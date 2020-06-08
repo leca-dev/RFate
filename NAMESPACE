@@ -1,0 +1,3 @@
+useDynLib(fate, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)

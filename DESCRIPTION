@@ -1,0 +1,32 @@
+Package: fate
+Type: Package
+Title: FATE-HD in an R Environment
+Version: 1.0
+Date: 2020-02-04
+Authors@R: c(person("Isabelle", "Boulangeat", role = "aut",
+                    email = "isabelle.boulangeat@inrae.fr"),
+             person("Guillaume", "Dupouy", role = c("aut", "cre"),
+                    email = "guillaume.dupouy@inrae.fr"),
+             person("Maya", "Gueguen", role = "aut",
+                    email = "maya.gueguen@univ-grenoble-alpes.fr"),
+             person("Bjoern", "Reineking", role = "aut",
+                    email = "bjoern.reineking@inrae.fr"))
+Author: Isabelle Boulangeat [aut],
+        Guillaume Dupouy [aut, cre],
+        Maya Gueguen [aut],
+        Bjoern Reineking [aut]
+Maintainer: Guillaume Dupouy <guillaume.dupouy@inrae.fr>
+Description:
+  Wrapper of the C++ model FATE-HD. FATE-HD is a dynamic landscape
+  vegetation model that simulates interactions between plant modelling entities
+  (e.g. species or plant functional groups), their population dynamics and
+  dispersal, whilst taking into account external drivers such as disturbance
+  regimes, and environmental variations.
+RoxygenNote: 7.1.0
+Encoding: UTF-8
+NeedsCompilation: yes
+License: GPL (>= 2)
+SystemRequirements: GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>= 4.8.0)
+Depends: R (>= 3.5)
+Imports: Rcpp (>= 1.0.2)
+LinkingTo: Rcpp, BH
