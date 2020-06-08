@@ -44,7 +44,7 @@
 #include "SuFateH.h"
 #include "SimulMap.h"
 #include "Disp.h"
-#include "Spatial.hpp"
+#include "Spatial.h"
 
 /* to save and load simulation objects */
 #include <boost/archive/text_oarchive.hpp> // to create archive
@@ -66,7 +66,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 	#include "sys/sysinfo.h" // Unix
 
 	struct sysinfo memInfo; // Unix
-	
+
 	/* MEMORY CURRENTLY USED BY CURRENT PROCESS : Unix */
 	int parseLine(char* line)
 	{
@@ -76,7 +76,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 		i = atoi(line);
 		return i;
 	}
-	
+
 	int getMemUsed(string typeMEM)
 	{ //Note: this value is in KB!
 		FILE* file = fopen("/proc/self/status", "r");
@@ -111,7 +111,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 	#include <mach/mach_types.h> // Mac
 	#include <mach/mach_init.h> // Mac
 	#include <mach/mach_host.h> // Mac
-	
+
 	struct task_basic_info t_info; // Mac
 	mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT; // Mac
 #endif
@@ -189,17 +189,17 @@ int main(int argc, char* argv[])
 	/* Time consuming measurement */
 	time_t Start, End;
 	time(&Start);
-	
+
 	/* Initializing a random generator seed */
 	srand(time(NULL));
-	
+
 	/* Read global parameter for this simulation */
 	cout << endl;
 	cout << "*********************************************" << endl;
 	cout << "   WELCOME TO FATE-HDD SIMULATION RUNTIME" << endl;
 	cout << "*********************************************" << endl;
 	cout << endl;
-	
+
 	/*=============================================================================*/
 	/* Test on given arguments */
 	{
@@ -211,7 +211,7 @@ int main(int argc, char* argv[])
 			cout << "You can also ask for software version info with " << argv[0] << " -v" << endl;
 			exit(1);
 		}
-		
+
 		stringstream ss;
 		string arg_test;
 		for (int i=1; i<=argc-1; i++)
@@ -234,15 +234,15 @@ int main(int argc, char* argv[])
 			}
 		}
 	} // end test arguments
-	
+
 	/*=============================================================================*/
 	/* Arguments reading */
 	string paramFile(argv[argc-1]);
-	
+
 	/* print input args */
 	cout << "This simulation will be based on " << paramFile  << " parameters file."<< endl;
 	cout << endl;
-	
+
 	/* create the simulation parameter object that store path to all needed parameters files */
 	FOPL file_of_params(paramFile);
 	cout << endl;
@@ -250,32 +250,32 @@ int main(int argc, char* argv[])
 	file_of_params.checkCorrectParams();
 	file_of_params.checkCorrectMasks();
 	file_of_params.show();
-	
+
 	/*=============================================================================*/
 	/* FILE for saving COMPUTATION statistics */
-	
+
 	/* Headed file creation */
 	ostringstream ossFileName;
 	ossFileName.str("");
 	ossFileName << file_of_params.getSavingDir() << "/ComputationStatistics.txt";
 	string strFileName = ossFileName.str();
-	
+
 	/* Open the file or create it */
 	ofstream FileStats(strFileName.c_str(), ios::out | ios::trunc);
-	
+
 	#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
 		/* Memory consuming measurement */
 		sysinfo (&memInfo); // Unix
-		
+
 		/* TOTAL VIRTUAL MEMORY */
 		long long totalVirtualMem = memInfo.totalram;
 		totalVirtualMem += memInfo.totalswap;
 		totalVirtualMem *= memInfo.mem_unit;
-		
+
 		/* TOTAL PHYSICAL MEMORY (RAM) */
 		long long totalPhysMem = memInfo.totalram;
 		totalPhysMem *= memInfo.mem_unit;
-		
+
 		FileStats << "TOTAL VIRTUAL MEMORY : " << totalVirtualMem << endl;
 		FileStats << "TOTAL PHYSICAL MEMORY : " << totalPhysMem << endl;
 		FileStats << "Initial VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
@@ -287,10 +287,10 @@ int main(int argc, char* argv[])
 		mach_msg_type_number_t count; // Mac
 		vm_statistics64_data_t vm_stats; // Mac
 	#endif
-	
+
 	/*=============================================================================*/
 	/* check if a saving of an old simulation is given or if we start a new one from scratch */
-	
+
 	// the map on which the whole simulation process is based on
 	if (file_of_params.getSavedState() == "0")
 	{ // start from scratch
@@ -304,11 +304,11 @@ int main(int argc, char* argv[])
 			loadFATE(file_of_params.getSavedState());
 			cout << "> done! " << endl;
 		}
-		
+
 		/* update the simulation parameters (replace the object saved ones by the current ones) */
 		cout << "*** UPDATE simulation files..." << endl;
 		simulMap->UpdateSimulationParameters(file_of_params);
-		
+
 		// FROM SAVED STATE BUT WITH NEW FG file_of_params
 		cout << "*** REBUILDING Global simulation parameters..." << endl;
 		GSP glob_params = GSP(file_of_params.getGlobSimulParams());
@@ -353,30 +353,30 @@ int main(int argc, char* argv[])
 		}
 		simulMap->setFGparams(fg_vec_tmp);
 	}
-	
+
 	cout << "\n***" << " NoCPU = " << simulMap->getGlobalParameters().getNoCPU() << endl;
 	FileStats << "Number of CPU used : " << simulMap->getGlobalParameters().getNoCPU() << endl;
-	
+
 	/*=============================================================================*/
 	/* get all needed parameters */
-	
+
 	/* timing parameters */
 	cout << "Getting timing parameters..." << endl;
 	int simul_duration = simulMap->getGlobalParameters().getSimulDuration();
 	bool seeding_on = false;
 	int seeding_duration = simulMap->getGlobalParameters().getSeedingDuration();
 	int seeding_timestep = simulMap->getGlobalParameters().getSeedingTimeStep();
-	
+
 	/* saving parameters */
 	cout << "Getting saving parameters..." << endl;
 	vector< int > summarised_array_saving_times = ReadTimingsFile( file_of_params.getSavingTimesMaps() );
 	vector< int > simul_objects_saving_times = ReadTimingsFile( file_of_params.getSavingTimesObjects() );
-	
+
 	/* study area change parameters */
 	cout << "Getting MASK timing parameters..." << endl;
 	vector< int > mask_change_times = ReadTimingsFile( file_of_params.getMaskChangemaskYears() );
 	vector< string > mask_change_files = file_of_params.getMaskChangemaskFiles();
-	
+
 	/* MODULES change parameters */
 	if (simulMap->getGlobalParameters().getDoHabSuitability())
 	{
@@ -412,14 +412,14 @@ int main(int argc, char* argv[])
 	vector< string > aliens_change_files = file_of_params.getAliensChangemaskFiles();
 	vector< int > aliens_freq_change_times = ReadTimingsFile( file_of_params.getAliensChangefreqYears() );
 	vector< string > aliens_freq_change_files = file_of_params.getAliensChangefreqFiles();
-	
+
 	/*=============================================================================*/
 	/* Simulation main loop */
 	for (int year=0; year<=simul_duration; year++)
 	{
 		cout << endl;
 		cout << "Starting year " << year << " :" << endl;
-		
+
 		/* SAVING OUTPUTS PROCEDURE =================================================*/
 		/* Saving computing statistics */
 		if (year%10==0)
@@ -427,11 +427,11 @@ int main(int argc, char* argv[])
 			#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
 				FileStats << "Year " << year << ", VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
 				FileStats << "Year " << year << ", PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
-			#elif defined(__APPLE__) 
+			#elif defined(__APPLE__)
 				if (KERN_SUCCESS != task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&t_info, &t_info_count)) { return -1; }
 				FileStats << "Year " << year << ", RESIDENT SIZE : " << t_info.resident_size << endl;
 				FileStats << "Year " << year << ", VIRTUAL MEMORY used : " << t_info.virtual_size << endl;
-				
+
 				mach_port = mach_host_self();
 				count = sizeof(vm_stats) / sizeof(natural_t);
 				if (KERN_SUCCESS == host_page_size(mach_port, &page_size) && KERN_SUCCESS == host_statistics64(mach_port, HOST_VM_INFO,(host_info64_t)&vm_stats, &count))
@@ -442,12 +442,12 @@ int main(int argc, char* argv[])
 					FileStats << "Year " << year << ", PHYSICAL USED MEMORY : " << used_memory << endl;
 				}
 			#endif
-			
+
 			time(&End);
 			int TotTime = difftime(End,Start);
 			FileStats << "Year " << year << ", COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
 		}
-		
+
 		/* omp_set_num_threads( simulMap->getGlobalParameters().getNoCPU() );
 		#pragma omp parallel
 		{*/
@@ -459,7 +459,7 @@ int main(int argc, char* argv[])
 			/* remove saved time from list */
 			summarised_array_saving_times.erase(summarised_array_saving_times.begin());
 		}
-		
+
 		/* Saving simulation object */
 		if (simul_objects_saving_times.size() > 0 && simul_objects_saving_times.front() == year)
 		{
@@ -471,27 +471,27 @@ int main(int argc, char* argv[])
 				saveFATE(objFileName);
 			}
 			cout << "> done! " << endl;
-			
+
 			/* remove saved time from list */
 			simul_objects_saving_times.erase(simul_objects_saving_times.begin());
-			
+
 			/* TEST EQUALITY */
 			/*string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
 			loadFATE(objFileName);
 			assert(*test == *simulMap);*/
 		}
-		
+
 		/* Do mask, climat, disturbances and climatic data changes ==================*/
 		/* Do MASK change */
 		if (mask_change_times.size() > 0 && mask_change_times.front() == year)
 		{
 			cout << "Doing MASK change..." << endl;
 			simulMap->DoFileChange(mask_change_files.front(), "mask");
-			
+
 			/* Change mask name in file_of_params to create outputs rasters with the correct studied area */
 			string strTmp; // tmp string to keep change filenames
 			vector< string > newNameFiles; // vector of change filenames
-			
+
 			/* open newChangeFile */
 			ifstream file(mask_change_files.front().c_str(), ios::in);
 			if (file)
@@ -506,7 +506,7 @@ int main(int argc, char* argv[])
 						cout << "*** " << strTmp << endl;
 					}
 				}
-				
+
 				/* Close file */
 				file.close();
 			} else
@@ -516,24 +516,24 @@ int main(int argc, char* argv[])
 			}
 			file_of_params.setMask(newNameFiles[0]); // change mask name
 			file_of_params.checkCorrectMasks(); // check that new mask is similar to the other simulation masks
-			
+
 			/* remove useless time and file from list */
 			mask_change_times.erase(mask_change_times.begin());
 			mask_change_files.erase(mask_change_files.begin());
 		}
-		
+
 		/* Do habitat suitability change */
 		if (simulMap->getGlobalParameters().getDoHabSuitability())
 		{
 			changeFile(year, "habSuit", habsuit_change_times, habsuit_change_files);
 		}
-		
+
 		/* Do disturbances change */
 		if (simulMap->getGlobalParameters().getDoDisturbances())
 		{
 			changeFile(year, "dist", dist_change_times, dist_change_files);
 		}
-		
+
 		/* FIRE DISTURBANCE */
 		if (simulMap->getGlobalParameters().getDoFireDisturbances())
 		{
@@ -542,7 +542,7 @@ int main(int argc, char* argv[])
 			/* Do fire frequencies change */
 			changeFreq(year, "fire", fire_freq_change_times, fire_freq_change_files);
 		}
-		
+
 		/* DROUGHT DISTURBANCE */
 		/* Do drought index change */
 		if (simulMap->getGlobalParameters().getDoDroughtDisturbances() ||
@@ -550,7 +550,7 @@ int main(int argc, char* argv[])
 		{
 			changeFile(year, "drought", drought_change_times, drought_change_files);
 		}
-		
+
 		/* ALIENS DISTURBANCE */
 		if (simulMap->getGlobalParameters().getDoAliensIntroduction())
 		{
@@ -559,7 +559,7 @@ int main(int argc, char* argv[])
 			/* Do aliens introduction frequencies change */
 			changeFreq(year, "aliens", aliens_freq_change_times, aliens_freq_change_files);
 		}
-		
+
 		/* Check seeding parameters =================================================*/
 		/* DISPERSAL MODULE */
 		if (simulMap->getGlobalParameters().getDoDispersal())
@@ -577,7 +577,7 @@ int main(int argc, char* argv[])
 					simulMap->StopSeeding();
 				}
 			}
-			
+
 			/* Stop seeding the last year of seeding */
 			if (seeding_duration > 0 && year == seeding_duration)
 			{
@@ -586,13 +586,13 @@ int main(int argc, char* argv[])
 				simulMap->StopSeeding();
 			}
 		}
-		
+
 		/* Run aliens introduction model ============================================*/
 		if (simulMap->getGlobalParameters().getDoAliensIntroduction())
 		{
 			simulMap->DoAliensIntroduction(year);
 		}
-		
+
 		/* Run drought disturbance model : PREVIOUS succession ======================*/
 		if (simulMap->getGlobalParameters().getDoDroughtDisturbances())
 		{
@@ -601,34 +601,34 @@ int main(int argc, char* argv[])
 			cout << "Apply drought disturbances..." << endl;
 			simulMap->DoDroughtDisturbance_part2("prev");
 		}
-		
+
 		/*===========================================================================*/
 		/* Run succession model */
 		cout << "Do Succession..." << endl;
 		simulMap->DoSuccession();
 		/*===========================================================================*/
-		
+
 		/* Run drought disturbance model : POST succession */
 		if (simulMap->getGlobalParameters().getDoDroughtDisturbances())
 		{
 			cout << "Apply drought disturbances..." << endl;
 			simulMap->DoDroughtDisturbance_part2("post");
 		}
-		
+
 		/* Run seeds dispersal model ================================================*/
 		if (simulMap->getGlobalParameters().getDoDispersal() && !seeding_on)
 		{
 			cout << "Disperse seeds..." << endl;
 			simulMap->DoDispersal();
 		}
-		
+
 		/* Run disturbance model ====================================================*/
 		if (simulMap->getGlobalParameters().getDoDisturbances())
 		{
 			cout << "Apply disturbances..." << endl;
 			simulMap->DoDisturbance(year);
 		}
-		
+
 		/* Run fire disturbance model ===============================================*/
 		if (simulMap->getGlobalParameters().getDoFireDisturbances())
 		{
@@ -637,19 +637,19 @@ int main(int argc, char* argv[])
 		}
 	} // end main simulation loop
 	//} // end PRAGMA
-	
+
 	delete simulMap;
-	
+
 	/* End of Run */
 	time(&End);
 	int TotTime = difftime(End,Start);
-	
+
 	FileStats << "End of simul, COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
 	FileStats.close();
-	
+
 	cout 	<< "Process executed normally! It took "
 	<< TotTime/3600 << "h " << (TotTime%3600)/60
 	<< "m " << (TotTime%3600)%60 << "s." << endl;
-	
+
 	return 0;
 }

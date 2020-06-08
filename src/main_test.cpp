@@ -39,7 +39,7 @@
 #include "SuFateH.h"
 #include "SimulMap.h"
 #include "Disp.h"
-#include "Spatial.hpp"
+#include "Spatial.h"
 
 /* to save and load simulation objects */
 #include <boost/archive/text_oarchive.hpp> // to create archive
@@ -69,10 +69,10 @@ int main(int argc, char* argv[])
 	/* Time consuming measurement */
 	time_t Start, End;
 	time(&Start);
-	
+
 	/* Initializing a random generator seed */
 	srand(time(NULL));
-	
+
 	/* Read global parameter for this simulation */
 	cout << endl;
 	cout << "*********************************************" << endl;
@@ -105,8 +105,8 @@ int main(int argc, char* argv[])
 		cout << "> DoubleToFract(0.3) = " << DoubleToFract(0.3) << endl;
 		cout << "> DoubleToFract(1) = " << DoubleToFract(1) << endl;
 		cout << "> DoubleToFract(10) = " << DoubleToFract(10.0) << endl;
-		
-		
+
+
 		// for Fract2 enum type
 		cout << " ===> Fract2" << endl;
 		vector<Fract2> frac2 = {F2None, F2Low, F2Medium, F2High, F2All};
@@ -115,7 +115,7 @@ int main(int argc, char* argv[])
 			cout << "> FractToDouble(" << Fract2(i) << ") = " << FractToDouble(Fract2(i)) << endl;
 			cout << "> FractToDouble(" << frac2[i] << ") = " << FractToDouble(frac2[i]) << endl;
 		}
-		
+
 	/*=============================================================================*/
 
 		/* test FGUtils class */
@@ -126,9 +126,9 @@ int main(int argc, char* argv[])
 		testFileExist("FateHD_compilation", "FateHD_compilation.sh");
 		vector<string> check_files = {"FateHD_compilation.sh", "Fake_file"};
 		testFileExist("check_files", check_files);*/
-		
+
 	/*=============================================================================*/
-	
+
 		/* Test of Reading parameters functions */
 //		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 //		cout << "Test of Reading parameters functions" << endl;
@@ -153,9 +153,9 @@ int main(int argc, char* argv[])
 	 	}
 		string paramFile(argv[1]);
 		cout << "> paramFile = " << paramFile << endl;
-		
+
 	/*=============================================================================*/
-	
+
 		/* test FOPL class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test FOPL class" << endl;
@@ -175,8 +175,8 @@ int main(int argc, char* argv[])
 		cout << "> file_of_params.getNamespaceConstants() = " << file_of_params.getNamespaceConstants() << endl;
 		FGUtils name_const(file_of_params.getNamespaceConstants());
 		name_const.show();*/
-		
-		
+
+
 		/* test GSP class */
 		// Missing test of constructor with all attributes given
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
@@ -188,7 +188,7 @@ int main(int argc, char* argv[])
 		glob_params.show();
 
 	/*=============================================================================*/
-	
+
 		/* test FG class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test FG class : filled by hand" << endl;
@@ -205,7 +205,7 @@ int main(int argc, char* argv[])
 		fg_resp.setFates(PC40,0,1,Kill);
 		fg.setDistResponse(fg_resp);
 		fg.show();
-		
+
 		/*cout << "Try setPoolLife with more than PTcount values :" << endl;
 		int poolL_wrong[3] = {3, 10, 2};
 		fg.setPoolLife(poolL_wrong);*/
@@ -228,8 +228,8 @@ int main(int argc, char* argv[])
 		vector<string> new_succ_files = {"SUCC_pfg1", "SUCC_pfg2", "SUCC_pfg3"};
 		file_of_params.setFGLifeHistory(new_succ_files);
 		vector<string> new_light_files = {"SUCC_pfg1", "SUCC_pfg2", "SUCC_pfg3"};
-		file_of_params.setFGLight(new_light_files);		
-		
+		file_of_params.setFGLight(new_light_files);
+
 		glob_params.setDoDisturbances(true);
 		glob_params.setNoDist(2);
 		glob_params.setNoDistSub(4);
@@ -237,7 +237,7 @@ int main(int argc, char* argv[])
 		fg2.show();
 
 	/*=============================================================================*/
-	
+
 		/* Test of cohort class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test Cohort class" << endl;
@@ -300,55 +300,55 @@ int main(int argc, char* argv[])
 		cout << "> delete from 3 to 7" << endl;
 		legion.removeCohort(3,7);
 		legion.show();
-		
+
 		cout << "> add new cohort" << endl;
 		legion.addCohort(1000,1,50);
 		legion.show();
-		
+
 		cout << "> reduce cohort by 0.5 between 1 and 20" << endl;
 		legion.reduceCohort(1,20,0.5);
-		
+
 		cout << "> reduce cohort by 0.5 between 60 and 80" << endl;
 		legion.reduceCohort(60,80,0.5);
 		legion.show();
-		
+
 		cout << "> reduce cohort by 0 between 2 and 6" << endl;
 		legion.reduceCohort(2,6,0);
 		legion.show();
-		
+
 		cout << "> reduce cohort by 5 between 2 and 12" << endl;
 		legion.reduceCohort(2,12,5);
 		legion.show();
 
 	/*=============================================================================*/
-	
+
 		/* Test of PropPool class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test PropPool class" << endl;
 		PropPool proppool;
 		proppool.show();
-		
+
 		proppool.setSize(102);
 		proppool.setDeclining(true);
 		proppool.show();
-		
+
 	/*=============================================================================*/
-	
+
 		/* Test of LightResources class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test LightResources class" << endl;
 		LightResources LR0(glob_params.getNoStrata());
 		LR0.show();
-		
+
 		LightResources LR1(4);
 		LR1.show();
-		
+
 		vector<Resource> vec_resources = {RLow, RLow, RHigh, RMedium, RLow};
 		LightResources LR2(vec_resources);
 		LR2.show();
 
 	/*=============================================================================*/
-	
+
 		/* Test of FuncGroup class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test FuncGroup class" << endl;
@@ -357,24 +357,24 @@ int main(int argc, char* argv[])
 		FuncGroup funcGroup(fg_ptr);
 		funcGroup.show();
 		funcGroup.summary();
-		
+
 		FG* fg_ptr1 = new FG(fg1);
 		FuncGroup funcGroup1(fg_ptr1);
 		funcGroup1.show();
 		funcGroup1.summary();
-		
+
 		vector<PropPool> vec_proppool = {proppool};
 		FuncGroup funcGroup2(vec_proppool, legion, fg_ptr1);
 		funcGroup2.show();
 		funcGroup2.summary();
-			
+
 	/*=============================================================================*/
-	
+
 		/* Test of SuFate class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test FuncGroup class: functions" << endl;
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
-			
+
 		// pfg parameters obj creation
 //		boost::shared_ptr<FG> fg0_ptr (new FG(fg0));
 //		boost::shared_ptr<FG> fg1_ptr (new FG(fg1));
@@ -400,7 +400,7 @@ int main(int argc, char* argv[])
 		//FG2.getLList_()->reduceCohort(80,60,0.5);
 		//FG2.getLList_()->addCohort(1000000,100, 7);
 		//FG2.getLList_()->removeCohort(9, 64);
-		
+
 		FG0.show();
 		FG1.show();
 		FG2.show();
@@ -416,7 +416,7 @@ int main(int argc, char* argv[])
 		cout << "(1,200) = " << FG0.totalNumAbund(1,200) << endl;
 		cout << "(150,200) = " << FG0.totalNumAbund(150,200) << endl;
 		cout << "FG0.getLList_()->getNumAbund(...) = " << endl;
-		cout << "(1,4) = " << FG0.getLList_()->getNumAbund(1,4) << endl;	
+		cout << "(1,4) = " << FG0.getLList_()->getNumAbund(1,4) << endl;
 		cout << "(1,5) = " << FG0.getLList_()->getNumAbund(1,5) << endl;
 		cout << "(5,10) = " << FG0.getLList_()->getNumAbund(5,10) << endl;
 		cout << "(6,10) = " << FG0.getLList_()->getNumAbund(6,10) << endl;
@@ -425,7 +425,7 @@ int main(int argc, char* argv[])
 		cout << "(1,200) = " << FG0.getLList_()->getNumAbund(1,200) << endl;
 		cout << "(150,200) = " << FG0.getLList_()->getNumAbund(150,200) << endl;
 		cout << endl;
-		
+
 		FG0.getFGparams_()->setImmSize(0.5);
 		cout << "FG0.totalNumAbund(...) = " << endl;
 		cout << "(1,4) = " << FG0.totalNumAbund(1,4) << endl;
@@ -437,7 +437,7 @@ int main(int argc, char* argv[])
 		cout << "(1,200) = " << FG0.totalNumAbund(1,200) << endl;
 		cout << "(150,200) = " << FG0.totalNumAbund(150,200) << endl;
 		cout << "FG0.getLList_()->getNumAbund(...) = " << endl;
-		cout << "(1,4) = " << FG0.getLList_()->getNumAbund(1,4) << endl;	
+		cout << "(1,4) = " << FG0.getLList_()->getNumAbund(1,4) << endl;
 		cout << "(1,5) = " << FG0.getLList_()->getNumAbund(1,5) << endl;
 		cout << "(5,10) = " << FG0.getLList_()->getNumAbund(5,10) << endl;
 		cout << "(6,10) = " << FG0.getLList_()->getNumAbund(6,10) << endl;
@@ -446,7 +446,7 @@ int main(int argc, char* argv[])
 		cout << "(1,200) = " << FG0.getLList_()->getNumAbund(1,200) << endl;
 		cout << "(150,200) = " << FG0.getLList_()->getNumAbund(150,200) << endl;
 		cout << endl;
-		
+
 		cout << "TEST getNumAbund : how it was" << endl;
 		cout << FG0.getLList_()->getNumAbund( 1,FG0.getFGparams_()->getMatTime() ) * FG0.getFGparams_()->getImmSize() +
 		FG0.getLList_()->getNumAbund( FG0.getFGparams_()->getMatTime()+1,FG0.getFGparams_()->getLifeSpan() ) << endl;
@@ -457,18 +457,18 @@ int main(int argc, char* argv[])
 		cout << FG0.totalNumAbund( 1,FG0.getFGparams_()->getLifeSpan() ) << endl;
 		// difference comes from that weighting by ImmSize is done for each cohort with totalNumAbund,
 		// while it's done only once at the end for getNumAbund
-		
+
 		cout << "TEST decomposition : " << endl;
 		cout << FG0.getLList_()->getNumAbund( 1,FG0.getFGparams_()->getMatTime() ) << endl;
 		cout << FG0.getLList_()->getNumAbund( 1,FG0.getFGparams_()->getMatTime() -1 ) << endl;
 		cout << FG0.getLList_()->getNumAbund( 1,FG0.getFGparams_()->getMatTime() ) * FG0.getFGparams_()->getImmSize() << endl;
 		cout << FG0.getLList_()->getNumAbund( 1,FG0.getFGparams_()->getMatTime() -1 ) * FG0.getFGparams_()->getImmSize() << endl;
 		cout << FG0.totalNumAbund( 1,FG0.getFGparams_()->getMatTime() -1 ) << endl;
-				
+
 		cout << "(100,1) = " << FG0.totalNumAbund(100,1) << endl;
 		cout << "(100,1) = " << FG0.getLList_()->getNumAbund(100,1) << endl;*/
 
-		
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << "> agelegion function" << endl;
 		cout << "+1 year" << endl;
@@ -483,9 +483,9 @@ int main(int argc, char* argv[])
 		cout << "+1 year" << endl;
 		FG2.ageLegions();
 		FG2.show();
-		
+
 	/*=============================================================================*/
-	
+
 		// GetPoolInput function test
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << "> getPools function" << endl;
@@ -497,9 +497,9 @@ int main(int argc, char* argv[])
 		FG0.show();
 		FG0.AgePool1();
 		FG0.show();
-		
+
 	/*=============================================================================*/
-	
+
 		/* Test of Community class */
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test Community class" << endl;
@@ -509,15 +509,15 @@ int main(int argc, char* argv[])
 		com0[2] = FG2;
 		Community COM0(com0);
 		COM0.show();
-		
+
 	/*=============================================================================*/
-		
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test SuFate class" << endl;
-		
+
 		// Global parameters object creation
-		GSPPtr GSP_ptr (new GSP(glob_params));		
-		
+		GSPPtr GSP_ptr (new GSP(glob_params));
+
 		// Community object creation
 		//CommunityPtr com0_ptr (new Community(COM0));
 
@@ -532,15 +532,15 @@ int main(int argc, char* argv[])
 		/* creation of namespace constants file */
 		//FGUtilsPtr name_const_ptr (new FGUtils(name_const));
 
-		// Succession model creation	
+		// Succession model creation
 		SuFate succ(1, COM0, LR1, 0.0, m_SeedMapOut, m_SeedMapIn, GSP_ptr); //, name_const_ptr);
 		succ.show();
 
 	/*=============================================================================*/
-	
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test SuFate class : functions" << endl;
-		
+
 		// CalculateEnvironment function test
 /*		cout << "> CalculateEnvironment function test" << endl;
 		succ.CalculateEnvironment(false, 0.0);
@@ -576,10 +576,10 @@ int main(int argc, char* argv[])
 		succ.getCommunity_()->getFuncGroup_(2)->show();
 
 	/*=============================================================================*/
-	
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test SuFateH class" << endl;
-		
+
 		// Envsuit and EnvsuitParams ptr creation
 		SpatialStack<double, double>* m_EnvSuitMapPtr = new SpatialStack<double, double>(m_Coord_ptr, COM0.getFuncGroupList().size());
 		SpatialStack<double, double>* m_EnvSuitRefMapPtr = new SpatialStack<double, double>(m_Coord_ptr, COM0.getFuncGroupList().size());
@@ -592,14 +592,14 @@ int main(int argc, char* argv[])
 		succH.show();
 
 	/*=============================================================================*/
-	
+
 		// Test Dispersal functions
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test Disp class" << endl;
-		
+
 		// Create a small frame : 10 x 10 pixels
 		Coordinates<double>* coordD_ptr = new Coordinates<double>(0.0,1000.0,100.0, 0.0,1000.0,100.0);
-		
+
 		// Create map of input seeds
 		vector< double > seedInFG0(100,10);
 		vector< double > seedInFG1(100,100);
@@ -608,21 +608,21 @@ int main(int argc, char* argv[])
 		seedInFG2[45] = 1000;
 		vector< vector< double > > seedIn = {seedInFG0, seedInFG1, seedInFG2};
 		SpatialStack<double, double>* seedMapIn_ptr = new SpatialStack<double, double>(coordD_ptr, seedIn);
-				
+
 		// Create map of output seeds
 		vector< double > seedOutFG0(100,0);
 		vector< double > seedOutFG1(100,0);
 		vector< double > seedOutFG2(100,0);
 		vector< vector< double > > seedOut = {seedOutFG0, seedOutFG1, seedOutFG2};
 		SpatialStack<double, double>* seedMapOut_ptr = new SpatialStack<double, double>(coordD_ptr, seedOut);
-		
+
 		// Create vector of FG
 		fg2.setDisp50(100);
 		fg2.setDisp99(300);
 		fg2.setDispLD(500);
 		vector<FG> FGparams = {fg0, fg1, fg2};
 		vector<FG>* FGparams_ptr = new vector<FG>(FGparams);
-		
+
 		cout << "> before dispersal (FG2) : input" << endl;
 		for (unsigned i=0; i<10; i++){
 			for (unsigned j=0; j<10; j++){
@@ -638,7 +638,7 @@ int main(int argc, char* argv[])
 			}
 			cout << endl;
 		}
-		
+
 		// Create Disp object
 		Disp disp_map(FGparams_ptr, seedMapIn_ptr, seedMapOut_ptr);
 		vector<unsigned> pix_id(100, 0);
@@ -664,10 +664,10 @@ int main(int argc, char* argv[])
 		//terminate();
 
 	/*=============================================================================*/
-	
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test SimulMap class" << endl;
-	
+
 		file_of_params.show();
 		file_of_params.setFGLifeHistory({"SUCC_pfg1","SUCC_pfg2"});
 		file_of_params.setFGDispersal({"DISP_pfg1","DISP_pfg2"});
@@ -675,10 +675,10 @@ int main(int argc, char* argv[])
 		SimulMap simulMap(file_of_params);
 
 	/*=============================================================================*/
-	
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << " ===> test SimulMap functions" << endl;
-	
+
 		cout << "> DistMap before change mask procedure" << endl;
 		for(unsigned j=0; j<simulMap.getDistMap().getYncell(); j++)
 		{
@@ -688,9 +688,9 @@ int main(int argc, char* argv[])
 			}
 			cout << endl;
 		}
-		
+
 		simulMap.DoFileChange("DIST_change_mask", "dist");
-		
+
 		cout << "> DistMap after change mask procedure" << endl;
 		for(unsigned j=0; j<simulMap.getDistMap().getYncell(); j++)
 		{
@@ -699,10 +699,10 @@ int main(int argc, char* argv[])
 				cout << simulMap.getDistMap()(i,j,0) << " ";
 			}
 			cout << endl;
-		}		
-		
+		}
+
 	/*=============================================================================*/
-	
+
 		cout << "> envSuitRefMap before update : PFG 1" << endl;
 		for(unsigned j=0; j<simulMap.getEnvSuitRefMap().getYncell(); j++)
 		{
@@ -722,9 +722,9 @@ int main(int argc, char* argv[])
 			}
 			cout << endl;
 		}
-				
+
 		simulMap.UpdateEnvSuitRefMap(1);
-		
+
 		cout << "> envSuitRefMap after update 1 : PFG 1" << endl;
 		for(unsigned j=0; j<simulMap.getEnvSuitRefMap().getYncell(); j++)
 		{
@@ -743,9 +743,9 @@ int main(int argc, char* argv[])
 			}
 			cout << endl;
 		}
-		
+
 		simulMap.UpdateEnvSuitRefMap(2);
-		
+
 		cout << "> envSuitRefMap after update 2 : PFG 1" << endl;
 		for(unsigned j=0; j<simulMap.getEnvSuitRefMap().getYncell(); j++)
 		{
@@ -764,7 +764,7 @@ int main(int argc, char* argv[])
 			}
 			cout << endl;
 		}
-		
+
 	/*=============================================================================*/
 
 		unsigned pt_id = 2;
@@ -777,7 +777,7 @@ int main(int argc, char* argv[])
 			simulMap.getFGparams()[fg].setImmSize(0.4);
 			simulMap.getFGparams()[fg].show();
 		}
-		
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << "> DoSuccession with seeding..." << endl;
 		simulMap.getSuccModelMap()(pt_id)->show();
@@ -793,7 +793,7 @@ int main(int argc, char* argv[])
 		cout << endl << endl;
 		cout << "\nyear 30" << endl;
 		simulMap.getSuccModelMap()(pt_id)->show();
-		
+
 		cout << endl << endl;
 		for(unsigned fg=0; fg<simulMap.getFGparams().size(); fg++)
 		{
@@ -816,7 +816,7 @@ int main(int argc, char* argv[])
 		cout << endl << endl;
 		cout << "\nyear 50" << endl;
 		simulMap.getSuccModelMap()(pt_id)->show();
-		
+
 		cout << endl << endl;
 		for(unsigned fg=0; fg<simulMap.getFGparams().size(); fg++)
 		{
@@ -824,13 +824,13 @@ int main(int argc, char* argv[])
 		}
 
 	/*=============================================================================*/
-	
+
 		cout << endl << endl << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-" << endl;
 		cout << "> Serialization tests : PropPool" << endl;
 
 		// Create data
 		PropPool pp(10, false, 100);
-		
+
 		// Save data
 		const char* fileName = "saved.txt";
 		{
@@ -845,7 +845,7 @@ int main(int argc, char* argv[])
 			ofs.close();
 		}
 		cout << "simple objects saved" << endl;
-		
+
 		// Restore data
 		PropPool restored_pp;
 		FG restored_fg0;
@@ -894,11 +894,11 @@ int main(int argc, char* argv[])
 			ar & restored_simulMap;
 			ifs.close();
 		}
-		cout << "complex objects restored" << endl;		
-		
+		cout << "complex objects restored" << endl;
+
 		// Make sure we restored the data exactly as it was saved
 		assert(restored_simulMap == simulMap);
-		
+
 
 		cout << endl;
 		cout << "> Serialization tests : inequality" << endl;
@@ -922,17 +922,14 @@ int main(int argc, char* argv[])
 		cout << "in SuFateH : " << restored_simulMap.getEnvSuitMap()(pt_id, 0) << endl;
 
 	/*=============================================================================*/
-	
+
 	 /* End of Run */
 	 time(&End);
 	 int TotTime = difftime(End,Start);
-	 
+
 	 cout 	<< "Process executed normally! It took "
 	 << TotTime/3600 << "h " << (TotTime%3600)/60
 	 << "m " << (TotTime%3600)%60 << "s." << endl;
 
     return 0;
 }
-
-
-

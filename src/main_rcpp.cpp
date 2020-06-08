@@ -44,7 +44,7 @@
 #include "SuFateH.h"
 #include "SimulMap.h"
 #include "Disp.h"
-#include "Spatial.hpp"
+#include "Spatial.h"
 #include "Logger.h"
 
 /* to save and load simulation objects */

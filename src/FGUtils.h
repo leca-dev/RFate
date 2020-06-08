@@ -8,7 +8,7 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef FGUTILS_H
 #define FGUTILS_H
 
@@ -22,7 +22,7 @@
 /*#include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>*/
 
-#include "Spatial.hpp"
+#include "Spatial.h"
 
 using namespace std;
 
