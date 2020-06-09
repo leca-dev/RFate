@@ -91,7 +91,7 @@ class DebugMessage: public LogMessage
 {
 public:
   template <typename T, typename... Types>
-  InfoMessage(int verbosity, const T& t1, const Types&... t2) :
+  DebugMessage(int verbosity, const T& t1, const Types&... t2) :
   LogMessage(1, verbosity, t1, t2...) {}
 };
 
@@ -100,9 +100,8 @@ class InfoMessage: public LogMessage
 {
 public:
   template <typename T, typename... Types>
-  WarningMessage(int verbosity, const T& t1, const Types&... t2) :
+  InfoMessage(int verbosity, const T& t1, const Types&... t2) :
   LogMessage(2, verbosity, t1, t2...) {}
-  void show() const;
 };
 
 

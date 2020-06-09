@@ -258,10 +258,10 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		long long totalPhysMem = memInfo.totalram;
 		totalPhysMem *= memInfo.mem_unit;
 
-		FileStats << "TOTAL VIRTUAL MEMORY : " << totalVirtualMem << endl;
-		FileStats << "TOTAL PHYSICAL MEMORY : " << totalPhysMem << endl;
-		FileStats << "Initial VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
-		FileStats << "Initial PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
+		fileStats << "TOTAL VIRTUAL MEMORY : " << totalVirtualMem << endl;
+		fileStats << "TOTAL PHYSICAL MEMORY : " << totalPhysMem << endl;
+		fileStats << "Initial VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
+		fileStats << "Initial PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
 	#elif defined(__APPLE__)
 		/* Memory consuming measurement */
 		vm_size_t page_size; // Mac
@@ -337,7 +337,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	}
 
 	cout << "\n***" << " NoCPU = " << simulMap->getGlobalParameters().getNoCPU() << endl;
-	FileStats << "Number of CPU used : " << simulMap->getGlobalParameters().getNoCPU() << endl;
+	fileStats << "Number of CPU used : " << simulMap->getGlobalParameters().getNoCPU() << endl;
 
 	/*=============================================================================*/
 	/* get all needed parameters */
@@ -407,12 +407,12 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		if (year%10==0)
 		{
 			#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
-				FileStats << "Year " << year << ", VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
-				FileStats << "Year " << year << ", PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
+				fileStats << "Year " << year << ", VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
+				fileStats << "Year " << year << ", PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
 			#elif defined(__APPLE__)
 				if (KERN_SUCCESS != task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&t_info, &t_info_count)) { return -1; }
-				FileStats << "Year " << year << ", RESIDENT SIZE : " << t_info.resident_size << endl;
-				FileStats << "Year " << year << ", VIRTUAL MEMORY used : " << t_info.virtual_size << endl;
+				fileStats << "Year " << year << ", RESIDENT SIZE : " << t_info.resident_size << endl;
+				fileStats << "Year " << year << ", VIRTUAL MEMORY used : " << t_info.virtual_size << endl;
 
 				mach_port = mach_host_self();
 				count = sizeof(vm_stats) / sizeof(natural_t);
@@ -420,14 +420,14 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 				{
 					long long free_memory = (int64_t)vm_stats.free_count * (int64_t)page_size;
 					long long used_memory = ((int64_t)vm_stats.active_count + (int64_t)vm_stats.inactive_count + (int64_t)vm_stats.wire_count) *  (int64_t)page_size;
-					FileStats << "Year " << year << ", PHYSICAL FREE MEMORY : " << free_memory << endl;
-					FileStats << "Year " << year << ", PHYSICAL USED MEMORY : " << used_memory << endl;
+					fileStats << "Year " << year << ", PHYSICAL FREE MEMORY : " << free_memory << endl;
+					fileStats << "Year " << year << ", PHYSICAL USED MEMORY : " << used_memory << endl;
 				}
 			#endif
 
 			time(&End);
 			int TotTime = difftime(End,Start);
-			FileStats << "Year " << year << ", COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
+			fileStats << "Year " << year << ", COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
 		}
 
 		/* omp_set_num_threads( simulMap->getGlobalParameters().getNoCPU() );
@@ -626,8 +626,8 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	time(&End);
 	int TotTime = difftime(End,Start);
 
-	FileStats << "End of simul, COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
-	FileStats.close();
+	fileStats << "End of simul, COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
+	fileStats.close();
 
 	cout 	<< "Process executed normally! It took "
 	<< TotTime/3600 << "h " << (TotTime%3600)/60
