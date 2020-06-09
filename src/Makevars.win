@@ -1,0 +1,117 @@
+# CXX = /Library/Developer/CommandLineTools/usr/bin/clang++
+# CXX11 = /Library/Developer/CommandLineTools/usr/bin/clang++
+CXX_STD = CXX11
+VERSION = 2.2.3
+COMPILED_BY ?= gcc-4.6.3
+RWINLIB = ../windows/gdal2-$(VERSION)
+TARGET = lib$(subst gcc,,$(COMPILED_BY))$(R_ARCH)
+
+PKG_CXXFLAGS = \
+	-Iinclude \
+	-I$(RWINLIB)/include/gdal \
+	-I$(RWINLIB)/include/geos \
+	-I$(RWINLIB)/include/proj \
+  $(SHLIB_OPENMP_CXXFLAGS) -Wa,-mbig-obj
+
+PKG_LIBS = \
+	$(SHLIB_OPENMP_CXXFLAGS) \
+	-L$(RWINLIB)/$(TARGET) \
+	-L$(RWINLIB)/lib$(R_ARCH) \
+	-lgdal -lsqlite3 -lspatialite -lproj -lgeos_c -lgeos  \
+	-ljson-c -lnetcdf -lmariadbclient -lpq -lintl -lwebp -lcurl -lssh2 -lssl -lcrypto \
+	-lkea -lhdf5_cpp -lhdf5_hl -lhdf5 -lexpat -lfreexl -lcfitsio \
+	-lmfhdf -ldf -lxdr \
+	-lopenjp2 -ljasper -lpng16 -ljpeg -ltiff -lgeotiff -lgif -lxml2 -llzma -lszip -lz \
+	-lodbc32 -lodbccp32 -liconv -lpsapi -lws2_32 -lcrypt32 -lwldap32 -lsecur32 -lgdi32
+
+SOURCES = \
+	Cohort.cpp \
+	Community.cpp \
+	Disp.cpp \
+	FG.cpp \
+	FGresponse.cpp \
+	FGUtils.cpp \
+	FilesOfParamsList.cpp \
+	FuncGroup.cpp \
+	GlobalSimulParameters.cpp \
+	Legion.cpp \
+	LightResources.cpp \
+	main_rcpp.cpp \
+	Params.cpp \
+	PropPool.cpp \
+	RcppExports.cpp \
+	SimulMap.cpp \
+	SuFate.cpp \
+	SuFateH.cpp \
+	Logger.cpp \
+	LogMessage.cpp \
+	./libs/filesystem/src/codecvt_error_category.cpp \
+	./libs/filesystem/src/directory.cpp \
+	./libs/filesystem/src/exception.cpp \
+	./libs/filesystem/src/operations.cpp \
+	./libs/filesystem/src/path_traits.cpp \
+	./libs/filesystem/src/path.cpp \
+	./libs/filesystem/src/portability.cpp \
+	./libs/filesystem/src/unique_path.cpp \
+	./libs/filesystem/src/utf8_codecvt_facet.cpp \
+	./libs/filesystem/src/windows_file_codecvt.cpp \
+	./libs/serialization/src/archive_exception.cpp \
+	./libs/serialization/src/basic_archive.cpp \
+	./libs/serialization/src/basic_iarchive.cpp \
+	./libs/serialization/src/basic_iserializer.cpp \
+	./libs/serialization/src/basic_oarchive.cpp \
+	./libs/serialization/src/basic_oserializer.cpp \
+	./libs/serialization/src/basic_pointer_iserializer.cpp \
+	./libs/serialization/src/basic_pointer_oserializer.cpp \
+	./libs/serialization/src/basic_serializer_map.cpp \
+	./libs/serialization/src/basic_text_iprimitive.cpp \
+	./libs/serialization/src/basic_text_oprimitive.cpp \
+	./libs/serialization/src/basic_text_wiprimitive.cpp \
+	./libs/serialization/src/basic_text_woprimitive.cpp \
+	./libs/serialization/src/basic_xml_archive.cpp \
+	./libs/serialization/src/binary_iarchive.cpp \
+	./libs/serialization/src/binary_oarchive.cpp \
+	./libs/serialization/src/binary_wiarchive.cpp \
+	./libs/serialization/src/binary_woarchive.cpp \
+	./libs/serialization/src/codecvt_null.cpp \
+	./libs/serialization/src/extended_type_info_no_rtti.cpp \
+	./libs/serialization/src/extended_type_info_typeid.cpp \
+	./libs/serialization/src/extended_type_info.cpp \
+	./libs/serialization/src/polymorphic_binary_iarchive.cpp \
+	./libs/serialization/src/polymorphic_binary_oarchive.cpp \
+	./libs/serialization/src/polymorphic_iarchive.cpp \
+	./libs/serialization/src/polymorphic_oarchive.cpp \
+	./libs/serialization/src/polymorphic_text_iarchive.cpp \
+	./libs/serialization/src/polymorphic_text_oarchive.cpp \
+	./libs/serialization/src/polymorphic_text_wiarchive.cpp \
+	./libs/serialization/src/polymorphic_text_woarchive.cpp \
+	./libs/serialization/src/polymorphic_xml_iarchive.cpp \
+	./libs/serialization/src/polymorphic_xml_oarchive.cpp \
+	./libs/serialization/src/polymorphic_xml_wiarchive.cpp \
+	./libs/serialization/src/polymorphic_xml_woarchive.cpp \
+	./libs/serialization/src/stl_port.cpp \
+	./libs/serialization/src/text_iarchive.cpp \
+	./libs/serialization/src/text_oarchive.cpp \
+	./libs/serialization/src/text_wiarchive.cpp \
+	./libs/serialization/src/text_woarchive.cpp \
+	./libs/serialization/src/utf8_codecvt_facet.cpp \
+	./libs/serialization/src/void_cast.cpp \
+	./libs/serialization/src/xml_archive_exception.cpp \
+	./libs/serialization/src/xml_grammar.cpp \
+	./libs/serialization/src/xml_iarchive.cpp \
+	./libs/serialization/src/xml_oarchive.cpp \
+	./libs/serialization/src/xml_wgrammar.cpp \
+	./libs/serialization/src/xml_wiarchive.cpp \
+	./libs/serialization/src/xml_woarchive.cpp
+
+OBJECTS = $(SOURCES:.cpp=.o)
+
+all: clean winlibs
+
+winlibs:
+	"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" --vanilla "../tools/winlibs.R" $(VERSION)
+
+clean:
+	rm -f $(SHLIB) $(OBJECTS)
+
+.PHONY: all winlibs clean
