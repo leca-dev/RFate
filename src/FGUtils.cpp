@@ -102,7 +102,7 @@ vector<string> ReadParamsWithinFile(string paramFile, string flag, string sepFla
 					}
 					getline(file, strTmp);
 				}
-				logg.info(flag, " parameter recovered");
+				logg.debug(flag, " parameter recovered");
 			}
 		} else
 		{
