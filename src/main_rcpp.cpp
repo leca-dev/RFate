@@ -1,11 +1,11 @@
-/*=============================================================================*/
-/*               FUNCTIONAL ATTRIBUTES IN TERRESTRIAL ECOSYSTEMS               */
-/*                                 Version 1.1                                 */
-/*                                                                             */
-/* Biological model, including succession, disturbance and environmental       */
-/* response sections.                                                          */
-/*                                                                             */
-/*=============================================================================*/
+/*============================================================================*/
+/*               FUNCTIONAL ATTRIBUTES IN TERRESTRIAL ECOSYSTEMS              */
+/*                                 Version 1.1                                */
+/*                                                                            */
+/* Biological model, including succession, disturbance and environmental      */
+/* response sections.                                                         */
+/*                                                                            */
+/*============================================================================*/
 
 #include <iostream>
 #include <memory>
@@ -59,7 +59,7 @@
 
 BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 
-/*=============================================================================*/
+/*============================================================================*/
 
 #if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
 	/* to get virtual and physical memory information */
@@ -117,13 +117,13 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 	mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT; // Mac
 #endif
 
-/*=============================================================================*/
+/*============================================================================*/
 
 using namespace std;
 
 /* some global variables */
 string FATEHDD_VERSION = "6.2-3";
-SimulMap* simulMap;
+SimulMap* simulMap(0);
 Logger logg;
 
 void saveFATE(string objFileName)
@@ -147,7 +147,7 @@ void saveFATE(string objFileName)
 void loadFATE(string objFileName)
 {
 	// Create an input archive
-	ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in ); //ios::in | ios::binary );
+	ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
 	if (ifs.good())
 	{
 		boost::archive::text_iarchive ar(ifs);
@@ -159,7 +159,8 @@ void loadFATE(string objFileName)
 		terminate();
 	}
 }
-void changeFile(int year, string change_type, vector<int>& change_times, vector<string>& change_files)
+void changeFile(int year, string change_type, vector<int>& change_times,
+								vector<string>& change_files)
 {
 	if (change_times.size() > 0 && change_times.front() == year)
 	{
@@ -171,7 +172,8 @@ void changeFile(int year, string change_type, vector<int>& change_times, vector<
 	}
 }
 
-void changeFreq(int year, string change_type, vector<int>& freq_change_times, vector<string>& freq_change_files)
+void changeFreq(int year, string change_type, vector<int>& freq_change_times,
+								vector<string>& freq_change_files)
 {
 	if (freq_change_times.size() > 0 && freq_change_times.front() == year)
 	{
@@ -228,18 +230,18 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 						"*********************************************\n");
 
 	/*==========================================================================*/
-	/* create the simulation parameter object that store path to all needed parameters files */
+	/* create the simulation parameter object that stores paths to all needed
+	parameters files */
 
 	logg.info("This simulation will be based on ", paramFile,
 						" parameters file.");
 	FOPL file_of_params(paramFile);
 	logg.info("File of parameters created !");
-	return 0;
 	file_of_params.checkCorrectParams();
 	file_of_params.checkCorrectMasks();
 	file_of_params.show();
 
-	/*=============================================================================*/
+	/*==========================================================================*/
 	/* FILE for saving COMPUTATION statistics */
 
 	string strFileName = file_of_params.getSavingDir() + "/ComputationStatistics.txt";
@@ -269,6 +271,10 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		mach_msg_type_number_t count; // Mac
 		vm_statistics64_data_t vm_stats; // Mac
 	#endif
+
+	fileStats.close();
+	delete simulMap;
+	return 0;
 
 	/*=============================================================================*/
 	/* check if a saving of an old simulation is given or if we start a new one from scratch */
