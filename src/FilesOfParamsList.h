@@ -8,11 +8,12 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef FOPL_H
 #define FOPL_H
 
 #include "FGUtils.h"
+#include "Logger.h"
 #include <boost/filesystem.hpp>
 
 using namespace std;
@@ -25,7 +26,7 @@ using namespace std;
  * This class contains a set of parameters corresponding to parameters text
  * files. It allows correct reading and creation. All paths should be given as
  * relative paths.
- * Basic parameters are mandatory : they concern global simulation (Global 
+ * Basic parameters are mandatory : they concern global simulation (Global
  * simulations parameters, saving state and directory, ...), timings (to
  * save abundances and objects), spatial characteristics (mask) and functional
  * groups (life history, ...).
@@ -36,16 +37,16 @@ using namespace std;
 class FOPL
 {
 	private:
-	
+
 	/* Global simulation parameters */
 	string m_GlobSimulParams; /*!< path to global simul params file */
-	
+
 	/* Saving parameters */
 	string m_SavedState; /*!< path to previous FATEHDD simulation output objects */
 	string m_SavingDir; /*!< Saving directory path */
 	string m_SavingTimesMaps; /*!< path to file containing summarised maps saving dates */
 	string m_SavingTimesObjects; /*!< path to file containing simul state objects saving dates */
-	
+
 	/* Spatial parameters */
 	string m_Mask; /*!< path to .asc mask file */
 	vector<string> m_MaskDist; /*!< list of path to disturbances masks */
@@ -53,20 +54,20 @@ class FOPL
 	string m_MaskDrought; /*!< path to drought index mask file */
 	string m_MaskElevation; /*!< path to elevation mask file */
 	string m_MaskSlope; /*!< path to slope mask file */
-	
+
 	// TODO (damien#1#): change way disturbances params are given as smth like :
 	/*
 	time=0
 	dist1=..
 	dist2=...
 	dist3=...
-	
+
 	time=xx
 	dist1=...
 	dist2=...
 	dist3=...
 	*/
-	
+
 	/* Simulation Timing parameters */
 	vector<string> m_MaskChangemaskFiles; /*!< list of files containing list of masks of studied area change scenario */
 	string m_MaskChangemaskYears; /*!< list of studied area changes times */
@@ -84,7 +85,7 @@ class FOPL
 	string m_AliensChangemaskYears; /*!< list of aliens introduction changes times */
 	vector<string> m_AliensChangefreqFiles;	/*!< list of files containing list of aliens introduction frequencies files change scenario */
 	string m_AliensChangefreqYears; /*!< list of aliens introduction frequencies changes times */
-	
+
 	/* FG specific parameters */
 	vector<string> m_FGLifeHistory; /*!< list of path to FG life history parameters files */
 	vector<string> m_FGLight; /*!< list of path to FG light parameters files */
@@ -95,17 +96,16 @@ class FOPL
 	vector<string> m_FGFire; /*!< list of path to FG fire disturbance parameters files */
 	vector<string> m_FGDrought; /*!< list of path to FG drought disturbance parameters files */
 	vector<string> m_FGMapsAliens; /*!< list of path to FG introduction points maps */
-	
-	
+
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Files of Parameters..." << endl;
 		ar & m_GlobSimulParams;
 		ar & m_SavedState;
 		ar & m_SavingDir;
@@ -143,20 +143,20 @@ class FOPL
 		ar & m_AliensChangefreqFiles;
 		ar & m_AliensChangefreqYears;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	FOPL default constructor => All parameters are set to 0, False or None
 	 */
 	FOPL();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -166,22 +166,22 @@ class FOPL
 	 * simulation related parameters
 	 */
 	FOPL(string paramSimulFile);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	FOPL destructor
 	 */
 	~FOPL();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const FOPL& o) const
 	{
 		return (m_GlobSimulParams == o.m_GlobSimulParams &&
@@ -221,11 +221,11 @@ class FOPL
 		m_AliensChangefreqFiles == o.m_AliensChangefreqFiles &&
 		m_AliensChangefreqYears == o.m_AliensChangefreqYears);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const string& getGlobSimulParams() const;
 	const string& getSavedState() const;
 	const string& getSavingDir() const;
@@ -262,7 +262,7 @@ class FOPL
 	const string& getAliensChangemaskYears() const;
 	const vector<string>& getAliensChangefreqFiles() const;
 	const string& getAliensChangefreqYears() const;
-	
+
 	void setGlobSimulParams(const string& globSimulParams);
 	void setSavedState(const string& savedState);
 	void setSavingDir(const string& savingDir);
@@ -299,11 +299,11 @@ class FOPL
 	void setAliensChangemaskYears(const string& aliensChangemaskYears);
 	void setAliensChangefreqFiles(const vector<string>& aliensChangefreqFiles);
 	void setAliensChangefreqYears(const string& aliensChangefreqYears);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 
 	/*!
@@ -313,7 +313,7 @@ class FOPL
 	 * exist.
 	 */
 	void checkCorrectParams_light();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : habitat suitability
 	 *
@@ -321,14 +321,14 @@ class FOPL
 	 * module exist.
 	 */
 	void checkCorrectParams_habSuit();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : dispersal
 	 *
 	 *	This function checks if all the files related to dispersal module exist.
 	 */
 	void checkCorrectParams_disp();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : disturbances
 	 *
@@ -336,7 +336,7 @@ class FOPL
 	 * exist.
 	 */
 	void checkCorrectParams_dist();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : soil competition
 	 *
@@ -344,7 +344,7 @@ class FOPL
 	 * exist.
 	 */
 	void checkCorrectParams_soil();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : fire disturbances
 	 *
@@ -352,7 +352,7 @@ class FOPL
 	 * exist.
 	 */
 	void checkCorrectParams_fire();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : drought disturbances
 	 *
@@ -360,7 +360,7 @@ class FOPL
 	 * module exist.
 	 */
 	void checkCorrectParams_drought();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved : aliens introduction
 	 *
@@ -368,8 +368,8 @@ class FOPL
 	 * module exist.
 	 */
 	void checkCorrectParams_aliens();
-	
-	
+
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved
 	 *
@@ -382,14 +382,14 @@ class FOPL
 	 * results).
 	 */
 	void checkCorrectParams();
-	
+
 	/*!
 	 *	\brief Check existence of parameter files retrieved
 	 *
 	 *	This function checks if all the files given within the simulation file
 	 * exist. It takes into account which modules are activated or not, and
 	 * hence which files should be checked for existence.
-	 * 
+	 *
 	 * \param doLight : is light competition module activated
 	 * \param doHabSuit : is habitat suitability module activated
 	 * \param doDisp : is dispersal module activated
@@ -401,7 +401,7 @@ class FOPL
 	 */
 	void checkCorrectParams(const bool& doLight, const bool& doHabSuit, const bool& doDisp, const bool& doDist,
 	const bool& doSoil, const bool& doFire, const bool& doDrought, const bool& doAliens);
-	
+
 	/*!
 	 *	\brief Compare extension and coordinates of raster file with reference
 	 *
@@ -409,14 +409,14 @@ class FOPL
 	 * or img) and the same coordinates (xmin, xmax, xres, xncell, ymin, ymax,
 	 * yres, yncell) than a reference raster file (usually the one obtained from
 	 * the tag --MASK-- within the simulation parameter file).
-	 * 
+	 *
 	 * \param param : name of the concerned parameter
 	 * \param file_name : path to raster file to be checked
 	 * \param ext_REF : extension of the reference file
 	 * \param coord_REF : coordinates of the reference file
 	 */
 	void testSameCoord(const string& param, const string& file_name, const string& ext_REF, Coordinates<double>& coord_REF);
-	
+
 	/*!
 	 *	\brief Compare extension and coordinates of raster file with reference
 	 *
@@ -424,14 +424,14 @@ class FOPL
 	 * (tif or img) and the same coordinates (xmin, xmax, xres, xncell, ymin,
 	 * ymax, yres, yncell) than a reference raster file (usually the one
 	 * obtained from the tag --MASK-- within the simulation parameter file).
-	 * 
+	 *
 	 * \param param : name of the concerned parameter
 	 * \param vector_name : a vector of paths to raster files to be checked
 	 * \param ext_REF : extension of the reference file
 	 * \param coord_REF : coordinates of the reference file
 	 */
 	void testSameCoord(const string& param, vector<string> vector_name, const string& ext_REF, Coordinates<double>& coord_REF);
-	
+
 	/*!
 	 *	\brief Routine to compare extension and coordinates of raster file with
 	 * reference
@@ -449,4 +449,3 @@ class FOPL
 
 BOOST_CLASS_VERSION(FOPL, 0)
 #endif //FOPL_H
-

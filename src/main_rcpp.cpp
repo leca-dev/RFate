@@ -232,9 +232,9 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 
 	logg.info("This simulation will be based on ", paramFile,
 						" parameters file.");
-	logg.error("test");
 	FOPL file_of_params(paramFile);
 	logg.info("File of parameters created !");
+	return 0;
 	file_of_params.checkCorrectParams();
 	file_of_params.checkCorrectMasks();
 	file_of_params.show();

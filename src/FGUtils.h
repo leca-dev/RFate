@@ -23,6 +23,7 @@
 #include <boost/archive/text_oarchive.hpp>*/
 
 #include "Spatial.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -345,9 +346,9 @@ T convert_int_to_enum(const string& key_param, int val, const string& key_enum, 
 	T result;
 	if (val < 0 || val > max_val)
 	{
-		cerr << "!!! Wrong parameter given for <" << key_param << ">." << endl;
-		cerr << " Must be a number between 0 and " << max_val - 1 << " corresponding to a level of enum " << key_enum << ". Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong parameter given for <", key_param, ">.\n",
+							 "Must be a number between 0 and ", max_val - 1,
+							 " corresponding to a level of enum ", key_enum, ". Please check!");
 	}
 	return static_cast<T>(val);
 }

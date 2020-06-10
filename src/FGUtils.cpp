@@ -89,7 +89,7 @@ vector<string> ReadParamsWithinFile(string paramFile, string flag, string sepFla
 			getline(file, strTmp);
 			if (strTmp.length() == 0)
 			{
-				cerr << flag << " parameter NOT recovered " << endl;
+				logg.warning(flag, " parameter NOT recovered");
 			} else
 			{
 				res.clear();
@@ -102,12 +102,12 @@ vector<string> ReadParamsWithinFile(string paramFile, string flag, string sepFla
 					}
 					getline(file, strTmp);
 				}
-				cout << flag << " parameter recovered " << endl;
+				logg.info(flag, " parameter recovered");
 			}
 		} else
 		{
 			//res.resize(1,""); /* return vector with an empty string  */
-			cerr << flag << " parameter NOT recovered " << endl;
+			logg.warning(flag, " parameter NOT recovered");
 		}
 		/* Close file */
 		file.close();
@@ -115,9 +115,8 @@ vector<string> ReadParamsWithinFile(string paramFile, string flag, string sepFla
 		return res;
 	} else
 	{
-		cerr << "Impossible to open " << paramFile << " file! (parameters)" << endl;
-		terminate();
-	}	
+		logg.error("Impossible to open ", paramFile, " file! (parameters)");
+	}
 } // end of ReadParamsWithinFile(...)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -143,8 +142,7 @@ vector< int > ReadTimingsFile(string paramFile)
 			return out;
 		} else
 		{
-			cerr << "Impossible to open " << paramFile << " file! (timing)" << endl;
-			terminate();
+			logg.error("Impossible to open ", paramFile, " file! (timing)");
 		}
 	} else
 	{
@@ -167,9 +165,9 @@ Coordinates<double> ReadCoordinates( string file_name )
 		return Coordinates<double>(ReadRasterCoordinates(file_name));
 	} else
 	{
-		cerr << "!!! The file extension (" << file_name_path.extension() << ") is not taking into account!" << endl;
-		cerr << "!!! Please use either .img or .tif (or .asc) files!" << endl;
-		terminate();
+		logg.error("!!! The file extension (", file_name_path.extension(),
+		 					 ") is not taken into account!\n",
+							 "!!! Please use either .img or .tif (or .asc) files!");
 	}
 } // end of ReadCoordinates(...)
 
@@ -182,7 +180,7 @@ Coordinates<double> ReadAsciiCoordinates( string file_name )
 	if (file)
 	{
 		double xmin, xres, ymin, ncols, nrows, nodata;
-		
+
 		/* read ascii file header */
 		for (unsigned i=0; i<6; i++)
 		{
@@ -195,21 +193,20 @@ Coordinates<double> ReadAsciiCoordinates( string file_name )
 			else if (strTmp == "CELLSIZE"){ file >> xres; }
 			else if (strTmp == "NODATA_value"){ file >> nodata; }
 		} // end of loop for header read
-		
+
 		/* close file */
 		file.close();
-		
+
 		/* fill the other params */
 		//double yres = xres;
 		//double xmax = xmin + ncols * xres;
 		//double ymax = ymin + nrows * yres;
-		
+
 		/* Create and return the output object */
 		return Coordinates<double>(xmin,xmin + ncols * xres,xres, ymin,ymin + nrows * xres,xres);
 	} else
 	{
-		cerr << "Impossible to open " << file_name << " file! (coordinates)" << endl;
-		terminate();
+		logg.error("Impossible to open ", file_name, " file! (coordinates)");
 	}
 } // end of ReadCoordinates(...)
 
@@ -218,39 +215,38 @@ Coordinates<double> ReadAsciiCoordinates( string file_name )
 Coordinates<double> ReadRasterCoordinates( string file_name )
 {
 	GDALAllRegister();
-	
+
 	/* Open the source file */
 	GDALDatasetH rasInput = GDALOpen( file_name.c_str(), GA_ReadOnly );
 	//GDALDataset *rasInput = (GDALDataset *) GDALOpen( file_name.c_str(), GA_ReadOnly );
 	CPLAssert( rasInput != NULL );
-	
+
 	GDALRasterBandH hBand = GDALGetRasterBand( rasInput, 1 );
 	//GDALRasterBand *hBand = rasInput->GetRasterBand( 1 );
 	double ncols = GDALGetRasterBandXSize( hBand );
 	double nrows = GDALGetRasterBandYSize( hBand );
-	
+
 	/* Write out the GeoTransform */
 	double inputGeoTransform[6];
 	GDALGetGeoTransform( rasInput, inputGeoTransform );
 	//rasInput->GetGeoTransform( inputGeoTransform );
-	
+
 	/* Close file */
 	GDALClose( rasInput );
-	
+
 	double xmin = inputGeoTransform[0]; /* top left x */
 	double ymin = inputGeoTransform[3]; /* top left y */
 	double xres = inputGeoTransform[1]; /* w-e pixel resolution */
 	double yres = abs(inputGeoTransform[5]); /* n-s pixel resolution (negative value) */
 	if (xres!=yres)
 	{ /* n-s pixel resolution (negative value) */
-		cerr << "!!! X & Y resolution are not the same! ( " << xres << " & " << yres << " )" << endl;
-		terminate();
+		logg.error("!!! X & Y resolution are not the same! ( ", xres, " & ", yres, " )");
 	}
-	
+
 	/* Fill the other params */
 	double xmax = xmin + ncols * xres;
 	double ymax = ymin + nrows * yres;
-	
+
 	/* Create and return the output object */
 	return Coordinates<double>(xmin,xmax,xres,ymin,ymax,yres);
 } // end of ReadCoordinates(...)
@@ -265,7 +261,8 @@ void testDirExist(const string& param, const string& dir_name)
 		if (!boost::filesystem::is_directory(dir_to_test))
 		{
 			boost::filesystem::create_directories(dir_to_test);
-			cerr << "!!! Parameter " << param << " : the directory " << dir_name << " has been created." << endl;
+			logg.warning("!!! Parameter ", param, " : the directory ", dir_name,
+									 " has been created.");
 		}
 	}
 }
@@ -276,16 +273,16 @@ void testFileExist(const string& param, const string& file_name, const bool& opt
 	if ((file_name == "0" && optional == false) ||
 		(file_name != "0" && optional == false && !boost::filesystem::exists(file_to_test)))
 	{
-		cerr << "!!! Parameter " << param << " : the file " << file_name << " does not exist. Please check!" << endl;
-		terminate();
+		logg.error("!!! Parameter ", param, " : the file ", file_name,
+							 " does not exist. Please check!");
 	}
 	if (file_name != "0" && optional == false && boost::filesystem::exists(file_to_test))
 	{
 		ifstream f(file_name.c_str());
 		if (!f.good())
 		{
-			cerr << "!!! Parameter " << param << " : the file " << file_name << " can not be opened. Please check!" << endl;
-			terminate();
+			logg.error("!!! Parameter ", param, " : the file ", file_name,
+			 					 " can not be opened. Please check!");
 		}
 	}
 }
@@ -323,5 +320,3 @@ void testFileExist_changeFile(const string& param, vector<string> vector_name, c
 		}
 	}
 }
-
-
