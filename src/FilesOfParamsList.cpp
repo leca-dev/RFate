@@ -437,15 +437,15 @@ void FOPL::checkCorrectMasks()
 
 	/* Get mask coordinates */
 	Coordinates<double> coord_REF = ReadCoordinates(m_Mask);
-	logg.info(">> MASK Coordinates - Xmax : ", coord_REF.getXmax(),
-						">> MASK Coordinates - Xmin : ", coord_REF.getXmin(),
-						">> MASK Coordinates - Xres : ", coord_REF.getXres(),
-						">> MASK Coordinates - Xncell : ", coord_REF.getXncell(),
-						">> MASK Coordinates - Ymax : ", coord_REF.getYmax(),
-						">> MASK Coordinates - Ymin : ", coord_REF.getYmin(),
-						">> MASK Coordinates - Yres : ", coord_REF.getYres(),
-						">> MASK Coordinates - Yncell : ", coord_REF.getYncell(),
-						">> MASK Coordinates - Totncell : ", coord_REF.getTotncell());
+	logg.debug(">> MASK Coordinates - Xmax : ", coord_REF.getXmax(),
+						 "\n>> MASK Coordinates - Xmin : ", coord_REF.getXmin(),
+						 "\n>> MASK Coordinates - Xres : ", coord_REF.getXres(),
+						 "\n>> MASK Coordinates - Xncell : ", coord_REF.getXncell(),
+						 "\n>> MASK Coordinates - Ymax : ", coord_REF.getYmax(),
+						 "\n>> MASK Coordinates - Ymin : ", coord_REF.getYmin(),
+						 "\n>> MASK Coordinates - Yres : ", coord_REF.getYres(),
+						 "\n>> MASK Coordinates - Yncell : ", coord_REF.getYncell(),
+						 "\n>> MASK Coordinates - Totncell : ", coord_REF.getTotncell());
 
 	testSameCoord("--PFG_MASK_HABSUIT--",m_FGMapsHabSuit,ext_REF,coord_REF);
 	testSameCoord("--DIST_MASK--",m_MaskDist,ext_REF,coord_REF);
