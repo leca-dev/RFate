@@ -9,7 +9,7 @@
  * \version 5.5-0
  * \date 2015/06/04
  */
- 
+
 #ifndef FGresponse_H
 #define FGresponse_H
 
@@ -33,25 +33,24 @@ using namespace std;
 class FGresponse
 {
 	private:
-	
+
 	unsigned m_NoPert; /*!< Number of different levels of perturbation */
 	unsigned m_NoPertSub; /*!< Number of perturbation subdivision (number of way to react to pert) */
-	
+
 	vector<Fract> m_PropKilled; /*!< Proportion of propagules killed */
 	vector<vector<int> > m_BreakAge; /*!< Age representing shift in response of FG */
 	vector<vector<int> > m_ResprAge; /*!< Age of re-sprouting for each age class */
 	vector<vector< vector<Fract> > > m_Fates; /*!< Proportion of FG unaffected, re-sprouted or killed for each age class */
 	vector<Fract> m_DormBreaks; /*!< Proportion of Dormant seeds activated */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing FG Response to disturbances..." << endl;
 		ar & m_NoPert;
 		ar & m_NoPertSub;
 		ar & m_PropKilled;
@@ -60,20 +59,20 @@ class FGresponse
 		ar & m_Fates;
 		ar & m_DormBreaks;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	FGresponse default constructor => All parameters are set to 0, False or None
 	 */
 	FGresponse();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -83,7 +82,7 @@ class FGresponse
 	 *	\param noPertSub : number of sub-perturbations
 	 */
 	FGresponse(unsigned noPert, unsigned noPertSub );
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -96,22 +95,22 @@ class FGresponse
 	 *	\param noPertSub : number of sub-perturbations
 	 */
 	FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPertSub );
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	FGresponse destructor
 	 */
 	virtual ~FGresponse();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const FGresponse& o) const
 	{
 		return (m_NoPert == o.m_NoPert &&
@@ -122,11 +121,11 @@ class FGresponse
 		m_Fates == o.m_Fates &&
 		m_DormBreaks == o.m_DormBreaks);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const unsigned& getNoPert() const;
 	const unsigned& getNoPertSub() const;
 	const vector<Fract>& getPropKilled() const;
@@ -139,7 +138,7 @@ class FGresponse
 	const Fract& getFates(const int& dist, const int& range, const DistFate& df) const;
 	const vector<Fract>& getDormBreaks() const;
 	const Fract& getDormBreaks(const int& dist) const;
-	
+
 	void setNoPert(const unsigned& noPert);
 	void setNoPertSub(const unsigned& noPertSub);
 	void setPropKilled(const vector<Fract>& propKilled);
@@ -152,11 +151,11 @@ class FGresponse
 	void setFates(const Fract& fates, const int& dist, const int& range, const DistFate& df);
 	void setDormBreaks(const vector<Fract>& dormBreaks);
 	void setDormBreaks(const Fract& dormBreaks, const int& dist);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 
 };

@@ -39,21 +39,22 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 {
 	testFileExist("--PFG_PARAMS_...PERT...--", PFG_PerturbationsFile, false);
 
-		par::Params PertParms(PFG_PerturbationsFile.c_str(), " = \"", "#"); /* opening PFG perturbations parameters file */		
-		
+		par::Params PertParms(PFG_PerturbationsFile.c_str(), " = \"", "#"); /* opening PFG perturbations parameters file */
+
 		vector<int> v_int = PertParms.get_val<int>("PROP_KILLED");
 		if (v_int.size() != noPert)
 		{
-			cerr << "!!! Wrong number of parameters provided for PROP_KILLED (" << v_int.size() << " instead of " << noPert << "). Please check!" << endl;
-			terminate();
+			logg.error("!!! Wrong number of parameters provided for PROP_KILLED (",
+			 					 v_int.size(), " instead of ", noPert, "). Please check!");
 		}
-		m_PropKilled = convert_int_to_enum<Fract>("PROP_KILLED", v_int, "Fract", Fcount);		
-		
+		m_PropKilled = convert_int_to_enum<Fract>("PROP_KILLED", v_int, "Fract", Fcount);
+
 		v_int = PertParms.get_val<int>("BREAK_AGE");
 		if (v_int.size() < noPert * (noPertSub-1))
 		{
-			cerr << "!!! Wrong number of parameters provided for BREAK_AGE (" << v_int.size() << " instead of " << noPert * (noPertSub-1) << "). Please check!" << endl;
-			terminate();
+			logg.error("!!! Wrong number of parameters provided for BREAK_AGE (",
+								 v_int.size(), " instead of ", noPert * (noPertSub-1),
+								 "). Please check!");
 		}
 		int counter = 0;
 		m_BreakAge.resize(noPert);
@@ -84,16 +85,16 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 			}
 			if (is_sup)
 			{
-				cerr << "!!! BREAK_AGE must be given in ascending order. Please check!" << endl;
-				terminate();
+				logg.error("!!! BREAK_AGE must be given in ascending order. Please check!");
 			}
 		}
-		
+
 		v_int = PertParms.get_val<int>("RESPR_AGE");
 		if (v_int.size() != noPert * noPertSub)
 		{
-			cerr << "!!! Wrong number of parameters provided for RESPR_AGE (" << v_int.size() << " instead of " << noPert * noPertSub << "). Please check!" << endl;
-			terminate();
+			logg.error("!!! Wrong number of parameters provided for RESPR_AGE (",
+								 v_int.size(), " instead of ", noPert * noPertSub,
+								 "). Please check!");
 		}
 		counter = 0;
 		m_ResprAge.resize(noPert);
@@ -106,12 +107,13 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 				counter++;
 			}
 		}
-		
+
 		v_int = PertParms.get_val<int>("FATES");
 		if (v_int.size() != noPert * noPertSub * (DFcount-1))
 		{
-			cerr << "!!! Wrong number of parameters provided for FATES (" << v_int.size() << " instead of " << noPert * noPertSub * (DFcount-1) << "). Please check!" << endl;
-			terminate();
+			logg.error("!!! Wrong number of parameters provided for FATES (",
+								 v_int.size(), " instead of ", noPert * noPertSub * (DFcount-1),
+								 "). Please check!");
 		}
 		counter = 0;
 		m_Fates.resize(noPert);
@@ -129,19 +131,20 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 				/* Proportion of individuals unaffected is set to 100% - ( fract(killed) + fract(resprout)) */
 				if ((FractToDouble(m_Fates[i][j][0]) + FractToDouble(m_Fates[i][j][2])) > 1)
 				{
-					cerr << "!!! Wrong values of parameters provided for FATES : Kill and Resprout percentages for perturbation ";
-					cerr << i << " and sub-perturbation " << j << " sum is superior to 100%. Please check!" << endl;
-					terminate();
+					logg.error("!!! Wrong values of parameters provided for FATES : ",
+										 "Kill and Resprout percentages for perturbation ", i,
+										 " and sub-perturbation ", j,
+										 " sum is superior to 100%. Please check!");
 				}
 				m_Fates[i][j][1] = getLeavingFract( m_Fates[i][j][0], m_Fates[i][j][2] );
 			}
 		}
-		
+
 		v_int = PertParms.get_val<int>("ACTIVATED_SEED");
 		if (v_int.size() != noPert)
 		{
-			cerr << "!!! Wrong number of parameters provided for ACTIVATED_SEED (" << v_int.size() << " instead of " << noPert << "). Please check!" << endl;
-			terminate();
+			logg.error("!!! Wrong number of parameters provided for ACTIVATED_SEED (",
+								 v_int.size(), " instead of ", noPert, "). Please check!");
 		}
 		m_DormBreaks = convert_int_to_enum<Fract>("ACTIVATED_SEED", v_int, "Fract", Fcount);
 }
@@ -165,56 +168,51 @@ const vector<Fract>& FGresponse::getPropKilled() const {return m_PropKilled;}
 const Fract& FGresponse::getPropKilled(const int& dist) const {
 	if (dist<0 || dist>m_NoPert)
 	{
-		cerr << "!!! Try to access value of m_PropKilled for a non-existing perturbation. Please check!" << endl;
-		terminate();
+		logg.error("!!! Try to access value of m_PropKilled for a non-existing perturbation. Please check!");
 	} else
 	{
 		return m_PropKilled[dist];
-	}	
+	}
 }
 const vector< vector<int> >& FGresponse::getBreakAge() const {return m_BreakAge;}
 const int& FGresponse::getBreakAge(const int& dist, const int& range) const {
 	if (dist<0 || dist>m_NoPert || range<0 || range>m_NoPertSub)
 	{
-		cerr << "!!! Try to access value of m_BreakAge for a non-existing perturbation or sub-perturbation. Please check!" << endl;
-		terminate();
+		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation or sub-perturbation. Please check!");
 	} else
 	{
 		return m_BreakAge[dist][range];
-	}	
+	}
 }
 const vector< vector<int> >& FGresponse::getResprAge() const {return m_ResprAge;}
 const int& FGresponse::getResprAge(const int& dist, const int& range) const {
 	if (dist<0 || dist>m_NoPert || range<0 || range>m_NoPertSub)
 	{
-		cerr << "!!! Try to access value of m_ResprAge for a non-existing perturbation or sub-perturbation. Please check!" << endl;
-		terminate();
+		logg.error("!!! Try to access value of m_ResprAge for a non-existing perturbation or sub-perturbation. Please check!");
 	} else
 	{
 		return m_ResprAge[dist][range];
-	}	
+	}
 }
 const vector<vector< vector<Fract> > >& FGresponse::getFates() const {return m_Fates;}
 const Fract& FGresponse::getFates(const int& dist, const int& range, const DistFate& df) const {
 	if (dist<0 || dist>m_NoPert || range<0 || range>m_NoPertSub)
 	{
-		cerr << "!!! Try to access value of m_Fates for a non-existing perturbation or sub-perturbation. Please check!" << endl;
-		terminate();
+		logg.error("!!! Try to access value of m_Fates for a non-existing perturbation or sub-perturbation. Please check!");
 	} else
 	{
 		return m_Fates[dist][range][df];
-	}	
+	}
 }
 const vector<Fract>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
 const Fract& FGresponse::getDormBreaks(const int& dist) const {
 	if (dist<0 || dist>m_NoPert)
 	{
-		cerr << "!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!" << endl;
-		terminate();
+		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!");
 	} else
 	{
 		return m_DormBreaks[dist];
-	}	
+	}
 }
 
 void FGresponse::setNoPert(const unsigned& noPert){m_NoPert = noPert;}
@@ -236,61 +234,11 @@ void FGresponse::setDormBreaks(const Fract& dormBreaks, const int& dist){m_DormB
 
 void FGresponse::show()
 {
-	/* iterator definition for multi-dim vectors printing */
-	vector<int>::iterator it1, end1;
-	vector<vector<int> >::iterator it2, end2;
-
-	vector<Fract>::iterator it1f, end1f;
-	vector<vector<Fract> >::iterator it2f, end2f;
-	vector<vector<vector<Fract> > >::iterator it3f, end3f;
-
-	cout << "m_NoPert = " << m_NoPert << endl;
-	cout << "m_NoPertSub = " << m_NoPertSub << endl;
-	cout << "m_PropKilled = " ;
-	copy(m_PropKilled.begin(), m_PropKilled.end(), ostream_iterator<int>(cout, " "));
-	cout << endl;
-	cout << "m_BreakAge = (line: perturbation, column: reaction level)" << endl;
-	it2=m_BreakAge.begin();
-	end2=m_BreakAge.end();
-	while (it2!=end2)
-	{
-		it1=it2->begin();
-		end1=it2->end();
-		copy(it1,end1, ostream_iterator<int>(cout, " "));
-		cout << endl;
-		++it2;
-	}
-	cout << "m_ResprAge = (line: perturbation, column: reaction level)" << endl;
-	it2=m_ResprAge.begin();
-	end2=m_ResprAge.end();
-	while (it2!=end2)
-	{
-		it1=it2->begin();
-		end1=it2->end();
-		copy(it1,end1, ostream_iterator<int>(cout, " "));
-		cout << endl;
-		++it2;
-	}
-	cout << "m_Fates = (block: perturbation, line: reaction level, column: plant behaviour)"  << endl;
-	it3f=m_Fates.begin();
-	end3f=m_Fates.end();
-	while (it3f != end3f)
-	{
-		it2f=it3f->begin();
-		end2f=it3f->end();
-		while (it2f != end2f)
-		{
-			it1f=it2f->begin();
-			end1f=it2f->end();
-			copy(it1f,end1f, ostream_iterator<Fract>(cout, " "));
-			cout << endl;
-			++it2f;
-		}
-		cout << endl;
-		++it3f;
-	}
-	cout << "m_DormBreaks = " ;
-	copy(m_DormBreaks.begin(), m_DormBreaks.end(), ostream_iterator<int>(cout, " "));
-	cout << endl;
+	logg.debug("m_NoPert = ", m_NoPert,
+						 "\nm_NoPertSub = ", m_NoPertSub,
+						 "\nm_PropKilled = ", m_PropKilled,
+						 "\nm_BreakAge = (line: perturbation, column: reaction level)", m_BreakAge,
+						 "\nm_ResprAge = (line: perturbation, column: reaction level)", m_ResprAge,
+						 "\nm_Fates = (block: perturbation, line: reaction level, column: plant behaviour)", m_Fates,
+						 "m_DormBreaks = ", m_DormBreaks);
 }
-

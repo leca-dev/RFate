@@ -42,29 +42,26 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 {
 	/* 1. check parameter file existence */
 	testFileExist("--PFG_PARAMS_LIFE_HISTORY--", PFG_LifeHistoryFile, false);
-	
+
 	/* 2. read succession parameters */
 	par::Params SuccParams(PFG_LifeHistoryFile.c_str(), " = \"", "#"); /* opening PFG life history traits parameters file */
-	
-	cout << endl;
-	cout << "*********************************************" << endl;
-	cout << "** PFG : " << SuccParams.get_val<string>("NAME")[0] << endl;
-	cout << "*********************************************" << endl;
-	cout << endl;
-	cout << "> Succession files opened" << endl;
-	
+
+	logg.info("\n*********************************************",
+            "\n** PFG : ", SuccParams.get_val<string>("NAME")[0],
+            "\n*********************************************\n",
+            "\n> Succession files opened");
+
 	/* 3. fill FG object according to given parameters */
-	
+
 	/* PFG Life History parameters filling =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 	m_Name = SuccParams.get_val<string>("NAME")[0];
 	m_M = SuccParams.get_val<int>("MATURITY")[0];
 	m_L = SuccParams.get_val<int>("LONGEVITY")[0];
 	if (m_M >= m_L)
 	{
-		cerr << "!!! MATURITY is superior or equal to LONGEVITY. Please check!" << endl;
-		terminate();
+		logg.error("!!! MATURITY is superior or equal to LONGEVITY. Please check!");
 	}
-	
+
 	m_MaxA = Abund(SuccParams.get_val<int>("MAX_ABUNDANCE")[0]);
 	m_ImmSize = FractToDouble(Fract(SuccParams.get_val<int>("IMM_SIZE")[0]));
 	//m_MaxStratum = SuccParams.get_val<int>("MAX_STRATUM")[0];
@@ -74,9 +71,9 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 	m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
 	if (m_Strata.size() != glob_params.getNoStrata() + 1)
 	{
-		cerr << "!!! Wrong number of parameters provided for CHANG_STR_AGES (" << m_Strata.size() - 1;
-		cerr << " instead of " << glob_params.getNoStrata() << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
+               m_Strata.size() - 1," instead of ", glob_params.getNoStrata(),
+               "). Please check!");
 	}
 	bool is_sup = false;
 	int prev_age = m_Strata[0];
@@ -89,11 +86,10 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 		prev_age = m_Strata[i];
 		if (is_sup)
 		{
-			cerr << "!!! CHANG_STR_AGES must be given in ascending order. Please check!" << endl;
-			terminate();
+			logg.error("!!! CHANG_STR_AGES must be given in ascending order. Please check!");
 		}
-	}	
-	
+	}
+
 	v_int = SuccParams.get_val<int>("IS_ALIEN", true);
 	if (v_int.size()) m_IsAlien = v_int[0]; else m_IsAlien = false;
 
@@ -101,16 +97,16 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 	m_PoolL = SuccParams.get_val<int>("SEED_POOL_LIFE");
 	if (m_PoolL.size() != PTcount)
 	{
-		cerr << "!!! Wrong number of parameters provided for SEED_POOL_LIFE (" << m_PoolL.size() << " instead of " << PTcount << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for SEED_POOL_LIFE (",
+               m_PoolL.size(), " instead of ", PTcount, "). Please check!");
 	}
 	m_InnateDorm = bool(SuccParams.get_val<int>("SEED_DORMANCY")[0]);
-	
+
 	/* Potential fecundity parameter filling  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 	v_int = SuccParams.get_val<int>("POTENTIAL_FECUNDITY", true);
 	if (v_int.size()) m_PotentialFecundity = v_int[0]; else m_PotentialFecundity = 100.0;
 
-	cout << "> Life History parameters provided" << endl;
+	logg.info("> Life History parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -119,7 +115,7 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
 {
 	/* 1. check parameter file existence */
 	testFileExist("--PFG_PARAMS_LIGHT--", PFG_LightFile, false);
-	
+
 	/* 2. read light parameters */
 	par::Params LightParams(PFG_LightFile.c_str(), " = \"", "#");
 
@@ -127,16 +123,17 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
 	m_ActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
 	if (m_ActiveGerm.size() != Rcount)
 	{
-		cerr << "!!! Wrong number of parameters provided for ACTIVE_GERM (LIGHT) (" << m_ActiveGerm.size() << " instead of " << Rcount << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for ACTIVE_GERM (LIGHT) (",
+               m_ActiveGerm.size(), " instead of ", Rcount, "). Please check!");
 	}
-	
+
 	/* get light tolerance as vector and reshape it into matrix format */
 	v_int = LightParams.get_val<int>("LIGHT_TOL");
 	if (v_int.size() < (LScount-1) * Rcount)
 	{
-		cerr << "!!! Wrong number of parameters provided for LIGHT_TOL (" << v_int.size() << " instead of " << (LScount-1) * Rcount << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for LIGHT_TOL (",
+               v_int.size(), " instead of ", (LScount-1) * Rcount,
+               "). Please check!");
 	}
 	int counter = 0;
 	m_Tolerance.resize(int(LScount));
@@ -155,7 +152,7 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
 	{
 		m_Tolerance[0][r] = m_Tolerance[1][r];
 	}
-	cout << "> PFG light parameters provided" << endl;
+	logg.info("> PFG light parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -164,12 +161,12 @@ void FG::getDispParams(const GSP& glob_params, const string& PFG_DispersalFile)
 {
 	/* 1. check parameter file existence */
 	testFileExist("--PFG_PARAMS_DISPERSAL--", PFG_DispersalFile, false);
-	
+
 	/* 2. read dispersal parameters */
 	par::Params DispParams(PFG_DispersalFile.c_str(), " = \"", "#");
 
 	m_Dispersed = false;
-	
+
 	vector<double> v_double = DispParams.get_val<double>("DISPERS_DIST");
 	if (v_double.size() == 3)
 	{
@@ -178,16 +175,15 @@ void FG::getDispParams(const GSP& glob_params, const string& PFG_DispersalFile)
 		m_dispLD = v_double[2];
 	} else
 	{
-		cerr << "!!! Wrong number of parameters provided for DISPERS_DIST (" << v_double.size() << " instead of " << 3 << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for DISPERS_DIST (",
+               v_double.size(), " instead of ", 3, "). Please check!");
 	}
 	if (m_disp99 < m_disp50 || m_dispLD < m_disp50 || m_dispLD < m_disp99)
 	{
-		cerr << "!!! DISPERS_DIST must be given in ascending order (disp50 <= disp99 <= dispLD). Please check!" << endl;
-		terminate();
+		logg.error("!!! DISPERS_DIST must be given in ascending order (disp50 <= disp99 <= dispLD). Please check!");
 	}
-	
-	cout << "> PFG dispersal parameters provided" << endl;
+
+	logg.info("> PFG dispersal parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -195,7 +191,7 @@ void FG::getDispParams(const GSP& glob_params, const string& PFG_DispersalFile)
 void FG::getDistParams(const GSP& glob_params, const string& PFG_DisturbancesFile)
 {
 	m_DistResponse = FGresponse(PFG_DisturbancesFile, glob_params.getNoDist(), glob_params.getNoDistSub());
-	cout << "> PFG disturbances parameters provided" << endl;
+	logg.info("> PFG disturbances parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -204,7 +200,7 @@ void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
 {
 	/* 1. check parameter file existence */
 	testFileExist("--PFG_PARAMS_SOIL--", PFG_SoilFile, false);
-	
+
 	/* 2. read dispersal parameters */
 	par::Params SoilParams(PFG_SoilFile.c_str(), " = \"", "#");
 
@@ -213,24 +209,24 @@ void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
 	m_SoilHigh = SoilParams.get_val<double>("SOIL_HIGH")[0];
 	if (m_SoilHigh < m_SoilContrib || m_SoilContrib < m_SoilLow || m_SoilHigh < m_SoilLow)
 	{
-		cerr << "!!! Soil values must be given in ascending order (SOIL_LOW <= SOIL_CONTRIB <= SOIL_HIGH). Please check!" << endl;
-		terminate();
+		logg.error("!!! Soil values must be given in ascending order (SOIL_LOW <= SOIL_CONTRIB <= SOIL_HIGH). Please check!");
 	}
-	
+
 	vector<int> v_int = SoilParams.get_val<int>("ACTIVE_GERM");
 	m_SoilActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
 	if (m_SoilActiveGerm.size() != Rcount)
 	{
-		cerr << "!!! Wrong number of parameters provided for ACTIVE_GERM (SOIL) (" << m_SoilActiveGerm.size() << " instead of " << Rcount << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for ACTIVE_GERM (SOIL) (",
+               m_SoilActiveGerm.size(), " instead of ", Rcount, "). Please check!");
 	}
-	
+
 	/* get soil tolerance as vector and reshape it into matrix format */
 	v_int = SoilParams.get_val<int>("SOIL_TOL", true);
 	if (v_int.size() != Rcount * (LScount - 1))
 	{
-		cerr << "!!! Wrong number of parameters provided for SOIL_TOL (" << v_int.size() << " instead of " << Rcount * (LScount - 1) << "). Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong number of parameters provided for SOIL_TOL (",
+               v_int.size(), " instead of ", Rcount * (LScount - 1),
+               "). Please check!");
 	}
 	int counter = 0;
 	m_SoilTolerance.resize(int(LScount));
@@ -243,15 +239,15 @@ void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
 			counter ++;
 		}
 	}
-	
+
 	/* Propagule Soil tolerance is assumed to be the same as germinants */
 	m_SoilTolerance[0].resize(Rcount);
 	for (unsigned c=0; c<m_SoilTolerance[0].size(); c++)
 	{
 		m_SoilTolerance[0][c] = m_SoilTolerance[1][c];
 	}
-	
-	cout << "> PFG soil parameters provided" << endl;
+
+	logg.info("> PFG soil parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -260,12 +256,12 @@ void FG::getFireParams(const GSP& glob_params, const string& PFG_FireFile)
 {
 	/* 1. check parameter file existence */
 	testFileExist("--PFG_PARAMS_FIRE--", PFG_FireFile, false);
-	
-	/* 2. read fire disturbance parameters */	
+
+	/* 2. read fire disturbance parameters */
 	par::Params FireParams(PFG_FireFile.c_str(), " = \"", "#");
 	m_FireResponse = FGresponse(PFG_FireFile, glob_params.getNoFireDist(), glob_params.getNoFireDistSub());
 	m_Flamm = FireParams.get_val<double>("FLAMMABILITY")[0];
-	cout << "> PFG fire parameters provided" << endl;
+	logg.info("> PFG fire parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -274,7 +270,7 @@ void FG::getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile)
 {
 	/* 1. check parameter file existence */
 	testFileExist("--PFG_PARAMS_DROUGHT--", PFG_DroughtFile, false);
-	
+
 	/* 2. read drought disturbance parameters */
 	par::Params DroughtParams(PFG_DroughtFile.c_str(), " = \"", "#");
 	m_DroughtResponse = FGresponse(PFG_DroughtFile, 2, glob_params.getNoDroughtSub());
@@ -282,7 +278,7 @@ void FG::getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile)
 	m_CountModToSev = DroughtParams.get_val<unsigned>("COUNT_MOD_TO_SEV")[0];
 	m_CountSevMort = DroughtParams.get_val<unsigned>("COUNT_SEV_MORT")[0];
 	m_DroughtRecovery = DroughtParams.get_val<unsigned>("DROUGHT_RECOVERY")[0];
-	cout << "> PFG drought parameters provided" << endl;
+	logg.info("> PFG drought parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -290,14 +286,14 @@ void FG::getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile)
 FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id)
 {
 	bool wrong_identifier = false;
-	
+
 	bool doLight = glob_params.getDoLightCompetition();
 	bool doDisp = glob_params.getDoDispersal();
 	bool doDist = glob_params.getDoDisturbances();
 	bool doSoil = glob_params.getDoSoilCompetition();
 	bool doFire = glob_params.getDoFireDisturbances();
 	bool doDrought = glob_params.getDoDroughtDisturbances();
-	
+
 	if (fg_id < file_of_params.getFGLifeHistory().size())
 	{
 		getSuccParams(glob_params,file_of_params.getFGLifeHistory()[fg_id]);
@@ -393,16 +389,15 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 			m_CountSevMort = 0;
 			m_DroughtRecovery = 0;
 		}
-		
+
 	} else
 	{
 		wrong_identifier = true;
 	}
-	
+
 	if (wrong_identifier)
 	{
-		cerr << "!!! Wrong identifier of FG given. Please check!" << endl;
-		terminate();
+		logg.error("!!! Wrong identifier of FG given. Please check!");
 	} else
 	{
 		this->show();
@@ -509,67 +504,42 @@ void FG::setIsAlien(const bool& isAlien){m_IsAlien = isAlien;}
 
 void FG::show()
 {
-	cout << endl;
-	cout << "*********************************************" << endl;
-	cout << "** Functional Group Parameters:" << endl;
-	cout << "*********************************************" << endl;
-	cout << endl;
-	cout << "m_Name = " << m_Name << endl;
-	cout << "m_M = " << m_M << endl;
-	cout << "m_L = " << m_L << endl;
-	cout << "m_MaxA = " << m_MaxA << endl;
-	cout << "m_ImmSize = " << m_ImmSize << endl;
-	cout << "m_MaxStratum = " << m_MaxStratum << endl;
-	cout << "m_Strata = " ;
-	copy(m_Strata.begin(), m_Strata.end(), ostream_iterator<int>(cout, " "));
-	cout << endl;
-	cout << "m_PoolL = " ;
-	for(int i=0; i<PTcount; i++){cout << m_PoolL[i] << " ";}
-	cout << endl;
-	cout << "m_InnateDorm = " << m_InnateDorm << endl;
-	cout << "m_PotentialFecundity = " << m_PotentialFecundity << endl;
-	cout << "m_ActiveGerm = (column: resource) ";
-	for(int i=0; i<Rcount; i++){cout << m_ActiveGerm[i] << " ";}
-	cout << endl;
-	cout << "m_Tolerance = (line: life stage, column: resource)";
-	for(int i=0; i<LScount; i++){ cout << endl; for(int j=0; j<Rcount; j++){cout << m_Tolerance[i][j] << " ";}}
-	cout << endl;
-	cout << "m_Dispersed = " << m_Dispersed << endl;
-	cout << "m_disp50 = " << m_disp50 << endl;
-	cout << "m_disp99 = " << m_disp99 << endl;
-	cout << "m_dispLD = " << m_dispLD << endl;
-	cout << "** m_DistResponse = " << endl;
-	cout << endl;
+	logg.debug("\n*********************************************",
+             "\n** Functional Group Parameters:",
+             "\n*********************************************\n",
+             "m_Name = ", m_Name,
+             "m_M = ", m_M,
+             "m_L = ", m_L,
+             "m_MaxA = ", m_MaxA,
+             "m_ImmSize = ", m_ImmSize,
+             "m_MaxStratum = ", m_MaxStratum,
+             "m_Strata = ", m_Strata,
+             "m_PoolL = ", m_PoolL,
+             "m_InnateDorm = ", m_InnateDorm,
+             "m_PotentialFecundity = ", m_PotentialFecundity,
+             "m_ActiveGerm = (column: resource) ", m_ActiveGerm,
+             "m_Tolerance = (line: life stage, column: resource)", m_Tolerance,
+             "m_Dispersed = ", m_Dispersed,
+             "m_disp50 = ", m_disp50,
+             "m_disp99 = ", m_disp99,
+             "m_dispLD = ", m_dispLD,
+             "** m_DistResponse =");
 	m_DistResponse.show();
-	cout << endl;
-	cout << "m_SoilContrib = " << m_SoilContrib << endl;
-	cout << "m_SoilLow = " << m_SoilLow << endl;
-	cout << "m_SoilHigh = " << m_SoilHigh << endl;
-	cout << "m_SoilActiveGerm = (column: resource) ";
-	for(int i=0; i<Rcount; i++){cout << m_SoilActiveGerm[i] << " ";}
-	cout << endl;
-	cout << "m_SoilTolerance = (line: life stage, column: resource)";
-	for(int i=0; i<LScount; i++){ cout << endl; for(int j=0; j<Rcount; j++){cout << m_SoilTolerance[i][j] << " ";}}
-	cout << endl << endl;
-	cout << "** m_FireResponse = " << endl;
-	cout << endl;
+  logg.debug("m_SoilContrib = ", m_SoilContrib,
+             "m_SoilLow = ", m_SoilLow,
+             "m_SoilHigh = ", m_SoilHigh,
+             "m_SoilActiveGerm = (column: resource) ", m_SoilActiveGerm,
+             "m_SoilTolerance = (line: life stage, column: resource)", m_SoilTolerance,
+             "** m_FireResponse =");
 	m_FireResponse.show();
-	cout << "m_Flamm = " << m_Flamm << endl;
-	cout << endl;
-	cout << "** m_DroughtResponse = " << endl;
-	cout << endl;
+  logg.debug("m_Flamm = ", m_Flamm,
+             "** m_DroughtResponse =");
 	m_DroughtResponse.show();
-	cout << endl;
-	cout << "m_DroughtSD = ";
-	for(unsigned i=0; i<m_DroughtSD.size() ; i++){cout << m_DroughtSD[i] << " ";}
-	cout << endl;
-	cout << "m_CountModToSev = " << m_CountModToSev << endl;
-	cout << "m_CountSevMort = " << m_CountSevMort << endl;
-	cout << "m_DroughtRecovery = " << m_DroughtRecovery << endl;
-	cout << "m_IsAlien = " << m_IsAlien << endl;
-	cout << endl;
+	logg.debug("m_DroughtSD = ", m_DroughtSD,
+             "m_CountModToSev = ", m_CountModToSev,
+             "m_CountSevMort = ", m_CountSevMort,
+             "m_DroughtRecovery = ", m_DroughtRecovery,
+             "m_IsAlien = ", m_IsAlien);
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-
-

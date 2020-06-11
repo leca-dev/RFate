@@ -8,7 +8,7 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef FG_H
 #define FG_H
 
@@ -16,6 +16,7 @@
 #include "FGUtils.h"
 #include "FilesOfParamsList.h"
 #include "GlobalSimulParameters.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -42,10 +43,10 @@ using namespace std;
 class FG
 {
 	private:
-	
+
 	/* FG Identification */
 	string m_Name; /*!< FG name */
-	
+
 	/* Life history*/
 	int m_M; /*!< Maturation time */
 	int m_L; /*!< Life span */
@@ -58,11 +59,11 @@ class FG
 	vector<int> m_PoolL; /*!< Seed Pool Life Span [PTcount] */
 	bool m_InnateDorm; /*!< Do FG seeds have Innate dormancy properties */
 	int m_PotentialFecundity; /*!< Potential Fecundity of mature plants */
-	
+
 	/* Light competition module */
 	vector<Fract> m_ActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
 	vector< vector<bool> > m_Tolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
-	
+
 	/* Dispersal module */
 	bool m_Dispersed; /*!< Is FG widely dispersed ? */
 	double m_disp50; /*!< Distance where 50% of seeds are dispersed */
@@ -82,7 +83,7 @@ class FG
 	/* Fire response */
 	FGresponse m_FireResponse; /*!< PFG response to fire disturbances */
 	double m_Flamm; /*!< Flammability : how easily the FG will burn */
-	
+
 	/* Drought response */
 	FGresponse m_DroughtResponse; /*!< PFG response to severe drought disturbance, with immediate or post-year effects */
 	vector<double> m_DroughtSD; /*!< (mean-1.5sd), (mean-2sd) from droughtDistribution and corresponding to thresholds to moderate and severe drought */
@@ -92,17 +93,16 @@ class FG
 
 	/* Alien introduction module */
 	bool m_IsAlien; /*!< Is FG an alien plant introduced ? */
-	
-	
+
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing FG..." << endl;
 		ar & m_Name;
 		ar & m_M;
 		ar & m_L;
@@ -135,13 +135,13 @@ class FG
 		ar & m_DroughtRecovery;
 		ar & m_IsAlien;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
@@ -155,7 +155,7 @@ class FG
 	 *	FG full constructor
 	 *
 	 *	\param PFG_LifeHistoryFile : path to text file containing well-formatted
-	 * life history related parameters 
+	 * life history related parameters
 	 *	\param PFG_LightFile : path to text file containing well-formatted light
 	 * competition related parameters
 	 *	\param PFG_DispersalFile : path to text file containing well-formatted
@@ -174,13 +174,13 @@ class FG
 	 */
 	FG(const string& PFG_LifeHistoryFile,
 	const string& PFG_LightFile,
-	const string& PFG_DispersalFile, 
+	const string& PFG_DispersalFile,
 	const string& PFG_DisturbancesFile,
 	const string& PFG_SoilFile,
 	const string& PFG_FireFile,
 	const string& PFG_DroughtFile,
 	const GSP& glob_params );
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -194,7 +194,7 @@ class FG
 	 * param fg_id : functional group ID to create community later
 	 */
 	FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id);
-	
+
 	/*!
 	 *	\brief Part of constructor (BASE : demographic model)
 	 *
@@ -204,10 +204,10 @@ class FG
 	 * related parameters, and modules specific (e.g number of strata, number of
 	 * disturbances...)
 	 *	\param PFG_LifeHistoryFile : path to text file containing well-formatted
-	 * life history related parameters 
+	 * life history related parameters
 	 */
 	void getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile);
-	
+
 	/*!
 	 *	\brief Part of constructor (OPTIONAL : light competition model)
 	 *
@@ -220,7 +220,7 @@ class FG
 	 * competition related parameters
 	 */
 	void getLightParams(const GSP& glob_params, const string& PFG_LightFile);
-	
+
 	/*!
 	 *	\brief Part of constructor (OPTIONAL : dispersal model)
 	 *
@@ -233,7 +233,7 @@ class FG
 	 * dispersal related parameters
 	 */
 	void getDispParams(const GSP& glob_params, const string& PFG_DispersalFile);
-	
+
 	/*!
 	 *	\brief Part of constructor (OPTIONAL : disturbances model)
 	 *
@@ -246,7 +246,7 @@ class FG
 	 * disturbances related parameters
 	 */
 	void getDistParams(const GSP& glob_params, const string& PFG_DisturbancesFile);
-	
+
 	/*!
 	 *	\brief Part of constructor (OPTIONAL : soil competition model)
 	 *
@@ -259,7 +259,7 @@ class FG
 	 * competition related parameters
 	 */
 	void getSoilParams(const GSP& glob_params, const string& PFG_SoilFile);
-	
+
 	/*!
 	 *	\brief Part of constructor (OPTIONAL : fire model)
 	 *
@@ -272,7 +272,7 @@ class FG
 	 * related parameters
 	 */
 	void getFireParams(const GSP& glob_params, const string& PFG_FireFile);
-	
+
 	/*!
 	 *	\brief Part of constructor (OPTIONAL : drought model)
 	 *
@@ -285,22 +285,22 @@ class FG
 	 * drought related parameters
 	 */
 	void getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	FG destructor
 	 */
 	virtual ~FG();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const FG& o) const
 	{
 		return (m_Name == o.m_Name &&
@@ -333,7 +333,7 @@ class FG
 		m_CountSevMort == o.m_CountSevMort &&
 		m_DroughtRecovery == o.m_DroughtRecovery &&
 		m_IsAlien == o.m_IsAlien);
-		
+
 		/* check fixed size tables equality */
 /*		for (unsigned i=0; i<PTcount; i++)
 		{
@@ -351,11 +351,11 @@ class FG
 			}
 		}*/
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const string& getName() const;
 	const int& getMatTime() const;
 	const int& getLifeSpan() const;
@@ -429,13 +429,13 @@ class FG
 	void setCountModToSev(const unsigned& countModToSev);
 	void setCountSevMort(const unsigned& countSevMort);
 	void setDroughtRecovery(const unsigned& droughtRecovery);
-	
+
 	void setIsAlien(const bool& isAlien);
 
 	/*-------------------------------------------*/
 	/* Others functions -------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 
 };
