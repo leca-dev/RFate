@@ -9,7 +9,7 @@
  * \version 1.0
  * \date 2014/11/05
  */
- 
+
 #ifndef Params_h
 #define Params_h
 
@@ -19,6 +19,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+
+#include "Logger.h"
 
 using namespace std;
 
@@ -37,27 +39,27 @@ namespace par
 	vector<string> split(const string &s, const vector<char> &delim, const string &comment = "#");
 	template<typename T>
 	T str_convert(const string &s);
-	
+
 	class Params
 	{
 		map<string, vector<string> > data;
 		const char * source;
 		vector<char> delimiters;
 		const string comment;
-		
+
 		void read_file();
 		void get_lines(ifstream &file);
-		
+
 		public:
-		
+
 		Params(const char * f, const string &delim = " \t", const string &c = "#");
-		
+
 		template<typename T>
 		vector<T> get_val(const string &key, const bool optional = false, const string &message = "") const;
 	};
-	
+
 	// TEMPLATE FUNCTIONS
-	
+
 	template<typename T>
 	vector<T> Params::get_val(const string &key, const bool optional, const string &message) const
 	{
@@ -72,22 +74,20 @@ namespace par
 		}
 		catch(const out_of_range& ex)
 		{
-			stringstream ss;
 			if (! optional)
 			{ // if param is not optional => return an error that will stop execution
-				ss << "\n\nError: parameter parser tried to access unknown parameter <" << key << ">\t" << ex.what() << endl;
-				ss << "!!! This is a required parameter. Please define it." << endl;
-				ss << message << endl;
-				throw (runtime_error (ss.str()));
+        logg.error("Error: parameter parser tried to access unknown parameter <",
+                   key, ">\t", ex.what(),
+                   "!!! This is a required parameter. Please define it.");
 			} else
 			{ // just print a warning; you will have to test that parameter length is not null to know if parameter is recovered or not
-				ss << "\nWarning: parameter parser tried to access unknown parameter <" << key << ">\t" << ex.what();
-				cout << ss.str() << endl;
+        logg.warning("Warning: parameter parser tried to access unknown parameter <",
+                     key, ">\t", ex.what());
 			}
 		}
 		return result;
 	}
-	
+
 	template<typename T>
 	T str_convert(const string &s)
 	{
@@ -95,9 +95,7 @@ namespace par
 		istringstream val(s); // create stream from the string
 		if (!(val >> result))
 		{
-			stringstream ss;
-			ss << "Cannot convert value <" << s << "> from string into requested type";
-			throw( runtime_error (ss.str() ));
+      logg.error("Cannot convert value <", s, "> from string into requested type");
 		}
 		return result;
 	}
