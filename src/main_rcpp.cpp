@@ -144,6 +144,7 @@ void saveFATE(string objFileName)
 		cerr << "Compression failed for " << objFileName << endl;
 	}
 }
+
 void loadFATE(string objFileName)
 {
 	// Create an input archive
@@ -155,10 +156,10 @@ void loadFATE(string objFileName)
 		ifs.close(); // close file
 	} else
 	{
-		cerr << "!!! File of SAVED STATE does not exists or can't be opened!" << endl;
-		terminate();
+		logg.error("!!! File of SAVED STATE does not exists or can't be opened!");
 	}
 }
+
 void changeFile(int year, string change_type, vector<int>& change_times,
 								vector<string>& change_files)
 {
@@ -272,65 +273,68 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		vm_statistics64_data_t vm_stats; // Mac
 	#endif
 
-	fileStats.close();
-	delete simulMap;
-	return 0;
-
-	/*=============================================================================*/
-	/* check if a saving of an old simulation is given or if we start a new one from scratch */
+	/*==========================================================================*/
+	/* check if a saving of an old simulation is given or if we start a new one
+	from scratch */
 
 	// the map on which the whole simulation process is based on
 	if (file_of_params.getSavedState() == "0")
 	{ // start from scratch
-		cout << "Starting from scratch..." << endl;
+		logg.info("Starting from scratch...");
 		simulMap = new SimulMap(file_of_params);
 	} else
 	{ // start from previous simulation state
-		cout << "Starting with outputs stored in " << file_of_params.getSavedState() << " file" << endl;
-		{
-			cout << "Loading previous simulation outputs..." << endl;
-			loadFATE(file_of_params.getSavedState());
-			cout << "> done! " << endl;
-		}
+		logg.info("Loading previous simulation outputs stored in ",
+							file_of_params.getSavedState(), " file...");
+		loadFATE(file_of_params.getSavedState());
+		logg.info("> done!\n*** UPDATE simulation files...");
 
-		/* update the simulation parameters (replace the object saved ones by the current ones) */
-		cout << "*** UPDATE simulation files..." << endl;
+		// update the simulation parameters
 		simulMap->UpdateSimulationParameters(file_of_params);
 
 		// FROM SAVED STATE BUT WITH NEW FG file_of_params
-		cout << "*** REBUILDING Global simulation parameters..." << endl;
+		logg.info("*** REBUILDING Global simulation parameters...");
 		GSP glob_params = GSP(file_of_params.getGlobSimulParams());
 		int noFG = glob_params.getNoFG();
-		cout << "*** REBUILDING Functional groups..." << endl;
+		logg.info("*** REBUILDING Functional groups...");
 		if (noFG!=(int)file_of_params.getFGLifeHistory().size())
 		{
-			cerr << "!!! Parameters NO_PFG (" << noFG << ") and --PFG_PARAMS_LIFE_HISTORY-- (" ;
-			cerr << file_of_params.getFGLifeHistory().size() << ") do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters NO_PFG (", noFG,
+								 ") and --PFG_PARAMS_LIFE_HISTORY-- (",
+								 file_of_params.getFGLifeHistory().size(),
+								 ") do not match in term of number!");
 		}
-		if (glob_params.getDoDispersal() && noFG!=(int)file_of_params.getFGDispersal().size())
+		if (glob_params.getDoDispersal() &&
+				noFG!=(int)file_of_params.getFGDispersal().size())
 		{
-			cerr << "!!! Parameters NO_PFG (" << noFG << ") and --PFG_PARAMS_DISPERSAL-- (" ;
-			cerr << file_of_params.getFGDispersal().size() << ") do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters NO_PFG (", noFG,
+								 ") and --PFG_PARAMS_DISPERSAL-- (",
+								 file_of_params.getFGDispersal().size(),
+								 ") do not match in term of number!");
 		}
-		if (glob_params.getDoDisturbances() && noFG!=(int)file_of_params.getFGDisturbance().size())
+		if (glob_params.getDoDisturbances() &&
+				noFG!=(int)file_of_params.getFGDisturbance().size())
 		{
-			cerr << "!!! Parameters NO_PFG (" << noFG << ") and --PFG_PARAMS_DISTURBANCES-- (" ;
-			cerr << file_of_params.getFGDisturbance().size() << ") do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters NO_PFG (", noFG,
+								 ") and --PFG_PARAMS_DISTURBANCES-- (",
+								 file_of_params.getFGDisturbance().size(),
+								 ") do not match in term of number!");
 		}
-		if (glob_params.getDoFireDisturbances() && noFG!=(int)file_of_params.getFGFire().size())
+		if (glob_params.getDoFireDisturbances() &&
+				noFG!=(int)file_of_params.getFGFire().size())
 		{
-			cerr << "!!! Parameters NO_PFG (" << noFG << ") and --PFG_PARAMS_FIRE-- (" ;
-			cerr << file_of_params.getFGFire().size() << ") do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters NO_PFG (", noFG,
+								 ") and --PFG_PARAMS_FIRE-- (",
+								 file_of_params.getFGFire().size(),
+								 ") do not match in term of number!");
 		}
-		if (glob_params.getDoDroughtDisturbances() && noFG!=(int)file_of_params.getFGDrought().size())
+		if (glob_params.getDoDroughtDisturbances() &&
+				noFG!=(int)file_of_params.getFGDrought().size())
 		{
-			cerr << "!!! Parameters NO_PFG (" << noFG << ") and --PFG_PARAMS_DROUGHT-- (" ;
-			cerr << file_of_params.getFGDrought().size() << ") do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters NO_PFG (", noFG,
+								 ") and --PFG_PARAMS_DROUGHT-- (",
+								 file_of_params.getFGDrought().size(),
+								 ") do not match in term of number!");
 		}
 		vector<FG> fg_vec_tmp;
 		for (int fg_id=0; fg_id<noFG; fg_id++)
@@ -342,8 +346,14 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		simulMap->setFGparams(fg_vec_tmp);
 	}
 
-	cout << "\n***" << " NoCPU = " << simulMap->getGlobalParameters().getNoCPU() << endl;
-	fileStats << "Number of CPU used : " << simulMap->getGlobalParameters().getNoCPU() << endl;
+	logg.info("\n*** NoCPU = ", simulMap->getGlobalParameters().getNoCPU());
+	fileStats << "Number of CPU used : "
+						<< simulMap->getGlobalParameters().getNoCPU()
+						<< endl;
+
+	fileStats.close();
+	delete simulMap;
+	return 0;
 
 	/*=============================================================================*/
 	/* get all needed parameters */
