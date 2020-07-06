@@ -8,7 +8,7 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef SUFATE_H
 #define SUFATE_H
 
@@ -16,6 +16,7 @@
 #include <boost/serialization/export.hpp>
 #include "Community.h"
 #include "LightResources.h"
+#include "Logger.h"
 
 typedef Community* CommunityPtr;
 typedef LightResources* LightResourcesPtr;
@@ -25,7 +26,7 @@ typedef GSP* GSPPtr;
 typedef FG* FGPtr;
 typedef FuncGroup* FuncGroupPtr;
 typedef Legion* LegionPtr;
- 
+
  /*!
  * \class SuFate
  * \brief Succession (demographic model) class
@@ -35,38 +36,37 @@ typedef Legion* LegionPtr;
  * considered as the basic / core module of the model. Other succession models
  * will inherit of this class.
  */
- 
+
 class SuFate
 {
 	protected:
-	
+
 	/* pixel attributes */
 	unsigned m_CellID; /*!< Cell grid id */
-	
+
 	/* community attributes */
 	Community m_Comm; /*!< Vector of FG Communities : state of each FG population at one time in one space */
-	
+
 	/* light resources attributes */
 	LightResources m_LightR; /*!< Light Resources state in each stratum */
-	
+
 	/* soil resources attribute */
 	double m_SoilR; /*!< Soil resource in the pixel */
-	
+
 	/* Seeds attributes */
 	IntMapPtr m_SeedRainMap; /*!< pointer to dispersed seeds maps == seed rain */
 	IntMapPtr m_SeedProdMap; /*!< pointer to maps where produced seeds will be stored */
-	
+
 	GSPPtr m_GSP; /*!< pointer to global simulation parameters */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Succession Model..." << endl;
 		ar & m_CellID;
 		ar & m_Comm;
 		ar & m_LightR;
@@ -75,20 +75,20 @@ class SuFate
 		ar & m_SeedProdMap; // ALREADY SAVED in SimulMap.h
 		ar & m_GSP; // ALREADY SAVED in SimulMap.h
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	SuFate default constructor => All parameters are set to 0, False or None
 	 */
 	SuFate();
-	
+
 	/*!
 	 *	\brief Semi-default constructor (null community and resources)
 	 *
@@ -97,7 +97,7 @@ class SuFate
 	 *	\param cellID : id of pixel this succession model is linked to
 	 */
 	SuFate(unsigned cellID);
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -115,22 +115,22 @@ class SuFate
 	 */
 	SuFate(unsigned cellID, Community comm, LightResources lightR, double soilR,
 	IntMapPtr seedRainMap, IntMapPtr SeedProdMap, GSPPtr gspPtr);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	SuFate destructor
 	 */
 	virtual ~SuFate();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const SuFate& o) const
 	{
 		return (m_CellID == o.m_CellID &&
@@ -141,11 +141,11 @@ class SuFate
 		*m_SeedProdMap == *(o.m_SeedProdMap) &&
 		*m_GSP == *(o.m_GSP));
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const unsigned getCellID() const;
 	const Community getCommunity() const;
 	LightResources getLightResources();
@@ -155,7 +155,7 @@ class SuFate
 	int getSeedRain(unsigned fg);
 	int getSeedProd(unsigned fg);
 	GSP getGSP();
-	
+
 	CommunityPtr getCommunity_();
 	LightResourcesPtr getLightResources_();
 	IntMapPtr getSeedRain_();
@@ -163,31 +163,31 @@ class SuFate
 	int* getSeedRain_(unsigned fg);
 	int* getSeedProd_(unsigned fg);
 	GSPPtr getGSP_();
-	
+
 	void setCommunity(const Community comm);
 	void setLightResources(const LightResources lightR);
 	void setSoilResources(double soilR);
 	void setSeedRain(unsigned fg, int seedRain);
 	void setSeedProd(unsigned fg, int seedProd);
-	
+
 	virtual double getEnvSuitRefVal(){ return 0.0;};
 	virtual void setEnvSuitRefMap_( DoubleMapPtr /*envSuitRefVal_*/ ){};
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	virtual void show();
 
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Calculate FG abundances per stratum to update light / soil values
 	 *
 	 *	Within each height stratum, FG abundances (theoretical number of
 	 * individuals) are calculated, taking into account the relative size of
 	 * mature and immature plants.
-	 * 
+	 *
 	 * For light :
 	 * Light resources are calculated per stratum, according to the FG
 	 * abundances and the thresholds defined in the GSP object :
@@ -196,10 +196,10 @@ class SuFate
 	 * thresholds, the light resources in the stratum below will decrease.
 	 * It is impossible to have more light in one stratum than in the upper
 	 * stratum.
-	 * 
+	 *
 	 * For Soil :
 	 * The soil condition is linked to the relative importance of each PFG
-	 * within the pixel. It is calculated as the weighted mean of each 
+	 * within the pixel. It is calculated as the weighted mean of each
 	 * theoretical maximum contribution of each PFG to soil resources.
 	 * Weights are the relative abundance of each PFG within the pixel.
 	 */
@@ -211,7 +211,7 @@ class SuFate
 	 * This function compares the light and/or soil resources of the pixel with
 	 * the tolerance of each PFG. PFG which are not tolerant to the current
 	 * conditions of the pixel are killed (removed) or reduced.
-	 * 
+	 *
 	 * For light :
 	 * The check is done for each stratum. Individuals are treated according to
 	 * their height, by converting their age according to the stratum break ages
@@ -224,14 +224,14 @@ class SuFate
 	 * lifestage (as it it the case for light). Individuals not tolerant to the
 	 * soil condition are reduced in abundance (or can be killed if the
 	 * reduction rate is of 100%).
-	 * 
+	 *
 	 * Finally, once all cohorts have been covered, the pickupCohorts function
 	 * is called to merge adjacent cohorts to save memory and time.
 	 */
 	void CheckSurvival();
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Get environmental influence on recruitment rate
 	 *
@@ -243,7 +243,7 @@ class SuFate
 	 * \return : 1 (no dependence on environment)
 	 */
 	virtual double getEnvRecrRate(int fg);
-	
+
 	/*!
 	 *	\brief Get environmental influence on mortality
 	 *
@@ -255,7 +255,7 @@ class SuFate
 	 * \return : 1 (no dependence on environment)
 	 */
 	virtual double getEnvMort(int fg);
-	
+
 	/*!
 	 *	\brief Get environmental influence on growth
 	 *
@@ -267,7 +267,7 @@ class SuFate
 	 * \return : 1 (no dependence on environment)
 	 */
 	virtual double getEnvGroth(int fg);
-	
+
 	/*!
 	 *	\brief Get environmental influence on fecundity
 	 *
@@ -279,9 +279,9 @@ class SuFate
 	 * \return : 1 (no dependence on environment)
 	 */
 	virtual double getEnvFecund(int fg);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Calculate recruitment : number of plants that will be born this
 	 * year for a given PFG
@@ -299,9 +299,9 @@ class SuFate
 	 * \return : number of individuals that will be born this year for this PFG
 	 */
 	int Recruitment( int fg, double GerminRate );
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Calculate fecundity : amount of seeds that will be produced this
 	 * year for a given PFG
@@ -320,7 +320,7 @@ class SuFate
 	 * \return : number of seeds that will be produced this year for this PFG
 	 */
 	double calcFecund(int fg);
-	
+
 	/*!
 	 *	\brief Get seeding input
 	 *
@@ -332,7 +332,7 @@ class SuFate
 	 * \return : number of seeds that will be dispersed this year for this PFG
 	 */
 	virtual int getSeedInput(int fg);
-	
+
 	/*!
 	 *	\brief Get Maturity age influenced by environment
 	 *
@@ -344,7 +344,7 @@ class SuFate
 	 * \return : maturity age of the PFG (no dependence on environment)
 	 */
 	int getMatTime(int fg);
-	
+
 	/*!
 	 *	\brief Get Lifespan influenced by environment
 	 *
@@ -356,15 +356,15 @@ class SuFate
 	 * \return : lifespan of the PFG (no dependence on environment)
 	 */
 	int getLifeSpan(int fg);
-		
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Do annual step of demographic FATE model : STEP 1
 	 *
 	 * This is the main succession routine. It has been coded for clarity as
 	 * opposed to speed; it works by simulating forward in single time steps.
-	 * 
+	 *
 	 * In each time step the procedure is :
 	 * 1. CheckSurvival : check the tolerance of established plants, and kill
 	 *    those that do not tolerate current light and/or soil conditions
@@ -378,7 +378,7 @@ class SuFate
 	 * effect must be modelled
 	 */
 	void DoSuccessionPart1(vector<unsigned> isDrought);
-	
+
 	/*!
 	 *	\brief Do annual step of demographic FATE model : STEP 2
 	 *
@@ -398,9 +398,9 @@ class SuFate
 	 * effect must be modelled
 	 */
 	void DoSuccessionPart2(vector<unsigned> isDrought);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Deal with unaffected individuals under disturbance
 	 *
@@ -414,7 +414,7 @@ class SuFate
 	 * ("dist", "fire", "drought")
 	 */
 	void DoUnaffected(int fg, int Dstb, FGresponse FGresp);
-	
+
 	/*!
 	 *	\brief Check PFG survival under disturbance
 	 *

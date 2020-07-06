@@ -48,7 +48,8 @@ void PropPool::setDTime( const int& dTime) { m_DTime = dTime; }
 
 void PropPool::show()
 {
-	cout << "Seed Pool : size = " << m_Size << ", declining = " << m_Declining << ", age = " << m_DTime << endl;
+	logg.debug("Seed Pool : size = ", m_Size, ", declining = ", m_Declining,
+						 ", age = ", m_DTime);
 } // end of show()
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -80,12 +81,12 @@ void PropPool::AgePool1(int pl)
 	{
 		/* Seed mortality rate follow a linear relationship as a function of seed life */
 		/* size (n+1) = size (n) - size(n) * (1 / (pl + 1)) */
-		
+
 		double decRate = 1.0 / ( (double) pl + 1.0 ); // calculate decreasing rate
 		m_Declining = true; // new seeds, so the pool is declining
 		m_DTime = m_DTime + 1; // increase age of youngest seeds
 		m_Size = floor(m_Size - decRate * m_Size);
-		
+
 		if (m_Size == 0)
 		{
 			m_Declining = false;

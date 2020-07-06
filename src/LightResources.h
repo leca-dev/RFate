@@ -13,6 +13,7 @@
 #define LIGHTRESOURCES_H
 
 #include "FGUtils.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -29,34 +30,33 @@ using namespace std;
 class LightResources
 {
 	private:
-	
+
 	vector< Resource > m_ResourceList; /*!< List of light resources */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Light Resources..." << endl;
 		ar & m_ResourceList;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	LightResources default constructor => All parameters are set to 0, False or None
 	 */
 	LightResources();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -65,7 +65,7 @@ class LightResources
 	 *	\param noStrata : number of height strata
 	 */
 	LightResources(int noStrata);
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -74,41 +74,41 @@ class LightResources
 	 *	\param resourceList : vector of light resources
 	 */
 	LightResources(vector<Resource> resourceList);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	LightResources destructor
 	 */
 	virtual ~LightResources();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const LightResources& o) const
 	{
 		return ( m_ResourceList == o.m_ResourceList );
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const vector<Resource>& getResourceList() const;
 	const Resource& getResource(const int& id) const;
-	
+
 	void setResourceList(const vector<Resource>& resourceList);
 	void setResource(const int& id, const Resource& resource);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 
 };

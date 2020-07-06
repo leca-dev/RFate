@@ -49,7 +49,7 @@ void Community::setFuncGroup(const int& id, const FuncGroup& funcGroup){ m_FuncG
 
 void Community::show()
 {
-	cout << "Community object :" << endl;
+	logg.debug("Community object :");
 	for(unsigned i=0; i<m_FuncGroupList.size(); i++)
 	{
 		m_FuncGroupList[i].show();
@@ -60,7 +60,7 @@ void Community::show()
 
 void Community::summary()
 {
-	cout << "Community summary :" << endl;
+	logg.debug("Community summary :");
 	for(unsigned i=0; i<m_FuncGroupList.size(); i++)
 	{
 		m_FuncGroupList[i].summary();
@@ -68,4 +68,14 @@ void Community::summary()
 } // end of summary()
 
 
-
+//void Community::showNames()
+//{
+//	string names("( ");
+//	typename vector<FuncGroup>::const_iterator fg;
+//	for (fg = m_FuncGroupList.begin(); fg != m_FuncGroupList.end(); ++fg)
+//	{
+//		names += fg->getFGparams_()->getName() + " ";
+//	}
+//	names += ")";
+//	logg.debug(names);
+//}

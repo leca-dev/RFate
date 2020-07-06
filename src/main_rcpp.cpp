@@ -351,46 +351,42 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 						<< simulMap->getGlobalParameters().getNoCPU()
 						<< endl;
 
-	fileStats.close();
-	delete simulMap;
-	return 0;
-
 	/*=============================================================================*/
 	/* get all needed parameters */
 
 	/* timing parameters */
-	cout << "Getting timing parameters..." << endl;
+	logg.info("Getting timing parameters...");
 	int simul_duration = simulMap->getGlobalParameters().getSimulDuration();
 	bool seeding_on = false;
 	int seeding_duration = simulMap->getGlobalParameters().getSeedingDuration();
 	int seeding_timestep = simulMap->getGlobalParameters().getSeedingTimeStep();
 
 	/* saving parameters */
-	cout << "Getting saving parameters..." << endl;
+	logg.info("Getting saving parameters...");
 	vector< int > summarised_array_saving_times = ReadTimingsFile( file_of_params.getSavingTimesMaps() );
 	vector< int > simul_objects_saving_times = ReadTimingsFile( file_of_params.getSavingTimesObjects() );
 
 	/* study area change parameters */
-	cout << "Getting MASK timing parameters..." << endl;
+	logg.info("Getting MASK timing parameters...");
 	vector< int > mask_change_times = ReadTimingsFile( file_of_params.getMaskChangemaskYears() );
 	vector< string > mask_change_files = file_of_params.getMaskChangemaskFiles();
 
 	/* MODULES change parameters */
 	if (simulMap->getGlobalParameters().getDoHabSuitability())
 	{
-		cout << "Getting HS timing parameters..." << endl;
+		logg.info("Getting HS timing parameters...");
 	}
 	vector< int > habsuit_change_times = ReadTimingsFile( file_of_params.getHabSuitChangemaskYears() );
 	vector< string > habsuit_change_files = file_of_params.getHabSuitChangemaskFiles();
 	if (simulMap->getGlobalParameters().getDoDisturbances())
 	{
-		cout << "Getting dist timing parameters..." << endl;
+		logg.info("Getting dist timing parameters...");
 	}
 	vector< int > dist_change_times = ReadTimingsFile( file_of_params.getDistChangemaskYears() );
 	vector< string > dist_change_files = file_of_params.getDistChangemaskFiles();
 	if (simulMap->getGlobalParameters().getDoFireDisturbances())
 	{
-		cout << "Getting fire timing parameters..." << endl;
+		logg.info("Getting fire timing parameters...");
 	}
 	vector< int > fire_change_times = ReadTimingsFile( file_of_params.getFireChangemaskYears() );
 	vector< string > fire_change_files = file_of_params.getFireChangemaskFiles();
@@ -398,13 +394,13 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	vector< string > fire_freq_change_files = file_of_params.getFireChangefreqFiles();
 	if (simulMap->getGlobalParameters().getDoDroughtDisturbances())
 	{
-		cout << "Getting drought index timing parameters..." << endl;
+		logg.info("Getting drought index timing parameters...");
 	}
 	vector< int > drought_change_times = ReadTimingsFile( file_of_params.getDroughtChangemaskYears() );
 	vector< string > drought_change_files = file_of_params.getDroughtChangemaskFiles();
 	if (simulMap->getGlobalParameters().getDoAliensIntroduction())
 	{
-		cout << "Getting aliens timing parameters..." << endl;
+		logg.info("Getting aliens timing parameters...");
 	}
 	vector< int > aliens_change_times = ReadTimingsFile( file_of_params.getAliensChangemaskYears() );
 	vector< string > aliens_change_files = file_of_params.getAliensChangemaskFiles();
@@ -415,8 +411,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	/* Simulation main loop */
 	for (int year=0; year<=simul_duration; year++)
 	{
-		cout << endl;
-		cout << "Starting year " << year << " :" << endl;
+		logg.info("\nStarting year ", year, " :");
 
 		/* SAVING OUTPUTS PROCEDURE =================================================*/
 		/* Saving computing statistics */
@@ -452,7 +447,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		/* Saving summarised array */
 		if (summarised_array_saving_times.size() > 0 && summarised_array_saving_times.front() == year)
 		{
-			cout << "Saving rasters..." << endl;
+			logg.info("Saving rasters...");
 			simulMap->SaveRasterAbund( file_of_params.getSavingDir(), year, file_of_params.getMask());
 			/* remove saved time from list */
 			summarised_array_saving_times.erase(summarised_array_saving_times.begin());
@@ -461,14 +456,14 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		/* Saving simulation object */
 		if (simul_objects_saving_times.size() > 0 && simul_objects_saving_times.front() == year)
 		{
-			cout << "Saving simulation object..." << endl;
+			logg.info("Saving simulation object...");
 			{
 				// Create an output archive
 				string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
 				cout << objFileName.c_str() << endl;
 				saveFATE(objFileName);
 			}
-			cout << "> done! " << endl;
+			logg.info("> done!");
 
 			/* remove saved time from list */
 			simul_objects_saving_times.erase(simul_objects_saving_times.begin());
@@ -483,7 +478,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		/* Do MASK change */
 		if (mask_change_times.size() > 0 && mask_change_times.front() == year)
 		{
-			cout << "Doing MASK change..." << endl;
+			logg.info("Doing MASK change...");
 			simulMap->DoFileChange(mask_change_files.front(), "mask");
 
 			/* Change mask name in file_of_params to create outputs rasters with the correct studied area */
@@ -501,7 +496,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 					{
 						/* store new files */
 						newNameFiles.push_back(strTmp);
-						cout << "*** " << strTmp << endl;
+						logg.info("*** ", strTmp);
 					}
 				}
 
@@ -509,8 +504,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 				file.close();
 			} else
 			{
-				cerr << "Impossible to open " << mask_change_files.front() << " file!" << endl;
-				terminate();
+				logg.error("Impossible to open ", mask_change_files.front(), " file!");
 			}
 			file_of_params.setMask(newNameFiles[0]); // change mask name
 			file_of_params.checkCorrectMasks(); // check that new mask is similar to the other simulation masks
@@ -566,7 +560,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 			{
 				if (year % seeding_timestep == 0)
 				{
-					cout << "Seeding occurs this year..." << endl;
+					logg.info("Seeding occurs this year...");
 					seeding_on = true;
 					simulMap->StartSeeding();
 				} else
@@ -579,7 +573,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 			/* Stop seeding the last year of seeding */
 			if (seeding_duration > 0 && year == seeding_duration)
 			{
-				cout << "End of seeding campain..." << endl;
+				logg.info("End of seeding campain...");
 				seeding_on = false;
 				simulMap->StopSeeding();
 			}
@@ -594,47 +588,52 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		/* Run drought disturbance model : PREVIOUS succession ======================*/
 		if (simulMap->getGlobalParameters().getDoDroughtDisturbances())
 		{
-			cout << "Calculate drought disturbances..." << endl;
+			logg.info("Calculate drought disturbances...");
 			simulMap->DoDroughtDisturbance_part1();
-			cout << "Apply drought disturbances..." << endl;
+			logg.info("Apply drought disturbances...");
 			simulMap->DoDroughtDisturbance_part2("prev");
 		}
 
 		/*===========================================================================*/
 		/* Run succession model */
-		cout << "Do Succession..." << endl;
+		logg.info("Do Succession...");
 		simulMap->DoSuccession();
+		logg.error("test");
 		/*===========================================================================*/
 
 		/* Run drought disturbance model : POST succession */
 		if (simulMap->getGlobalParameters().getDoDroughtDisturbances())
 		{
-			cout << "Apply drought disturbances..." << endl;
+			logg.info("Apply drought disturbances...");
 			simulMap->DoDroughtDisturbance_part2("post");
 		}
 
 		/* Run seeds dispersal model ================================================*/
 		if (simulMap->getGlobalParameters().getDoDispersal() && !seeding_on)
 		{
-			cout << "Disperse seeds..." << endl;
+			logg.info("Disperse seeds...");
 			simulMap->DoDispersal();
 		}
 
 		/* Run disturbance model ====================================================*/
 		if (simulMap->getGlobalParameters().getDoDisturbances())
 		{
-			cout << "Apply disturbances..." << endl;
+			logg.info("Apply disturbances...");
 			simulMap->DoDisturbance(year);
 		}
 
 		/* Run fire disturbance model ===============================================*/
 		if (simulMap->getGlobalParameters().getDoFireDisturbances())
 		{
-			cout << "Apply fire disturbances..." << endl;
+			logg.info("Apply fire disturbances...");
 			simulMap->DoFireDisturbance(year);
 		}
 	} // end main simulation loop
 	//} // end PRAGMA
+
+	fileStats.close();
+	delete simulMap;
+	return 0;
 
 	delete simulMap;
 

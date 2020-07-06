@@ -46,7 +46,7 @@ const int& Legion::getNoCohort() const{ return m_CohortList.size(); }
 
 void Legion::show()
 {
-	cout << "Legion object :" << endl;
+	logg.debug("Legion object :");
 	for(unsigned i=0; i<m_CohortList.size(); i++)
 	{
 		m_CohortList[i].show();
@@ -60,31 +60,31 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 
 	if (cSize > 0)
 	{ // if the given size is positive
-	
+
 		int tempCSize = cSize, tempAy = ay, tempAo = ao;
-		
+
 		/* check that ay < ao */
 		if (ay > ao)
 		{
 			tempAy = ao;
 			tempAo = ay;
 		}
-		
+
 		/* initialize the position within the legion (index of the cohort) */
 		unsigned i = 0;
 		while (true)
 		{ // recursive infinite loop
-		
+
 			/* initialise the cohort to add */
 			Cohort newCohort(tempCSize, tempAy, tempAo);
-			
+
 			/* 1. PUSH_BACK : add at the end of the vector if it is the last element */
 			if (i >= m_CohortList.size())
 			{
 				m_CohortList.push_back(newCohort);
 				break;
 			}
-			
+
 			/* 2. FUSION : merge at the tail if ay = getAo + 1 and cSize = getCSize */
 			if (tempAy == m_CohortList[i].getAo()+1 && tempCSize == m_CohortList[i].getCSize())
 			{
@@ -106,7 +106,7 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 				m_CohortList.insert(m_CohortList.begin() + i, newCohort);
 				break;
 			}
-			
+
 			/* 5. OVERLAP with beginning of an old cohort : if ao > getAy and ay < getAy */
 			if (tempAo > m_CohortList[i].getAy() && tempAy <  m_CohortList[i].getAy())
 			{
@@ -127,7 +127,7 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 				newCohort.setAy(tempAy);
 				continue;
 			}
-			
+
 			/* 6. INSERT + REDIRECT TO 7: if ao = getAy and ay < getAy */
 			if (tempAo == m_CohortList[i].getAy() && tempAy < m_CohortList[i].getAy())
 			{
@@ -185,13 +185,13 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 void Legion::splitCohort(const int& i, const int& age)
 {
 	vector< Cohort >::iterator it = m_CohortList.begin() + i + 1;
-	
+
 	/* create a new cohort of same size between (age + 1, ao) */
 	Cohort newCohort(m_CohortList[i].getCSize(), age + 1, m_CohortList[i].getAo());
-	
+
 	/* change ao of original cohort to age */
 	m_CohortList[i].setAo(age);
-	
+
 	/* insert the new cohort after the original one */
 	m_CohortList.insert(it, newCohort);
 } // end of splitCohort(...)
@@ -210,7 +210,7 @@ void Legion::removeCohort(const int& ay, const int& ao)
 	}
 	/* get minimum (youngest) and maximum (oldest) age of individuals within the legion */
 	int minAge = m_CohortList.front().getAy(), maxAge = m_CohortList.back().getAo();
-	
+
 	/* initialize the position within the legion (index of the cohort) */
 	unsigned i = 0;
 	if (tempAy > maxAge || tempAo < minAge)
@@ -309,14 +309,14 @@ void Legion::reduceCohort(const int& ay, const int& ao, const double& reducFact)
 
 		/* declare modifiable variables */
 		int tempAy = ay, tempAo = ao;
-		
+
 		/* check that ay < ao */
 		if (ay > ao)
 		{
 			tempAy = ao;
 			tempAo = ay;
-		}		
-		
+		}
+
 		/* 1. DELETE ALL */
 		if (reducFact < 0)
 		{
@@ -342,7 +342,7 @@ void Legion::reduceCohort(const int& ay, const int& ao, const double& reducFact)
 			{ // INSIDE THE COHORT : ao < getAo : split the cohort and call recursively
 				this->splitCohort(co, tempAo);
 			}
-			
+
 			unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
 			if (newSize > 0)
 			{ /* 2. REDUCE THIS LEGION ABUNDANCE + CONTINUE THE LOOP */
@@ -368,7 +368,7 @@ void Legion::pickupCohorts()
 		{
 			/* check if successive cohorts :
 			- have the same abundance
-			- are juxtaposed (ao + 1 = ay)	
+			- are juxtaposed (ao + 1 = ay)
 			 */
 			if ((m_CohortList[co].getCSize() == m_CohortList[co+1].getCSize() &&
 				 (m_CohortList[co].getAo() + 1) == m_CohortList[co+1].getAy()))
@@ -385,4 +385,3 @@ void Legion::pickupCohorts()
 } // end of pickupCohorts()
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-

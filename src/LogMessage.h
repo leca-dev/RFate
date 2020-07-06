@@ -2,7 +2,9 @@
 #define LOGMESSAGE_H
 
 #include <Rcpp.h>
+#include <RcppThread.h>
 #include <sstream>
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -64,14 +66,15 @@ std::string& appendMessage(std::string& message, const T& t1,
 {
   appendMessage(message, t1);
   appendMessage(message, t2...);
+  return message;
 }
 
 
 class LogMessage
 {
 protected:
-  int m_importance, m_verbosity;
   std::string m_message;
+  int m_importance, m_verbosity;
 
 public:
   template <typename T, typename... Types>
@@ -83,6 +86,9 @@ public:
       appendMessage(m_message, t1, t2...);
     }
   }
+
+  ~LogMessage();
+
   void show() const;
 };
 
@@ -111,7 +117,8 @@ public:
   template <typename T, typename... Types>
   WarningMessage(int verbosity, const T& t1, const Types&... t2) :
   LogMessage(3, verbosity, t1, t2...) {}
-  void show() const;
+
+  // void show() const;
 };
 
 
@@ -121,6 +128,7 @@ public:
   template <typename T, typename... Types>
   ErrorMessage(int verbosity, const T& t1, const Types&... t2) :
   LogMessage(4, verbosity, t1, t2...) {}
+
   void show() const;
 };
 

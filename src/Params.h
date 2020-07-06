@@ -78,7 +78,7 @@ namespace par
 			{ // if param is not optional => return an error that will stop execution
         logg.error("Error: parameter parser tried to access unknown parameter <",
                    key, ">\t", ex.what(),
-                   "!!! This is a required parameter. Please define it.");
+                   "\n!!! This is a required parameter. Please define it.");
 			} else
 			{ // just print a warning; you will have to test that parameter length is not null to know if parameter is recovered or not
         logg.warning("Warning: parameter parser tried to access unknown parameter <",

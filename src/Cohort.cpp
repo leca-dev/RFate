@@ -43,5 +43,5 @@ void Cohort::setAo(const int& ao){ m_Ao = ao; }
 
 void Cohort::show()
 {
-	cout << "from " << m_Ay << " to " << m_Ao << " (size: " << m_CSize << ")" << endl;
+	logg.debug("from ", m_Ay, " to ", m_Ao, " (size: ", m_CSize, ")");
 }

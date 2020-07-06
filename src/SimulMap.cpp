@@ -133,7 +133,6 @@ SimulMap::SimulMap(FOPL file_of_params)
 	{
 		m_FGparams.emplace_back(m_glob_params, file_of_params, fg_id);
 	}
-	logg.error("test");
 
 	/* build study area coordinates */
 	logg.info("> build study area coordinates...");
@@ -604,7 +603,6 @@ void SimulMap::DoFreqChange(string newChangeFile, string typeFile)
 	} else
 	{
 		logg.error("Impossible to open ", newChangeFile, " file!");
-		terminate();
 	}
 } // end of DoFreqChange(...)
 
@@ -628,14 +626,15 @@ void SimulMap::DoSuccession()
 	}
 
 	/* Do succession only on points within mask */
-	omp_set_num_threads( m_glob_params.getNoCPU() );
+	omp_set_num_threads(m_glob_params.getNoCPU());
 	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-
 	for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
 	{
 		unsigned cell_ID = m_MaskCells[ID];
-		m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
+		logg.info("test dosuccession");
+		// m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
 	}
+	logg.error("test_simulmap");
 	if (m_glob_params.getDoHabSuitability())
 	{
 		/* Defined the new environmental reference value for next year */
@@ -1139,8 +1138,8 @@ void SimulMap::DoFireDisturbance(int yr)
 	}
 
 	/* Do fire disturbances only on points within mask */
-	//omp_set_num_threads( m_glob_params.getNoCPU() );
-	//#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+	omp_set_num_threads( m_glob_params.getNoCPU() );
+	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
 
 	for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
 	{ // loop on disturbances
