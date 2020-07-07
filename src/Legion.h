@@ -97,7 +97,7 @@ class Legion
 
 	vector<Cohort>* getCohortList_();
 	Cohort* getCohort_(const int& id);
-	const int& getNoCohort() const;
+	int getNoCohort();
 
 	void setCohortList(const vector<Cohort>& cohortList);
 	void setCohort(const int& id, const Cohort& cohort);

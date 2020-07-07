@@ -34,7 +34,7 @@ const FuncGroup& Community::getFuncGroup(const int& id) const{ return m_FuncGrou
 
 FuncGroup* Community::getFuncGroup_(const int& id) { return &m_FuncGroupList[id]; }
 
-const int& Community::getNoCohort(const int& id) const{ return m_FuncGroupList[id].getLList().getNoCohort(); }
+int Community::getNoCohort(const int& id) { return m_FuncGroupList[id].getLList().getNoCohort(); }
 
 const int& Community::getAy(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAy(); }
 const int& Community::getAo(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAo(); }

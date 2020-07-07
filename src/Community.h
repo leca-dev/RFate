@@ -96,7 +96,7 @@ class Community
 	const FuncGroup& getFuncGroup(const int& id) const;
 
 	FuncGroup* getFuncGroup_(const int& id);
-	const int& getNoCohort(const int& id) const;
+	int getNoCohort(const int& id);
 	const int& getAy(const int& id, const int& co) const;
 	const int& getAo(const int& id, const int& co) const;
 	const int& getCSize(const int& id, const int& co) const;
