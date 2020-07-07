@@ -12,9 +12,7 @@ private:
 
 public:
   Logger(int verbosity=0);
-
   ~Logger();
-
   void configure(int verbosity);
 
   template <typename T, typename... Types>
@@ -41,7 +39,6 @@ public:
   template <typename T, typename... Types>
   void warning(const T& t1, const Types&... t2) const
   {
-    #pragma omp critical
     {
       WarningMessage logMessage(m_verbosity, "[WARNING] : ", t1, t2...);
       logMessage.show();
@@ -51,7 +48,6 @@ public:
   template <typename T, typename... Types>
   void error(const T& t1, const Types&... t2) const
   {
-    #pragma omp critical
     {
       ErrorMessage logMessage(m_verbosity, "[ERROR] : ", t1, t2...);
       logMessage.show();

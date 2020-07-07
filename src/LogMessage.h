@@ -60,11 +60,11 @@ std::string& appendMessage(std::string& message,
 }
 
 
-template <typename T, typename... Types>
-std::string& appendMessage(std::string& message, const T& t1,
+template <class T, class ...Types>
+std::string& appendMessage(std::string& message, const T& t,
                            const Types&... t2)
 {
-  appendMessage(message, t1);
+  appendMessage(message, t);
   appendMessage(message, t2...);
   return message;
 }
@@ -117,8 +117,7 @@ public:
   template <typename T, typename... Types>
   WarningMessage(int verbosity, const T& t1, const Types&... t2) :
   LogMessage(3, verbosity, t1, t2...) {}
-
-  // void show() const;
+  void show() const;
 };
 
 
@@ -128,7 +127,6 @@ public:
   template <typename T, typename... Types>
   ErrorMessage(int verbosity, const T& t1, const Types&... t2) :
   LogMessage(4, verbosity, t1, t2...) {}
-
   void show() const;
 };
 
