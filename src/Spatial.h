@@ -696,7 +696,9 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 		//float scanline[ncols];
 		//vector<float> scanline(ncols);
 		float *scanline = new float[ncols];
-		GDALRasterIO( hBand, GF_Read, 0, i, ncols, 1, scanline, ncols, 1, GDT_Float32, 0, 0 );
+		CPLErr rasterAccess = GDALRasterIO(
+			hBand, GF_Read, 0, i, ncols, 1, scanline, ncols, 1, GDT_Float32, 0, 0
+		);
 		for (int j=0; j<ncols; j++)
 		{
 			res.emplace_back(scanline[j]);

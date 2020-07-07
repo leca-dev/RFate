@@ -38,7 +38,7 @@ Cohort* Legion::getCohort_(const int& id) { return &m_CohortList[id]; }
 void Legion::setCohortList(const vector<Cohort>& cohortList){ m_CohortList = cohortList;}
 void Legion::setCohort(const int& id, const Cohort& cohort){ m_CohortList[id] = cohort;}
 
-int Legion::getNoCohort(){ return m_CohortList.size(); }
+int Legion::getNoCohort() const { return m_CohortList.size(); }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Other functions                                                                                 */

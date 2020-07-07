@@ -258,7 +258,6 @@ void SuFate::CalculateEnvironment()
 
 void SuFate::CheckSurvival()
 {
-	logg.info("test check survival");
 	unsigned noFG = m_Comm.getFuncGroupList().size();
 
 	if (m_GSP->getDoSoilCompetition())
@@ -472,7 +471,6 @@ int SuFate::getSeedInput(int fg)
 
 void SuFate::DoSuccessionPart1(vector<unsigned> isDrought)
 {
-	logg.info("test dosucc1");
 	unsigned noFG = m_Comm.getFuncGroupList().size();
 	if (noFG > 0)
 	{

@@ -8,7 +8,7 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef SUFATEH_H
 #define SUFATEH_H
 
@@ -27,43 +27,42 @@ using namespace std;
  * maps, allowing the model to weight demographic processes (such as
  * recruitment, fecundity, maturity age, ...) according to each FG preferences.
  */
- 
+
  // TODO (damien#1#): Reimplement several way to influence demo parameters
- 
+
 class SuFateH : public SuFate
 {
 	protected :
-	
+
 	DoubleMapPtr m_EnvSuitMapPtr; /*!< pointer to habitat suitability maps */
 	DoubleMapPtr m_EnvSuitRefMapPtr; /*!< pointer to stochastic environmental value consider as yearly reference */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar , const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Succession Model with environment..." << endl;
 		ar & boost::serialization::base_object<SuFate>(*this);
 		ar & m_EnvSuitMapPtr; // ALREADY SAVED in SimulMap.h
 		ar & m_EnvSuitRefMapPtr; // ALREADY SAVED in SimulMap.h
 	}
-	
+
 	public :
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	SuFateH default constructor => All parameters are set to 0, False or None
 	 */
 	SuFateH();
-	
+
 	/*!
 	 *	\brief Semi-default constructor (null community and resources)
 	 *
@@ -72,7 +71,7 @@ class SuFateH : public SuFate
 	 *	\param cellID : id of pixel this succession model is linked to
 	 */
 	SuFateH(unsigned cellID);
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -95,33 +94,33 @@ class SuFateH : public SuFate
 	SuFateH(unsigned cellID, Community comm, LightResources lightR, double soilR,
 	IntMapPtr seedRainMap, IntMapPtr SeedProdMap, GSPPtr gspPtr,
 	DoubleMapPtr envSuitMapPtr, DoubleMapPtr envSuitRefMapPtr);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	SuFateH destructor
 	 */
 	~SuFateH();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const SuFateH& o) const
 	{
 		return (SuFate::operator==(o) &&
 		*m_EnvSuitMapPtr == *(o.m_EnvSuitMapPtr) &&
 		*m_EnvSuitRefMapPtr == *(o.m_EnvSuitRefMapPtr));
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	SpatialStack<double, double> getEnvSuitMap();
 	SpatialStack<double, double> getEnvSuitRefMap();
 	double getEnvSuit(unsigned fg);
@@ -129,16 +128,16 @@ class SuFateH : public SuFate
 
 	DoubleMapPtr getEnvSuitMap_();
 	DoubleMapPtr getEnvSuitRefMap_();
-	
+
 	virtual void setEnvSuitRefMap_( DoubleMapPtr envSuitRefVal_);
 
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	virtual void show();
-	
+
 	/*-------------------------------------------*/
 
 	/*!
@@ -153,7 +152,7 @@ class SuFateH : public SuFate
 	 * \return : 1 (habSuit >= habRef) or 0 (habSuit < habRef)
 	 */
 	virtual double getEnvRecrRate(int fg);
-	
+
 	/*!
 	 *	\brief Get environmental influence on mortality
 	 *
@@ -166,7 +165,7 @@ class SuFateH : public SuFate
 	 * \return : 1 (no dependence on environment)
 	 */
 	virtual double getEnvMort(int fg);
-	
+
 	/*!
 	 *	\brief Get environmental influence on growth
 	 *
@@ -179,7 +178,7 @@ class SuFateH : public SuFate
 	 * \return : 1 (habSuit >= habRef) or 0 (habSuit < habRef)
 	 */
 	virtual double getEnvGroth(int fg);
-	
+
 	/*!
 	 *	\brief Get environmental influence on fecundity
 	 *
@@ -194,7 +193,7 @@ class SuFateH : public SuFate
 	virtual double getEnvFecund(int fg);
 
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Get seeding input
 	 *
@@ -209,7 +208,7 @@ class SuFateH : public SuFate
 	 * (getSeedingInput (habSuit >= habRef) or 0 (habSuit < habRef))
 	 */
 	virtual int getSeedInput(int fg);
-	
+
 	/*!
 	 *	\brief Get Maturity age influenced by environment
 	 *
@@ -221,7 +220,7 @@ class SuFateH : public SuFate
 	 * \return : maturity age (no influence) or lifespan (influence) of the PFG
 	 */
 	int getMatTime(int fg);
-	
+
 	/*!
 	 *	\brief Get Lifespan influenced by environment
 	 *
@@ -234,7 +233,7 @@ class SuFateH : public SuFate
 	 * \return : lifespan of the PFG (no dependence on environment)
 	 */
 	int getLifeSpan(int fg);
-	
+
 };
 
 BOOST_CLASS_VERSION(SuFateH, 0)
