@@ -141,7 +141,7 @@ void saveFATE(string objFileName)
 	int compress_ok = system(strCompressCommand.c_str());
 	if (compress_ok != 0)
 	{
-		cerr << "Compression failed for " << objFileName << endl;
+		logg.warning("Compression failed for ", objFileName);
 	}
 }
 
@@ -165,7 +165,7 @@ void changeFile(int year, string change_type, vector<int>& change_times,
 {
 	if (change_times.size() > 0 && change_times.front() == year)
 	{
-		cout << "Doing " << change_type << " masks change..." << endl;
+		logg.info("Doing ", change_type, " masks change...");
 		simulMap->DoFileChange(change_files.front(), change_type);
 		/* remove useless time and file from list */
 		change_times.erase(change_times.begin());
@@ -178,7 +178,7 @@ void changeFreq(int year, string change_type, vector<int>& freq_change_times,
 {
 	if (freq_change_times.size() > 0 && freq_change_times.front() == year)
 	{
-		cout << "Doing " << change_type << " frequencies change..." << endl;
+		logg.info("Doing ", change_type, " frequencies change...");
 		simulMap->DoFreqChange(freq_change_files.front(), change_type);
 		/* remove useless time and file from list */
 		freq_change_times.erase(freq_change_times.begin());
@@ -223,8 +223,6 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	// Timer initialization
 	time_t Start, End;
 	time(&Start);  // Start timer
-	// Random generator seed initialization
-	srand(time(NULL));
 
 	logg.info("*********************************************\n",
 						"   WELCOME TO FATE-HDD SIMULATION RUNTIME\n",
@@ -460,7 +458,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 			{
 				// Create an output archive
 				string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
-				cout << objFileName.c_str() << endl;
+				logg.debug(objFileName.c_str());
 				saveFATE(objFileName);
 			}
 			logg.info("> done!");
@@ -598,7 +596,6 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		/* Run succession model */
 		logg.info("Do Succession...");
 		simulMap->DoSuccession();
-		logg.error("test");
 		/*===========================================================================*/
 
 		/* Run drought disturbance model : POST succession */
@@ -631,22 +628,21 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	} // end main simulation loop
 	//} // end PRAGMA
 
-	fileStats.close();
-	delete simulMap;
-	return 0;
-
 	delete simulMap;
 
 	/* End of Run */
 	time(&End);
 	int TotTime = difftime(End,Start);
 
-	fileStats << "End of simul, COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
+	fileStats << "End of simul, COMPUTATION TIME : "
+						<< TotTime/3600 << "h "
+						<< (TotTime%3600)/60 << "m "
+						<< (TotTime%3600)%60 << "s"
+						<< endl;
 	fileStats.close();
 
-	cout 	<< "Process executed normally! It took "
-	<< TotTime/3600 << "h " << (TotTime%3600)/60
-	<< "m " << (TotTime%3600)%60 << "s." << endl;
+	logg.info("Process executed normally! It took ", TotTime/3600, "h ",
+						(TotTime%3600)/60, "m ", (TotTime%3600)%60, "s.");
 
 	return 0;
 }
