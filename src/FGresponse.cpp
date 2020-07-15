@@ -169,50 +169,40 @@ const Fract& FGresponse::getPropKilled(const int& dist) const {
 	if (dist<0 || dist>m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_PropKilled for a non-existing perturbation. Please check!");
-	} else
-	{
-		return m_PropKilled[dist];
 	}
+	return m_PropKilled[dist];
 }
 const vector< vector<int> >& FGresponse::getBreakAge() const {return m_BreakAge;}
 const int& FGresponse::getBreakAge(const int& dist, const int& range) const {
 	if (dist<0 || dist>m_NoPert || range<0 || range>m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation or sub-perturbation. Please check!");
-	} else
-	{
-		return m_BreakAge[dist][range];
 	}
+	return m_BreakAge[dist][range];
 }
 const vector< vector<int> >& FGresponse::getResprAge() const {return m_ResprAge;}
 const int& FGresponse::getResprAge(const int& dist, const int& range) const {
 	if (dist<0 || dist>m_NoPert || range<0 || range>m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_ResprAge for a non-existing perturbation or sub-perturbation. Please check!");
-	} else
-	{
-		return m_ResprAge[dist][range];
 	}
+	return m_ResprAge[dist][range];
 }
 const vector<vector< vector<Fract> > >& FGresponse::getFates() const {return m_Fates;}
 const Fract& FGresponse::getFates(const int& dist, const int& range, const DistFate& df) const {
 	if (dist<0 || dist>m_NoPert || range<0 || range>m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_Fates for a non-existing perturbation or sub-perturbation. Please check!");
-	} else
-	{
-		return m_Fates[dist][range][df];
 	}
+	return m_Fates[dist][range][df];
 }
 const vector<Fract>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
 const Fract& FGresponse::getDormBreaks(const int& dist) const {
 	if (dist<0 || dist>m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!");
-	} else
-	{
-		return m_DormBreaks[dist];
 	}
+	return m_DormBreaks[dist];
 }
 
 void FGresponse::setNoPert(const unsigned& noPert){m_NoPert = noPert;}

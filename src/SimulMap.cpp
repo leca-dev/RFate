@@ -36,19 +36,29 @@ typedef boost::variate_generator<RandomGenerator&, UniInt> GeneratorUniInt;
 /* Constructor                                                                                     */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-SimulMap::SimulMap() : m_glob_params(GSP()), m_FGparams(0,FG()),
-m_Coord(Coordinates<double>()), m_Mask(SpatialMap<double, int>()), m_MaskCells(1,0),
-m_SeedMapIn(SpatialStack<double, int>()), m_SeedMapOut(SpatialStack<double, int>()),
-m_EnvSuitMap(SpatialStack<double, double>()), m_EnvSuitRefMap(SpatialStack<double, double>()),
-m_DistMap(SpatialStack<double, int>()),
-m_FireMap(SpatialStack<double, int>()), m_TslfMap(SpatialMap<double, int>()),
-m_ElevationMap(SpatialMap<double, double>()), m_SlopeMap(SpatialMap<double, double>()),
-m_DroughtMap(SpatialMap<double, double>()),
-m_PostDroughtMap(SpatialStack<double, unsigned>()), m_CountDroughtMap(SpatialStack<double, unsigned>()),
-m_IsDroughtMap(SpatialStack<double, unsigned>()), m_ApplyCurrDroughtMap(SpatialStack<double, unsigned>()), m_ApplyPostDroughtMap(SpatialStack<double, unsigned>()),
-m_CondInitMap(SpatialStack<double, double>()),
-m_SuccModelMap(SpatialMap<double, SuFatePtr>()),
-m_DispModel(Disp())
+SimulMap::SimulMap() : m_glob_params(GSP()),
+											 m_FGparams(0,FG()),
+											 m_Coord(Coordinates<double>()),
+											 m_Mask(SpatialMap<double, int>()),
+											 m_MaskCells(1,0),
+											 m_SeedMapIn(SpatialStack<double, int>()),
+											 m_SeedMapOut(SpatialStack<double, int>()),
+											 m_EnvSuitMap(SpatialStack<double, double>()),
+											 m_EnvSuitRefMap(SpatialStack<double, double>()),
+											 m_DistMap(SpatialStack<double, int>()),
+											 m_FireMap(SpatialStack<double, int>()),
+											 m_TslfMap(SpatialMap<double, int>()),
+											 m_DroughtMap(SpatialMap<double, double>()),
+											 m_ElevationMap(SpatialMap<double, double>()),
+											 m_SlopeMap(SpatialMap<double, double>()),
+											 m_PostDroughtMap(SpatialStack<double, unsigned>()),
+											 m_CountDroughtMap(SpatialStack<double, unsigned>()),
+											 m_IsDroughtMap(SpatialStack<double, unsigned>()),
+											 m_ApplyCurrDroughtMap(SpatialStack<double, unsigned>()),
+											 m_ApplyPostDroughtMap(SpatialStack<double, unsigned>()),
+											 m_CondInitMap(SpatialStack<double, double>()),
+											 m_SuccModelMap(SpatialMap<double, SuFatePtr>()),
+											 m_DispModel(Disp())
 {
 	/* Nothing to do */
 }

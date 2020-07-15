@@ -28,5 +28,5 @@ NeedsCompilation: yes
 License: GPL (>= 2)
 SystemRequirements: GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>= 4.8.0)
 Depends: R (>= 3.5)
-Imports: Rcpp (>= 1.0.2), RcppThread (>= 0.5.4)
+Imports: Rcpp (>= 1.0.2)
 LinkingTo: Rcpp, RcppThread, BH

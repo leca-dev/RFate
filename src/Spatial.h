@@ -274,10 +274,8 @@ class SpatialMap
 		if (i >= XY->getXncell() || j >= XY->getYncell())
 		{
 			logg.error("Matrix subscript out of bounds");
-		} else
-		{
-			return Values[i + j * XY->getXncell()];
 		}
+		return Values[i + j * XY->getXncell()];
 	}
 
 	/* getter based on point id */
@@ -322,10 +320,8 @@ class SpatialMap
 		if (id > XY->getXncell() * XY->getYncell())
 		{
 			logg.error("Matrix subscript out of bounds");
-		} else
-		{
-			return Values[ id ];
 		}
+		return Values[ id ];
 	}
 
 	void setValues(vector<val_T> values){ Values = values; }
@@ -334,10 +330,8 @@ class SpatialMap
 		if (id > XY->getXncell() * XY->getYncell())
 		{
 			logg.error("Matrix subscript out of bounds");
-		} else
-		{
-			Values[ id ] = value;
 		}
+		Values[ id ] = value;
 	}
 
 	/*-------------------------------------------*/
@@ -468,10 +462,8 @@ class SpatialStack
 		if (i >= Layers.at(0).getXncell() || j >= Layers.at(0).getYncell())
 		{
 			logg.error("Matrix subscript out of bounds");
-		} else
-		{
-			return Layers.at(k)(i,j);
 		}
+		return Layers.at(k)(i,j);
 	}
 
 	/* getter based on cell id and layer id */
@@ -480,10 +472,8 @@ class SpatialStack
 		if (id > Layers.at(0).getXncell() * Layers.at(0).getYncell())
 		{
 			logg.error("Matrix subscript out of bounds");
-		} else
-		{
-			return Layers.at(k)(id);
 		}
+		return Layers.at(k)(id);
 	}
 
 	/* getter based on layer id */
@@ -751,10 +741,9 @@ double lim_sup=numeric_limits<double>::infinity(), bool print_info=false)
 	//if(file_name_path.extension()==".asc"){ // ASCII file
 	//  res = ReadAscii< T >(file_name);
 	//} else
-	if (file_name_path.extension()==".img" || file_name_path.extension()==".tif")
-	{ // IMG or TIF file
-		return ReadRaster< T >(file_name, lim_inf, lim_sup, print_info);
-	} else {
+	if (file_name_path.extension() != ".img" &&
+			file_name_path.extension() != ".tif")
+	{
 		logg.error("!!! The file extension (", file_name_path.extension(),
                ") is not taking into account!",
                "\n!!! Please use either .img or .tif files!",
@@ -763,6 +752,7 @@ double lim_sup=numeric_limits<double>::infinity(), bool print_info=false)
                "or .tif, you can give the projection system and the program ",
                "will check that the maps provided have the same)");
 	}
+	return ReadRaster< T >(file_name, lim_inf, lim_sup, print_info);
 }
 
 #endif // SPATIAL_H
