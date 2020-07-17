@@ -1,7 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <omp.h>
+#include "openmp.h"
 #include "LogMessage.h"
 
 

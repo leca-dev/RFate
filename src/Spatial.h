@@ -689,6 +689,11 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 		CPLErr rasterAccess = GDALRasterIO(
 			hBand, GF_Read, 0, i, ncols, 1, scanline, ncols, 1, GDT_Float32, 0, 0
 		);
+		if (rasterAccess > 0)
+		{
+			logg.warning("Reading ", file_name, " raster: acces status ",
+									 rasterAccess);
+		}
 		for (int j=0; j<ncols; j++)
 		{
 			res.emplace_back(scanline[j]);
