@@ -36,19 +36,29 @@ typedef boost::variate_generator<RandomGenerator&, UniInt> GeneratorUniInt;
 /* Constructor                                                                                     */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-SimulMap::SimulMap() : m_glob_params(GSP()), m_FGparams(0,FG()),
-m_Coord(Coordinates<double>()), m_Mask(SpatialMap<double, int>()), m_MaskCells(1,0),
-m_SeedMapIn(SpatialStack<double, int>()), m_SeedMapOut(SpatialStack<double, int>()),
-m_EnvSuitMap(SpatialStack<double, double>()), m_EnvSuitRefMap(SpatialStack<double, double>()),
-m_DistMap(SpatialStack<double, int>()),
-m_FireMap(SpatialStack<double, int>()), m_TslfMap(SpatialMap<double, int>()),
-m_ElevationMap(SpatialMap<double, double>()), m_SlopeMap(SpatialMap<double, double>()),
-m_DroughtMap(SpatialMap<double, double>()),
-m_PostDroughtMap(SpatialStack<double, unsigned>()), m_CountDroughtMap(SpatialStack<double, unsigned>()),
-m_IsDroughtMap(SpatialStack<double, unsigned>()), m_ApplyCurrDroughtMap(SpatialStack<double, unsigned>()), m_ApplyPostDroughtMap(SpatialStack<double, unsigned>()),
-m_CondInitMap(SpatialStack<double, double>()),
-m_SuccModelMap(SpatialMap<double, SuFatePtr>()),
-m_DispModel(Disp())
+SimulMap::SimulMap() : m_glob_params(GSP()),
+											 m_FGparams(0,FG()),
+											 m_Coord(Coordinates<double>()),
+											 m_Mask(SpatialMap<double, int>()),
+											 m_MaskCells(1,0),
+											 m_SeedMapIn(SpatialStack<double, int>()),
+											 m_SeedMapOut(SpatialStack<double, int>()),
+											 m_EnvSuitMap(SpatialStack<double, double>()),
+											 m_EnvSuitRefMap(SpatialStack<double, double>()),
+											 m_DistMap(SpatialStack<double, int>()),
+											 m_FireMap(SpatialStack<double, int>()),
+											 m_TslfMap(SpatialMap<double, int>()),
+											 m_DroughtMap(SpatialMap<double, double>()),
+											 m_ElevationMap(SpatialMap<double, double>()),
+											 m_SlopeMap(SpatialMap<double, double>()),
+											 m_PostDroughtMap(SpatialStack<double, unsigned>()),
+											 m_CountDroughtMap(SpatialStack<double, unsigned>()),
+											 m_IsDroughtMap(SpatialStack<double, unsigned>()),
+											 m_ApplyCurrDroughtMap(SpatialStack<double, unsigned>()),
+											 m_ApplyPostDroughtMap(SpatialStack<double, unsigned>()),
+											 m_CondInitMap(SpatialStack<double, double>()),
+											 m_SuccModelMap(SpatialMap<double, SuFatePtr>()),
+											 m_DispModel(Disp())
 {
 	/* Nothing to do */
 }
@@ -57,57 +67,64 @@ m_DispModel(Disp())
 
 SimulMap::SimulMap(FOPL file_of_params)
 {
-	cout << "*** building Simulation Map..." << endl;
-	
+	logg.info("*** building Simulation Map...\n",
+						"*** building Global simulation parameters...");
+
 	/* read global parameters file */
-	cout << "*** building Global simulation parameters..." << endl;
-	m_glob_params  = GSP(file_of_params.getGlobSimulParams());
+	m_glob_params = GSP(file_of_params.getGlobSimulParams());
 	m_glob_params.show();
 	GSPPtr m_glob_params_ptr = &m_glob_params;
 	int noFG = m_glob_params.getNoFG(); // number of functional groups
 
 
 	/* build functional groups entities */
-	cout << "*** building Functional groups..." << endl;
+	logg.info("*** building Functional groups...");
 	if (noFG!=(int)file_of_params.getFGLifeHistory().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_LIFE_HISTORY-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIFE_HISTORY-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoLightCompetition() && noFG!=(int)file_of_params.getFGLight().size())
+	if (m_glob_params.getDoLightCompetition() &&
+			noFG!=(int)file_of_params.getFGLight().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_LIGHT-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIGHT-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoHabSuitability() && noFG!=(int)file_of_params.getFGMapsHabSuit().size())
+	if (m_glob_params.getDoHabSuitability() &&
+			noFG!=(int)file_of_params.getFGMapsHabSuit().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_MASK_HABSUIT-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_MASK_HABSUIT-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoDispersal() && noFG!=(int)file_of_params.getFGDispersal().size())
+	if (m_glob_params.getDoDispersal() &&
+			noFG!=(int)file_of_params.getFGDispersal().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_DISPERSAL-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISPERSAL-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoDisturbances() && noFG!=(int)file_of_params.getFGDisturbance().size())
+	if (m_glob_params.getDoDisturbances() &&
+			noFG!=(int)file_of_params.getFGDisturbance().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_DISTURBANCES-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISTURBANCES-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoSoilCompetition() && noFG!=(int)file_of_params.getFGSoil().size())
+	if (m_glob_params.getDoSoilCompetition() &&
+			noFG!=(int)file_of_params.getFGSoil().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_SOIL-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_SOIL-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoFireDisturbances() && noFG!=(int)file_of_params.getFGFire().size())
+	if (m_glob_params.getDoFireDisturbances() &&
+			noFG!=(int)file_of_params.getFGFire().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_FIRE-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_FIRE-- ",
+							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoDroughtDisturbances() && noFG!=(int)file_of_params.getFGDrought().size())
+	if (m_glob_params.getDoDroughtDisturbances()
+			&& noFG!=(int)file_of_params.getFGDrought().size())
 	{
-		cerr << "!!! Parameters NO_PFG and --PFG_PARAMS_DROUGHT-- do not match in term of number!" << endl;
-		terminate();
+		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DROUGHT-- ",
+							 "do not match in term of number!");
 	}
 
 	/* check for parameters file */
@@ -119,21 +136,21 @@ SimulMap::SimulMap(FOPL file_of_params)
 												m_glob_params.getDoFireDisturbances(),
 												m_glob_params.getDoDroughtDisturbances(),
 												m_glob_params.getDoAliensIntroduction());
-	
+
 	/* build Plant Functional Groups */
 	m_FGparams.reserve(noFG);
 	for (int fg_id=0; fg_id<noFG; fg_id++)
 	{
 		m_FGparams.emplace_back(m_glob_params, file_of_params, fg_id);
 	}
-	
+
 	/* build study area coordinates */
-	cout << "> build study area coordinates..." << endl;
+	logg.info("> build study area coordinates...");
 	m_Coord = Coordinates<double>( ReadCoordinates(file_of_params.getMask()) );
 	Coordinates<double>* m_Coord_ptr = &m_Coord; // ptr on study area coordinates
-	
+
 	/* build simulation mask (study area) */
-	cout << "> build simulation mask (study area)..." << endl;
+	logg.info("> build simulation mask (study area)...");
 	m_Mask = SpatialMap<double, int>(m_Coord_ptr, ReadMask<int>( file_of_params.getMask(), 0.0, 1.0, true ) );
 	m_MaskCells.reserve(m_Mask.getTotncell());
 	for (unsigned cell_ID=0; cell_ID<m_Mask.getTotncell(); cell_ID++)
@@ -144,7 +161,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 		}
 	}
 	m_MaskCells.shrink_to_fit();
-	
+
 	/* DECLARE EMPTY SPATIAL STACK*/
 	vector< vector< double > > emptyMapDouble;
 	vector< vector< int > > emptyMapInt;
@@ -162,27 +179,27 @@ SimulMap::SimulMap(FOPL file_of_params)
 			emptyMapUns.push_back( emptyValUns );
 		}
 	}
-	
+
 	/* declare empty seeds map */
-	cout << "> declare empty seeds map..." << endl;
+	logg.info("> declare empty seeds map...");
 	m_SeedMapIn = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
 	m_SeedMapOut = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
 	emptyMapInt.resize(1);
 	IntMapPtr m_SeedMapIn_ptr = &m_SeedMapIn; //  ptr on maps of produced seeds
 	IntMapPtr m_SeedMapOut_ptr = &m_SeedMapOut; // ptr on maps of dispersed seeds (seed rain)
-	
+
 	/* dispersal model creation */
 	if (m_glob_params.getDoDispersal())
 	{
-		cout << "> dispersal model creation..." << endl;
+		logg.info("> dispersal model creation...");
 		m_DispModel = Disp( &m_FGparams, &m_SeedMapIn, &m_SeedMapOut );
 	} else
 	{
 		m_DispModel = Disp(&m_FGparams, &m_SeedMapIn, &m_SeedMapOut, false);
 	}
-	
+
 	/* build environmental condition maps */
-	cout << "> build environmental condition maps..." << endl;
+	logg.info("> build environmental condition maps...");
 	if (m_glob_params.getDoHabSuitability())
 	{
 		vector< vector< double > > envSuitMap; // environmental suitability of fgs
@@ -194,7 +211,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 		m_EnvSuitMap = SpatialStack<double, double>(m_Coord_ptr, envSuitMap);
 
 		/* define the coming year environmental reference */
-		cout << "> define the coming year environmental reference..." << endl;
+		logg.info("> define the coming year environmental reference...");
 		vector< double >  envSuitRefVal( m_Mask.getTotncell(), 0.5 );
 		vector< vector< double > > envSuitRefMap; // environmental suitability year reference of fgs
 		envSuitRefMap.reserve(noFG);
@@ -208,11 +225,11 @@ SimulMap::SimulMap(FOPL file_of_params)
 		m_EnvSuitMap = SpatialStack<double, double>(m_Coord_ptr, emptyMapDouble);
 		m_EnvSuitRefMap = SpatialStack<double, double>(m_Coord_ptr, emptyMapDouble);
 	}
-	
+
 	/* build simulation disturbances masks */
 	if (m_glob_params.getDoDisturbances())
 	{
-		cout << "> build simulation disturbances masks..." << endl;
+		logg.info("> build simulation disturbances masks...");
 		if (m_glob_params.getNoDist()==(int)file_of_params.getMaskDist().size())
 		{
 			vector< vector< int > > distMap; // disturbances masks
@@ -224,20 +241,20 @@ SimulMap::SimulMap(FOPL file_of_params)
 			m_DistMap = SpatialStack<double, int>(m_Coord_ptr, distMap);
 		} else
 		{
-			cerr << "!!! Parameters DIST_NO and --DIST_MASK-- do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters DIST_NO and --DIST_MASK-- ",
+								 "do not match in term of number!");
 		}
 	} else
 	{
 		m_DistMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
 	}
-	
+
 	/* build simulation fire disturbances masks */
 	if (m_glob_params.getDoFireDisturbances())
 	{
 		if (m_glob_params.getFireIgnitMode()==5)
 		{
-			cout << "> build simulation fire disturbances masks..." << endl;
+			logg.info("> build simulation fire disturbances masks...");
 			if (m_glob_params.getNoFireDist()==(int)file_of_params.getMaskFire().size())
 			{
 				vector< vector< int > > fireMap; // fire disturbances masks
@@ -249,16 +266,16 @@ SimulMap::SimulMap(FOPL file_of_params)
 				m_FireMap = SpatialStack<double, int>(m_Coord_ptr, fireMap);
 			} else
 			{
-				cerr << "!!! Parameters FIRE_NO and --FIRE_MASK-- do not match in term of number!" << endl;
-				terminate();
+				logg.error("!!! Parameters FIRE_NO and --FIRE_MASK-- ",
+									 "do not match in term of number!");
 			}
 		} else
 		{
 			m_FireMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
 		}
-		
+
 		/* build fire masks */
-		cout << "> build fire masks..." << endl;
+		logg.info("> build fire masks...");
 		if (m_glob_params.getFirePropMode()==4)
 		{
 			m_DroughtMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskDrought(), 0.0, 1.0 ) );
@@ -270,9 +287,9 @@ SimulMap::SimulMap(FOPL file_of_params)
 			m_ElevationMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble);
 			m_SlopeMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble);
 		}
-		
+
 		/* build TSLF mask (study area) */
-		cout << "> build TSLF mask (study area)..." << endl;
+		logg.info("> build TSLF mask (study area)...");
 		m_TslfMap = SpatialMap<double, int>(m_Coord_ptr, ReadMask<int>( file_of_params.getMask(), 0.0, 1.0 ) );
 	} else
 	{
@@ -282,11 +299,11 @@ SimulMap::SimulMap(FOPL file_of_params)
 		m_ElevationMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble);
 		m_SlopeMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble);
 	}
-	
+
 	/* build drought index mask */
 	if (m_glob_params.getDoDroughtDisturbances())
 	{
-		cout << "> build drought index mask..." << endl;
+		logg.info("> build drought index mask...");
 		m_DroughtMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskDrought(), -5000.0, 1000.0 ) );
 		vector< vector< unsigned > > droughtMap; // drought disturbances masks
 		droughtMap.reserve(noFG);
@@ -299,7 +316,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 		m_IsDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
 		m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
 		m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
-		
+
 		for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
 		{ // loop on pixels
 			for (int fg=0; fg<noFG; fg++)
@@ -317,11 +334,11 @@ SimulMap::SimulMap(FOPL file_of_params)
 		m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
 		m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
 	}
-		
+
 	/* build aliens introduction masks */
 	if (m_glob_params.getDoAliensIntroduction())
 	{
-		cout << "> build aliens introduction masks..." << endl;
+		logg.info("> build aliens introduction masks...");
 		if (noFG==(int)file_of_params.getFGMapsAliens().size())
 		{
 			vector< vector< double > > condInitMap; // aliens introduction masks
@@ -333,16 +350,16 @@ SimulMap::SimulMap(FOPL file_of_params)
 			m_CondInitMap = SpatialStack<double, double>(m_Coord_ptr, condInitMap);
 		} else
 		{
-			cerr << "!!! Parameters NO_PFG and --ALIENS_MASK-- do not match in term of number!" << endl;
-			terminate();
+			logg.error("!!! Parameters NO_PFG and --ALIENS_MASK-- ",
+								 "do not match in term of number!");
 		}
 	} else
 	{
 		m_CondInitMap = SpatialStack<double, double>(m_Coord_ptr, emptyMapDouble);
 	}
-	
+
 	/* standard community creation */
-	cout << "> standard community creation..." << endl;
+	logg.info("> standard community creation...");
 	vector< FuncGroup > comm_std;
 	comm_std.reserve(noFG);
 	for (int fg_id=0; fg_id<noFG; fg_id++)
@@ -350,18 +367,18 @@ SimulMap::SimulMap(FOPL file_of_params)
 		comm_std.emplace_back(FuncGroup( &(m_FGparams[fg_id]) ));
 	}
 	Community Comm_std(comm_std);
-	
+
 	/* standard light resource creation */
-	cout << "> standard light resource creation..." << endl;
+	logg.info("> standard light resource creation...");
 	LightResources lr_std(m_glob_params.getNoStrata());
-	
+
 	/* create a succession model within each pixel */
-	cout << "> create a succession model within each pixel..." << endl;
+	logg.info("> create a succession model within each pixel...");
 	vector< SuFatePtr > succModel_ptr_list; // vector of ptr on a succession model
 	succModel_ptr_list.reserve(m_Mask.getTotncell());
 	for (unsigned i=0; i<m_Mask.getTotncell(); i++)
 	{
-		SuFatePtr succModel_ptr; // ptr on succession model	
+		SuFatePtr succModel_ptr; // ptr on succession model
 		if (m_glob_params.getDoHabSuitability() == false)
 		{ // FATE succession model
 			succModel_ptr = new SuFate(i, Comm_std, lr_std, m_glob_params.getSoilInit(), m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr);
@@ -373,7 +390,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 	}
 
 	/* build the succession models map */
-	cout << "> build the succession models map..." << endl;
+	logg.info("> build the succession models map...");
 	m_SuccModelMap = SpatialMap<double, SuFatePtr>(m_Coord_ptr, succModel_ptr_list);
 
 }
@@ -471,9 +488,9 @@ void SimulMap::StopSeeding()
 
 void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 {
-	cout << "Try to get change parameters : " << endl;
-	cout << "From file " << newChangeFile << " (" << typeFile << ")" << endl;
-	
+	logg.info("Try to get change parameters :\nFrom file ", newChangeFile, " (",
+						typeFile, ")");
+
 	/* open newChangeFile */
 	ifstream file(newChangeFile.c_str(), ios::in);
 	if (file)
@@ -487,12 +504,12 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 			{
 				/* store new files */
 				newNameFiles.push_back(strTmp);
-				cout << "*** " << strTmp << endl;
+				logg.info("*** ", strTmp);
 			}
 		}
 		/* Close file */
 		file.close();
-		
+
 		/* Check if the number of given files is compatible with number of files required */
 		unsigned noFiles = 0;
 		if (strcmp(typeFile.c_str(),"habSuit")==0){ noFiles = m_FGparams.size();
@@ -502,13 +519,13 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 		} else if (strcmp(typeFile.c_str(),"drought")==0){ noFiles = 1;
 		} else if (strcmp(typeFile.c_str(),"aliens")==0){ noFiles = m_FGparams.size();
 		}
-		
+
 		if (newNameFiles.size()!=noFiles)
 		{
-			cerr << "Number of new files is incompatible with the number of files required (" << newNameFiles.size() << " vs " << noFiles << ")." << endl;
-			terminate();
+			logg.error("Number of new files is incompatible with the number of files required (",
+								 newNameFiles.size(), " vs ", noFiles, ").");
 		}
-		
+
 		/* Updating Maps */
 		if ((strcmp(typeFile.c_str(),"habSuit")==0) | (strcmp(typeFile.c_str(),"drought")==0) | (strcmp(typeFile.c_str(),"aliens")==0))
 		{
@@ -537,7 +554,7 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 			if (strcmp(typeFile.c_str(),"mask")==0)
 			{
 				setMask(SpatialMap<double, int>( &m_Coord, newMaps[0]));
-				
+
 				/* If studied area changed, change also the ids of used cells */
 				vector<unsigned> newMaskCells;
 				newMaskCells.reserve(m_Mask.getTotncell());
@@ -555,11 +572,10 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 			}
 		}
 		/* Indicate that operation succeeded */
-		cout << " Done " << endl;
+		logg.info("Done");
 	} else
 	{
-		cerr << "Impossible to open " << newChangeFile << " file!" << endl;
-		terminate();
+		logg.error("Impossible to open ", newChangeFile, " file!");
 	}
 } // end of DoFileChange(...)
 
@@ -567,8 +583,8 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 
 void SimulMap::DoFreqChange(string newChangeFile, string typeFile)
 {
-	cout << "Try to get change parameters : " << endl;
-	
+	logg.info("Try to get change parameters :");
+
 	/* Updating Maps : open newChangeFile */
 	ifstream file(newChangeFile.c_str(), ios::in);
 	if (file)
@@ -582,22 +598,21 @@ void SimulMap::DoFreqChange(string newChangeFile, string typeFile)
 			{
 				/* store new freq values */
 				newfreq.push_back(atoi(strTmp.c_str()));
-				cout << "*** " << strTmp << endl;
+				logg.info("*** ", strTmp);
 			}
 		}
 		/* Close file */
 		file.close();
-		
+
 		if (strcmp(typeFile.c_str(),"fire")==0){ m_glob_params.setFreqFireDist(newfreq);
 		} else if(strcmp(typeFile.c_str(),"aliens")==0){ m_glob_params.setFreqAliens(newfreq);
 		}
-		
+
 		/* Indicate that operation succeeded */
-		cout << " Done " << endl;
+		logg.info("Done");
 	} else
 	{
-		cerr << "Impossible to open " << newChangeFile << " file!" << endl;
-		terminate();
+		logg.error("Impossible to open ", newChangeFile, " file!");
 	}
 } // end of DoFreqChange(...)
 
@@ -619,14 +634,13 @@ void SimulMap::DoSuccession()
 			}
 		}
 	}
-	
+
 	/* Do succession only on points within mask */
-	omp_set_num_threads( m_glob_params.getNoCPU() );
+	omp_set_num_threads(m_glob_params.getNoCPU());
 	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-	
 	for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
 	{
-		unsigned cell_ID = m_MaskCells[ID];	
+		unsigned cell_ID = m_MaskCells[ID];
 		m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
 	}
 	if (m_glob_params.getDoHabSuitability())
@@ -634,9 +648,9 @@ void SimulMap::DoSuccession()
 		/* Defined the new environmental reference value for next year */
 		this->UpdateEnvSuitRefMap(m_glob_params.getHabSuitMode());
 	}
-	
+
 /*  time(&end);
-  cout << "> Dosuccession took " << difftime (end,start) << " s" << endl;	*/
+  logg.info("> Dosuccession took ", difftime (end,start), " s");	*/
 }
 
 
@@ -648,17 +662,27 @@ void SimulMap::DoAliensIntroduction(int yr)
 	vector<bool> applyIntro;
 	for (vector<int>::const_iterator it=m_glob_params.getFreqAliens().begin(); it!=m_glob_params.getFreqAliens().end(); ++it)
 	{
-		if (*it==1) { applyIntro.push_back(true); cout << "Do aliens introduction..." << endl;
-		} else if (*it==0) { applyIntro.push_back(false);
-		} else if (yr%(*it)==0) { applyIntro.push_back(true); cout << "Do aliens introduction..." << endl;
-		} else { applyIntro.push_back(false);
+		if (*it==1)
+		{
+			applyIntro.push_back(true);
+			logg.info("Do aliens introduction...");
+		} else if (*it==0)
+		{
+			applyIntro.push_back(false);
+		} else if (yr%(*it)==0)
+		{
+			applyIntro.push_back(true);
+			logg.info("Do aliens introduction...");
+		} else
+		{
+			applyIntro.push_back(false);
 		}
 	}
-	
+
 	/* Do succession only on points within mask */
 	omp_set_num_threads( m_glob_params.getNoCPU() );
 	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-	
+
 	for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
 	{
 		unsigned cell_ID = m_MaskCells[ID];
@@ -688,9 +712,9 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	RandomGenerator rng(seed);
 	Uni01 random_01(rng);
-	
+
 	int noFires = m_glob_params.getFireIgnitNo()[dist];
-	
+
 	/* No of starting fires : normal distribution */
 	if (m_glob_params.getFireIgnitMode()==2)
 	{
@@ -705,9 +729,9 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 		GeneratorUniInt draw_from_distrib(rng,distrib);
 		noFires = m_glob_params.getFireIgnitNoHist()[draw_from_distrib()];
 	}
-	
+
 	vector<unsigned> startCell;
-	
+
 	/* Randomly distributed over the landscape */
 	if (m_glob_params.getFireIgnitMode()==1 || m_glob_params.getFireIgnitMode()==2 || m_glob_params.getFireIgnitMode()==3)
 	{
@@ -720,7 +744,7 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 	} else if (m_glob_params.getFireIgnitMode()==4) /* ChaoLi probability adaptation */
 	{
 		for (vector<unsigned>::iterator cell_ID=availCells.begin(); cell_ID!=availCells.end(); ++cell_ID)
-		{	
+		{
 			/* Baseline proba */
 			double probBL = m_glob_params.getFireIgnitLogis()[0] / (1+exp(m_glob_params.getFireIgnitLogis()[1]-m_glob_params.getFireIgnitLogis()[2]*m_TslfMap(*cell_ID)));
 			/* Fuel proba */
@@ -742,7 +766,7 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 			}
 			/* Drought proba */
 			double probDrought = (-1.0) * m_DroughtMap(*cell_ID);
-			
+
 			if (random_01() < probBL*probFuel*probDrought)
 			{ //(rand()/(double)RAND_MAX)
 				startCell.push_back(*cell_ID);
@@ -759,7 +783,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	RandomGenerator rng(seed);
 	Uni01 random_01(rng);
-	
+
 	vector<unsigned int> preCell, currCell, postCell, neighCell;
 	currCell = start;
 	double prob = 0.0, lim = 100.0 /* maxStep */, stepCount = 0.0 /* maxStep, maxConsume */;
@@ -778,7 +802,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 		lim = 0.0;
 		stepCount = (-1.0)*currCell.size();
 	}
-	
+
 	while (currCell.size())
 	{
 		for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
@@ -800,7 +824,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 					}
 				}
 			}
-			
+
 			/* FIRST CASE : fire spread depends on a probability of the current burning cell */
 			/* fireIntensity */
 			if (m_glob_params.getFirePropMode()==1)
@@ -813,13 +837,13 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 				unsigned abundTmpTot = 0;
 				vector<unsigned> abundTmpFG;
 				vector<double> propKillFG;
-				
+
 				for (unsigned fg=0; fg<m_FGparams.size(); fg++)
 				{ // loop on FG
 					unsigned abundTmp = m_SuccModelMap(*it1)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund();
 					abundTmpTot += abundTmp;
 					abundTmpFG.push_back(abundTmp);
-					
+
 					double propKill = 0.0;
 					vector<vector< vector<Fract> > > fates = m_SuccModelMap(*it1)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFireResponse().getFates();
 					for (unsigned sub=0; sub<fates[dist].size(); sub++)
@@ -828,7 +852,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 					}
 					propKillFG.push_back(propKill);
 				} // end loop on FG
-				
+
 				prob = 0.0;
 				if (abundTmpTot>0)
 				{
@@ -838,7 +862,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 					}
 				}
 			}
-			
+
 			/* For each neighbour cell : does the fire propagate ? */
 			if (m_glob_params.getFirePropMode()==1 || m_glob_params.getFirePropMode()==2)
 			{
@@ -851,7 +875,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 					}
 				}
 			}
-			
+
 			/* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
 			if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
 			{
@@ -873,7 +897,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 					{
 						preCell.push_back(maxCell);
 					}
-					
+
 					/* if you want to burn all the cells with the max amount of fuel (and not only one) */
 					while (count(abundTmp.begin(),abundTmp.end(),*max_element(abundTmp.begin(),abundTmp.end()))>1)
 					{
@@ -886,7 +910,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 						}
 					}
 				}
-				
+
 			} else if(m_glob_params.getFirePropMode()==4 /* "maxAmountSoil" */)
 			{
 				vector<double> soilTmp;
@@ -929,9 +953,9 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 						}
 						/* Drought proba */
 						double probDrought = (-1.0) * m_DroughtMap(*it2);
-						
+
 						/* Slope adjustement */
-						double probSlope;						
+						double probSlope;
 						if (m_ElevationMap(*it2)>m_ElevationMap(*it1))
 						{
 							probSlope = 1 + 0.001*m_SlopeMap(*it2);
@@ -939,7 +963,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 						{
 							probSlope = 1 + 0.001*max(-30.0,(-1.0)*m_SlopeMap(*it2));
 						}
-						
+
 						if ( random_01() < probBL*probFuel*probDrought*probSlope)
 						{ //(rand()/(double)RAND_MAX)
 							preCell.push_back(*it2);
@@ -949,7 +973,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 			}
 			neighCell.clear();
 		}
-		
+
 		/* IN ANY CASE : Update cells vectors : CURR->POST and PRE->CURR*/
 		int newBurnt = postCell.size();
 		postCell.insert(postCell.end(),currCell.begin(),currCell.end());
@@ -971,16 +995,16 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 			preCell.clear();
 		}
 		newBurnt = postCell.size()-newBurnt;
-		
+
 		/* Update the limit option */
 		if (m_glob_params.getFireQuotaMode()==1 /* "maxStep" */){ stepCount++;
 		} else if (m_glob_params.getFireQuotaMode()==3 /* "maxCell" */){ stepCount += newBurnt;
 		} if (m_glob_params.getFireQuotaMode()==4 /* "keepGoing" */){ stepCount = (-1.0)*currCell.size();
 		}
-		
+
 		if(stepCount>=lim) { break; }
 	}
-	
+
 	/* if you want to stop the fires only when you reach the quota (maxConsume & maxCell) */
 /*	if (stepCount<lim)
 	{
@@ -1002,7 +1026,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 			postCell.push_back(*cell_ID);
 		}
 	}*/
-  
+
   return(postCell);
 }
 
@@ -1025,7 +1049,7 @@ void SimulMap::DoFireDisturbance(int yr)
 {
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	RandomGenerator rng(seed);
-	
+
 	/* Do fire disturbances depending on their frequency */
 	vector<bool> applyDist;
 	for (vector<int>::const_iterator it=m_glob_params.getFreqFireDist().begin(); it!=m_glob_params.getFreqFireDist().end(); ++it)
@@ -1036,7 +1060,7 @@ void SimulMap::DoFireDisturbance(int yr)
 		} else { applyDist.push_back(false);
 		}
 	}
-	
+
 	/* If fire disturbances occur this year :
 	apply ignition function
 	apply propagation function
@@ -1120,17 +1144,17 @@ void SimulMap::DoFireDisturbance(int yr)
 			}
 		}
 	}
-	
+
 	/* Do fire disturbances only on points within mask */
-	//omp_set_num_threads( m_glob_params.getNoCPU() );
-	//#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-	
+	omp_set_num_threads( m_glob_params.getNoCPU() );
+	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+
 	for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
 	{ // loop on disturbances
 		DoUpdateTslf(ALLburntCell[dist]);
 		if (applyDist[dist] & (ALLburntCell[dist].size()>0))
 		{
-			cout << "Fire this year !" << endl;
+			logg.info("Fire this year !");
 			for (vector<unsigned>::iterator cell_ID=ALLburntCell[dist].begin(); cell_ID!=ALLburntCell[dist].end(); ++cell_ID)
 			{
 				for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1149,7 +1173,7 @@ void SimulMap::DoDroughtDisturbance_part1()
 	/* Calculation of abundance per strata for each pixel */
 	unsigned noStrata = m_glob_params.getNoStrata();
 	SpatialMap<double, double> moistValues = getDroughtMap();
-	
+
 	// omp_set_num_threads( m_glob_params.getNoCPU() );
 	// #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
 	for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
@@ -1158,14 +1182,14 @@ void SimulMap::DoDroughtDisturbance_part1()
 		for (unsigned fg=0; fg<m_FGparams.size(); fg++)
 		{ // loop on PFG
 			vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get stratum changing ages
-			
+
 			// #pragma omp parallel for ordered
 			for (unsigned strat=1; strat<noStrata; strat++)
 			{ // loop on Stratum
 				tmpAbund[strat-1] += (int)(m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
 			} // end loop on Stratum
 		} // end loop on PFG
-		
+
 		/* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
 		double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end());
 		double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); //7000.0;
@@ -1173,7 +1197,7 @@ void SimulMap::DoDroughtDisturbance_part1()
 		pixAbund = pixAbund/maxVal;
 		if (pixAbund>0.5){ moistValues(*cell_ID) = m_DroughtMap(*cell_ID) + abs(m_DroughtMap(*cell_ID))/2.0; }
 	}
-	
+
 	/* Do disturbances only on points within mask */
 	for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
 	{ // loop on pixels
@@ -1182,13 +1206,13 @@ void SimulMap::DoDroughtDisturbance_part1()
 			m_IsDroughtMap(*cell_ID, fg) = 0;
 			m_ApplyPostDroughtMap(*cell_ID, fg) = 0;
 			m_ApplyCurrDroughtMap(*cell_ID, fg) = 1;
-			
+
 			if (m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
 			{
 				/* 0.Check Habitat Suitability */
 				// set recruit and fecund to 0 ?
 				// automatic at the beginning of DoSuccession
-				
+
 				/* 2.Check Post Drought Mortality */
 				if (m_PostDroughtMap(*cell_ID, fg)==1)
 				{
@@ -1196,7 +1220,7 @@ void SimulMap::DoDroughtDisturbance_part1()
 					m_IsDroughtMap(*cell_ID, fg) = 1;
 					m_ApplyPostDroughtMap(*cell_ID, fg) = 1;
 				}
-				
+
 				/* 1.Check Moisture Index */
 				double moistIndex = moistValues(*cell_ID);
 				if (moistIndex>m_FGparams[fg].getDroughtSD()[0])
@@ -1211,7 +1235,7 @@ void SimulMap::DoDroughtDisturbance_part1()
 				{
 					/* Set recruitment and fecundity to 0 */
 					m_IsDroughtMap(*cell_ID, fg) = 1;
-					
+
 					if (m_CountDroughtMap(*cell_ID, fg)<m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(*cell_ID, fg) ++; }
 					bool currSevDrought = false, currModDrought = false;
 					if (moistIndex<m_FGparams[fg].getDroughtSD()[1])
@@ -1227,7 +1251,7 @@ void SimulMap::DoDroughtDisturbance_part1()
 					}
 					bool modToSev = (currModDrought && (m_CountDroughtMap(*cell_ID, fg)==m_FGparams[fg].getCountModToSev()));
 					bool SevMort = (currSevDrought && (m_CountDroughtMap(*cell_ID, fg)==m_FGparams[fg].getCountSevMort()));
-					
+
 					/* 4.If drought : check Current Drought Mortality */
 					if (modToSev || SevMort )
 					{
@@ -1255,7 +1279,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
 			{ /* Apply post drought effects */
 				if (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0)
 				{
-					//cout << ">> Post drought effect this year !" << endl;
+					//logg.info(">> Post drought effect this year !");
 					m_SuccModelMap(*cell_ID)->DoDisturbance(fg,1,m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
 					//m_SuccModelMap(*cell_ID)->DoDisturbance(1,"drought");
 				}
@@ -1263,7 +1287,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
 			{ /* Apply current drought effects */
 				if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
 				{
-					//cout << ">> Current drought effect this year !" << endl;
+					//logg.info(">> Current drought effect this year !");
 					m_SuccModelMap(*cell_ID)->DoDisturbance(fg,0,m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
 					//m_SuccModelMap(*cell_ID)->DoDisturbance(0,"drought");
 				}
@@ -1271,13 +1295,13 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
 			{ /* Apply cumulated post-current drought effects */
 				if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
 				{
-					//cout << ">> Current+Post drought effect this year !" << endl;
+					//logg.info(">> Current+Post drought effect this year !");
 					FGresponse CurrPostResp = m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse();
 					vector<vector<int> > tmpBreakAge = CurrPostResp.getBreakAge(), tmpResprAge = CurrPostResp.getResprAge();
 					vector<Fract> tmpDormBreaks = CurrPostResp.getDormBreaks();
 					vector<Fract> tmpPropKilled = CurrPostResp.getPropKilled();
 					vector<vector<vector<Fract> > > tmpFates = CurrPostResp.getFates();
-					
+
 					tmpBreakAge.push_back(tmpBreakAge[0]);
 					tmpResprAge.push_back(tmpResprAge[0]);
 					tmpDormBreaks.push_back(tmpDormBreaks[0]);
@@ -1344,11 +1368,11 @@ void SimulMap::DoDisturbance(int yr)
 		} else { applyDist.push_back(false);
 		}
 	}
-	
+
 	/* Do disturbances only on points within mask */
 	omp_set_num_threads( m_glob_params.getNoCPU() );
 	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-	
+
 	for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
 	{
 		unsigned cell_ID = m_MaskCells[ID];
@@ -1370,11 +1394,11 @@ void SimulMap::DoDisturbance(int yr)
 void SimulMap::UpdateEnvSuitRefMap(unsigned option)
 {
 	vector< double > envSuitRefVal(m_Mask.getTotncell(),0.5);
-	
+
 	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 	RandomGenerator rng(seed);
 	Uni01 random_01(rng);
-	
+
 	if (option==1)
 	{
 		/* draw a random number for each pixel*/
@@ -1396,12 +1420,13 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
 			/* to each pfg assign a mean and a standard deviation */
 			double meanFG = random_01(); //( rand()/(double)RAND_MAX );
 			double sdFG = random_01(); //( rand()/(double)RAND_MAX );
-			cout << "NEW Env Suit Ref distrib for FG : " << fg_id << "  with mean=" << meanFG << " and sd=" << sdFG << endl;
-			
+			logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=",
+								meanFG, " and sd=", sdFG);
+
 			/* build the distribution corresponding to these mean and sd */
 			Normal distrib(meanFG,sdFG);
 			GeneratorNorm draw_from_distrib(rng,distrib);
-			
+
 			/* draw a random number from this distribution for each pixel*/
 			envSuitRefVal.resize(m_Mask.getTotncell(),0.5);
 			for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
@@ -1412,9 +1437,8 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
 		}
 	} else
 	{
-		cerr << "Chosen option to update Environmental Suitability reference does not exist." << endl;
-		cerr << "Please select either 1 (one random number per pixel) or 2 (one distribution per PFG)." << endl;
-		terminate();
+		logg.error("Chosen option to update Environmental Suitability reference does not exist.\n",
+							 "Please select either 1 (one random number per pixel) or 2 (one distribution per PFG).");
 	}
 }
 
@@ -1424,42 +1448,52 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 {
 	/* keep a copy of parameters that will be replaced */
 	GSP old_glob_params(m_glob_params);
-	
+
 	/* read new global parameters file */
 	m_glob_params  = GSP(file_of_params.getGlobSimulParams());
-	
+
 	/* check some parameters compatibility */
 	if (old_glob_params.getNoFG() != m_glob_params.getNoFG())
 	{
-		cerr << "!!! Number of functional groups involved in saved object (" << old_glob_params.getNoFG() << ") is incompatible with new parameters (" << m_glob_params.getNoFG() << ")!" << endl;
-		terminate();
+		logg.error("!!! Number of functional groups involved in saved object (",
+		 					 old_glob_params.getNoFG(),
+							 ") is incompatible with new parameters (",
+							 m_glob_params.getNoFG(), ")!");
 	}
 	if (old_glob_params.getDoHabSuitability() != m_glob_params.getDoHabSuitability())
 	{
-		cerr << "!!! Succession model involved in saved object (" << old_glob_params.getDoHabSuitability() << ") is incompatible with new parameters (" << m_glob_params.getDoHabSuitability() << ")!" << endl;
-		terminate();
+		logg.error("!!! Succession model involved in saved object (",
+		 					 old_glob_params.getDoHabSuitability(),
+							 ") is incompatible with new parameters (",
+							  m_glob_params.getDoHabSuitability(), ")!");
 	}
 	if (old_glob_params.getNoStrata() != m_glob_params.getNoStrata())
 	{
-		cerr << "!!! Number of strata involved in saved object (" << old_glob_params.getNoStrata() << ") is incompatible with new parameters (" << m_glob_params.getNoStrata() << ")!" << endl;
-		terminate();
+		logg.error("!!! Number of strata involved in saved object (",
+		 					 old_glob_params.getNoStrata(),
+							 ") is incompatible with new parameters (",
+							  m_glob_params.getNoStrata(), ")!");
 	}
 	if (old_glob_params.getNoDist() != m_glob_params.getNoDist())
 	{
-		cerr << "!!! Number of disturbances involved in saved object (" << old_glob_params.getNoDist() << ") is incompatible with new parameters (" << m_glob_params.getNoDist() << ")!" << endl;
-		terminate();
+		logg.error("!!! Number of disturbances involved in saved object (",
+		 					 old_glob_params.getNoDist(),
+							 ") is incompatible with new parameters (",
+							 m_glob_params.getNoDist(), ")!");
 	}
 	if (old_glob_params.getNoDistSub() != m_glob_params.getNoDistSub())
 	{
-		cerr << "!!! Number of way to be influence by disturbances involved in saved object (" << old_glob_params.getNoDistSub() << ") is incompatible with new parameters (" << m_glob_params.getNoDistSub() << ")" << endl;
-		terminate();
+		logg.error("!!! Number of way to be influence by disturbances involved in saved object (",
+		 					 old_glob_params.getNoDistSub(),
+							 ") is incompatible with new parameters (",
+							 m_glob_params.getNoDistSub(), ")");
 	}
 	/* end of check parameters compatibility */
-	
+
 	/* update fg environmental suitability conditions if needed */
 	if (file_of_params.getFGMapsHabSuit()[0] != "0")
 	{ // some new initial envsuit conditions given
-		cout << "***** Update habitat suitability maps..." << endl;
+		logg.info("***** Update habitat suitability maps...");
 		vector< vector< double > > envSuitMap; // environmental suitability of fgs
 		envSuitMap.reserve(m_FGparams.size());
 		for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
@@ -1468,11 +1502,11 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 		}
 		m_EnvSuitMap = SpatialStack<double, double>(&m_Coord, envSuitMap);
 	}
-	
+
 	/* update disturbances mask if needed */
 	if (file_of_params.getMaskDist()[0] != "0")
 	{
-		cout << "***** Update disturbances maps..." << endl;
+		logg.info("***** Update disturbances maps...");
 		vector< vector< int > > distMap; // disturbances map
 		distMap.reserve(m_glob_params.getNoDist());
 		for (int dist_id=0; dist_id<m_glob_params.getNoDist(); dist_id++)
@@ -1481,11 +1515,11 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 		}
 		m_DistMap = SpatialStack<double, int>(&m_Coord, distMap);
 	}
-	
+
 	/* update drought disturbances mask if needed */
 	if (file_of_params.getMaskDrought() != "0")
 	{
-		cout << "***** Update drought disturbances maps..." << endl;
+		logg.info("***** Update drought disturbances maps...");
 		m_DroughtMap = SpatialMap<double, double>(&m_Coord, ReadMask<double>( file_of_params.getMaskDrought(), -5000.0, 1000.0 ) );
 		vector< vector< unsigned > > droughtMap; // drought disturbances map
 		droughtMap.reserve(m_FGparams.size());
@@ -1498,7 +1532,7 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 		m_IsDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
 		m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
 		m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-		
+
 		for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
 		{ // loop on pixels
 			for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1508,11 +1542,11 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 			}
 		}
 	}
-	
+
 	/* build aliens introduction masks */
 	if (file_of_params.getFGMapsAliens()[0] != "0")
 	{
-		cout << "***** Update aliens introduction maps..." << endl;
+		logg.info("***** Update aliens introduction maps...");
 		vector< vector< double > > condInitMap; // aliens introduction masks
 		condInitMap.reserve(m_FGparams.size());
 		for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1528,50 +1562,51 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 {
 	GDALAllRegister();
-	
+
 	// Start timer
 	time_t start,end;
 	time(&start);
-	
+
 	// Get output driver (GeoTIFF format).
 	const char * driverInput = "GTiff";
 	boost::filesystem::path prevFile_path(prevFile.c_str());
 	if (prevFile_path.extension()==".tif"){ driverInput = "GTiff";
 	} else if (prevFile_path.extension()==".img"){ driverInput = "HFA";
 	} else {
-		cerr << "!!! The --MASK-- file extension (" << prevFile_path.extension() << ") is not taking into account!" << endl;
-		cerr << "!!! Please use either .img or .tif files!" << endl;
-		terminate();
+		logg.error("!!! The --MASK-- file extension (", prevFile_path.extension(),
+		 					 ") is not taking into account!\n",
+							 "!!! Please use either .img or .tif files!");
 	}
-	cout << "Input & Ouput driver is : " << driverInput << " (extension " << prevFile_path.extension()<< ")" << endl;
+	logg.info("Input & Ouput driver is : ", driverInput, " (extension ",
+						prevFile_path.extension(), ")");
 	GDALDriverH outputDriver = GDALGetDriverByName( driverInput );
 	CPLAssert( outputDriver != NULL );
-	
+
 	// Open the source file.
 	GDALDatasetH rasInput = GDALOpen( prevFile.c_str(), GA_ReadOnly );
 	CPLAssert( rasInput != NULL );
-	
+
 	// Get Source coordinate system.
 	const char *inputProjection = GDALGetProjectionRef( rasInput );
 	CPLAssert( inputProjection != NULL && strlen(inputProjection) > 0 );
-	cout << "Input & Ouput projection is : " << inputProjection << endl;
+	logg.info("Input & Ouput projection is : ", inputProjection);
 	double outputGeoTransform[6];
 	GDALGetGeoTransform( rasInput, outputGeoTransform );
-	
+
 	// Create output with same datatype as first input band.
 	//GDALDataType inputDataType = GDALGetRasterDataType(GDALGetRasterBand(rasInput,1)); //GDT_Byte
-	
-	cout << ">>> Saving PFG abund outputs" << endl;
+
+	logg.info(">>> Saving PFG abund outputs");
 
 	/* 1. ABUND PER PFG and PER STRATA */
-	cout << "> Saving abund per PFG & per strata" << endl;
+	logg.info("> Saving abund per PFG & per strata");
 	/* 2. ABUND PER PFG for ALL STRATA */
-	cout << "> Saving abund per PFG for all strata" << endl;
+	logg.info("> Saving abund per PFG for all strata");
 	omp_set_num_threads( m_glob_params.getNoCPU() );
 	#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
 	for (unsigned fg=0; fg<m_FGparams.size(); fg++)
 	{ // loop on PFG
-		//cout << ">>>>> PFG " << fg << endl;
+		//logg.info(">>>>> PFG ", fg);
 		vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
 		GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
 		for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
@@ -1581,7 +1616,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 		bool positiveVal2 = false;
 		for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
 		{ // loop on Stratum
-			//cout << ">>>>> Stratum " << strat << endl;
+			//logg.info(">>>>> Stratum ", strat);
 			// Calculate abundance values.
 			GUInt16 *abunValues1 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
 			for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
@@ -1602,7 +1637,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 					positiveVal2 = true;
 				}
 			} // end loop on pixels
-			
+
 			if (positiveVal1)
 			{
 				// Create the output file only if the PFG is present somewhere.
@@ -1614,12 +1649,20 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 				CPLAssert( rasOutput != NULL );
 				GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
 				GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
-				
+
 				//GDALRasterBand * hBand = rasOutput->GetRasterBand( strat );
 				GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-				GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), abunValues1, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
+				CPLErr rasterAccess = GDALRasterIO(
+					hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+					abunValues1, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+				);
+				if (rasterAccess > 0)
+				{
+					logg.warning("Writing ", newFile, " raster: acces status ",
+											 rasterAccess);
+				}
 				GDALClose( rasOutput ); // Once we're done, close properly the dataset
-				
+
 				// Compress file
 				ostringstream ossCompressCommand;
 				ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -1627,7 +1670,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 				int compress_ok = system(strCompressCommand.c_str());
 				if (compress_ok != 0)
 				{
-					cerr << "Compression failed for " << newFile << endl;
+					logg.warning("Compression failed for ", newFile);
 				}
 			}
 			delete [] abunValues1;
@@ -1640,11 +1683,19 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			CPLAssert( rasOutput != NULL );
 			GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
 			GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
-			
+
 			GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-			GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), abunValues2, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
+			CPLErr rasterAccess = GDALRasterIO(
+				hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+				abunValues2, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+			);
+			if (rasterAccess > 0)
+			{
+				logg.warning("Writing ", newFile, " raster: acces status ",
+										 rasterAccess);
+			}
 			GDALClose( rasOutput ); // Once we're done, close properly the dataset
-			
+
 			// Compress file
 			ostringstream ossCompressCommand;
 			ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -1652,14 +1703,14 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			int compress_ok = system(strCompressCommand.c_str());
 			if (compress_ok != 0)
 			{
-				cerr << "Compression failed for " << newFile << endl;
+				logg.warning("Compression failed for ", newFile);
 			}
 		}
 		delete [] abunValues2;
 	} // end loop on PFG
-	
+
 	/* 3. ABUND PER STRATA for ALL PFG */
-/*	cout << "> Saving abund per strata for all PFG" << endl;
+/*	logg.info("> Saving abund per strata for all PFG");
 	for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
 	{ // loop on Stratum
 		// Calculate abundance values.
@@ -1682,7 +1733,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			abunValues3[*cell_ID] = abundTmp;
 			if (abundTmp>0) positiveVal = true;
 		} // end loop on pixels
-		
+
 		if (positiveVal)
 		{
 			// Create the output file only if the PFG is present somewhere.
@@ -1691,11 +1742,11 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			CPLAssert( rasOutput != NULL );
 			GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
 			GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
-			
+
 			GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
 			GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), abunValues3, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
 			GDALClose( rasOutput ); // Once we're done, close properly the dataset
-			
+
 			// Compress file
 			ostringstream ossCompressCommand;
 			ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -1703,15 +1754,15 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			int compress_ok = system(strCompressCommand.c_str());
 			if (compress_ok != 0)
 			{
-				cerr << "Compression failed for " << newFile << endl;
+				logg.warning("Compression failed for ", newFile);
 			}
 		}
 		delete [] abunValues3;
 	} // end loop on Stratum*/
-	
+
 	if (m_glob_params.getDoSoilCompetition())
 	{
-		cout << "> Saving soil outputs" << endl;
+		logg.info("> Saving soil outputs");
 		float *soilValues = new float[m_Mask.getXncell()*m_Mask.getYncell()];
 		// fill our file pix by pix
 		omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1729,18 +1780,26 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 		string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+boost::lexical_cast<string>(year)+prevFile_path.extension().string();
 		GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
 		CPLAssert( rasOutput != NULL );
-		
+
 		GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
 		double outputGeoTransform[6]; // Write out the GeoTransform.
 		GDALGetGeoTransform( rasInput, outputGeoTransform );
 		GDALSetGeoTransform( rasOutput, outputGeoTransform );
-		
+
 		GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-		GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), soilValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0 );
+		CPLErr rasterAccess = GDALRasterIO(
+			hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+			soilValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
+		);
+		if (rasterAccess > 0)
+		{
+			logg.warning("Writing ", newFile, " raster: acces status ",
+									 rasterAccess);
+		}
 		GDALClose( rasOutput ); // Once we're done, close properly the dataset
-		
+
 		delete [] soilValues;
-		
+
 		// Compress file
 		ostringstream ossCompressCommand;
 		ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -1748,14 +1807,14 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 		int compress_ok = system(strCompressCommand.c_str());
 		if (compress_ok != 0)
 		{
-			cerr << "Compression failed for " << newFile << endl;
+			logg.warning("Compression failed for ", newFile);
 		}
 	}
-	
+
 	if (m_glob_params.getDoLightCompetition())
 	{
-		cout << "> Saving light outputs" << endl;
-		
+		logg.info("> Saving light outputs");
+
 		for (int strat=0; strat<m_glob_params.getNoStrata(); strat++)
 		{ // loop on Stratum
 			// Calculate light values.
@@ -1772,24 +1831,32 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 				unsigned cell_ID = m_MaskCells[ID];
 				lightValues[cell_ID] = ResourceToDouble(m_SuccModelMap(cell_ID)->getLightResources().getResource(strat));
 			}
-			
+
 			// Create the output file.
 			string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+boost::lexical_cast<string>(year)+
 				"_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
 			GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
 			CPLAssert( rasOutput != NULL );
-			
+
 			GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
 			double outputGeoTransform[6]; // Write out the GeoTransform.
 			GDALGetGeoTransform( rasInput, outputGeoTransform );
 			GDALSetGeoTransform( rasOutput, outputGeoTransform );
-			
+
 			GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-			GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
-			GDALClose( rasOutput ); // Once we're done, close properly the dataset			
-			
+			CPLErr rasterAccess = GDALRasterIO(
+				hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+				lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+			);
+			if (rasterAccess > 0)
+			{
+				logg.warning("Writing ", newFile, " raster: acces status ",
+										 rasterAccess);
+			}
+			GDALClose( rasOutput ); // Once we're done, close properly the dataset
+
 			delete [] lightValues;
-			
+
 			// Compress file
 			ostringstream ossCompressCommand;
 			ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -1797,15 +1864,15 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			int compress_ok = system(strCompressCommand.c_str());
 			if (compress_ok != 0)
 			{
-				cerr << "Compression failed for " << newFile << endl;
+				logg.warning("Compression failed for ", newFile);
 			}
 		}
 	}
-	
+
 	/* BONUS. DISPERSAL MAPS PER PFG */
 	/*if (m_glob_params.getDoDispersal())
 	{
-		cout << ">>> Saving DISPERSAL SEED MAPs" << endl;
+		logg.info(">>> Saving DISPERSAL SEED MAPs");
 		for (unsigned fg=0; fg<m_FGparams.size(); fg++)
 		{ // loop on PFG
 			GUInt16 *seedValues = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
@@ -1827,18 +1894,18 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
 			GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
 			CPLAssert( rasOutput != NULL );
-			
+
 			GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
 			double outputGeoTransform[6]; // Write out the GeoTransform.
 			GDALGetGeoTransform( rasInput, outputGeoTransform );
 			GDALSetGeoTransform( rasOutput, outputGeoTransform );
-			
+
 			GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
 			GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
-			GDALClose( rasOutput ); // Once we're done, close properly the dataset			
-			
-			delete [] seedValues;			
-			
+			GDALClose( rasOutput ); // Once we're done, close properly the dataset
+
+			delete [] seedValues;
+
 			// Compress file
 			ostringstream ossCompressCommand;
 			ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -1846,14 +1913,14 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			int compress_ok = system(strCompressCommand.c_str());
 			if (compress_ok != 0)
 			{
-				cerr << "Compression failed for " << newFile << endl;
+				logg.warning("Compression failed for ", newFile);
 			}
 		} // end loop on PFG
 	}*/
-	
+
 	GDALClose( rasInput );
-	
+
 	// Print timer
 	time(&end);
-	cout << "> Saving stuff took " << difftime (end,start) << " s" << endl;
+	logg.info("> Saving stuff took ", difftime (end,start), " s");
 }

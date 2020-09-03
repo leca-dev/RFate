@@ -16,6 +16,7 @@
 #include <iostream>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include "Logger.h"
 /*#include <boost/serialization/version.hpp>*/
 
 using namespace std;
@@ -36,38 +37,37 @@ using namespace std;
 class Cohort
 {
 	private:
-	
+
 	int m_CSize; /*!< Abundance of each age of the Cohort */
 	int m_Ay; /*!< Age of the Youngest individuals */
 	int m_Ao; /*!< Age of the Oldest individuals */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Cohort..." << endl;
 		ar & m_CSize;
 		ar & m_Ay;
 		ar & m_Ao;
 	}
 
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	Cohort default constructor => All parameters are set to 0, False or None
 	 */
 	Cohort();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -78,37 +78,37 @@ class Cohort
 	 *	\param ao : oldest individuals of the cohort
 	 */
 	Cohort(int cSize, int ay, int ao);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	Cohort destructor
 	 */
 	virtual ~Cohort();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const Cohort& o) const
 	{
 		return (m_CSize == o.m_CSize &&
 		m_Ay == o.m_Ay &&
 		m_Ao == o.m_Ao);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const int& getCSize() const;
 	const int& getAy() const;
 	const int& getAo() const;
-	
+
 	void setCSize(const int& cSize);
 	void setAy(const int& ay);
 	void setAo(const int& ao);
@@ -116,11 +116,10 @@ class Cohort
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 
 };
 
 BOOST_CLASS_VERSION(Cohort, 0)
 #endif //COHORT_H
-

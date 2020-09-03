@@ -1,0 +1,14 @@
+#!/bin/sh
+for f in ./config.*; do
+    rm -f $f
+done
+if [ -d autom4te.cache ]
+then
+    rm -rf autom4te.cache
+fi
+if [ -e src/Makevars ]
+then
+    rm -f src/Makevars
+fi
+
+exit 0

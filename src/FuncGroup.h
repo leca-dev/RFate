@@ -8,13 +8,14 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef FUNCGROUP_H
 #define FUNCGROUP_H
 
 #include "FG.h"
 #include "PropPool.h"
 #include "Legion.h"
+#include "Logger.h"
 
 typedef FG* FGPtr;
 using namespace std;
@@ -36,38 +37,37 @@ using namespace std;
 class FuncGroup
 {
 	private:
-	
+
 	vector<PropPool> m_Pools; /*!< Propagules pool array (active & dormant seed pool) */
 	Legion m_LList; /*!< FG legion list */
 	FGPtr m_FGparams; /*!< FG parameters */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Functional Group..." << endl;
 		ar & m_Pools;
 		ar & m_LList;
 		ar & m_FGparams;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	*	\brief Constructor
 	*
 	*	FuncGroup default constructor => All parameters are set to 0, False or None
 	*/
 	FuncGroup();
-	
+
 	/*!
 	*	\brief Constructor
 	*
@@ -76,7 +76,7 @@ class FuncGroup
 	*	\param fgparams : pointer to a FG object
 	*/
 	FuncGroup(FGPtr fgparams);
-	
+
 	/*!
 	*	\brief Constructor
 	*
@@ -87,11 +87,11 @@ class FuncGroup
 	*	\param fgparams : pointer to a FG object
 	*/
 	FuncGroup(const vector<PropPool>& pools, const Legion& llist, FGPtr fgparams);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	*	\brief Destructor
 	*
@@ -99,42 +99,42 @@ class FuncGroup
 	*
 	*	\param fg : the FuncGroup object to copy
 	*/
-	virtual ~FuncGroup(); 
-	
+	virtual ~FuncGroup();
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const FuncGroup& o) const
 	{
 		return ( m_Pools == o.m_Pools && m_LList == o.m_LList && *m_FGparams == *(o.m_FGparams) );
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const vector<PropPool>& getPools() const;
 	const PropPool& getPools(const PoolType& pt) const;
 	const Legion& getLList() const;
 	const FG& getFGparams() const;
-	
+
 	Legion* getLList_();
 	PropPool* getPools_(const PoolType& pt);
 	FGPtr getFGparams_();
-	
+
 	void setPools( const vector<PropPool>& pools);
 	void setPools( const PropPool& pool, const PoolType& pt );
 	void setLList( const Legion llist );
 	void setFGparams( FGPtr fgparams );
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 	void summary();
-	
+
 	/*!
 	 *	\brief Calculate abundance of individuals between two ages
 	 *
@@ -147,7 +147,7 @@ class FuncGroup
 	 * \return : the number of individuals within the legion between two ages
 	 */
 	unsigned totalNumAbund(unsigned Age0, unsigned Age1);
-	
+
 	/*!
 	 *	\brief Calculate abundance of the complete legion
 	 *
@@ -158,7 +158,7 @@ class FuncGroup
 	 * \return : the number of total individuals within the legion
 	 */
 	unsigned totalNumAbund();
-	
+
 	/*!
 	 *	\brief Age all individuals in the legion list
 	 *
@@ -170,14 +170,14 @@ class FuncGroup
 	 * it corresponds to the functional group life span.
 	 */
 	void ageLegions(int maxAge = -1);
-	
+
 	/*!
 	 *	\brief Age seeds in a pool and calculate new abundance
 	 *
 	 * Seed mortality rate is considered to follow a linear relationship as a
 	 * function of seed life :
 	 * size (n+1) = size (n) - size(n) * (1 / (pl + 1))
-	 * 
+	 *
 	 *	\param pt : selected pool (DormantP or ActiveP)
 	 */
 	void AgePool1(const PoolType& pt);
@@ -190,7 +190,7 @@ class FuncGroup
 	 * size (n+1) = size (n) - size(n) * (1 / (pl + 1))
 	 */
 	void AgePool1();
-	
+
 };
 
 BOOST_CLASS_VERSION(FuncGroup, 0)

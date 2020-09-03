@@ -34,7 +34,7 @@ const FuncGroup& Community::getFuncGroup(const int& id) const{ return m_FuncGrou
 
 FuncGroup* Community::getFuncGroup_(const int& id) { return &m_FuncGroupList[id]; }
 
-const int& Community::getNoCohort(const int& id) const{ return m_FuncGroupList[id].getLList().getNoCohort(); }
+int Community::getNoCohort(const int& id) { return m_FuncGroupList[id].getLList().getNoCohort(); }
 
 const int& Community::getAy(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAy(); }
 const int& Community::getAo(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAo(); }
@@ -49,7 +49,7 @@ void Community::setFuncGroup(const int& id, const FuncGroup& funcGroup){ m_FuncG
 
 void Community::show()
 {
-	cout << "Community object :" << endl;
+	logg.debug("Community object :");
 	for(unsigned i=0; i<m_FuncGroupList.size(); i++)
 	{
 		m_FuncGroupList[i].show();
@@ -60,7 +60,7 @@ void Community::show()
 
 void Community::summary()
 {
-	cout << "Community summary :" << endl;
+	logg.debug("Community summary :");
 	for(unsigned i=0; i<m_FuncGroupList.size(); i++)
 	{
 		m_FuncGroupList[i].summary();
@@ -68,4 +68,14 @@ void Community::summary()
 } // end of summary()
 
 
-
+//void Community::showNames()
+//{
+//	string names("( ");
+//	typename vector<FuncGroup>::const_iterator fg;
+//	for (fg = m_FuncGroupList.begin(); fg != m_FuncGroupList.end(); ++fg)
+//	{
+//		names += fg->getFGparams_()->getName() + " ";
+//	}
+//	names += ")";
+//	logg.debug(names);
+//}

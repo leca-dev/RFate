@@ -16,6 +16,7 @@
 #include <iostream>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include "Logger.h"
 
 using namespace std;
 
@@ -35,38 +36,37 @@ using namespace std;
 class PropPool
 {
 	private:
-	
+
 	int m_Size; /*!< Abundance of seeds of the pool, % of Potential Fecundity */
 	bool m_Declining; /*!< Is the pool declining ? */
 	int m_DTime; /*!< Age of the youngest seeds in */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Propagule Pool..." << endl;
 		ar & m_Size;
 		ar & m_Declining;
 		ar & m_DTime;
 	}
 
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	PropPool default constructor => All parameters are set to 0, False or None
 	 */
 	PropPool();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -77,45 +77,45 @@ class PropPool
 	 *	\param dTime : age of the youngest seeds of the pool
 	 */
 	PropPool(int size, bool declining, int dTime);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	PropPool destructor
 	 */
 	virtual ~PropPool();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const PropPool& o) const
 	{
 		return (m_Size == o.m_Size &&
 		m_Declining == o.m_Declining &&
 		m_DTime == o.m_DTime);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const int& getSize() const;
 	const bool& getDeclining() const;
 	const int& getDTime() const;
-	
+
 	void setSize(const int& size);
 	void setDeclining(const bool& declining);
 	void setDTime(const int& dTime);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
 
 	/*!
@@ -126,7 +126,7 @@ class PropPool
 	 * If the new abundance is greater, the pool becomes :
 	 * Pool(size = Inp, declining = false, dTime = 0),
 	 * otherwise, the propagules pool is not modified.
-	 * 
+	 *
 	 *	\param Inp : abundance of seeds to be added
 	 */
 	void PutSeedInPool(int Inp);
@@ -144,7 +144,7 @@ class PropPool
 	 * Seed mortality rate is considered to follow a linear relationship as a
 	 * function of seed life :
 	 * size (n+1) = size (n) - size(n) * (1 / (pl + 1))
-	 * 
+	 *
 	 *	\param pl : seeds life span
 	 */
 	void AgePool1(int pl);

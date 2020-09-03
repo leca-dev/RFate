@@ -8,16 +8,17 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef GSP_H
 #define GSP_H
- 
+
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/version.hpp>
 #include "Params.h"
 #include "FGUtils.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -37,7 +38,7 @@ using namespace std;
 class GSP
 {
 	private:
-	
+
 	int m_NoCPU; /*!< Number of CPU for parallel computing */
 	int m_NoFG; /*!< Number of PFG studied */
 	int m_NoStrata; /*!< Number of height strata */
@@ -48,31 +49,31 @@ class GSP
 	int m_MaxAbundLow; /*!< Maximum abundance or space a PFG can occupy : low value */
 	int m_MaxAbundMedium; /*!< Maximum abundance or space a PFG can occupy : medium value */
 	int m_MaxAbundHigh; /*!< Maximum abundance or space a PFG can occupy : high value */
-	
+
 	/* Light competition module */
 	bool m_DoLightCompetition; /*!< Unable or not Light competition module */
 	int m_LightThreshLow; /*!< Threshold to transform PFG abundances into Low light resources */
 	int m_LightThreshMedium; /*!< Threshold to transform PFG abundances into Medium light resources */
-	
-	/* Habitat suitability module */	
+
+	/* Habitat suitability module */
 	bool m_DoHabSuitability; /*!< Unable or not habitat suitability module */
 	int m_HabSuitMode; /*!< Option to draw the habitat suitability ref */
-	
+
 	/* Dispersal module */
 	bool m_DoDispersal; /*!< Unable or not dispersal module */
 	int m_DispersalMode; /*!< Option to disperse the seeds */
-	
+
 	/* Disturbances module */
 	bool m_DoDisturbances; /*!< Unable or not disturbance module */
 	int m_NoDist; /*!< Number of disturbances */
 	int m_NoDistSub; /*!< Number of disturbances subdivision (no of way to react to dist) */
 	vector<int> m_FreqDist; /*!< Frequency of each disturbance in years */
-	
+
 	/* Soil competition module */
 	bool m_DoSoilCompetition; /*!< Unable or not Soil competition module */
 	double m_SoilInit; /*!< Initialization soil value */
 	double m_SoilRetention; /*!< Percentage of soil from previous year to keep */
-	
+
 	/* Fire disturbance module */
 	bool m_DoFireDisturbances; /*!< Unable or not fire disturbance module */
 	int m_NoFireDist; /*!< Number of fire disturbances */
@@ -90,26 +91,25 @@ class GSP
 	vector<double> m_FirePropIntensity; /*!< Probabilities of propagation, depending on fire intensity */
 	vector<double> m_FirePropLogis; /*!< Logistic parameters for the baseline probability of fire spread */
 	int m_FireQuotaMax; /*!< Maximum step / amount / cells before end of fire spreading */
-	
+
 	/* Drought disturbance module */
 	bool m_DoDroughtDisturbances; /*!< Unable or not drought disturbance module */
 	int m_NoDroughtSub; /*!< Number of drought disturbances subdivision (no of way to react to dist) */
 	string m_ChronoPost; /*!< When are applied post drought effects ("prev" or "post" succession) */
 	string m_ChronoCurr; /*!< When are applied current drought effects ("prev" or "post" succession) */
-	
+
 	/* Aliens introduction module */
 	bool m_DoAliensIntroduction; /*!< Unable or not aliens introduction module */
 	vector<int> m_FreqAliens; /*!< Frequency of each aliens introduction in years */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Global Simulation Parameters..." << endl;
 		ar & m_NoCPU;
 		ar & m_NoFG;
 		ar & m_NoStrata;
@@ -157,20 +157,20 @@ class GSP
 		ar & m_DoAliensIntroduction;
 		ar & m_FreqAliens;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	GSP default constructor => All parameters are set to 0, False or None
 	 */
 	GSP();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -180,7 +180,7 @@ class GSP
 	 * global simulation related parameters
 	 */
 	GSP(const string globalParamsFile);
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -291,22 +291,22 @@ class GSP
 	const string& chronoCurr,
 	const bool& doAliensIntroduction,
 	const vector<int>& freqAliens);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	GSP destructor
 	 */
 	~GSP();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const GSP& o) const
 	{
 		return ( m_NoCPU == o.m_NoCPU &&
@@ -356,11 +356,11 @@ class GSP
 		m_DoAliensIntroduction == o.m_DoAliensIntroduction &&
 		m_FreqAliens == o.m_FreqAliens);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const int& getNoCPU() const;
 	const int& getNoFG() const;
 	const int& getNoStrata() const;
@@ -407,7 +407,7 @@ class GSP
 	const string& getChronoCurr() const;
 	const bool& getDoAliensIntroduction() const;
 	const vector<int>& getFreqAliens() const;
-	
+
 	void setNoCPU(const int& noCPU);
 	void setNoFG(const int& noFG);
 	void setNoStrata(const int& noStrata);
@@ -454,13 +454,13 @@ class GSP
 	void setChronoCurr(const string& chronoCurr);
 	void setDoAliensIntroduction(const bool& doAliensIntroduction);
 	void setFreqAliens(const vector<int>& freqAliens);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
-	
+
 	/*!
 	 *	\brief Convert Abundance classes to integer
 	 *
@@ -469,7 +469,7 @@ class GSP
 	 *   - ALow -> m_MaxAbundLow
 	 *   - AMedium -> m_MaxAbundMedium
 	 *   - AHigh -> m_MaxAbundHigh
-	 * 
+	 *
 	 * \param abund : a value from enum Abund (ANone, ALow, AMedium, AHigh)
 	 *	\return : an integer corresponding to a value from enum Abund
 	 */
@@ -479,4 +479,3 @@ class GSP
 
 BOOST_CLASS_VERSION(GSP, 0)
 #endif //GSP_H
-

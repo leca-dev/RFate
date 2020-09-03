@@ -7,7 +7,7 @@ using namespace std;
 /* Constructors                                                                                    */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-FOPL::FOPL() : 
+FOPL::FOPL() :
 m_GlobSimulParams(""), /* Global simulation parameters */
 m_SavedState(""), m_SavingDir(""), m_SavingTimesMaps(""), m_SavingTimesObjects(""), /* Saving parameters */
 m_Mask(""), m_MaskDist(1,""), m_MaskFire(1,""), m_MaskDrought(""), m_MaskElevation(""), m_MaskSlope(""), /* Spatial parameters */
@@ -26,16 +26,16 @@ m_FGDisturbance(1,""), m_FGSoil(1,""), m_FGFire(1,""), m_FGDrought(1,""), m_FGMa
 FOPL::FOPL(string paramSimulFile)
 {
 	testFileExist("paramSimulFile", paramSimulFile, false);
-	
+
 	/* Global simulation parameters */
 	m_GlobSimulParams = ReadParamsWithinFile(paramSimulFile, "GLOBAL_PARAMS")[0];
-	
+
 	/* Saving parameters */
 	m_SavedState = ReadParamsWithinFile(paramSimulFile, "SAVED_STATE")[0];
 	m_SavingDir = ReadParamsWithinFile(paramSimulFile, "SAVING_DIR")[0];
 	m_SavingTimesMaps = ReadParamsWithinFile(paramSimulFile, "SAVING_YEARS_MAPS")[0];
 	m_SavingTimesObjects = ReadParamsWithinFile(paramSimulFile, "SAVING_YEARS_OBJECTS")[0];
-	
+
 	/* Spatial parameters */
 	m_Mask = ReadParamsWithinFile(paramSimulFile, "MASK")[0];
 	m_MaskDist = ReadParamsWithinFile(paramSimulFile, "DIST_MASK");
@@ -43,7 +43,7 @@ FOPL::FOPL(string paramSimulFile)
 	m_MaskDrought = ReadParamsWithinFile(paramSimulFile, "DROUGHT_MASK")[0];
 	m_MaskElevation = ReadParamsWithinFile(paramSimulFile, "ELEVATION_MASK")[0];
 	m_MaskSlope = ReadParamsWithinFile(paramSimulFile, "SLOPE_MASK")[0];
-	
+
 	/* Simulation Timing parameters */
 	m_MaskChangemaskFiles = ReadParamsWithinFile(paramSimulFile, "MASK_CHANGEMASK_FILES");
 	m_MaskChangemaskYears = ReadParamsWithinFile(paramSimulFile, "MASK_CHANGEMASK_YEARS")[0];
@@ -61,7 +61,7 @@ FOPL::FOPL(string paramSimulFile)
 	m_AliensChangemaskYears = ReadParamsWithinFile(paramSimulFile, "ALIENS_CHANGEMASK_YEARS")[0];
 	m_AliensChangefreqFiles = ReadParamsWithinFile(paramSimulFile, "ALIENS_CHANGEFREQ_FILES");
 	m_AliensChangefreqYears = ReadParamsWithinFile(paramSimulFile, "ALIENS_CHANGEFREQ_YEARS")[0];
-	
+
 	/* FG specific parameters */
 	m_FGLifeHistory = ReadParamsWithinFile(paramSimulFile, "PFG_PARAMS_LIFE_HISTORY");
 	m_FGLight = ReadParamsWithinFile(paramSimulFile, "PFG_PARAMS_LIGHT");
@@ -166,95 +166,49 @@ void FOPL::setAliensChangefreqYears(const string& aliensChangefreqYears){ m_Alie
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 void FOPL::show()
 {
-	cout << endl;
-	cout << "List of parameters files paths:" << endl;
-	cout << endl;
-	
-	/* Global simulation parameters */
-	cout << "m_GlobSimulParams = " << m_GlobSimulParams << endl;
-	
-	/* Saving parameters */
-	cout << "m_SavingDir = " << m_SavingDir << endl;
-	cout << "m_SavingTimesMaps = " << m_SavingTimesMaps << endl;
-	cout << "m_SavingTimesObjects = " << m_SavingTimesObjects << endl;
-	
-	/* Spatial parameters */
-	cout << "m_Mask = " << m_Mask << endl;
-	cout << "m_MaskDist = ";
-	copy(m_MaskDist.begin(), m_MaskDist.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_MaskFire = ";
-	copy(m_MaskFire.begin(), m_MaskFire.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_MaskDrought = " << m_MaskDrought << endl;
-	cout << "m_MaskElevation = " << m_MaskElevation << endl;
-	cout << "m_MaskSlope = " << m_MaskSlope << endl;
-	
-	/* Simulation Timing parameters */
-	cout << "m_MaskChangemaskFiles = ";
-	copy(m_MaskChangemaskFiles.begin(), m_MaskChangemaskFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_MaskChangemaskYears = " << m_MaskChangemaskYears << endl;
-	cout << "m_HabSuitChangemaskFiles = ";
-	copy(m_HabSuitChangemaskFiles.begin(), m_HabSuitChangemaskFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_HabSuitChangemaskYears = " << m_HabSuitChangemaskYears << endl;
-	cout << "m_DistChangemaskFiles = ";
-	copy(m_DistChangemaskFiles.begin(), m_DistChangemaskFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_DistChangemaskYears = " << m_DistChangemaskYears << endl;
-	cout << "m_FireChangemaskFiles = ";
-	copy(m_FireChangemaskFiles.begin(), m_FireChangemaskFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FireChangemaskYears = " << m_FireChangemaskYears << endl;
-	cout << "m_FireChangefreqFiles = ";
-	copy(m_FireChangefreqFiles.begin(), m_FireChangefreqFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FireChangefreqYears = " << m_FireChangefreqYears << endl;
-	cout << "m_DroughtChangemaskFiles = ";
-	copy(m_DroughtChangemaskFiles.begin(), m_DroughtChangemaskFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_DroughtChangemaskYears = " << m_DroughtChangemaskYears << endl;
-	
-	/* FG specific parameters */
-	cout << "m_FGLifeHistory = ";
-	copy(m_FGLifeHistory.begin(), m_FGLifeHistory.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGLight = ";
-	copy(m_FGLight.begin(), m_FGLight.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGMapsHabSuit = ";
-	copy(m_FGMapsHabSuit.begin(), m_FGMapsHabSuit.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGDispersal = ";
-	copy(m_FGDispersal.begin(), m_FGDispersal.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGDisturbance = ";
-	copy(m_FGDisturbance.begin(), m_FGDisturbance.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGSoil = ";
-	copy(m_FGSoil.begin(), m_FGSoil.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGFire = ";
-	copy(m_FGFire.begin(), m_FGFire.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGDrought = ";
-	copy(m_FGDrought.begin(), m_FGDrought.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_FGMapsAliens = ";
-	copy(m_FGMapsAliens.begin(), m_FGMapsAliens.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	
-	/* Aliens introduction parameters */
-	cout << "m_AliensChangemaskFiles = ";
-	copy(m_AliensChangemaskFiles.begin(), m_AliensChangemaskFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_AliensChangemaskYears = " << m_AliensChangemaskYears << endl;
-	cout << "m_AliensChangefreqFiles = ";
-	copy(m_AliensChangefreqFiles.begin(), m_AliensChangefreqFiles.end(), ostream_iterator<string>(cout, " "));
-	cout << endl;
-	cout << "m_AliensChangefreqYears = " << m_AliensChangefreqYears << endl;
-	cout << endl;
+	logg.debug("\nList of parameters files paths:\n",
+						 // Globale simulations parameters
+						 "\nm_GlobSimulParams = ", m_GlobSimulParams,
+						 // Saving parameters
+						 "\nm_SavingDir = ", m_SavingDir,
+						 "\nm_SavingTimesMaps = ", m_SavingTimesMaps,
+						 "\nm_SavingTimesObjects = ", m_SavingTimesObjects,
+						 // Spatial parameters
+						 "\nm_Mask = ", m_Mask,
+						 "\nm_MaskDist = ", m_MaskDist,
+						 "\nm_MaskFire = ", m_MaskFire,
+						 "\nm_MaskDrought = ", m_MaskDrought,
+					 	 "\nm_MaskElevation = ", m_MaskElevation,
+					 	 "\nm_MaskSlope = ", m_MaskSlope,
+						 // Simulation timing parameters
+						 "\nm_MaskChangemaskFiles = ", m_MaskChangemaskFiles,
+						 "\nm_MaskChangemaskYears = ", m_MaskChangemaskYears,
+						 "\nm_HabSuitChangemaskFiles = ", m_HabSuitChangemaskFiles,
+						 "\nm_HabSuitChangemaskYears = ", m_HabSuitChangemaskYears,
+						 "\nm_DistChangemaskFiles = ", m_DistChangemaskFiles,
+						 "\nm_DistChangemaskYears = ", m_DistChangemaskYears,
+						 "\nm_FireChangemaskFiles = ", m_FireChangemaskFiles,
+						 "\nm_FireChangemaskYears = ", m_FireChangemaskYears,
+						 "\nm_FireChangefreqFiles = ", m_FireChangefreqFiles,
+						 "\nm_FireChangefreqYears = ", m_FireChangefreqYears,
+						 "\nm_DroughtChangemaskFiles = ", m_DroughtChangemaskFiles,
+						 "\nm_DroughtChangemaskYears = ", m_DroughtChangemaskYears,
+						 // FG specific parameters
+						 "\nm_FGLifeHistory = ", m_FGLifeHistory,
+						 "\nm_FGLight = ", m_FGLight,
+						 "\nm_FGMapsHabSuit = ", m_FGMapsHabSuit,
+						 "\nm_FGDispersal = ", m_FGDispersal,
+						 "\nm_FGDisturbance = ", m_FGDisturbance,
+						 "\nm_FGSoil = ", m_FGSoil,
+						 "\nm_FGFire = ", m_FGFire,
+						 "\nm_FGDrought = ", m_FGDrought,
+						 "\nm_FGMapsAliens = ", m_FGMapsAliens,
+						 // Aliens introduction parameters
+						 "\nm_AliensChangemaskFiles = ", m_AliensChangemaskFiles,
+						 "\nm_AliensChangemaskYears = ", m_AliensChangemaskYears,
+						 "\nm_AliensChangefreqFiles = ", m_AliensChangefreqFiles,
+						 "\nm_AliensChangefreqYears = ", m_AliensChangefreqYears,
+						 "\n");
 } // end of show()
 
 
@@ -331,25 +285,24 @@ void FOPL::checkCorrectParams_aliens()
 void FOPL::checkCorrectParams(const bool& doLight, const bool& doHabSuit, const bool& doDisp, const bool& doDist,
 const bool& doSoil, const bool& doFire, const bool& doDrought, const bool& doAliens)
 {
-	cout << endl;
-	cout << "===========> RUNNING Check of PARAM SIMUL FILES :" << endl;
-	
+	logg.info("\n===========> RUNNING Check of PARAM SIMUL FILES :");
+
 	testFileExist("--GLOBAL_PARAMS--",m_GlobSimulParams, false);
 	testFileExist("--SAVED_STATE--",m_SavedState, true);
-	
+
 	testDirExist("--SAVING_DIR--",m_SavingDir);
 	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_perStrata/");
 	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_allStrata/");
 	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_allPFG_perStrata/");
-	
+
 	testFileExist("--SAVING_YEARS_MAPS--",m_SavingTimesMaps, true);
 	testFileExist("--SAVING_YEARS_OBJECTS--",m_SavingTimesObjects, true);
-	
+
 	testFileExist("--MASK--",m_Mask, false);
 	testFileExist("--MASK_CHANGEMASK_YEARS--",m_MaskChangemaskYears, true);
 	testFileExist("--MASK_CHANGEMASK_FILES--",m_MaskChangemaskFiles, true);
 	testFileExist_changeFile("--MASK_CHANGEMASK_FILES--",m_MaskChangemaskFiles, true);
-	
+
 	testFileExist("--PFG_PARAMS_LIFE_HISTORY--",m_FGLifeHistory, false);
 
 	if (doLight) checkCorrectParams_light();
@@ -360,16 +313,14 @@ const bool& doSoil, const bool& doFire, const bool& doDrought, const bool& doAli
 	if (doFire) checkCorrectParams_fire();
 	if (doDrought) checkCorrectParams_drought();
 	if (doAliens) checkCorrectParams_aliens();
-	
-	cout << "===========> Check OK!" << endl;
-	cout << endl;
+
+	logg.info("===========> Check OK!\n");
 } // end of checkCorrectParams(...)
 
 void FOPL::checkCorrectParams()
 {
-	cout << endl;
-	cout << "===========> RUNNING Check of PARAM SIMUL FILES :" << endl;
-	
+	logg.info("\n===========> RUNNING Check of PARAM SIMUL FILES :");
+
 	testFileExist("--GLOBAL_PARAMS--",m_GlobSimulParams, false);
 	testFileExist("--SAVED_STATE--",m_SavedState, true);
 
@@ -423,9 +374,8 @@ void FOPL::checkCorrectParams()
 	testFileExist_changeFile("--ALIENS_CHANGEMASK_FILES--",m_AliensChangemaskFiles, true);
 	testFileExist("--ALIENS_CHANGEFREQ_FILES--",m_AliensChangefreqFiles, true);
 	testFileExist("--ALIENS_CHANGEFREQ_YEARS--",m_AliensChangefreqYears, true);
-	
-	cout << "===========> Check OK!" << endl;
-	cout << endl;
+
+	logg.info("===========> Check OK!\n");
 } // end of checkCorrectParams(...)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -437,23 +387,23 @@ void FOPL::testSameCoord(const string& param, const string& file_name, const str
 		boost::filesystem::path file_to_test(file_name);
 		if (file_to_test.extension()!=ext_REF)
 		{ // TEST file extension
-			cerr << "!!! Parameter " << param << " : the file " << file_name << " does not have the same extension than --MASK-- file. Please check!" << endl;
-			terminate();
+			logg.error("!!! Parameter ", param,  " : the file ",  file_name,
+			 					 " does not have the same extension than --MASK-- file. Please check!");
 		}
 		Coordinates<double> coord_to_test = ReadCoordinates(file_name);
 		if (!(coord_to_test==coord_REF))
 		{ // TEST file coordinates
-			cout << "> TESTED Coordinates - Xmax : " << coord_to_test.getXmax() << endl;
-			cout << "> TESTED Coordinates - Xmin : " << coord_to_test.getXmin() << endl;
-			cout << "> TESTED Coordinates - Xres : " << coord_to_test.getXres() << endl;
-			cout << "> TESTED Coordinates - Xncell : " << coord_to_test.getXncell() << endl;
-			cout << "> TESTED Coordinates - Ymax : " << coord_to_test.getYmax() << endl;
-			cout << "> TESTED Coordinates - Ymin : " << coord_to_test.getYmin() << endl;
-			cout << "> TESTED Coordinates - Yres : " << coord_to_test.getYres() << endl;
-			cout << "> TESTED Coordinates - Yncell : " << coord_to_test.getYncell() << endl;
-			cout << "> TESTED Coordinates - Totncell : " << coord_to_test.getTotncell() << endl;
-			cerr << "!!! Parameter " << param << " : the file " << file_name << " does not have the same coordinates than --MASK-- file. Please check!" << endl;
-			terminate();
+			logg.error("> TESTED Coordinates - Xmax : ", coord_to_test.getXmax(),
+								 "\n> TESTED Coordinates - Xmin : ", coord_to_test.getXmin(),
+								 "\n> TESTED Coordinates - Xres : ", coord_to_test.getXres(),
+								 "\n> TESTED Coordinates - Xncell : ", coord_to_test.getXncell(),
+								 "\n> TESTED Coordinates - Ymax : ", coord_to_test.getYmax(),
+								 "\n> TESTED Coordinates - Ymin : ", coord_to_test.getYmin(),
+								 "\n> TESTED Coordinates - Yres : ", coord_to_test.getYres(),
+								 "\n> TESTED Coordinates - Yncell : ", coord_to_test.getYncell(),
+								 "\n> TESTED Coordinates - Totncell : ", coord_to_test.getTotncell(),
+								 "\n!!! Parameter ", param, " : the file ", file_name,
+								 " does not have the same coordinates than --MASK-- file. Please check!");
 		}
 	}
 }
@@ -468,49 +418,44 @@ void FOPL::testSameCoord(const string& param, vector<string> vector_name, const 
 
 void FOPL::checkCorrectMasks()
 {
-	cout << endl;
-	cout << "===========> RUNNING Check of RASTER MASKS :" << endl;
-	
+	logg.info("\n===========> RUNNING Check of RASTER MASKS :");
+
 	/* Get mask extension */
 	boost::filesystem::path mask_path(m_Mask.c_str());
 	string ext_REF = mask_path.extension().string();
-	
+
 	if (ext_REF==".asc")
 	{ // ASCII file
-		cerr << "!!! The --MASK-- file is an ASCII file. You must provide either a .img or .tif file." << endl;
-		terminate();
+		logg.error("!!! The --MASK-- file is an ASCII file. ",
+							 "You must provide either a .img or .tif file.");
 	}
 	if (ext_REF!=".img" && ext_REF!=".tif")
 	{ // ASCII file
-		cerr << "!!! The extension of the --MASK-- file (" << ext_REF << ") is not supported. You must provide either a .img or .tif file." << endl;
-		terminate();
+		logg.error("!!! The extension of the --MASK-- file (", ext_REF,
+		 					 ") is not supported. You must provide either a .img or .tif file.");
 	}
-	
+
 	/* Get mask coordinates */
 	Coordinates<double> coord_REF = ReadCoordinates(m_Mask);
-	cout << ">> MASK Coordinates - Xmax : " << coord_REF.getXmax() << endl;
-	cout << ">> MASK Coordinates - Xmin : " << coord_REF.getXmin() << endl;
-	cout << ">> MASK Coordinates - Xres : " << coord_REF.getXres() << endl;
-	cout << ">> MASK Coordinates - Xncell : " << coord_REF.getXncell() << endl;
-	cout << ">> MASK Coordinates - Ymax : " << coord_REF.getYmax() << endl;
-	cout << ">> MASK Coordinates - Ymin : " << coord_REF.getYmin() << endl;
-	cout << ">> MASK Coordinates - Yres : " << coord_REF.getYres() << endl;
-	cout << ">> MASK Coordinates - Yncell : " << coord_REF.getYncell() << endl;
-	cout << ">> MASK Coordinates - Totncell : " << coord_REF.getTotncell() << endl;
-	
+	logg.debug(">> MASK Coordinates - Xmax : ", coord_REF.getXmax(),
+						 "\n>> MASK Coordinates - Xmin : ", coord_REF.getXmin(),
+						 "\n>> MASK Coordinates - Xres : ", coord_REF.getXres(),
+						 "\n>> MASK Coordinates - Xncell : ", coord_REF.getXncell(),
+						 "\n>> MASK Coordinates - Ymax : ", coord_REF.getYmax(),
+						 "\n>> MASK Coordinates - Ymin : ", coord_REF.getYmin(),
+						 "\n>> MASK Coordinates - Yres : ", coord_REF.getYres(),
+						 "\n>> MASK Coordinates - Yncell : ", coord_REF.getYncell(),
+						 "\n>> MASK Coordinates - Totncell : ", coord_REF.getTotncell());
+
 	testSameCoord("--PFG_MASK_HABSUIT--",m_FGMapsHabSuit,ext_REF,coord_REF);
 	testSameCoord("--DIST_MASK--",m_MaskDist,ext_REF,coord_REF);
-	
+
 	testSameCoord("--FIRE_MASK--",m_MaskFire,ext_REF,coord_REF);
 	testSameCoord("--DROUGHT_MASK--",m_MaskDrought,ext_REF,coord_REF);
 	testSameCoord("--ELEVATION_MASK--",m_MaskElevation,ext_REF,coord_REF);
 	testSameCoord("--SLOPE_MASK--",m_MaskSlope,ext_REF,coord_REF);
-	
+
 	testSameCoord("--PFG_MASK_ALIENS--",m_FGMapsAliens,ext_REF,coord_REF);
-		
-	cout << "===========> Check OK!" << endl;
-	cout << endl;
+
+	logg.info("===========> Check OK!\n");
 } // end of checkCorrectMasks(...)
-
-
-

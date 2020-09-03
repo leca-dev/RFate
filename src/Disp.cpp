@@ -58,8 +58,8 @@ m_FGparams(FGparams), m_SeedMapIn(seedMapIn), m_SeedMapOut(seedMapOut)
 	m_prop_d2.resize(m_FGparams->size(),vector<float>(0.0)); /* proportion of seeds into crown d99 */
 	m_prob_d1.resize(m_FGparams->size(),vector<float>(0.0)); /* probability vector of receiving seeds into crown d50 */
 	m_prob_d2.resize(m_FGparams->size(),vector<float>(0.0)); /* probability vector of receiving seeds into crown d99 */
-	
-	cout << "> GetDistancesXY & GetPropProb..." << endl;
+
+	logg.info("> GetDistancesXY & GetPropProb...");
 	GetDistancesXY();
 	GetPropProb();
 }
@@ -153,8 +153,9 @@ void Disp::GetDistancesXY()
 	int d1 = m_FGparams->at(fg).getDisp50() / m_SeedMapIn->getXres(); // disp50 into pixels
 	int d2 = m_FGparams->at(fg).getDisp99() / m_SeedMapIn->getXres(); // disp99 into pixels
 	int dld = m_FGparams->at(fg).getDispLD() / m_SeedMapIn->getXres(); // dispLD into pixels
-	cout << ">>> For PFG " << fg << ", pixels dispersal distances are : " << d1 << ", " << d2 << ", " << dld << endl;
-	
+	logg.info(">>> For PFG ", fg, ", pixels dispersal distances are : ", d1, ", ",
+	 					d2, ", ", dld);
+
 	/* Determination of indices of cells relative to seed pool for each crown */
 	vector<int> v1x, v2x, vldx, v1y, v2y, vldy;
 	v1x.reserve(gaussCircleProblem(d1)); v2x.reserve(gaussCircleProblem(d2)); vldx.reserve(gaussCircleProblem(dld));
@@ -190,7 +191,9 @@ void Disp::GetDistancesXY()
 	m_FGdistCircle[fg].reserve(6);
 	m_FGdistCircle[fg].emplace_back(v1x); m_FGdistCircle[fg].emplace_back(v2x); m_FGdistCircle[fg].emplace_back(vldx);
 	m_FGdistCircle[fg].emplace_back(v1y); m_FGdistCircle[fg].emplace_back(v2y); m_FGdistCircle[fg].emplace_back(vldy);
-	cout << ">>> Number of corresponding pixels within circle are : " << m_FGdistCircle[fg][0].size() << ", " << m_FGdistCircle[fg][1].size() << ", " << m_FGdistCircle[fg][2].size() << endl;
+	logg.info(">>> Number of corresponding pixels within circle are : ",
+	 					m_FGdistCircle[fg][0].size(), ", ", m_FGdistCircle[fg][1].size(),
+						", ", m_FGdistCircle[fg][2].size());
 	}
 }
 
@@ -203,7 +206,7 @@ void Disp::GetPropProb()
 		/* conversion of dispersal distances in meters into pixels */
 		int d1 = m_FGparams->at(fg).getDisp50() / m_SeedMapIn->getXres(); // disp50 into pixels
 		int d2 = m_FGparams->at(fg).getDisp99() / m_SeedMapIn->getXres(); // disp99 into pixels
-		
+
 		/* 50 % of seeds are under 0 and ln(2) according to exponential density law (lambda=1) */
 		/* 0-ln(2) interval is divide into d1+1 parts */
 		m_prop_d1[fg].clear();
@@ -240,7 +243,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 {
 	omp_set_num_threads( noCPU );
 	#pragma omp parallel for schedule(dynamic) if(noCPU>1)
-	
+
 	for (unsigned fg=0; fg<m_FGparams->size(); fg++)
 	{
 		/* dispOption = 1 (uniform), 2 (expKernel) or 3 (expKernel + proba) */
@@ -250,19 +253,19 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 			vector<int> v1x_select, v2x_select, v1y_select, v2y_select;
 			vector<float> prop_d1_select, prop_d2_select;
 			unsigned noDrawMax = int (max(1,(int)ceil(m_FGdistCircle[fg][0].size()/2.0)));
-			
+
 			unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 			RandomGenerator rng(seed);
-			
+
 			/* conversion of dispersal distances in meters into pixels */
 			int d1 = m_FGparams->at(fg).getDisp50() / m_SeedMapIn->getXres(); // disp50 into pixels
 			int d2 = m_FGparams->at(fg).getDisp99() / m_SeedMapIn->getXres(); // disp99 into pixels
 			int dld = m_FGparams->at(fg).getDispLD() / m_SeedMapIn->getXres(); // dispLD into pixels
-			
+
 			if (dispOption==2 || dispOption==3)
 			{
 				Uni01 random_01(rng);
-				
+
 				/* select cell receiving seeds according to a probability decreasing with distance */
 				for (int id=0; id<(int)m_FGdistCircle[fg][0].size(); id++)
 				{
@@ -307,7 +310,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 
 				if ((*m_SeedMapIn)(x,y,fg) > 0)
 				{ // test of value of each pixel
-				
+
 					/* chose p= 100% of seeds into d1 disk and put 50% / area of disk seeds into */
 					if (d1==0) /* all seeds fall in the same pixel */
 					{
@@ -337,7 +340,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 							}
 						} // end of loop on d1 disk
 					}
-				
+
 					/* chose as many as in first disk and into d1 d2 crow and put 49% / area of crown / p seeds into */
 					if (d2 == 0)
 					{
@@ -373,7 +376,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 								if (dispOption==1)
 								{
 									new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
-									
+
 									/* x of its neighbour */
 									UniInt distrib(0,3);
 									GeneratorUniInt draw_from_distrib(rng,distrib);
@@ -386,7 +389,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 										case 2 : yt++;
 													break;
 										case 3 : yt--;
-													break; 
+													break;
 									}
 									if (xt>=0 && yt>=0 && xt<(int)m_SeedMapIn->getXncell() && yt<(int)m_SeedMapIn->getYncell())
 									{
@@ -399,7 +402,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 							}
 						}
 					} // end of d50 -> d99 crown dispersal
-				
+
 					/* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
 					if (dld == 0)
 					{
@@ -410,7 +413,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						{
 							UniInt distrib(0,(int)m_FGdistCircle[fg][2].size() - 1);
 							GeneratorUniInt draw_from_distrib(rng,distrib);
-						
+
 							/*!*/
 							int LD_draw = draw_from_distrib(); //rand()% vSize;
 							/*!*/
@@ -424,12 +427,11 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 					} // end of d99 -> ldd crown dispersal
 				} // end test if some seed to disperse
 			} // end loop over pixels
-			
+
 			m_SeedMapOut->setValues(fg, new_SeedMapOut.getValues());
 		} else
 		{
-			cout << "No seed dispersal for the PFG "<< fg << "!" << endl;
+			logg.info("No seed dispersal for the PFG ", fg, "!");
 		}
 	} // end loop over PFGs
 }
-

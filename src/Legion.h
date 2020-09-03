@@ -15,6 +15,7 @@
 
 #include <vector>
 #include "Cohort.h"
+#include "Logger.h"
 
 using namespace std;
 
@@ -31,34 +32,33 @@ using namespace std;
 class Legion
 {
 	private:
-	
+
 	vector< Cohort > m_CohortList; /*!< List of succeeding cohorts */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Legion..." << endl;
 		ar & m_CohortList;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	Legion default constructor => All parameters are set to 0, False or None
 	 */
 	Legion();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -67,47 +67,47 @@ class Legion
 	 *	\param cohortList : vector of cohorts
 	 */
 	Legion(vector<Cohort> cohortList);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	Legion destructor
 	 */
 	virtual ~Legion();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const Legion& o) const
 	{
 		return ( m_CohortList == o.m_CohortList );
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	const vector<Cohort>& getCohortList() const;
 	const Cohort& getCohort(const int& id) const;
-	
+
 	vector<Cohort>* getCohortList_();
 	Cohort* getCohort_(const int& id);
-	const int& getNoCohort() const;
-	
+	int getNoCohort() const;
+
 	void setCohortList(const vector<Cohort>& cohortList);
 	void setCohort(const int& id, const Cohort& cohort);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	void show();
-	
+
 	/*!
 	 *	\brief Insert a cohort of individuals (one or several generations) into
 	 * a cohort list
@@ -116,13 +116,13 @@ class Legion
 	 * individuals into a legion (list of cohorts).
 	 * A new cohort can be created, an older one can be split or modified, to
 	 * keep a well sorted Legion list.
-	 * 
+	 *
 	 *	\param cSize : abundance of each generation of the new cohort
 	 *	\param ay : age of the youngest individuals of the new cohort
 	 *	\param ao : age of the oldest individuals of the new cohort
 	 */
 	void addCohort(const int& cSize, const int& ay, const int& ao);
-	
+
 	/*!
 	 *	\brief Split a cohort of individuals in 2 parts
 	 *
@@ -130,11 +130,11 @@ class Legion
 	 * manipulate them correctly (increase or decrease abundance of specific
 	 * generations, remove specific generations, etc).
 	 *
-	 *	\param i : the index within the Legion list of the cohort to split 
+	 *	\param i : the index within the Legion list of the cohort to split
 	 *	\param age : the breaking age used to split the selected cohort
 	 */
 	void splitCohort(const int& i, const int& age);
-	
+
 	/*!
 	 *	\brief Remove a cohort of individuals (one or several generations) from
 	 * a cohort list
@@ -143,7 +143,7 @@ class Legion
 	 * A whole cohort can be removed, an older one can be split or modified, to
 	 * keep a well sorted Legion list.
 	 * Given ages are strictly removed from the Legion list.
-	 * 
+	 *
 	 *	\param ay : age of the youngest individuals to be removed
 	 *	\param ao : age of the oldest individuals to be removed
 	 */
@@ -157,7 +157,7 @@ class Legion
 	 * ao. The reduction factor is given by reducFact.
 	 * A whole cohort can be removed, an older one can be split or modified, to
 	 * keep a well sorted Legion list.
-	 * 
+	 *
 	 *	\param ay : age of the youngest individuals whose abundance should be
 	 * reduced
 	 *	\param ao : age of the oldest individuals whose abundance should be
@@ -165,7 +165,7 @@ class Legion
 	 * \param reducFact : the cohort abundance reduction factor
 	 */
 	void reduceCohort(const int& ay, const int& ao, const double& reducFact);
-	
+
 	/*!
 	 *	\brief Pick up all cohorts of individuals from a legion list if possible
 	 *
@@ -174,7 +174,7 @@ class Legion
 	 * The aim is to prevent from memory wasting.
 	 */
 	void pickupCohorts();
-	
+
 };
 
 BOOST_CLASS_VERSION(Legion, 0)

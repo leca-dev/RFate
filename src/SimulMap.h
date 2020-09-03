@@ -8,7 +8,7 @@
  * \author Damien Georges
  * \version 1.0
  */
- 
+
 #ifndef SIMULMAP_H
 #define SIMULMAP_H
 
@@ -17,12 +17,13 @@
 #include "GlobalSimulParameters.h"
 #include "FilesOfParamsList.h"
 #include "FGUtils.h"
+#include "Logger.h"
 
 #include <iostream>
 #include <string>
 #include <sstream>
 #include <boost/filesystem.hpp>
-#include <omp.h>
+#include "openmp.h"
 
 typedef SuFate* SuFatePtr;
 using namespace std;
@@ -36,7 +37,7 @@ using namespace std;
  * It gathers all simulation parameters (GSP, FOPL), functional group
  * parameters (FG, FGresponse, ...) and spatial information (coordinates, mask,
  * ...). All spatial objects have the same coordinates and extent.
- * 
+ *
  * A mask of simulation map differentiates study/non-study pixels. To each
  * pixel is assigned a succession model. All succession models are linked to a
  * SpatialStack of seed maps, insuring communication between demographic and
@@ -45,16 +46,16 @@ using namespace std;
  * succession models.
  * In other words, each pixel has a succession model (SuFate), which can be
  * linked to habitat suitability maps (SuFateH). Disturbances, if activated,
- * are also supported at the pixel level. 
+ * are also supported at the pixel level.
  */
 
 class SimulMap
 {
 	private:
-	
+
 	GSP m_glob_params; /*!< Object containing simulation parameters */
 	vector<FG> m_FGparams; /*!< List of FG parameters objects*/
-	
+
 	Coordinates<double> m_Coord; /*!< Coordinates of study area */
 	SpatialMap<double, int> m_Mask; /*!< Map referencing if a point belong (1) or not (0) to the studied area  */
 	vector<unsigned> m_MaskCells; /*!< List of the cells belonging to the studied area */
@@ -62,7 +63,7 @@ class SimulMap
 	SpatialStack<double, int> m_SeedMapOut; /*!< Map of dispersed seeds == succession seed rain*/
 	SpatialStack<double, double> m_EnvSuitMap; /*!< Stack of FG environmental suitability maps */
 	SpatialStack<double, double> m_EnvSuitRefMap; /*!< Environmental suitability reference maps for current year */
-	
+
 	SpatialStack<double, int> m_DistMap; /*!< Stack of disturbances mask */
 	SpatialStack<double, int> m_FireMap; /*!< Stack of disturbances mask */
 	SpatialMap<double, int> m_TslfMap; /*!< Map referencing the Time Since Last Fire (TSLF) in each cell  */
@@ -75,45 +76,45 @@ class SimulMap
 	SpatialStack<double, unsigned> m_ApplyCurrDroughtMap; /*!< Stack of maps referencing for each FG if a point will suffer from current drought effects (0 or 1) this year */
 	SpatialStack<double, unsigned> m_ApplyPostDroughtMap; /*!< Stack of maps referencing for each FG if a point will suffer from post drought effects (0 or 1) this year */
 	SpatialStack<double, double> m_CondInitMap; /*!< Stack of aliens introduction mask */
-	
+
 	SpatialMap<double, SuFatePtr> m_SuccModelMap; /*!< Map of succession models ( stored a pointers ) */
-	
+
 	Disp m_DispModel; /*!< Seed dispersal model */
-	
-		
+
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class SuFate;
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		cout << ">> Saving/Loading GLOBAL PARAMETERS..." << endl;
+		logg.info(">> Saving/Loading GLOBAL PARAMETERS...");
 		ar & m_glob_params;
-		cout << ">> Saving/Loading FG PARAMETERS..." << endl;
+		logg.info(">> Saving/Loading FG PARAMETERS...");
 		ar & m_FGparams;
-		cout << ">> Saving/Loading COORDINATES..." << endl;
+		logg.info(">> Saving/Loading COORDINATES...");
 		ar & m_Coord;
-		cout << ">> Saving/Loading MASK..." << endl;
+		logg.info(">> Saving/Loading MASK...");
 		ar & m_Mask;
-		cout << ">> Saving/Loading MASK CELLS..." << endl;
+		logg.info(">> Saving/Loading MASK CELLS...");
 		ar & m_MaskCells;
-		cout << ">> Saving/Loading SEED MAP IN..." << endl;
+		logg.info(">> Saving/Loading SEED MAP IN...");
 		ar & m_SeedMapIn;
-		cout << ">> Saving/Loading SEED MAP OUT..." << endl;
+		logg.info(">> Saving/Loading SEED MAP OUT...");
 		ar & m_SeedMapOut;
-		cout << ">> Saving/Loading HABITAT SUITABILITY MAPS..." << endl;
+		logg.info(">> Saving/Loading HABITAT SUITABILITY MAPS...");
 		ar & m_EnvSuitMap;
-		cout << ">> Saving/Loading HABITAT SUITABILITY REFERENCE MAPS..." << endl;
+		logg.info(">> Saving/Loading HABITAT SUITABILITY REFERENCE MAPS...");
 		ar & m_EnvSuitRefMap;
-		cout << ">> Saving/Loading DISTURBANCE MAPS..." << endl;
+		logg.info(">> Saving/Loading DISTURBANCE MAPS...");
 		ar & m_DistMap;
-		cout << ">> Saving/Loading FIRE MAPS..." << endl;
+		logg.info(">> Saving/Loading FIRE MAPS...");
 		ar & m_FireMap;
 		ar & m_TslfMap;
-		cout << ">> Saving/Loading DROUGHT MAPS..." << endl;
+		logg.info(">> Saving/Loading DROUGHT MAPS...");
 		ar & m_DroughtMap;
 		ar & m_ElevationMap;
 		ar & m_SlopeMap;
@@ -122,27 +123,27 @@ class SimulMap
 		ar & m_IsDroughtMap;
 		ar & m_ApplyCurrDroughtMap;
 		ar & m_ApplyPostDroughtMap;
-		cout << ">> Saving/Loading ALIEN MAPS..." << endl;
+		logg.info(">> Saving/Loading ALIEN MAPS...");
 		ar & m_CondInitMap;
-		cout << ">> Saving/Loading SUCCESSION MODEL MAP..." << endl;
+		logg.info(">> Saving/Loading SUCCESSION MODEL MAP...");
 		ar & m_SuccModelMap;
-		cout << ">> Saving/Loading DISPERSAL MODEL..." << endl;
+		logg.info(">> Saving/Loading DISPERSAL MODEL...");
 		ar & m_DispModel;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
 	 *	SimulMap default constructor => All parameters are set to 0, False or None
 	 */
 	SimulMap();
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -153,23 +154,23 @@ class SimulMap
 	 * simulation (MASK, SAVING_DIR, GLOBAL_PARAMETERS, ...) related parameters
 	 */
 	SimulMap(FOPL file_of_params);
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
 	 *	SimulMap destructor
 	 */
 	~SimulMap();
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
-	bool operator==(SimulMap& o) 
+
+	bool operator==(SimulMap& o)
 	{
 		/* check equality between all simple elements */
 		bool is_equal = (m_glob_params == o.m_glob_params &&
@@ -194,7 +195,7 @@ class SimulMap
 		m_ApplyPostDroughtMap == o.m_ApplyPostDroughtMap &&
 		m_CondInitMap == o.m_CondInitMap &&
 		m_DispModel == o.m_DispModel);
-		
+
 		/* Compare succession models maps */
 		if (is_equal)
 		{ // don't do it if there is yet some differences
@@ -208,11 +209,11 @@ class SimulMap
 		}
 		return is_equal;
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	GSP& getGlobalParameters();
 	vector<FG>& getFGparams();
 	Coordinates<double>& getCoord();
@@ -236,7 +237,7 @@ class SimulMap
 	SpatialStack<double, double>& getCondInitMap();
 	SpatialMap<double, SuFatePtr>& getSuccModelMap();
 	Disp& getDispModel();
-	
+
 	void setGlobalParameters(GSP globalParameters);
 	void setFGparams(vector<FG> FGparams);
 	void setCoord(Coordinates<double> coord);
@@ -260,11 +261,11 @@ class SimulMap
 	void setCondInitMap(SpatialStack<double, double> condInitMap);
 	void setSuccModelMap(SpatialMap<double, SuFatePtr> succModelMap);
 	void setDispModel(Disp dispModel);
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-		
+
 	/*!
 	 *	\brief Start seeding process
 	 *
@@ -272,7 +273,7 @@ class SimulMap
 	 * (defined by SEEDING_INPUT in GSP) in all pixels for each PFG.
 	 */
 	void StartSeeding();
-	
+
 	/*!
 	 *	\brief Start seeding process
 	 *
@@ -281,16 +282,16 @@ class SimulMap
 	 * Seeds will only be produced by currently living and mature individuals.
 	 */
 	void StopSeeding();
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Change reference maps
 	 *
 	 *	This function will update all mask maps according to paths to raster
 	 * files. Be sure that the order of maps is coherent with the original order
 	 * of disturbances or PFG.
-	 * 
+	 *
 	 * \param newChangeFile : path to a text file containing a list of path to
 	 * raster file(s) (.img or .tif), one line for each new file. Be careful to
 	 * the order of those files.
@@ -304,14 +305,14 @@ class SimulMap
 	 *   "aliens" for introduction maps used for aliens module
 	 */
 	void DoFileChange(string newChangeFile, string typeFile);
-	
+
 	/*!
 	 *	\brief Change reference frequencies
 	 *
 	 *	This function will update all event frequencies.
 	 * Be sure that the new number of frequencies is equal to the number of
 	 * disturbances of PFG.
-	 * 
+	 *
 	 * \param freqChangeFile : path to a text file containing a vector of new
 	 * event frequencies, one line for each new year. Be careful to the order of
 	 * those values.
@@ -321,9 +322,9 @@ class SimulMap
 	 *   "aliens" for aliens module
 	 */
 	void DoFreqChange(string freqChangeFile, string typeFile);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Do succession (demographic) model within each pixel
 	 *
@@ -331,9 +332,9 @@ class SimulMap
 	 * model within each study pixel.
 	 */
 	void DoSuccession();
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Do dispersal model within each pixel
 	 *
@@ -344,21 +345,21 @@ class SimulMap
 	 * following year.
 	 */
 	void DoDispersal();
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Do ignition of fire disturbance model
 	 *
 	 *	This function finds cells in which a fire disturbance will start,
 	 * according to the selected fire model (random distribution, ChaoLi
 	 * probability).
-	 * 
+	 *
 	 * \param dist : id of considered disturbance
 	 * \param availCells : vector of cells that can be impacted by the disturbance
 	 */
 	vector<unsigned int> DoIgnition(int dist, vector<unsigned int> availCells);
-	
+
 	/*!
 	 *	\brief Do propagation of fire disturbance model
 	 *
@@ -366,38 +367,38 @@ class SimulMap
 	 * starting to previously identified cells (start) and according to the
 	 * selected propagation model (probability dependent, based on neighbouring
 	 * cells, max amount of fuel, LandClim, ...).
-	 * 
+	 *
 	 * \param dist : id of considered disturbance
 	 * \param start : vector of cells where there is an ignition of fire
 	 * \param availCells : vector of cells that can be impacted by the disturbance
 	 */
 	vector<unsigned int> DoPropagation(int dist, vector<unsigned int> start, vector<unsigned int> availCells);
-	
+
 	/*!
 	 *	\brief Update the TimeSinceLastFire mask
 	 *
 	 *	This function fills a map counting in each cell since when has a fire not
 	 * occurred. Pixels impacted this year (burnt) are set to 0, others are
 	 * incremented by one.
-	 * 
+	 *
 	 * \param burnt : vector of cells impacted by the disturbance
 	 */
 	void DoUpdateTslf(vector<unsigned int> burnt);
-	
+
 	/*!
 	 *	\brief Apply fire disturbance model
 	 *
 	 *	This function defines, if a fire disturbance should occur this year,
-	 * the ignition cells, does the propagation of fire, and applies the 
+	 * the ignition cells, does the propagation of fire, and applies the
 	 * DoDisturbance function of each SuFate or SuFateH model within each
 	 * impacted study pixel.
-	 * 
+	 *
 	 * \param yr : current year of simulation
 	 */
 	void DoFireDisturbance(int yr);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Apply drought disturbance model
 	 *
@@ -410,47 +411,47 @@ class SimulMap
 	 *   - CountDroughtMap : how many cumulated years of drought
 	 */
 	void DoDroughtDisturbance_part1();
-	
+
 	/*!
 	 *	\brief Apply drought disturbance model
 	 *
 	 *	This function defines, if a drought disturbance should occur this year,
 	 * the impacted cells and applies the DoDisturbance function of each SuFate
 	 * or SuFateH model within each impacted study pixel.
-	 * 
+	 *
 	 * \param chrono : string indicating if drought effects that should be
 	 * applied are before ("prev") or after ("post") succession
 	 */
 	void DoDroughtDisturbance_part2(string chrono);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Apply disturbance model
 	 *
 	 *	This function defines, if a disturbance should occur this year, the
 	 * impacted cells and applies the DoDisturbance function of each SuFate
 	 * or SuFateH model within each impacted study pixel.
-	 * 
+	 *
 	 * \param yr : current year of simulation
 	 */
 	void DoDisturbance(int yr);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Apply aliens introduction model
 	 *
 	 *	This function activates, if invasive introduction should occur this year,
 	 * the production of maximal quantity of seeds (defined by SEEDING_INPUT in
 	 * GSP) in pixels defined by alien mask for each alien PFG.
-	 * 
+	 *
 	 * \param yr : current year of simulation
 	 */
 	void DoAliensIntroduction(int yr);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Update the current year environmental reference value
 	 *
@@ -465,26 +466,26 @@ class SimulMap
 	 *         represent mean and standard deviation. Then, for each pixel, a
 	 *         number is drawn from a normal distribution defined by these two
 	 *         values.
-	 * 
+	 *
 	 * \param option : 1 (random) or 2 (PFG distribution)
 	 */
 	void UpdateEnvSuitRefMap(unsigned option);
-	
+
 	/*!
 	 *	\brief Update simulation parameters when starting from backup
 	 *
 	 *	This function checks and updates simulation parameters when a simulation
 	 * is started from the outputs of a previous run (SAVED_STATE), in case some
 	 * parameters have changed (e.g. SIMULATION_DURATION, MASK, ...).
-	 * 
+	 *
 	 * \param file_of_params : FOPL class object containing path to text files
 	 * containing well-formatted PFG (LIFE_HISTORY, LIGHT, SOIL, DIST, DISP) or
 	 * simulation (MASK, SAVING_DIR, GLOBAL_PARAMETERS, ...) related parameters
 	 */
 	void UpdateSimulationParameters(FOPL file_of_params);
-	
+
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Save simulation outputs into raster files
 	 *
@@ -493,16 +494,15 @@ class SimulMap
 	 *   - abundances per PFG and per stratum
 	 *   - abundances per PFG for all strata
 	 *   - light resources (if light competition activated)
-	 *   - soil resources (if soil competition activated) 
+	 *   - soil resources (if soil competition activated)
 	 *
 	 * \param saveDir : string with the simulation results folder path
 	 * \param year : current year of simulation
 	 * \param prevFile : path to mask raster file to initiate saved rasters
 	 */
 	void SaveRasterAbund(string saveDir, int year, string prevFile);
-	
+
 };
 
 BOOST_CLASS_VERSION(SimulMap, 0)
 #endif //MAP_H
-

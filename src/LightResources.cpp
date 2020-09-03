@@ -46,8 +46,5 @@ void LightResources::setResource(const int& id, const Resource& resource){ m_Res
 
 void LightResources::show()
 {
-	cout << "LightResources object = (column: strata)" <<endl;
-	copy(m_ResourceList.begin(), m_ResourceList.end(), ostream_iterator<Resource>(cout, " "));
-	cout << endl;
+	logg.debug("LightResources object = (column: strata)", m_ResourceList);
 } // end of show()
-

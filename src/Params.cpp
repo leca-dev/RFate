@@ -25,9 +25,7 @@ void par::Params::read_file()
 	ifstream inputFile (source);
 	if (!inputFile.is_open())
 	{
-		stringstream ss;
-		ss << "Warning: problem reading from file <" << source << ">";
-		throw (runtime_error (ss.str()));
+		logg.error("Warning: problem reading from file <", source, ">");
 	}
 	get_lines(inputFile);
 	inputFile.close();
@@ -41,7 +39,7 @@ void par::Params::get_lines(ifstream &file)
 		string line;
 		getline(file, line);
 		lineno++;
-		
+
 		vector<string> lineData;
 		string varName;
 		try
@@ -50,8 +48,7 @@ void par::Params::get_lines(ifstream &file)
 		}
 		catch(...)
 		{
-			cerr << "error: problem parsing input, line " << lineno << endl;
-			throw;
+			logg.error("error: problem parsing input, line ", lineno);
 		}
 
 		if (lineData.size() <= 1) continue; // skip lines that are empty or were commented
@@ -64,10 +61,10 @@ void par::Params::get_lines(ifstream &file)
 vector<string> par::split(const string &s, const vector<char> &delim, const string &comment)
 {
 	vector<string> dest;
-	
+
 	// ignore commented lines
 	if (s.substr(0,comment.length()) == comment)	return dest;
-	
+
 	stringstream ls(s); // create stringstream out of input
 	string dat;
 	while (getline(ls, dat, delim.back()))

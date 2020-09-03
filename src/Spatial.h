@@ -26,48 +26,48 @@
 #include "gdal_priv.h" // to read raster files
 #include "gdal.h"
 #include "cpl_conv.h"
+#include "Logger.h"
 
 using namespace std;
 
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
- 
+
  /*!
  * \class Coordinates
  * \brief Coordinates of any spatial object
  *
  * This object contains basic information to build a spatial map (X and Y
  * minimum and maximum coordinates, resolution and number of cells).
- * It will be used to build a SpatialMap object. 
+ * It will be used to build a SpatialMap object.
  */
 
 template <class T>
 class Coordinates
 {
 	protected:
-	
+
 	T Xmin; /*!< minimal longitude */
 	T Xmax; /*!< maximal longitude */
 	T Xres; /*!< longitudinal resolution */
-	
+
 	T Ymin; /*!< minimal latitude */
 	T Ymax; /*!< maximal latitude */
 	T Yres; /*!< latitudinal resolution */
-	
+
 	unsigned Xncell; /*!< number of cells in the whole longitudinal gradient */
-	unsigned Yncell; /*!< number of cells in the whole latitudinal gradient */	
+	unsigned Yncell; /*!< number of cells in the whole latitudinal gradient */
 	unsigned Totncell; /*!< total number of cells in the map */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Coordinates..." << endl;
 		ar & Xmin;
 		ar & Xmax;
 		ar & Xres;
@@ -78,13 +78,13 @@ class Coordinates
 		ar & Yncell;
 		ar & Totncell;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
@@ -95,7 +95,7 @@ class Coordinates
 	{
 		/* Nothing to do */
 	}
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -115,11 +115,11 @@ class Coordinates
 	{
 		/* Nothing to do */
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
@@ -129,11 +129,11 @@ class Coordinates
 	{
 		/* Nothing to do */
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const Coordinates& o) const
 	{
 		return (Xmin == o.Xmin &&
@@ -146,33 +146,33 @@ class Coordinates
 		Yncell == o.Yncell &&
 		Totncell == o.Totncell);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	T getX(const int& i){ return Xmin + i*Xres; }
 	T getY(const int& j){ return Ymin + j*Yres; }
-	
+
 	T getXres() { return Xres; }
 	T getYres() { return Yres; }
-	
+
 	const unsigned& getXncell() const{ return Xncell; }
 	const unsigned& getYncell() const{ return Yncell; }
-	
+
 	T getXmin(){ return Xmin; }
 	T getYmin(){ return Ymin; }
-	
+
 	T getXmax(){ return Xmax; }
 	T getYmax(){ return Ymax; }
-	
+
 	unsigned getTotncell(){ return Totncell; }
 
 };
 
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 /* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
- 
+
  /*!
  * \class SpatialMap
  * \brief Spatial map object
@@ -184,29 +184,28 @@ template <class coor_T, class val_T>
 class SpatialMap
 {
 	protected:
-	
+
 	Coordinates<coor_T> * XY; /*!< pointer to a coordinates object */
 	vector<val_T> Values; /*!< list of stored values */
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Spatial Map..." << endl;
 		ar & XY;
 		ar & Values;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
@@ -217,7 +216,7 @@ class SpatialMap
 		XY = NULL;
 		Values.assign(0, (val_T)(0));
 	}
-	
+
 	/*!
 	 *	\brief Semi-default constructor (empty map)
 	 *
@@ -230,7 +229,7 @@ class SpatialMap
 		XY = xy;
 		Values.assign(XY->getTotncell(), (val_T)(0));
 	}
-	
+
 	/*!
 	 *	\brief Full constructor
 	 *
@@ -245,11 +244,11 @@ class SpatialMap
 		XY = xy;
 		Values = values;
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
@@ -259,52 +258,48 @@ class SpatialMap
 	{
 		/* Nothing to do */
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const SpatialMap& o) const
 	{
 		return ( *XY == *(o.XY) && Values == o.Values );
 	}
-	
+
 	/* getter based on x,y coordinates */
 	val_T& operator() (unsigned i, unsigned j)
 	{
 		if (i >= XY->getXncell() || j >= XY->getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
-		} else
-		{
-			return Values[i + j * XY->getXncell()];
+			logg.error("Matrix subscript out of bounds");
 		}
+		return Values[i + j * XY->getXncell()];
 	}
-	
+
 	/* getter based on point id */
 	val_T& operator() (unsigned id)
 	{
 		return this->getValue(id);
 	}
-	
+
 	/* setter based on x,y coordinates */
 	void operator() (unsigned i, unsigned j, const val_T value)
 	{
 		if (i >= XY->getXncell() || j >= XY->getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
+			logg.error("Matrix subscript out of bounds");
 		} else
 		{
 			this->Values[i + j * XY->getXncell()] = value;
 		}
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	vector<coor_T> getXY(unsigned i, unsigned j)
 	{
 		vector<coor_T> xy(2);
@@ -319,36 +314,30 @@ class SpatialMap
 	unsigned getTotncell() { return XY->getTotncell(); }
 	Coordinates<coor_T>* getCoordinates() { return XY; }
 	vector<val_T> getValues() { return Values; };
-	
+
 	val_T& getValue(unsigned id)
 	{
 		if (id > XY->getXncell() * XY->getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
-		} else
-		{
-			return Values[ id ];
+			logg.error("Matrix subscript out of bounds");
 		}
+		return Values[ id ];
 	}
-	
+
 	void setValues(vector<val_T> values){ Values = values; }
 	void setValue(unsigned id, val_T value)
 	{
 		if (id > XY->getXncell() * XY->getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
-		} else
-		{
-			Values[ id ] = value;
+			logg.error("Matrix subscript out of bounds");
 		}
+		Values[ id ] = value;
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Empty a map of its values
 	 *
@@ -380,27 +369,26 @@ template <class coor_T, class val_T>
 class SpatialStack
 {
 	protected:
-	
+
 	vector< SpatialMap< coor_T, val_T > > Layers;
-	
+
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
 	/*-------------------------------------------*/
-	
+
 	friend class boost::serialization::access;
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
-		//cout << "> Serializing Spatial Stack..." << endl;
 		ar & Layers;
 	}
-	
+
 	public:
-	
+
 	/*-------------------------------------------*/
 	/* Constructors -----------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Default constructor
 	 *
@@ -410,7 +398,7 @@ class SpatialStack
 	{
 		/* Nothing to do */
 	}
-	
+
 	/*!
 	 *	\brief Semi-default constructor (empty stack)
 	 *
@@ -444,11 +432,11 @@ class SpatialStack
 			Layers.emplace_back(layerTmp);
 		}
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Destructor
 	 *
@@ -458,65 +446,58 @@ class SpatialStack
 	{
 		/* Nothing to do */
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Operators --------------------------------*/
 	/*-------------------------------------------*/
-	
+
 	bool operator==(const SpatialStack& o) const
 	{
 		return (Layers == o.Layers);
 	}
-	
+
 	/* getter based on x,y coordinates and layer id */
 	val_T& operator() (unsigned i, unsigned j, unsigned k)
 	{
 		if (i >= Layers.at(0).getXncell() || j >= Layers.at(0).getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
-		} else
-		{
-			return Layers.at(k)(i,j);
+			logg.error("Matrix subscript out of bounds");
 		}
+		return Layers.at(k)(i,j);
 	}
-	
+
 	/* getter based on cell id and layer id */
 	val_T& operator() (unsigned id, unsigned k)
 	{
 		if (id > Layers.at(0).getXncell() * Layers.at(0).getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
-		} else
-		{
-			return Layers.at(k)(id);
+			logg.error("Matrix subscript out of bounds");
 		}
+		return Layers.at(k)(id);
 	}
-	
+
 	/* getter based on layer id */
 	val_T& operator() (unsigned k)
 	{
 		return Layers.at(k);
 	}
-	
+
 	/* setter based on x,y coordinates and layer id */
 	void operator() (unsigned i, unsigned j, unsigned k, const val_T value)
 	{
 		if (i >= Layers.at(0).getXncell() || j >= Layers.at(0).getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
+			logg.error("Matrix subscript out of bounds");
 		} else
 		{
 			this->Layers[k](i,j,value);
 		}
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
-	
+
 	vector<coor_T> getXY( unsigned i, unsigned j)
 	{
 		vector<coor_T> xy(2);
@@ -524,37 +505,36 @@ class SpatialStack
 		return xy;
 	}
 	Coordinates<coor_T>* getCoordinates(unsigned k) { return Layers.at(k).getCoordinates(); }
-	
+
 	coor_T getXres() { return Layers.at(0).getXres(); }
 	coor_T getYres() { return Layers.at(0).getYres(); }
-	
+
 	unsigned getXncell() { return Layers.at(0).getXncell(); }
 	unsigned getYncell() { return Layers.at(0).getYncell(); }
 	unsigned getNoLayers() { return Layers.size(); }
-	
+
 	vector<val_T> getValues(unsigned k) {return Layers.at(k).getValues(); };
-	
+
 	void setValue(unsigned id, unsigned k, val_T value)
 	{
 		if (id > Layers.at(0).getXncell() * Layers.at(0).getYncell())
 		{
-			cerr << "Matrix subscript out of bounds" << endl;
-			terminate();
+			logg.error("Matrix subscript out of bounds");
 		} else
 		{
 			this->Layers.at(k).setValue(id,value);
 		}
 	}
-	
+
 	void setValues(unsigned k, vector<val_T> values)
 	{
 		this->Layers.at(k).setValues(values);
 	}
-	
+
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
 	/*-------------------------------------------*/
-	
+
 	/*!
 	 *	\brief Empty each map of a stack of its values
 	 *
@@ -603,7 +583,7 @@ vector< T > ReadAscii(string file_name, bool only_defined_cell = false)
 			else if (strTmp == "CELLSIZE"){ file >> cellres; }
 			else if (strTmp == "NODATA_value"){ file >> nodata; }
 		} // end of loop for header read
-		
+
 		/* Storing mask values */
 		while (!file.eof())
 		{
@@ -622,8 +602,7 @@ vector< T > ReadAscii(string file_name, bool only_defined_cell = false)
 		return res;
 	} else
 	{
-		cerr << "Impossible to open " << file_name << " file! (mask)" << endl;
-		terminate();
+		logg.error("Impossible to open ", file_name, " file! (mask)");
 	}
 }
 
@@ -645,9 +624,9 @@ vector< T > ReadAscii(string file_name, bool only_defined_cell = false)
 template< typename T >
 vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool print_info)
 {
-	cout << file_name << endl;
+	logg.info(file_name);
 	GDALAllRegister();
-	
+
 	// Get output driver (GeoTIFF format).
 	const char * driverInput = "GTiff";
 	boost::filesystem::path file_name_path(file_name.c_str());
@@ -659,34 +638,47 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 		driverInput = "HFA";
 	} else
 	{
-		cerr << "!!! The file extension (" << file_name_path.extension() << ") is not taking into account!" << endl;
-		cerr << "!!! Please use either .img or .tif files!" << endl;
-		terminate();
+		logg.error("!!! The file extension (", file_name_path.extension(),
+               ") is not taking into account!",
+               "\n!!! Please use either .img or .tif files!");
 	}
-	if (print_info) cout << "Input driver is : " << driverInput << " (extension " << file_name_path.extension()<< ")" << endl;
-	
+	if (print_info)
+  {
+    logg.debug("Input driver is : ", driverInput, " (extension ",
+               file_name_path.extension(), ")");
+  }
+
 	// Open the source file.
 	GDALDatasetH rasInput = GDALOpen( file_name.c_str(), GA_ReadOnly );
 	CPLAssert( rasInput != NULL );
-	
+
 	// Get Source coordinate system.
 	const char *inputProjection = GDALGetProjectionRef( rasInput );
 	CPLAssert( inputProjection != NULL && strlen(inputProjection) > 0 );
-	if (print_info) cout << "Input projection is : " << inputProjection << endl;
-	
+	if (print_info)
+  {
+    logg.debug("Input projection is : ", inputProjection);
+  }
+
 	// Create output with same datatype as first input band.
 	GDALDataType inputDataType = GDALGetRasterDataType(GDALGetRasterBand(rasInput,1)); //GDT_Byte
-	if (print_info) cout << "Input data type is : " << inputDataType << endl;
-	
+	if (print_info)
+  {
+    logg.debug("Input data type is : ", inputDataType);
+  }
+
 	GDALRasterBandH hBand = GDALGetRasterBand( rasInput, 1 );
 	int ncols = GDALGetRasterBandXSize( hBand );
 	int nrows = GDALGetRasterBandYSize( hBand );
-	
+
 	// Write out the GeoTransform.
 	double inputGeoTransform[6];
 	GDALGetGeoTransform( rasInput, inputGeoTransform );
 	double cellres = inputGeoTransform[1]; /* w-e pixel resolution */
-	if (print_info) cout << "Input resolution is : " << cellres << endl;
+	if (print_info)
+  {
+    logg.debug("Input resolution is : ", cellres);
+  }
 	vector< T > res;
 	res.reserve(nrows * ncols);
 	for (int i=0; i<nrows; i++)
@@ -694,31 +686,39 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 		//float scanline[ncols];
 		//vector<float> scanline(ncols);
 		float *scanline = new float[ncols];
-		GDALRasterIO( hBand, GF_Read, 0, i, ncols, 1, scanline, ncols, 1, GDT_Float32, 0, 0 );
+		CPLErr rasterAccess = GDALRasterIO(
+			hBand, GF_Read, 0, i, ncols, 1, scanline, ncols, 1, GDT_Float32, 0, 0
+		);
+		if (rasterAccess > 0)
+		{
+			logg.warning("Reading ", file_name, " raster: acces status ",
+									 rasterAccess);
+		}
 		for (int j=0; j<ncols; j++)
 		{
 			res.emplace_back(scanline[j]);
 		}
 		delete[] scanline;
 	}
-	if (print_info) cout << "Reading completed!" << endl;
-	
+	if (print_info)
+  {
+    logg.debug("Reading completed!");
+  }
+
 	/* close file */
 	GDALClose( rasInput );
-	
-	/* check for values out of range */	
+
+	/* check for values out of range */
 	for (unsigned cell_ID=0; cell_ID<res.size(); cell_ID++)
 	{
 		if (res[cell_ID]<lim_inf || res[cell_ID]>lim_sup)
 		{
-			cerr << endl;
-			cerr << "!!! This map contains element that are not included between " << lim_inf << " and " << lim_sup << "!" << endl;
-			cerr << "!!! NA values are not accepted : please replace them with 0." << endl;
-			cerr << endl;
-			terminate();
+			logg.error("!!! This map contains element that are not included between ",
+                 lim_inf, " and ", lim_sup, "!\n",
+                 "!!! NA values are not accepted : please replace them with 0.");
 		}
 	}
-	
+
 	/* return result */
 	return res;
 }
@@ -746,21 +746,18 @@ double lim_sup=numeric_limits<double>::infinity(), bool print_info=false)
 	//if(file_name_path.extension()==".asc"){ // ASCII file
 	//  res = ReadAscii< T >(file_name);
 	//} else
-	if (file_name_path.extension()==".img" || file_name_path.extension()==".tif")
-	{ // IMG or TIF file
-		return ReadRaster< T >(file_name, lim_inf, lim_sup, print_info);
-	} else {
-		cerr << endl;
-		cerr << "!!! The file extension (" << file_name_path.extension() << ") is not taking into account!" << endl;
-		cerr << "!!! Please use either .img or .tif files!" << endl;
-		cerr << "(NB: module to take into account .asc files is still coded but has been removed" << endl;
-		cerr << "to improve data reliability : with .img or .tif, you can give the projection system" << endl;
-		cerr << "and the program will check that the maps provided have the same)" << endl;
-		cerr << endl;
-		terminate();
+	if (file_name_path.extension() != ".img" &&
+			file_name_path.extension() != ".tif")
+	{
+		logg.error("!!! The file extension (", file_name_path.extension(),
+               ") is not taking into account!",
+               "\n!!! Please use either .img or .tif files!",
+               "\n(NB: module to take into account .asc files is still coded ",
+               "but has been removed to improve data reliability : with .img ",
+               "or .tif, you can give the projection system and the program ",
+               "will check that the maps provided have the same)");
 	}
+	return ReadRaster< T >(file_name, lim_inf, lim_sup, print_info);
 }
 
 #endif // SPATIAL_H
-
-

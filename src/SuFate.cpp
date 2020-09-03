@@ -74,42 +74,35 @@ void SuFate::setSeedProd(unsigned fg, int seedProd) { m_SeedProdMap->setValue(m_
 
 void SuFate::show()
 {
-	cout << "\nFate Succession Object" << endl;
-	
-	/* print number of PFG and their names */
 	int noFG = m_Comm.getFuncGroupList().size();
-	cout << "Number of Functional Groups = " << noFG << endl;
-	cout << "( ";
-	for (int i=0; i<noFG; i++)
-	{
-		cout << m_Comm.getFuncGroup_(i)->getFGparams_()->getName() << " ";
-	}
-	cout << ")" << endl;
-	
-	/* print available seed rain */
-	cout << "Seeds rain =";
-	for (int i=0; i<noFG; i++)
-	{
-		cout << " " << (*m_SeedRainMap)(m_CellID, i);
-	}
-	cout << endl;
-	
-	/* print produced seeds */
-	cout << "Produced seeds =";
-	for (int i=0; i<noFG; i++)
-	{
-		cout << " " << (*m_SeedProdMap)(m_CellID, i);
-	}
-	cout << endl;
-	
-	/* print light condition */
-	m_LightR.show();
-	
-	/* print communities summary */
-	m_Comm.summary();
-	
-	/* print soil conditions */
-	cout << "Soil resources = " << m_SoilR << endl;
+	logg.debug("Fate Succession Object",
+						 "\nNumber of Functional Groups = ", noFG);  // nb of PFGs
+	for (int i=0; i<noFG; i++)  // print PFG names
+ 	{
+		 logg.debug(m_Comm.getFuncGroup_(i)->getFGparams_()->getName(), " ");  // TODO : make a method on Community class
+ 	}
+	logg.debug(")",
+						 "\nSeeds rain =");
+ 	for (int i=0; i<noFG; i++)
+ 	{
+ 		logg.debug(" ", (*m_SeedRainMap)(m_CellID, i));  // TODO : make a method somewhere
+ 	}
+
+ 	/* print produced seeds */
+ 	logg.debug("Produced seeds =");
+ 	for (int i=0; i<noFG; i++)
+ 	{
+ 		logg.debug(" ", (*m_SeedProdMap)(m_CellID, i));  // TODO : make a method somewhere
+ 	}
+
+ 	/* print light condition */
+ 	m_LightR.show();
+
+ 	/* print communities summary */
+ 	m_Comm.summary();
+
+ 	/* print soil conditions */
+ 	logg.debug("Soil resources = ", m_SoilR);
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -128,9 +121,9 @@ void SuFate::CalculateEnvironment()
 		vector< int > stProfile(m_GSP->getNoStrata(), 0);
 		int noFG = int(m_Comm.getFuncGroupList().size());
 		int noFG_pres = 0;
-		
+
 		vector < int > AbundPFG(noFG,0); // vector to store abundances of PFGs
-		
+
 		for (int fg=0; fg < noFG; fg++)
 		{
 			/* initialize strata abundance */
@@ -138,14 +131,14 @@ void SuFate::CalculateEnvironment()
 
 			/* create a copy of FG parameters to simplify and speed up the code */
 			FGPtr FGparams = m_Comm.getFuncGroup_(fg)->getFGparams_();
-			
+
 			/* Create a vector with stratum break ages */
 			vector<int> bkStratAges = FGparams->getStrata();
-			
+
 			if (m_Comm.getNoCohort(fg) > 0)
 			{
 				noFG_pres++; /* add 1 to pfg counter */
-				
+
 				/* Fill the stratum according to Cohorts of each PFG */
 				for (int co=0; co<m_Comm.getNoCohort(fg); co++)
 				{
@@ -153,7 +146,7 @@ void SuFate::CalculateEnvironment()
 					int ayTemp = m_Comm.getAy(fg, co);
 					int aoTemp = m_Comm.getAo(fg, co);
 					int csizeTemp = m_Comm.getCSize(fg, co);
-					
+
 					int st = 0; /* Stratum counter */
 					while (ayTemp >= bkStratAges[st+1]){ st++; } /* Get the first stratum which Legion filled */
 
@@ -202,7 +195,7 @@ void SuFate::CalculateEnvironment()
 						}
 					}
 				} // end loop on strata
-				
+
 				/* add PFG strata abundances */
 				for (unsigned st=0; st<stProfile.size(); st++)
 				{
@@ -211,7 +204,7 @@ void SuFate::CalculateEnvironment()
 				}
 			}
 		} // end loop on PFG
-		
+
 		/* compute the weighted mean of soil contributions (optional) */
 		if (m_GSP->getDoSoilCompetition())
 		{
@@ -219,7 +212,7 @@ void SuFate::CalculateEnvironment()
 			if (noFG_pres > 0)
 			{
 				int TotAbund = accumulate(AbundPFG.begin(),AbundPFG.end(),0);
-				
+
 				/* test if we have a full coverage or not to calculate soil resources */
 				if (TotAbund > 0)
 				{
@@ -234,10 +227,10 @@ void SuFate::CalculateEnvironment()
 					setSoilResources(soilResource + m_GSP->getSoilRetention() * (getSoilResources() - soilResource));
 					//setSoilResources(soilResource);
 				}
-				
+
 			}
 		}
-		
+
 		/* attribute light values to each stratum (optional) */
 		/* Work down the strata calculating */
 		if (m_GSP->getDoLightCompetition())
@@ -266,11 +259,11 @@ void SuFate::CalculateEnvironment()
 void SuFate::CheckSurvival()
 {
 	unsigned noFG = m_Comm.getFuncGroupList().size();
-	
+
 	if (m_GSP->getDoSoilCompetition())
 	{
 		for (unsigned fg = 0; fg < noFG; fg++)
-		{	
+		{
 			int noCohort = m_Comm.getNoCohort(fg);
 			if (noCohort > 0)
 			{
@@ -278,7 +271,7 @@ void SuFate::CheckSurvival()
 				FuncGroupPtr FuncG = m_Comm.getFuncGroup_(fg);
 				FGPtr FGparams = FuncG->getFGparams_();
 				LegionPtr FGlegion = FuncG->getLList_();
-		
+
 				Resource soilRes = RMedium;
 				if (m_SoilR < FGparams->getSoilLow())
 				{
@@ -287,7 +280,7 @@ void SuFate::CheckSurvival()
 				{
 					soilRes = RHigh;
 				}
-				
+
 				/* check germinant plants survival */
 				FGlegion->reduceCohort(0, 0, FractToDouble(FGparams->getSoilTolerance()[Germinant][soilRes]));
 				/* check immature plants survival */
@@ -310,10 +303,10 @@ void SuFate::CheckSurvival()
 				FuncGroupPtr FuncG = m_Comm.getFuncGroup_(fg);
 				FGPtr FGparams = FuncG->getFGparams_();
 				LegionPtr FGlegion = FuncG->getLList_();
-				
+
 				/* Create a vector with stratum break ages */
 				vector<int> bkStratAges = FGparams->getStrata();
-				
+
 				/* Fill the stratum according to Cohorts of each PFG */
 				int co = 0;
 				while (co < noCohort)
@@ -325,7 +318,7 @@ void SuFate::CheckSurvival()
 					/* Get the first stratum which Legion filled */
 					int st = 0;
 					while (ayTemp >= bkStratAges[st+1]) { st++; }
-					
+
 					/* only matures or only immature plants in this Legion */
 					if (ayTemp >= this->getMatTime(fg) || aoTemp < this->getMatTime(fg))
 					{
@@ -418,7 +411,7 @@ int SuFate::getLifeSpan(int fg)
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
- 
+
 double SuFate::calcFecund(int fg)
 {
 	FuncGroupPtr FuncG = m_Comm.getFuncGroup_(fg);
@@ -429,7 +422,7 @@ double SuFate::calcFecund(int fg)
 	if (this->getMatTime(fg) <= this->getLifeSpan(fg))
 	{
 		matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /
-		(double) ( m_GSP->AbundToInt(FGparams->getMaxAbund()) 
+		(double) ( m_GSP->AbundToInt(FGparams->getMaxAbund())
 		/ (this->getLifeSpan(fg) - this->getMatTime(fg)) );
 	}
 	return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
@@ -485,16 +478,16 @@ void SuFate::DoSuccessionPart1(vector<unsigned> isDrought)
 		/* tolerate current resource availability  */
 		/* do soil (optional) and light competition */
 		CheckSurvival();
-		
+
 		/* 1. Age established plants   */
 		/* recalculate the environment */
 		for (unsigned fg = 0; fg < noFG; fg++)
 		{
 			this->getCommunity_()->getFuncGroup_(fg)->ageLegions( ceil( this->getLifeSpan(fg) ) );
 		}
-		
+
 		CalculateEnvironment();
-		
+
 		DoSuccessionPart2(isDrought);
 	}
 }
@@ -514,7 +507,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		FGPtr FGparams = FuncG->getFGparams_();
 		PropPool* App_ptr = FuncG->getPools_(ActiveP);
 		PropPool* Dpp_ptr = FuncG->getPools_(DormantP);
-		
+
 		/* Soil resources */
 		Resource soilRes = RMedium;
 		if (m_SoilR < FGparams->getSoilLow())
@@ -524,7 +517,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		{
 			soilRes = RHigh;
 		}
-		
+
 		/* 3. Calculate the seed rain */
 		int SeedInput, AvailSeeds;
 		if (FGparams->getDispersed() == 1)
@@ -534,7 +527,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		{
 			SeedInput = getSeedRain(fg);
 		}
-		
+
 		if (FGparams->getInnateDormancy())
 		{
 			AvailSeeds = App_ptr->getSize();
@@ -542,7 +535,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		{
 			AvailSeeds = max( int( App_ptr->getSize() ), int( SeedInput ) ) ;
 		}
-		
+
 		/* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
 		double GerminRate = AvailSeeds;
 		if (doLight && doSoil)
@@ -583,14 +576,14 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			/* 5. If all available seeds germinated, zero the active seed pool */
 			App_ptr->EmptyPool();
 		}
-		
+
 		/* 6. Age the propagule pools */
 		App_ptr->AgePool1(FGparams->getPoolLife(ActiveP));
 		if (FGparams->getInnateDormancy())
 		{
 			Dpp_ptr->AgePool1(FGparams->getPoolLife(ActiveP));
 		}
-		
+
 		/* 7. Place the seeds in the appropriate pool */
 		if (FGparams->getInnateDormancy())
 		{
@@ -599,7 +592,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		{
 			App_ptr->PutSeedInPool( SeedInput );
 		}
-		
+
 		/* 8. Establishment depends upon the germinants being able to withstand the environment in stratum 0 */
 		bool doRecruit = true;
 		if (doLight && doSoil)
@@ -628,7 +621,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 				}
 			}
 		}
-		
+
 		/* 9. Update Fecundity */
 		if (isDrought[fg])
 		{
@@ -653,7 +646,7 @@ void SuFate::DoUnaffected(int fg, int Dstb, FGresponse FGresp)
 		int ageStart = FGresp.getBreakAge(Dstb, range); /* Disturbance age delimiters */
 		int ageStop = max(FGresp.getBreakAge(Dstb, range + 1) - 1, ageStart); // if we have a only one year disturbance class then ageStart = ageStop
 		double pcUnaff = FractToDouble(FGresp.getFates(Dstb, range, Unaff )); /* Unaffected plant percentage */
-		
+
 		if (m_Comm.getNoCohort(fg) > 0)
 		{
 			/* remove cohorts if all plants are affected */
@@ -686,7 +679,7 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 		int noRange = FGresp.getFates()[Dstb].size();
 		vector< int > ResprC(noRange,0);
 		//fill(ResprC.begin(), ResprC.end(), 0);
-		
+
 		for (int co=0; co<m_Comm.getNoCohort(fg); co++)
 		{
 			for (int range=0; range<noRange; range++)
@@ -696,10 +689,10 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 				fmax( m_Comm.getAy(fg,co), FGresp.getBreakAge(Dstb, range) ) + 1, 0 ) ); //rescale to apply on range-1
 			}
 		}
-		
+
 		/* Calculation of unaffected plants */
 		DoUnaffected( fg, Dstb, FGresp );
-		
+
 		/* Make plant resprout */
 		for (int range=0; range<noRange; range++)
 		{
@@ -708,14 +701,14 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 				FGlegion->addCohort(ResprC[range], FGresp.getResprAge(Dstb, range), FGresp.getResprAge(Dstb, range));
 			}
 		}
-		
+
 		/* Seeds pool perturbation part */
 		PropPool* App_ptr = FuncG->getPools_(ActiveP);
 		PropPool* Dpp_ptr = FuncG->getPools_(DormantP);
-		
+
 		/* Kill active seeds */
 		App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * FractToDouble( FGresp.getPropKilled(Dstb) ) ) );
-		
+
 		/* Transfer Dormant seeds to active seed pool */
 		if (FuncG->getFGparams_()->getInnateDormancy())
 		{

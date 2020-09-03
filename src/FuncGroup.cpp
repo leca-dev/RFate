@@ -54,8 +54,8 @@ void FuncGroup::setFGparams( FGPtr fgparams ) { m_FGparams = fgparams; }
 
 void FuncGroup::show()
 {
-	cout << "FunctGroup :" << endl;
-	cout << "FG = " << m_FGparams->getName() << endl;
+	logg.debug("FunctGroup :",
+						 "\nFG = ", m_FGparams->getName());
 	m_LList.show();
 	for (unsigned i=0; i<m_Pools.size();i++)
 	{
@@ -67,26 +67,26 @@ void FuncGroup::show()
 void FuncGroup::summary()
 {
 	unsigned Ay = 0, Ao = 0, TotAbund = 0;
-	
+
 	if (m_LList.getNoCohort() > 0)
 	{
 		Ay = m_LList.getCohortList().front().getAy();
 		Ao = m_LList.getCohortList().back().getAo();
 		TotAbund = this->totalNumAbund();
 	}
-	
-	cout << "FunctGroup summary :" << endl;
-	cout << " FG = " << m_FGparams->getName()
-	<< "\tYoungest = " << Ay
-	<< "\tOldest = " << Ao
-	<< "\tTotAbund = " << TotAbund << endl;
+
+	logg.debug("FunctGroup summary :",
+						 "\nFG = ", m_FGparams->getName(),
+						 "\tYoungest = ", Ay,
+						 "\tOldest = ", Ao,
+						 "\tTotAbund = ", TotAbund);
 } // end of summary()
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 {
-	/* initialize count to 0 */ 
+	/* initialize count to 0 */
 	unsigned CsizeTot = 0;
 
 	/* check that Age0 < Age1 */
@@ -112,7 +112,7 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 		{
 			/* get size of cohorts of the legion */
 			unsigned Csize = m_LList.getCohort(i).getCSize();
-			
+
 			/* initialize the legion part (mature and immature) counts */
 			unsigned matLegPart = 0, immLegPart = 0;
 			unsigned MatTime = m_FGparams->getMatTime();
@@ -152,7 +152,7 @@ void FuncGroup::ageLegions(int maxAge)
 	{
 		maxAge = m_FGparams->getLifeSpan();
 	}
-	
+
 	if (m_LList.getNoCohort() > 0)
 	{ // if there is some cohort within the legion
 		for (unsigned i=0; i<m_LList.getNoCohort(); i++)

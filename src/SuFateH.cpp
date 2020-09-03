@@ -43,7 +43,7 @@ double SuFateH::getEnvSuitRefVal(unsigned fg) { return (*m_EnvSuitRefMapPtr)(m_C
 
 DoubleMapPtr SuFateH::getEnvSuitMap_() { return m_EnvSuitMapPtr; }
 DoubleMapPtr SuFateH::getEnvSuitRefMap_() { return m_EnvSuitRefMapPtr; }
-	
+
 void SuFateH::setEnvSuitRefMap_( DoubleMapPtr envSuitRefMap_ ) { m_EnvSuitRefMapPtr = envSuitRefMap_; }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -53,19 +53,17 @@ void SuFateH::setEnvSuitRefMap_( DoubleMapPtr envSuitRefMap_ ) { m_EnvSuitRefMap
 void SuFateH::show()
 {
 	SuFate::show();
-	cout << "Environmental suitability of cell : ";
+	logg.debug("Environmental suitability of cell : ");
 	for (unsigned fg=0; fg<m_Comm.getFuncGroupList().size(); fg++)
 	{
-		cout << (*m_EnvSuitMapPtr)(m_CellID, fg) << " ";
+		logg.debug((*m_EnvSuitMapPtr)(m_CellID, fg));
 	}
-	cout << endl;
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 double SuFateH::getEnvRecrRate(int fg)
 {
-	//cout << "***" << " fg" << fg << " HS" << getEnvSuit(fg) << " refHS" << getEnvSuitRefVal(fg) << endl;
 	if (getEnvSuit(fg) >= getEnvSuitRefVal(fg))
 	{ // not affected by environment
 		return 1.0;
@@ -139,4 +137,3 @@ int SuFateH::getSeedInput(int fg)
 		return 0;
 	} // affected by environment
 }
-
