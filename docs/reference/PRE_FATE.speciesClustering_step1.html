@@ -319,46 +319,19 @@ function.</p>
 <code><a href='PRE_FATE.speciesClustering_step2.html'>PRE_FATE.speciesClustering_step2</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Load example data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>DATASET_Bauges_PFG</span>)
 
 <span class='co'>## Species dissimilarity distance (niche overlap + traits distance)</span>
 <span class='no'>tab.dist</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.dist_total</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.dist</span>)</div><div class='output co'>#&gt; List of 3
-#&gt;  $ Chamaephyte : 'dist' num [1:378] 0.1622 0.1631 0.0573 0.0825 0.0576 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:28] "X10559" "X10896" "X11038" "X11102" ...
-#&gt;   ..- attr(*, "Size")= int 28
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ Herbaceous  : 'dist' num [1:20706] 0.2503 0.1533 0.0506 0.4386 0.2402 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:204] "X10113" "X10130" "X10328" "X10502" ...
-#&gt;   ..- attr(*, "Size")= int 204
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ Phanerophyte: 'dist' num [1:435] 0.0134 0.1695 0.1444 0.1293 0.3155 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:30] "X10512" "X10889" "X11057" "X11313" ...
-#&gt;   ..- attr(*, "Size")= int 30
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.dist</span><span class='kw'>[[</span><span class='fl'>1</span>]])[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt;            X10559    X10896    X11038     X11102     X11135
-#&gt; X10559 0.00000000 0.1622210 0.1630688 0.05731085 0.08254469
-#&gt; X10896 0.16222096 0.0000000 0.3117108 0.10101087 0.19808341
-#&gt; X11038 0.16306879 0.3117108 0.0000000 0.12611516 0.15693438
-#&gt; X11102 0.05731085 0.1010109 0.1261152 0.00000000 0.08286085
-#&gt; X11135 0.08254469 0.1980834 0.1569344 0.08286085 0.00000000</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.dist</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.dist</span><span class='kw'>[[</span><span class='fl'>1</span>]])[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]
+
 <span class='co'>## Build dendrograms -------------------------------------------------------------------------</span>
-<span class='no'>sp.CLUST</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step1</span>(<span class='kw'>mat.species.DIST</span> <span class='kw'>=</span> <span class='no'>tab.dist</span>)</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.speciesClustering_step1
-#&gt;  #------------------------------------------------------------# </div><div class='img'><img src='PRE_FATE.speciesClustering_step1-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt;   Clustering method :  average
-#&gt;   Clustering evaluation...</div><div class='img'><img src='PRE_FATE.speciesClustering_step1-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; Done!</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.CLUST</span>)</div><div class='output co'>#&gt; [1] "clust.dendrograms" "clust.evaluation"  "plot.clustMethod" 
-#&gt; [4] "plot.clustNo"     </div><div class='input'>
+<span class='no'>sp.CLUST</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step1</span>(<span class='kw'>mat.species.DIST</span> <span class='kw'>=</span> <span class='no'>tab.dist</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.CLUST</span>)
+
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>foreach</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>ggplot2</span>)
@@ -378,14 +351,10 @@ function.</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>pp</span><span class='kw'>[[</span><span class='fl'>3</span>]])
 }
 
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.CLUST</span>$<span class='no'>clust.evaluation</span>)</div><div class='output co'>#&gt; 'data.frame':	234 obs. of  4 variables:
-#&gt;  $ GROUP      : chr  "Chamaephyte" "Chamaephyte" "Chamaephyte" "Chamaephyte" ...
-#&gt;  $ no.clusters: int  2 3 4 5 6 7 8 9 10 11 ...
-#&gt;  $ variable   : Factor w/ 6 levels "mdunn","mVI",..: 1 1 1 1 1 1 1 1 1 1 ...
-#&gt;  $ value      : num  0.129 0.13 0.158 0.158 0.158 ...</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.CLUST</span>$<span class='no'>plot.clustMethod</span>)</div><div class='img'><img src='PRE_FATE.speciesClustering_step1-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.CLUST</span>$<span class='no'>plot.clustNo</span>)</div><div class='img'><img src='PRE_FATE.speciesClustering_step1-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.CLUST</span>$<span class='no'>clust.evaluation</span>)
 
-</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.CLUST</span>$<span class='no'>plot.clustMethod</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.CLUST</span>$<span class='no'>plot.clustNo</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

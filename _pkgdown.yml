@@ -67,7 +67,7 @@ reference:
     desc:  Graphical User Interface (shiny application)
     contents:
       - "RFATE.run"
-  - title: Build Plant Functional Groups (PFG)
+  - title: Build Plant Functional Groups
     desc:  Functions to select dominant species, compute functional distance between species and build clusters.
     contents:
       - "PRE_FATE.abundBraunBlanquet"

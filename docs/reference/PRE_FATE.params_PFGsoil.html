@@ -405,25 +405,17 @@ each PFG :</p>
 <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Directory already exists! (`FATE_simulation`)</span></div><div class='input'>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
+
 <span class='co'>## Create PFG soil parameter files</span>
 <span class='fu'>PRE_FATE.params_PFGsoil</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
                         , <span class='kw'>mat.PFG.soil</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>PFG</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PFG1"</span>, <span class='st'>"PFG2"</span>, <span class='st'>"PFG3"</span>)
                                                     , <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"H"</span>, <span class='st'>"H"</span>, <span class='st'>"C"</span>)
                                                     , <span class='kw'>soil_contrib</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2.5</span>, <span class='fl'>3</span>, <span class='fl'>4.8</span>)
                                                     , <span class='kw'>soil_tol_min</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>3</span>)
-                                                    , <span class='kw'>soil_tol_max</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>6</span>)))</div><div class='output co'>#&gt; 
-#&gt;  ---------- INFORMATION : SOIL 
-#&gt; 
-#&gt;   Classes :  2 3 4 5
-#&gt;   Number of classes :  5
-#&gt;   Number of PFG within each class (contribution) :  0 2 0 1</div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG1.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG2.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG3.txt has been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Done!
-#&gt; 
-#&gt;   Complete table of information about PFG soil parameters can be find in  FATE_simulation/DATA/PFGS/ folder.</div><div class='input'>
-</div></pre>
+                                                    , <span class='kw'>soil_tol_max</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>6</span>)))</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

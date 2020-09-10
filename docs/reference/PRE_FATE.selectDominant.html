@@ -436,73 +436,25 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 <code><a href='https://rdrr.io/pkg/ade4/man/dudi.pco.html'>dudi.pco</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Load example data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>DATASET_Bauges_PFG</span>)
 
 <span class='co'>## Species observations</span>
 <span class='no'>tab</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>sp.observations</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab</span>)</div><div class='output co'>#&gt; 'data.frame':	288654 obs. of  6 variables:
-#&gt;  $ sites  : chr  "NUMCHRONO-30758" "NUMCHRONO-108244" "NUMCHRONO-108245" "NUMCHRONO-108246" ...
-#&gt;  $ species: int  17351 10895 10905 4565 13355 6422 11038 11082 11336 11206 ...
-#&gt;  $ abund  : num  NA NA NA NA NA NA NA NA NA NA ...
-#&gt;  $ X      : num  916538 948532 948532 948565 948917 ...
-#&gt;  $ Y      : num  6538072 6528763 6528774 6528829 6528645 ...
-#&gt;  $ habitat: chr  NA "HABITAT-2" "HABITAT-2" "HABITAT-2" ...</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab</span>)
+
 <span class='co'>## No habitat, no robustness -----------------------------------------------------------------</span>
 <span class='no'>tab.select</span> <span class='kw'>=</span> <span class='no'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>)]
-<span class='no'>sp.SELECT</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(<span class='kw'>mat.observations</span> <span class='kw'>=</span> <span class='no'>tab.select</span>)</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.selectDominant
-#&gt;  #------------------------------------------------------------# 
-#&gt; 
-#&gt;  ---------- INFORMATION : SAMPLING 
-#&gt; 
-#&gt;   Number of releves :  288654
-#&gt;   Number of sites :  67199
-#&gt;   Number of species :  2913
-#&gt; 
-#&gt;  ---------- INFORMATION : ABUNDANCE 
-#&gt; 
-#&gt;   Percentage of releves with abundance information :  24.93 %
-#&gt;   Percentage of sites with abundance information :  7.28 %
-#&gt;   Percentage of species with abundance information :  55.78 %</div><div class='output co'>#&gt; <span class='warning'>Warning: Species with NO abundance information can only be selected with the criteria based on number of presences.</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- STATISTICS COMPUTATION 
-#&gt; 
-#&gt;   For each species (site level) :
-#&gt;      - total frequency and abundance (rule A1 &amp; A2)
-#&gt;      - mean relative abundance (rule B2)
-#&gt;      - frequency (absolute and relative) of each relative abundance class (rule B1)
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'> The output files </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_mat.A_B2.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_mat.B1.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_TABLE_complete_A_10_0.9_B_5_0.25_0.5.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_TABLE_species_A_10_0.9_B_5_0.25_0.5.csv </span>
-#&gt; <span class='message'>have been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- SELECTION OF DOMINANT SPECIES 
-#&gt; 
-#&gt;    - Number of selected species : 397
-#&gt;    - Representativity of species : 14 %
-#&gt;    - Representativity of sites : 62 %
-#&gt;    - Representativity of total abundance : 87 %
-#&gt;   Complete table of information can be find in output files.
-#&gt; 
-#&gt;  ---------- PRODUCING PLOT(S) 
-#&gt; 
-#&gt; &gt; Illustration of rules A and C</div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 112 rows containing missing values (geom_bar).</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Illustration of rule B</div><div class='output co'>#&gt; 
-#&gt; &gt; Illustration of selected species</div><div class='output co'>#&gt; <span class='warning'>Warning: Zero distance(s)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Zero distance(s)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Zero distance(s)</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Done!</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)</div><div class='output co'>#&gt; [1] "species.selected" "tab.rules"        "plot.A"           "plot.B"          
-#&gt; [5] "plot.pco"        </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)</div><div class='output co'>#&gt; 'data.frame':	2913 obs. of  7 variables:
-#&gt;  $ A1       : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
-#&gt;  $ A2       : logi  FALSE TRUE TRUE TRUE TRUE FALSE ...
-#&gt;  $ B1       : logi  FALSE TRUE FALSE TRUE TRUE FALSE ...
-#&gt;  $ B2       : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-#&gt;  $ species  : chr  "272" "11718" "6273" "9655" ...
-#&gt;  $ SELECTION: Factor w/ 9 levels "Not selected",..: 1 3 2 3 3 1 1 2 1 1 ...
-#&gt;  $ SELECTED : logi  FALSE TRUE TRUE TRUE TRUE FALSE ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.A</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 112 rows containing missing values (geom_bar).</span></div><div class='img'><img src='PRE_FATE.selectDominant-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.B</span>$<span class='no'>abs</span>)</div><div class='img'><img src='PRE_FATE.selectDominant-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.B</span>$<span class='no'>rel</span>)</div><div class='img'><img src='PRE_FATE.selectDominant-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis2</span>)</div><div class='img'><img src='PRE_FATE.selectDominant-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis3</span>)</div><div class='img'><img src='PRE_FATE.selectDominant-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>sp.SELECT</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(<span class='kw'>mat.observations</span> <span class='kw'>=</span> <span class='no'>tab.select</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.A</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.B</span>$<span class='no'>abs</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.B</span>$<span class='no'>rel</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis2</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis3</span>)
+
 <span class='co'>## Habitat, change parameters ----------------------------------------------------------------</span>
 <span class='no'>tab.select</span> <span class='kw'>=</span> <span class='no'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>, <span class='st'>"habitat"</span>)]
 <span class='no'>sp.SELECT</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(<span class='kw'>mat.observations</span> <span class='kw'>=</span> <span class='no'>tab.select</span>
@@ -513,64 +465,13 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
                                     , <span class='kw'>rule.B1_percentage</span> <span class='kw'>=</span> <span class='fl'>0.2</span>
                                     , <span class='kw'>rule.B1_number</span> <span class='kw'>=</span> <span class='fl'>3</span>
                                     , <span class='kw'>rule.B2</span> <span class='kw'>=</span> <span class='fl'>0.4</span>
-                                    , <span class='kw'>doRuleC</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.selectDominant
-#&gt;  #------------------------------------------------------------# 
-#&gt; 
-#&gt;  ---------- INFORMATION : SAMPLING 
-#&gt; 
-#&gt;   Number of releves :  288654
-#&gt;   Number of sites :  67199
-#&gt;   Number of species :  2913
-#&gt; 
-#&gt;  ---------- INFORMATION : ABUNDANCE 
-#&gt; 
-#&gt;   Percentage of releves with abundance information :  24.93 %
-#&gt;   Percentage of sites with abundance information :  7.28 %
-#&gt;   Percentage of species with abundance information :  55.78 %</div><div class='output co'>#&gt; <span class='warning'>Warning: Species with NO abundance information can only be selected with the criteria based on number of presences.</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- STATISTICS COMPUTATION 
-#&gt; 
-#&gt;   For each species (site level) :
-#&gt;      - total frequency and abundance (rule A1 &amp; A2)
-#&gt;      - mean relative abundance (rule B2)
-#&gt;      - frequency (absolute and relative) of each relative abundance class (rule B1)
-#&gt;   For each species (habitat level) :
-#&gt;      - frequency and abundance (absolute and relative) within each habitat (rule C)
-#&gt; </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'> The output files </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_mat.A_B2.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_mat.B1.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_mat.C.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_TABLE_complete_A_10_0.9_B_3_0.2_0.4_C_10_0.9.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_TABLE_species_A_10_0.9_B_3_0.2_0.4_C_10_0.9.csv </span>
-#&gt; <span class='message'>have been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- SELECTION OF DOMINANT SPECIES 
-#&gt; 
-#&gt;    - Number of selected species : 337
-#&gt;    - Representativity of species : 12 %
-#&gt;    - Representativity of sites : 49 %
-#&gt;    - Representativity of total abundance : 83 %
-#&gt;   Complete table of information can be find in output files.
-#&gt; 
-#&gt;  ---------- PRODUCING PLOT(S) 
-#&gt; 
-#&gt; &gt; Illustration of rules A and C</div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 25 rows containing missing values (geom_bar).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 85 rows containing missing values (geom_bar).</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Illustration of rule B</div><div class='output co'>#&gt; 
-#&gt; &gt; Illustration of selected species</div><div class='output co'>#&gt; <span class='warning'>Warning: Zero distance(s)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Zero distance(s)</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Zero distance(s)</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Done!</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)</div><div class='output co'>#&gt; [1] "species.selected" "tab.rules"        "plot.A"           "plot.B"          
-#&gt; [5] "plot.C"           "plot.pco"        </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)</div><div class='output co'>#&gt; 'data.frame':	2913 obs. of  10 variables:
-#&gt;  $ A1       : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
-#&gt;  $ A2       : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...
-#&gt;  $ B1       : logi  TRUE FALSE TRUE TRUE FALSE FALSE ...
-#&gt;  $ B2       : logi  FALSE FALSE FALSE FALSE FALSE FALSE ...
-#&gt;  $ HABITAT-1: logi  FALSE TRUE TRUE TRUE TRUE TRUE ...
-#&gt;  $ HABITAT-2: logi  TRUE TRUE TRUE TRUE TRUE FALSE ...
-#&gt;  $ HABITAT-3: logi  FALSE TRUE FALSE TRUE FALSE FALSE ...
-#&gt;  $ species  : chr  "2740" "11102" "2144" "23" ...
-#&gt;  $ SELECTION: Factor w/ 9 levels "Not selected",..: 3 2 3 3 2 2 9 2 3 3 ...
-#&gt;  $ SELECTED : logi  TRUE TRUE TRUE TRUE TRUE TRUE ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.C</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Transformation introduced infinite values in continuous y-axis</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 85 rows containing missing values (geom_bar).</span></div><div class='img'><img src='PRE_FATE.selectDominant-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis2</span>)</div><div class='img'><img src='PRE_FATE.selectDominant-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis3</span>)</div><div class='img'><img src='PRE_FATE.selectDominant-8.png' alt='' width='700' height='433' /></div><div class='input'>
+                                    , <span class='kw'>doRuleC</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.C</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis2</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis3</span>)
+
 <span class='co'>## Robustness (!quite long!) -----------------------------------------------------------------</span>
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='no'>tab.select</span> <span class='kw'>=</span> <span class='no'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>)]
@@ -583,7 +484,7 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.robustness</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.robustness</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.robustness</span>$<span class='no'>`All dataset`</span>)
-}</div></pre>
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

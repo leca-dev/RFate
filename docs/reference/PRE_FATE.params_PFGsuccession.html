@@ -398,35 +398,18 @@ all PFG :</p>
 <code><a href='PRE_FATE.params_PFGdisturbance.html'>PRE_FATE.params_PFGdisturbance</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Directory already exists! (`FATE_simulation`)</span></div><div class='input'>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
+
 <span class='co'>## Create PFG succession parameter files</span>
 <span class='fu'>PRE_FATE.params_PFGsuccession</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
                               , <span class='kw'>mat.PFG.succ</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>PFG</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"PFG"</span>, <span class='fl'>1</span>:<span class='fl'>6</span>)
                                                           , <span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='st'>"H"</span>, <span class='st'>"H"</span>, <span class='st'>"P"</span>, <span class='st'>"P"</span>)
                                                           , <span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>250</span>, <span class='fl'>36</span>, <span class='fl'>68</span>, <span class='fl'>1250</span>, <span class='fl'>550</span>)
                                                           , <span class='kw'>maturity</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>9</span>)
-                                                          , <span class='kw'>longevity</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span>)))</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.params_PFGsuccession
-#&gt;  #------------------------------------------------------------# 
-#&gt; 
-#&gt;  ---------- INFORMATION : GROUP 
-#&gt; 
-#&gt;   Number of groups :  6
-#&gt;   Number of PFG of each type :  2  H,  2  C,  2  P, 
-#&gt;   Number of aliens :  0
-#&gt; 
-#&gt;  ---------- INFORMATION : STRATA 
-#&gt; 
-#&gt;   Number of strata :  6
-#&gt;   Height limits of selected strata :  0 20 50 150 400 1000 2000
-#&gt;   Number of PFG within each stratum :  1 1 1 1 1 1</div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG3.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG4.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG5.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG6.txt has been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Done!
-#&gt; 
-#&gt;   Complete table of information about PFG succession parameters can be find in  FATE_simulation/DATA/PFGS/ folder.</div><div class='input'>
+                                                          , <span class='kw'>longevity</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span>)))
+
 
 <span class='co'>## Create PFG succession parameter files</span>
 <span class='fu'>PRE_FATE.params_PFGsuccession</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
@@ -435,33 +418,12 @@ all PFG :</p>
                                                           , <span class='kw'>height</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>250</span>, <span class='fl'>36</span>, <span class='fl'>68</span>, <span class='fl'>1250</span>, <span class='fl'>550</span>)
                                                           , <span class='kw'>maturity</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>9</span>)
                                                           , <span class='kw'>longevity</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span>)
-                                                          , <span class='kw'>immature_size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>5</span>)))</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.params_PFGsuccession
-#&gt;  #------------------------------------------------------------# 
-#&gt; 
-#&gt;  ---------- INFORMATION : GROUP 
-#&gt; 
-#&gt;   Number of groups :  6
-#&gt;   Number of PFG of each type :  2  H,  2  C,  2  P, 
-#&gt;   Number of aliens :  0
-#&gt; 
-#&gt;  ---------- INFORMATION : STRATA 
-#&gt; 
-#&gt;   Number of strata :  6
-#&gt;   Height limits of selected strata :  0 20 50 150 400 1000 2000
-#&gt;   Number of PFG within each stratum :  1 1 1 1 1 1</div><div class='output co'>#&gt; <span class='warning'>Warning: `params.file` (FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt) already exists. It will be replaced.</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `params.file` (FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt) already exists. It will be replaced.</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `params.file` (FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG3.txt) already exists. It will be replaced.</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG3.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `params.file` (FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG4.txt) already exists. It will be replaced.</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG4.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `params.file` (FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG5.txt) already exists. It will be replaced.</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG5.txt has been successfully created !</span></div><div class='output co'>#&gt; <span class='warning'>Warning: `params.file` (FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG6.txt) already exists. It will be replaced.</span></div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG6.txt has been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt; &gt; Done!
-#&gt; 
-#&gt;   Complete table of information about PFG succession parameters can be find in  FATE_simulation/DATA/PFGS/ folder.</div><div class='input'>                                                        
-                                                        
-## ----------------------------------------------------------------------------------------- ##
+                                                          , <span class='kw'>immature_size</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>5</span>)))
 
-## Load example data
-                                                        
 
-</div></pre>
+<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
+
+<span class='co'>## Load example data</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

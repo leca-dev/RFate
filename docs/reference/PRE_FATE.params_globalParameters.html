@@ -941,9 +941,10 @@ file, and if so, some additional parameters will be required :</p>
 <code><a href='PRE_FATE.params_simulParameters.html'>PRE_FATE.params_simulParameters</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()</div><div class='output co'>#&gt; <span class='warning'>Warning: Directory already exists! (`FATE_simulation`)</span></div><div class='input'>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
+
 <span class='co'>## Create a Global_parameters file</span>
 <span class='fu'>PRE_FATE.params_globalParameters</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
                                  , <span class='kw'>required.no_PFG</span> <span class='kw'>=</span> <span class='fl'>3</span>
@@ -962,7 +963,8 @@ file, and if so, some additional parameters will be required :</p>
                                  , <span class='kw'>DISPERSAL.mode</span> <span class='kw'>=</span> <span class='fl'>1</span>
                                  , <span class='kw'>doHabSuitability</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
                                  , <span class='kw'>HABSUIT.mode</span> <span class='kw'>=</span> <span class='fl'>1</span>
-                                 )</div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V3.txt has been successfully created !</span></div><div class='input'>
+                                 )
+
 <span class='co'>## Create SEVERAL Global_parameters files</span>
 <span class='fu'>PRE_FATE.params_globalParameters</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
                                  , <span class='kw'>required.no_PFG</span> <span class='kw'>=</span> <span class='fl'>3</span>
@@ -981,15 +983,13 @@ file, and if so, some additional parameters will be required :</p>
                                  , <span class='kw'>DISPERSAL.mode</span> <span class='kw'>=</span> <span class='fl'>1</span>
                                  , <span class='kw'>doHabSuitability</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
                                  , <span class='kw'>HABSUIT.mode</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>)
-                                 )</div><div class='output co'>#&gt; <span class='message'>The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V4.txt has been successfully created !</span></div><div class='input'>
+                                 )
 
 
-## ----------------------------------------------------------------------------------------- ##
-                 
-## Load example data
-                                 
 
-</div></pre>
+<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
+
+<span class='co'>## Load example data</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

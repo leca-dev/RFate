@@ -288,33 +288,18 @@ below :</em></p><dl'>
 <code><a href='PRE_FATE.speciesClustering_step2.html'>PRE_FATE.speciesClustering_step2</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Load example data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>DATASET_Bauges_PFG</span>)
 
 <span class='co'>## Species traits</span>
 <span class='no'>tab.traits</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.traits</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.traits</span>)</div><div class='output co'>#&gt; 'data.frame':	284 obs. of  7 variables:
-#&gt;  $ species  : Factor w/ 4457 levels "X1000","X10008",..: 2199 2212 1716 2151 2216 2385 2446 2980 3059 3072 ...
-#&gt;  $ GROUP    : chr  "Phanerophyte" "Phanerophyte" NA NA ...
-#&gt;  $ DISPERSAL: Ord.factor w/ 7 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 4 4 3 7 2 1 NA 7 5 3 ...
-#&gt;  $ LIGHT    : Ord.factor w/ 5 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 2 2 NA NA 3 3 NA 3 3 4 ...
-#&gt;  $ NITROGEN : Ord.factor w/ 9 levels "1"&lt;"1.5"&lt;"2"&lt;..: 5 5 5 5 2 7 NA 6 4 3 ...
-#&gt;  $ MOISTURE : Ord.factor w/ 9 levels "1"&lt;"1.5"&lt;"2"&lt;..: 5 6 NA NA 4 6 NA 5 4 3 ...
-#&gt;  $ HEIGHT   : num  7.82 7.82 NA NA 3.99 ...</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.traits</span>)
+
 <span class='co'>## Determinant species</span>
 <span class='no'>sp.DETERM</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.determ</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DETERM</span>)</div><div class='output co'>#&gt; 'data.frame':	262 obs. of  10 variables:
-#&gt;  $ PFG         : chr  "Chamaephyte.1" "Chamaephyte.1" "Chamaephyte.1" "Chamaephyte.1" ...
-#&gt;  $ GROUP       : chr  "Chamaephyte" "Chamaephyte" "Chamaephyte" "Chamaephyte" ...
-#&gt;  $ ID.cluster  : chr  "1" "1" "1" "1" ...
-#&gt;  $ species     : chr  "X10559" "X11102" "X11135" "X11354" ...
-#&gt;  $ ID          : num  1 2 3 4 5 6 7 8 9 10 ...
-#&gt;  $ sp.mean.dist: num  0.0694 0.0558 0.0758 0.0616 0.0604 ...
-#&gt;  $ allSp.mean  : num  0.0814 0.0814 0.0814 0.0814 0.0814 ...
-#&gt;  $ allSp.min   : num  0.0403 0.0403 0.0403 0.0403 0.0403 ...
-#&gt;  $ allSp.max   : num  0.122 0.122 0.122 0.122 0.122 ...
-#&gt;  $ DETERMINANT : Factor w/ 2 levels "TRUE","FALSE": 1 1 1 1 1 2 1 1 1 1 ...</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DETERM</span>)
+
 <span class='co'>## Merge traits and PFG informations</span>
 <span class='no'>mat.traits</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='no'>sp.DETERM</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"species"</span>, <span class='st'>"PFG"</span>)]
                    , <span class='no'>tab.traits</span>
@@ -322,57 +307,23 @@ below :</em></p><dl'>
 
 
 <span class='co'>## Compute traits per PFG : no specific graphic ----------------------------------------------</span>
-<span class='no'>sp.PFG</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step3</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>mat.traits</span>)</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.speciesClustering_step3 : PFG TRAIT VALUES
-#&gt;  #------------------------------------------------------------# </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'> The parameter file PRE_FATE_PFG_TABLE_traits.csv has been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- PRODUCING PLOT(S) 
-#&gt; 
-#&gt; &gt; GROUP...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; DISPERSAL...</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='img'><img src='PRE_FATE.speciesClustering_step3-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; LIGHT...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; NITROGEN...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; MOISTURE...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-5.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; HEIGHT...</div><div class='output co'>#&gt; 
-#&gt; &gt; Done!</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='img'><img src='PRE_FATE.speciesClustering_step3-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>)</div><div class='output co'>#&gt; [1] "tab"  "plot"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>tab</span>)</div><div class='output co'>#&gt; 'data.frame':	20 obs. of  8 variables:
-#&gt;  $ PFG       : chr  "Chamaephyte.1" "Chamaephyte.2" "Chamaephyte.3" "Chamaephyte.4" ...
-#&gt;  $ no.species: int  11 1 8 6 1 1 65 3 92 1 ...
-#&gt;  $ GROUP     : chr  "Chamaephyte" "Chamaephyte" "Chamaephyte" "Chamaephyte" ...
-#&gt;  $ DISPERSAL : chr  "6" "6" "6" "6" ...
-#&gt;  $ LIGHT     : chr  "3" "3" "3" "3" ...
-#&gt;  $ NITROGEN  : chr  "3" "2" "2" "3" ...
-#&gt;  $ MOISTURE  : chr  "2.5" "2.5" "3" "3" ...
-#&gt;  $ HEIGHT    : num  4 6 4 4 5 5 3 4 3 2 ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>)</div><div class='output co'>#&gt; [1] "GROUP"     "DISPERSAL" "LIGHT"     "NITROGEN"  "MOISTURE"  "HEIGHT"   </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>DISPERSAL</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='img'><img src='PRE_FATE.speciesClustering_step3-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>LIGHT</span>)</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-8.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>MOISTURE</span>)</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-9.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>sp.PFG</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step3</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>mat.traits</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>tab</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>DISPERSAL</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>LIGHT</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>MOISTURE</span>)
+
 
 <span class='co'>## Compute traits per PFG : with one specific graphic ----------------------------------------</span>
 <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='no'>mat.traits</span>) <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"species"</span>, <span class='st'>"PFG"</span>, <span class='st'>"GROUP"</span>, <span class='st'>"DISPERSAL"</span>
                          , <span class='st'>"light"</span>, <span class='st'>"NITROGEN"</span>, <span class='st'>"MOISTURE"</span>, <span class='st'>"height"</span>)
-<span class='no'>sp.PFG</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step3</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>mat.traits</span>)</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.speciesClustering_step3 : PFG TRAIT VALUES
-#&gt;  #------------------------------------------------------------# </div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'> The parameter file PRE_FATE_PFG_TABLE_traits.csv has been successfully created !</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- PRODUCING PLOT(S) 
-#&gt; 
-#&gt; &gt; Height and light...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-10.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; GROUP...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-11.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; DISPERSAL...</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='img'><img src='PRE_FATE.speciesClustering_step3-12.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; NITROGEN...</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-13.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 
-#&gt; &gt; MOISTURE...</div><div class='output co'>#&gt; 
-#&gt; &gt; Done!</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 1 rows containing missing values (geom_point).</span></div><div class='img'><img src='PRE_FATE.speciesClustering_step3-14.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>)</div><div class='output co'>#&gt; [1] "tab"  "plot"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>tab</span>)</div><div class='output co'>#&gt; 'data.frame':	20 obs. of  8 variables:
-#&gt;  $ PFG       : chr  "Chamaephyte.1" "Chamaephyte.2" "Chamaephyte.3" "Chamaephyte.4" ...
-#&gt;  $ no.species: int  11 1 8 6 1 1 65 3 92 1 ...
-#&gt;  $ GROUP     : chr  "Chamaephyte" "Chamaephyte" "Chamaephyte" "Chamaephyte" ...
-#&gt;  $ DISPERSAL : chr  "6" "6" "6" "6" ...
-#&gt;  $ light     : chr  "3" "3" "3" "3" ...
-#&gt;  $ NITROGEN  : chr  "3" "2" "2" "3" ...
-#&gt;  $ MOISTURE  : chr  "2.5" "2.5" "3" "3" ...
-#&gt;  $ height    : num  4 6 4 4 5 5 3 4 3 2 ...</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>)</div><div class='output co'>#&gt; [1] "height_light" "GROUP"        "DISPERSAL"    "NITROGEN"     "MOISTURE"    </div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>height_light</span>)</div><div class='img'><img src='PRE_FATE.speciesClustering_step3-15.png' alt='' width='700' height='433' /></div><div class='input'>
-
-</div></pre>
+<span class='no'>sp.PFG</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step3</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>mat.traits</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>tab</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.PFG</span>$<span class='no'>plot</span>$<span class='no'>height_light</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

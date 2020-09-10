@@ -303,117 +303,23 @@ is weighted by the number of traits used</strong>.</p>
 <code><a href='https://rdrr.io/pkg/phyloclim/man/niche.overlap.html'>niche.overlap</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
+    <pre class="examples">
 <span class='co'>## Load example data</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>DATASET_Bauges_PFG</span>)
 
 <span class='co'>## Species traits</span>
 <span class='no'>tab.traits</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.traits</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.traits</span>)</div><div class='output co'>#&gt; 'data.frame':	284 obs. of  7 variables:
-#&gt;  $ species  : Factor w/ 4457 levels "X1000","X10008",..: 2199 2212 1716 2151 2216 2385 2446 2980 3059 3072 ...
-#&gt;  $ GROUP    : chr  "Phanerophyte" "Phanerophyte" NA NA ...
-#&gt;  $ DISPERSAL: Ord.factor w/ 7 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 4 4 3 7 2 1 NA 7 5 3 ...
-#&gt;  $ LIGHT    : Ord.factor w/ 5 levels "1"&lt;"2"&lt;"3"&lt;"4"&lt;..: 2 2 NA NA 3 3 NA 3 3 4 ...
-#&gt;  $ NITROGEN : Ord.factor w/ 9 levels "1"&lt;"1.5"&lt;"2"&lt;..: 5 5 5 5 2 7 NA 6 4 3 ...
-#&gt;  $ MOISTURE : Ord.factor w/ 9 levels "1"&lt;"1.5"&lt;"2"&lt;..: 5 6 NA NA 4 6 NA 5 4 3 ...
-#&gt;  $ HEIGHT   : num  7.82 7.82 NA NA 3.99 ...</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.traits</span>)
+
 <span class='co'>## Species niche overlap (similarity distance)</span>
 <span class='no'>tab.overlap</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.dist_overlap</span>
-<span class='no'>tab.overlap</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]</div><div class='output co'>#&gt;           X10113    X10130    X10328    X10502    X10512
-#&gt; X10113        NA 0.3658476 0.5682751 0.7287500 0.6877509
-#&gt; X10130 0.6572168        NA 0.1029676 0.4860218 0.1602655
-#&gt; X10328 0.8243148 0.2691582        NA 0.5529661 0.6170380
-#&gt; X10502 0.9359201 0.7582322 0.7777290        NA 0.4915670
-#&gt; X10512 0.8841843 0.3711542 0.8725871 0.7480937        NA</div><div class='input'>
+<span class='no'>tab.overlap</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]
+
 <span class='co'>## Give warnings -----------------------------------------------------------------------------</span>
 <span class='no'>sp.DIST</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>tab.traits</span>
-                                   , <span class='kw'>mat.overlap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.overlap</span>))</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.speciesDistance
-#&gt;  #------------------------------------------------------------# 
-#&gt; 
-#&gt;  ---------- INFORMATION : AVAILABLE 
-#&gt; 
-#&gt; &gt; FOR TRAITS 
-#&gt;   Number of species :  284
-#&gt;   Groups :  Chamaephyte, Herbaceous, Phanerophyte
-#&gt;   Measured traits :  DISPERSAL, LIGHT, NITROGEN, MOISTURE, HEIGHT</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing data!</span>
-#&gt; <span class='warning'> `mat.traits` contains some species with no trait values : X323, X40623, X41178</span>
-#&gt; <span class='warning'>These species will not be taken into account ! </span>
-#&gt; <span class='warning'></span></div><div class='output co'>#&gt; 
-#&gt; &gt; FOR OVERLAP 
-#&gt;   Number of species :  275
-#&gt; 
-#&gt; &gt; FOR BOTH 
-#&gt;   Number of species with traits and no overlap information :  17
-#&gt;   Number of species with overlap and no traits information :  11
-#&gt;   Number of species with both trait and overlap distances:  264
-#&gt; 
-#&gt;   Comparison of groups' dimensions : 
-#&gt; 
-#&gt; &gt; Group Chamaephyte :    trait values = 31   overlap values =  28
-#&gt; &gt; Group Herbaceous :    trait values = 216   overlap values =  204
-#&gt; &gt; Group Phanerophyte :    trait values = 32   overlap values =  30</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing data!</span>
-#&gt; <span class='warning'> `mat.traits` contains some traits with too many missing values or not enough variation between species. </span>
-#&gt; <span class='warning'>These traits will not be taken into account ! </span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>Columns below represent for each trait :</span>
-#&gt; <span class='warning'> - the percentage of missing values </span>
-#&gt; <span class='warning'> - the percentage of similar species </span>
-#&gt; <span class='warning'> - the standard deviation of pairwise distances </span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>In group Chamaephyte : </span>
-#&gt; <span class='warning'> &gt;&gt; DISPERSAL			0.38	45.87	17.83</span>
-#&gt; <span class='warning'> &gt;&gt; LIGHT			0	33.6	23.93</span>
-#&gt; <span class='warning'> &gt;&gt; NITROGEN			0	29.63	21.15</span>
-#&gt; <span class='warning'>In group Herbaceous : </span>
-#&gt; <span class='warning'> &gt;&gt; DISPERSAL			2.27	17.15	28.67</span>
-#&gt; <span class='warning'> &gt;&gt; LIGHT			0.76	37.25	27.07</span>
-#&gt; <span class='warning'> &gt;&gt; MOISTURE			1.14	15.74	23.08</span>
-#&gt; <span class='warning'> &gt;&gt; NITROGEN			0	25.87	19.76</span>
-#&gt; <span class='warning'>In group Phanerophyte : </span>
-#&gt; <span class='warning'> &gt;&gt; DISPERSAL			0	33.56	22.79</span>
-#&gt; <span class='warning'> &gt;&gt; LIGHT			0	32.64	23.99</span>
-#&gt; <span class='warning'> &gt;&gt; MOISTURE			0.38	18.72	23.58</span>
-#&gt; <span class='warning'> &gt;&gt; NITROGEN			0	28.05	28.49</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- INFORMATION : USED 
-#&gt; 
-#&gt;   Traits used to calculate functional distances : 
-#&gt; 
-#&gt; &gt; Group Chamaephyte : HEIGHT MOISTURE
-#&gt; &gt; Group Herbaceous : HEIGHT
-#&gt; &gt; Group Phanerophyte : HEIGHT
-#&gt; 
-#&gt;   Number of species :  262
-#&gt;   Groups :  Chamaephyte, Herbaceous, Phanerophyte
-#&gt;   Number of species in each group :  28 204 30
-#&gt;   Number of NA values due to `gowdis` function :  2
-#&gt; 
-#&gt; &gt; Done!</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'> The output files </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_speciesDistance_Chamaephyte.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_speciesDistance_Herbaceous.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_speciesDistance_Phanerophyte.csv </span>
-#&gt; <span class='message'>have been successfully created !</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DIST</span>)</div><div class='output co'>#&gt; List of 3
-#&gt;  $ Chamaephyte : 'dist' num [1:378] 0.2286 0.23 0.0955 0.1376 0.0809 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:28] "X10559" "X10896" "X11038" "X11102" ...
-#&gt;   ..- attr(*, "Size")= int 28
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ Herbaceous  : 'dist' num [1:20706] 0.181 0.113 0.139 0.36 0.168 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:204] "X10113" "X10130" "X10328" "X10502" ...
-#&gt;   ..- attr(*, "Size")= int 204
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ Phanerophyte: 'dist' num [1:435] 0.0224 0.3209 0.1192 0.1826 0.3868 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:30] "X10512" "X10889" "X11057" "X11313" ...
-#&gt;   ..- attr(*, "Size")= int 30
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE</div><div class='input'>
+                                   , <span class='kw'>mat.overlap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.overlap</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DIST</span>)
+
 <span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>foreach</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>ggplot2</span>)
@@ -438,88 +344,8 @@ is weighted by the number of traits used</strong>.</p>
                                    , <span class='kw'>mat.overlap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.overlap</span>)
                                    , <span class='kw'>opt.maxPercent.NA</span> <span class='kw'>=</span> <span class='fl'>0.05</span>
                                    , <span class='kw'>opt.maxPercent.similarSpecies</span> <span class='kw'>=</span> <span class='fl'>0.3</span>
-                                   , <span class='kw'>opt.min.sd</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)</div><div class='output co'>#&gt; 
-#&gt; 
-#&gt;  #------------------------------------------------------------#
-#&gt;  # PRE_FATE.speciesDistance
-#&gt;  #------------------------------------------------------------# 
-#&gt; 
-#&gt;  ---------- INFORMATION : AVAILABLE 
-#&gt; 
-#&gt; &gt; FOR TRAITS 
-#&gt;   Number of species :  284
-#&gt;   Groups :  Chamaephyte, Herbaceous, Phanerophyte
-#&gt;   Measured traits :  DISPERSAL, LIGHT, NITROGEN, MOISTURE, HEIGHT</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing data!</span>
-#&gt; <span class='warning'> `mat.traits` contains some species with no trait values : X323, X40623, X41178</span>
-#&gt; <span class='warning'>These species will not be taken into account ! </span>
-#&gt; <span class='warning'></span></div><div class='output co'>#&gt; 
-#&gt; &gt; FOR OVERLAP 
-#&gt;   Number of species :  275
-#&gt; 
-#&gt; &gt; FOR BOTH 
-#&gt;   Number of species with traits and no overlap information :  17
-#&gt;   Number of species with overlap and no traits information :  11
-#&gt;   Number of species with both trait and overlap distances:  264
-#&gt; 
-#&gt;   Comparison of groups' dimensions : 
-#&gt; 
-#&gt; &gt; Group Chamaephyte :    trait values = 31   overlap values =  28
-#&gt; &gt; Group Herbaceous :    trait values = 216   overlap values =  204
-#&gt; &gt; Group Phanerophyte :    trait values = 32   overlap values =  30</div><div class='output co'>#&gt; <span class='warning'>Warning: Missing data!</span>
-#&gt; <span class='warning'> `mat.traits` contains some traits with too many missing values or not enough variation between species. </span>
-#&gt; <span class='warning'>These traits will not be taken into account ! </span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>Columns below represent for each trait :</span>
-#&gt; <span class='warning'> - the percentage of missing values </span>
-#&gt; <span class='warning'> - the percentage of similar species </span>
-#&gt; <span class='warning'> - the standard deviation of pairwise distances </span>
-#&gt; <span class='warning'></span>
-#&gt; <span class='warning'>In group Chamaephyte : </span>
-#&gt; <span class='warning'> &gt;&gt; DISPERSAL			0.38	45.87	17.83</span>
-#&gt; <span class='warning'> &gt;&gt; LIGHT			0	33.6	23.93</span>
-#&gt; <span class='warning'>In group Herbaceous : </span>
-#&gt; <span class='warning'> &gt;&gt; LIGHT			0.76	37.25	27.07</span>
-#&gt; <span class='warning'>In group Phanerophyte : </span>
-#&gt; <span class='warning'> &gt;&gt; DISPERSAL			0	33.56	22.79</span>
-#&gt; <span class='warning'> &gt;&gt; LIGHT			0	32.64	23.99</span></div><div class='output co'>#&gt; 
-#&gt;  ---------- INFORMATION : USED 
-#&gt; 
-#&gt;   Traits used to calculate functional distances : 
-#&gt; 
-#&gt; &gt; Group Chamaephyte : HEIGHT MOISTURE NITROGEN
-#&gt; &gt; Group Herbaceous : DISPERSAL HEIGHT MOISTURE NITROGEN
-#&gt; &gt; Group Phanerophyte : HEIGHT MOISTURE NITROGEN
-#&gt; 
-#&gt;   Number of species :  262
-#&gt;   Groups :  Chamaephyte, Herbaceous, Phanerophyte
-#&gt;   Number of species in each group :  28 204 30
-#&gt;   Number of NA values due to `gowdis` function :  2
-#&gt; 
-#&gt; &gt; Done!</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'> The output files </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_speciesDistance_Chamaephyte.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_speciesDistance_Herbaceous.csv </span>
-#&gt; <span class='message'> &gt; PRE_FATE_DOMINANT_speciesDistance_Phanerophyte.csv </span>
-#&gt; <span class='message'>have been successfully created !</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DIST</span>)</div><div class='output co'>#&gt; List of 3
-#&gt;  $ Chamaephyte : 'dist' num [1:378] 0.1914 0.1925 0.0716 0.1032 0.0607 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:28] "X10559" "X10896" "X11038" "X11102" ...
-#&gt;   ..- attr(*, "Size")= int 28
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ Herbaceous  : 'dist' num [1:20706] 0.3 0.184 0.059 0.526 0.286 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:204] "X10113" "X10130" "X10328" "X10502" ...
-#&gt;   ..- attr(*, "Size")= int 204
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE
-#&gt;  $ Phanerophyte: 'dist' num [1:435] 0.0201 0.1604 0.1905 0.1836 0.2855 ...
-#&gt;   ..- attr(*, "Labels")= chr [1:30] "X10512" "X10889" "X11057" "X11313" ...
-#&gt;   ..- attr(*, "Size")= int 30
-#&gt;   ..- attr(*, "call")= language as.dist.default(m = mat)
-#&gt;   ..- attr(*, "Diag")= logi FALSE
-#&gt;   ..- attr(*, "Upper")= logi FALSE</div><div class='input'>
-</div></pre>
+                                   , <span class='kw'>opt.min.sd</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DIST</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
