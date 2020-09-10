@@ -1,0 +1,4 @@
+"NAME" "SOIL_CONTRIB" "SOIL_LOW" "SOIL_HIGH" "ACTIVE_GERM_for_L" "ACTIVE_GERM_for_M" "ACTIVE_GERM_for_H" "SOIL_TOL_for_GeL" "SOIL_TOL_for_GeM" "SOIL_TOL_for_GeH" "SOIL_TOL_for_ImL" "SOIL_TOL_for_ImM" "SOIL_TOL_for_ImH" "SOIL_TOL_for_MaL" "SOIL_TOL_for_MaM" "SOIL_TOL_for_MaH"
+"PFG1" "2.5" "2" "3" "8" "10" "5" "1" "10" "3" "4" "10" "6" "7" "10" "9"
+"PFG2" "3" "3" "3" "8" "10" "5" "1" "10" "3" "4" "10" "6" "7" "10" "9"
+"PFG3" "4.8" "3" "6" "9" "10" "9" "1" "10" "3" "4" "10" "6" "7" "10" "9"
