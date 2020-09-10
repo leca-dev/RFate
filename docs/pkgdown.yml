@@ -1,6 +1,14 @@
 pandoc: 1.19.2.1
 pkgdown: 1.5.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-09-10T09:47Z
+articles:
+  fate_tutorial_0_modelling_framework: fate_tutorial_0_modelling_framework.html
+  fate_tutorial_0_publications: fate_tutorial_0_publications.html
+  fate_tutorial_1_PFG: fate_tutorial_1_PFG.html
+  fate_tutorial_2_RUN_SIMULATION: fate_tutorial_2_RUN_SIMULATION.html
+  fate_tutorial_3_MODULES: fate_tutorial_3_MODULES.html
+  rfate_tutorial_1_PFG: rfate_tutorial_1_PFG.html
+  rfate_tutorial_2_params: rfate_tutorial_2_params.html
+  rfate_tutorial_3_graphics: rfate_tutorial_3_graphics.html
+last_built: 2020-09-10T12:47Z
 
