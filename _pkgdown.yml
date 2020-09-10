@@ -1,0 +1,124 @@
+
+navbar:
+  structure:
+    left:
+    - home
+    - FATE
+    - RFate
+    - reference
+    right:
+    - download
+    - github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      icon: fa-book fa-lg
+      href: reference/index.html
+    FATE:
+      text: FATE
+      icon: fab fa-pagelines
+      menu:
+        - text: "---------"
+        - text: Publications
+          href: articles/fate_tutorial_0_publications.html
+        - text: Modelling framework
+          href: articles/fate_tutorial_0_modelling_framework.html
+        - text: "---------"
+        - text: a. Principle of PFG
+          href: articles/fate_tutorial_1_PFG.html
+        - text: b. Run a FATE simulation
+          href: articles/fate_tutorial_2_RUN_SIMULATION.html
+        - text: c. Use a FATE module
+          href: articles/fate_tutorial_3_MODULES.html
+    RFate:
+      text: RFate
+      icon: fas fa-toolbox
+      menu:
+        - text: "---------"
+        - text: Build PFG
+          icon: fa-battery-quarter
+          href: articles/rfate_tutorial_1_PFG.html
+        - text: Build parameter files
+          icon: fa-battery-half
+          href: articles/rfate_tutorial_2_params.html
+        - text: Build graphics
+          icon: fa-battery-three-quarters
+          href: articles/rfate_tutorial_3_graphics.html
+        - text: "---------"
+    articles:
+    download:
+      text: 'Download Current Version'
+      icon: fa-rocket fa-lg
+      href: archive/RFate_0.2.0.9000.tar.gz
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/leca-dev/RFate.git
+      
+
+reference:
+  - title: Datasets
+    desc:  Used in the examples.
+    contents:
+      - "DATASET_Bauges_PFG"
+  - title: Interface
+    desc:  Graphical User Interface (shiny application)
+    contents:
+      - "RFATE.run"
+  - title: Build Plant Functional Groups (PFG)
+    desc:  Functions to select dominant species, compute functional distance between species and build clusters.
+    contents:
+      - "PRE_FATE.abundBraunBlanquet"
+      - "PRE_FATE.selectDominant"
+      - "PRE_FATE.speciesDistance"
+      - "PRE_FATE.speciesClustering_step1"
+      - "PRE_FATE.speciesClustering_step2"
+      - "PRE_FATE.speciesClustering_step3"
+  - title: Create FATE parameter files
+    desc:  Create user-friendly directory tree, parameter and simulation files for FATE simulation.
+    contents:
+      - "PRE_FATE.skeletonDirectory"
+      - "PRE_FATE.params_PFGsuccession"
+      - "PRE_FATE.params_PFGlight"
+      - "PRE_FATE.params_PFGsoil"
+      - "PRE_FATE.params_PFGdispersal"
+      - "PRE_FATE.params_PFGdisturbance"
+      - "PRE_FATE.params_PFGdrought"
+      - "PRE_FATE.params_changingYears"
+      - "PRE_FATE.params_savingYears"
+      - "PRE_FATE.params_globalParameters"
+      - "PRE_FATE.params_simulParameters"
+      - "PRE_FATE.params_multipleSet"
+  - title: Run FATE simulation
+    contents:
+      - "FATE.run"
+  - title: Analyze FATE outputs
+    desc:  Evalute predicted maps, produce summary and dynamic graphics.
+    contents:
+      - "POST_FATE.graphics"
+      - "POST_FATE.temporalEvolution"
+      - "POST_FATE.graphic_evolutionCoverage"
+      - "POST_FATE.graphic_evolutionPixels"
+      - "POST_FATE.graphic_evolutionStability"
+      - "POST_FATE.relativeAbund"
+      - "POST_FATE.graphic_validationStatistics"
+      - "POST_FATE.binaryMaps"
+      - "POST_FATE.graphic_mapPFGvsHS"
+      - "POST_FATE.graphic_mapPFG"
+  - title: Save FATE simulation
+    contents:
+      - "SAVE_FATE.step1_PFG"
+      - "SAVE_FATE.step2_parameters"
+  - title: Tool box
+    desc:  Utility functions.
+    contents:
+      - ".getOS"
+      - ".getParam"
+      - ".setParam"
+      - ".setPattern"
+      - ".adaptMaps"
+      - ".upscaleMaps"
+      - ".getCutoff"
+      - ".unzip_ALL"
