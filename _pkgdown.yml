@@ -52,7 +52,7 @@ navbar:
     download:
       text: 'Download Current Version'
       icon: fa-rocket fa-lg
-      href: archive/RFate_0.2.0.9000.tar.gz
+      href: archive/RFate_1.0.tar.gz
     github:
       icon: fa-github fa-lg
       href: https://github.com/leca-dev/RFate.git
