@@ -1,0 +1,201 @@
+---
+title: "`shinyRFate` interface"
+output:
+  html_document:
+    theme: lumen
+    highlight: zenburn
+    number_sections: no
+    toc: yes
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+---
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+<style>
+.zoom p {
+width:250px;
+margin-left: auto;
+margin-right: auto;
+}
+.zoom p:hover {
+width:900px;
+position: relative;
+z-index: 10;
+}
+.column {
+  float: left;
+  width: 30%;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+
+<br/>
+
+<div style = "text-align:center;">See [RFATE.run()](../reference/RFATE.run.html) function</div>
+
+<br/>
+
+
+`RFate` workflow, presented on [Home page](../index.html), is quite long and complex. Although it can be divided into **4 main parts**, each of them requires several steps, and the user can quickly get lost or confused in the whole process.
+
+The organization of the [Reference page](../reference/index.html), as well as the order of the tutorials, try to reflect these different parts.
+
+A [shiny](https://shiny.rstudio.com/) interface, that can be launched with the [RFATE.run()](../reference/RFATE.run.html) function from the `RFate` package allows the user to go through the different steps without going through the code. Links to the *functions documentation*, *vizualization tools*, the possibility to *start from pre-existing folders*, always being able to follow the *progress in the console* of the different functions... This interface should make it easier to take control of `FATE` with R.
+
+<div style="text-align:center;">
+<img src="pictures/SHINY_RFate_1.png" alt="shinyRFate home" style="width:700px;"></img>
+</div>
+
+
+<br/>
+
+
+## <i class="fas fa-tools"></i> `shinyRFate` tool box
+
+#### <i class="fas fa-question-circle"></i> Help and documentation
+
+Two types of documentation can be accessed all over the application through <i class="fas fa-question-circle"></i> buttons. They give informations about :
+
+  - the different steps to be followed in each part  
+  (global informations that can be found in the tutorials, about [the different `FATE` modules](fate_tutorial_3_MODULES.html) for example)
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_2.png" alt="shinyRFate help 1"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_3.png" alt="shinyRFate help 2"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_10.png" alt="shinyRFate help 3"></img></p>
+  </div>
+  </div>
+</div> 
+
+  - the different parameters needed by the available functions, and redirection to more complete documentation (see [Reference page](../reference/index.html))
+
+<div class="zoom">
+<p><img src="pictures/SHINY_RFate_8.png" alt="shinyRFate help 4"></img></p>
+</div>
+
+#### <i class="fas fa-hourglass-half"></i> Monitoring of functions
+
+Once a button was pressed to start a function, a panel is displayed as long as the function is running, indicating the selected parameters. All informations printed by the function can be followed within the `R` console. Information panels appear when the functions has finished running, results files have been created, or an error has been found.
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_4.png" alt="shinyRFate running function"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_6.png" alt="shinyRFate output function"></img></p>
+  </div>
+  </div>
+</div> 
+
+<br/><br/>
+
+
+## <i class="fas fa-shoe-prints"></i> `shinyRFate` workflow
+
+#### <i class="fa fa-object-group"></i> Plant Functional Groups
+
+Created graphics and tables of loaded and used values can be visualized through the application.  
+Generally, the data shown onto the shiny application is saved into `.csv` or `.pdf` files.
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_5.png" alt="shinyRFate 1. graphic"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_7.png" alt="shinyRFate 1. table"></img></p>
+  </div>
+  </div>
+</div> 
+
+#### <i class="fa fa-copy"></i> Simulation parameter files
+
+Parameter files and folders can be created, visualized and modified from the application.  
+Multiple sets of parameters can be produced from a pre-existing simulation folder.
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_11.png" alt="shinyRFate 2."></img></p>
+  </div>
+  </div>
+</div> 
+
+#### <i class="fa fa-cogs"></i> Run a FATE simulation
+
+`C++` model is run through `R` with the `Rcpp` package.
+Outputs and log errors can be visualized in the application or the `R` console.
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_12.png" alt="shinyRFate 3."></img></p>
+  </div>
+  </div>
+</div> 
+
+#### <i class="fa fa fa-chart-bar"></i> Analyse results
+
+`RFate` package provides functions to pre-analyse results of `FATE` simulations. 
+It can produce intermediate results files, quick summary graphics, and preliminary transformation of outputs. Existing graphics can be re-viewed with the browser panel.
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_9.png" alt="shinyRFate 4. graphic"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_13.png" alt="shinyRFate 4. table"></img></p>
+  </div>
+  </div>
+</div>
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_16.png" alt="shinyRFate 4. table"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_17.png" alt="shinyRFate 4. table"></img></p>
+  </div>
+  </div>
+</div> 
+
+<div class="row">
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_14.png" alt="shinyRFate 4. table"></img></p>
+  </div>
+  </div>
+  <div class="column">
+  <div class="zoom">
+  <p><img src="pictures/SHINY_RFate_15.png" alt="shinyRFate 4. table"></img></p>
+  </div>
+  </div>
+</div>

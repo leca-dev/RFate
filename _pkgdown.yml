@@ -6,6 +6,7 @@ navbar:
     - FATE
     - RFate
     - reference
+    - interface
     right:
     - download
     - github
@@ -48,6 +49,10 @@ navbar:
           icon: fa-battery-three-quarters
           href: articles/rfate_tutorial_3_graphics.html
         - text: "---------"
+    interface:
+      text: SHINY interface
+      icon: fas fa-desktop
+      href: articles/interface_tutorial_0_presentation.html
     articles:
     download:
       text: 'Download Current Version'
