@@ -47,7 +47,7 @@
   actual = packageDescription(pkgname)[["Version"]]
   previouswarn = getOption("warn")
   options(warn = 2)
-  webpage = "https://mayagueguen.github.io/RFate/authors.html"
+  webpage = "https://leca-dev.github.io/RFate/authors.html"
   description = try(read.delim(webpage, header = F, stringsAsFactors = F), silent = TRUE)
   
   m = paste("Welcome in package", pkgname, "!")
@@ -73,7 +73,7 @@
   }
   m = paste0(m, "\n Support functions for the software FATE.")
   m = paste0(m, "\n More informations can be find here :")
-  m = paste0(m, "\n - https://rleca.github.io/RFate/")
+  m = paste0(m, "\n - https://leca-dev.github.io/RFate/")
   
   packageStartupMessage(m)
   options(warn = previouswarn)
