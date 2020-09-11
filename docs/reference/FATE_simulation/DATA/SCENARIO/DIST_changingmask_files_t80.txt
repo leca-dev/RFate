@@ -1,2 +1,0 @@
-MASK_DIST1_80.tif
-MASK_DIST2_80.tif

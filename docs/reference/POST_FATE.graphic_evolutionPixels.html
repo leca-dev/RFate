@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create a graphical representation of the evolution of PFG abundance 
-through time for 5 (or more) pixels of a <code>FATE</code> simulation — POST_FATE.graphic_evolutionPixels • RFate</title>
+through time for 5 (or more) pixels of a FATE simulation — POST_FATE.graphic_evolutionPixels • RFate</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ through time for 5 (or more) pixels of a <code>FATE</code> simulation — POST_F
 
 
 <meta property="og:title" content="Create a graphical representation of the evolution of PFG abundance 
-through time for 5 (or more) pixels of a <code>FATE</code> simulation — POST_FATE.graphic_evolutionPixels" />
+through time for 5 (or more) pixels of a FATE simulation — POST_FATE.graphic_evolutionPixels" />
 <meta property="og:description" content="This script is designed to produce one graphical representation 
 for a FATE simulation : the evolution through time of the 
 abundance of each PFG for 5 (or more) randomly selected cells of the studied 
@@ -200,11 +200,11 @@ area.</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.graphic_evolutionPixels</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.cells_ID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.fixedScale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>opt.doPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  opt.cells_ID = <span class='kw'>NULL</span>,
+  opt.fixedScale = <span class='fl'>TRUE</span>,
+  opt.doPlot = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -244,8 +244,8 @@ of outputs will occur, be saved and returned</p></td>
 
     <p>A <code>list</code> containing one <code>data.frame</code> object with the 
 following columns, and one <code>ggplot2</code> object :</p>
-<dl'>
-  <dt>tab</dt><dd><p><dl'>
+<dl>
+  <dt>tab</dt><dd><p><dl>
       <dt><code>TYPE</code></dt><dd><p>concerned information (either '<code>light</code>', 
       '<code>abundance</code>' or '<code>soil</code>')</p></dd>
       <dt><code>GROUP</code></dt><dd><p>concerned entity (either 
@@ -262,14 +262,14 @@ following columns, and one <code>ggplot2</code> object :</p>
 </dl>
 
 
-<p>One <code>POST_FATE_TABLE_PIXEL_evolution_pixels_[...].csv</code> file is created :</p><dl'>
+<p>One <code>POST_FATE_TABLE_PIXEL_evolution_pixels_[...].csv</code> file is created :</p><dl>
   <dt><em>pixels ids</em></dt><dd><p>always, containing the <code>data.frame</code> detailed 
   above</p></dd>
 
 </dl>
 
 
-<p>One <code>POST_FATE_[...].pdf</code> file is created :</p><dl'>
+<p>One <code>POST_FATE_[...].pdf</code> file is created :</p><dl>
   <dt><code class="file">GRAPHIC_A <br /> pixels</code></dt><dd><p>to visualize for each PFG the evolution 
   of its abundance within each selected pixel through simulation time</p></dd>
 
@@ -302,22 +302,27 @@ activated).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='POST_FATE.temporalEvolution.html'>POST_FATE.temporalEvolution</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>POST_FATE.graphic_evolutionPixels</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                                  , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>)
-
-<span class='fu'>POST_FATE.graphic_evolutionPixels</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                                  , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                                  , <span class='kw'>opt.fixedScale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
+<span class='fu'>POST_FATE.graphic_evolutionPixels</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                                  , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>)
+                                    
+<span class='fu'>POST_FATE.graphic_evolutionPixels</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                                  , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                                  , opt.fixedScale = <span class='fl'>FALSE</span>)
 }
-
+                                    
 
 
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-<span class='co'>## Load example data</span></pre>
+<span class='co'>## Load example data</span>
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -333,7 +338,7 @@ activated).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

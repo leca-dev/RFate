@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create all possible graphical representations for a <code>FATE</code> 
+<title>Create all possible graphical representations for a FATE 
 simulation — POST_FATE.graphics • RFate</title>
 
 
@@ -40,7 +40,7 @@ simulation — POST_FATE.graphics • RFate</title>
 
 
 
-<meta property="og:title" content="Create all possible graphical representations for a <code>FATE</code> 
+<meta property="og:title" content="Create all possible graphical representations for a FATE 
 simulation — POST_FATE.graphics" />
 <meta property="og:description" content="This script is designed to produce a set of graphical 
 representations for a FATE simulation. Graphics can be of three 
@@ -204,31 +204,31 @@ specific year (richness, abundance, light, soil).</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.graphics</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>years</span>,
-  <span class='no'>no_years</span>,
-  <span class='kw'>opt.ras_habitat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>doFunc.evolCov</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>doFunc.evolPix</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>doFunc.evolStab</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>evolPix.cells_ID</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>evolStab.mw_size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>evolStab.mw_step</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>evol.fixedScale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>doFunc.valid</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='no'>valid.mat.PFG.obs</span>,
-  <span class='kw'>doFunc.mapPFGvsHS</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>doFunc.mapPFG</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>mapPFGvsHS.stratum</span> <span class='kw'>=</span> <span class='st'>"all"</span>,
-  <span class='no'>binMap.method</span>,
-  <span class='kw'>binMap.method1.threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
-  <span class='kw'>binMap.method2.cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>mapPFG.stratum_min</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>mapPFG.stratum_max</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>mapPFG.doBinary</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>opt.doPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  <span class='kw'>years</span>,
+  <span class='kw'>no_years</span>,
+  opt.ras_habitat = <span class='kw'>NULL</span>,
+  doFunc.evolCov = <span class='fl'>TRUE</span>,
+  doFunc.evolPix = <span class='fl'>TRUE</span>,
+  doFunc.evolStab = <span class='fl'>TRUE</span>,
+  evolPix.cells_ID = <span class='kw'>NULL</span>,
+  evolStab.mw_size = <span class='fl'>3</span>,
+  evolStab.mw_step = <span class='fl'>1</span>,
+  evol.fixedScale = <span class='fl'>TRUE</span>,
+  doFunc.valid = <span class='fl'>TRUE</span>,
+  <span class='kw'>valid.mat.PFG.obs</span>,
+  doFunc.mapPFGvsHS = <span class='fl'>TRUE</span>,
+  doFunc.mapPFG = <span class='fl'>TRUE</span>,
+  mapPFGvsHS.stratum = <span class='st'>"all"</span>,
+  <span class='kw'>binMap.method</span>,
+  binMap.method1.threshold = <span class='fl'>0.05</span>,
+  binMap.method2.cutoff = <span class='kw'>NULL</span>,
+  mapPFG.stratum_min = <span class='fl'>1</span>,
+  mapPFG.stratum_max = <span class='fl'>10</span>,
+  mapPFG.doBinary = <span class='fl'>TRUE</span>,
+  opt.doPlot = <span class='fl'>TRUE</span>,
+  opt.no_CPU = <span class='fl'>1</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -389,8 +389,8 @@ files, as well as the extraction of values from raster files</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The following <code>POST_FATE_GRAPHIC_[...].pdf</code> files are created :</p><dl'>
-  <dt><code class="file">A_evolution_coverage</code></dt><dd><p><dl'>
+    <p>The following <code>POST_FATE_GRAPHIC_[...].pdf</code> files are created :</p><dl>
+  <dt><code class="file">A_evolution_coverage</code></dt><dd><p><dl>
     <dt><code class="file">spaceOccupancy</code></dt><dd><p>to visualize for each PFG the evolution of 
     its occupation of the studied area through simulation time</p></dd>
     <dt><code class="file">abundance</code></dt><dd><p>to visualize for each PFG the evolution of its 
@@ -404,7 +404,7 @@ files, as well as the extraction of values from raster files</p></td>
   each PFG based on given observations within the studied area</p></dd>
   <dt><code class="file">B_map_PFGvsHS</code></dt><dd><p>to visualize the PFG presence within the 
   studied area (probability and simulated occurrence)</p></dd>
-  <dt><code class="file">C_map_PFG</code></dt><dd><p><dl'>
+  <dt><code class="file">C_map_PFG</code></dt><dd><p><dl>
     <dt><code class="file">PFGcover</code></dt><dd><p>to visualize the PFG cover within the studied 
     area</p></dd>
     <dt><code class="file">PFGrichness</code></dt><dd><p>to visualize the PFG richness within the 
@@ -415,7 +415,7 @@ files, as well as the extraction of values from raster files</p></td>
 
 </dl>
 
-<p>Three folders are created :</p><dl'>
+<p>Three folders are created :</p><dl>
   <dt><code class="file">ABUND_REL_perPFG <br />_allStrata</code></dt><dd><p>containing relative 
   abundance raster maps for each PFG across all strata (see 
   <code><a href='POST_FATE.relativeAbund.html'>POST_FATE.relativeAbund</a></code>)</p></dd>
@@ -498,10 +498,13 @@ the following graphics before the maps are compressed again :</p>
 <code><a href='POST_FATE.graphic_validationStatistics.html'>POST_FATE.graphic_validationStatistics</a></code>, 
 <code><a href='POST_FATE.graphic_mapPFGvsHS.html'>POST_FATE.graphic_mapPFGvsHS</a></code>, 
 <code><a href='POST_FATE.graphic_mapPFG.html'>POST_FATE.graphic_mapPFG</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-## Load exemple data                                 
+<span class='co'>## Load exemple data                                 </span>
 
 </pre>
   </div>
@@ -519,7 +522,7 @@ the following graphics before the maps are compressed again :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

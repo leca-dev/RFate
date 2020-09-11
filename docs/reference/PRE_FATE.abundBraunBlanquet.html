@@ -194,7 +194,7 @@ information into relative abundances or average recovery values
 (between 0 and 100).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.abundBraunBlanquet</span>(<span class='no'>abund</span>)</pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.abundBraunBlanquet</span>(<span class='kw'>abund</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,12 +234,17 @@ phytosociologique et phytogéographique. Nat. Monsp., sér. Bot., 25, 5-21.</em>
 <p><em>Foucault B. (de), 1980. Les prairies du bocage virois (Basse-Normandie, 
 France). Typologie phytosociologique et essai de reconstitution des séries 
 évolutives herbagères. Doc. Phytosoc., N.S., 5, 1-109.</em></p>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='no'>abund_BB</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='st'>"+"</span>, <span class='st'>"r"</span>, <span class='fl'>1</span>:<span class='fl'>5</span>), <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>abund</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.abundBraunBlanquet</span>(<span class='no'>abund_BB</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>abund</span>)</pre>
+<span class='kw'>abund_BB</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='st'>"+"</span>, <span class='st'>"r"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>), size = <span class='fl'>100</span>, replace = <span class='fl'>TRUE</span>)
+<span class='kw'>abund</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.abundBraunBlanquet</span>(<span class='kw'>abund_BB</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>abund</span>)
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -255,7 +260,7 @@ France). Typologie phytosociologique et essai de reconstitution des séries
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

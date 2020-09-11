@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create a graphical representation of the evolution of PFG coverage
-and abundance through time for a <code>FATE</code> simulation — POST_FATE.graphic_evolutionCoverage • RFate</title>
+and abundance through time for a FATE simulation — POST_FATE.graphic_evolutionCoverage • RFate</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ and abundance through time for a <code>FATE</code> simulation — POST_FATE.grap
 
 
 <meta property="og:title" content="Create a graphical representation of the evolution of PFG coverage
-and abundance through time for a <code>FATE</code> simulation — POST_FATE.graphic_evolutionCoverage" />
+and abundance through time for a FATE simulation — POST_FATE.graphic_evolutionCoverage" />
 <meta property="og:description" content="This script is designed to produce two graphical 
 representations for a FATE simulation : 1) the evolution through
 time of the space occupation of each PFG ; 2) the evolution through time
@@ -202,10 +202,10 @@ over the whole area.</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.graphic_evolutionCoverage</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.fixedScale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>opt.doPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  opt.fixedScale = <span class='fl'>TRUE</span>,
+  opt.doPlot = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -240,14 +240,14 @@ of outputs will occur, be saved and returned</p></td>
 
     <p>A <code>list</code> containing two <code>data.frame</code> objects with the 
 following columns, and two <code>ggplot2</code> objects :</p>
-<dl'>
-  <dt>tab.spaceOccupancy</dt><dd><p><dl'>
+<dl>
+  <dt>tab.spaceOccupancy</dt><dd><p><dl>
       <dt><code>PFG</code></dt><dd><p>concerned plant functional group (for abundance)</p></dd>
       <dt><code>HAB</code></dt><dd><p>concerned habitat</p></dd>
       <dt><em>year</em></dt><dd><p>concerned simulation year</p></dd>
       <dt><code>spaceOccupancy</code></dt><dd><p>number of occupied pixels divided by the 
       total number of pixels within the studied area</p></dd></dl></p></dd>
-  <dt>tab.totalAbundance</dt><dd><p><dl'>
+  <dt>tab.totalAbundance</dt><dd><p><dl>
       <dt><code>PFG</code></dt><dd><p>concerned plant functional group (for abundance)</p></dd>
       <dt><code>HAB</code></dt><dd><p>concerned habitat</p></dd>
       <dt><em>year</em></dt><dd><p>concerned simulation year</p></dd>
@@ -261,7 +261,7 @@ following columns, and two <code>ggplot2</code> objects :</p>
 </dl>
 
 
-<p>Two <code>POST_FATE_TABLE_ZONE_evolution_[...].csv</code> files are created :</p><dl'>
+<p>Two <code>POST_FATE_TABLE_ZONE_evolution_[...].csv</code> files are created :</p><dl>
   <dt><code class="file">spaceOccupancy</code></dt><dd><p>always, containing <code>tab.spaceOccupancy</code></p></dd>
   <dt><code class="file">totalAbundance</code></dt><dd><p>always, containing <code>tab.totalAbundance</code></p></dd>
 
@@ -269,7 +269,7 @@ following columns, and two <code>ggplot2</code> objects :</p>
 
 
 <p>One <code>POST_FATE_GRAPHIC_A_evolution_coverage_[...].pdf</code> file is created 
-containing two types of graphics :</p><dl'>
+containing two types of graphics :</p><dl>
   <dt>spaceOccupancy</dt><dd><p>to visualize for each PFG the evolution of its 
   occupation of the studied area through simulation time</p></dd>
   <dt>totalAbundance</dt><dd><p>to visualize for each PFG the evolution of its 
@@ -302,22 +302,28 @@ function has been run and that the file
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='POST_FATE.temporalEvolution.html'>POST_FATE.temporalEvolution</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>POST_FATE.graphic_evolutionCoverage</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                                    , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>)
-
-<span class='fu'>POST_FATE.graphic_evolutionCoverage</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                                    , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                                    , <span class='kw'>opt.fixedScale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
+<span class='fu'>POST_FATE.graphic_evolutionCoverage</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                                    , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>)
+                                    
+<span class='fu'>POST_FATE.graphic_evolutionCoverage</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                                    , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                                    , opt.fixedScale = <span class='fl'>FALSE</span>)
 }
 
 
 
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-<span class='co'>## Load example data</span></pre>
+<span class='co'>## Load example data</span>
+
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -333,7 +339,7 @@ function has been run and that the file
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

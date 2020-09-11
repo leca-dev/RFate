@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create relative abundance maps for each Plant Functional Group for 
-one (or several) specific year of a <code>FATE</code> simulation — POST_FATE.relativeAbund • RFate</title>
+one (or several) specific year of a FATE simulation — POST_FATE.relativeAbund • RFate</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ one (or several) specific year of a <code>FATE</code> simulation — POST_FATE.r
 
 
 <meta property="og:title" content="Create relative abundance maps for each Plant Functional Group for 
-one (or several) specific year of a <code>FATE</code> simulation — POST_FATE.relativeAbund" />
+one (or several) specific year of a FATE simulation — POST_FATE.relativeAbund" />
 <meta property="og:description" content="This script is designed to produce raster maps of PFG 
 simulated relative abundances for one (or several) specific FATE 
 simulation year." />
@@ -198,10 +198,10 @@ simulation year.</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.relativeAbund</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>years</span>,
-  <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  <span class='kw'>years</span>,
+  opt.no_CPU = <span class='fl'>1</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -234,7 +234,7 @@ files</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>One result folder is created :</p><dl'>
+    <p>One result folder is created :</p><dl>
   <dt><code class="file">ABUND_REL_perPFG <br />_allStrata</code></dt><dd><p>containing relative 
   abundance raster maps for each PFG across all strata</p></dd>
 
@@ -266,25 +266,31 @@ before the maps are compressed again :</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='POST_FATE.graphic_validationStatistics.html'>POST_FATE.graphic_validationStatistics</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>POST_FATE.relativeAbund</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                        , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                        , <span class='kw'>years</span> <span class='kw'>=</span> <span class='fl'>850</span>
-                        , <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-
-<span class='fu'>POST_FATE.relativeAbund</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                        , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                        , <span class='kw'>years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>850</span>, <span class='fl'>950</span>)
-                        , <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
+<span class='fu'>POST_FATE.relativeAbund</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                        , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                        , years = <span class='fl'>850</span>
+                        , opt.no_CPU = <span class='fl'>1</span>)
+                                    
+<span class='fu'>POST_FATE.relativeAbund</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                        , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                        , years = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>850</span>, <span class='fl'>950</span>)
+                        , opt.no_CPU = <span class='fl'>1</span>)
 }
-
-
-
+                                                        
+                                                        
+                                                        
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-<span class='co'>## Load example data</span></pre>
+<span class='co'>## Load example data</span>
+                                    
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -300,7 +306,7 @@ before the maps are compressed again :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

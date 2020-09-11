@@ -1,8 +1,0 @@
-## File automatically generated 
-## Date : Thu Sep 10 11:47:19 2020
-NAME PFG3
-SOIL_CONTRIB 4.8
-SOIL_LOW 3
-SOIL_HIGH 6
-ACTIVE_GERM 9 10 9
-SOIL_TOL 1 10 3 4 10 6 7 10 9

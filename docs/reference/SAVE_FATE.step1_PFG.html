@@ -193,19 +193,19 @@ used to build a set of Plant Functional Groups.</p>
     </div>
 
     <pre class="usage"><span class='fu'>SAVE_FATE.step1_PFG</span>(
-  <span class='no'>name.dataset</span>,
-  <span class='no'>mat.observations</span>,
-  <span class='kw'>rules.selectDominant</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>doRuleA</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>rule.A1</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>rule.A2_quantile</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>doRuleB</span> <span class='kw'>=</span>
-    <span class='fl'>NA</span>, <span class='kw'>rule.B1_percentage</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>rule.B1_number</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>rule.B2</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>doRuleC</span> <span class='kw'>=</span> <span class='fl'>NA</span>),
-  <span class='no'>mat.traits</span>,
-  <span class='kw'>mat.overlap</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>rules.speciesDistance</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='kw'>opt.maxPercent.NA</span> <span class='kw'>=</span> <span class='fl'>NA</span>, <span class='kw'>opt.maxPercent.similarSpecies</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-    <span class='kw'>opt.min.sd</span> <span class='kw'>=</span> <span class='fl'>NA</span>),
-  <span class='no'>mat.species.DIST</span>,
-  <span class='kw'>clust.evaluation</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='no'>no.clusters</span>,
-  <span class='no'>determ.all</span>,
-  <span class='no'>mat.traits.PFG</span>
+  <span class='kw'>name.dataset</span>,
+  <span class='kw'>mat.observations</span>,
+  rules.selectDominant = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doRuleA = <span class='fl'>NA</span>, rule.A1 = <span class='fl'>NA</span>, rule.A2_quantile = <span class='fl'>NA</span>, doRuleB =
+    <span class='fl'>NA</span>, rule.B1_percentage = <span class='fl'>NA</span>, rule.B1_number = <span class='fl'>NA</span>, rule.B2 = <span class='fl'>NA</span>, doRuleC = <span class='fl'>NA</span>),
+  <span class='kw'>mat.traits</span>,
+  mat.overlap = <span class='fl'>NA</span>,
+  rules.speciesDistance = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(opt.maxPercent.NA = <span class='fl'>NA</span>, opt.maxPercent.similarSpecies = <span class='fl'>NA</span>,
+    opt.min.sd = <span class='fl'>NA</span>),
+  <span class='kw'>mat.species.DIST</span>,
+  clust.evaluation = <span class='fl'>NA</span>,
+  <span class='kw'>no.clusters</span>,
+  <span class='kw'>determ.all</span>,
+  <span class='kw'>mat.traits.PFG</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -300,10 +300,10 @@ PFG). <br /> Such an object can be obtained with the
 
     <p>A <code>list</code> containing all the elements given to the function and 
 checked :</p>
-<dl'>
+<dl>
   <dt>name.dataset</dt><dd><p>name of the dataset</p></dd>
   <dt>mat.observations</dt><dd><p>(see <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code>) <br />
-  <dl'>
+  <dl>
     <dt><code>sites</code></dt><dd><p>name of sampling site</p></dd>
     <dt><code>(x, y)</code></dt><dd><p>coordinates of sampling site</p></dd>
     <dt><code>species</code></dt><dd><p>name of the concerned species</p></dd>
@@ -314,7 +314,7 @@ checked :</p>
   <code>doRuleB</code>, <code>rule.B1_percentage</code>, <code>rule.B1_number</code>, 
   <code>rule.B2</code>, <code>doRuleC</code> (see <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code>)</p></dd>
   <dt>mat.traits</dt><dd><p>(see <code><a href='PRE_FATE.speciesDistance.html'>PRE_FATE.speciesDistance</a></code>) <br />
-  <dl'>
+  <dl>
     <dt><code>species</code></dt><dd><p>name of the concerned species</p></dd>
     <dt><code>GROUP</code></dt><dd><p>name of the concerned data subset</p></dd>
     <dt><code>...</code></dt><dd><p>one column for each functional trait <br /> <br /></p></dd></dl></p></dd>
@@ -328,14 +328,14 @@ checked :</p>
   between each pair of species, or a <code>list</code> of <code>dist</code> objects, one 
   for each <code>GROUP</code> value (see <code><a href='PRE_FATE.speciesDistance.html'>PRE_FATE.speciesDistance</a></code>)</p></dd>
   <dt>clust.evaluation</dt><dd><p>(see <code><a href='PRE_FATE.speciesClustering_step1.html'>PRE_FATE.speciesClustering_step1</a></code>) <br />
-  <dl'>
+  <dl>
     <dt><code>GROUP</code></dt><dd><p>name of data subset</p></dd>
     <dt><code>no.clusters</code></dt><dd><p>number of clusters used for the clustering</p></dd>
     <dt><code>variable</code></dt><dd><p>evaluation metrics' name</p></dd>
     <dt><code>value</code></dt><dd><p>value of evaluation metric <br /> <br /></p></dd></dl></p></dd>
   <dt>no.clusters</dt><dd><p>number of clusters to be kept for each data subset</p></dd>
   <dt>determ.all</dt><dd><p>(see <code><a href='PRE_FATE.speciesClustering_step2.html'>PRE_FATE.speciesClustering_step2</a></code>) <br />
-  <dl'>
+  <dl>
     <dt><code>PFG</code></dt><dd><p>ID of the plant functional group 
     (<code>GROUP</code> + <code>ID.cluster</code>)</p></dd>
     <dt><code>GROUP</code></dt><dd><p>name of data subset</p></dd>
@@ -352,7 +352,7 @@ checked :</p>
     <dt><code>(allSp.max)</code></dt><dd><p>\(mean(\text{sp.mean.dist}) + 1.64 * 
     sd(\text{sp.mean.dist})\) within the PFG</p></dd></dl></p></dd>
   <dt>mat.traits.PFG</dt><dd><p>(see <code><a href='PRE_FATE.speciesClustering_step3.html'>PRE_FATE.speciesClustering_step3</a></code>) <br />
-  <dl'>
+  <dl>
     <dt><code>PFG</code></dt><dd><p>name of the concerned functional group</p></dd>
     <dt><code>no.species</code></dt><dd><p>number of species in the concerned PFG</p></dd>
     <dt><code>...</code></dt><dd><p>one column for each functional trait <br /> <br /></p></dd></dl></p></dd>
@@ -368,10 +368,13 @@ checked :</p>
 <code><a href='PRE_FATE.speciesClustering_step1.html'>PRE_FATE.speciesClustering_step1</a></code>, 
 <code><a href='PRE_FATE.speciesClustering_step2.html'>PRE_FATE.speciesClustering_step2</a></code>, 
 <code><a href='PRE_FATE.speciesClustering_step3.html'>PRE_FATE.speciesClustering_step3</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-## Load example data
+<span class='co'>## Load example data</span>
 
 </pre>
   </div>
@@ -389,7 +392,7 @@ checked :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

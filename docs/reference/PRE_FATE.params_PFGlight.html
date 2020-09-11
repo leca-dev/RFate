@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create <em>LIGHT</em> parameter files for a <code>FATE</code> simulation — PRE_FATE.params_PFGlight • RFate</title>
+<title>Create LIGHT parameter files for a FATE simulation — PRE_FATE.params_PFGlight • RFate</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Create <em>LIGHT</em> parameter files for a <code>FATE</code> simulation — PRE_FATE.params_PFGlight" />
+<meta property="og:title" content="Create LIGHT parameter files for a FATE simulation — PRE_FATE.params_PFGlight" />
 <meta property="og:description" content="This script is designed to create parameter files containing 
 light-related parameters for each PFG (one file for each of them) used in 
 the light module of FATE." />
@@ -195,10 +195,10 @@ the light module of <code>FATE</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.params_PFGlight</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='no'>mat.PFG.light</span>,
-  <span class='kw'>mat.PFG.tol</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.folder.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>name.simulation</span>,
+  <span class='kw'>mat.PFG.light</span>,
+  mat.PFG.tol = <span class='kw'>NULL</span>,
+  opt.folder.name = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -241,7 +241,7 @@ to the name of the folder that will be created into the
     <p>A <code>.txt</code> file per PFG into the 
 <code>name.simulation/DATA/PFGS/LIGHT/</code> directory with the following 
 parameters :</p>
-<dl'>
+<dl>
   <dt>NAME</dt><dd><p>name of the PFG</p></dd>
   <dt>ACTIVE_GERM</dt><dd><p>germination rates depending on light conditions 
   <br /> <em>(from <code>0</code> to <code>10</code>, corresponding to 0 to 100%)</em></p></dd>
@@ -272,7 +272,7 @@ folder <code>name.simulation/DATA/PFGS/LIGHT/opt.folder.name/</code>.</p>
 <strong>light competition</strong> within a primary vegetation succession. <br /> <br /></p>
 <p>Several parameters, given within <code>mat.PFG.light</code> or <code>mat.PFG.tol</code>, 
 are required for each PFG in order to set up this light competition :</p>
-<dl'>
+<dl>
   <dt>PFG</dt><dd><p>the concerned plant functional group <br /> <br /></p></dd>
   
   <dt>type</dt><dd><p>or life-form, based on Raunkier. <br /> It should be either 
@@ -310,12 +310,12 @@ are required for each PFG in order to set up this light competition :</p>
 
 <p>These values will allow to calculate or define a set of characteristics for 
 each PFG :</p>
-<dl'>
+<dl>
   <dt>ACTIVE_GERM</dt><dd><p>proportion of seeds that will germinate for each light 
   condition (<code>Low</code>, <code>Medium</code>, <code>High</code>) <br /> <br />
   Three methods to define these proportions are available :
   <ul>
-<li><p>from <strong>predefined scenarios</strong> (using <code>strategy_ag</code>) :</p><dl'>
+<li><p>from <strong>predefined scenarios</strong> (using <code>strategy_ag</code>) :</p><dl>
       <dt></dt><dd><p><strong><code>| _L_ _M_ _H_ |</code></strong></p></dd>
       <dt></dt><dd><p><code>_______________</code></p></dd>
       <dt>light_lover</dt><dd><p><code>| 50% 80% 90% |</code></p></dd>
@@ -344,7 +344,7 @@ each PFG :</p>
 <li><p>with <code>g</code>: Germinant, <code>i</code>: Immature, <code>m</code>: Mature</p></li>
 <li><p>with <code>L</code>: low light, <code>M</code>: medium light, <code>H</code>: 
         high light <br /> <br /></p></li>
-</ul><p></p><dl'>
+</ul><p></p><dl>
       <dt></dt><dd><p><strong><code>| _ g _ | _ i _ | _ m _ |</code></strong></p></dd>
       <dt></dt><dd><p><strong><code>| L M H | L M H | L M H |</code></strong></p></dd>
       <dt></dt><dd><p><code>_________________________</code></p></dd>
@@ -354,7 +354,7 @@ each PFG :</p>
       <dt>semi_shade</dt><dd><p><code>| 1 1 . | 1 1 . | 1 1 1 |</code></p></dd>
       <dt>undergrowth</dt><dd><p><code>| 1 1 . | 1 1 . | 1 1 . |</code></p></dd></dl></li>
 <li><p>from <strong>predefined rules</strong> (using <code>type</code> and 
-    <code>light_need</code>):</p><dl'>
+    <code>light_need</code>):</p><dl>
         <dt>(A)</dt><dd><p>PFG are tolerant to <code>Low</code> light if <code>light &lt;= 2</code></p></dd>
         <dt>(A)</dt><dd><p>PFG are tolerant to <code>Medium</code> light if 
         <code>2 &lt;= light &lt;= 4</code></p></dd>
@@ -373,7 +373,7 @@ each PFG :</p>
 <li><p>with <code>g</code>: Germinant, <code>i</code>: Immature, <code>m</code>: Mature</p></li>
 <li><p>with <code>L</code>: low light, <code>M</code>: medium light, <code>H</code>: 
         high light <br /> <br /></p></li>
-</ul><p></p><dl'>
+</ul><p></p><dl>
         <dt></dt><dd><p><strong><code>| _ g _ | _ i _ | _ m _ |</code></strong></p></dd>
         <dt></dt><dd><p><strong><code>| L M H | L M H | L M H |</code></strong></p></dd>
         <dt></dt><dd><p><code>_________________________</code></p></dd>
@@ -394,13 +394,16 @@ each PFG :</p>
     <div class='dont-index'><p><code><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></code>,
 <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>, 
 <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 
-## ----------------------------------------------------------------------------------------- ##
+<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
 
-## Load example data
+<span class='co'>## Load example data</span>
                          
 
 </pre>
@@ -419,7 +422,7 @@ each PFG :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

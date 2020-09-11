@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create <em>SAVE</em> parameter files for a <code>FATE</code> simulation — PRE_FATE.params_savingYears • RFate</title>
+<title>Create SAVE parameter files for a FATE simulation — PRE_FATE.params_savingYears • RFate</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Create <em>SAVE</em> parameter files for a <code>FATE</code> simulation — PRE_FATE.params_savingYears" />
+<meta property="og:title" content="Create SAVE parameter files for a FATE simulation — PRE_FATE.params_savingYears" />
 <meta property="og:description" content="This script is designed to create a parameter file containing 
 simulation years at which the FATE software must save rasters of 
 PFG abundances (as well as light and soil resources if these modules are 
@@ -197,10 +197,10 @@ activated) and/or simulation objects.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.params_savingYears</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>years.maps</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>years.objects</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.folder.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>name.simulation</span>,
+  years.maps = <span class='kw'>NULL</span>,
+  years.objects = <span class='kw'>NULL</span>,
+  opt.folder.name = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -247,7 +247,7 @@ folder <code>name.simulation/DATA/SAVE/opt.folder.name/</code>.</p>
 
     <p><code>FATE</code> software allows the user to save two different types of 
 outputs :</p>
-<dl'>
+<dl>
   <dt>Raster maps</dt><dd><p>PFG abundance maps can be saved for all specified 
   simulation years. <br /> It includes maps per PFG per strata 
   (<code>ABUND_perPFG_perStrata</code> folder) and summary maps 
@@ -269,6 +269,9 @@ outputs :</p>
 
     <div class='dont-index'><p><code><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></code>, 
 <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
@@ -276,9 +279,11 @@ outputs :</p>
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
 
 <span class='co'>## Create a SAVE_year_maps or/and SAVE_year_objects parameter file</span>
-<span class='fu'>PRE_FATE.params_savingYears</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                          , <span class='kw'>years.maps</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>150</span>, <span class='fl'>200</span>)
-                          , <span class='kw'>years.objects</span> <span class='kw'>=</span> <span class='fl'>200</span>)</pre>
+<span class='fu'>PRE_FATE.params_savingYears</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                          , years.maps = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>150</span>, <span class='fl'>200</span>)
+                          , years.objects = <span class='fl'>200</span>)
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -294,7 +299,7 @@ outputs :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

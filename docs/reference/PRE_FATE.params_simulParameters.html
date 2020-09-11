@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create <em>Simul_parameters</em> parameter file for a <code>FATE</code> 
+<title>Create Simul_parameters parameter file for a FATE 
 simulation — PRE_FATE.params_simulParameters • RFate</title>
 
 
@@ -40,7 +40,7 @@ simulation — PRE_FATE.params_simulParameters • RFate</title>
 
 
 
-<meta property="og:title" content="Create <em>Simul_parameters</em> parameter file for a <code>FATE</code> 
+<meta property="og:title" content="Create Simul_parameters parameter file for a FATE 
 simulation — PRE_FATE.params_simulParameters" />
 <meta property="og:description" content="This script is designed to create one (or several) parameter 
 file containing PARAMETER FILENAMES used in FATE model." />
@@ -196,16 +196,16 @@ file containing <code>PARAMETER FILENAMES</code> used in <code>FATE</code> model
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.params_simulParameters</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='no'>name.MASK</span>,
-  <span class='kw'>name.SAVED_STATE</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name.DIST</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name.DROUGHT</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name.FIRE</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name.ELEVATION</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>name.SLOPE</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.global.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.folder.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>name.simulation</span>,
+  <span class='kw'>name.MASK</span>,
+  name.SAVED_STATE = <span class='kw'>NULL</span>,
+  name.DIST = <span class='kw'>NULL</span>,
+  name.DROUGHT = <span class='kw'>NULL</span>,
+  name.FIRE = <span class='kw'>NULL</span>,
+  name.ELEVATION = <span class='kw'>NULL</span>,
+  name.SLOPE = <span class='kw'>NULL</span>,
+  opt.global.name = <span class='kw'>NULL</span>,
+  opt.folder.name = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -339,7 +339,7 @@ directory with the following parameters :</p>
 containing links to other files containing all the parameters and data 
 needed by the program to run.</p>
 
-<dl'>
+<dl>
   <dt>GLOBAL_PARAMS</dt><dd><p>file where parameters related to the simulation 
   definition are referred (e.g. number of PFG involved, number of height 
   strata, simulation duration, computer resources, modules loaded, etc) <br />
@@ -450,7 +450,7 @@ needed by the program to run.</p>
   <em>When relative paths are used</em>, the user should be careful of the 
   folder from which the simulation is launched. <br />
   <em>A function allows to transform these relative paths into absolute 
-  ones. (see examples of <code><a href='dot-setPattern.html'>.setPattern</a></code>)</em>.</p></li>
+  ones. (see examples of <code><a href='.setPattern.html'>.setPattern</a></code>)</em>.</p></li>
 <li><p><strong>The order of files matters!</strong> <br />
   For instance the first link below <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag 
   (e.g. <em>PFG Albert</em>) has to match with the first item below the 
@@ -469,14 +469,17 @@ needed by the program to run.</p>
 <code><a href='PRE_FATE.params_PFGdrought.html'>PRE_FATE.params_PFGdrought</a></code>,
 <code><a href='PRE_FATE.params_savingYears.html'>PRE_FATE.params_savingYears</a></code>,
 <code><a href='PRE_FATE.params_changingYears.html'>PRE_FATE.params_changingYears</a></code>,
-<code><a href='dot-setPattern.html'>.setPattern</a></code></p></div>
+<code><a href='.setPattern.html'>.setPattern</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
            
-## ----------------------------------------------------------------------------------------- ##
+<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
                                 
-## Load example data
+<span class='co'>## Load example data</span>
 
 </pre>
   </div>
@@ -494,7 +497,7 @@ needed by the program to run.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>

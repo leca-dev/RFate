@@ -1,7 +1,0 @@
-"NAME" "TYPE" "HEIGHT" "LONGEVITY" "MATURITY" "MAX_STRATUM" "MAX_ABUNDANCE" "IMM_SIZE" "CHANG_STR_AGES_to_str_1_0" "CHANG_STR_AGES_to_str_2_20" "CHANG_STR_AGES_to_str_3_50" "CHANG_STR_AGES_to_str_4_150" "CHANG_STR_AGES_to_str_5_400" "CHANG_STR_AGES_to_str_6_1000" "SEED_POOL_LIFE_active" "SEED_POOL_LIFE_dormant" "SEED_DORMANCY" "POTENTIAL_FECUNDITY" "IS_ALIEN" "FLAMMABILITY"
-"PFG1" "C" "10" "13" "5" "1" "1" "10" "0" "10000" "10000" "10000" "10000" "10000" "0" "0" "0" "100" "0" "0"
-"PFG2" "C" "250" "201" "5" "4" "3" "8" "0" "1" "1" "2" "10000" "10000" "0" "0" "0" "100" "0" "0"
-"PFG3" "H" "36" "26" "3" "2" "1" "10" "0" "10000" "10000" "10000" "10000" "10000" "0" "0" "0" "100" "0" "0"
-"PFG4" "H" "68" "5" "3" "3" "2" "10" "0" "10000" "10000" "10000" "10000" "10000" "0" "0" "0" "100" "0" "0"
-"PFG5" "P" "1250" "111" "8" "6" "3" "1" "0" "1" "2" "5" "15" "62" "0" "0" "0" "100" "0" "0"
-"PFG6" "P" "550" "71" "9" "5" "3" "5" "0" "1" "1" "3" "9" "10000" "0" "0" "0" "100" "0" "0"

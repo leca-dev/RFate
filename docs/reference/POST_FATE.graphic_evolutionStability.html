@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create a graphical representation of the evolution of habitat 
-composition through time for a <code>FATE</code> simulation — POST_FATE.graphic_evolutionStability • RFate</title>
+composition through time for a FATE simulation — POST_FATE.graphic_evolutionStability • RFate</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ composition through time for a <code>FATE</code> simulation — POST_FATE.graphi
 
 
 <meta property="og:title" content="Create a graphical representation of the evolution of habitat 
-composition through time for a <code>FATE</code> simulation — POST_FATE.graphic_evolutionStability" />
+composition through time for a FATE simulation — POST_FATE.graphic_evolutionStability" />
 <meta property="og:description" content="This script is designed to produce one graphical representation 
 for a FATE simulation : the evolution through time of the total 
 abundance and evenness of each habitat." />
@@ -198,11 +198,11 @@ abundance and evenness of each habitat.</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.graphic_evolutionStability</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>movingWindow_size</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>movingWindow_step</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>opt.doPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  movingWindow_size = <span class='fl'>3</span>,
+  movingWindow_step = <span class='fl'>1</span>,
+  opt.doPlot = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -243,8 +243,8 @@ of outputs will occur, be saved and returned</p></td>
 
     <p>A <code>list</code> containing two <code>data.frame</code> objects with the 
 following columns, and one <code>ggplot2</code> object :</p>
-<dl'>
-  <dt>tab.hab</dt><dd><p><dl'>
+<dl>
+  <dt>tab.hab</dt><dd><p><dl>
       <dt><code>HAB</code></dt><dd><p>concerned habitat</p></dd>
       <dt><code>year</code></dt><dd><p>concerned simulation year</p></dd>
       <dt><code>totalAbundance</code></dt><dd><p>total abundance over all the pixels 
@@ -253,7 +253,7 @@ following columns, and one <code>ggplot2</code> object :</p>
       concerned habitat</p></dd>
       <dt><code>evenness</code></dt><dd><p>evenness over all the pixels within the 
       concerned habitat</p></dd></dl></p></dd>
-  <dt>tab.stab</dt><dd><p><dl'>
+  <dt>tab.stab</dt><dd><p><dl>
       <dt><code>HAB</code></dt><dd><p>concerned habitat</p></dd>
       <dt><code>no.years</code></dt><dd><p>number of simulation years used (<em>moving 
       window size</em>)</p></dd>
@@ -274,7 +274,7 @@ following columns, and one <code>ggplot2</code> object :</p>
 
 </dl>
 
-<p>Two <code>POST_FATE_TABLE_HAB_evolution_[...].csv</code> files are created :</p><dl'>
+<p>Two <code>POST_FATE_TABLE_HAB_evolution_[...].csv</code> files are created :</p><dl>
   <dt><code class="file">stability1</code></dt><dd><p>always, containing <code>tab.hab</code></p></dd>
   <dt><code class="file">stability2</code></dt><dd><p><em>if successive years available</em>, containing 
   <code>tab.stab</code></p></dd>
@@ -282,7 +282,7 @@ following columns, and one <code>ggplot2</code> object :</p>
 </dl>
 
 
-<p>One <code>POST_FATE_[...].pdf</code> files is created :</p><dl'>
+<p>One <code>POST_FATE_[...].pdf</code> files is created :</p><dl>
   <dt><code class="file">GRAPHIC_A <br /> stability</code></dt><dd><p>to visualize for each habitat the 
   evolution of its total abundance and its evenness through simulation time</p></dd>
 
@@ -318,22 +318,28 @@ function has been run and that the file
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='POST_FATE.temporalEvolution.html'>POST_FATE.temporalEvolution</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>POST_FATE.graphic_evolutionStability</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                                    , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>)
-
-<span class='fu'>POST_FATE.graphic_evolutionStability</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                                    , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                                    , <span class='kw'>opt.fixedScale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
+<span class='fu'>POST_FATE.graphic_evolutionStability</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                                    , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>)
+                                    
+<span class='fu'>POST_FATE.graphic_evolutionStability</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                                    , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                                    , opt.fixedScale = <span class='fl'>FALSE</span>)
 }
 
 
 
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-<span class='co'>## Load example data</span></pre>
+<span class='co'>## Load example data</span>
+
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -349,7 +355,7 @@ function has been run and that the file
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
 </div>
 
       </footer>
