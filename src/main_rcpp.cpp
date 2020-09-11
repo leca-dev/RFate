@@ -188,26 +188,28 @@ void changeFreq(int year, string change_type, vector<int>& freq_change_times,
 
 
 /*============================================================================*/
-//' FATE-HD Wrapper
+//' FATE Wrapper
 //'
-//' This function runs a FATE-HD dynamical landscape vegetation simulation.
+//' This function runs a FATE dynamical landscape vegetation simulation.
 //'
-//' @param paramFile path to the parameter file of the simulation.
-//' @param nbCpus number of CPUs affected to the simulation (default 1).
-//' @param verboseLevel logger verbose level.
+//' @param simulParam a \code{string} corresponding to the name of a 
+//' parameter file that will be contained into the \code{PARAM_SIMUL} folder 
+//' of the \code{FATE} simulation
+//' @param no_CPU (\emph{optional}) default \code{1}. \cr The number of 
+//' resources that can be used to parallelize the simulation
+//' @param verboseLevel (\emph{optional}) default \code{0}. \cr The logger 
+//' verbose level
 //'
 //' @return None
 //'
-//' @examples \dontrun{runFate()}
+//' @examples \dontrun{FATE()}
 //'
 //' @author Isabelle Boulangeat, \email{isabelle.boulangeat@inrae.fr}
-//' @author Maya Gueguen, \email{maya.gueguen@univ-grenoble-alpes.fr}
-//'
-//' @references \url{http://www.will.chez-alice.fr/pdf/BoulangeatGCB2014.pdf}
+//' @author Maya Guéguen, \email{maya.gueguen@univ-grenoble-alpes.fr}
 //'
 //' @export
 // [[Rcpp::export]]
-int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
+int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 {
 	/*==========================================================================*/
 	/* Initialization */
@@ -215,26 +217,26 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	// Logger initialization
 	logg.configure(verboseLevel);  // Set logger verbose level
 	// Number of CPUs used for computation
-	if (nbCpus > 1)
+	if (no_CPU > 1)
 	{
-		logg.info("PARALLEL VERSION : programme will run on ", nbCpus, " CPU.");
-		omp_set_num_threads(nbCpus);  // Set number of CPUs
+		logg.info("PARALLEL VERSION : programme will run on ", no_CPU, " CPU.");
+		omp_set_num_threads(no_CPU);  // Set number of CPUs
 	}
 	// Timer initialization
 	time_t Start, End;
 	time(&Start);  // Start timer
 
 	logg.info("*********************************************\n",
-						"   WELCOME TO FATE-HDD SIMULATION RUNTIME\n",
+						"   WELCOME TO FATE SIMULATION RUNTIME\n",
 						"*********************************************\n");
 
 	/*==========================================================================*/
 	/* create the simulation parameter object that stores paths to all needed
 	parameters files */
 
-	logg.info("This simulation will be based on ", paramFile,
+	logg.info("This simulation will be based on ", simulParam,
 						" parameters file.");
-	FOPL file_of_params(paramFile);
+	FOPL file_of_params(simulParam);
 	logg.info("File of parameters created !");
 	file_of_params.checkCorrectParams();
 	file_of_params.checkCorrectMasks();

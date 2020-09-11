@@ -93,7 +93,7 @@ reference:
       - "PRE_FATE.params_multipleSet"
   - title: Run FATE simulation
     contents:
-      - "FATE.run"
+      - "FATE"
   - title: Analyze FATE outputs
     desc:  Evalute predicted maps, produce summary and dynamic graphics.
     contents:
