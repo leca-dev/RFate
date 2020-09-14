@@ -186,27 +186,27 @@ POST_FATE.temporalEvolution = function(
     cat("\n  Simulation file : ", abs.simulParam)
     cat("\n")
     
-    ## Get results directories ----------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    ## Get results directories ------------------------------------------------
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
-    ## Get number of PFGs ---------------------------------------------------
-    ## Get PFG names --------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    ## Get number of PFGs -----------------------------------------------------
+    ## Get PFG names ----------------------------------------------------------
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
-    ## Get raster mask ------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    ## Get raster mask --------------------------------------------------------
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get habitat information ----------------------------------------------
     if (exists("ras.habitat"))
     {
-      ras.habitat = ras.habitat * ras.mask
+      ras.habitat = ras.habitat * GLOB_MASK$ras.mask
     }
     
     ## Get list of arrays and extract years of simulation -------------------
-    raster.perPFG.allStrata = .getRasterNames(years = NULL, "allStrata", "ABUND")
+    raster.perPFG.allStrata = .getRasterNames(years = NULL, "allStrata", "ABUND", GLOB_DIR)
     years = sapply(sub("Abund_YEAR_", "", raster.perPFG.allStrata)
                    , function(x) strsplit(as.character(x), "_")[[1]][1])
     years = sort(unique(as.numeric(years)))
@@ -219,13 +219,13 @@ POST_FATE.temporalEvolution = function(
     cat("\n")
     
     ## UNZIP the raster saved -----------------------------------------------
-    .unzip_ALL(folder_name = dir.output.perPFG.allStrata, no_cores = opt.no_CPU)
-    if (doLight) .unzip_ALL(folder_name = dir.output.light, no_cores = opt.no_CPU)
-    if (doSoil) .unzip_ALL(folder_name = dir.output.soil, no_cores = opt.no_CPU)
+    .unzip_ALL(folder_name = GLOB_DIR$dir.output.perPFG.allStrata, no_cores = opt.no_CPU)
+    if (GLOB_SIM$doLight) .unzip_ALL(folder_name = GLOB_DIR$dir.output.light, no_cores = opt.no_CPU)
+    if (GLOB_SIM$doSoil) .unzip_ALL(folder_name = GLOB_DIR$dir.output.soil, no_cores = opt.no_CPU)
     
     doWriting.abund = TRUE
-    doWriting.light = ifelse(doLight, TRUE, FALSE)
-    doWriting.soil = ifelse(doSoil, TRUE, FALSE)
+    doWriting.light = ifelse(GLOB_SIM$doLight, TRUE, FALSE)
+    doWriting.soil = ifelse(GLOB_SIM$doSoil, TRUE, FALSE)
     
     
     ## get the data inside the rasters --------------------------------------
@@ -240,10 +240,10 @@ POST_FATE.temporalEvolution = function(
         warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
       }
     }
-    tabAbund.list = foreach (pfg = PFG) %dopar%
+    tabAbund.list = foreach (pfg = GLOB_SIM$PFG) %dopar%
     {
       cat(" ", pfg)
-      file_name = paste0(dir.output.perPFG.allStrata,
+      file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata,
                          "Abund_YEAR_",
                          years,
                          "_",
@@ -265,7 +265,7 @@ POST_FATE.temporalEvolution = function(
       
       if (length(file_name) > 0)
       {
-        ras = stack(file_name) * ras.mask
+        ras = stack(file_name) * GLOB_MASK$ras.mask
         ras.df = rasterToPoints(ras)
         ras.df = as.data.frame(ras.df)
         colnames(ras.df) = c("X", "Y", ye)
@@ -274,7 +274,7 @@ POST_FATE.temporalEvolution = function(
         
         if (nrow(ras.df) > 0)
         {
-          ras.df$ID.pixel = cellFromXY(ras.mask, ras.df[, c("X", "Y")])
+          ras.df$ID.pixel = cellFromXY(GLOB_MASK$ras.mask, ras.df[, c("X", "Y")])
           ras.df$PFG = pfg
           
           if (exists("ras.habitat"))
@@ -300,7 +300,7 @@ POST_FATE.temporalEvolution = function(
       fwrite(tabAbund
              , file = paste0(name.simulation
                              , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
-                             , basename(dir.save)
+                             , basename(GLOB_DIR$dir.save)
                              , ".csv")
              , row.names = FALSE)
     } else
@@ -312,13 +312,13 @@ POST_FATE.temporalEvolution = function(
     
     
     ## get the data inside the rasters --------------------------------------
-    if (doLight)
+    if (GLOB_SIM$doLight)
     {
       cat("\n ---------- GETTING LIGHT for stratum")
-      tabLight.list = foreach (stra = c(1:no_STRATA)-1) %dopar%
+      tabLight.list = foreach (stra = c(1:GLOB_SIM$no_STRATA)-1) %dopar%
       {
         cat(" ", stra)
-        file_name = paste0(dir.output.light
+        file_name = paste0(GLOB_DIR$dir.output.light
                            , "Light_Resources_YEAR_"
                            , years
                            , "_STRATA_"
@@ -338,11 +338,11 @@ POST_FATE.temporalEvolution = function(
         
         if (length(file_name) > 0)
         {
-          ras = stack(file_name) * ras.mask
+          ras = stack(file_name) * GLOB_MASK$ras.mask
           ras.df = rasterToPoints(ras)
           ras.df = as.data.frame(ras.df)
           colnames(ras.df) = c("X", "Y", ye)
-          ras.df$ID.pixel = cellFromXY(ras.mask, ras.df[, c("X", "Y")])
+          ras.df$ID.pixel = cellFromXY(GLOB_MASK$ras.mask, ras.df[, c("X", "Y")])
           ras.df$STRATUM = stra
           
           if (exists("ras.habitat"))
@@ -367,7 +367,7 @@ POST_FATE.temporalEvolution = function(
         fwrite(tabLight
                , file = paste0(name.simulation
                                , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_light_"
-                               , basename(dir.save)
+                               , basename(GLOB_DIR$dir.save)
                                , ".csv")
                , row.names = FALSE)
       } else
@@ -383,10 +383,10 @@ POST_FATE.temporalEvolution = function(
     
     
     ## get the data inside the rasters --------------------------------------
-    if (doSoil)
+    if (GLOB_SIM$doSoil)
     {
       cat("\n ---------- GETTING SOIL")
-      file_name = paste0(dir.output.soil,
+      file_name = paste0(GLOB_DIR$dir.output.soil,
                          "Soil_Resources_YEAR_",
                          years)
       if (length(which(file.exists(paste0(file_name, ".tif")))) > 0)
@@ -404,11 +404,11 @@ POST_FATE.temporalEvolution = function(
       
       if (length(file_name) > 0)
       {
-        ras = stack(file_name) * ras.mask
+        ras = stack(file_name) * GLOB_MASK$ras.mask
         ras.df = rasterToPoints(ras)
         ras.df = as.data.frame(ras.df)
         colnames(ras.df) = c("X", "Y", ye)
-        ras.df$ID.pixel = cellFromXY(ras.mask, ras.df[, c("X", "Y")])
+        ras.df$ID.pixel = cellFromXY(GLOB_MASK$ras.mask, ras.df[, c("X", "Y")])
         
         if (exists("ras.habitat"))
         {
@@ -428,7 +428,7 @@ POST_FATE.temporalEvolution = function(
         fwrite(tabSoil
                , file = paste0(name.simulation
                                , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_soil_"
-                               , basename(dir.save)
+                               , basename(GLOB_DIR$dir.save)
                                , ".csv")
                , row.names = FALSE)
       } else
@@ -445,9 +445,9 @@ POST_FATE.temporalEvolution = function(
     
     
     ## ZIP the raster saved -------------------------------------------------
-    .zip_ALL(folder_name = dir.output.perPFG.allStrata, no_cores= opt.no_CPU)
-    if (doLight) .zip_ALL(folder_name = dir.output.light, no_cores = opt.no_CPU)
-    if (doSoil) .zip_ALL(folder_name = dir.output.soil, no_cores = opt.no_CPU)
+    .zip_ALL(folder_name = GLOB_DIR$dir.output.perPFG.allStrata, no_cores= opt.no_CPU)
+    if (GLOB_SIM$doLight) .zip_ALL(folder_name = GLOB_DIR$dir.output.light, no_cores = opt.no_CPU)
+    if (GLOB_SIM$doSoil) .zip_ALL(folder_name = GLOB_DIR$dir.output.soil, no_cores = opt.no_CPU)
     
     cat("\n> Done!\n")
     
@@ -456,17 +456,17 @@ POST_FATE.temporalEvolution = function(
       message(paste0("\n The output files \n"
                      , ifelse(doWriting.abund
                               , paste0(" > POST_FATE_TABLE_PIXEL_evolution_abundance_"
-                                       , basename(dir.save)
+                                       , basename(GLOB_DIR$dir.save)
                                        , ".csv \n")
                               , "")
                      , ifelse(doWriting.light
                               , paste0(" > POST_FATE_TABLE_PIXEL_evolution_light_"
-                                       , basename(dir.save)
+                                       , basename(GLOB_DIR$dir.save)
                                        , ".csv \n")
                               , "")
                      , ifelse(doWriting.soil
                               , paste0(" > POST_FATE_TABLE_PIXEL_evolution_soil_"
-                                       , basename(dir.save)
+                                       , basename(GLOB_DIR$dir.save)
                                        , ".csv \n")
                               , "")
                      , "have been successfully created !\n"))

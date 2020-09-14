@@ -125,25 +125,25 @@ POST_FATE.relativeAbund = function(
     cat("\n")
     
     ## Get results directories ------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
-
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
+    
     ## Get number of PFGs -----------------------------------------------------
     ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     
     ## Get list of arrays and extract years of simulation ---------------------
     years = sort(unique(as.numeric(years)))
     
     ## UNZIP the raster saved -------------------------------------------------
-    raster.perPFG.allStrata = .getRasterNames(years, "allStrata", "ABUND")
-    .unzip(folder_name = dir.output.perPFG.allStrata
+    raster.perPFG.allStrata = .getRasterNames(years, "allStrata", "ABUND", GLOB_DIR)
+    .unzip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
            , list_files = raster.perPFG.allStrata
            , no_cores = opt.no_CPU)
     
@@ -154,11 +154,11 @@ POST_FATE.relativeAbund = function(
     {
       cat(" ", y)
       
-      file_name = paste0(dir.output.perPFG.allStrata
+      file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata
                          , "Abund_YEAR_"
                          , y
                          , "_"
-                         , PFG
+                         , GLOB_SIM$PFG
                          , "_STRATA_all")
       if (length(which(file.exists(paste0(file_name, ".tif")))) > 0)
       {
@@ -170,16 +170,16 @@ POST_FATE.relativeAbund = function(
       {
         file_name = paste0(file_name, ".asc")
       }
-      gp = PFG[which(file.exists(file_name))]
+      gp = GLOB_SIM$PFG[which(file.exists(file_name))]
       file_name = file_name[which(file.exists(file_name))]
       
       if (length(file_name) > 0)
       {
-        ras = stack(file_name) * ras.mask
+        ras = stack(file_name) * GLOB_MASK$ras.mask
         ras_REL = ras / sum(ras)
         names(ras_REL) = gp
         
-        new_name = paste0(dir.output.perPFG.allStrata.REL
+        new_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.REL
                           , "Abund_relative_YEAR_"
                           , y
                           , "_"
@@ -199,7 +199,7 @@ POST_FATE.relativeAbund = function(
     } ## end loop on years
     
     ## ZIP the raster saved ---------------------------------------------------
-    .zip(folder_name = dir.output.perPFG.allStrata
+    .zip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
          , list_files = raster.perPFG.allStrata
          , no_cores = opt.no_CPU)
     

@@ -189,22 +189,22 @@ POST_FATE.graphic_evolutionStability = function(
     cat("\n")
     
     ## Get results directories ------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
     ## Get number of PFGs -----------------------------------------------------
     ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get the abundance table ------------------------------------------------
     file.abundance = paste0(name.simulation
                             , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
-                            , basename(dir.save)
+                            , basename(GLOB_DIR$dir.save)
                             , ".csv")
     .testParam_existFile(file.abundance)
     tab.totalAbundance = fread(file.abundance)
@@ -293,13 +293,13 @@ POST_FATE.graphic_evolutionStability = function(
     write.csv(tab.HAB
               , file = paste0(name.simulation
                               , "/RESULTS/POST_FATE_TABLE_HAB_evolution_stability1_"
-                              , basename(dir.save)
+                              , basename(GLOB_DIR$dir.save)
                               , ".csv")
               , row.names = FALSE)
     
     message(paste0("\n The output file \n"
                    , " > POST_FATE_TABLE_HAB_evolution_stability1_"
-                   , basename(dir.save)
+                   , basename(GLOB_DIR$dir.save)
                    , ".csv \n"
                    , "has been successfully created !\n"))
     
@@ -399,13 +399,13 @@ POST_FATE.graphic_evolutionStability = function(
       write.csv(tab.STAB
                 , file = paste0(name.simulation
                                 , "/RESULTS/POST_FATE_TABLE_HAB_evolution_stability2_"
-                                , basename(dir.save)
+                                , basename(GLOB_DIR$dir.save)
                                 , ".csv")
                 , row.names = FALSE)
       
       message(paste0("\n The output file \n"
                      , " > POST_FATE_TABLE_HAB_evolution_stability2_"
-                     , basename(dir.save)
+                     , basename(GLOB_DIR$dir.save)
                      , ".csv \n"
                      , "has been successfully created !\n"))
       
@@ -462,7 +462,7 @@ POST_FATE.graphic_evolutionStability = function(
         
         ggsave(filename = paste0(name.simulation
                                  , "/RESULTS/POST_FATE_GRAPHIC_A_evolution_stability_"
-                                 , basename(dir.save), ".pdf")
+                                 , basename(GLOB_DIR$dir.save), ".pdf")
                , plot = pp, width = 10, height = 8)
         
       } else

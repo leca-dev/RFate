@@ -185,17 +185,17 @@ POST_FATE.binaryMaps = function(
     cat("\n")
     
     ## Get results directories ------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
     ## Get number of PFGs -----------------------------------------------------
     ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get list of arrays and extract years of simulation ---------------------
     years = sort(unique(as.numeric(years)))
@@ -204,12 +204,12 @@ POST_FATE.binaryMaps = function(
     if (method == 1)
     {
       mat.cutoff = expand.grid(year = years
-                               , PFG = PFG
+                               , PFG = GLOB_SIM$PFG
                                , cutoff = method1.threshold
                                , stringsAsFactors = FALSE)
     } else if (exists("valid.files"))
     {
-      valid.files = valid.files[grep(basename(dir.save), valid.files)]
+      valid.files = valid.files[grep(basename(GLOB_DIR$dir.save), valid.files)]
       if (length(valid.files) > 0)
       {
         mat.cutoff = foreach(fi = valid.files, .combine = "rbind") %do%
@@ -217,7 +217,7 @@ POST_FATE.binaryMaps = function(
           ye = sub("_validationStatistics.*", "", fi)
           ye = sub("POST_FATE_TABLE_YEAR_", "", ye)
           tab = fread(paste0(name.simulation, "/RESULTS/", fi))
-		  tab = as.data.frame(tab, stringsAsFactors = FALSE)
+		      tab = as.data.frame(tab, stringsAsFactors = FALSE)
           tab = unique(tab[, c("PFG", "cutoff")])
           tab$year = as.numeric(ye)
           return(tab)
@@ -227,13 +227,13 @@ POST_FATE.binaryMaps = function(
         stop(paste0("Missing data!\n The folder ", name.simulation
                     , "/RESULTS/ does not contain adequate files "
                     , "(starting by `POST_FATE_TABLE_YEAR_[...]_validationStatistics` "
-                    , "and corresponding to `", basename(dir.save), "` folder)"))
+                    , "and corresponding to `", basename(GLOB_DIR$dir.save), "` folder)"))
       }
     }
     
     ## UNZIP the raster saved -------------------------------------------------
-    raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND")
-    .unzip(folder_name = dir.output.perPFG.perStrata
+    raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
+    .unzip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
            , list_files = raster.perPFG.perStrata
            , no_cores = opt.no_CPU)
     
@@ -245,25 +245,25 @@ POST_FATE.binaryMaps = function(
     {
       cat("\n> year", y)
       
-      file_name = paste0(dir.output.perPFG.allStrata.REL
+      file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.REL
                          , "Abund_relative_YEAR_"
                          , y
                          , "_"
                          , PFG
                          , "_STRATA_all.tif")
-      gp = PFG[which(file.exists(file_name))]
+      gp = GLOB_SIM$PFG[which(file.exists(file_name))]
       file_name = file_name[which(file.exists(file_name))]
       
       if (length(file_name) > 0)
       {
-        ras = stack(file_name) * ras.mask
+        ras = stack(file_name) * GLOB_MASK$ras.mask
         names(ras) = gp
         
         for (fg in gp)
         {
           ## Produce binary maps ------------------------------------
           ## ALL STRATA
-          new_name = paste0(dir.output.perPFG.allStrata.BIN
+          new_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.BIN
                             , "Binary_YEAR_"
                             , y
                             , "_"
@@ -280,7 +280,7 @@ POST_FATE.binaryMaps = function(
                         , overwrite = TRUE)
             
             ## SEPARATED STRATA
-            prev_names = list.files(path = dir.output.perPFG.perStrata
+            prev_names = list.files(path = GLOB_DIR$dir.output.perPFG.perStrata
                                     , pattern = paste0("Abund_YEAR_"
                                                        , y
                                                        , "_"
@@ -290,8 +290,8 @@ POST_FATE.binaryMaps = function(
             prev_names = prev_names[grep(".tif$", prev_names)]
             if (length(prev_names) > 0)
             {
-              new_names = sub(dir.output.perPFG.perStrata
-                              , dir.output.perPFG.perStrata.BIN
+              new_names = sub(GLOB_DIR$dir.output.perPFG.perStrata
+                              , GLOB_DIR$dir.output.perPFG.perStrata.BIN
                               , prev_names)
               new_names = sub("Abund_YEAR_", "Binary_YEAR_", new_names)
               ras.bin.str = stack(prev_names)
@@ -318,7 +318,7 @@ POST_FATE.binaryMaps = function(
     
     
     ## ZIP the raster saved ---------------------------------------------------
-    .zip(folder_name = dir.output.perPFG.perStrata
+    .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
          , list_files = raster.perPFG.perStrata
          , no_cores = opt.no_CPU)
     

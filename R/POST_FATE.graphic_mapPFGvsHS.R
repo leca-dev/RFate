@@ -138,18 +138,18 @@ POST_FATE.graphic_mapPFGvsHS = function(
     cat("\n  Simulation file : ", abs.simulParam)
     cat("\n")
     
-    ## Get results directories -----------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    ## Get results directories ------------------------------------------------
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
     ## Get number of PFGs -----------------------------------------------------
     ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get raster HS ----------------------------------------------------------
     if (doHabsuit)
@@ -161,16 +161,16 @@ POST_FATE.graphic_mapPFGvsHS = function(
       .testParam_existFile(file.hs)
       
       ## SDM maps -------------------------------------------------------------
-      ras.hs = stack(file.hs) * ras.mask
+      ras.hs = stack(file.hs) * GLOB_MASK$ras.mask
       ras.hs.pts = as.data.frame(rasterToPoints(ras.hs))
-      colnames(ras.hs.pts) = c("X", "Y", PFG)
+      colnames(ras.hs.pts) = c("X", "Y", GLOB_SIM$PFG)
     } else
     {
       warning(paste0("Missing data!\n The habitat suitability module "
                      , "was not activated. Please check."))
-      ras.hs.pts = as.data.frame(rasterToPoints(ras.mask))
+      ras.hs.pts = as.data.frame(rasterToPoints(GLOB_MASK$ras.mask))
       colnames(ras.hs.pts) = c("X", "Y", "layer")
-      for (fg in PFG) ras.hs.pts[[fg]] = ras.hs.pts$layer
+      for (fg in GLOB_SIM$PFG) ras.hs.pts[[fg]] = ras.hs.pts$layer
     }
     
     
@@ -179,11 +179,11 @@ POST_FATE.graphic_mapPFGvsHS = function(
     
     if (opt.stratum == "all")
     {
-      raster.perPFG.allStrata.BIN = .getRasterNames(years, "allStrata", "BIN")
+      raster.perPFG.allStrata.BIN = .getRasterNames(years, "allStrata", "BIN", GLOB_DIR)
       dir.tmp = paste0("RESULTS/", basename(dir.save), "/BIN_perPFG_allStrata/")
     } else
     {
-      raster.perPFG.perStrata.BIN = .getRasterNames(years, "perStrata", "BIN")
+      raster.perPFG.perStrata.BIN = .getRasterNames(years, "perStrata", "BIN", GLOB_DIR)
       dir.tmp = paste0("RESULTS/", basename(dir.save), "/BIN_perPFG_perStrata/")
     }
     .testParam_existFolder(name.simulation, dir.tmp)
@@ -203,16 +203,16 @@ POST_FATE.graphic_mapPFGvsHS = function(
                          , "Binary_YEAR_"
                          , y
                          , "_"
-                         , PFG
+                         , GLOB_SIM$PFG
                          , "_STRATA_"
                          , opt.stratum
                          , ".tif")
-      gp = PFG[which(file.exists(file_name))]
+      gp = GLOB_SIM$PFG[which(file.exists(file_name))]
       file_name = file_name[which(file.exists(file_name))]
       
       if (length(file_name) > 0)
       {
-        ras = stack(file_name) * ras.mask
+        ras = stack(file_name) * GLOB_MASK$ras.mask
         names(ras) = gp
         
         ras.pts = as.data.frame(rasterToPoints(ras))
@@ -221,7 +221,7 @@ POST_FATE.graphic_mapPFGvsHS = function(
         
         ## produce the plot ---------------------------------------------------
         cat("\n ---------- PRODUCING PLOT(S)")
-        plot_list.PFG = foreach(pfg = PFG) %do%
+        plot_list.PFG = foreach(pfg = GLOB_SIM$PFG) %do%
         {
           cat("\n> Preparing for PFG ", pfg)
           
@@ -261,7 +261,7 @@ POST_FATE.graphic_mapPFGvsHS = function(
             }
           }
         } ## END loop on PFG
-        names(plot_list.PFG) = PFG
+        names(plot_list.PFG) = GLOB_SIM$PFG
         return(plot_list.PFG)
       }
       
@@ -273,12 +273,12 @@ POST_FATE.graphic_mapPFGvsHS = function(
     {
       pdf(file = paste0(name.simulation
                         , "/RESULTS/POST_FATE_GRAPHIC_B_map_PFGvsHS_"
-                        , basename(dir.save)
+                        , basename(GLOB_DIR$dir.save)
                         , ".pdf")
           , width = 10, height = 10)
       for (y in years)
       {
-        for (pfg in PFG)
+        for (pfg in GLOB_SIM$PFG)
         {
           pp = plot_list[[as.character(y)]][[pfg]]
           if (!is.null(pp)) plot(pp)

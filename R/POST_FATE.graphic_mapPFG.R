@@ -231,18 +231,18 @@ POST_FATE.graphic_mapPFG = function(
     cat("\n  Simulation file : ", abs.simulParam)
     cat("\n")
     
-    ## Get results directories ----------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    ## Get results directories ------------------------------------------------
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
-    ## Get number of PFGs ---------------------------------------------------
-    ## Get PFG names --------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    ## Get number of PFGs -----------------------------------------------------
+    ## Get PFG names ----------------------------------------------------------
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
-    ## Get raster mask ------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    ## Get raster mask --------------------------------------------------------
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get list of arrays and extract years of simulation -------------------
     years = sort(unique(as.numeric(years)))
@@ -250,12 +250,12 @@ POST_FATE.graphic_mapPFG = function(
     
     opt.doStrata = FALSE
     name_strata = "all"
-    if (opt.stratum_min > 1 || opt.stratum_max < no_STRATA)
+    if (opt.stratum_min > 1 || opt.stratum_max < GLOB_SIM$no_STRATA)
     {
       opt.doStrata = TRUE
-      range_strata = max(1, opt.stratum_min):min(no_STRATA, opt.stratum_max)
-      name_strata = paste0(max(1, opt.stratum_min), "_", min(no_STRATA, opt.stratum_max))
-      cat("\n  Number of strata : ", no_STRATA)
+      range_strata = max(1, opt.stratum_min):min(GLOB_SIM$no_STRATA, opt.stratum_max)
+      name_strata = paste0(max(1, opt.stratum_min), "_", min(GLOB_SIM$no_STRATA, opt.stratum_max))
+      cat("\n  Number of strata : ", GLOB_SIM$no_STRATA)
       cat("\n  Selected strata : ", range_strata)
       cat("\n")
     }
@@ -263,14 +263,14 @@ POST_FATE.graphic_mapPFG = function(
     ## UNZIP the raster saved -------------------------------------------------
     if (opt.doBinary)
     {
-      raster.perPFG.allStrata.BIN = .getRasterNames(years, "allStrata", "BIN")
+      raster.perPFG.allStrata.BIN = .getRasterNames(years, "allStrata", "BIN", GLOB_DIR)
     }
     ## If opt.stratum_... used
     if (opt.doStrata)
     {
-      raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND")
+      raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
       combi = expand.grid(year = years
-                          , pfg = PFG
+                          , pfg = GLOB_SIM$PFG
                           , stratum = range_strata
                           , stringsAsFactors = FALSE)
       raster.perPFG.perStrata = sapply(1:nrow(combi), function(i)
@@ -281,13 +281,13 @@ POST_FATE.graphic_mapPFG = function(
                , "_STRATA_"
                , combi$stratum[i]
                , ".tif.gz"))
-      .unzip(folder_name = dir.output.perPFG.perStrata
+      .unzip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
              , list_files = raster.perPFG.perStrata
              , no_cores = opt.no_CPU)
     } else
     {
-      raster.perPFG.allStrata = .getRasterNames(years, "allStrata", "ABUND")
-      .unzip(folder_name = dir.output.perPFG.allStrata
+      raster.perPFG.allStrata = .getRasterNames(years, "allStrata", "ABUND", GLOB_DIR)
+      .unzip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
              , list_files = raster.perPFG.allStrata
              , no_cores = opt.no_CPU)
     }
@@ -301,31 +301,31 @@ POST_FATE.graphic_mapPFG = function(
       if (!opt.doStrata)
       {
         ## GET PFG abundance maps (all strata) ------------------------------
-        file_name = paste0(dir.output.perPFG.allStrata
+        file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata
                            , "Abund_YEAR_"
                            , y
                            , "_"
-                           , PFG
+                           , GLOB_SIM$PFG
                            , "_STRATA_all.tif")
-        gp = PFG[which(file.exists(file_name))]
+        gp = GLOB_SIM$PFG[which(file.exists(file_name))]
         file_name = file_name[which(file.exists(file_name))]
         
         if (length(file_name) > 0)
         {
-          ras.PFG = stack(file_name) * ras.mask
+          ras.PFG = stack(file_name) * GLOB_MASK$ras.mask
           names(ras.PFG) = gp
         } else
         {
           stop(paste0("Missing data!\n The folder "
-                      , dir.output.perPFG.allStrata
+                      , GLOB_DIR$dir.output.perPFG.allStrata
                       , " does not contain adequate files"))
         }
       } else
       {
         ## GET PFG abundance maps (selected strata) -------------------------
-        ras.PFG = foreach (fg = PFG) %do%
+        ras.PFG = foreach (fg = GLOB_SIM$PFG) %do%
         {
-          file_name = paste0(dir.output.perPFG.perStrata
+          file_name = paste0(GLOB_DIR$dir.output.perPFG.perStrata
                              , "Abund_YEAR_"
                              , y
                              , "_"
@@ -338,19 +338,19 @@ POST_FATE.graphic_mapPFG = function(
           
           if (length(file_name) > 0)
           {
-            ras = stack(file_name) * ras.mask
+            ras = stack(file_name) * GLOB_MASK$ras.mask
             ras.tot = sum(ras)
             names(ras.tot) = fg
             return(ras.tot)
           }
         }
-        names(ras.PFG) = PFG
+        names(ras.PFG) = GLOB_SIM$PFG
         ras.PFG = ras.PFG[[which(!is.null(ras.PFG))]]
         
         if (length(ras.PFG) == 0)
         {
           stop(paste0("Missing data!\n The folder "
-                      , dir.output.perPFG.perStrata
+                      , GLOB_DIR$dir.output.perPFG.perStrata
                       , " does not contain adequate files"))
         }
         ras.PFG = stack(ras.PFG)
@@ -358,7 +358,7 @@ POST_FATE.graphic_mapPFG = function(
       if (opt.doBinary)
       {
         ## Multiplied by binary maps ----------------------------------------
-        file_name = paste0(dir.output.perPFG.allStrata.BIN
+        file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.BIN
                            , "Binary_YEAR_"
                            , y
                            , "_"
@@ -375,7 +375,7 @@ POST_FATE.graphic_mapPFG = function(
         } else
         {
           warning(paste0("Missing data!\n The folder "
-                         , dir.output.perPFG.allStrata.BIN
+                         , GLOB_DIR$dir.output.perPFG.allStrata.BIN
                          , " does not contain all required files. "
                          , "`opt.doBinary` set to FALSE. Please check."))
         }
@@ -388,7 +388,7 @@ POST_FATE.graphic_mapPFG = function(
       ras.COVER = ras.PFG / max(ras.TOT[], na.rm = TRUE)
       ras_list$cover = ras.COVER
       
-      output.name = paste0(dir.save
+      output.name = paste0(GLOB_DIR$dir.save
                            , "/PFGcover_YEAR_"
                            , y
                            , "_STRATA_"
@@ -406,12 +406,12 @@ POST_FATE.graphic_mapPFG = function(
       ras.DIV = foreach(qq = 0:2) %do%
       {
         div_q = divLeinster(spxp = ras.pts, q = qq)
-        ras.div = ras.mask
+        ras.div = GLOB_MASK$ras.mask
         ras.div[] = div_q
-        ras.div[which(ras.mask[] == 0)] = NA
+        ras.div[which(GLOB_MASK$ras.mask[] == 0)] = NA
         ras_list[[paste0("DIV.", qq)]] = ras.div
         
-        output.name = paste0(dir.save
+        output.name = paste0(GLOB_DIR$dir.save
                              , "/PFGrichness_YEAR_"
                              , y
                              , "_STRATA_"
@@ -426,7 +426,7 @@ POST_FATE.graphic_mapPFG = function(
       }
       
       ## GET CWM map ----------------------------------------------------------
-      if (doLight)
+      if (GLOB_SIM$doLight)
       {
         light_files = .getParam(params.lines = abs.simulParam
                                 , flag = "PFG_PARAMS_LIGHT"
@@ -439,7 +439,7 @@ POST_FATE.graphic_mapPFG = function(
                     , flag.split = " "
                     , is.num = TRUE)
         }
-        names(light_need) = PFG
+        names(light_need) = GLOB_SIM$PFG
         if (length(na.exclude(light_need)) == 0)
         {
           warning(paste0("Missing data!\n The files \n"
@@ -450,7 +450,7 @@ POST_FATE.graphic_mapPFG = function(
           ras.CWM.light = ras.REL * light_need[names(ras.REL)]
           ras_list$CWM.light = ras.CWM.light
           
-          output.name = paste0(dir.save
+          output.name = paste0(GLOB_DIR$dir.save
                                , "/PFGlight_YEAR_"
                                , y
                                , "_STRATA_"
@@ -460,7 +460,7 @@ POST_FATE.graphic_mapPFG = function(
           writeRaster(ras.CWM.light, filename = output.name, overwrite = TRUE)
         }
       }
-      if (doSoil)
+      if (GLOB_SIM$doSoil)
       {
         soil_files = .getParam(params.lines = abs.simulParam
                                , flag = "PFG_PARAMS_SOIL"
@@ -473,11 +473,11 @@ POST_FATE.graphic_mapPFG = function(
                     , flag.split = " "
                     , is.num = TRUE)
         }
-        names(soil_contrib) = PFG
+        names(soil_contrib) = GLOB_SIM$PFG
         ras.CWM.soil = ras.REL * soil_contrib[names(ras.REL)]
         ras_list$CWM.soil = ras.CWM.soil
         
-        output.name = paste0(dir.save
+        output.name = paste0(GLOB_DIR$dir.save
                              , "/PFGsoil_YEAR_"
                              , y
                              , "_STRATA_"
@@ -530,7 +530,7 @@ POST_FATE.graphic_mapPFG = function(
                              , i.axis = "Abundance (%)"
                              , i.title = paste0("GRAPH C : map of PFG cover - Simulation year : ", y)
                              , i.subtitle = paste0("For each pixel, PFG abundances from strata "
-                                                   , opt.stratum_min, " to ", no_STRATA, " are summed,\n"
+                                                   , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
                                                    , "then transformed into relative values by dividing "
                                                    , "by the maximum abundance obtained.\n"))
         
@@ -550,7 +550,7 @@ POST_FATE.graphic_mapPFG = function(
                                                       , "Finally, simulated PFG occurrences are summed.\n"))
         
         ## PFG CWM LIGHT --------------------------------------------------------
-        if (doLight && exists("ras.CWM.light"))
+        if (GLOB_SIM$doLight && exists("ras.CWM.light"))
         {
           cat("\n> PFG CWM light...")
           ras.pts = as.data.frame(rasterToPoints(ras.CWM.light))
@@ -560,13 +560,13 @@ POST_FATE.graphic_mapPFG = function(
                                    , i.axis = "PFG light CWM"
                                    , i.title = paste0("GRAPH C : map of light CWM - Simulation year : ", y)
                                    , i.subtitle = paste0("For each pixel, PFG abundances from strata "
-                                                         , opt.stratum_min, " to ", no_STRATA, " are summed,\n"
+                                                         , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
                                                          , "then transformed into relative values by dividing by the maximum abundance obtained.\n"
                                                          , "Community Weighted Mean is then calculated with observed values of light for each PFG."))
         }
         
         ## PFG CWM SOIL ---------------------------------------------------------
-        if (doSoil && exists("ras.CWM.soil"))
+        if (GLOB_SIM$doSoil && exists("ras.CWM.soil"))
         {
           cat("\n> PFG CWM soil...")
           ras.pts = as.data.frame(rasterToPoints(ras.CWM.soil))
@@ -576,7 +576,7 @@ POST_FATE.graphic_mapPFG = function(
                                    , i.axis = "PFG soil CWM"
                                    , i.title = paste0("GRAPH C : map of soil CWM - Simulation year : ", y)
                                    , i.subtitle = paste0("For each pixel, PFG abundances from strata "
-                                                         , opt.stratum_min, " to ", no_STRATA, " are summed,\n"
+                                                         , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
                                                          , "then transformed into relative values by dividing by the maximum abundance obtained.\n"
                                                          , "Community Weighted Mean is then calculated with observed values of soil for each PFG."))
         }
@@ -592,7 +592,7 @@ POST_FATE.graphic_mapPFG = function(
     {
       pdf(file = paste0(name.simulation
                         , "/RESULTS/POST_FATE_GRAPHIC_C_map_PFG_"
-                        , basename(dir.save), ".pdf")
+                        , basename(GLOB_DIR$dir.save), ".pdf")
           , width = 12, height = 10)
       for (y in years)
       {
@@ -607,12 +607,12 @@ POST_FATE.graphic_mapPFG = function(
     ## ZIP the raster saved -------------------------------------------------
     if (opt.doStrata)
     {
-      .zip(folder_name = dir.output.perPFG.perStrata
+      .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
            , list_files = raster.perPFG.perStrata
            , no_cores = opt.no_CPU)
     } else
     {
-      .zip(folder_name = dir.output.perPFG.allStrata
+      .zip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
            , list_files = raster.perPFG.allStrata
            , no_cores = opt.no_CPU)
     }

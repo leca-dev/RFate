@@ -222,20 +222,20 @@ POST_FATE.graphic_validationStatistics = function(
     cat("\n")
     
     ## Get results directories ------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
     ## Get number of PFGs -----------------------------------------------------
     ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get PFG observations ---------------------------------------------------
-    mat.PFG.obs = mat.PFG.obs[which(mat.PFG.obs$PFG %in% PFG), ]
+    mat.PFG.obs = mat.PFG.obs[which(mat.PFG.obs$PFG %in% GLOB_SIM$PFG), ]
     if (nrow(mat.PFG.obs) == 0)
     {
       stop(paste0("Missing data!\n The names of PFG within `mat.PFG.obs`"
@@ -248,8 +248,8 @@ POST_FATE.graphic_validationStatistics = function(
     hab_names = "ALL"
     if (exists("ras.habitat"))
     {
-      ras.habitat = ras.habitat * ras.mask
-      df.habitat = data.frame(ID = cellFromXY(ras.habitat, xy.1)
+      ras.habitat = ras.habitat * GLOB_MASK$ras.mask
+      df.habitat = data.frame(ID = cellFromXY(ras.habitat, GLOB_MASK$xy.1)
                               , stringsAsFactors = FALSE)
       df.habitat$HAB = ras.habitat[df.habitat$ID]
       hab_names = c(hab_names, unique(df.habitat$HAB))
@@ -261,7 +261,7 @@ POST_FATE.graphic_validationStatistics = function(
     years = sort(unique(as.numeric(years)))
     
     ## UNZIP the raster saved -------------------------------------------------
-    raster.perPFG.allStrata.REL = .getRasterNames(years, "allStrata", "REL")
+    raster.perPFG.allStrata.REL = .getRasterNames(years, "allStrata", "REL", GLOB_DIR)
     
     
     ## get the data inside the rasters ----------------------------------------
@@ -271,18 +271,18 @@ POST_FATE.graphic_validationStatistics = function(
     {
       cat("\n> year", y)
       
-      file_name = paste0(dir.output.perPFG.allStrata.REL
+      file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.REL
                          , "Abund_relative_YEAR_"
                          , y
                          , "_"
-                         , PFG
+                         , GLOB_SIM$PFG
                          , "_STRATA_all.tif")
-      gp = PFG[which(file.exists(file_name))]
+      gp = GLOB_SIM$PFG[which(file.exists(file_name))]
       file_name = file_name[which(file.exists(file_name))]
       
       if (length(file_name) > 0)
       {
-        ras = stack(file_name) * ras.mask
+        ras = stack(file_name) * GLOB_MASK$ras.mask
         names(ras) = gp
         
         mat.y = mat.PFG.obs
@@ -345,8 +345,9 @@ POST_FATE.graphic_validationStatistics = function(
                 {
                   if (habi == "ALL")
                   {
-                    assign("cutoff", NULL, envir = .GlobalEnv) 
-                    cutoff <<- .getCutoff(Obs = tmp[, "obs"], Fit = tmp[, "fg"])
+                    # assign("cutoff", NULL, envir = .GlobalEnv) 
+                    cutoff <- NULL
+                    cutoff <- .getCutoff(Obs = tmp[, "obs"], Fit = tmp[, "fg"])
                   }
                   if (exists("cutoff") && !(is.na(cutoff[1])))
                   {
@@ -403,14 +404,14 @@ POST_FATE.graphic_validationStatistics = function(
                                     , "/RESULTS/POST_FATE_TABLE_YEAR_"
                                     , y
                                     , "_validationStatistics_"
-                                    , basename(dir.save)
+                                    , basename(GLOB_DIR$dir.save)
                                     , ".csv")
                     , row.names = FALSE)
           
           message(paste0("\n The output file POST_FATE_TABLE_YEAR_"
                          , y
                          , "_validationStatistics_"
-                         , basename(dir.save)
+                         , basename(GLOB_DIR$dir.save)
                          , ".csv has been successfully created !\n"))
           
           ## prepare the plot -------------------------------------------------
@@ -554,7 +555,7 @@ POST_FATE.graphic_validationStatistics = function(
     {
       pdf(file = paste0(name.simulation
                         , "/RESULTS/POST_FATE_GRAPHIC_B_validationStatistics_"
-                        , basename(dir.save), ".pdf")
+                        , basename(GLOB_DIR$dir.save), ".pdf")
           , width = 12, height = 10)
       for (y in years)
       {

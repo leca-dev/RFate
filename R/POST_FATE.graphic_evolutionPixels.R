@@ -163,22 +163,22 @@ POST_FATE.graphic_evolutionPixels = function(
     cat("\n")
     
     ## Get results directories ------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
     ## Get number of PFGs -----------------------------------------------------
     ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get the abundance table ------------------------------------------------
     file.abundance = paste0(name.simulation
                             , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
-                            , basename(dir.save)
+                            , basename(GLOB_DIR$dir.save)
                             , ".csv")
     .testParam_existFile(file.abundance)
     tab.abundance = fread(file.abundance)
@@ -190,14 +190,14 @@ POST_FATE.graphic_evolutionPixels = function(
     years = years[which(!(years %in% c("TYPE", "GROUP", "ID.pixel", "X", "Y", "HAB")))]
     years = as.numeric(years)
     
-    strata = paste0("Stratum ", (no_STRATA - 1):0)
+    strata = paste0("Stratum ", (GLOB_SIM$no_STRATA - 1):0)
     
     ## Get resources tables ---------------------------------------------------
-    if (doLight)
+    if (GLOB_SIM$doLight)
     {
       file.light = paste0(name.simulation
                           , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_light_"
-                          , basename(dir.save)
+                          , basename(GLOB_DIR$dir.save)
                           , ".csv")
       .testParam_existFile(file.light)
       tab.light = fread(file.light)
@@ -209,11 +209,11 @@ POST_FATE.graphic_evolutionPixels = function(
       tab.abundance = rbind(tab.abundance, tab.light)
     }
     
-    if (doSoil)
+    if (GLOB_SIM$doSoil)
     {
       file.soil = paste0(name.simulation
                          , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_soil_"
-                         , basename(dir.save)
+                         , basename(GLOB_DIR$dir.save)
                          , ".csv")
       .testParam_existFile(file.soil)
       tab.soil = fread(file.soil)
@@ -229,7 +229,7 @@ POST_FATE.graphic_evolutionPixels = function(
     IDS = sample(unique(tab.abundance$ID.pixel), 5)
     if (!is.null(opt.cells_ID))
     {
-      if (sum(opt.cells_ID %in% ind_1_mask) == length(opt.cells_ID))
+      if (sum(opt.cells_ID %in% GLOB_MASK$ind_1_mask) == length(opt.cells_ID))
       {
         IDS = opt.cells_ID
       } else
@@ -237,7 +237,7 @@ POST_FATE.graphic_evolutionPixels = function(
         warning(paste0("The values given in `opt.cells_ID` do not match "
                        , "with any cells of the studied area \n"
                        , "(obtained from the raster file `"
-                       , file.mask
+                       , GLOB_MASK$file.mask
                        , "`)\n"
                        , "They will be replaced by randomly selected cells."))
       }
@@ -264,7 +264,7 @@ POST_FATE.graphic_evolutionPixels = function(
                                        , paste0(IDS, collapse = "_")
                                        , length(IDS))
                               , "_"
-                              , basename(dir.save)
+                              , basename(GLOB_DIR$dir.save)
                               , ".csv")
               , row.names = FALSE)
     
@@ -274,7 +274,7 @@ POST_FATE.graphic_evolutionPixels = function(
                             , paste0(IDS, collapse = "_")
                             , length(IDS))
                    , "_"
-                   , basename(dir.save)
+                   , basename(GLOB_DIR$dir.save)
                    , ".csv \n"
                    , "has been successfully created !\n"))
     
@@ -283,13 +283,13 @@ POST_FATE.graphic_evolutionPixels = function(
     {
       cat("\n ---------- PRODUCING PLOT \n")
       vec_col1 = c('#0077BB', '#33BBEE', '#009988', '#EE7733', '#CC3311', '#EE3377')
-      val_col1 = c(rep(rgb(1,1,1,1), no_STRATA)
+      val_col1 = c(rep(rgb(1,1,1,1), GLOB_SIM$no_STRATA)
                    , colorRampPalette(vec_col1)(no_PFG)
                    , "grey30")
       names(val_col1) = c(strata, PFG, "soil")
       
       vec_col2 = c('#FEC44F', '#FB9A29', '#EC7014', '#CC4C02', '#993404', '#662506')
-      val_col2 = colorRampPalette(vec_col2)(no_STRATA)
+      val_col2 = colorRampPalette(vec_col2)(GLOB_SIM$no_STRATA)
       names(val_col2) = strata
       
       
@@ -321,7 +321,7 @@ POST_FATE.graphic_evolutionPixels = function(
                                         , paste0(IDS, collapse = "_")
                                         , length(IDS))
                                , "_"
-                               , basename(dir.save)
+                               , basename(GLOB_DIR$dir.save)
                                , ".pdf")
              , plot = pp, width = 10, height = 8)
     } else

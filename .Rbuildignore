@@ -1,2 +1,12 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+.gitignore
+.Rproj.user
+.git
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$
+^_pkgdown\.yml$
+^docs$
+^windows$
+^FATE_simulation$

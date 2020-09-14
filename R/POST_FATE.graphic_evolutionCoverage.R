@@ -168,22 +168,17 @@ POST_FATE.graphic_evolutionCoverage = function(
     cat("\n")
     
     ## Get results directories ------------------------------------------------
-    .getGraphics_results(name.simulation  = name.simulation
-                         , abs.simulParam = abs.simulParam)
-    
-    ## Get number of PFGs -----------------------------------------------------
-    ## Get PFG names ----------------------------------------------------------
-    .getGraphics_PFG(name.simulation  = name.simulation
-                     , abs.simulParam = abs.simulParam)
+    GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
     
     ## Get raster mask --------------------------------------------------------
-    .getGraphics_mask(name.simulation  = name.simulation
-                      , abs.simulParam = abs.simulParam)
+    GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                  , abs.simulParam = abs.simulParam)
     
     ## Get the abundance table ------------------------------------------------
     file.abundance = paste0(name.simulation
                             , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
-                            , basename(dir.save)
+                            , basename(GLOB_DIR$dir.save)
                             , ".csv")
     .testParam_existFile(file.abundance)
     tab.totalAbundance = fread(file.abundance)
@@ -237,7 +232,7 @@ POST_FATE.graphic_evolutionCoverage = function(
         tab = apply(tab, 2, function(x) length(which(x > 0)))
         
         return(data.frame(PFG = pfg, HAB = hab, YEAR = years
-                          , spaceOccupancy = tab / no_1_mask
+                          , spaceOccupancy = tab / GLOB_MASK$no_1_mask
                           , stringsAsFactors = FALSE))
       }
     }
@@ -246,23 +241,23 @@ POST_FATE.graphic_evolutionCoverage = function(
     write.csv(distri.melt
               , file = paste0(name.simulation
                               , "/RESULTS/POST_FATE_TABLE_ZONE_evolution_spaceOccupancy_"
-                              , basename(dir.save)
+                              , basename(GLOB_DIR$dir.save)
                               , ".csv")
               , row.names = FALSE)
     
     write.csv(distriAbund.melt
               , file = paste0(name.simulation
                               , "/RESULTS/POST_FATE_TABLE_ZONE_evolution_totalAbundance_"
-                              , basename(dir.save)
+                              , basename(GLOB_DIR$dir.save)
                               , ".csv")
               , row.names = FALSE)
     
     message(paste0("\n The output files \n"
                    , " > POST_FATE_TABLE_ZONE_evolution_spaceOccupancy_"
-                   , basename(dir.save)
+                   , basename(GLOB_DIR$dir.save)
                    , ".csv \n"
                    , " > POST_FATE_TABLE_ZONE_evolution_totalAbundance_"
-                   , basename(dir.save)
+                   , basename(GLOB_DIR$dir.save)
                    , ".csv \n"
                    , "have been successfully created !\n"))
     
@@ -308,7 +303,7 @@ POST_FATE.graphic_evolutionCoverage = function(
       ## ----------------------------------------------------------------------
       pdf(file = paste0(name.simulation
                         , "/RESULTS/POST_FATE_GRAPHIC_A_evolution_coverage_"
-                        , basename(dir.save), ".pdf")
+                        , basename(GLOB_DIR$dir.save), ".pdf")
           , width = 10, height = 8)
       plot(pp1)
       plot(pp2)
