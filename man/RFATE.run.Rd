@@ -8,7 +8,7 @@
 RFATE.run()
 }
 \description{
-This \code{\link[shiny]{shiny}} application allows to use all 
+This \code{shiny} application allows to use all 
 the \code{RFate} functions (\code{PRE_FATE}, \code{FATE} and 
 \code{POST_FATE}), from the building of PFG to the treatment of \code{FATE} 
 output files.

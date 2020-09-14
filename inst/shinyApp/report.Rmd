@@ -1,0 +1,161 @@
+---
+title: "Dynamic report"
+output: html_document
+params:
+  name.simul: NA
+  create.skeleton: NA
+  required.no_PFG: NA
+  required.no_STRATA: NA
+  required.simul_duration: NA
+  opt.no_CPU: NA
+  required.seeding_duration: NA
+  required.seeding_timestep: NA
+  required.seeding_input: NA
+  required.max_abund_low: NA
+  required.max_abund_medium: NA
+  required.max_abund_high: NA
+  doDispersal: NA
+  doHabSuitability: NA
+  doDisturbances: NA
+  doLight: NA
+  doSoil: NA
+  DISPERSAL.mode: NA
+  HABSUIT.mode: NA
+  DIST.no: NA
+  DIST.no_sub: NA
+  DIST.freq: NA
+  LIGHT.thresh_medium: NA
+  LIGHT.thresh_low: NA
+  compt.global.no: NA
+  compt.global.files: NA
+---
+
+## Plant Functional Groups
+
+## Simulation parameter files
+
+### New
+
+```{r}
+# params$name.simul
+# params$create.skeleton
+# params$create.skeleton[1]
+# # if (params$create.skeleton[1] == 1)
+# # {
+# print(params$required.no_PFG)
+# params$required.no_STRATA
+# params$required.simul_duration
+# params$opt.no_CPU
+# params$required.seeding_duration
+# params$required.seeding_timestep
+# params$required.seeding_input
+# params$required.max_abund_low
+# params$required.max_abund_medium
+# params$required.max_abund_high
+# params$doDispersal
+# params$doHabSuitability
+# params$doDisturbances
+# params$doLight
+# params$doSoil
+# # }
+```
+
+
+Creation of directory :
+
+```{r}
+if (params$create.skeleton > 0)
+{
+  PRE_FATE.skeletonDirectory(name.simulation = params$name.simul)
+}
+```
+
+Creation of parameter simulation file :
+```{r eval = FALSE}
+if (params$create.skeleton > 0)
+{
+  mask.file = list.files(path = paste0(params$name.simul, "/DATA/MASK")
+                         , pattern = "^MASK_")
+  if (params$upload.mask > 0 && length(mask.file) > 0)
+  {
+      PRE_FATE.params_simulParameters(name.simulation = params$name.simul
+                                      , name.mask = mask.file
+      )
+  }
+}
+```
+
+```{r}
+if (params$create.skeleton > 0)
+{
+  PRE_FATE.params_globalParameters(name.simulation = params$name.simul
+                                   , opt.no_CPU = params$opt.no_CPU
+                                   , required.no_PFG = params$required.no_PFG
+                                   , required.no_STRATA = params$required.no_STRATA
+                                   , required.simul_duration = params$required.simul_duration
+                                   , required.seeding_duration = params$required.seeding_duration
+                                   , required.seeding_timestep = params$required.seeding_timestep
+                                   , required.seeding_input = params$required.seeding_input
+                                   , required.max_abund_low = params$required.max_abund_low
+                                   , required.max_abund_medium = params$required.max_abund_medium
+                                   , required.max_abund_high = params$required.max_abund_high
+                                   , doDispersal = params$doDispersal
+                                   , DISPERSAL.mode = as.vector(c("(1) uniform kernel" = 1
+                                                                  , "(2) exponential kernel" = 2
+                                                                  , "(3) exponential kernel with probability" = 3)[params$DISPERSAL.mode])
+                                   , doHabSuitability = params$doHabSuitability
+                                   , HABSUIT.mode = ifelse(params$HABSUIT.mode == "(1) random", 1, 2)
+                                   , doLight = params$doLight
+                                   , LIGHT.thresh_medium = params$LIGHT.thresh_medium
+                                   , LIGHT.thresh_low = params$LIGHT.thresh_low
+                                   , doSoil = params$doSoil
+                                   , doDisturbances = params$doDisturbances
+                                   , DIST.no = params$DIST.no
+                                   , DIST.no_sub = params$DIST.no_sub
+                                   , DIST.freq = rep(params$DIST.freq, params$DIST.no)
+  )
+}
+```
+
+```{r}
+get_tab.global = function() {
+  if (!is.null(params$name.simul) && nchar(params$name.simul) > 0)
+  {
+    path_folder = paste0(params$name.simul, "/DATA/GLOBAL_PARAMETERS/")
+    tab = get_files(path_folder)
+    
+    if (!is.null(tab) && ncol(tab) > 0)
+    {
+      params$compt.global.no = ncol(tab)
+      params$compt.global.files = colnames(tab)
+      return(tab)
+    }
+  }
+}
+```
+
+```{r}
+  tab = get_tab.global()
+  tab = as.data.frame(tab)
+  
+  if (!is.null(tab) && ncol(tab) > 0)
+  {
+    tab
+  }
+```
+
+### Multiple set
+
+## Simulation outputs & graphics
+
+
+```{r}
+# The `params` object is available in the document.
+#params$n
+```
+
+A plot of `params$n` random points.
+
+```{r}
+#plot(rnorm(params$n), rnorm(params$n))
+```
