@@ -78,3 +78,8 @@
   packageStartupMessage(m)
   options(warn = previouswarn)
 }
+
+.onUnload = function (libpath)
+{
+  library.dynam.unload("RFate", libpath)
+}
