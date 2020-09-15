@@ -270,7 +270,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 				for (int id=0; id<(int)m_FGdistCircle[fg][0].size(); id++)
 				{
 					int dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id]));
-					if (dist_pt < m_prob_d1[fg].size())
+					if (dist_pt < (int)m_prob_d1[fg].size())
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
@@ -285,7 +285,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 				for (int id=0; id<(int)m_FGdistCircle[fg][1].size(); id++)
 				{
 					int dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1;
-					if (dist_pt < m_prob_d2[fg].size())
+					if (dist_pt < (int)m_prob_d2[fg].size())
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */

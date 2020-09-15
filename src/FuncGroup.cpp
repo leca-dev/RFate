@@ -99,7 +99,7 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 
 	if (m_LList.getNoCohort() > 0)
 	{
-	for (unsigned i=0; i<m_LList.getNoCohort(); i++)
+	for (int i=0; i<m_LList.getNoCohort(); i++)
 	{
 		unsigned Ay = m_LList.getCohort(i).getAy();
 		unsigned Ao = m_LList.getCohort(i).getAo();
@@ -155,7 +155,7 @@ void FuncGroup::ageLegions(int maxAge)
 
 	if (m_LList.getNoCohort() > 0)
 	{ // if there is some cohort within the legion
-		for (unsigned i=0; i<m_LList.getNoCohort(); i++)
+		for (int i=0; i<m_LList.getNoCohort(); i++)
 		{
 			m_LList.getCohort_(i)->setAy(m_LList.getCohort(i).getAy() + 1);
 			m_LList.getCohort_(i)->setAo(min( m_LList.getCohort(i).getAo() + 1,  maxAge));

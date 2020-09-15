@@ -51,7 +51,7 @@ SpatialStack<double, int> SuFate::getSeedRain() { return *m_SeedRainMap; }
 SpatialStack<double, int> SuFate::getSeedProd() { return *m_SeedProdMap; }
 int SuFate::getSeedRain(unsigned fg) { return (*m_SeedRainMap)( m_CellID, fg); }
 int SuFate::getSeedProd(unsigned fg) { return (*m_SeedProdMap)( m_CellID, fg); }
-GSP SuFate::getGSP() { return *m_GSP; };
+GSP SuFate::getGSP() { return *m_GSP; }
 
 CommunityPtr SuFate::getCommunity_() { return &m_Comm; }
 LightResourcesPtr SuFate::getLightResources_() { return &m_LightR; }
@@ -59,7 +59,7 @@ IntMapPtr SuFate::getSeedRain_() { return m_SeedRainMap; }
 IntMapPtr SuFate::getSeedProd_() { return m_SeedProdMap; }
 int* SuFate::getSeedRain_(unsigned fg) { return &( (*m_SeedRainMap)( m_CellID, fg) ); }
 int* SuFate::getSeedProd_(unsigned fg) { return &( (*m_SeedProdMap)( m_CellID, fg) ); }
-GSPPtr SuFate::getGSP_() { return m_GSP; };
+GSPPtr SuFate::getGSP_() { return m_GSP; }
 
 void SuFate::setCommunity(const Community comm) { m_Comm.setFuncGroupList(comm.getFuncGroupList()); }
 void SuFate::setLightResources(const LightResources lightR) { m_LightR.setResourceList(lightR.getResourceList()); }

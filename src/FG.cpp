@@ -69,7 +69,7 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 	if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
 	m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
 	m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
-	if (m_Strata.size() != glob_params.getNoStrata() + 1)
+	if ((int)m_Strata.size() != glob_params.getNoStrata() + 1)
 	{
 		logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
                m_Strata.size() - 1," instead of ", glob_params.getNoStrata(),
