@@ -48,8 +48,6 @@ Imports:
 Suggests:
     spelling, 
     testthat,
-    covr,
-    knitr
+    covr
 LinkingTo: Rcpp, RcppThread, BH
 Language: en-US
-VignetteBuilder: knitr

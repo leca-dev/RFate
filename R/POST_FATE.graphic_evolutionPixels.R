@@ -255,7 +255,7 @@ POST_FATE.graphic_evolutionPixels = function(
     colnames(distriAbund) = c("TYPE", "GROUP", "ID.pixel", "HAB", "YEAR", "value")
     distriAbund$YEAR = as.numeric(as.character(distriAbund$YEAR))
     distriAbund$TYPE = factor(distriAbund$TYPE, c("light", "abundance", "soil"))
-    distriAbund$GROUP = factor(distriAbund$GROUP, c(strata, PFG, "soil"))
+    distriAbund$GROUP = factor(distriAbund$GROUP, c(strata, GLOB_SIM$PFG, "soil"))
     
     write.csv(distriAbund
               , file = paste0(name.simulation
@@ -284,9 +284,9 @@ POST_FATE.graphic_evolutionPixels = function(
       cat("\n ---------- PRODUCING PLOT \n")
       vec_col1 = c('#0077BB', '#33BBEE', '#009988', '#EE7733', '#CC3311', '#EE3377')
       val_col1 = c(rep(rgb(1,1,1,1), GLOB_SIM$no_STRATA)
-                   , colorRampPalette(vec_col1)(no_PFG)
+                   , colorRampPalette(vec_col1)(GLOB_SIM$no_PFG)
                    , "grey30")
-      names(val_col1) = c(strata, PFG, "soil")
+      names(val_col1) = c(strata, GLOB_SIM$PFG, "soil")
       
       vec_col2 = c('#FEC44F', '#FB9A29', '#EC7014', '#CC4C02', '#993404', '#662506')
       val_col2 = colorRampPalette(vec_col2)(GLOB_SIM$no_STRATA)

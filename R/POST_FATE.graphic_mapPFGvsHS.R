@@ -152,7 +152,7 @@ POST_FATE.graphic_mapPFGvsHS = function(
                                   , abs.simulParam = abs.simulParam)
     
     ## Get raster HS ----------------------------------------------------------
-    if (doHabsuit)
+    if (GLOB_SIM$doHabsuit)
     {
       file.hs = .getParam(params.lines = abs.simulParam
                           , flag = "PFG_MASK_HABSUIT"
@@ -180,11 +180,11 @@ POST_FATE.graphic_mapPFGvsHS = function(
     if (opt.stratum == "all")
     {
       raster.perPFG.allStrata.BIN = .getRasterNames(years, "allStrata", "BIN", GLOB_DIR)
-      dir.tmp = paste0("RESULTS/", basename(dir.save), "/BIN_perPFG_allStrata/")
+      dir.tmp = paste0("RESULTS/", basename(GLOB_DIR$dir.save), "/BIN_perPFG_allStrata/")
     } else
     {
       raster.perPFG.perStrata.BIN = .getRasterNames(years, "perStrata", "BIN", GLOB_DIR)
-      dir.tmp = paste0("RESULTS/", basename(dir.save), "/BIN_perPFG_perStrata/")
+      dir.tmp = paste0("RESULTS/", basename(GLOB_DIR$dir.save), "/BIN_perPFG_perStrata/")
     }
     .testParam_existFolder(name.simulation, dir.tmp)
     dir.tmp = paste0(name.simulation, "/", dir.tmp)

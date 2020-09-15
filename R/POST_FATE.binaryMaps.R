@@ -249,7 +249,7 @@ POST_FATE.binaryMaps = function(
                          , "Abund_relative_YEAR_"
                          , y
                          , "_"
-                         , PFG
+                         , GLOB_SIM$PFG
                          , "_STRATA_all.tif")
       gp = GLOB_SIM$PFG[which(file.exists(file_name))]
       file_name = file_name[which(file.exists(file_name))]

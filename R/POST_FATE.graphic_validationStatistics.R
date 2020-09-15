@@ -508,7 +508,7 @@ POST_FATE.graphic_validationStatistics = function(
                                              , ymax = "value + AUC.sd")
                                   , color = "grey30", na.rm = TRUE) +
                     annotate(geom = "text"
-                             , x = no_PFG / 2
+                             , x = GLOB_SIM$no_PFG / 2
                              , y = 1.05
                              , label = subti
                              , size = 4) +
