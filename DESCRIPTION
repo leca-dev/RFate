@@ -17,8 +17,7 @@ Author: Maya Guéguen [aut, cre],
         Bjoern Reineking [aut]
 Maintainer: Guillaume Dupouy <guillaume.dupouy@inrae.fr>, 
             Maya Guéguen <maya.gueguen@univ-grenoble-alpes.fr>
-Description:
-    Wrapper of the C++ model FATE. FATE is a vegetation model based on Plant Functional Groups 
+Description: Wrapper of the C++ model FATE. FATE is a vegetation model based on Plant Functional Groups 
     (PFG) that aims to simulate primary ecological succession through entities interactions, 
     population dynamics and dispersal, and external drivers such as disturbance regimes or environmental variations.
     RFate is a package which provides functions to :
@@ -46,8 +45,6 @@ Imports:
 Suggests:
     spelling, 
     testthat,
-    covr,
-    knitr, rmarkdown
+    covr
 LinkingTo: Rcpp, RcppThread, BH
-VignetteBuilder: knitr, rmarkdown
 Language: en-US
