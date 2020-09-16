@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create the skeleton folder for a FATE simulation — PRE_FATE.skeletonDirectory • RFate</title>
+<title>Create the skeleton folder for a <code>FATE</code> simulation — PRE_FATE.skeletonDirectory • RFate</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Create the skeleton folder for a FATE simulation — PRE_FATE.skeletonDirectory" />
+<meta property="og:title" content="Create the skeleton folder for a <code>FATE</code> simulation — PRE_FATE.skeletonDirectory" />
 <meta property="og:description" content="This script is designed to create a user-friendly directory 
 tree to run a FATE simulation." />
 
@@ -199,7 +199,7 @@ tree to run a FATE simulation." />
 tree to run a <code>FATE</code> simulation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.skeletonDirectory</span>(name.simulation = <span class='st'>"FATE_simulation"</span>)</pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.skeletonDirectory</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,10 +234,10 @@ But as this is more practical, this function proposes a way to
 <strong>organize all those files or parameter files</strong> that will or could be 
 used by a <code>FATE</code> simulation. <br /> <br /></p>
 <p>The tree structure is detailed below :</p>
-<dl>
+<dl'>
   <dt><code>DATA</code></dt><dd><p>this folder will contain all the data or parameters 
   that are needed by the model
-  <dl>
+  <dl'>
     <dt><code>GLOBAL_PARAMETERS</code></dt><dd><p>files containing global parameters for 
     the simulation <br /> (see <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>)</p></dd>
     <dt><code>MASK</code></dt><dd><p>raster maps used in the model</p></dd>
@@ -246,7 +246,7 @@ used by a <code>FATE</code> simulation. <br /> <br /></p>
     <dt><code>SAVE</code></dt><dd><p>files containing information about simulation times 
     to save outputs <br /> (see <code><a href='PRE_FATE.params_savingYears.html'>PRE_FATE.params_savingYears</a></code>)</p></dd>
     <dt><code>PFGS</code></dt><dd><p><br />
-    <dl>
+    <dl'>
       <dt><code>SUCC</code></dt><dd><p>life history parameter files <br /> 
       (see <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code>)</p></dd>
       <dt><code>LIGHT</code></dt><dd><p>response to light competition parameter files <br /> 
@@ -284,9 +284,6 @@ structure.</p>
 <code><a href='PRE_FATE.params_changingYears.html'>PRE_FATE.params_changingYears</a></code>,
 <code><a href='PRE_FATE.params_savingYears.html'>PRE_FATE.params_savingYears</a></code>,
 <code><a href='PRE_FATE.params_simulParameters.html'>PRE_FATE.params_simulParameters</a></code></p></div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
@@ -294,9 +291,7 @@ structure.</p>
 <span class='fu'>PRE_FATE.skeletonDirectory</span>()
 
 <span class='co'>## Create a skeleton folder with a specific name</span>
-<span class='fu'>PRE_FATE.skeletonDirectory</span>(name.simulation = <span class='st'>"FATE_AlpineForest"</span>)
-
-</pre>
+<span class='fu'>PRE_FATE.skeletonDirectory</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_AlpineForest"</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -312,7 +307,7 @@ structure.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

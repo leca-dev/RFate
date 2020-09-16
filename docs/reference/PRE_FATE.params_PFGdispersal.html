@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create DISPERSAL parameter files for a FATE 
+<title>Create <em>DISPERSAL</em> parameter files for a <code>FATE</code> 
 simulation — PRE_FATE.params_PFGdispersal • RFate</title>
 
 
@@ -40,7 +40,7 @@ simulation — PRE_FATE.params_PFGdispersal • RFate</title>
 
 
 
-<meta property="og:title" content="Create DISPERSAL parameter files for a FATE 
+<meta property="og:title" content="Create <em>DISPERSAL</em> parameter files for a <code>FATE</code> 
 simulation — PRE_FATE.params_PFGdispersal" />
 <meta property="og:description" content="This script is designed to create parameter files containing 
 dispersal distances for each PFG (one file for each of them) used in the 
@@ -205,9 +205,9 @@ dispersal module of <code>FATE</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.params_PFGdispersal</span>(
-  <span class='kw'>name.simulation</span>,
-  <span class='kw'>mat.PFG.disp</span>,
-  opt.folder.name = <span class='kw'>NULL</span>
+  <span class='no'>name.simulation</span>,
+  <span class='no'>mat.PFG.disp</span>,
+  <span class='kw'>opt.folder.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -236,7 +236,7 @@ to the name of the folder that will be created into the
     <p>A <code>.txt</code> file per PFG into the 
 <code>name.simulation/DATA/PFGS/DISP/</code> directory with the following 
 parameters :</p>
-<dl>
+<dl'>
   <dt>DISPERS_DIST</dt><dd><p>dispersal distances (3 values) <em>(in meters)</em> 
   <br /> <br /></p></dd>
 
@@ -254,7 +254,7 @@ spatially explicit by dispersing seeds of each PFG with a kernel (see
 <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>). <br /> <br /></p>
 <p>Dispersal distances are needed for each PFG to quantify the amount of seeds 
 dispersed into 3 different concentric circles :</p>
-<dl>
+<dl'>
   <dt>d50</dt><dd><p>the distance at which <code>50%</code> of seeds are dispersed</p></dd>
   <dt>d99</dt><dd><p>the distance at which <code>99%</code> of seeds are dispersed</p></dd>
   <dt>ldd</dt><dd><p>the long dispersal distance at which <code>100%</code> of seeds are dispersed</p></dd>
@@ -265,9 +265,6 @@ dispersed into 3 different concentric circles :</p>
 
     <div class='dont-index'><p><code><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></code>, 
 <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code></p></div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
@@ -275,19 +272,17 @@ dispersed into 3 different concentric circles :</p>
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
 
 <span class='co'>## Create PFG dispersal parameter files</span>
-<span class='fu'>PRE_FATE.params_PFGdispersal</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                            , mat.PFG.disp = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(PFG = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PFG1"</span>, <span class='st'>"PFG2"</span>, <span class='st'>"PFG3"</span>)
-                                                        , d50 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>, <span class='fl'>50</span>, <span class='fl'>10</span>)
-                                                        , d99 = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1000</span>, <span class='fl'>1500</span>, <span class='fl'>2000</span>)
-                                                        , ldd = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10000</span>, <span class='fl'>5000</span>, <span class='fl'>10000</span>)))
+<span class='fu'>PRE_FATE.params_PFGdispersal</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
+                            , <span class='kw'>mat.PFG.disp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>PFG</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"PFG1"</span>, <span class='st'>"PFG2"</span>, <span class='st'>"PFG3"</span>)
+                                                        , <span class='kw'>d50</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>, <span class='fl'>50</span>, <span class='fl'>10</span>)
+                                                        , <span class='kw'>d99</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1000</span>, <span class='fl'>1500</span>, <span class='fl'>2000</span>)
+                                                        , <span class='kw'>ldd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10000</span>, <span class='fl'>5000</span>, <span class='fl'>10000</span>)))
 
 
 
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-  
-<span class='co'>## Load example data</span>
 
-</pre>
+<span class='co'>## Load example data</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -303,7 +298,7 @@ dispersed into 3 different concentric circles :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

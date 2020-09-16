@@ -199,7 +199,7 @@ parameter, and replace it with new value(s)." />
 parameter, and replace it with new value(s).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>.setParam</span>(<span class='kw'>params.lines</span>, <span class='kw'>flag</span>, <span class='kw'>flag.split</span>, <span class='kw'>value</span>)</pre>
+    <pre class="usage"><span class='fu'>.setParam</span>(<span class='no'>params.lines</span>, <span class='no'>flag</span>, <span class='no'>flag.split</span>, <span class='no'>value</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -227,45 +227,39 @@ file (containing values or filenames)</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class='co'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.exists</a></span>(<span class='st'>"FATE_simulation"</span>)) <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"FATE_simulation"</span>, recursive = <span class='fl'>TRUE</span>)
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.exists</a></span>(<span class='st'>"FATE_simulation"</span>)) <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='st'>"FATE_simulation"</span>, <span class='kw'>recursive</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
 
 <span class='co'>## Create a Global_parameters file</span>
-<span class='fu'><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                                 , required.no_PFG = <span class='fl'>6</span>
-                                 , required.no_strata = <span class='fl'>5</span>
-                                 , required.simul_duration = <span class='fl'>100</span>
-                                 , required.seeding_duration = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>50</span>)
-                                 , required.seeding_timestep = <span class='fl'>1</span>
-                                 , required.seeding_input = <span class='fl'>100</span>
-                                 , required.max_abund_low = <span class='fl'>30000</span>
-                                 , required.max_abund_medium = <span class='fl'>50000</span>
-                                 , required.max_abund_high = <span class='fl'>90000</span>)
-                                 
+<span class='fu'><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
+                                 , <span class='kw'>required.no_PFG</span> <span class='kw'>=</span> <span class='fl'>6</span>
+                                 , <span class='kw'>required.no_strata</span> <span class='kw'>=</span> <span class='fl'>5</span>
+                                 , <span class='kw'>required.simul_duration</span> <span class='kw'>=</span> <span class='fl'>100</span>
+                                 , <span class='kw'>required.seeding_duration</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>50</span>)
+                                 , <span class='kw'>required.seeding_timestep</span> <span class='kw'>=</span> <span class='fl'>1</span>
+                                 , <span class='kw'>required.seeding_input</span> <span class='kw'>=</span> <span class='fl'>100</span>
+                                 , <span class='kw'>required.max_abund_low</span> <span class='kw'>=</span> <span class='fl'>30000</span>
+                                 , <span class='kw'>required.max_abund_medium</span> <span class='kw'>=</span> <span class='fl'>50000</span>
+                                 , <span class='kw'>required.max_abund_high</span> <span class='kw'>=</span> <span class='fl'>90000</span>)
+
 <span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='st'>"FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>)
-                                 
+
 <span class='co'>## Change number of PFG</span>
-<span class='fu'>.setParam</span>(params.lines = <span class='st'>"FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>
-          , flag = <span class='st'>"NO_PFG"</span>
-          , flag.split = <span class='st'>" "</span>
-          , value = <span class='fl'>14</span>)
-          
+<span class='fu'>.setParam</span>(<span class='kw'>params.lines</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>
+          , <span class='kw'>flag</span> <span class='kw'>=</span> <span class='st'>"NO_PFG"</span>
+          , <span class='kw'>flag.split</span> <span class='kw'>=</span> <span class='st'>" "</span>
+          , <span class='kw'>value</span> <span class='kw'>=</span> <span class='fl'>14</span>)
+
 <span class='fu'><a href='https://rdrr.io/r/base/readLines.html'>readLines</a></span>(<span class='st'>"FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>)
 
 
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-                                
-<span class='co'>## Load example data</span>
 
-
-</pre>
+<span class='co'>## Load example data</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -281,7 +275,7 @@ file (containing values or filenames)</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

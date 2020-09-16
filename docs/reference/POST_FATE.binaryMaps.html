@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create binary maps for each Plant Functional Group for one (or 
-several) specific year of a FATE simulation — POST_FATE.binaryMaps • RFate</title>
+several) specific year of a <code>FATE</code> simulation — POST_FATE.binaryMaps • RFate</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ several) specific year of a FATE simulation — POST_FATE.binaryMaps • RFate</
 
 
 <meta property="og:title" content="Create binary maps for each Plant Functional Group for one (or 
-several) specific year of a FATE simulation — POST_FATE.binaryMaps" />
+several) specific year of a <code>FATE</code> simulation — POST_FATE.binaryMaps" />
 <meta property="og:description" content="This script is designed to produce raster maps of PFG presence 
 / absence for one (or several) specific FATE simulation year." />
 
@@ -203,13 +203,13 @@ several) specific year of a <code>FATE</code> simulation</h1>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.binaryMaps</span>(
-  <span class='kw'>name.simulation</span>,
-  file.simulParam = <span class='kw'>NULL</span>,
-  <span class='kw'>years</span>,
-  <span class='kw'>method</span>,
-  method1.threshold = <span class='fl'>0.05</span>,
-  method2.cutoff = <span class='kw'>NULL</span>,
-  opt.no_CPU = <span class='fl'>1</span>
+  <span class='no'>name.simulation</span>,
+  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>years</span>,
+  <span class='no'>method</span>,
+  <span class='kw'>method1.threshold</span> <span class='kw'>=</span> <span class='fl'>0.05</span>,
+  <span class='kw'>method2.cutoff</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -260,7 +260,7 @@ files</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Two folders are created :</p><dl>
+    <p>Two folders are created :</p><dl'>
   <dt><code class="file">BIN_perPFG <br />_allStrata</code></dt><dd><p>containing presence / absence 
   raster maps for each PFG across all strata</p></dd>
   <dt><code class="file">BIN_perPFG <br />_perStrata</code></dt><dd><p>containing presence / absence 
@@ -277,7 +277,7 @@ presence / absence</strong>. <br /> <br /></p>
 <p>For each PFG and each selected simulation year, raster maps are retrieved 
 from the results folder <code>ABUND_REL_perPFG_allStrata</code> and lead to the 
 production of as many maps as those found :</p>
-<dl>
+<dl'>
   <dt><code>1</code> fixed threshold</dt><dd><p>relative abundance maps are transformed 
   into binary maps according to the threshold given by 
   <code>method1.threshold</code> : 
@@ -311,17 +311,14 @@ functions</strong> :</p>
 
     <div class='dont-index'><p><code><a href='POST_FATE.relativeAbund.html'>POST_FATE.relativeAbund</a></code>,
 <code><a href='POST_FATE.graphic_validationStatistics.html'>POST_FATE.graphic_validationStatistics</a></code>
-<code><a href='.getCutoff.html'>.getCutoff</a></code>,
+<code><a href='dot-getCutoff.html'>.getCutoff</a></code>,
 <code><a href='POST_FATE.graphic_mapPFGvsHS.html'>POST_FATE.graphic_mapPFGvsHS</a></code></p></div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
                                                         
-<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-<span class='co'>## Load example data</span>
+## ----------------------------------------------------------------------------------------- ##
+## Load example data
                                                                          
 
 </pre>
@@ -340,7 +337,7 @@ functions</strong> :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

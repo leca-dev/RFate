@@ -205,11 +205,11 @@ and niche overlap (based on co-occurrence of species).</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.speciesDistance</span>(
-  <span class='kw'>mat.traits</span>,
-  <span class='kw'>mat.overlap</span>,
-  opt.maxPercent.NA = <span class='fl'>0</span>,
-  opt.maxPercent.similarSpecies = <span class='fl'>0.25</span>,
-  opt.min.sd = <span class='fl'>0.3</span>
+  <span class='no'>mat.traits</span>,
+  <span class='no'>mat.overlap</span>,
+  <span class='kw'>opt.maxPercent.NA</span> <span class='kw'>=</span> <span class='fl'>0</span>,
+  <span class='kw'>opt.maxPercent.similarSpecies</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
+  <span class='kw'>opt.min.sd</span> <span class='kw'>=</span> <span class='fl'>0.3</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -217,7 +217,7 @@ and niche overlap (based on co-occurrence of species).</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>mat.traits</th>
-      <td><p>a <code>data.frame</code> with at least 3 columns :</p><dl>
+      <td><p>a <code>data.frame</code> with at least 3 columns :</p><dl'>
 <dt><code>species</code></dt><dd><p>the ID of each studied species</p></dd>
 <dt><code>GROUP</code></dt><dd><p>a factor variable containing grouping information to 
 divide the species into data subsets (see 
@@ -229,7 +229,7 @@ divide the species into data subsets (see
     <tr>
       <th>mat.overlap</th>
       <td><p>two options :</p><ul>
-<li><p>a <code>data.frame</code> with 2 columns :</p><dl>
+<li><p>a <code>data.frame</code> with 2 columns :</p><dl'>
     <dt><code>species</code></dt><dd><p>the ID of each studied species</p></dd>
     <dt><code>raster</code></dt><dd><p>path to raster file with species distribution</p></dd>
   
@@ -284,7 +284,7 @@ based on two types of distance information :</p>
 <li><p>This function allows <code>NA</code> values. <br /> However, too many 
     missing values lead to misleading results. Hence, 3 parameters allow the 
     user to play with the place given to missing values, and therefore the 
-    selection of traits that will be used for the distance computation :</p><dl>
+    selection of traits that will be used for the distance computation :</p><dl'>
       <dt>opt.maxPercent.NA</dt><dd><p>traits with too many missing values are 
       removed</p></dd>
       <dt>opt.maxPercent <br /> .similarSpecies</dt><dd><p>traits with too many 
@@ -308,56 +308,51 @@ is weighted by the number of traits used</strong>.</p>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/FD/man/gowdis.html'>gowdis</a></code>,
 <code><a href='https://rdrr.io/pkg/phyloclim/man/niche.overlap.html'>niche.overlap</a></code></p></div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_PFG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>DATASET_Bauges_PFG</span>)
 
 <span class='co'>## Species traits</span>
-<span class='kw'>tab.traits</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='kw'>dom.traits</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tab.traits</span>)
+<span class='no'>tab.traits</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.traits</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab.traits</span>)
 
 <span class='co'>## Species niche overlap (similarity distance)</span>
-<span class='kw'>tab.overlap</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='kw'>dom.dist_overlap</span>
-<span class='kw'>tab.overlap</span>[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
+<span class='no'>tab.overlap</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>dom.dist_overlap</span>
+<span class='no'>tab.overlap</span>[<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>1</span>:<span class='fl'>5</span>]
 
 <span class='co'>## Give warnings -----------------------------------------------------------------------------</span>
-<span class='kw'>sp.DIST</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span>(mat.traits = <span class='kw'>tab.traits</span>
-                                   , mat.overlap = <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='kw'>tab.overlap</span>))
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.DIST</span>)
+<span class='no'>sp.DIST</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>tab.traits</span>
+                                   , <span class='kw'>mat.overlap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.overlap</span>))
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DIST</span>)
 
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='kw'><a href='https://github.com/RevolutionAnalytics/foreach'>foreach</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='kw'><a href='http://ggplot2.tidyverse.org'>ggplot2</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='kw'><a href='https://github.com/andrie/ggdendro'>ggdendro</a></span>)
-<span class='kw'>pp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/foreach/man/foreach.html'>foreach</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.DIST</span>)) <span class='op'>%do%</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>foreach</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>ggplot2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>require</a></span>(<span class='no'>ggdendro</span>)
+<span class='no'>pp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/foreach/man/foreach.html'>foreach</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.DIST</span>)) <span class='kw'>%do%</span>
 {
-  <span class='kw'>hc</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></span>(<span class='kw'>sp.DIST</span>[[<span class='kw'>x</span>]])
-  <span class='kw'>pp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html'>ggdendrogram</a></span>(<span class='kw'>hc</span>, rotate = <span class='fl'>TRUE</span>) <span class='op'>+</span>
-    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(title = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"Hierarchical clustering based on species distance "</span>
-                        , <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.DIST</span>)) <span class='op'>&gt;</span> <span class='fl'>1</span>
-                        , <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"(group "</span>, <span class='kw'>x</span>, <span class='st'>")"</span>)
+  <span class='no'>hc</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></span>(<span class='no'>sp.DIST</span><span class='kw'>[[</span><span class='no'>x</span>]])
+  <span class='no'>pp</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html'>ggdendrogram</a></span>(<span class='no'>hc</span>, <span class='kw'>rotate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) +
+    <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span>(<span class='kw'>title</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"Hierarchical clustering based on species distance "</span>
+                        , <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.DIST</span>)) <span class='kw'>&gt;</span> <span class='fl'>1</span>
+                        , <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"(group "</span>, <span class='no'>x</span>, <span class='st'>")"</span>)
                         , <span class='st'>""</span>)))
-  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='kw'>pp</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/function.html'>return</a></span>(<span class='no'>pp</span>)
 }
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>pp</span>[[<span class='fl'>1</span>]])
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>pp</span>[[<span class='fl'>2</span>]])
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>pp</span>[[<span class='fl'>3</span>]])
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>pp</span><span class='kw'>[[</span><span class='fl'>1</span>]])
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>pp</span><span class='kw'>[[</span><span class='fl'>2</span>]])
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>pp</span><span class='kw'>[[</span><span class='fl'>3</span>]])
 }
 
 <span class='co'>## Change parameters to allow more NAs (and change traits used) ------------------------------</span>
-<span class='kw'>sp.DIST</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span>(mat.traits = <span class='kw'>tab.traits</span>
-                                   , mat.overlap = <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='kw'>tab.overlap</span>)
-                                   , opt.maxPercent.NA = <span class='fl'>0.05</span>
-                                   , opt.maxPercent.similarSpecies = <span class='fl'>0.3</span>
-                                   , opt.min.sd = <span class='fl'>0.3</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.DIST</span>)
-
-</pre>
+<span class='no'>sp.DIST</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span>(<span class='kw'>mat.traits</span> <span class='kw'>=</span> <span class='no'>tab.traits</span>
+                                   , <span class='kw'>mat.overlap</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='no'>tab.overlap</span>)
+                                   , <span class='kw'>opt.maxPercent.NA</span> <span class='kw'>=</span> <span class='fl'>0.05</span>
+                                   , <span class='kw'>opt.maxPercent.similarSpecies</span> <span class='kw'>=</span> <span class='fl'>0.3</span>
+                                   , <span class='kw'>opt.min.sd</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.DIST</span>)</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -373,7 +368,7 @@ is weighted by the number of traits used</strong>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -8,7 +8,7 @@
 
 <title>Create maps of both habitat suitability and simulated occurrences of 
 each Plant Functional Group for one (or several) specific year of a 
-FATE simulation — POST_FATE.graphic_mapPFGvsHS • RFate</title>
+<code>FATE</code> simulation — POST_FATE.graphic_mapPFGvsHS • RFate</title>
 
 
 <!-- jquery -->
@@ -43,7 +43,7 @@ FATE simulation — POST_FATE.graphic_mapPFGvsHS • RFate</title>
 
 <meta property="og:title" content="Create maps of both habitat suitability and simulated occurrences of 
 each Plant Functional Group for one (or several) specific year of a 
-FATE simulation — POST_FATE.graphic_mapPFGvsHS" />
+<code>FATE</code> simulation — POST_FATE.graphic_mapPFGvsHS" />
 <meta property="og:description" content="This script is designed to produce raster maps of PFG habitat 
 suitability and simulated occurrences for one (or several) specific 
 FATE simulation year." />
@@ -208,10 +208,10 @@ suitability and simulated occurrences for one (or several) specific
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(
-  <span class='kw'>name.simulation</span>,
-  file.simulParam = <span class='kw'>NULL</span>,
-  <span class='kw'>years</span>,
-  opt.stratum = <span class='st'>"all"</span>
+  <span class='no'>name.simulation</span>,
+  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>years</span>,
+  <span class='kw'>opt.stratum</span> <span class='kw'>=</span> <span class='st'>"all"</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -248,7 +248,7 @@ year) <code>list</code> of <code>ggplot2</code> objects, representing for each p
 functional group its map of modelled presence / absence <code>vs</code> its 
 habitat suitability map. <br /> <br /></p>
 
-<p>One <code>POST_FATE_[...].pdf</code> file is created :</p><dl>
+<p>One <code>POST_FATE_[...].pdf</code> file is created :</p><dl'>
   <dt><code class="file">GRAPHIC_B <br /> map_PFGvsHS</code></dt><dd><p>to visualize the PFG presence 
   within the studied area (probability and simulated occurrence)</p></dd>
 
@@ -279,30 +279,23 @@ and that the folders <code>BIN_perPFG_allStrata</code> and
 
     <div class='dont-index'><p><code><a href='POST_FATE.relativeAbund.html'>POST_FATE.relativeAbund</a></code>, 
 <code><a href='POST_FATE.binaryMaps.html'>POST_FATE.binaryMaps</a></code></p></div>
-    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
-
-    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
-<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                             , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
-                             , years = <span class='fl'>850</span>)
-                                    
-<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                             , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
-                             , years = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>850</span>, <span class='fl'>950</span>))
-                                    
-<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                             , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
-                             , years = <span class='fl'>850</span>
-                             , opt.stratum = <span class='fl'>2</span>)
-}
-                                    
-                                    
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
+                             , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
+                             , <span class='kw'>years</span> <span class='kw'>=</span> <span class='fl'>850</span>)
 
-</pre>
+<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
+                             , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
+                             , <span class='kw'>years</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>850</span>, <span class='fl'>950</span>))
+
+<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
+                             , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
+                             , <span class='kw'>years</span> <span class='kw'>=</span> <span class='fl'>850</span>
+                             , <span class='kw'>opt.stratum</span> <span class='kw'>=</span> <span class='fl'>2</span>)
+}</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -318,7 +311,7 @@ and that the folders <code>BIN_perPFG_allStrata</code> and
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
