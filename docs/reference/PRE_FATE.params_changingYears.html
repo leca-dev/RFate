@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create <em>SCENARIO</em> parameter files for a <code>FATE</code>
+<title>Create SCENARIO parameter files for a FATE
 simulation — PRE_FATE.params_changingYears • RFate</title>
 
 
@@ -40,7 +40,7 @@ simulation — PRE_FATE.params_changingYears • RFate</title>
 
 
 
-<meta property="og:title" content="Create <em>SCENARIO</em> parameter files for a <code>FATE</code>
+<meta property="og:title" content="Create SCENARIO parameter files for a FATE
 simulation — PRE_FATE.params_changingYears" />
 <meta property="og:description" content="This script is designed to create several parameter files to 
 manage the update of simulation maps : 1) simulation years at which the 
@@ -207,10 +207,10 @@ maps to be used.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.params_changingYears</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='no'>type.changing</span>,
-  <span class='no'>mat.changing</span>,
-  <span class='kw'>opt.folder.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>name.simulation</span>,
+  <span class='kw'>type.changing</span>,
+  <span class='kw'>mat.changing</span>,
+  opt.folder.name = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -271,7 +271,7 @@ to the name of the folder that will be created into the
 
     <p>Several modules of the <code>FATE</code> software allow the user to simulate 
 changes over time :</p>
-<dl'>
+<dl>
   <dt>succession</dt><dd><p>the <strong>core module</strong> is based on a raster mask given 
   within the <em>Simul_parameters</em> file with the <code>MASK</code> flag (see 
   <code><a href='PRE_FATE.params_simulParameters.html'>PRE_FATE.params_simulParameters</a></code>), <strong>with either 
@@ -333,7 +333,7 @@ changes over time :</p>
 
 <p>Several parameters, given within <code>mat.changing</code>, are required to set up 
 these temporal changes :</p>
-<dl'>
+<dl>
   <dt>year</dt><dd><p>all simulation years at which the raster files of a specific 
   module <em>(succession <code>MASK</code>, habitat suitability <code>HABSUIT</code>, 
   disturbance <code>DIST</code>, drought <code>DROUGHT</code>, aliens introduction 
@@ -354,6 +354,9 @@ these temporal changes :</p>
     <div class='dont-index'><p><code><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></code>, 
 <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>,
 <code><a href='PRE_FATE.params_PFGdisturbance.html'>PRE_FATE.params_PFGdisturbance</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
@@ -361,14 +364,16 @@ these temporal changes :</p>
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
 
 <span class='co'>## Create a Changing_times parameter file</span>
-<span class='fu'>PRE_FATE.params_changingYears</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                              , <span class='kw'>type.changing</span> <span class='kw'>=</span> <span class='st'>"DIST"</span>
-                              , <span class='kw'>mat.changing</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>year</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>,<span class='fl'>50</span>,<span class='fl'>80</span>,<span class='fl'>80</span>)
-                                                          , <span class='kw'>order</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span>)
-                                                          , <span class='kw'>new.value</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MASK_DIST1_50.tif"</span>
+<span class='fu'>PRE_FATE.params_changingYears</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                              , type.changing = <span class='st'>"DIST"</span>
+                              , mat.changing = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(year = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>50</span>,<span class='fl'>50</span>,<span class='fl'>80</span>,<span class='fl'>80</span>)
+                                                          , order = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span>)
+                                                          , new.value = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"MASK_DIST1_50.tif"</span>
                                                                           , <span class='st'>"MASK_DIST2_50.tif"</span>
                                                                           , <span class='st'>"MASK_DIST1_80.tif"</span>
-                                                                          , <span class='st'>"MASK_DIST2_80.tif"</span>)))</pre>
+                                                                          , <span class='st'>"MASK_DIST2_80.tif"</span>)))
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -384,7 +389,7 @@ these temporal changes :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

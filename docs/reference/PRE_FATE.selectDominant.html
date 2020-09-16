@@ -200,19 +200,19 @@ abundance records, and habitat if the information is available.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.selectDominant</span>(
-  <span class='no'>mat.observations</span>,
-  <span class='kw'>doRuleA</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>rule.A1</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>rule.A2_quantile</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>doRuleB</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>rule.B1_percentage</span> <span class='kw'>=</span> <span class='fl'>0.25</span>,
-  <span class='kw'>rule.B1_number</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>rule.B2</span> <span class='kw'>=</span> <span class='fl'>0.5</span>,
-  <span class='kw'>doRuleC</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>opt.doRobustness</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>opt.robustness_percent</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='fl'>0.1</span>),
-  <span class='kw'>opt.robustness_rep</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>opt.doPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>mat.observations</span>,
+  doRuleA = <span class='fl'>TRUE</span>,
+  rule.A1 = <span class='fl'>10</span>,
+  rule.A2_quantile = <span class='fl'>0.9</span>,
+  doRuleB = <span class='fl'>TRUE</span>,
+  rule.B1_percentage = <span class='fl'>0.25</span>,
+  rule.B1_number = <span class='fl'>5</span>,
+  rule.B2 = <span class='fl'>0.5</span>,
+  doRuleC = <span class='fl'>FALSE</span>,
+  opt.doRobustness = <span class='fl'>FALSE</span>,
+  opt.robustness_percent = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='fl'>0.1</span>),
+  opt.robustness_rep = <span class='fl'>10</span>,
+  opt.doPlot = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -302,10 +302,10 @@ of outputs will occur, be saved and returned.</p></td>
 
     <p>A <code>list</code> containing one <code>vector</code>, two <code>data.frame</code> 
 objects with the following columns, and up to five <code>ggplot2</code> objects :</p>
-<dl'>
+<dl>
   <dt>species.selected</dt><dd><p>the names of the selected species</p></dd>
   <dt>tab.rules</dt><dd><p><br />
-    <dl'>
+    <dl>
       <dt><code>A1,A2,B1,B2, hab</code></dt><dd><p>if the rule has been used, if the 
       species fullfills this condition or not</p></dd>
       <dt><code>species</code></dt><dd><p>the concerned species</p></dd>
@@ -313,7 +313,7 @@ objects with the following columns, and up to five <code>ggplot2</code> objects 
       was selected, or not</p></dd>
       <dt><code>SELECTED</code></dt><dd><p><code>TRUE</code> if the species fullfills <code>A1</code> 
       and at least one other condition, <code>FALSE</code> otherwise</p></dd></dl></p></dd>
-  <dt>tab.robustness</dt><dd><p><dl'>
+  <dt>tab.robustness</dt><dd><p><dl>
       <dt><code>...</code></dt><dd><p>same as <code>tab.rules</code></p></dd>
       <dt><code>type</code></dt><dd><p>the type of subset (either <code>releves</code> or 
       <code>sites</code>)</p></dd>
@@ -335,14 +335,14 @@ objects with the following columns, and up to five <code>ggplot2</code> objects 
 
 
 <p>The information is written in 
-<code class="file">PRE_FATE_DOMINANT_[...].csv</code> files :</p><dl'>
+<code class="file">PRE_FATE_DOMINANT_[...].csv</code> files :</p><dl>
   <dt><code class="file">TABLE_complete</code></dt><dd><p>the complete table of all species and the 
   selection rules described above (<code>tab.rules</code>)</p></dd>
   <dt><code class="file">TABLE_species</code></dt><dd><p>only the names / ID of the species selected</p></dd>
 
 </dl>
 
-<p>Up to six <code class="file">PRE_FATE_DOMINANT_[...].pdf</code> files are also created :</p><dl'>
+<p>Up to six <code class="file">PRE_FATE_DOMINANT_[...].pdf</code> files are also created :</p><dl>
   <dt><code class="file">STEP_1_rule_A</code></dt><dd><p><strong><code class="file">STEP_2_selectedSpecies_PHYLO</code></strong></p></dd>
   <dt><code class="file">STEP_1_rule_B</code></dt><dd><p><strong><code class="file">STEP_2_selectedSpecies_PCO</code></strong></p></dd>
   <dt><code class="file">STEP_1_rule_C</code></dt><dd><p><strong><code class="file">STEP_2_selectedSpecies_robustness</code></strong></p></dd>
@@ -355,9 +355,9 @@ objects with the following columns, and up to five <code>ggplot2</code> objects 
 presence/abundance sampling information</strong>. <br /> <br /></p>
 
 <p>Three rules can be applied to make the species selection :</p>
-<dl'>
+<dl>
   <dt>A. Presence releves</dt><dd><p>both conditions must be fullfilled
-  <dl'>
+  <dl>
     <dt>on number of releves</dt><dd><p>the species should be found a minimum 
     number of times (<code>rule.A1</code>)
     <br /> <em>This should ensure that the species has been given sufficient 
@@ -370,7 +370,7 @@ presence/abundance sampling information</strong>. <br /> <br /></p>
     the releves are well distributed throughout the area).</em></p></dd></dl></p></dd>
   <dt>B. Abundance releves : </dt><dd><p>at least one of the two conditions is 
   required
-  <dl'>
+  <dl>
     <dt>on dominancy</dt><dd><p>the species should be dominant (i.e. represent at 
     least <code>rule.B1_percentage %</code> of the coverage of the site) in at 
     least <code>rule.B1_number</code> sites
@@ -392,7 +392,7 @@ presence/abundance sampling information</strong>. <br /> <br /></p>
 
 <p>A table is created containing for each species whether or not it fullfills 
 the conditions selected, for example :</p>
-<p></p><dl'>
+<p></p><dl>
       <dt></dt><dd><p><strong><code>| ___A1 ___A2 ___B1 ___B2 grass lands |</code></strong></p></dd>
       <dt></dt><dd><p><code>_______________________________________</code></p></dd>
       <dt>species a</dt><dd><p><code>| _TRUE FALSE FALSE _TRUE _TRUE FALSE |</code></p></dd>
@@ -441,57 +441,63 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 <code><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></code>,
 <code><a href='https://rdrr.io/pkg/ape/man/as.phylo.html'>as.phylo</a></code>,
 <code><a href='https://rdrr.io/pkg/ade4/man/dudi.pco.html'>dudi.pco</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>DATASET_Bauges_PFG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_PFG</span>)
 
 <span class='co'>## Species observations</span>
-<span class='no'>tab</span> <span class='kw'>=</span> <span class='no'>DATASET_Bauges_PFG</span>$<span class='no'>sp.observations</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>tab</span>)
+<span class='kw'>tab</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='kw'>sp.observations</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tab</span>)
 
 <span class='co'>## No habitat, no robustness -----------------------------------------------------------------</span>
-<span class='no'>tab.select</span> <span class='kw'>=</span> <span class='no'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>)]
-<span class='no'>sp.SELECT</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(<span class='kw'>mat.observations</span> <span class='kw'>=</span> <span class='no'>tab.select</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.A</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.B</span>$<span class='no'>abs</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.B</span>$<span class='no'>rel</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis2</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis3</span>)
+<span class='kw'>tab.select</span> <span class='op'>=</span> <span class='kw'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>)]
+<span class='kw'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(mat.observations = <span class='kw'>tab.select</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.SELECT</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>tab.rules</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.A</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.B</span><span class='op'>$</span><span class='kw'>abs</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.B</span><span class='op'>$</span><span class='kw'>rel</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.pco</span><span class='op'>$</span><span class='kw'>Axis1_Axis2</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.pco</span><span class='op'>$</span><span class='kw'>Axis1_Axis3</span>)
 
 <span class='co'>## Habitat, change parameters ----------------------------------------------------------------</span>
-<span class='no'>tab.select</span> <span class='kw'>=</span> <span class='no'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>, <span class='st'>"habitat"</span>)]
-<span class='no'>sp.SELECT</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(<span class='kw'>mat.observations</span> <span class='kw'>=</span> <span class='no'>tab.select</span>
-                                    , <span class='kw'>doRuleA</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-                                    , <span class='kw'>rule.A1</span> <span class='kw'>=</span> <span class='fl'>10</span>
-                                    , <span class='kw'>rule.A2_quantile</span> <span class='kw'>=</span> <span class='fl'>0.9</span>
-                                    , <span class='kw'>doRuleB</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-                                    , <span class='kw'>rule.B1_percentage</span> <span class='kw'>=</span> <span class='fl'>0.2</span>
-                                    , <span class='kw'>rule.B1_number</span> <span class='kw'>=</span> <span class='fl'>3</span>
-                                    , <span class='kw'>rule.B2</span> <span class='kw'>=</span> <span class='fl'>0.4</span>
-                                    , <span class='kw'>doRuleC</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.C</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis2</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.pco</span>$<span class='no'>Axis1_Axis3</span>)
-
+<span class='kw'>tab.select</span> <span class='op'>=</span> <span class='kw'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>, <span class='st'>"habitat"</span>)]
+<span class='kw'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(mat.observations = <span class='kw'>tab.select</span>
+                                    , doRuleA = <span class='fl'>TRUE</span>
+                                    , rule.A1 = <span class='fl'>10</span>
+                                    , rule.A2_quantile = <span class='fl'>0.9</span>
+                                    , doRuleB = <span class='fl'>TRUE</span>
+                                    , rule.B1_percentage = <span class='fl'>0.2</span>
+                                    , rule.B1_number = <span class='fl'>3</span>
+                                    , rule.B2 = <span class='fl'>0.4</span>
+                                    , doRuleC = <span class='fl'>TRUE</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.SELECT</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>tab.rules</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.C</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.pco</span><span class='op'>$</span><span class='kw'>Axis1_Axis2</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.pco</span><span class='op'>$</span><span class='kw'>Axis1_Axis3</span>)
+                                    
 <span class='co'>## Robustness (!quite long!) -----------------------------------------------------------------</span>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='no'>tab.select</span> <span class='kw'>=</span> <span class='no'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>)]
-<span class='no'>sp.SELECT</span> <span class='kw'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(<span class='kw'>mat.observations</span> <span class='kw'>=</span> <span class='no'>tab.select</span>
-                                    , <span class='kw'>opt.doRobustness</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-                                    , <span class='kw'>opt.robustness_percent</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.8</span>)
-                                    , <span class='kw'>opt.robustness_rep</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.rules</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>tab.robustness</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.robustness</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>sp.SELECT</span>$<span class='no'>plot.robustness</span>$<span class='no'>`All dataset`</span>)
-}</pre>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='kw'>tab.select</span> <span class='op'>=</span> <span class='kw'>tab</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>)]
+<span class='kw'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span>(mat.observations = <span class='kw'>tab.select</span>
+                                    , opt.doRobustness = <span class='fl'>TRUE</span>
+                                    , opt.robustness_percent = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.2</span>, <span class='fl'>0.8</span>)
+                                    , opt.robustness_rep = <span class='fl'>3</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.SELECT</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>tab.rules</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>tab.robustness</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.robustness</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.SELECT</span><span class='op'>$</span><span class='kw'>plot.robustness</span><span class='op'>$</span><span class='kw'>`All dataset`</span>)
+}
+                                    
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -507,7 +513,7 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

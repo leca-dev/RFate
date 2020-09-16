@@ -8,7 +8,7 @@
 
 <title>Create a graphical representation of several statistics for each PFG 
 to asses the quality of the model for one (or several) specific year of a 
-<code>FATE</code> simulation — POST_FATE.graphic_validationStatistics • RFate</title>
+FATE simulation — POST_FATE.graphic_validationStatistics • RFate</title>
 
 
 <!-- jquery -->
@@ -43,7 +43,7 @@ to asses the quality of the model for one (or several) specific year of a
 
 <meta property="og:title" content="Create a graphical representation of several statistics for each PFG 
 to asses the quality of the model for one (or several) specific year of a 
-<code>FATE</code> simulation — POST_FATE.graphic_validationStatistics" />
+FATE simulation — POST_FATE.graphic_validationStatistics" />
 <meta property="og:description" content="This script is designed to produce a graphical representation 
 of several statistics (sensitivity, specificity, TSS, AUC) for quality 
 assessment for one (or several) specific FATE simulation year." />
@@ -208,12 +208,12 @@ assessment for one (or several) specific <code>FATE</code> simulation year.</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.graphic_validationStatistics</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>years</span>,
-  <span class='no'>mat.PFG.obs</span>,
-  <span class='kw'>opt.ras_habitat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.doPlot</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  <span class='kw'>years</span>,
+  <span class='kw'>mat.PFG.obs</span>,
+  opt.ras_habitat = <span class='kw'>NULL</span>,
+  opt.doPlot = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -259,8 +259,8 @@ of outputs will occur, be saved and returned</p></td>
 
     <p>A <code>list</code> containing one <code>data.frame</code> object with the 
 following columns, and one <code>ggplot2</code> object :</p>
-<dl'>
-  <dt>tab</dt><dd><p><dl'>
+<dl>
+  <dt>tab</dt><dd><p><dl>
       <dt><code>PFG</code></dt><dd><p>concerned plant functional group</p></dd>
       <dt><code>AUC.sd</code></dt><dd><p>standard deviation of the AUC values</p></dd>
       <dt><code>sensitivity.sd</code></dt><dd><p>standard deviation of the sensitivity 
@@ -276,13 +276,13 @@ following columns, and one <code>ggplot2</code> object :</p>
 
 </dl>
 
-<p>One <code class="file">POST_FATE_TABLE_YEAR_[...].csv</code> file is created :</p><dl'>
+<p>One <code class="file">POST_FATE_TABLE_YEAR_[...].csv</code> file is created :</p><dl>
   <dt><code class="file">validationStatistics</code></dt><dd><p>containing the <code>data.frame</code> 
   detailed above</p></dd>
 
 </dl>
 
-<p>One <code class="file">POST_FATE_[...].pdf</code> file is created :</p><dl'>
+<p>One <code class="file">POST_FATE_[...].pdf</code> file is created :</p><dl>
   <dt><code class="file">GRAPHIC_B <br /> validationStatistics</code></dt><dd><p>to assess the modeling 
   quality of each PFG based on given observations within the studied area</p></dd>
 
@@ -296,7 +296,7 @@ statistic values</strong> and one preanalytical graphic. <br /> <br /></p>
 
 <p>Observation records (presences and absences) are required for each PFG 
 within the <code>mat.PFG.obs</code> object :</p>
-<dl'>
+<dl>
   <dt><code>PFG</code></dt><dd><p>the concerned plant functional group</p></dd>
   <dt><code>X, Y</code></dt><dd><p>the coordinates of each observation, matching with the 
   projection of the mask of <code>name.simulation</code></p></dd>
@@ -336,15 +336,18 @@ exists. <br /> <br /></p>
 <code><a href='https://rdrr.io/pkg/PresenceAbsence/man/sensitivity.html'>sensitivity</a></code>,
 <code><a href='https://rdrr.io/pkg/PresenceAbsence/man/specificity.html'>specificity</a></code>,
 <code><a href='https://rdrr.io/pkg/PresenceAbsence/man/auc.html'>auc</a></code>,
-<code><a href='dot-getCutoff.html'>.getCutoff</a></code>,
+<code><a href='.getCutoff.html'>.getCutoff</a></code>,
 <code><a href='POST_FATE.binaryMaps.html'>POST_FATE.binaryMaps</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
                                                         
                                                         
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
+<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
+<span class='co'>## Load example data</span>
 
 </pre>
   </div>
@@ -362,7 +365,7 @@ exists. <br /> <br /></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

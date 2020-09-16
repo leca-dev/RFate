@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Create tables of pixel temporal evolution of PFG abundances (and 
-light and soil resources if activated) for a <code>FATE</code> simulation — POST_FATE.temporalEvolution • RFate</title>
+light and soil resources if activated) for a FATE simulation — POST_FATE.temporalEvolution • RFate</title>
 
 
 <!-- jquery -->
@@ -41,7 +41,7 @@ light and soil resources if activated) for a <code>FATE</code> simulation — PO
 
 
 <meta property="og:title" content="Create tables of pixel temporal evolution of PFG abundances (and 
-light and soil resources if activated) for a <code>FATE</code> simulation — POST_FATE.temporalEvolution" />
+light and soil resources if activated) for a FATE simulation — POST_FATE.temporalEvolution" />
 <meta property="og:description" content="This script is designed to produce from 1 to 3 tables 
 containing pixel temporal evolution of PFG abundances, as well as light and 
 soil resources if those modules were activated, in a FATE 
@@ -207,11 +207,11 @@ simulation.</p>
     </div>
 
     <pre class="usage"><span class='fu'>POST_FATE.temporalEvolution</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>no_years</span>,
-  <span class='kw'>opt.ras_habitat</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  <span class='kw'>no_years</span>,
+  opt.ras_habitat = <span class='kw'>NULL</span>,
+  opt.no_CPU = <span class='fl'>1</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -250,7 +250,7 @@ files, as well as the extraction of values from raster files</p></td>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>list</code> containing three <code>data.frame</code> objects with the 
-following columns :</p><dl'>
+following columns :</p><dl>
   <dt><code>PFG</code></dt><dd><p>concerned plant functional group (for abundance)</p></dd>
   <dt><code>STRATUM</code></dt><dd><p>concerned height stratum (for LIGHT)</p></dd>
   <dt><code>ID.pixel</code></dt><dd><p>number of the concerned pixel</p></dd>
@@ -261,7 +261,7 @@ following columns :</p><dl'>
 
 </dl>
 
-<p>One to three <code class="file">POST_FATE_TABLE_PIXEL_evolution_[...].csv</code> files are created :</p><dl'>
+<p>One to three <code class="file">POST_FATE_TABLE_PIXEL_evolution_[...].csv</code> files are created :</p><dl>
   <dt><code class="file">abundance</code></dt><dd><p>always</p></dd>
   <dt><code class="file">light</code></dt><dd><p><em>if light module was activated</em></p></dd>
   <dt><code class="file">soil</code></dt><dd><p><em>if soil module was activated</em></p></dd>
@@ -327,20 +327,26 @@ also contain information about the pixel habitat. <br /> <br /></p>
 <code><a href='POST_FATE.graphic_evolutionCoverage.html'>POST_FATE.graphic_evolutionCoverage</a></code>,
 <code><a href='POST_FATE.graphic_evolutionPixels.html'>POST_FATE.graphic_evolutionPixels</a></code>,
 <code><a href='POST_FATE.graphic_evolutionStability.html'>POST_FATE.graphic_evolutionStability</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>POST_FATE.temporalEvolution</span>(<span class='kw'>name.simulation</span> <span class='kw'>=</span> <span class='st'>"FATE_simulation"</span>
-                            , <span class='kw'>file.simulParam</span> <span class='kw'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                            , <span class='kw'>no_years</span> <span class='kw'>=</span> <span class='fl'>50</span>
-                            , <span class='kw'>opt.no_CPU</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
+<span class='fu'>POST_FATE.temporalEvolution</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                            , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                            , no_years = <span class='fl'>50</span>
+                            , opt.no_CPU = <span class='fl'>1</span>)
 }
-
-
-
+                                                        
+                                                        
+                                                        
 <span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-<span class='co'>## Load example data</span></pre>
+<span class='co'>## Load example data</span>
+                                                                         
+
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -356,7 +362,7 @@ also contain information about the pixel habitat. <br /> <br /></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

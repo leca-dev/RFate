@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create <em>DISTURBANCE</em> parameter files for a <code>FATE</code>
+<title>Create DISTURBANCE parameter files for a FATE
 simulation — PRE_FATE.params_PFGdisturbance • RFate</title>
 
 
@@ -40,7 +40,7 @@ simulation — PRE_FATE.params_PFGdisturbance • RFate</title>
 
 
 
-<meta property="og:title" content="Create <em>DISTURBANCE</em> parameter files for a <code>FATE</code>
+<meta property="og:title" content="Create DISTURBANCE parameter files for a FATE
 simulation — PRE_FATE.params_PFGdisturbance" />
 <meta property="og:description" content="This script is designed to create parameter files containing 
 response to disturbance parameters for each PFG (one file for each of them) 
@@ -205,10 +205,10 @@ used in the disturbance module of <code>FATE</code>.</p>
     </div>
 
     <pre class="usage"><span class='fu'>PRE_FATE.params_PFGdisturbance</span>(
-  <span class='no'>name.simulation</span>,
-  <span class='kw'>mat.PFG.dist</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>mat.PFG.tol</span>,
-  <span class='kw'>opt.folder.name</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>name.simulation</span>,
+  mat.PFG.dist = <span class='kw'>NULL</span>,
+  <span class='kw'>mat.PFG.tol</span>,
+  opt.folder.name = <span class='kw'>NULL</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -250,7 +250,7 @@ to the name of the folder that will be created into the
     <p>A <code>.txt</code> file per PFG into the 
 <code>name.simulation/DATA/PFGS/DIST/</code> directory with the following 
 parameters :</p>
-<dl'>
+<dl>
   <dt>BREAK_AGE</dt><dd><p>ages at which the PFG changes of response stage 
   <em>(in years)</em></p></dd>
   <dt>RESPR_AGE</dt><dd><p>resprouting age table (in a single row) <br />
@@ -296,7 +296,7 @@ perturbation(s) that will impact each PFG in terms of <em>resprouting</em> and
 
 <p>Several parameters, given within <code>mat.PFG.dist</code> or <code>mat.PFG.tol</code>, 
 are required for each PFG in order to set up these responses :</p>
-<dl'>
+<dl>
   <dt>PFG</dt><dd><p>the concerned plant functional group <br /> <br /></p></dd>
   
   <dt>(<em>type</em>)</dt><dd><p>or life-form, based on Raunkier. <br /> It should be 
@@ -335,7 +335,7 @@ are required for each PFG in order to set up these responses :</p>
 
 <p>These values will allow to calculate or define a set of characteristics for 
 each PFG :</p>
-<dl'>
+<dl>
   <dt>BREAK_AGE</dt><dd><p>= each PFG can respond to a disturbance in several 
   different ways that depend on the PFG age <br />
    = ages at which each PFG changes of response stage <br /> <br />
@@ -393,7 +393,7 @@ each PFG :</p>
 <li><p>with <code>1, 2, 3, 4</code>: response classes</p></li>
 <li><p>with <code>K</code>: killed individuals, <code>R</code>: resprouting 
         individuals <br /> <br /></p></li>
-</ul><p></p><dl'>
+</ul><p></p><dl>
         <dt></dt><dd><p><strong><code>| ___1___ | ___2___ | ___3___ | ___4___ |</code></strong></p></dd>
         <dt></dt><dd><p><strong><code>| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |</code></strong></p></dd>
         <dt></dt><dd><p><code>_________________________________________</code></p></dd>
@@ -438,13 +438,16 @@ each PFG :</p>
 
     <div class='dont-index'><p><code><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></code>, 
 <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 
-## ----------------------------------------------------------------------------------------- ##
+<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
                                     
-## Load example data
+<span class='co'>## Load example data</span>
                                                            
 
 </pre>
@@ -463,7 +466,7 @@ each PFG :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -210,7 +210,7 @@ containing :
     <div class="ref-description">
     <p>This function loads one of the available data sets, 
 containing :</p>
-<dl'>
+<dl>
   <dt>PNE_PFG</dt><dd><p>elements to create the Plant Functional Groups (PFG) 
   over the Ecrins National Park (PNE) <br />
   (<em><a href='https://mayagueguen.github.io/FATE-WEBSITE/papers/Boulangeat_2012_GCB.pdf'>Boulangeat et al. 2012 GCB</a></em>)</p></dd>
@@ -225,7 +225,7 @@ containing :</p>
 
     </div>
 
-    <pre class="usage"><span class='fu'>.loadData</span>(<span class='no'>data.name</span>)</pre>
+    <pre class="usage"><span class='fu'>.loadData</span>(<span class='kw'>data.name</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -242,7 +242,7 @@ that will be loaded</p></td>
     <p><strong><br /> PNE_PFG</strong></p>
 <p>A <code>list</code> object with 6 elements to help building the Plant Functional 
 Group :</p>  
-<p></p><dl'>
+<p></p><dl>
     <dt>sp.observations</dt><dd><p>a <code>data.frame</code> of dimension 
     <code>168313 x 7</code> <br />
     containing releves data about plant species in the PNE <br />
@@ -339,7 +339,7 @@ Group :</p>
 <p><strong><br /><br /> PNE_PARAM</strong></p>
 <p>A <code>list</code> object with 13 elements to help building the simulation 
 files and folders to run a <code>FATE</code> simulation :</p>  
-<p></p><dl'>
+<p></p><dl>
     <dt>masks</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of dimension 
     <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers (lcc) 
     projection, containing 7 mask layers with binary values (0 or 1) to be 
@@ -400,7 +400,7 @@ files and folders to run a <code>FATE</code> simulation :</p>
 
 <p><strong><br /><br /> PNE_RESULTS</strong></p>
 <p>A <code>list</code> object with 5 elements :</p>
-<dl'>
+<dl>
   <dt>evaluation</dt><dd><p>a <code>data.frame</code> of dimension <code>24 x 11</code> <br />
     containing statistical metrics to evaluate the predictive quality of 
     both Habitat Suitability models (HS) and <code>FATE</code> simulation 
@@ -457,6 +457,9 @@ files and folders to run a <code>FATE</code> simulation :</p>
 
 </dl>
 
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Maya Guéguen</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -473,7 +476,7 @@ files and folders to run a <code>FATE</code> simulation :</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
