@@ -343,7 +343,6 @@ void testFileExist_changeFile(const string& param, vector<string> vector_name, c
 template<typename T>
 T convert_int_to_enum(const string& key_param, int val, const string& key_enum, int max_val)
 {
-	T result;
 	if (val < 0 || val > max_val)
 	{
 		logg.error("!!! Wrong parameter given for <", key_param, ">.\n",

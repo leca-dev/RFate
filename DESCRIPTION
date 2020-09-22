@@ -2,7 +2,7 @@ Package: fate
 Type: Package
 Title: FATE-HD in an R Environment
 Version: 1.0
-Date: 2020-02-04
+Date: 2020-07-15
 Authors@R: c(person("Isabelle", "Boulangeat", role = "aut",
                     email = "isabelle.boulangeat@inrae.fr"),
              person("Guillaume", "Dupouy", role = c("aut", "cre"),
@@ -22,7 +22,7 @@ Description:
   (e.g. species or plant functional groups), their population dynamics and
   dispersal, whilst taking into account external drivers such as disturbance
   regimes, and environmental variations.
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Encoding: UTF-8
 NeedsCompilation: yes
 License: GPL (>= 2)

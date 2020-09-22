@@ -444,9 +444,6 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 			fileStats << "Year " << year << ", COMPUTATION TIME : " << TotTime/3600 << "h " << (TotTime%3600)/60 << "m " << (TotTime%3600)%60 << "s" << endl;
 		}
 
-		/* omp_set_num_threads( simulMap->getGlobalParameters().getNoCPU() );
-		#pragma omp parallel
-		{*/
 		/* Saving summarised array */
 		if (summarised_array_saving_times.size() > 0 && summarised_array_saving_times.front() == year)
 		{

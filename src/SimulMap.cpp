@@ -1658,6 +1658,11 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 					hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
 					abunValues1, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
 				);
+				if (rasterAccess > 0)
+				{
+					logg.warning("Writing ", newFile, " raster: acces status ",
+											 rasterAccess);
+				}
 				GDALClose( rasOutput ); // Once we're done, close properly the dataset
 
 				// Compress file
@@ -1686,6 +1691,11 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 				hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
 				abunValues2, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
 			);
+			if (rasterAccess > 0)
+			{
+				logg.warning("Writing ", newFile, " raster: acces status ",
+										 rasterAccess);
+			}
 			GDALClose( rasOutput ); // Once we're done, close properly the dataset
 
 			// Compress file
@@ -1783,6 +1793,11 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
 			soilValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
 		);
+		if (rasterAccess > 0)
+		{
+			logg.warning("Writing ", newFile, " raster: acces status ",
+									 rasterAccess);
+		}
 		GDALClose( rasOutput ); // Once we're done, close properly the dataset
 
 		delete [] soilValues;
@@ -1835,6 +1850,11 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 				hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
 				lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
 			);
+			if (rasterAccess > 0)
+			{
+				logg.warning("Writing ", newFile, " raster: acces status ",
+										 rasterAccess);
+			}
 			GDALClose( rasOutput ); // Once we're done, close properly the dataset
 
 			delete [] lightValues;

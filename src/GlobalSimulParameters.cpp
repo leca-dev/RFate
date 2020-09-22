@@ -11,8 +11,8 @@
 #include <sys/types.h>
 #include <cstdlib>
 #include <ctime>
-#include <omp.h>
 
+#include "openmp.h"
 #include "GlobalSimulParameters.h"
 
 using namespace std;

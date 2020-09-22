@@ -23,7 +23,7 @@
 #include <string>
 #include <sstream>
 #include <boost/filesystem.hpp>
-#include <omp.h>
+#include "openmp.h"
 
 typedef SuFate* SuFatePtr;
 using namespace std;

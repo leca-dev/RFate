@@ -12,7 +12,7 @@
 #ifndef DISP_H
 #define DISP_H
 
-#include <omp.h>
+#include "openmp.h"
 #include "FG.h"
 #include "Logger.h"
 

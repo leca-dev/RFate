@@ -124,6 +124,8 @@ class SuFateH : public SuFate
 	SpatialStack<double, double> getEnvSuitMap();
 	SpatialStack<double, double> getEnvSuitRefMap();
 	double getEnvSuit(unsigned fg);
+
+	using SuFate::getEnvSuitRefVal;
 	double getEnvSuitRefVal(unsigned fg);
 
 	DoubleMapPtr getEnvSuitMap_();
