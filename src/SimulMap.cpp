@@ -435,6 +435,7 @@ SpatialStack<double, unsigned>& SimulMap::getApplyPostDroughtMap() { return m_Ap
 SpatialStack<double, double>& SimulMap::getCondInitMap() { return m_CondInitMap; }
 SpatialMap<double, SuFatePtr>& SimulMap::getSuccModelMap() { return m_SuccModelMap; }
 Disp& SimulMap::getDispModel() { return m_DispModel; }
+int SimulMap::getNoCPU() { return m_glob_params.getNoCPU(); }
 
 void SimulMap::setGlobalParameters(GSP globalParameters) { m_glob_params = globalParameters; }
 void SimulMap::setFGparams(vector<FG> FGparams) { m_FGparams = FGparams; }
@@ -459,6 +460,7 @@ void SimulMap::setApplyPostDroughtMap(SpatialStack<double, unsigned> applyPostDr
 void SimulMap::setCondInitMap(SpatialStack<double, double> condInitMap) { m_CondInitMap = condInitMap; }
 void SimulMap::setSuccModelMap(SpatialMap<double, SuFatePtr> succModelMap) { m_SuccModelMap = succModelMap; }
 void SimulMap::setDispModel(Disp dispModel) { m_DispModel = dispModel; }
+void SimulMap::setNoCPU(int noCPU) { m_glob_params.setNoCPU(noCPU); }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Other functions                                                                                 */

@@ -215,11 +215,11 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	// Logger initialization
 	logg.configure(verboseLevel);  // Set logger verbose level
 	// Number of CPUs used for computation
-	if (nbCpus > 1)
-	{
-		logg.info("PARALLEL VERSION : programme will run on ", nbCpus, " CPU.");
-		omp_set_num_threads(nbCpus);  // Set number of CPUs
-	}
+	// if (nbCpus > 1)
+	// {
+	// 	logg.info("PARALLEL VERSION : programme will run on ", nbCpus, " CPU.");
+	// 	omp_set_num_threads(nbCpus);  // Set number of CPUs
+	// }
 	// Timer initialization
 	time_t Start, End;
 	time(&Start);  // Start timer
@@ -344,9 +344,14 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 		simulMap->setFGparams(fg_vec_tmp);
 	}
 
-	logg.info("\n*** NoCPU = ", simulMap->getGlobalParameters().getNoCPU());
+	// Set number of CPUs
+	if (nbCpus != simulMap->getNoCPU()) {
+		simulMap->setNoCPU(nbCpus);
+	}
+
+	logg.info("\n*** NoCPU = ", simulMap->getNoCPU());
 	fileStats << "Number of CPU used : "
-						<< simulMap->getGlobalParameters().getNoCPU()
+						<< simulMap->getNoCPU()
 						<< endl;
 
 	/*=============================================================================*/

@@ -237,6 +237,7 @@ class SimulMap
 	SpatialStack<double, double>& getCondInitMap();
 	SpatialMap<double, SuFatePtr>& getSuccModelMap();
 	Disp& getDispModel();
+	int getNoCPU();
 
 	void setGlobalParameters(GSP globalParameters);
 	void setFGparams(vector<FG> FGparams);
@@ -261,6 +262,7 @@ class SimulMap
 	void setCondInitMap(SpatialStack<double, double> condInitMap);
 	void setSuccModelMap(SpatialMap<double, SuFatePtr> succModelMap);
 	void setDispModel(Disp dispModel);
+	void setNoCPU(int noCPU);
 
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
