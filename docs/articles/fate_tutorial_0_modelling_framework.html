@@ -215,37 +215,56 @@ It depends on the amount of seeds produced by mature plants and affects each PFG
 <br><div class="zoom">
 <p>
 <img src="pictures/SCHEMA_FATE_successionCycle_1.png" alt="SCHEMA FATE successionCycle 1"></p>
+</div>
+<p><br></p>
+<p>The timestep is at the year level : seasonality is not included within each timestep, but communities go through 4 states :</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Check of survival</strong> : what are the pixel resources (in terms of light and soil) of the previous year, and can the PFG stand them ?</li>
+<li>All PFG <strong>grow one-year older</strong>, and too old PFG die.</li>
+<li>
+<strong>New pixel resources</strong> (in terms of light and soil) are calculated with the actual community, as well as the <strong>seeds produced</strong>. <strong>Recruitment</strong> of new individuals from the previous pool of seeds occurs.</li>
+<li>If some perturbations are defined, community is impacted in function of the <strong>PFG responses to the disturbance(s)</strong>.</li>
+</ol>
+<div class="zoom">
 <p>
 <img src="pictures/SCHEMA_FATE_successionCycle_2.png" alt="SCHEMA FATE successionCycle 2"></p>
 </div>
-<!-- <img src="/home/gueguema/Documents/_TUTOS/3_R/_PACKAGES/leca-dev/RFate/vignettes/pictures/SCHEMA_FATE_successionCycle_1.png" alt="SCHEMA FATE successionCycle 1" style="width:1200px;"></img> -->
-<!-- <img src="/home/gueguema/Documents/_TUTOS/3_R/_PACKAGES/leca-dev/RFate/vignettes/pictures/SCHEMA_FATE_successionCycle_2.png" alt="SCHEMA FATE successionCycle 2" style="width:1200px;"></img> -->
+<!-- <img src="C:/Users/gueguen/Documents/PACKAGES/leca-dev/RFate/vignettes/pictures/SCHEMA_FATE_successionCycle_1.png" alt="SCHEMA FATE successionCycle 1" style="width:1200px;"></img> -->
+<!-- <img src="C:/Users/gueguen/Documents/PACKAGES/leca-dev/RFate/vignettes/pictures/SCHEMA_FATE_successionCycle_2.png" alt="SCHEMA FATE successionCycle 2" style="width:1200px;"></img> -->
 <p><br><br></p>
+</div>
+<div id="calculation-of-pixel-resources" class="section level2">
+<h2 class="hasAnchor">
+<a href="#calculation-of-pixel-resources" class="anchor"></a><i class="fas fa-sliders-h"></i> Calculation of pixel resources</h2>
+<p><br></p>
+<p>Light and soil resources are <strong>proportional to the abundance of the PFG community</strong> of the pixel. They are both converted into <strong>qualitative classes</strong> (<code>Low</code>, <code>Medium</code> or <code>High</code>), for each <strong>height stratum</strong> (concerning light) and for each <strong>PFG</strong> (regarding soil). The response of each PFG to each resource level is defined <strong>in function of age</strong> (<code>Germinant</code>, <code>Immature</code> and <code>Mature</code>), in a semi-binary way for light (<em>bottom right</em>), and in a more quantitative way for soil (<em>bottom left</em>).</p>
+<div style="text-align:center;">
+<p><img src="pictures/SCHEMA_FATE_competition_GIF.gif" alt="SCHEMA FATE competition Light and Soil"></p>
+</div>
 </div>
 <div id="structural-equations" class="section level2">
 <h2 class="hasAnchor">
 <a href="#structural-equations" class="anchor"></a><i class="fas fa-square-root-alt"></i> Structural equations</h2>
 <p><br></p>
+<hr>
 <p><strong>Influence of environment (habitat suitability) :</strong></p>
 <ul>
 <li>
-<strong>getEnv…() functions</strong> :<br>
-All the <span class="math inline">\(\text{getEnv}...()\)</span> functions represent the influence of the habitat suitability if the <code>SuFateh</code> model is selected.<br>
+<strong>getEnv...() functions</strong> :<br>
+All the <span class="math inline">\(\text{getEnv}...()\)</span> functions represent the influence of the habitat suitability if the module is selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in <a href="reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a> file).<br>
 They can have effect on different processes, such as mortality, recruitment or fecundity, depending on whether the habitat within the pixel is suitable or not for the considered PFG.</li>
 </ul>
 <p><br></p>
 <ul>
-<li>
-<p><strong>Is the habitat suitable ?</strong> :<br>
-Each year (timestep), the values contained in each PFG habitat suitability maps will be compared to a reference value :</p>
-<ul>
+<li><p><strong>Is the habitat suitable ?</strong> :<br>
+Each year (timestep), the values contained in each PFG habitat suitability maps will be compared to a reference value :</p></li>
 <li>if superior, the environment is considered suitable for the PFG (hence <span class="math inline">\(\text{getEnv}...()\)</span> functions will return <code>1</code>)</li>
-<li>otherwise, the environment is considered unsuitable for the PFG (hence <span class="math inline">\(\text{getEnv}...()\)</span> functions will return <code>0</code>)</li>
-</ul>
-</li>
+<li><p>otherwise, the environment is considered unsuitable for the PFG (hence <span class="math inline">\(\text{getEnv}...()\)</span> functions will return <code>0</code>)</p></li>
 </ul>
 <p>Depending on the parameterisation chosen, (see <code>HABSUIT_OPTION</code> parameter in <a href="reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a> file), the reference value can be set in two different ways.</p>
 <p><br></p>
+<hr>
 <p><strong>Lifespan &amp; maturity :</strong></p>
 <ul>
 <li>
@@ -259,11 +278,11 @@ Hence, habitat or not, <span class="math inline">\(\text{getEnvMort}() = 1\)</sp
 <strong>Maturity time</strong> :<br>
 The time from which a PFG is able to produce seeds can also be influenced by its habitat, in a negative way :</li>
 </ul>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 \text{maturityTime} &amp;= (\text{LifeSpan} - \text{Maturity}) * (1.0 - \text{getEnvGrowth}()) + \text{Maturity} \\
 \text{maturityTime} &amp;= ceil(\text{maturityTime})
-\end{align}\]</span></p>
-<p>If <code>SuFateh</code> model is NOT selected, or the habitat is suitable, then <span class="math inline">\(\text{maturityTime} = \text{Maturity}\)</span>.<br>
+\end{align}\]</span>
+<p>If <code>DO_HABITAT_SUITABILITY</code> model is NOT selected, or the habitat is suitable, then <span class="math inline">\(\text{maturityTime} = \text{Maturity}\)</span>.<br>
 Otherwise, it the habitat is NOT suitable, <span class="math inline">\(\text{maturityTime} = \text{LifeSpan}\)</span>, which means there will be no fecundity, and then no seeds produced.</p>
 <p><br></p>
 <ul>
@@ -272,11 +291,12 @@ Otherwise, it the habitat is NOT suitable, <span class="math inline">\(\text{mat
 The period during which a PFG can produce seeds.</li>
 </ul>
 <p><span class="math display">\[\text{Lifespan} - \text{Maturity}\]</span> <br></p>
+<hr>
 <p><strong>Carrying capacity (mature vs immature) :</strong></p>
 <ul>
 <li>
 <strong>Immature</strong> :<br>
-Depending on the PFG life-form (herbaceous, chamaephytes, phanerophytes), immature individuals may no take as much space as mature individuals (e.g. young tree vs old tree). Hence, when calculating total abundance of plants, which is used as a proxy of space occupation, abundance of immature individuals is weighted by their relative size compare to mature individuals : <span class="math inline">\(\text{ImmSize}\)</span> (see <code>IMM_SIZE</code> parameter in <a href="reference/PRE_FATE.params_PFGsuccession.html">Succession</a> files).</li>
+Depending on the PFG life-form (herbaceous, chamaephytes, phanerophytes), immature individuals may no take as much space as mature individuals (e.g. young tree vs old tree). Hence, when calculating total abundance of plants, which is used as a proxy of space occupation, abundance of immature individuals is weighted by their relative size compare to mature individuals : <span class="math inline">\(\text{ImmSize}\)</span> (see <code>IMM_SIZE</code> parameter in <a href="reference/PRE_FATE.params_PFGsuccession.html">Succession</a> files).</li>
 </ul>
 <p><br></p>
 <ul>
@@ -295,32 +315,34 @@ Hence, the maximum space occupied by a mature PFG per year of maturity is define
 <p><img src="pictures/SCHEMA_FATE_seedCycle.png" alt="SCHEMA FATE seedCycle" style="width:600px;"></p>
 </div>
 <p><br></p>
+<hr>
 <p><strong>Germination :</strong></p>
 <ul>
 <li>
 <strong>Condition on carrying capacity</strong> :<br>
-A condition is set to help regulate populations : new individuals only grow if there is not yet too many individuals within the pixel, i.e. if the total abundance of the PFG does not exceed its global carrying capacity :</li>
+A condition is set to help regulate populations : new individuals only grow if there is not yet too many individuals within the pixel, i.e. if the total abundance of the PFG does not exceed its global carrying capacity :</li>
 </ul>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 \text{totAbund} &amp;= \text{AbundMature} &amp;+ \text{AbundImmature} * \text{ImmSize} \\
 \text{globalCC} &amp;= \text{MaxAbund} &amp;+ \text{MaxAbund} * \text{ImmSize}\\
 &amp;\text{if (totAbund} &lt; \text{globalCC)} \\
 &amp;\{ \\
 &amp; ... \\
 &amp;\}
-\end{align}\]</span></p>
+\end{align}\]</span>
 <p><br></p>
 <ul>
 <li>
 <strong>Condition on pixel resources</strong> :<br><span class="math inline">\(MaxRecruit\)</span> corresponds to percentage of seeds that will germinate depending on the pixel resources (light, soil) in stratum 0 (which represents the enforced dormancy) (see <code>ACTIVE_GERM</code> parameter in <a href="reference/PRE_FATE.params_PFGlight.html">Light</a> and <a href="reference/PRE_FATE.params_PFGsoil.html">Soil</a> files).<br>
 The number of germinating seeds is obtained by weighting the number of available seeds by this germination rate.<br>
-If <code>SuFateh</code> model is selected, the habitat must be suitable, otherwise the recruitment will be null.</li>
+If the module is selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in <a href="reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a> file), the habitat must be suitable, otherwise the recruitment will be null.</li>
 </ul>
-<p><span class="math display">\[\begin{align}
+<span class="math display">\[\begin{align}
 \text{RecruitmentRate} &amp;= \text{GerminationRate} &amp;* \text{ getEnvRecrRate}() \\
  &amp;= \text{AvailSeeds} * \text{MaxRecruitment} &amp;* \text{ getEnvRecrRate}() 
-\end{align}\]</span></p>
+\end{align}\]</span>
 <p><br></p>
+<hr>
 <p><strong>Fecundity :</strong></p>
 <ul>
 <li>
@@ -331,7 +353,7 @@ Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see 
 <ul>
 <li>
 <strong>Produced seeds</strong> :<br>
-At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the <code>SuFateh</code> model is selected (no seeds produced if the habitat is not suitable) :</li>
+At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the module is selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in <a href="reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a> file) (no seeds produced if the habitat is not suitable) :</li>
 </ul>
 <p><span class="math display">\[\text{Fecundity} = min(1, \frac{\text{AbundMature}}{\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}}) * \text{PotentialFecund} * \text{getEnvFecund}()\]</span></p>
 <p>If <span class="math inline">\(\frac{\text{AbundMature}}{\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}} \geqslant 1\)</span>, the PFG has reached its annual carrying capacity : it is in optimal conditions and will produce its maximum amount of seeds (<span class="math inline">\(\text{PotentialFecund}\)</span>). Otherwise, this amount will be reduced in proportion.</p>
@@ -353,7 +375,7 @@ At each time step, the number of seeds that will be produced by a PFG depends bo
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -69,6 +69,18 @@ Only three age classes are considered : **germinant**, **juvenile** and **mature
 <br/>
 <div class="zoom">
 <p><img src="pictures/SCHEMA_FATE_successionCycle_1.png" alt="SCHEMA FATE successionCycle 1"></img></p>
+</div>
+
+<br/>
+
+The timestep is at the year level : seasonality is not included within each timestep, but communities go through 4 states :
+
+1. **Check of survival** : what are the pixel resources (in terms of light and soil) of the previous year, and can the PFG stand them ?
+2. All PFG **grow one-year older**, and too old PFG die.
+3. **New pixel resources** (in terms of light and soil) are calculated with the actual community, as well as the **seeds produced**. **Recruitment** of new individuals from the previous pool of seeds occurs.
+4. If some perturbations are defined, community is impacted in function of the **PFG responses to the disturbance(s)**.
+
+<div class="zoom">
 <p><img src="pictures/SCHEMA_FATE_successionCycle_2.png" alt="SCHEMA FATE successionCycle 2"></img></p>
 </div>
 
@@ -78,16 +90,28 @@ Only three age classes are considered : **germinant**, **juvenile** and **mature
 
 <br/><br/>
 
+## <i class="fas fa-sliders-h"></i> Calculation of pixel resources
+
+<br/>
+
+Light and soil resources are **proportional to the abundance of the PFG community** of the pixel. They are both converted into **qualitative classes** (`Low`, `Medium` or `High`), for each **height stratum** (concerning light) and for each **PFG** (regarding soil). The response of each PFG to each resource level is defined **in function of age** (`Germinant`, `Immature` and `Mature`), in a semi-binary way for light (*bottom right*), and in a more quantitative way for soil (*bottom left*).
+
+<div style="text-align:center;">
+<img src="pictures/SCHEMA_FATE_competition_GIF.gif" alt="SCHEMA FATE competition Light and Soil"></img>
+</div>
+
+
 
 ## <i class="fas fa-square-root-alt"></i> Structural equations
 
 <br/>
 
+------------------------------
 
 **Influence of environment (habitat suitability) :**  
 
 - **getEnv...() functions** :  
-All the $\text{getEnv}...()$ functions represent the influence of the habitat suitability if the `SuFateh` model is selected.  
+All the $\text{getEnv}...()$ functions represent the influence of the habitat suitability if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file).  
 They can have effect on different processes, such as mortality, recruitment or fecundity, depending on whether the habitat within the pixel is suitable or not for the considered PFG.
   
 <br/>
@@ -101,6 +125,8 @@ Each year (timestep), the values contained in each PFG habitat suitability maps 
 Depending on the parameterisation chosen, (see `HABSUIT_OPTION` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file), the reference value can be set in two different ways.
 
 <br/>
+
+------------------------------
 
 **Lifespan & maturity :**  
 
@@ -119,7 +145,7 @@ The time from which a PFG is able to produce seeds can also be influenced by its
 \text{maturityTime} &= ceil(\text{maturityTime})
 \end{align}
 
-If `SuFateh` model is NOT selected, or the habitat is suitable, then $\text{maturityTime} = \text{Maturity}$.  
+If `DO_HABITAT_SUITABILITY` model is NOT selected, or the habitat is suitable, then $\text{maturityTime} = \text{Maturity}$.  
 Otherwise, it the habitat is NOT suitable, $\text{maturityTime} = \text{LifeSpan}$, which means there will be no fecundity, and then no seeds produced.
 
 <br/>
@@ -129,6 +155,8 @@ The period during which a PFG can produce seeds.
 
 $$\text{Lifespan} - \text{Maturity}$$
 <br/>
+
+------------------------------
 
 **Carrying capacity (mature vs immature) :**  
 
@@ -157,6 +185,8 @@ $$\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}$$
 
 <br/>
 
+------------------------------
+
 **Germination :**  
 
 - **Condition on carrying capacity** :  
@@ -176,7 +206,7 @@ A condition is set to help regulate populations : new individuals only grow if t
 - **Condition on pixel resources** :  
 $MaxRecruit$ corresponds to percentage of seeds that will germinate depending on the pixel resources (light, soil) in stratum 0 (which represents the enforced dormancy) (see `ACTIVE_GERM` parameter in [Light](reference/PRE_FATE.params_PFGlight.html) and [Soil](reference/PRE_FATE.params_PFGsoil.html) files).  
 The number of germinating seeds is obtained by weighting the number of available seeds by this germination rate.  
-If `SuFateh` model is selected, the habitat must be suitable, otherwise the recruitment will be null.
+If the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file), the habitat must be suitable, otherwise the recruitment will be null.
 
 \begin{align}
 \text{RecruitmentRate} &= \text{GerminationRate} &* \text{ getEnvRecrRate}() \\
@@ -185,6 +215,7 @@ If `SuFateh` model is selected, the habitat must be suitable, otherwise the recr
 
 <br/>
 
+------------------------------
 
 **Fecundity :**  
 
@@ -194,7 +225,7 @@ Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see 
 <br/>
 
 - **Produced seeds** :  
-At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the `SuFateh` model is selected (no seeds produced if the habitat is not suitable) :
+At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file) (no seeds produced if the habitat is not suitable) :
 
 $$\text{Fecundity} = min(1, \frac{\text{AbundMature}}{\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}}) * \text{PotentialFecund} * \text{getEnvFecund}()$$
 
