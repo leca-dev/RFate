@@ -3,20 +3,22 @@ Type: Package
 Title: FATE with R
 Version: 1.0
 Date: 2020-09-15
-Authors@R: c(person("Isabelle", "Boulangeat", role = "aut",
+Authors@R: c(person("Maya", "Guéguen", role = c("aut", "cre"),
+                    email = "maya.gueguen@univ-grenoble-alpes.fr"),
+             person("Isabelle", "Boulangeat", role = "aut",
                     email = "isabelle.boulangeat@inrae.fr"),
              person("Guillaume", "Dupouy", role = c("aut", "cre"),
                     email = "guillaume.dupouy@inrae.fr"),
-             person("Maya", "Guéguen", role = c("aut", "cre"),
-                    email = "maya.gueguen@univ-grenoble-alpes.fr"),
-             person("Bjoern", "Reineking", role = "aut",
-                    email = "bjoern.reineking@inrae.fr"))
+             person("Bjoern", "Reineking", role = "ctb",
+                    email = "bjoern.reineking@inrae.fr"),
+              person("Billur", "Bektas", role = "ctb",
+                    email = "billur.bektas@univ-grenoble-alpes.fr"))
 Author: Maya Guéguen [aut, cre],
-        Guillaume Dupouy [aut, cre],
         Isabelle Boulangeat [aut],
-        Bjoern Reineking [aut]
-Maintainer: Guillaume Dupouy <guillaume.dupouy@inrae.fr>, 
-            Maya Guéguen <maya.gueguen@univ-grenoble-alpes.fr>
+        Guillaume Dupouy [aut, cre],
+        Bjoern Reineking [ctb],
+        Billur Bektas [ctb]
+Maintainer: Maya Guéguen <maya.gueguen@univ-grenoble-alpes.fr>
 Description: Wrapper of the C++ model FATE. FATE is a vegetation model based on Plant Functional Groups 
     (PFG) that aims to simulate primary ecological succession through entities interactions, 
     population dynamics and dispersal, and external drivers such as disturbance regimes or environmental variations.
