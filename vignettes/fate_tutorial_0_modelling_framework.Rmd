@@ -94,11 +94,10 @@ The timestep is at the year level : seasonality is not included within each time
 
 <br/>
 
-Light and soil resources are **proportional to the abundance of the PFG community** of the pixel. They are both converted into **qualitative classes** (`Low`, `Medium` or `High`), for each **height stratum** (concerning light) and for each **PFG** (regarding soil). The response of each PFG to each resource level is defined **in function of age** (`Germinant`, `Immature` and `Mature`), in a semi-binary way for light (*bottom right*), and in a more quantitative way for soil (*bottom left*).
+Light and soil resources are **proportional to the abundance of the PFG community** of the pixel. They are both converted into **qualitative classes** (`Low`, `Medium` or `High`), for each **height stratum** (concerning light) and for each **PFG** (according to its tolerance, regarding soil). The response of each PFG to each resource level is defined **in function of age** (`Germinant`, `Immature` and `Mature`), in a semi-binary way for light (*bottom right*), and in a more quantitative way for soil (*bottom left*).
 
-<div style="text-align:center;">
+
 <img src="pictures/SCHEMA_FATE_competition_GIF.gif" alt="SCHEMA FATE competition Light and Soil"></img>
-</div>
 
 
 
