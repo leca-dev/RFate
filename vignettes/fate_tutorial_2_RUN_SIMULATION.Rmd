@@ -55,7 +55,7 @@ multiple species in interactions and (iii) account for the processes shaping bio
 
 ### <i class="fas fa-wrench"></i> How to produce all these parameters files ?
 
-[RFate](https://mayagueguen.github.io/RFate/) is a [R](https://www.r-project.org/) package available on [github](https://github.com/MayaGueguen/RFate) and designed to provide support function to the `FATE` software.
+[RFate](https://leca-dev.github.io/RFate/) is a [R](https://www.r-project.org/) package available on [github](https://github.com/leca-dev/RFate) and designed to provide support function to the `FATE` software.
 
 It contains documentation and functions to create and organize all input files required by the model, as well as scripts to help analyze the resulting outputs.
 
@@ -69,7 +69,7 @@ It contains documentation and functions to create and organize all input files r
 
 As `FATE` needs quite a lot of parameters given into different parameter files, it is important to organize them in a clear and intuitive way.
 
-While this is not mandatory to run a `FATE` simulation, a specific and methodical folder architecture can be obtained with the [PRE_FATE.skeletonDirectory function](../reference/PRE_FATE.skeletonDirectory.html) from the [RFate](https://mayagueguen.github.io/RFate/) package.
+While this is not mandatory to run a `FATE` simulation, a specific and methodical folder architecture can be obtained with the [PRE_FATE.skeletonDirectory function](../reference/PRE_FATE.skeletonDirectory.html) from the [RFate](https://leca-dev.github.io/RFate/) package.
 
 A good way to start is to create this skeleton directory, and then copy or create the needed files inside to have all simulation data into the same place.
 
@@ -124,7 +124,7 @@ If the corresponding modules were activated within the [GlobalParameters](../ref
 - *`LIGHT/`*
 - *`SOIL/`*
 
-These ouputs can then be used as is, or post-treated with functions from the [RFate](https://mayagueguen.github.io/RFate/) package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).
+These ouputs can then be used as is, or post-treated with functions from the [RFate](https://leca-dev.github.io/RFate/) package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).
 
 
 <br/>

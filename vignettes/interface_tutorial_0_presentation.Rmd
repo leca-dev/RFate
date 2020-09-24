@@ -39,7 +39,7 @@ z-index: 10;
 
 <br/>
 
-<div style = "text-align:center;">See [RFATE.run()](../reference/RFATE.run.html) function</div>
+<div style = "text-align:center;">See [RFATE()](../reference/RFATE.html) function</div>
 
 <br/>
 
@@ -48,7 +48,7 @@ z-index: 10;
 
 The organization of the [Reference page](../reference/index.html), as well as the order of the tutorials, try to reflect these different parts.
 
-A [shiny](https://shiny.rstudio.com/) interface, that can be launched with the [RFATE.run()](../reference/RFATE.run.html) function from the `RFate` package allows the user to go through the different steps without going through the code. Links to the *functions documentation*, *vizualization tools*, the possibility to *start from pre-existing folders*, always being able to follow the *progress in the console* of the different functions... This interface should make it easier to take control of `FATE` with R.
+A [shiny](https://shiny.rstudio.com/) interface, that can be launched with the [RFATE()](../reference/RFATE.html) function from the `RFate` package allows the user to go through the different steps without going through the code. Links to the *functions documentation*, *vizualization tools*, the possibility to *start from pre-existing folders*, always being able to follow the *progress in the console* of the different functions... This interface should make it easier to take control of `FATE` with R.
 
 <div style="text-align:center;">
 <img src="pictures/SHINY_RFate_1.png" alt="shinyRFate home" style="width:700px;"></img>

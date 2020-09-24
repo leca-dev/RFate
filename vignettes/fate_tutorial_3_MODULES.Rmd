@@ -27,7 +27,7 @@ pre.grey {
 
 <br/>
 
-All of these modules require <pre class = "bash">mandatory parameters</pre> and sometimes, some others that are <pre class = "grey">optional</pre> that can all be created with [RFate](https://mayagueguen.github.io/RFate/) functions.
+All of these modules require <pre class = "bash">mandatory parameters</pre> and sometimes, some others that are <pre class = "grey">optional</pre> that can all be created with [RFate](https://leca-dev.github.io/RFate/) functions.
 
 <br/> <br/>
 

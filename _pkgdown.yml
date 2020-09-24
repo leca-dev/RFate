@@ -71,7 +71,7 @@ reference:
   - title: Interface
     desc:  Graphical User Interface (shiny application)
     contents:
-      - "RFATE.run"
+      - "RFATE"
   - title: Build Plant Functional Groups
     desc:  Functions to select dominant species, compute functional distance between species and build clusters.
     contents:

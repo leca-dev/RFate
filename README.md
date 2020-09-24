@@ -23,6 +23,8 @@ margin-right: auto;
 }
 .zoom p:hover {
 width:1200px;
+position: relative;
+z-index: 10;
 }
 </style>
 

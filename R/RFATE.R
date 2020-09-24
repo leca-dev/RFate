@@ -2,7 +2,7 @@
 ##' @title Shiny application to apply \code{RFate} functions and run 
 ##' \code{FATE} simulation
 ##' 
-##' @name RFATE.run
+##' @name RFATE
 ##'
 ##' @author Maya Guéguen
 ##' 
@@ -22,7 +22,7 @@
 ## END OF HEADER ###############################################################
 
 
-RFATE.run = function()
+RFATE = function()
 {
   appDir <- system.file("shinyApp", package = "RFate")
   if (appDir == "") {
