@@ -17,25 +17,19 @@ Author: Isabelle Boulangeat [aut],
         Bjoern Reineking [aut]
 Maintainer: Guillaume Dupouy <guillaume.dupouy@inrae.fr>, 
             Maya Guéguen <maya.gueguen@univ-grenoble-alpes.fr>
-Description:
-  Wrapper of the C++ model FATE. FATE is a dynamic landscape
-  vegetation model that simulates interactions between plant modelling entities
-  (e.g. species or plant functional groups), their population dynamics and
-  dispersal, whilst taking into account external drivers such as disturbance
-  regimes, and environmental variations.
-Description: Wrapper of the C++ model FATE. FATE is a vegetation model 
-based on Plant Functional Groups (PFG) that aims to simulate primary 
-ecological succession through entities interactions, population dynamics 
-and dispersal, and external drivers such as disturbance regimes or 
-environmental variations.
-RFate is a package which provides functions to :
-        1) gather, prepare and format data to be used with FATE ;
-        2) run FATE simulation(s)
-        3) process and analyze data produced by FATE.
+Description: 
+  Wrapper of the C++ model FATE. FATE is a vegetation model 
+  based on Plant Functional Groups (PFG) that aims to simulate primary 
+  ecological succession through entities interactions, population dynamics 
+  and dispersal, and external drivers such as disturbance regimes or 
+  environmental variations.
+  RFate is a package which provides functions to :
+          1) gather, prepare and format data to be used with FATE ;
+          2) run FATE simulation(s)
+          3) process and analyze data produced by FATE.
 RoxygenNote: 7.1.1
 Encoding: UTF-8
 NeedsCompilation: yes
-License: GPL (>= 2)
 License:
     file LICENSE
 URL: https://github.com/leca-dev/RFate.git

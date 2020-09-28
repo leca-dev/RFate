@@ -1,14 +1,14 @@
 #' @docType package
 #'
-#' @name fate
+#' @name RFate
 #'
 #' @title
-#' \packageTitle{fate}
+#' \packageTitle{RFate}
 #'
 #' @author
-#' \packageAuthor{fate}
+#' \packageAuthor{RFate}
 #'
-#' Maintainer: \packageMaintainer{fate}
+#' Maintainer: \packageMaintainer{RFate}
 #'
 #' @description
 #' \dQuote{FATE-HD is a dynamic landscape vegetation model that simulates
@@ -21,7 +21,7 @@
 #'  but has been entirely recoded in C++ and revisited.}
 #' (\href{https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.12466}{Boulangeat, 2014})
 #'
-#' @section fate functions:
+#' @section RFate functions:
 #' \code{\link{runFate}}
 #'
 #' @keywords package internal
