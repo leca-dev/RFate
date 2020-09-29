@@ -5,18 +5,17 @@ Version: 1.0
 Date: 2020-09-15
 Authors@R: c(person("Isabelle", "Boulangeat", role = "aut",
                     email = "isabelle.boulangeat@inrae.fr"),
-             person("Guillaume", "Dupouy", role = c("aut", "cre"),
+             person("Guillaume", "Dupouy", role = c("aut"),
                     email = "guillaume.dupouy@inrae.fr"),
              person("Maya", "Guéguen", role = c("aut", "cre"),
                     email = "maya.gueguen@univ-grenoble-alpes.fr"),
              person("Bjoern", "Reineking", role = "aut",
                     email = "bjoern.reineking@inrae.fr"))
 Author: Isabelle Boulangeat [aut],
-        Guillaume Dupouy [aut, cre],
+        Guillaume Dupouy [aut],
         Maya Guéguen [aut, cre],
         Bjoern Reineking [aut]
-Maintainer: Guillaume Dupouy <guillaume.dupouy@inrae.fr>, 
-            Maya Guéguen <maya.gueguen@univ-grenoble-alpes.fr>
+Maintainer: Maya Guéguen <maya.gueguen@univ-grenoble-alpes.fr>
 Description: 
   Wrapper of the C++ model FATE. FATE is a vegetation model 
   based on Plant Functional Groups (PFG) that aims to simulate primary 
