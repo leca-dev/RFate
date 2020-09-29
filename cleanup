@@ -1,11 +1,15 @@
 #!/bin/sh
+
+# Remove config.* files
 for f in ./config.*; do
     rm -f $f
 done
+# Remove autom4te.cache directory
 if [ -d autom4te.cache ]
 then
     rm -rf autom4te.cache
 fi
+# Remove src/Makevars file
 if [ -e src/Makevars ]
 then
     rm -f src/Makevars
