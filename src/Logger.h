@@ -1,9 +1,15 @@
-/**
- @file Logger.h
- @author Guillaume dupouy
- @version 1.0
- @date 2020/09/15
+/*============================================================================*/
+/*                                Logger Class                                */
+/*============================================================================*/
+
+/*!
+ * \file Logger.h
+ * \brief Logger Class
+ * \author Guillaume Dupouy
+ * \version 1.0
+ * \date 2020/09/15
  */
+
 
 #ifndef LOGGER_H
 #define LOGGER_H

@@ -5,8 +5,9 @@
 /*!
  * \file FG.h
  * \brief Plant Functional Group definition
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2020
  */
 
 #ifndef FG_H

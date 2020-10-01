@@ -7,6 +7,7 @@
  * \brief Succession (demographic model) with habitat suitability class
  * \author Damien Georges
  * \version 1.0
+ * \date 2013/10/21
  */
 
 #ifndef SUFATEH_H

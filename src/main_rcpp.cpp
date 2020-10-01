@@ -1,6 +1,6 @@
 /*============================================================================*/
 /*               FUNCTIONAL ATTRIBUTES IN TERRESTRIAL ECOSYSTEMS              */
-/*                                 Version 1.1                                */
+/*                                 Version 1.0                                */
 /*                                                                            */
 /* Biological model, including succession, disturbance and environmental      */
 /* response sections.                                                         */

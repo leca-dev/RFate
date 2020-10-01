@@ -4,8 +4,8 @@
 
 /*!
  * \file Params.h
- * \brief Utilites to read and use some parameters given into text files
- * \author Matthew Talluto, updated by Isabelle Boulangeat
+ * \brief Utilities to read and use some parameters given into text files
+ * \author Matthew Talluto, Isabelle Boulangeat
  * \version 1.0
  * \date 2014/11/05
  */

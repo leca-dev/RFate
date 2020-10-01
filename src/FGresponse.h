@@ -6,7 +6,7 @@
  * \file FGresponse.h
  * \brief Functional Group response to perturbation(s)
  * \author Maya Gueguen
- * \version 5.5-0
+ * \version 1.0
  * \date 2015/06/04
  */
 

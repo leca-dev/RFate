@@ -5,8 +5,9 @@
 /*!
  * \file FilesOfParamsList.h
  * \brief Parameters files list managing class
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2020
  */
 
 #ifndef FOPL_H

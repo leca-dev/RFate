@@ -5,8 +5,9 @@
 /*!
  * \file FGUtils.h
  * \brief Declaration of categorical variables and routines involved in FATE
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2018
  */
 
 #ifndef FGUTILS_H

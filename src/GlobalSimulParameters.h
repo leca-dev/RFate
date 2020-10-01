@@ -5,8 +5,9 @@
 /*!
  * \file GSP.h
  * \brief Global Simulation Parameters Class
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2020
  */
 
 #ifndef GSP_H

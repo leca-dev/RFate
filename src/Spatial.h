@@ -5,8 +5,9 @@
 /*!
  * \file Spatial.h
  * \brief Spatial objects and templates class
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2016/04/15
  */
 
 #ifndef SPATIAL_H

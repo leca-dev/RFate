@@ -7,6 +7,7 @@
  * \brief Structure to store available light resources in each stratum
  * \author Damien Georges
  * \version 1.0
+ * \date 2013/10/21
  */
 
 #ifndef LIGHTRESOURCES_H

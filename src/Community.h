@@ -7,6 +7,7 @@
  * \brief Structure to store list of Plant Functional Group populations
  * \author Damien Georges
  * \version 1.0
+ * \date 2013/10/21
  */
 
 #ifndef COMMUNITY_H

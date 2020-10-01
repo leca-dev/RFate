@@ -5,8 +5,9 @@
 /*!
  * \file Disp.h
  * \brief Dispersal modules definition
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2020
  */
 
 #ifndef DISP_H

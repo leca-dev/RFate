@@ -5,8 +5,9 @@
 /*!
  * \file SimulMap.h
  * \brief Spatial simulation map
- * \author Damien Georges
+ * \author Damien Georges, Maya Gueguen
  * \version 1.0
+ * \date 2020
  */
 
 #ifndef SIMULMAP_H

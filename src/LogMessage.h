@@ -1,9 +1,15 @@
-/**
- @file LogMessage.h
- @author Guillaume dupouy
- @version 1.0
- @date 2020/09/15
+/*============================================================================*/
+/*                             LogMessage Class                               */
+/*============================================================================*/
+
+/*!
+ * \file LogMessage.h
+ * \brief LogMessage Class
+ * \author Guillaume Dupouy
+ * \version 1.0
+ * \date 2020/09/15
  */
+
 
 #ifndef LOGMESSAGE_H
 #define LOGMESSAGE_H

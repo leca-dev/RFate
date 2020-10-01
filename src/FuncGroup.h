@@ -7,6 +7,7 @@
  * \brief Plant Functional Group Class
  * \author Damien Georges
  * \version 1.0
+ * \date 2013/10/21
  */
 
 #ifndef FUNCGROUP_H
