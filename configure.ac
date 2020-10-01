@@ -4,7 +4,7 @@
 AC_PREREQ([2.69])
 
 define([pkgversion], esyscmd([sh -c "grep Version: DESCRIPTION | cut -d' ' -f2 | tr -d '\n'"]))
-AC_INIT([RFate], [pkgversion], [guillaume.dupouy@inrae.fr])
+AC_INIT([RFate], [pkgversion], [maya.gueguen@univ-grenoble-alpes.fr])
 AC_CONFIG_SRCDIR([src/main_rcpp.cpp])
 #AC_CONFIG_HEADERS([config.h])
 
