@@ -25,7 +25,7 @@ void par::Params::read_file()
 	ifstream inputFile (source);
 	if (!inputFile.is_open())
 	{
-		logg.error("Warning: problem reading from file <", source, ">");
+		logg.error("Error: problem reading from file <", source, ">");
 	}
 	get_lines(inputFile);
 	inputFile.close();
@@ -48,7 +48,7 @@ void par::Params::get_lines(ifstream &file)
 		}
 		catch(...)
 		{
-			logg.error("error: problem parsing input, line ", lineno);
+			logg.error("Error: problem parsing input, line ", lineno);
 		}
 
 		if (lineData.size() <= 1) continue; // skip lines that are empty or were commented
