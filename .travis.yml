@@ -2,6 +2,8 @@
 
 language: R
 dist: bionic
+env:
+  - _R_CHECK_SYSTEM_CLOCK_=0
 
 addons:
   apt:

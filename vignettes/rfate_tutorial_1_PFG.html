@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title><i class="fa fa-shoe-prints"></i> What are the key steps of this process ?</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<p><br/></p>
+
+<div style = "text-align:center;">See [Principle of PFG](fate_tutorial_1_PFG.html) FATE tutorial</div>
+
+<p><br/></p>
+
+<p>A plant functional group, or <strong>PFG</strong>, is &ldquo;<em>a set of representative species [that] is classified based on key biological characteristics, to determine groups of species sharing ecological strategies</em>&rdquo; (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.">Boulangeat, 2012</a>).</p>
+
+<p><br/> <br/></p>
+
+<p><a href="">RFate</a> is a <a href="https://www.r-project.org/">R</a> package available on <a href="https://github.com/leca-dev/RFate">github</a> and designed to provide support functions to the <code>FATE</code> software.</p>
+
+<p>It contains documentation and functions to create and organize all input files required by the model, and <strong>building PFG</strong> is the first step to run a <code>FATE</code> simulation. The procedure presented below is based on <code>RFate</code> functions.</p>
+
+<p><br/> <br/></p>
+
+<h2><i class="fa fa-shoe-prints"></i> What are the key steps of this process ?</h2>
+
+<p><br/></p>
+
+<p><strong>1. Selection of dominant species</strong> </p>
+
+<ul>
+<li>with the function <a href="../reference/PRE_FATE.selectDominant.html">PRE_FATE.selectDominant</a><br/></li>
+</ul>
+
+<p><strong>2. Overlap of species climatic niches</strong>  </p>
+
+<ul>
+<li>with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)</li>
+</ul>
+
+<p><strong>3. Calculation of species pairwise distance</strong>  </p>
+
+<ul>
+<li>by combining overlap and functional distances with the function <a href="../reference/PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></li>
+</ul>
+
+<p><strong>4. Clustering of species :</strong>  </p>
+
+<ul>
+<li>calculate all possible clusters, and the corresponding evaluation metrics<br/>
+with the function <a href="../reference/PRE_FATE.speciesClustering_step1.html">PRE_FATE.speciesClustering_step1</a></li>
+<li>choose the best number of clusters from the previous step and find determinant species<br/>
+with the function <a href="../reference/PRE_FATE.speciesClustering_step2.html">PRE_FATE.speciesClustering_step2</a></li>
+<li>combine traits data and clustering to calculate mean / median trait values per PFG<br/>
+with the function <a href="../reference/PRE_FATE.speciesClustering_step3.html">PRE_FATE.speciesClustering_step3</a></li>
+</ul>
+
+<p><br/><br/></p>
+
+<h2><i class="fa fa-shopping-basket"></i> What do you need ?</h2>
+
+<h4>1. Selection of dominant species</h4>
+
+<ul>
+<li>Gather <strong>occurrences</strong> for all species within the studied area</li>
+<li>Identify <strong>dominant species</strong> based on abundances and frequençy of sampling</li>
+</ul>
+
+<p>with the function <a href="../reference/PRE_FATE.selectDominant.html">PRE_FATE.selectDominant</a>  </p>
+
+<h4>2. Overlap of species climatic niches</h4>
+
+<p>with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)</p>
+
+<ul>
+<li><em>Option 1: Principal Component analysis</em>
+
+<ul>
+<li>Gather <strong>environmental data</strong> for the studied area</li>
+<li>Compute <strong>PCA</strong> over environment to create a <em>climatic space</em></li>
+<li>Calculate the <strong>density of each species</strong> within this <em>climatic space</em> from the PCA</li>
+<li>For each pair of species, compute the <strong>overlap</strong> of the 2 considered species within the <em>climatic space</em></li>
+</ul></li>
+</ul>
+
+<p><br/></p>
+
+<ul>
+<li><em>Option 2: Species Distribution Models</em>
+
+<ul>
+<li>Gather <strong>environmental data</strong> for the studied area</li>
+<li>For each dominant species, compute a <strong>species distribution model</strong> (SDM)<br/>
+combining environmental data and occurrences to determine the <em>climatic niche</em> of the species</li>
+<li>With these SDMs, calculate the <strong>niche overlap</strong> of each pair of species</li>
+</ul></li>
+</ul>
+
+<h4>3. Calculation of species pairwise distance</h4>
+
+<p>by combining overlap and functional distances with the function <a href="../reference/PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></p>
+
+<ul>
+<li>Gather <strong>traits data</strong> for all dominant species within the studied area<br/>
+(traits need to be related to fundamental process of growth : light tolerance, dispersal, height&hellip;)</li>
+<li>Compute <strong>dissimilarity distances</strong> between pairs of species based on these traits and taking also into account the overlap of the 2 species within the <em>climatic space</em> (see previous step)</li>
+</ul>
+
+<p><em>For further details about the data, please refer to</em> <a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.">Boulangeat, 2012</a>. </p>
+
+<h4>4. Clustering of species</h4>
+
+<p>using the <strong>dissimilarity distances</strong> from previous step :</p>
+
+<ul>
+<li>calculate all possible clusters, and the corresponding evaluation metrics<br/>
+with the function <a href="../reference/PRE_FATE.speciesClustering_step1.html">PRE_FATE.speciesClustering_step1</a></li>
+<li>choose the best number of clusters from the previous step and find determinant species<br/>
+with the function <a href="../reference/PRE_FATE.speciesClustering_step2.html">PRE_FATE.speciesClustering_step2</a></li>
+<li>combine traits data and clustering to calculate mean / median trait values per PFG<br/>
+with the function <a href="../reference/PRE_FATE.speciesClustering_step3.html">PRE_FATE.speciesClustering_step3</a></li>
+</ul>
+
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+---
+title: "PRE_FATE - build parameter files"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PRE_FATE - build parameter files}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+pre.bash {
+ background-color: black;
+ color: #9ea1a3;
+ font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+pre.grey {
+ background-color: white;
+ border-style: solid;
+ border-color: #8b8d8f;
+ color: #8b8d8f;
+ font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+</style>
+
+<br/>
+
+## <i class="fa fa-copy"></i> The different type of parameters and *flags*
+
+<br/>
+
+`FATE` requires a quite large number of parameters, which are stored into `.txt` files, presented to and recovered by the software.  
+These **parameters** can be of 3 types :
+
+1. **Filenames**, to guide the application to other parameter files that should be read
+2. These filenames either correspond to :
+    - other parameter files that contain **values** to be actually read and used
+    - **raster** files, with the extension `.tif` (lighter) or `.img`
+
+<br/>
+
+To enumerate these settings, **2 types of flag** can be found and used within the parameter files :
+
+1. To give one or several links to other files containing parameter values or to raster files : **`--PARAM_NAME--`**
+<pre class = "bash">
+--GLOBAL_PARAMS--
+FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt
+--MASK--
+FATE_simulation/DATA/MASK/mask.tif
+--PFG_PARAMS_LIFE_HISTORY--
+FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt
+FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt
+...
+</pre>
+
+In this way, each parameter can have several values (filenames), and **each line corresponds to a value**.  
+The transition to a new parameter is made thanks to the presence of a new flag on the next line.
+
+2. To give parameter values : **`PARAM_NAME`**
+<pre class = "bash">
+NAME H2_dryGrass
+MATURITY 3
+LONGEVITY 11
+MAX_ABUNDANCE 1
+CHANG_STR_AGES 0 10000 10000 10000 10000
+...
+</pre>
+
+Each line corresponds to a parameter, given by the **flag** (parameter name in capital letters) **followed by all values linked to this flag on the same line**. Each value has to be separated from another by a **space**.
+
+<br/><br/>
+
+
+## <i class="fas fa-wrench"></i> Which files for which settings ?
+
+<br/>
+
+The function [PRE_FATE.skeletonDirectory](../reference/PRE_FATE.skeletonDirectory.html) allows to create a user-friendly directory tree to store all parameter files and data.
+
+<br/>
+
+*1. Simulation parameterization*
+
+- **Global parameters** : related to the simulation definition  
+(number of PFG and strata, simulation duration, computer resources, manage abundance values, modules loaded...)  
+with the function [PRE_FATE.params_globalParameters](../reference/PRE_FATE.params_globalParameters.html)
+- **Years to save abundance raster maps and simulation outputs** with the function [PRE_FATE.params_saveYears](../reference/PRE_FATE.params_saveYears.html)
+- **Years and files to change rasters** for the succession, habitat suitability or disturbance modules  
+with the function [PRE_FATE.params_changingYears](../reference/PRE_FATE.params_changingYears.html)
+
+*2. For each PFG : behavior and characteristics*
+
+- **Succession files** : related to the life history with the function [PRE_FATE.params_PFGsuccession](../reference/PRE_FATE.params_PFGsuccession.html)
+- **Dispersal files** : related to the dispersal ability with the function [PRE_FATE.params_PFGdispersal](../reference/PRE_FATE.params_PFGdispersal.html)
+- **Light files** : related to the light competition with the function [PRE_FATE.params_PFGlight](../reference/PRE_FATE.params_PFGlight.html)
+- **Soil files** : related to the soil competition with the function [PRE_FATE.params_PFGsoil](../reference/PRE_FATE.params_PFGsoil.html)
+- **Disturbance files** : related to the response to perturbations in terms of resprouting and mortality  
+with the function [PRE_FATE.params_PFGdisturbance](../reference/PRE_FATE.params_PFGdisturbance.html)
+- **Drought files** : related to the response to drought in terms of resprouting and mortality  
+with the function [PRE_FATE.params_PFGdrought](../reference/PRE_FATE.params_PFGdrought.html)
+
+*3. Parameter management*
+
+- **SimulParameters file** : containing all links to the files created with the previous functions.  
+This is the file that will be given as the only argument to the [FATE.run](../reference/FATE.run.html) function.  
+It can be created with the function [PRE_FATE.params_simulParameters](../reference/PRE_FATE.params_simulParameters.html)
+- **Multiple set of files** : to duplicate simulation folder and scan global parameters space with Latin Hypercube Sampling.  
+Folders can be created with the function [PRE_FATE.params_multipleSet](../reference/PRE_FATE.params_multipleSet.html)
+

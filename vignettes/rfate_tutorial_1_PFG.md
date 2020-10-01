@@ -1,0 +1,103 @@
+---
+title: "PRE_FATE - build Plant Functional Groups (PFG)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PRE_FATE - build Plant Functional Groups (PFG)}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+<br/>
+
+<div style = "text-align:center;">See [Principle of PFG](fate_tutorial_1_PFG.html) `FATE` tutorial</div>
+
+<br/>
+
+A plant functional group, or **PFG**, is "*a set of representative species [that] is classified based on key biological characteristics, to determine groups of species sharing ecological strategies*" ([Boulangeat, 2012](http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf "Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.")).
+
+<br/> <br/>
+
+[RFate]() is a [R](https://www.r-project.org/) package available on [github](https://github.com/leca-dev/RFate) and designed to provide support functions to the `FATE` software.
+
+It contains documentation and functions to create and organize all input files required by the model, and **building PFG** is the first step to run a `FATE` simulation. The procedure presented below is based on `RFate` functions.
+
+<br/> <br/>
+
+
+
+## <i class="fa fa-shoe-prints"></i> What are the key steps of this process ?
+
+<br/>
+
+**1. Selection of dominant species** 
+
+- with the function [PRE_FATE.selectDominant](../reference/PRE_FATE.selectDominant.html)  
+
+**2. Overlap of species climatic niches**  
+
+- with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)
+
+**3. Calculation of species pairwise distance**  
+
+- by combining overlap and functional distances with the function [PRE_FATE.speciesDistance](../reference/PRE_FATE.speciesDistance.html)
+
+**4. Clustering of species :**  
+
+- calculate all possible clusters, and the corresponding evaluation metrics  
+with the function [PRE_FATE.speciesClustering_step1](../reference/PRE_FATE.speciesClustering_step1.html)
+- choose the best number of clusters from the previous step and find determinant species  
+with the function [PRE_FATE.speciesClustering_step2](../reference/PRE_FATE.speciesClustering_step2.html)
+- combine traits data and clustering to calculate mean / median trait values per PFG  
+with the function [PRE_FATE.speciesClustering_step3](../reference/PRE_FATE.speciesClustering_step3.html)
+
+
+<br/><br/>
+
+## <i class="fa fa-shopping-basket"></i> What do you need ?
+
+#### 1. Selection of dominant species
+
+- Gather **occurrences** for all species within the studied area
+- Identify **dominant species** based on abundances and frequençy of sampling
+
+with the function [PRE_FATE.selectDominant](../reference/PRE_FATE.selectDominant.html)  
+
+
+#### 2. Overlap of species climatic niches
+with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)
+
+- *Option 1: Principal Component analysis*
+    - Gather **environmental data** for the studied area
+    - Compute **PCA** over environment to create a *climatic space*
+    - Calculate the **density of each species** within this *climatic space* from the PCA
+    - For each pair of species, compute the **overlap** of the 2 considered species within the *climatic space*
+
+<br/>
+
+- *Option 2: Species Distribution Models*
+    - Gather **environmental data** for the studied area
+    - For each dominant species, compute a **species distribution model** (SDM)  
+    combining environmental data and occurrences to determine the *climatic niche* of the species
+    - With these SDMs, calculate the **niche overlap** of each pair of species
+
+
+#### 3. Calculation of species pairwise distance
+by combining overlap and functional distances with the function [PRE_FATE.speciesDistance](../reference/PRE_FATE.speciesDistance.html)
+
+- Gather **traits data** for all dominant species within the studied area  
+(traits need to be related to fundamental process of growth : light tolerance, dispersal, height...)
+- Compute **dissimilarity distances** between pairs of species based on these traits and taking also into account the overlap of the 2 species within the *climatic space* (see previous step)
+
+*For further details about the data, please refer to* [Boulangeat, 2012](http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf "Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475."). 
+
+
+#### 4. Clustering of species
+using the **dissimilarity distances** from previous step :
+
+- calculate all possible clusters, and the corresponding evaluation metrics  
+with the function [PRE_FATE.speciesClustering_step1](../reference/PRE_FATE.speciesClustering_step1.html)
+- choose the best number of clusters from the previous step and find determinant species  
+with the function [PRE_FATE.speciesClustering_step2](../reference/PRE_FATE.speciesClustering_step2.html)
+- combine traits data and clustering to calculate mean / median trait values per PFG  
+with the function [PRE_FATE.speciesClustering_step3](../reference/PRE_FATE.speciesClustering_step3.html)
+

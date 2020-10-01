@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title><i class="fa fa-copy"></i> The different type of parameters and <em>flags</em></title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<style>
+pre.bash {
+ background-color: black;
+ color: #9ea1a3;
+ font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+pre.grey {
+ background-color: white;
+ border-style: solid;
+ border-color: #8b8d8f;
+ color: #8b8d8f;
+ font-family: Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+}
+</style>
+
+<p><br/></p>
+
+<h2><i class="fa fa-copy"></i> The different type of parameters and <em>flags</em></h2>
+
+<p><br/></p>
+
+<p><code>FATE</code> requires a quite large number of parameters, which are stored into <code>.txt</code> files, presented to and recovered by the software.<br/>
+These <strong>parameters</strong> can be of 3 types :</p>
+
+<ol>
+<li><strong>Filenames</strong>, to guide the application to other parameter files that should be read</li>
+<li>These filenames either correspond to :
+
+<ul>
+<li>other parameter files that contain <strong>values</strong> to be actually read and used</li>
+<li><strong>raster</strong> files, with the extension <code>.tif</code> (lighter) or <code>.img</code></li>
+</ul></li>
+</ol>
+
+<p><br/></p>
+
+<p>To enumerate these settings, <strong>2 types of flag</strong> can be found and used within the parameter files :</p>
+
+<ol>
+<li>To give one or several links to other files containing parameter values or to raster files : <strong><code>--PARAM_NAME--</code></strong>
+<pre class = "bash">
+--GLOBAL_PARAMS--
+FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt
+--MASK--
+FATE_simulation/DATA/MASK/mask.tif
+--PFG_PARAMS_LIFE_HISTORY--
+FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt
+FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt
+...
+</pre></li>
+</ol>
+
+<p>In this way, each parameter can have several values (filenames), and <strong>each line corresponds to a value</strong>.<br/>
+The transition to a new parameter is made thanks to the presence of a new flag on the next line.</p>
+
+<ol>
+<li>To give parameter values : <strong><code>PARAM_NAME</code></strong>
+<pre class = "bash">
+NAME H2_dryGrass
+MATURITY 3
+LONGEVITY 11
+MAX_ABUNDANCE 1
+CHANG_STR_AGES 0 10000 10000 10000 10000
+...
+</pre></li>
+</ol>
+
+<p>Each line corresponds to a parameter, given by the <strong>flag</strong> (parameter name in capital letters) <strong>followed by all values linked to this flag on the same line</strong>. Each value has to be separated from another by a <strong>space</strong>.</p>
+
+<p><br/><br/></p>
+
+<h2><i class="fas fa-wrench"></i> Which files for which settings ?</h2>
+
+<p><br/></p>
+
+<p>The function <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a> allows to create a user-friendly directory tree to store all parameter files and data.</p>
+
+<p><br/></p>
+
+<p><em>1. Simulation parameterization</em></p>
+
+<ul>
+<li><strong>Global parameters</strong> : related to the simulation definition<br/>
+(number of PFG and strata, simulation duration, computer resources, manage abundance values, modules loaded&hellip;)<br/>
+with the function <a href="../reference/PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a></li>
+<li><strong>Years to save abundance raster maps and simulation outputs</strong> with the function <a href="../reference/PRE_FATE.params_saveYears.html">PRE_FATE.params_saveYears</a></li>
+<li><strong>Years and files to change rasters</strong> for the succession, habitat suitability or disturbance modules<br/>
+with the function <a href="../reference/PRE_FATE.params_changingYears.html">PRE_FATE.params_changingYears</a></li>
+</ul>
+
+<p><em>2. For each PFG : behavior and characteristics</em></p>
+
+<ul>
+<li><strong>Succession files</strong> : related to the life history with the function <a href="../reference/PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a></li>
+<li><strong>Dispersal files</strong> : related to the dispersal ability with the function <a href="../reference/PRE_FATE.params_PFGdispersal.html">PRE_FATE.params_PFGdispersal</a></li>
+<li><strong>Light files</strong> : related to the light competition with the function <a href="../reference/PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></li>
+<li><strong>Soil files</strong> : related to the soil competition with the function <a href="../reference/PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a></li>
+<li><strong>Disturbance files</strong> : related to the response to perturbations in terms of resprouting and mortality<br/>
+with the function <a href="../reference/PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a></li>
+<li><strong>Drought files</strong> : related to the response to drought in terms of resprouting and mortality<br/>
+with the function <a href="../reference/PRE_FATE.params_PFGdrought.html">PRE_FATE.params_PFGdrought</a></li>
+</ul>
+
+<p><em>3. Parameter management</em></p>
+
+<ul>
+<li><strong>SimulParameters file</strong> : containing all links to the files created with the previous functions.<br/>
+This is the file that will be given as the only argument to the <a href="../reference/FATE.run.html">FATE.run</a> function.<br/>
+It can be created with the function <a href="../reference/PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></li>
+<li><strong>Multiple set of files</strong> : to duplicate simulation folder and scan global parameters space with Latin Hypercube Sampling.<br/>
+Folders can be created with the function <a href="../reference/PRE_FATE.params_multipleSet.html">PRE_FATE.params_multipleSet</a></li>
+</ul>
+
+</body>
+
+</html>

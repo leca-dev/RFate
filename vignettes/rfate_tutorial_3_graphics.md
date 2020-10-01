@@ -1,0 +1,52 @@
+---
+title: "POST_FATE - graphics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{POST_FATE - graphics}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+<br/>
+
+
+*A. Evolution of simulation through time*
+
+- **Create temporal evolution table** : retrieve PFG pixel abundance (as well as light and soil resources) through time  
+with the function [POST_FATE.temporalEvolution](../reference/POST_FATE.temporalEvolution.html)
+
+- **Abundance over all studied area** : with the function [POST_FATE.graphic_evolutionCoverage](../reference/POST_FATE.graphic_evolutionCoverage.html)
+- **Abundance / light / soil within some pixels** : with the function [POST_FATE.graphic_evolutionPixels](../reference/POST_FATE.graphic_evolutionPixels.html)
+- **Habitat composition stability over all studied area** : with the function [POST_FATE.graphic_evolutionStability](../reference/POST_FATE.graphic_evolutionStability.html)
+
+<br/>
+
+
+*B. Relative / binary maps & Evaluation of outputs*
+
+- **Create relative abundance maps** : transform absolute abundance maps into relative abundance maps  
+with the function [POST_FATE.relativeAbund](../reference/POST_FATE.relativeAbund.html)
+- **Validation statistics** : calculate evaluation metrics (TSS, AUC) for each PFG   
+with the function [POST_FATE.graphic_validationStatistics](../reference/POST_FATE.graphic_validationStatistics.html)
+
+- **Create binary maps** : transform relative abundance maps into presence / absence maps  
+with the function [POST_FATE.binaryMaps](../reference/POST_FATE.binaryMaps.html)
+
+- **PFG outputs vs Habitat suitability** : compare binary maps (outputs) with habitat suitability maps (inputs)  
+with the function [POST_FATE.graphic_mapPFGvsHS](../reference/POST_FATE.graphic_mapPFGvsHS.html)
+
+<br/>
+
+
+*C. Visualization of outputs*
+
+- **PFG cover / richness / light CWM / soil CWM** :  
+with the function [POST_FATE.graphic_mapPFG](../reference/POST_FATE.graphic_mapPFG.html)
+    - create map of PFG abundance above 1.5 meters within each pixel  
+    - create map of number of PFG alive within each pixel
+    - create map of light community weighted mean within each pixel  
+    - create map of soil community weighted mean within each pixel  
+    
+
+
