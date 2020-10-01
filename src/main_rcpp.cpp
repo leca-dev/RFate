@@ -207,19 +207,14 @@ void changeFreq(int year, string change_type, vector<int>& freq_change_times,
 //'
 //' @export
 // [[Rcpp::export]]
-int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
+int runFate(std::string paramFile, int nbCpus = 0, int verboseLevel = 0)
 {
 	/*==========================================================================*/
 	/* Initialization */
 
 	// Logger initialization
 	logg.configure(verboseLevel);  // Set logger verbose level
-	// Number of CPUs used for computation
-	// if (nbCpus > 1)
-	// {
-	// 	logg.info("PARALLEL VERSION : programme will run on ", nbCpus, " CPU.");
-	// 	omp_set_num_threads(nbCpus);  // Set number of CPUs
-	// }
+
 	// Timer initialization
 	time_t Start, End;
 	time(&Start);  // Start timer
@@ -345,7 +340,7 @@ int runFate(std::string paramFile, int nbCpus = 1, int verboseLevel = 0)
 	}
 
 	// Set number of CPUs
-	if (nbCpus != simulMap->getNoCPU()) {
+	if (nbCpus > 0 && nbCpus != simulMap->getNoCPU()) {
 		simulMap->setNoCPU(nbCpus);
 	}
 
