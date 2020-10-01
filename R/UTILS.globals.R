@@ -18,7 +18,8 @@ utils::globalVariables(names = c("file.mask", "ras.mask", "ind_1_mask"
                                  , "no_1_mask", "xy.1"))
 
 ## PRE_FATE.selectDominant
-utils::globalVariables(names = c("i.type", "i.percent", "i.dat", "i.hab", "i.rule"
+utils::globalVariables(names = c("i", "j"
+                                 , "i.type", "i.percent", "i.dat", "i.hab", "i.rule"
                                  , "i.rep", "i.iter", "i.axis", "i.subset"))
 
 ## PRE_FATE.speciesclustering...
