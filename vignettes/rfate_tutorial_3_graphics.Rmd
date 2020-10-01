@@ -1,5 +1,10 @@
 ---
-title: "<font color='#068f96'> <i class='fa fa-battery-three-quarters'></i> `POST_FATE` - graphics </font>"
+title: "POST_FATE - graphics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{POST_FATE - graphics}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
 ---
 
 

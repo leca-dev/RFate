@@ -39,14 +39,16 @@ Imports:
     graphics, grDevices, methods, stats, utils, R.utils,
     ggplot2, ggthemes, ggrepel, ggExtra, gridExtra, cowplot,
     reshape2, foreach, SPOT, data.table,
-    raster, rgdal,
-    phyloclim, FD, fpc, clValid, ade4, PresenceAbsence, Hmisc,
+    raster,
+    phyloclim, FD, fpc, clValid, ade4, PresenceAbsence,
     viridis, RColorBrewer, colorspace,
     ape, shiny,
     parallel, doParallel
 Suggests:
     spelling, 
     testthat,
-    covr
+    covr,
+    knitr, rmarkdown
 LinkingTo: Rcpp, RcppThread, BH
+VignetteBuilder: knitr, rmarkdown
 Language: en-US

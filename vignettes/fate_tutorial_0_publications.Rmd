@@ -3,7 +3,7 @@ title: "FATE tutorial 0 - Publications"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{FATE tutorial 0 - Publications}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 resource_files:
   - papers/Moore_Noble_1990_JEM.pdf

@@ -1,5 +1,10 @@
 ---
 title: "FATE tutorial 0 - Modelling framework"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FATE tutorial 0 - Modelling framework}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
 ---
 
 <style>

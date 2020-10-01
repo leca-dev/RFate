@@ -1,5 +1,10 @@
 ---
 title: "FATE tutorial 3 - Use a module"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{FATE tutorial 3 - Use a module}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
 ---
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">

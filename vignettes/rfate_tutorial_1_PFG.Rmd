@@ -1,5 +1,10 @@
 ---
-title: "<font color='#068f96'><i class='fa fa-battery-quarter'></i> `PRE_FATE` - build Plant Functional Groups (PFG)</font>"
+title: "PRE_FATE - build Plant Functional Groups (PFG)"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PRE_FATE - build Plant Functional Groups (PFG)}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
 ---
 
 <br/>
