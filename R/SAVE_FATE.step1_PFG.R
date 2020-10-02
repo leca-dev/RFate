@@ -218,7 +218,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
   ## CHECK parameter rules.selectDominant
   names.rules.selectDominant = c("doRuleA", "rule.A1", "rule.A2_quantile", "doRuleB", "rule.B1_percentage"
                                  , "rule.B1_number", "rule.B2", "doRuleC")
-  .testParam_notInValues.m(names(rules.selectDominant), names.rules.selectDominant)
+  .testParam_notInValues.m("rules.selectDominant", names(rules.selectDominant), names.rules.selectDominant)
   if (length(rules.selectDominant) != 8)
   {
     for (name.i in names.rules.selectDominant)
@@ -230,6 +230,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
     }
   }
   rules.selectDominant = rules.selectDominant[names.rules.selectDominant]
+  rules.selectDominant = sapply(rules.selectDominant, function(x) as.numeric(as.character(x)))
   if (length(which(is.na(rules.selectDominant))) < 8)
   {
     .testParam_notInValues.m("rules.selectDominant['doRuleA']", rules.selectDominant['doRuleA'], c(0, 1))
