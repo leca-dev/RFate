@@ -11,8 +11,6 @@ test_that("SAVE_FATE.step1_PFG gives error with missing values", {
                , "`name.dataset` must contain a character value of length > 0")
 })
 
-
-
 ## INPUTS
 test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : name.dataset", {
   expect_error(SAVE_FATE.step1_PFG(name.dataset = NA)
@@ -22,6 +20,8 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : name.datase
   expect_error(SAVE_FATE.step1_PFG(name.dataset = factor("a"))
                , "`name.dataset` must contain a character value of length > 0")
 })
+
+
 
 ## INPUTS
 test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : mat.observations", {

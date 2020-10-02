@@ -217,10 +217,11 @@ SAVE_FATE.step2_parameters = function(name.dataset
     .testParam_existFolder(name.simulation, "DATA/")
     .testParam_existFolder(name.simulation, "PARAM_SIMUL/")
     ## ARCHIVE folders
-    name.arch_data = paste0(paste0(unique(c(name.dataset, name.simulation)), collapse = "_"), "_DATA.zip")
-    name.arch_paramsimul = paste0(name.simulation, "_PARAM_SIMUL.zip")
-    zip(zipfile  = name.arch_data, files = paste0(name.simulation, "DATA/"), flags = "-r")
-    zip(zipfile  = name.arch_paramsimul, files = paste0(name.simulation, "PARAM_SIMUL/"), flags = "-r")
+    name.arch = paste0(unique(c(name.dataset, name.simulation)), collapse = "_")
+    name.arch_data = paste0(name.arch, "_DATA.zip")
+    name.arch_paramsimul = paste0(name.arch, "_PARAM_SIMUL.zip")
+    zip(zipfile  = name.arch_data, files = paste0(name.simulation, "/DATA/"), flags = "-r")
+    zip(zipfile  = name.arch_paramsimul, files = paste0(name.simulation, "/PARAM_SIMUL/"), flags = "-r")
   }
   
   ## CHECK parameter strata.limits
