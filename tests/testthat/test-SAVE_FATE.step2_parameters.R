@@ -516,20 +516,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.ligh
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = NA)
-               , "`mat.PFG.light` must be a data.frame")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
-                                                                      , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = NULL)
-               , "`mat.PFG.light` must be a data.frame")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
-                                                                      , maturity = 1, longevity = 1)
                                           , mat.PFG.light = "")
                , "`mat.PFG.light` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -812,14 +798,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.ligh
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
                                           , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = NA)
-               , "`mat.PFG.light.tol` must be a data.frame")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
-                                                                      , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
                                           , mat.PFG.light.tol = "")
                , "`mat.PFG.light.tol` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1026,26 +1004,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = NA)
-               , "`mat.PFG.soil` must be a data.frame")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
-                                                                      , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = NULL)
-               , "`mat.PFG.soil` must be a data.frame")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
-                                                                      , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = "")
                , "`mat.PFG.soil` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1053,8 +1011,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = 1)
                , "`mat.PFG.soil` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1062,8 +1018,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = factor(1))
                , "`mat.PFG.soil` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1071,8 +1025,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = matrix(1))
                , "`mat.PFG.soil` must be a data.frame")
   
@@ -1082,8 +1034,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame())
                , "`mat.PFG.soil` does not have the appropriate number of rows (>0) or columns (PFG, type, (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), soil_contrib, soil_tol_min, soil_tol_max, (strategy_contrib))"
                , fixed = TRUE)
@@ -1092,8 +1042,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(1))
                , "`mat.PFG.soil` does not have the appropriate number of rows (>0) or columns (PFG, type, (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), soil_contrib, soil_tol_min, soil_tol_max, (strategy_contrib))"
                , fixed = TRUE)
@@ -1102,8 +1050,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(1,2,3,4,5,6,7,8))
                , "`mat.PFG.soil` does not have the appropriate number of rows (>0) or columns (PFG, type, (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), soil_contrib, soil_tol_min, soil_tol_max, (strategy_contrib))"
                , fixed = TRUE)
@@ -1114,8 +1060,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(1,2,3))
                , "Column names of `mat.PFG.soil` must be `PFG`, `type`, `(active_germ_low)`, `(active_germ_medium)`, `(active_germ_high)`, `(strategy_ag)`, `soil_contrib`, `soil_tol_min`, `soil_tol_max` and `(strategy_contrib)`"
                , fixed = TRUE)
@@ -1124,8 +1068,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(1,2,3,4,5))
                , "Column names of `mat.PFG.soil` must be `PFG`, `type`, `(active_germ_low)`, `(active_germ_medium)`, `(active_germ_high)`, `(strategy_ag)`, `soil_contrib`, `soil_tol_min`, `soil_tol_max` and `(strategy_contrib)`"
                , fixed = TRUE)
@@ -1137,8 +1079,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = rep("H", 2), strategy_contrib = "indifferent"))
                , "`mat.PFG.soil$PFG` must contain different values", fixed = TRUE)
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1146,8 +1086,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = NA, type = "H", strategy_contrib = "indifferent"))
                , "`mat.PFG.soil$PFG` must contain different values", fixed = TRUE)
   
@@ -1157,8 +1095,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = "", type = "H", strategy_contrib = "indifferent"))
                , "`mat.PFG.soil$PFG` must contain a character value of length > 0"
                , fixed = TRUE)
@@ -1169,8 +1105,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = NA, strategy_contrib = "indifferent"))
                , "`mat.PFG.soil$type` must be either `H`, `C` or `P`", fixed = TRUE)
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1178,8 +1112,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = 2, strategy_contrib = "indifferent"))
                , "`mat.PFG.soil$type` must be either `H`, `C` or `P`", fixed = TRUE)
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1187,8 +1119,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = "", strategy_contrib = "indifferent"))
                , "`mat.PFG.soil$type` must be either `H`, `C` or `P`", fixed = TRUE)
   
@@ -1198,8 +1128,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = "H", strategy_contrib = 1))
                , "`mat.PFG.soil$strategy_contrib` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
@@ -1208,8 +1136,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = "H", strategy_contrib = NA))
                , "`mat.PFG.soil$strategy_contrib` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
@@ -1218,8 +1144,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, type = "H", strategy_contrib = ""))
                , "`mat.PFG.soil$strategy_contrib` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
@@ -1231,8 +1155,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = 1, strategy_contrib = "ubiquist"))
                , "`mat.PFG.soil$strategy_ag` must be either `poor_lover`, `indifferent` or `rich_lover`"
                , fixed = TRUE)
@@ -1241,8 +1163,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = NA, strategy_contrib = "ubiquist"))
                , "`mat.PFG.soil$strategy_ag` must be either `poor_lover`, `indifferent` or `rich_lover`"
                , fixed = TRUE)
@@ -1251,8 +1171,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = "", strategy_contrib = "ubiquist"))
                , "`mat.PFG.soil$strategy_ag` must be either `poor_lover`, `indifferent` or `rich_lover`"
                , fixed = TRUE)
@@ -1264,8 +1182,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = c(1,2), active_germ_low = c(NA, 1)
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1277,8 +1193,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = -1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1289,8 +1203,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1.5
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1303,8 +1215,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = c(1,2), active_germ_low = 1
                                                                       , active_germ_medium = c(NA, 1), active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1316,8 +1226,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = -1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1328,8 +1236,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1.5, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1342,8 +1248,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = c(1,2), active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = c(NA, 1)
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1355,8 +1259,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = -1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1367,8 +1269,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1.5
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 1))
@@ -1382,8 +1282,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = NA, soil_tol_min = 1, soil_tol_max = 1))
@@ -1393,8 +1291,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = "a", soil_tol_min = 1, soil_tol_max = 1))
@@ -1404,8 +1300,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = factor(1), soil_tol_min = 1, soil_tol_max = 1))
@@ -1415,8 +1309,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = factor("a"), soil_tol_min = 1, soil_tol_max = 1))
@@ -1428,8 +1320,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = c(1,2), active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = c(NA, 1), soil_tol_min = 1, soil_tol_max = 1))
@@ -1441,8 +1331,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = NA, soil_tol_max = 1))
@@ -1452,8 +1340,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = "a", soil_tol_max = 1))
@@ -1463,8 +1349,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = factor(1), soil_tol_max = 1))
@@ -1474,8 +1358,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = factor("a"), soil_tol_max = 1))
@@ -1487,8 +1369,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = c(1,2), active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = c(NA, 1), soil_tol_max = 1))
@@ -1500,8 +1380,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = NA))
@@ -1511,8 +1389,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = "a"))
@@ -1522,8 +1398,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = factor(1)))
@@ -1533,8 +1407,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = factor("a")))
@@ -1546,8 +1418,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = c(1,2), active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = c(NA, 1)))
@@ -1561,8 +1431,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 2, soil_tol_max = 1))
@@ -1575,8 +1443,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
                                           , mat.PFG.soil = data.frame(PFG = 1, active_germ_low = 1
                                                                       , active_germ_medium = 1, active_germ_high = 1
                                                                       , soil_contrib = 1, soil_tol_min = 1, soil_tol_max = 0))
@@ -1594,23 +1460,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
-                                          , mat.PFG.soil.tol = NA)
-               , "`mat.PFG.soil.tol` must be a data.frame")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
-                                                                      , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = "")
                , "`mat.PFG.soil.tol` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1618,11 +1467,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = 1)
                , "`mat.PFG.soil.tol` must be a data.frame")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -1630,11 +1474,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = matrix(1))
                , "`mat.PFG.soil.tol` must be a data.frame")
   
@@ -1645,11 +1484,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame())
                , "`mat.PFG.soil.tol` does not have the appropriate number of rows (>0) or columns (PFG, lifeStage, resources, tolerance, (strategy_tol)"
                , fixed = TRUE)
@@ -1658,11 +1492,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(1))
                , "`mat.PFG.soil.tol` does not have the appropriate number of rows (>0) or columns (PFG, lifeStage, resources, tolerance, (strategy_tol)"
                , fixed = TRUE)
@@ -1673,11 +1502,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(1,2))
                , "Column names of `mat.PFG.soil.tol` must be `PFG`, `lifeStage`, `resources`, `tolerance` and `(strategy_tol)`"
                , fixed = TRUE)
@@ -1686,11 +1510,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(1,2,3,4))
                , "Column names of `mat.PFG.soil.tol` must be `PFG`, `lifeStage`, `resources`, `tolerance` and `(strategy_tol)`"
                , fixed = TRUE)
@@ -1702,11 +1521,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = NA, lifeStage = 1
                                                                           , resources = 1, tolerance = 1))
                , "`mat.PFG.soil.tol$PFG` must contain a character value of length > 0"
@@ -1718,11 +1532,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = 1
                                                                           , resources = 1, tolerance = 1))
                , "`mat.PFG.soil.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
@@ -1732,11 +1541,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = NA
                                                                           , resources = 1, tolerance = 1))
                , "`mat.PFG.soil.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
@@ -1746,11 +1550,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = ""
                                                                           , resources = 1, tolerance = 1))
                , "`mat.PFG.soil.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
@@ -1762,11 +1561,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                           , resources = 1, tolerance = 1))
                , "`mat.PFG.soil.tol$resources` must be either `Low`, `Medium` or `High`"
@@ -1776,11 +1570,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                           , resources = NA, tolerance = 1))
                , "`mat.PFG.soil.tol$resources` must be either `Low`, `Medium` or `High`"
@@ -1790,11 +1579,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                           , resources = "", tolerance = 1))
                , "`mat.PFG.soil.tol$resources` must be either `Low`, `Medium` or `High`"
@@ -1807,11 +1591,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                           , resources = "Low", tolerance = c(NA, 1)))
                , "`mat.PFG.soil.tol$tolerance` must not contain NA values", fixed = TRUE)
@@ -1822,11 +1601,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                           , resources = "Low", tolerance = -1))
                , "`mat.PFG.soil.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
@@ -1836,11 +1610,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                           , resources = "Low", tolerance = 1.5))
                , "`mat.PFG.soil.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
@@ -1852,11 +1621,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, strategy_tol = 1))
                , "`mat.PFG.soil.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
@@ -1865,11 +1629,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, strategy_tol = NA))
                , "`mat.PFG.soil.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
@@ -1878,14 +1637,1470 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.soil
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
                                                                       , maturity = 1, longevity = 1)
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
-                                          , mat.PFG.light.tol = data.frame(PFG = 1, strategy_tol = "pioneer")
-                                          , mat.PFG.soil = data.frame(PFG = 1
-                                                                      , strategy_ag = "indifferent"
-                                                                      , strategy_contrib = "ubiquist")
                                           , mat.PFG.soil.tol = data.frame(PFG = 1, strategy_tol = factor("a")))
                , "`mat.PFG.soil.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
 })
 
 
+
+## INPUTS
+test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.disp", {
+  if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
+  PRE_FATE.skeletonDirectory()
+  
+  ## TEST mat.PFG.disp : data.frame
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = "")
+               , "`mat.PFG.disp` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = 1)
+               , "`mat.PFG.disp` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = factor(1))
+               , "`mat.PFG.disp` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = matrix(1))
+               , "`mat.PFG.disp` must be a data.frame")
+  
+  ## TEST mat.PFG.disp :correct number of rows and columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame())
+               , "`mat.PFG.disp` does not have the appropriate number of rows (>0) or columns (PFG, d50, d99, ldd)"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(1))
+               , "`mat.PFG.disp` does not have the appropriate number of rows (>0) or columns (PFG, d50, d99, ldd)"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.disp : correct names of columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(1, 2, 3, 4))
+               , "Column names of `mat.PFG.disp` must be `PFG`, `d50`, `d99` and `ldd`")
+  
+  ## TEST mat.PFG.disp$PFG : different values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = c(2,2), d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$PFG` must contain different values", fixed = TRUE)
+  
+  ## TEST mat.PFG.disp$PFG : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = "", d50 = NA, d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$PFG` must contain a character value of length > 0", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.disp$d50 : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = NA, d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$d50` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = "a", d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$d50` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = factor(1), d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$d50` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = factor("a"), d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$d50` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.disp$d50 : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = c(1,2), d50 = c(2,NA), d99 = 3, ldd = 4))
+               , "`mat.PFG.disp$d50` must not contain NA values", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.disp$d99 : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = NA, ldd = 4))
+               , "`mat.PFG.disp$d99` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = "a", ldd = 4))
+               , "`mat.PFG.disp$d99` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = factor(1), ldd = 4))
+               , "`mat.PFG.disp$d99` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = factor("a"), ldd = 4))
+               , "`mat.PFG.disp$d99` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.disp$d99 : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = c(1,2), d50 = 2, d99 = c(3,NA), ldd = 4))
+               , "`mat.PFG.disp$d99` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.disp$ldd : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = 3, ldd = NA))
+               , "`mat.PFG.disp$ldd` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = 3, ldd = "a"))
+               , "`mat.PFG.disp$ldd` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = 3, ldd = factor(1)))
+               , "`mat.PFG.disp$ldd` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = 1, d50 = 2, d99 = 3, ldd = factor("a")))
+               , "`mat.PFG.disp$ldd` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.disp$ldd : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.disp = data.frame(PFG = c(1,2), d50 = 2, d99 = 3, ldd = c(4,NA)))
+               , "`mat.PFG.disp$ldd` must not contain NA values", fixed = TRUE)
+})
+
+
+
+## INPUTS
+test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.dist", {
+  if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
+  PRE_FATE.skeletonDirectory()
+  
+  ## TEST mat.PFG.dist : data.frame
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = "")
+               , "`mat.PFG.dist` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = 1)
+               , "`mat.PFG.dist` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = factor(1))
+               , "`mat.PFG.dist` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = matrix(1))
+               , "`mat.PFG.dist` must be a data.frame")
+  
+  ## TEST mat.PFG.dist : correct number of rows and columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame())
+               , "`mat.PFG.dist` does not have the appropriate number of rows (>0) or columns (PFG, type, maturity, longevity, age_above_150cm)"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(1))
+               , "`mat.PFG.dist` does not have the appropriate number of rows (>0) or columns (PFG, type, maturity, longevity, age_above_150cm)"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(1,2,3,4))
+               , "`mat.PFG.dist` does not have the appropriate number of rows (>0) or columns (PFG, type, maturity, longevity, age_above_150cm)"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.dist : correct names of columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(1,2,3,4,5))
+               , "Column names of `mat.PFG.dist` must be `PFG`, `type`, `maturity`, `longevity` and `age_above_150cm`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist$PFG : different values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = c(2,2), maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$PFG` must contain different values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = NA, type = 2, maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$PFG` must contain different values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = c(1,NA), type = c(2,2), maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$PFG` must contain different values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$PFG : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = "", type = 1, maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$PFG` must contain a character value of length > 0", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$type : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = NA, maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$type` must be either `H`, `C` or `P`", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = 2, maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$type` must be either `H`, `C` or `P`", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "", maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$type` must be either `H`, `C` or `P`", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = c(1,2), type = c("H",NA), maturity = 1
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$type` must be either `H`, `C` or `P`", fixed = TRUE)
+  
+  
+  
+  ## TEST mat.PFG.dist$maturity : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = NA
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$maturity` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = "a"
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$maturity` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = factor(1)
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$maturity` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$maturity : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = c(1,2), type = "H", maturity = c(3,NA)
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$maturity` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$maturity : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = c(1,2), type = "H", maturity = 2
+                                                                      , longevity = 1, age_above_150cm = 1))
+               , "`mat.PFG.dist$maturity` must contain values equal or inferior to `mat.PFG.dist$longevity`"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$longevity : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = 1
+                                                                      , longevity = NA, age_above_150cm = 1))
+               , "`mat.PFG.dist$longevity` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = 1
+                                                                      , longevity = "a", age_above_150cm = 1))
+               , "`mat.PFG.dist$longevity` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = 1
+                                                                      , longevity = factor(1), age_above_150cm = 1))
+               , "`mat.PFG.dist$longevity` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$longevity : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = c(1,2), type = "H", maturity = 1
+                                                                      , longevity = c(3,NA), age_above_150cm = 1))
+               , "`mat.PFG.dist$longevity` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$age_above_150cm : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = 1
+                                                                      , longevity = 1, age_above_150cm = NA))
+               , "`mat.PFG.dist$age_above_150cm` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = 1
+                                                                      , longevity = 1, age_above_150cm = "a"))
+               , "`mat.PFG.dist$age_above_150cm` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = 1, type = "H", maturity = 1
+                                                                      , longevity = 1, age_above_150cm = factor(1)))
+               , "`mat.PFG.dist$age_above_150cm` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist$age_above_150cm : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = c(1,2), type = "H", maturity = 1
+                                                                      , longevity = 1, age_above_150cm = c(3,NA)))
+               , "`mat.PFG.dist$age_above_150cm` must not contain NA values", fixed = TRUE)
+  
+})
+
+## INPUTS
+test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.dist.tol", {
+  
+  ## TEST mat.PFG.dist.tol : data.frame
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = "")
+               , "`mat.PFG.dist.tol` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = 1)
+               , "`mat.PFG.dist.tol` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = matrix(1))
+               , "`mat.PFG.dist.tol` must be a data.frame")
+  
+  
+  ## TEST mat.PFG.dist.tol : correct number of rows and columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame())
+               , "`mat.PFG.dist.tol` does not have the appropriate number of rows (>0) or columns (nameDist, PFG, responseStage, (breakAge), (resproutAge), killedIndiv, resproutIndiv, (strategy_tol))"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(1))
+               , "`mat.PFG.dist.tol` does not have the appropriate number of rows (>0) or columns (nameDist, PFG, responseStage, (breakAge), (resproutAge), killedIndiv, resproutIndiv, (strategy_tol))"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(1,2,3,4,5,6,7,8))
+               , "`mat.PFG.dist.tol` does not have the appropriate number of rows (>0) or columns (nameDist, PFG, responseStage, (breakAge), (resproutAge), killedIndiv, resproutIndiv, (strategy_tol))"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol : correct names of columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(1,2,3))
+               , "Column names of `mat.PFG.dist.tol` must be `nameDist`, `PFG`, `responseStage`, `(breakAge)`, `(resproutAge)`, `killedIndiv`, `resproutIndiv` and `(strategy_tol)`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(1,2,3,4,5))
+               , "Column names of `mat.PFG.dist.tol` must be `nameDist`, `PFG`, `responseStage`, `(breakAge)`, `(resproutAge)`, `killedIndiv`, `resproutIndiv` and `(strategy_tol)`"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$nameDist : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = "", PFG = 1, strategy_tol = 1))
+               , "`mat.PFG.dist.tol$nameDist` must contain a character value of length > 0", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$PFG : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "", strategy_tol = 1))
+               , "`mat.PFG.dist.tol$PFG` must contain a character value of length > 0", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = NA, strategy_tol = 1))
+               , "`mat.PFG.dist.tol$PFG` must contain a character value of length > 0", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$PFG : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = "B", type = "H", maturity = 1
+                                                                      , longevity = 1 , age_above_150cm = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", strategy_tol = 1))
+               , "`mat.PFG.dist.tol$PFG` must be either `H`, `C`, `P` or `B`", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$breakAge : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = NA, resproutAge = 1
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$breakAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = "a", resproutAge = 1
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$breakAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = factor(1), resproutAge = 1
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$breakAge` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$breakAge : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = c(1,NA), resproutAge = 1
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$breakAge` must not contain NA values", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$resproutAge : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = 1, resproutAge = NA
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$resproutAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = 1, resproutAge = "a"
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$resproutAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = 1, resproutAge = factor(1)
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$resproutAge` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$resproutAge : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , breakAge = 1, resproutAge = c(1,NA)
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$resproutAge` must not contain NA values", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$responseStage : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = c(1,NA)
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$responseStage` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$responseStage : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1.5
+                                                                          , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$responseStage` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$killedIndiv : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , killedIndiv = c(1,NA), resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$killedIndiv` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$killedIndiv : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , killedIndiv = -1, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , killedIndiv = 1.5, resproutIndiv = 1))
+               , "`mat.PFG.dist.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$resproutIndiv : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , killedIndiv = 1, resproutIndiv = c(1,NA)))
+               , "`mat.PFG.dist.tol$resproutIndiv` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.dist.tol$resproutIndiv : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , killedIndiv = 1, resproutIndiv = -1))
+               , "`mat.PFG.dist.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
+                                                                          , killedIndiv = 1, resproutIndiv = 1.5))
+               , "`mat.PFG.dist.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.dist.tol$strategy_tol : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", strategy_tol = 1))
+               , "`mat.PFG.dist.tol$strategy_tol` must be either `indifferent`, `mowing_herbs`, `mowing_trees`, `grazing_herbs_1`, `grazing_herbs_2`, `grazing_herbs_3`, `grazing_trees_1`, `grazing_trees_2` or `grazing_trees_3`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist.tol = data.frame(nameDist = 1, PFG = "A", strategy_tol = NA))
+               , "`mat.PFG.dist.tol$strategy_tol` must be either `indifferent`, `mowing_herbs`, `mowing_trees`, `grazing_herbs_1`, `grazing_herbs_2`, `grazing_herbs_3`, `grazing_trees_1`, `grazing_trees_2` or `grazing_trees_3`"
+               , fixed = TRUE)
+  
+})
+
+
+
+## INPUTS
+test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.drought", {
+  
+  ## TEST mat.PFG.drought : data.frame
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = "")
+               , "`mat.PFG.drought` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = 1)
+               , "`mat.PFG.drought` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = matrix(1))
+               , "`mat.PFG.drought` must be a data.frame")
+  
+  
+  ## TEST mat.PFG.drought : correct number of rows and columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame())
+               , "`mat.PFG.drought` does not have the appropriate number of rows (>0) or columns (PFG, threshold_moderate, threshold_severe, counter_recovery, counter_sens, counter_cum, (strategy_drou))"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(1))
+               , "`mat.PFG.drought` does not have the appropriate number of rows (>0) or columns (PFG, threshold_moderate, threshold_severe, counter_recovery, counter_sens, counter_cum, (strategy_drou))"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(1,2,3,4,5,6,7,8))
+               , "`mat.PFG.drought` does not have the appropriate number of rows (>0) or columns (PFG, threshold_moderate, threshold_severe, counter_recovery, counter_sens, counter_cum, (strategy_drou))"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.drought : correct names of columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(1,2,3,4))
+               , "Column names of `mat.PFG.drought` must be `PFG`, `threshold_moderate`, `threshold_severe`, `counter_recovery`, `counter_sens`, `counter_cum` and `(strategy_drou)`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(1,2,3,4,5,6))
+               , "Column names of `mat.PFG.drought` must be `PFG`, `threshold_moderate`, `threshold_severe`, `counter_recovery`, `counter_sens`, `counter_cum` and `(strategy_drou)`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought$PFG : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = ""
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$PFG` must contain a character value of length > 0", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = NA
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$PFG` must contain a character value of length > 0", fixed = TRUE)
+  
+  
+  
+  ## TEST mat.PFG.drought$threshold_moderate : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = NA
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_moderate` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = "a"
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_moderate` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = factor(1)
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_moderate` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$threshold_moderate : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = c(1,NA)
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_moderate` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$threshold_severe : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = NA
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_severe` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = "a"
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_severe` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = factor(1)
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_severe` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$threshold_severe : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = c(1,NA)
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_severe` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$threshold_severe : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 2
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$threshold_severe` must contain values equal or inferior to `mat.PFG.drought$threshold_moderate`"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_recovery : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = NA
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_recovery` must not contain NA values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = c(1,NA)
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_recovery` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_recovery : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = "a"
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_recovery` must be an integer > 0", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = factor(1)
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_recovery` must be an integer > 0", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_sens : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = NA
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_sens` must not contain NA values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = c(1,NA)
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_sens` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_sens : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = "a"
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_sens` must be an integer > 0", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = factor(1)
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_sens` must be an integer > 0", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_cum : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = NA))
+               , "`mat.PFG.drought$counter_cum` must not contain NA values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = c(1,NA)))
+               , "`mat.PFG.drought$counter_cum` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_cum : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = "a"))
+               , "`mat.PFG.drought$counter_cum` must be an integer > 0", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = 1
+                                                                         , counter_cum = factor(1)))
+               , "`mat.PFG.drought$counter_cum` must be an integer > 0", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$counter_sens : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , counter_recovery = 1
+                                                                         , counter_sens = 2
+                                                                         , counter_cum = 1))
+               , "`mat.PFG.drought$counter_sens` must contain values equal or inferior to `mat.PFG.drought$counter_cum`"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.drought$strategy_drou : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = 1))
+               , "`mat.PFG.drought$strategy_drou` must be either `herbs`, `chamaephytes` or `trees_shrubs`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought = data.frame(PFG = "A"
+                                                                         , threshold_moderate = 1
+                                                                         , threshold_severe = 1
+                                                                         , strategy_drou = NA))
+               , "`mat.PFG.drought$strategy_drou` must be either `herbs`, `chamaephytes` or `trees_shrubs`"
+               , fixed = TRUE)
+  
+})
+
+## INPUTS
+test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.drought.tol", {
+  
+  ## TEST mat.PFG.drought.tol : data.frame
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = "")
+               , "`mat.PFG.drought.tol` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = 1)
+               , "`mat.PFG.drought.tol` must be a data.frame")
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = matrix(1))
+               , "`mat.PFG.drought.tol` must be a data.frame")
+  
+  
+  ## TEST mat.PFG.drought.tol : correct number of rows and columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame())
+               , "`mat.PFG.drought.tol` does not have the appropriate number of rows (>0) or columns (nameDist, PFG, responseStage, (breakAge), (resproutAge), killedIndiv, resproutIndiv, (strategy_tol))"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(1))
+               , "`mat.PFG.drought.tol` does not have the appropriate number of rows (>0) or columns (nameDist, PFG, responseStage, (breakAge), (resproutAge), killedIndiv, resproutIndiv, (strategy_tol))"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(1,2,3,4,5,6,7,8))
+               , "`mat.PFG.drought.tol` does not have the appropriate number of rows (>0) or columns (nameDist, PFG, responseStage, (breakAge), (resproutAge), killedIndiv, resproutIndiv, (strategy_tol))"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol : correct names of columns
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(1,2,3))
+               , "Column names of `mat.PFG.drought.tol` must be `nameDist`, `PFG`, `responseStage`, `(breakAge)`, `(resproutAge)`, `killedIndiv`, `resproutIndiv` and `(strategy_tol)`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(1,2,3,4,5))
+               , "Column names of `mat.PFG.drought.tol` must be `nameDist`, `PFG`, `responseStage`, `(breakAge)`, `(resproutAge)`, `killedIndiv`, `resproutIndiv` and `(strategy_tol)`"
+               , fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$nameDist : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "", PFG = 1, strategy_tol = 1))
+               , "`mat.PFG.drought.tol$nameDist` must be either `immediate` or `delayed`", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "first", PFG = 1, strategy_tol = 1))
+               , "`mat.PFG.drought.tol$nameDist` must be either `immediate` or `delayed`", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$PFG : length > 0
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "", strategy_tol = 1))
+               , "`mat.PFG.drought.tol$PFG` must contain a character value of length > 0", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = NA, strategy_tol = 1))
+               , "`mat.PFG.drought.tol$PFG` must contain a character value of length > 0", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$PFG : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.dist = data.frame(PFG = "B", type = "H", maturity = 1
+                                                                      , longevity = 1 , age_above_150cm = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", strategy_tol = 1))
+               , "`mat.PFG.drought.tol$PFG` must be either `H`, `C`, `P` or `B`", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$breakAge : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = NA, resproutAge = 1
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$breakAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = "a", resproutAge = 1
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$breakAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = factor(1), resproutAge = 1
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$breakAge` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$breakAge : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          ,  mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                              , breakAge = c(1,NA), resproutAge = 1
+                                                                              , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$breakAge` must not contain NA values", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$resproutAge : numeric values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = 1, resproutAge = NA
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$resproutAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = 1, resproutAge = "a"
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$resproutAge` must contain numeric values", fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = 1, resproutAge = factor(1)
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$resproutAge` must contain numeric values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$resproutAge : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , breakAge = 1, resproutAge = c(1,NA)
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$resproutAge` must not contain NA values", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$responseStage : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = c(1,NA)
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$responseStage` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$responseStage : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A"
+                                                                             , responseStage = 1.5
+                                                                             , killedIndiv = 1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$responseStage` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$killedIndiv : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , killedIndiv = c(1,NA), resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$killedIndiv` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$killedIndiv : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , killedIndiv = -1, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , killedIndiv = 1.5, resproutIndiv = 1))
+               , "`mat.PFG.drought.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$resproutIndiv : no NA values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , killedIndiv = 1, resproutIndiv = c(1,NA)))
+               , "`mat.PFG.drought.tol$resproutIndiv` must not contain NA values", fixed = TRUE)
+  
+  ## TEST mat.PFG.drought.tol$resproutIndiv : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , killedIndiv = 1, resproutIndiv = -1))
+               , "`mat.PFG.drought.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
+                                                                             , killedIndiv = 1, resproutIndiv = 1.5))
+               , "`mat.PFG.drought.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.drought.tol$strategy_tol : correct values
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", strategy_tol = 1))
+               , "`mat.PFG.drought.tol$strategy_tol` must be either `herbs_cham_1`, `herbs_cham_2`, `herbs_cham_3`, `trees_1`, `trees_2` or `trees_3`"
+               , fixed = TRUE)
+  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
+                                          , name.simulation = "FATE_simulation"
+                                          , strata.limits = 1
+                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H", height = 1
+                                                                      , maturity = 1, longevity = 1)
+                                          , mat.PFG.drought.tol = data.frame(nameDist = "immediate", PFG = "A", strategy_tol = NA))
+               , "`mat.PFG.drought.tol$strategy_tol` must be either `herbs_cham_1`, `herbs_cham_2`, `herbs_cham_3`, `trees_1`, `trees_2` or `trees_3`"
+               , fixed = TRUE)
+  
+})

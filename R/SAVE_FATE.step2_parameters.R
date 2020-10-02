@@ -168,15 +168,15 @@ SAVE_FATE.step2_parameters = function(name.dataset
                                       , name.simulation = NA
                                       , strata.limits
                                       , mat.PFG.succ
-                                      , mat.PFG.light = NA
-                                      , mat.PFG.light.tol = NA
-                                      , mat.PFG.soil = NA
-                                      , mat.PFG.soil.tol = NA
-                                      , mat.PFG.disp = NA
-                                      , mat.PFG.dist = NA
-                                      , mat.PFG.dist.tol = NA
-                                      , mat.PFG.drought = NA
-                                      , mat.PFG.drought.tol = NA
+                                      , mat.PFG.light = NULL
+                                      , mat.PFG.light.tol = NULL
+                                      , mat.PFG.soil = NULL
+                                      , mat.PFG.soil.tol = NULL
+                                      , mat.PFG.disp = NULL
+                                      , mat.PFG.dist = NULL
+                                      , mat.PFG.dist.tol = NULL
+                                      , mat.PFG.drought = NULL
+                                      , mat.PFG.drought.tol = NULL
                                       , rasters = list("name.MASK" = NA
                                                        , "name.DIST" = NA
                                                        , "name.DROUGHT" = NA
@@ -359,63 +359,66 @@ SAVE_FATE.step2_parameters = function(name.dataset
     }
   }
   ## CHECK parameter mat.PFG.light
-  if (.testParam_notDf(mat.PFG.light))
+  if (!is.null(mat.PFG.light))
   {
-    .stopMessage_beDataframe("mat.PFG.light")
-  } else
-  {
-    if (nrow(mat.PFG.light) == 0 || !(ncol(mat.PFG.light) %in% c(2, 3, 4, 6)))
+    if (.testParam_notDf(mat.PFG.light))
     {
-      .stopMessage_numRowCol("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
-                                                , "(active_germ_high)", "(strategy_ag)", "(light_need)"))
+      .stopMessage_beDataframe("mat.PFG.light")
     } else
     {
-      notCorrect = switch(as.character(ncol(mat.PFG.light))
-                          , "2" = (.testParam_notColnames(mat.PFG.light, c("PFG", "type")) &&
-                                     .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag")))
-                          , "3" = .testParam_notColnames(mat.PFG.light, c("PFG", "type", "light_need"))
-                          , "4" = (.testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
-                                                                           , "active_germ_medium"
-                                                                           , "active_germ_high")) &&
-                                     .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag"
-                                                                             , "type", "light_need")))
-                          , "6" = .testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
-                                                                          , "active_germ_medium"
-                                                                          , "active_germ_high"
-                                                                          , "type", "light_need"))
-                          , TRUE)
-      if (notCorrect){
-        .stopMessage_columnNames("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
-                                                    , "(active_germ_high)", "(strategy_ag)", "(light_need)"))
+      if (nrow(mat.PFG.light) == 0 || !(ncol(mat.PFG.light) %in% c(2, 3, 4, 6)))
+      {
+        .stopMessage_numRowCol("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
+                                                  , "(active_germ_high)", "(strategy_ag)", "(light_need)"))
+      } else
+      {
+        notCorrect = switch(as.character(ncol(mat.PFG.light))
+                            , "2" = (.testParam_notColnames(mat.PFG.light, c("PFG", "type")) &&
+                                       .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag")))
+                            , "3" = .testParam_notColnames(mat.PFG.light, c("PFG", "type", "light_need"))
+                            , "4" = (.testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
+                                                                             , "active_germ_medium"
+                                                                             , "active_germ_high")) &&
+                                       .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag"
+                                                                               , "type", "light_need")))
+                            , "6" = .testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
+                                                                            , "active_germ_medium"
+                                                                            , "active_germ_high"
+                                                                            , "type", "light_need"))
+                            , TRUE)
+        if (notCorrect){
+          .stopMessage_columnNames("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
+                                                      , "(active_germ_high)", "(strategy_ag)", "(light_need)"))
+        }
       }
-    }
-    mat.PFG.light$PFG = as.character(mat.PFG.light$PFG)
-    .testParam_samevalues.m("mat.PFG.light$PFG", mat.PFG.light$PFG)
-    .testParam_notChar.m("mat.PFG.light$PFG", mat.PFG.light$PFG)
-    if (sum(colnames(mat.PFG.light) == "type") == 1)
-    {
-      mat.PFG.light$type = as.character(mat.PFG.light$type)
-      .testParam_notInValues.m("mat.PFG.light$type", mat.PFG.light$type, c("H", "C", "P"))
-    }
-    if (sum(colnames(mat.PFG.light) == "light_need") == 1)
-    {
-      .testParam_NAvalues.m("mat.PFG.light$light_need", mat.PFG.light$light_need)
-      .testParam_notInValues.m("mat.PFG.light$light_need", mat.PFG.light$light_need, 0:5)
-    }
-    if (sum(colnames(mat.PFG.light) == "active_germ_low") == 1)
-    {
-      .testParam_NAvalues.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low)
-      .testParam_notInValues.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low, 0:10)
-      .testParam_NAvalues.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium)
-      .testParam_notInValues.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium, 0:10)
-      .testParam_NAvalues.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high)
-      .testParam_notInValues.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high, 0:10)
-    }
-    if (sum(colnames(mat.PFG.light) == "strategy_ag") == 1)
-    {
-      mat.PFG.light$strategy_ag = as.character(mat.PFG.light$strategy_ag)
-      .testParam_notInValues.m("mat.PFG.light$strategy_ag", mat.PFG.light$strategy_ag
-                               , c("light_lover", "indifferent", "shade_lover"))
+      mat.PFG.light$PFG = as.character(mat.PFG.light$PFG)
+      .testParam_samevalues.m("mat.PFG.light$PFG", mat.PFG.light$PFG)
+      .testParam_notChar.m("mat.PFG.light$PFG", mat.PFG.light$PFG)
+      if (sum(colnames(mat.PFG.light) == "type") == 1)
+      {
+        mat.PFG.light$type = as.character(mat.PFG.light$type)
+        .testParam_notInValues.m("mat.PFG.light$type", mat.PFG.light$type, c("H", "C", "P"))
+      }
+      if (sum(colnames(mat.PFG.light) == "light_need") == 1)
+      {
+        .testParam_NAvalues.m("mat.PFG.light$light_need", mat.PFG.light$light_need)
+        .testParam_notInValues.m("mat.PFG.light$light_need", mat.PFG.light$light_need, 0:5)
+      }
+      if (sum(colnames(mat.PFG.light) == "active_germ_low") == 1)
+      {
+        .testParam_NAvalues.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low)
+        .testParam_notInValues.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low, 0:10)
+        .testParam_NAvalues.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium)
+        .testParam_notInValues.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium, 0:10)
+        .testParam_NAvalues.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high)
+        .testParam_notInValues.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high, 0:10)
+      }
+      if (sum(colnames(mat.PFG.light) == "strategy_ag") == 1)
+      {
+        mat.PFG.light$strategy_ag = as.character(mat.PFG.light$strategy_ag)
+        .testParam_notInValues.m("mat.PFG.light$strategy_ag", mat.PFG.light$strategy_ag
+                                 , c("light_lover", "indifferent", "shade_lover"))
+      }
     }
   }
   ## CHECK parameter mat.PFG.light.tol
@@ -457,85 +460,88 @@ SAVE_FATE.step2_parameters = function(name.dataset
     }
   }
   ## CHECK parameter mat.PFG.soil
-  if (.testParam_notDf(mat.PFG.soil))
+  if (!is.null(mat.PFG.soil))
   {
-    .stopMessage_beDataframe("mat.PFG.soil")
-  } else
-  {
-    if (nrow(mat.PFG.soil) == 0 || !(ncol(mat.PFG.soil) %in% c(3, 5, 7)))
+    if (.testParam_notDf(mat.PFG.soil))
     {
-      .stopMessage_numRowCol("mat.PFG.soil", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
-                                               , "(active_germ_high)", "(strategy_ag)", "soil_contrib"
-                                               , "soil_tol_min", "soil_tol_max", "(strategy_contrib)"))
+      .stopMessage_beDataframe("mat.PFG.soil")
     } else
     {
-      notCorrect = switch(as.character(ncol(mat.PFG.soil))
-                          , "3" = (.testParam_notColnames(mat.PFG.soil, c("PFG", "type", "strategy_contrib")) &&
-                                     .testParam_notColnames(mat.PFG.soil, c("PFG", "strategy_ag", "strategy_contrib")))
-                          , "5" = (.testParam_notColnames(mat.PFG.soil, c("PFG", "type", "soil_contrib"
-                                                                          , "soil_tol_min", "soil_tol_max")) &&
-                                     .testParam_notColnames(mat.PFG.soil, c("PFG", "active_germ_low"
-                                                                            , "active_germ_medium"
-                                                                            , "active_germ_high"
-                                                                            , "strategy_contrib")) &&
-                                     .testParam_notColnames(mat.PFG.soil, c("PFG", "strategy_ag", "soil_contrib"
-                                                                            , "soil_tol_min", "soil_tol_max")))
-                          , "7" = .testParam_notColnames(mat.PFG.soil, c("PFG", "active_germ_low"
-                                                                         , "active_germ_medium"
-                                                                         , "active_germ_high", "soil_contrib"
-                                                                         , "soil_tol_min", "soil_tol_max"))
-                          , TRUE)
-      if (notCorrect){
-        .stopMessage_columnNames("mat.PFG.soil", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
-                                                   , "(active_germ_high)", "(strategy_ag)", "soil_contrib"
-                                                   , "soil_tol_min", "soil_tol_max", "(strategy_contrib)"))
+      if (nrow(mat.PFG.soil) == 0 || !(ncol(mat.PFG.soil) %in% c(3, 5, 7)))
+      {
+        .stopMessage_numRowCol("mat.PFG.soil", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
+                                                 , "(active_germ_high)", "(strategy_ag)", "soil_contrib"
+                                                 , "soil_tol_min", "soil_tol_max", "(strategy_contrib)"))
+      } else
+      {
+        notCorrect = switch(as.character(ncol(mat.PFG.soil))
+                            , "3" = (.testParam_notColnames(mat.PFG.soil, c("PFG", "type", "strategy_contrib")) &&
+                                       .testParam_notColnames(mat.PFG.soil, c("PFG", "strategy_ag", "strategy_contrib")))
+                            , "5" = (.testParam_notColnames(mat.PFG.soil, c("PFG", "type", "soil_contrib"
+                                                                            , "soil_tol_min", "soil_tol_max")) &&
+                                       .testParam_notColnames(mat.PFG.soil, c("PFG", "active_germ_low"
+                                                                              , "active_germ_medium"
+                                                                              , "active_germ_high"
+                                                                              , "strategy_contrib")) &&
+                                       .testParam_notColnames(mat.PFG.soil, c("PFG", "strategy_ag", "soil_contrib"
+                                                                              , "soil_tol_min", "soil_tol_max")))
+                            , "7" = .testParam_notColnames(mat.PFG.soil, c("PFG", "active_germ_low"
+                                                                           , "active_germ_medium"
+                                                                           , "active_germ_high", "soil_contrib"
+                                                                           , "soil_tol_min", "soil_tol_max"))
+                            , TRUE)
+        if (notCorrect){
+          .stopMessage_columnNames("mat.PFG.soil", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
+                                                     , "(active_germ_high)", "(strategy_ag)", "soil_contrib"
+                                                     , "soil_tol_min", "soil_tol_max", "(strategy_contrib)"))
+        }
       }
-    }
-    mat.PFG.soil$PFG = as.character(mat.PFG.soil$PFG)
-    .testParam_samevalues.m("mat.PFG.soil$PFG", mat.PFG.soil$PFG)
-    .testParam_notChar.m("mat.PFG.soil$PFG", mat.PFG.soil$PFG)
-    if (sum(colnames(mat.PFG.soil) == "type") == 1)
-    {
-      mat.PFG.soil$type = as.character(mat.PFG.soil$type)
-      .testParam_notInValues.m("mat.PFG.soil$type", mat.PFG.soil$type, c("H", "C", "P"))
-    }
-    if (sum(colnames(mat.PFG.soil) == "active_germ_low") == 1)
-    {
-      .testParam_NAvalues.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low)
-      .testParam_notInValues.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low, 0:10)
-      .testParam_NAvalues.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium)
-      .testParam_notInValues.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium, 0:10)
-      .testParam_NAvalues.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high)
-      .testParam_notInValues.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high, 0:10)
-    }
-    if (sum(colnames(mat.PFG.soil) == "strategy_ag") == 1)
-    {
-      mat.PFG.soil$strategy_ag = as.character(mat.PFG.soil$strategy_ag)
-      .testParam_notInValues.m("mat.PFG.soil$strategy_ag", mat.PFG.soil$strategy_ag
-                               , c("poor_lover", "indifferent", "rich_lover"))
-    }
-    if (sum(colnames(mat.PFG.soil) == "soil_contrib") == 1)
-    {
-      .testParam_notNum.m("mat.PFG.soil$soil_contrib", mat.PFG.soil$soil_contrib)
-      .testParam_NAvalues.m("mat.PFG.soil$soil_contrib", mat.PFG.soil$soil_contrib)
-      .testParam_notNum.m("mat.PFG.soil$soil_tol_min", mat.PFG.soil$soil_tol_min)
-      .testParam_NAvalues.m("mat.PFG.soil$soil_tol_min", mat.PFG.soil$soil_tol_min)
-      .testParam_notNum.m("mat.PFG.soil$soil_tol_max", mat.PFG.soil$soil_tol_max)
-      .testParam_NAvalues.m("mat.PFG.soil$soil_tol_max", mat.PFG.soil$soil_tol_max)
-      if (sum(mat.PFG.soil$soil_tol_min > mat.PFG.soil$soil_contrib) > 0){
-        stop(paste0("Wrong type of data!\n `mat.PFG.soil$soil_tol_min` must contain "
-                    , "values equal or inferior to `mat.PFG.soil$soil_contrib`"))
+      mat.PFG.soil$PFG = as.character(mat.PFG.soil$PFG)
+      .testParam_samevalues.m("mat.PFG.soil$PFG", mat.PFG.soil$PFG)
+      .testParam_notChar.m("mat.PFG.soil$PFG", mat.PFG.soil$PFG)
+      if (sum(colnames(mat.PFG.soil) == "type") == 1)
+      {
+        mat.PFG.soil$type = as.character(mat.PFG.soil$type)
+        .testParam_notInValues.m("mat.PFG.soil$type", mat.PFG.soil$type, c("H", "C", "P"))
       }
-      if (sum(mat.PFG.soil$soil_tol_max < mat.PFG.soil$soil_contrib) > 0){
-        stop(paste0("Wrong type of data!\n `mat.PFG.soil$soil_tol_max` must contain "
-                    , "values equal or superior to `mat.PFG.soil$soil_contrib`"))
+      if (sum(colnames(mat.PFG.soil) == "active_germ_low") == 1)
+      {
+        .testParam_NAvalues.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low)
+        .testParam_notInValues.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low, 0:10)
+        .testParam_NAvalues.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium)
+        .testParam_notInValues.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium, 0:10)
+        .testParam_NAvalues.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high)
+        .testParam_notInValues.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high, 0:10)
       }
-    }
-    if (sum(colnames(mat.PFG.soil) == "strategy_contrib") == 1)
-    {
-      mat.PFG.soil$strategy_contrib = as.character(mat.PFG.soil$strategy_contrib)
-      .testParam_notInValues.m("mat.PFG.soil$strategy_contrib", mat.PFG.soil$strategy_contrib
-                               , c("full_light", "pioneer", "ubiquist", "semi_shade", "undergrowth"))
+      if (sum(colnames(mat.PFG.soil) == "strategy_ag") == 1)
+      {
+        mat.PFG.soil$strategy_ag = as.character(mat.PFG.soil$strategy_ag)
+        .testParam_notInValues.m("mat.PFG.soil$strategy_ag", mat.PFG.soil$strategy_ag
+                                 , c("poor_lover", "indifferent", "rich_lover"))
+      }
+      if (sum(colnames(mat.PFG.soil) == "soil_contrib") == 1)
+      {
+        .testParam_notNum.m("mat.PFG.soil$soil_contrib", mat.PFG.soil$soil_contrib)
+        .testParam_NAvalues.m("mat.PFG.soil$soil_contrib", mat.PFG.soil$soil_contrib)
+        .testParam_notNum.m("mat.PFG.soil$soil_tol_min", mat.PFG.soil$soil_tol_min)
+        .testParam_NAvalues.m("mat.PFG.soil$soil_tol_min", mat.PFG.soil$soil_tol_min)
+        .testParam_notNum.m("mat.PFG.soil$soil_tol_max", mat.PFG.soil$soil_tol_max)
+        .testParam_NAvalues.m("mat.PFG.soil$soil_tol_max", mat.PFG.soil$soil_tol_max)
+        if (sum(mat.PFG.soil$soil_tol_min > mat.PFG.soil$soil_contrib) > 0){
+          stop(paste0("Wrong type of data!\n `mat.PFG.soil$soil_tol_min` must contain "
+                      , "values equal or inferior to `mat.PFG.soil$soil_contrib`"))
+        }
+        if (sum(mat.PFG.soil$soil_tol_max < mat.PFG.soil$soil_contrib) > 0){
+          stop(paste0("Wrong type of data!\n `mat.PFG.soil$soil_tol_max` must contain "
+                      , "values equal or superior to `mat.PFG.soil$soil_contrib`"))
+        }
+      }
+      if (sum(colnames(mat.PFG.soil) == "strategy_contrib") == 1)
+      {
+        mat.PFG.soil$strategy_contrib = as.character(mat.PFG.soil$strategy_contrib)
+        .testParam_notInValues.m("mat.PFG.soil$strategy_contrib", mat.PFG.soil$strategy_contrib
+                                 , c("full_light", "pioneer", "ubiquist", "semi_shade", "undergrowth"))
+      }
     }
   }
   ## CHECK parameter mat.PFG.soil.tol
@@ -577,27 +583,30 @@ SAVE_FATE.step2_parameters = function(name.dataset
     }
   }
   ## CHECK parameter mat.PFG.disp
-  if (.testParam_notDf(mat.PFG.disp))
+  if (!is.null(mat.PFG.disp))
   {
-    .stopMessage_beDataframe("mat.PFG.disp")
-  } else
-  {
-    if (nrow(mat.PFG.disp) == 0 || ncol(mat.PFG.disp) != 4)
+    if (.testParam_notDf(mat.PFG.disp))
     {
-      .stopMessage_numRowCol("mat.PFG.disp", c("PFG", "d50", "d99", "ldd"))
-    } else if (.testParam_notColnames(mat.PFG.disp, c("PFG", "d50", "d99", "ldd")))
+      .stopMessage_beDataframe("mat.PFG.disp")
+    } else
     {
-      .stopMessage_columnNames("mat.PFG.disp", c("PFG", "d50", "d99", "ldd"))
+      if (nrow(mat.PFG.disp) == 0 || ncol(mat.PFG.disp) != 4)
+      {
+        .stopMessage_numRowCol("mat.PFG.disp", c("PFG", "d50", "d99", "ldd"))
+      } else if (.testParam_notColnames(mat.PFG.disp, c("PFG", "d50", "d99", "ldd")))
+      {
+        .stopMessage_columnNames("mat.PFG.disp", c("PFG", "d50", "d99", "ldd"))
+      }
+      mat.PFG.disp$PFG = as.character(mat.PFG.disp$PFG)
+      .testParam_samevalues.m("mat.PFG.disp$PFG", mat.PFG.disp$PFG)
+      .testParam_notChar.m("mat.PFG.disp$PFG", mat.PFG.disp$PFG)
+      .testParam_notNum.m("mat.PFG.disp$d50", mat.PFG.disp$d50)
+      .testParam_NAvalues.m("mat.PFG.disp$d50", mat.PFG.disp$d50)
+      .testParam_notNum.m("mat.PFG.disp$d99", mat.PFG.disp$d99)
+      .testParam_NAvalues.m("mat.PFG.disp$d99", mat.PFG.disp$d99)
+      .testParam_notNum.m("mat.PFG.disp$ldd", mat.PFG.disp$ldd)
+      .testParam_NAvalues.m("mat.PFG.disp$ldd", mat.PFG.disp$ldd)
     }
-    mat.PFG.disp$PFG = as.character(mat.PFG.disp$PFG)
-    .testParam_samevalues.m("mat.PFG.disp$PFG", mat.PFG.disp$PFG)
-    .testParam_notChar.m("mat.PFG.disp$PFG", mat.PFG.disp$PFG)
-    .testParam_notNum.m("mat.PFG.disp$d50", mat.PFG.disp$d50)
-    .testParam_NAvalues.m("mat.PFG.disp$d50", mat.PFG.disp$d50)
-    .testParam_notNum.m("mat.PFG.disp$d99", mat.PFG.disp$d99)
-    .testParam_NAvalues.m("mat.PFG.disp$d99", mat.PFG.disp$d99)
-    .testParam_notNum.m("mat.PFG.disp$ldd", mat.PFG.disp$ldd)
-    .testParam_NAvalues.m("mat.PFG.disp$ldd", mat.PFG.disp$ldd)
   }
   ## CHECK parameter mat.PFG.dist
   if (!is.null(mat.PFG.dist))
@@ -633,190 +642,199 @@ SAVE_FATE.step2_parameters = function(name.dataset
     }
   }
   ## CHECK parameter mat.PFG.dist.tol
-  if (.testParam_notDf(mat.PFG.dist.tol))
+  if (!is.null(mat.PFG.dist.tol))
   {
-    .stopMessage_beDataframe("mat.PFG.dist.tol")
-  } else
-  {
-    if (nrow(mat.PFG.dist.tol) == 0 || !(ncol(mat.PFG.dist.tol) %in% c(3, 5, 6, 7)))
+    if (.testParam_notDf(mat.PFG.dist.tol))
     {
-      .stopMessage_numRowCol("mat.PFG.dist.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
-                                                   , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
+      .stopMessage_beDataframe("mat.PFG.dist.tol")
     } else
     {
-      notCorrect = switch(as.character(ncol(mat.PFG.dist.tol))
-                          , "3" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "strategy_tol"))
-                          , "5" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "responseStage"
-                                                                             , "killedIndiv", "resproutIndiv"))
-                          , "6" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "responseStage"
-                                                                             , "breakAge", "resproutAge"
-                                                                             , "strategy_tol"))
-                          , "7" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "responseStage"
-                                                                             , "breakAge", "resproutAge"
-                                                                             , "killedIndiv", "resproutIndiv"))
-                          , TRUE)
-      if (notCorrect){
-        .stopMessage_columnNames("mat.PFG.dist.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
-                                                       , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
-      }
-    }
-    mat.PFG.dist.tol$nameDist = as.character(mat.PFG.dist.tol$nameDist)
-    .testParam_notChar.m("mat.PFG.dist.tol$nameDist", mat.PFG.dist.tol$nameDist)
-    mat.PFG.dist.tol$PFG = as.character(mat.PFG.dist.tol$PFG)
-    .testParam_notChar.m("mat.PFG.dist.tol$PFG", mat.PFG.dist.tol$PFG)
-    if (!is.null(mat.PFG.dist))
-    {
-      .testParam_notInValues.m("mat.PFG.dist.tol$PFG", mat.PFG.dist.tol$PFG, c("H", "C", "P", mat.PFG.dist$PFG))
-    }
-    if (sum(colnames(mat.PFG.dist.tol) == "responseStage") == 1)
-    {
-      .testParam_NAvalues.m("mat.PFG.dist.tol$responseStage", mat.PFG.dist.tol$responseStage)
-      .testParam_notInValues.m("mat.PFG.dist.tol$responseStage", mat.PFG.dist.tol$responseStage, 0:10)
-      if (sum(colnames(mat.PFG.dist.tol) == "breakAge") == 1)
+      if (nrow(mat.PFG.dist.tol) == 0 || !(ncol(mat.PFG.dist.tol) %in% c(3, 5, 6, 7)))
       {
-        .testParam_notNum.m("mat.PFG.dist.tol$breakAge", mat.PFG.dist.tol$breakAge)
-        .testParam_NAvalues.m("mat.PFG.dist.tol$breakAge", mat.PFG.dist.tol$breakAge)
-        .testParam_notNum.m("mat.PFG.dist.tol$resproutAge", mat.PFG.dist.tol$resproutAge)
-        .testParam_NAvalues.m("mat.PFG.dist.tol$resproutAge", mat.PFG.dist.tol$resproutAge)
-      }
-      if (sum(colnames(mat.PFG.dist.tol) == "killedIndiv") == 1)
+        .stopMessage_numRowCol("mat.PFG.dist.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
+                                                     , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
+      } else
       {
-        .testParam_NAvalues.m("mat.PFG.dist.tol$killedIndiv", mat.PFG.dist.tol$killedIndiv)
-        .testParam_notInValues.m("mat.PFG.dist.tol$killedIndiv", mat.PFG.dist.tol$killedIndiv, 0:10)
-        .testParam_NAvalues.m("mat.PFG.dist.tol$resproutIndiv", mat.PFG.dist.tol$resproutIndiv)
-        .testParam_notInValues.m("mat.PFG.dist.tol$resproutIndiv", mat.PFG.dist.tol$resproutIndiv, 0:10)
+        notCorrect = switch(as.character(ncol(mat.PFG.dist.tol))
+                            , "3" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "strategy_tol"))
+                            , "5" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "responseStage"
+                                                                               , "killedIndiv", "resproutIndiv"))
+                            , "6" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "responseStage"
+                                                                               , "breakAge", "resproutAge"
+                                                                               , "strategy_tol"))
+                            , "7" = .testParam_notColnames(mat.PFG.dist.tol, c("nameDist", "PFG", "responseStage"
+                                                                               , "breakAge", "resproutAge"
+                                                                               , "killedIndiv", "resproutIndiv"))
+                            , TRUE)
+        if (notCorrect){
+          .stopMessage_columnNames("mat.PFG.dist.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
+                                                         , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
+        }
       }
-    }
-    if (sum(colnames(mat.PFG.dist.tol) == "strategy_tol") == 1)
-    {
-      mat.PFG.dist.tol$strategy_tol = as.character(mat.PFG.dist.tol$strategy_tol)
-      .testParam_notInValues.m("mat.PFG.dist.tol$strategy_tol", mat.PFG.dist.tol$strategy_tol
-                               , c("indifferent", "mowing_herbs", "mowing_trees"
-                                   , "grazing_herbs_1", "grazing_herbs_2", "grazing_herbs_3"
-                                   , "grazing_trees_1", "grazing_trees_2", "grazing_trees_3"))
+      mat.PFG.dist.tol$nameDist = as.character(mat.PFG.dist.tol$nameDist)
+      .testParam_notChar.m("mat.PFG.dist.tol$nameDist", mat.PFG.dist.tol$nameDist)
+      mat.PFG.dist.tol$PFG = as.character(mat.PFG.dist.tol$PFG)
+      .testParam_notChar.m("mat.PFG.dist.tol$PFG", mat.PFG.dist.tol$PFG)
+      if (!is.null(mat.PFG.dist))
+      {
+        .testParam_notInValues.m("mat.PFG.dist.tol$PFG", mat.PFG.dist.tol$PFG, c("H", "C", "P", mat.PFG.dist$PFG))
+      }
+      if (sum(colnames(mat.PFG.dist.tol) == "responseStage") == 1)
+      {
+        .testParam_NAvalues.m("mat.PFG.dist.tol$responseStage", mat.PFG.dist.tol$responseStage)
+        .testParam_notInValues.m("mat.PFG.dist.tol$responseStage", mat.PFG.dist.tol$responseStage, 0:10)
+        if (sum(colnames(mat.PFG.dist.tol) == "breakAge") == 1)
+        {
+          .testParam_notNum.m("mat.PFG.dist.tol$breakAge", mat.PFG.dist.tol$breakAge)
+          .testParam_NAvalues.m("mat.PFG.dist.tol$breakAge", mat.PFG.dist.tol$breakAge)
+          .testParam_notNum.m("mat.PFG.dist.tol$resproutAge", mat.PFG.dist.tol$resproutAge)
+          .testParam_NAvalues.m("mat.PFG.dist.tol$resproutAge", mat.PFG.dist.tol$resproutAge)
+        }
+        if (sum(colnames(mat.PFG.dist.tol) == "killedIndiv") == 1)
+        {
+          .testParam_NAvalues.m("mat.PFG.dist.tol$killedIndiv", mat.PFG.dist.tol$killedIndiv)
+          .testParam_notInValues.m("mat.PFG.dist.tol$killedIndiv", mat.PFG.dist.tol$killedIndiv, 0:10)
+          .testParam_NAvalues.m("mat.PFG.dist.tol$resproutIndiv", mat.PFG.dist.tol$resproutIndiv)
+          .testParam_notInValues.m("mat.PFG.dist.tol$resproutIndiv", mat.PFG.dist.tol$resproutIndiv, 0:10)
+        }
+      }
+      if (sum(colnames(mat.PFG.dist.tol) == "strategy_tol") == 1)
+      {
+        mat.PFG.dist.tol$strategy_tol = as.character(mat.PFG.dist.tol$strategy_tol)
+        .testParam_notInValues.m("mat.PFG.dist.tol$strategy_tol", mat.PFG.dist.tol$strategy_tol
+                                 , c("indifferent", "mowing_herbs", "mowing_trees"
+                                     , "grazing_herbs_1", "grazing_herbs_2", "grazing_herbs_3"
+                                     , "grazing_trees_1", "grazing_trees_2", "grazing_trees_3"))
+      }
     }
   }
   ## CHECK parameter mat.PFG.drought
-  if (.testParam_notDf(mat.PFG.drought))
+  if (!is.null(mat.PFG.drought))
   {
-    .stopMessage_beDataframe("mat.PFG.drought")
-  } else
-  {
-    if (nrow(mat.PFG.drought) == 0 || !(ncol(mat.PFG.drought) %in% c(4, 6)))
+    if (.testParam_notDf(mat.PFG.drought))
     {
-      .stopMessage_numRowCol("mat.PFG.drought", c("PFG", "threshold_moderate"
-                                                  , "threshold_severe", "counter_recovery"
-                                                  , "counter_sens", "counter_cum"
-                                                  , "(strategy_drou)"))
+      .stopMessage_beDataframe("mat.PFG.drought")
     } else
     {
-      notCorrect = switch(as.character(ncol(mat.PFG.drought))
-                          , "4" = .testParam_notColnames(mat.PFG.drought
-                                                         , c("PFG", "threshold_moderate"
-                                                             , "threshold_severe","strategy_drou"))
-                          , "6" = .testParam_notColnames(mat.PFG.drought
-                                                         , c("PFG", "threshold_moderate"
-                                                             , "threshold_severe", "counter_recovery"
-                                                             , "counter_sens", "counter_cum"))
-                          , TRUE)
-      if (notCorrect){
-        .stopMessage_columnNames("mat.PFG.drought", c("PFG", "threshold_moderate"
-                                                      , "threshold_severe", "counter_recovery"
-                                                      , "counter_sens", "counter_cum"
-                                                      , "(strategy_drou)"))
+      if (nrow(mat.PFG.drought) == 0 || !(ncol(mat.PFG.drought) %in% c(4, 6)))
+      {
+        .stopMessage_numRowCol("mat.PFG.drought", c("PFG", "threshold_moderate"
+                                                    , "threshold_severe", "counter_recovery"
+                                                    , "counter_sens", "counter_cum"
+                                                    , "(strategy_drou)"))
+      } else
+      {
+        notCorrect = switch(as.character(ncol(mat.PFG.drought))
+                            , "4" = .testParam_notColnames(mat.PFG.drought
+                                                           , c("PFG", "threshold_moderate"
+                                                               , "threshold_severe","strategy_drou"))
+                            , "6" = .testParam_notColnames(mat.PFG.drought
+                                                           , c("PFG", "threshold_moderate"
+                                                               , "threshold_severe", "counter_recovery"
+                                                               , "counter_sens", "counter_cum"))
+                            , TRUE)
+        if (notCorrect){
+          .stopMessage_columnNames("mat.PFG.drought", c("PFG", "threshold_moderate"
+                                                        , "threshold_severe", "counter_recovery"
+                                                        , "counter_sens", "counter_cum"
+                                                        , "(strategy_drou)"))
+        }
       }
-    }
-    mat.PFG.drought$PFG = as.character(mat.PFG.drought$PFG)
-    .testParam_notChar.m("mat.PFG.drought$PFG", mat.PFG.drought$PFG)
-    .testParam_notNum.m("mat.PFG.drought$threshold_moderate", mat.PFG.drought$threshold_moderate)
-    .testParam_NAvalues.m("mat.PFG.drought$threshold_moderate", mat.PFG.drought$threshold_moderate)
-    .testParam_notNum.m("mat.PFG.drought$threshold_severe", mat.PFG.drought$threshold_severe)
-    .testParam_NAvalues.m("mat.PFG.drought$threshold_severe", mat.PFG.drought$threshold_severe)
-    if (sum(mat.PFG.drought$threshold_severe > mat.PFG.drought$threshold_moderate) > 0){
-      stop(paste0("Wrong type of data!\n `mat.PFG.drought$threshold_severe` must contain "
-                  , "values equal or inferior to `mat.PFG.drought$threshold_moderate`"))
-    }
-    if (ncol(mat.PFG.drought) == 6)
-    {
-      .testParam_NAvalues.m("mat.PFG.drought$counter_recovery", mat.PFG.drought$counter_recovery)
-      .testParam_notInteger.m("mat.PFG.drought$counter_recovery", mat.PFG.drought$counter_recovery)
-      .testParam_NAvalues.m("mat.PFG.drought$counter_sens", mat.PFG.drought$counter_sens)
-      .testParam_notInteger.m("mat.PFG.drought$counter_sens", mat.PFG.drought$counter_sens)
-      .testParam_NAvalues.m("mat.PFG.drought$counter_cum", mat.PFG.drought$counter_cum)
-      .testParam_notInteger.m("mat.PFG.drought$counter_cum", mat.PFG.drought$counter_cum)
-      if (sum(mat.PFG.drought$counter_sens > mat.PFG.drought$counter_cum) > 0){
-        stop(paste0("Wrong type of data!\n `mat.PFG.drought$counter_sens` must contain "
-                    , "values equal or inferior to `mat.PFG.drought$counter_cum`"))
+      mat.PFG.drought$PFG = as.character(mat.PFG.drought$PFG)
+      .testParam_notChar.m("mat.PFG.drought$PFG", mat.PFG.drought$PFG)
+      .testParam_notNum.m("mat.PFG.drought$threshold_moderate", mat.PFG.drought$threshold_moderate)
+      .testParam_NAvalues.m("mat.PFG.drought$threshold_moderate", mat.PFG.drought$threshold_moderate)
+      .testParam_notNum.m("mat.PFG.drought$threshold_severe", mat.PFG.drought$threshold_severe)
+      .testParam_NAvalues.m("mat.PFG.drought$threshold_severe", mat.PFG.drought$threshold_severe)
+      if (sum(mat.PFG.drought$threshold_severe > mat.PFG.drought$threshold_moderate) > 0){
+        stop(paste0("Wrong type of data!\n `mat.PFG.drought$threshold_severe` must contain "
+                    , "values equal or inferior to `mat.PFG.drought$threshold_moderate`"))
       }
-    }
-    if (sum(colnames(mat.PFG.drought) == "strategy_drou") == 1)
-    {
-      mat.PFG.drought$strategy_drou = as.character(mat.PFG.drought$strategy_drou)
-      .testParam_notInValues.m("mat.PFG.drought$strategy_drou", mat.PFG.drought$strategy_drou
-                               , c("herbs", "chamaephytes", "trees_shrubs"))
+      if (ncol(mat.PFG.drought) == 6)
+      {
+        .testParam_NAvalues.m("mat.PFG.drought$counter_recovery", mat.PFG.drought$counter_recovery)
+        .testParam_notInteger.m("mat.PFG.drought$counter_recovery", mat.PFG.drought$counter_recovery)
+        .testParam_NAvalues.m("mat.PFG.drought$counter_sens", mat.PFG.drought$counter_sens)
+        .testParam_notInteger.m("mat.PFG.drought$counter_sens", mat.PFG.drought$counter_sens)
+        .testParam_NAvalues.m("mat.PFG.drought$counter_cum", mat.PFG.drought$counter_cum)
+        .testParam_notInteger.m("mat.PFG.drought$counter_cum", mat.PFG.drought$counter_cum)
+        if (sum(mat.PFG.drought$counter_sens > mat.PFG.drought$counter_cum) > 0){
+          stop(paste0("Wrong type of data!\n `mat.PFG.drought$counter_sens` must contain "
+                      , "values equal or inferior to `mat.PFG.drought$counter_cum`"))
+        }
+      }
+      if (sum(colnames(mat.PFG.drought) == "strategy_drou") == 1)
+      {
+        mat.PFG.drought$strategy_drou = as.character(mat.PFG.drought$strategy_drou)
+        .testParam_notInValues.m("mat.PFG.drought$strategy_drou", mat.PFG.drought$strategy_drou
+                                 , c("herbs", "chamaephytes", "trees_shrubs"))
+      }
     }
   }
   ## CHECK parameter mat.PFG.drought.tol
-  if (.testParam_notDf(mat.PFG.drought.tol))
+  if (!is.null(mat.PFG.drought.tol))
   {
-    .stopMessage_beDataframe("mat.PFG.drought.tol")
-  } else
-  {
-    if (nrow(mat.PFG.drought.tol) == 0 || !(ncol(mat.PFG.drought.tol) %in% c(3, 5, 6, 7)))
+    if (.testParam_notDf(mat.PFG.drought.tol))
     {
-      .stopMessage_numRowCol("mat.PFG.drought.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
-                                                      , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
+      .stopMessage_beDataframe("mat.PFG.drought.tol")
     } else
     {
-      notCorrect = switch(as.character(ncol(mat.PFG.drought.tol))
-                          , "3" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "strategy_tol"))
-                          , "5" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "responseStage"
-                                                                                , "killedIndiv", "resproutIndiv"))
-                          , "6" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "responseStage"
-                                                                                , "breakAge", "resproutAge"
-                                                                                , "strategy_tol"))
-                          , "7" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "responseStage"
-                                                                                , "breakAge", "resproutAge"
-                                                                                , "killedIndiv", "resproutIndiv"))
-                          , TRUE)
-      if (notCorrect){
-        .stopMessage_columnNames("mat.PFG.drought.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
-                                                          , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
-      }
-    }
-    mat.PFG.drought.tol$nameDist = as.character(mat.PFG.drought.tol$nameDist)
-    .testParam_notInValues.m("mat.PFG.drought.tol$nameDist", mat.PFG.drought.tol$nameDist, c("immediate", "delayed"))
-    mat.PFG.drought.tol$PFG = as.character(mat.PFG.drought.tol$PFG)
-    .testParam_notChar.m("mat.PFG.drought.tol$PFG", mat.PFG.drought.tol$PFG)
-    if (!is.null(mat.PFG.dist))
-    {
-      .testParam_notInValues.m("mat.PFG.drought.tol$PFG", mat.PFG.drought.tol$PFG, c("H", "C", "P", mat.PFG.dist$PFG))
-    }
-    if (sum(colnames(mat.PFG.drought.tol) == "responseStage") == 1)
-    {
-      .testParam_NAvalues.m("mat.PFG.drought.tol$responseStage", mat.PFG.drought.tol$responseStage)
-      .testParam_notInValues.m("mat.PFG.drought.tol$responseStage", mat.PFG.drought.tol$responseStage, 0:10)
-      if (sum(colnames(mat.PFG.drought.tol) == "breakAge") == 1)
+      if (nrow(mat.PFG.drought.tol) == 0 || !(ncol(mat.PFG.drought.tol) %in% c(3, 5, 6, 7)))
       {
-        .testParam_notNum.m("mat.PFG.drought.tol$breakAge", mat.PFG.drought.tol$breakAge)
-        .testParam_NAvalues.m("mat.PFG.drought.tol$breakAge", mat.PFG.drought.tol$breakAge)
-        .testParam_notNum.m("mat.PFG.drought.tol$resproutAge", mat.PFG.drought.tol$resproutAge)
-        .testParam_NAvalues.m("mat.PFG.drought.tol$resproutAge", mat.PFG.drought.tol$resproutAge)
-      }
-      if (sum(colnames(mat.PFG.drought.tol) == "killedIndiv") == 1)
+        .stopMessage_numRowCol("mat.PFG.drought.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
+                                                        , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
+      } else
       {
-        .testParam_NAvalues.m("mat.PFG.drought.tol$killedIndiv", mat.PFG.drought.tol$killedIndiv)
-        .testParam_notInValues.m("mat.PFG.drought.tol$killedIndiv", mat.PFG.drought.tol$killedIndiv, 0:10)
-        .testParam_NAvalues.m("mat.PFG.drought.tol$resproutIndiv", mat.PFG.drought.tol$resproutIndiv)
-        .testParam_notInValues.m("mat.PFG.drought.tol$resproutIndiv", mat.PFG.drought.tol$resproutIndiv, 0:10)
+        notCorrect = switch(as.character(ncol(mat.PFG.drought.tol))
+                            , "3" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "strategy_tol"))
+                            , "5" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "responseStage"
+                                                                                  , "killedIndiv", "resproutIndiv"))
+                            , "6" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "responseStage"
+                                                                                  , "breakAge", "resproutAge"
+                                                                                  , "strategy_tol"))
+                            , "7" = .testParam_notColnames(mat.PFG.drought.tol, c("nameDist", "PFG", "responseStage"
+                                                                                  , "breakAge", "resproutAge"
+                                                                                  , "killedIndiv", "resproutIndiv"))
+                            , TRUE)
+        if (notCorrect){
+          .stopMessage_columnNames("mat.PFG.drought.tol", c("nameDist", "PFG", "responseStage", "(breakAge)", "(resproutAge)"
+                                                            , "killedIndiv", "resproutIndiv", "(strategy_tol)"))
+        }
       }
-    }
-    if (sum(colnames(mat.PFG.drought.tol) == "strategy_tol") == 1)
-    {
-      mat.PFG.drought.tol$strategy_tol = as.character(mat.PFG.drought.tol$strategy_tol)
-      .testParam_notInValues.m("mat.PFG.drought.tol$strategy_tol", mat.PFG.drought.tol$strategy_tol
-                               , c("herbs_cham_1", "herbs_cham_2", "herbs_cham_3"
-                                   , "trees_1", "trees_2", "trees_3"))
+      mat.PFG.drought.tol$nameDist = as.character(mat.PFG.drought.tol$nameDist)
+      .testParam_notInValues.m("mat.PFG.drought.tol$nameDist", mat.PFG.drought.tol$nameDist, c("immediate", "delayed"))
+      mat.PFG.drought.tol$PFG = as.character(mat.PFG.drought.tol$PFG)
+      .testParam_notChar.m("mat.PFG.drought.tol$PFG", mat.PFG.drought.tol$PFG)
+      if (!is.null(mat.PFG.dist))
+      {
+        .testParam_notInValues.m("mat.PFG.drought.tol$PFG", mat.PFG.drought.tol$PFG, c("H", "C", "P", mat.PFG.dist$PFG))
+      }
+      if (sum(colnames(mat.PFG.drought.tol) == "responseStage") == 1)
+      {
+        .testParam_NAvalues.m("mat.PFG.drought.tol$responseStage", mat.PFG.drought.tol$responseStage)
+        .testParam_notInValues.m("mat.PFG.drought.tol$responseStage", mat.PFG.drought.tol$responseStage, 0:10)
+        if (sum(colnames(mat.PFG.drought.tol) == "breakAge") == 1)
+        {
+          .testParam_notNum.m("mat.PFG.drought.tol$breakAge", mat.PFG.drought.tol$breakAge)
+          .testParam_NAvalues.m("mat.PFG.drought.tol$breakAge", mat.PFG.drought.tol$breakAge)
+          .testParam_notNum.m("mat.PFG.drought.tol$resproutAge", mat.PFG.drought.tol$resproutAge)
+          .testParam_NAvalues.m("mat.PFG.drought.tol$resproutAge", mat.PFG.drought.tol$resproutAge)
+        }
+        if (sum(colnames(mat.PFG.drought.tol) == "killedIndiv") == 1)
+        {
+          .testParam_NAvalues.m("mat.PFG.drought.tol$killedIndiv", mat.PFG.drought.tol$killedIndiv)
+          .testParam_notInValues.m("mat.PFG.drought.tol$killedIndiv", mat.PFG.drought.tol$killedIndiv, 0:10)
+          .testParam_NAvalues.m("mat.PFG.drought.tol$resproutIndiv", mat.PFG.drought.tol$resproutIndiv)
+          .testParam_notInValues.m("mat.PFG.drought.tol$resproutIndiv", mat.PFG.drought.tol$resproutIndiv, 0:10)
+        }
+      }
+      if (sum(colnames(mat.PFG.drought.tol) == "strategy_tol") == 1)
+      {
+        mat.PFG.drought.tol$strategy_tol = as.character(mat.PFG.drought.tol$strategy_tol)
+        .testParam_notInValues.m("mat.PFG.drought.tol$strategy_tol", mat.PFG.drought.tol$strategy_tol
+                                 , c("herbs_cham_1", "herbs_cham_2", "herbs_cham_3"
+                                     , "trees_1", "trees_2", "trees_3"))
+      }
     }
   }
   ## CHECK parameter rasters
