@@ -140,7 +140,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : doRuleA / d
                , "`rules.selectDominant['rule.A1']` must contain numeric values"
                , fixed = TRUE)
   
-
+  
   ## TEST rule.A2_quantile : correct values
   expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
                                    , mat.observations = data.frame(species = "1"
@@ -164,7 +164,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : doRuleA / d
                                                               , "rule.A2_quantile" = 1.5))
                , "`rules.selectDominant['rule.A2_quantile']` must contain values between `0` and `1`"
                , fixed = TRUE)
-
+  
   ## TEST rule.B1_number : numeric values
   expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
                                    , mat.observations = data.frame(species = "1"
@@ -588,7 +588,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.traits = data.frame(species = c("A", "B"), 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = list(matrix(1:9, ncol=3)
-                                                                        , matrix(1:8, ncol=4)))
+                                                             , matrix(1:8, ncol=4)))
                , "`mat.species.DIST[[2]]` does not have the same number of rows (2) and columns (4)"
                , fixed = TRUE)
 })
@@ -939,7 +939,5 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                , "`mat.traits.PFG$PFG` must contain different values"
                , fixed = TRUE)
 })
-
-
 
 
