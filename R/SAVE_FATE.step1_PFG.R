@@ -331,7 +331,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
   }
   ## CHECK parameter rules.speciesDistance
   names.rules.speciesDistance = c("opt.maxPercent.NA", "opt.maxPercent.similarSpecies", "opt.min.sd")
-  .testParam_notInValues.m(names(rules.speciesDistance), names.rules.speciesDistance)
+  .testParam_notInValues.m("rules.speciesDistance", names(rules.speciesDistance), names.rules.speciesDistance)
   if (length(rules.speciesDistance) != 3)
   {
     for (name.i in names.rules.speciesDistance)
@@ -343,6 +343,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
     }
   }
   rules.speciesDistance = rules.speciesDistance[names.rules.speciesDistance]
+  rules.speciesDistance = sapply(rules.speciesDistance, function(x) as.numeric(as.character(x)))
   if (length(which(is.na(rules.speciesDistance))) < 3)
   {
     .testParam_notBetween.m("rules.speciesDistance['opt.maxPercent.NA']"
