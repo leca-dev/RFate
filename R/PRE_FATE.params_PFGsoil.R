@@ -234,11 +234,10 @@
 ##'                         , mat.PFG.soil = data.frame(PFG = paste0('PFG', 1:6)
 ##'                                                     , strategy_ag = c('rich_lover', 'indifferent'
 ##'                                                                       , 'indifferent', 'rich_lover'
-##'                                                                       , 'indifferent', 'poor_lover'))
-##'                          , mat.PFG.tol = data.frame(PFG = paste0('PFG', 1:6)
-##'                                                     , strategy_tol = c('ubiquist', 'ubiquist'
-##'                                                                        , 'ubiquist', 'ubiquist'
-##'                                                                        , 'ubiquist', 'ubiquist')))
+##'                                                                       , 'indifferent', 'poor_lover')
+##'                                                     , strategy_contrib = rep('ubiquist', 6))
+##'                         , mat.PFG.tol = data.frame(PFG = paste0('PFG', 1:6)
+##'                                                    , strategy_tol = rep('ubiquist', 6)))
 ##'                                                         
 ##' 
 ##' ## Create PFG soil parameter files (with all values) -----------------------------------------
@@ -256,7 +255,8 @@
 ##'                         , mat.PFG.soil = data.frame(PFG = paste0('PFG', 1:6)
 ##'                                                     , active_germ_low = c(5, 8, 8, 6, 8, 8)
 ##'                                                     , active_germ_medium = rep(9, 6)
-##'                                                     , active_germ_high = c(9, 8, 8, 9, 8, 4))
+##'                                                     , active_germ_high = c(9, 8, 8, 9, 8, 4)
+##'                                                     , strategy_contrib = rep('ubiquist', 6))
 ##'                         , mat.PFG.tol = mat.tol)
 ##'                                                         
 ##'                                                         
