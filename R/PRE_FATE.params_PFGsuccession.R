@@ -209,28 +209,46 @@
 ##' ## Create a skeleton folder with the default name ('FATE_simulation')
 ##' PRE_FATE.skeletonDirectory()
 ##' 
-##' ## Create PFG succession parameter files
-##' PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
-##'                               , mat.PFG.succ = data.frame(PFG = paste0("PFG", 1:6)
-##'                                                           , type = c("C", "C", "H", "H", "P", "P")
+##' ## Create PFG succession parameter files -----------------------------------------------------
+##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_simulation'
+##'                               , mat.PFG.succ = data.frame(PFG = paste0('PFG', 1:6)
+##'                                                           , type = c('C', 'C', 'H', 'H', 'P', 'P')
 ##'                                                           , height = c(10, 250, 36, 68, 1250, 550)
 ##'                                                           , maturity = c(5, 5, 3, 3, 8, 9)
 ##'                                                           , longevity = c(12, 200, 25, 4, 110, 70)))
 ##'                                                         
 ##' 
-##' ## Create PFG succession parameter files
-##' PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
-##'                               , mat.PFG.succ = data.frame(PFG = paste0("PFG", 1:6)
-##'                                                           , type = c("C", "C", "H", "H", "P", "P")
+##' ## Create PFG succession parameter files (with immature_size) --------------------------------
+##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_simulation'
+##'                               , mat.PFG.succ = data.frame(PFG = paste0('PFG', 1:6)
+##'                                                           , type = c('C', 'C', 'H', 'H', 'P', 'P')
 ##'                                                           , height = c(10, 250, 36, 68, 1250, 550)
 ##'                                                           , maturity = c(5, 5, 3, 3, 8, 9)
 ##'                                                           , longevity = c(12, 200, 25, 4, 110, 70)
 ##'                                                           , immature_size = c(10, 8, 10, 10, 1, 5)))
 ##'                                                         
 ##'                                                         
-##' ## ----------------------------------------------------------------------------------------- ##
-##' 
+##' ## -------------------------------------------------------------------------------------------
+##'
 ##' ## Load example data
+##' data(DATASET_Bauges_parameters)
+##' 
+##' ## PFG traits for succession
+##' tab.traits = DATASET_Bauges_parameters$tab.succ
+##' str(tab.traits)
+##' 
+##' ## Create a skeleton folder
+##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+##' 
+##' ## Create PFG succession parameter files -----------------------------------------------------
+##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Bauges'
+##'                               , mat.PFG.succ = tab.traits)
+##' 
+##' ## Create PFG succession parameter files (fixing strata limits) ------------------------------
+##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Bauges'
+##'                               , mat.PFG.succ = tab.traits
+##'                               , strata.limits = c(0, 20, 50, 150, 400, 1000)
+##'                               , strata.limits_reduce = FALSE)
 ##'                                                         
 ##' 
 ##' @export

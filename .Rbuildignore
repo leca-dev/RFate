@@ -4,7 +4,7 @@
 .Rproj.user
 .git
 ^\.travis\.yml$
-^appveyor\.yml$
+^\.appveyor\.yml$
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^docs$

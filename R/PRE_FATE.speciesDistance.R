@@ -108,6 +108,8 @@
 ##' 
 ##' ## Species traits
 ##' tab.traits = DATASET_Bauges_PFG$dom.traits
+##' tab.traits = tab.traits[, c("species", "GROUP", "MATURITY", "LONGEVITY"
+##'                             , "HEIGHT", "DISPERSAL", "LIGHT", "NITROGEN")]
 ##' str(tab.traits)
 ##' 
 ##' ## Species niche overlap (similarity distance)
