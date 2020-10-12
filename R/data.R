@@ -1,17 +1,32 @@
 ### HEADER #####################################################################
-##' @title Dataset Bauges PFG
+##' @title Datasets used in examples
 ##' 
 ##' @name DATASET_Bauges_PFG
+##' @aliases DATASET_Bauges_parameters
+##' 
+##' @usage
+##' data(DATASET_Bauges_PFG)
+##' data(DATASET_Bauges_parameters)
 ##' 
 ##' @author Maya Guéguen
 ##'
-##' @description \strong{Dataset :} Bauges
+##' @description
 ##' 
-##' \strong{Step :} find dominant species and build PFG
+##' \strong{Dataset :} Bauges
+##' 
+##' \strong{Steps :}
+##' 
+##' 1. find dominant species and build PFG
+##' 
+##' 2. prepare parameter files for a \code{FATE} simulation
 ##' 
 ##' \emph{Base de données du Conservatoire Botanique National Alpin - 2018}
 ##' 
-##' @format A \code{list} object with 7 elements to help finding dominant 
+##' @format
+##' 
+##' \strong{\cr \cr >> DATASET_Bauges_PFG << \cr \cr}
+##' 
+##' A \code{list} object with 7 elements to help finding dominant 
 ##' species and building Plant Functional Groups in Bauges area :
 ##'   
 ##'   \describe{
@@ -122,11 +137,85 @@
 ##'       \item \strong{DISPERSAL} : median value
 ##'       \item \strong{LIGHT} : median value
 ##'       \item \strong{NITROGEN} : median value
-##'       \item \strong{MOISTURE} : median value
+##'       \item \strong{MOISTURE} : median value \cr \cr \cr \cr
 ##'     }
 ##'     }
+##'   }
+##'   
+##'   
+##'  \strong{>> DATASET_Bauges_parameters << \cr \cr}
+##'   
+##'  A \code{list} object with 7 elements to help building parameter files 
+##'  in order to run a \code{FATE} simulation :
+##'   
+##'   \describe{
+##'     \item{dom.traits}{a \code{data.frame} of dimension 
+##'     \code{125 x 12} \cr
+##'     containing traits for dominant species \cr
+##'     \itemize{
+##'       \item \strong{species} : species ID
+##'       \item \strong{NAME} : species name
+##'       \item \strong{PFG} : Plant Functional Group name
+##'       \item \strong{type} : rough generalization of Raunkier life-forms :
+##'       \itemize{
+##'         \item Herbaceous
+##'         \item Chamaephyte
+##'         \item Phanerophyte
+##'       }
+##'       \item \strong{maturity} 
+##'       \item \strong{longevity} 
+##'       \item \strong{height} 
+##'       \item \strong{dispersal} :classes (from 1 to 7) based on dispersal 
+##'       distances and types (Vittoz & Engler)
+##'       \item \strong{light} : Flora Indicativa value for light preference 
+##'       (from 1 to 5)
+##'       \item \strong{soil_contrib} : Flora Indicativa value for soil 
+##'       fertility (from 1 to 5)
+##'       \item \strong{soil_tolerance} : Flora Indicativa value for soil 
+##'       tolerance (either 0.2 for small or 1.0 for high)
+##'       \item \strong{dist_tolerance} : tolerance to disturbance (grazing, 
+##'       mowing) (from 1 to 5)
+##'     }
+##'     }
+##'     \item{PFG.traits}{a \code{data.frame} of dimension 
+##'     \code{16 x 12} \cr
+##'     containing traits for Plant Functional Groups \cr
+##'     \itemize{
+##'       \item \strong{PFG} : Plant Functional Group name
+##'       \item \strong{no.species} : number of dominant species within each 
+##'       Plant Functional Group
+##'       \item \strong{type} : rough generalization of Raunkier life-forms :
+##'       \itemize{
+##'         \item Herbaceous
+##'         \item Chamaephyte
+##'         \item Phanerophyte
+##'       }
+##'       \item \strong{...} (same traits as \code{dom.traits}) 
+##'     }
+##'     }
+##'     \item{tab.succ}{a \code{data.frame} of dimension 
+##'     \code{16 x 5} containing data from \code{PFG.traits} (\emph{PFG, type, 
+##'     height, maturity, longevity}) \cr to be used with the function 
+##'     \code{\link{PRE_FATE.params_PFGsuccession}}}
+##'     \item{tab.light}{a \code{data.frame} of dimension 
+##'     \code{16 x 3} containing data from \code{PFG.traits} (\emph{PFG, type, 
+##'     light}) \cr to be used with the function 
+##'     \code{\link{PRE_FATE.params_PFGlight}}}
+##'     \item{tab.soil}{a \code{data.frame} of dimension 
+##'     \code{16 x 5} containing data from \code{PFG.traits} (\emph{PFG, type, 
+##'     soil_contrib, soil_tol_min, soil_tol_max}) \cr to be used with the function 
+##'     \code{\link{PRE_FATE.params_PFGsoil}}}
+##'     \item{tab.disp}{a \code{data.frame} of dimension 
+##'     \code{16 x 3} containing data from \code{PFG.traits} (\emph{PFG, type, 
+##'     dispersal}) \cr to be used with the function 
+##'     \code{\link{PRE_FATE.params_PFGdispersal}}}
+##'     \item{tab.dist}{a \code{data.frame} of dimension 
+##'     \code{16 x 3} containing data from \code{PFG.traits} (\emph{PFG, type, 
+##'     dist_tolerance}) \cr to be used with the function 
+##'     \code{\link{PRE_FATE.params_PFGdisturbance}}}
 ##'   }
 ##' 
 ## END OF HEADER ###############################################################
 
 "DATASET_Bauges_PFG"
+"DATASET_Bauges_parameters"

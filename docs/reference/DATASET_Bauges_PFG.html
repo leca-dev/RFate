@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dataset Bauges PFG — DATASET_Bauges_PFG • RFate</title>
+<title>Datasets used in examples — DATASET_Bauges_PFG • RFate</title>
 
 
 <!-- jquery -->
@@ -39,9 +39,11 @@
 
 
 
-<meta property="og:title" content="Dataset Bauges PFG — DATASET_Bauges_PFG" />
+<meta property="og:title" content="Datasets used in examples — DATASET_Bauges_PFG" />
 <meta property="og:description" content="Dataset : Bauges
-Step : find dominant species and build PFG
+Steps :
+1. find dominant species and build PFG
+2. prepare parameter files for a FATE simulation
 Base de données du Conservatoire Botanique National Alpin - 2018" />
 
 
@@ -190,23 +192,27 @@ Base de données du Conservatoire Botanique National Alpin - 2018" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Dataset Bauges PFG</h1>
+    <h1>Datasets used in examples</h1>
     <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/data.R'><code>R/data.R</code></a></small>
     <div class="hidden name"><code>DATASET_Bauges_PFG.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p><strong>Dataset :</strong> Bauges</p>
-<p><strong>Step :</strong> find dominant species and build PFG</p>
+<p><strong>Steps :</strong></p>
+<p>1. find dominant species and build PFG</p>
+<p>2. prepare parameter files for a <code>FATE</code> simulation</p>
 <p><em>Base de données du Conservatoire Botanique National Alpin - 2018</em></p>
     </div>
 
-    <pre class="usage"><span class='kw'>DATASET_Bauges_PFG</span></pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_PFG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_parameters</span>)</pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A <code>list</code> object with 7 elements to help finding dominant 
+    <p><strong><br /> <br /> &gt;&gt; DATASET_Bauges_PFG &lt;&lt; <br /> <br /></strong></p>
+<p>A <code>list</code> object with 7 elements to help finding dominant 
 species and building Plant Functional Groups in Bauges area :</p>  
 <p></p><dl>
     <dt>sp.names</dt><dd><p>a <code>data.frame</code> of dimension 
@@ -308,8 +314,76 @@ species and building Plant Functional Groups in Bauges area :</p>
 <li><p><strong>DISPERSAL</strong> : median value</p></li>
 <li><p><strong>LIGHT</strong> : median value</p></li>
 <li><p><strong>NITROGEN</strong> : median value</p></li>
-<li><p><strong>MOISTURE</strong> : median value</p></li>
+<li><p><strong>MOISTURE</strong> : median value <br /> <br /> <br /> <br /></p></li>
 </ul></p></dd>
+  
+</dl>
+  
+  
+<p><strong>&gt;&gt; DATASET_Bauges_parameters &lt;&lt; <br /> <br /></strong></p>  
+<p>A <code>list</code> object with 7 elements to help building parameter files 
+ in order to run a <code>FATE</code> simulation :</p>  
+<p></p><dl>
+    <dt>dom.traits</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>125 x 12</code> <br />
+    containing traits for dominant species <br />
+    <ul>
+<li><p><strong>species</strong> : species ID</p></li>
+<li><p><strong>NAME</strong> : species name</p></li>
+<li><p><strong>PFG</strong> : Plant Functional Group name</p></li>
+<li><p><strong>type</strong> : rough generalization of Raunkier life-forms :</p><ul>
+<li><p>Herbaceous</p></li>
+<li><p>Chamaephyte</p></li>
+<li><p>Phanerophyte</p></li>
+</ul></li>
+<li><p><strong>maturity</strong></p></li>
+<li><p><strong>longevity</strong></p></li>
+<li><p><strong>height</strong></p></li>
+<li><p><strong>dispersal</strong> :classes (from 1 to 7) based on dispersal 
+      distances and types (Vittoz &amp; Engler)</p></li>
+<li><p><strong>light</strong> : Flora Indicativa value for light preference 
+      (from 1 to 5)</p></li>
+<li><p><strong>soil_contrib</strong> : Flora Indicativa value for soil 
+      fertility (from 1 to 5)</p></li>
+<li><p><strong>soil_tolerance</strong> : Flora Indicativa value for soil 
+      tolerance (either 0.2 for small or 1.0 for high)</p></li>
+<li><p><strong>dist_tolerance</strong> : tolerance to disturbance (grazing, 
+      mowing) (from 1 to 5)</p></li>
+</ul></p></dd>
+    <dt>PFG.traits</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>16 x 12</code> <br />
+    containing traits for Plant Functional Groups <br />
+    <ul>
+<li><p><strong>PFG</strong> : Plant Functional Group name</p></li>
+<li><p><strong>no.species</strong> : number of dominant species within each 
+      Plant Functional Group</p></li>
+<li><p><strong>type</strong> : rough generalization of Raunkier life-forms :</p><ul>
+<li><p>Herbaceous</p></li>
+<li><p>Chamaephyte</p></li>
+<li><p>Phanerophyte</p></li>
+</ul></li>
+<li><p><strong>...</strong> (same traits as <code>dom.traits</code>)</p></li>
+</ul></p></dd>
+    <dt>tab.succ</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>16 x 5</code> containing data from <code>PFG.traits</code> (<em>PFG, type, 
+    height, maturity, longevity</em>) <br /> to be used with the function 
+    <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code></p></dd>
+    <dt>tab.light</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>16 x 3</code> containing data from <code>PFG.traits</code> (<em>PFG, type, 
+    light</em>) <br /> to be used with the function 
+    <code><a href='PRE_FATE.params_PFGlight.html'>PRE_FATE.params_PFGlight</a></code></p></dd>
+    <dt>tab.soil</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>16 x 5</code> containing data from <code>PFG.traits</code> (<em>PFG, type, 
+    soil_contrib, soil_tol_min, soil_tol_max</em>) <br /> to be used with the function 
+    <code><a href='PRE_FATE.params_PFGsoil.html'>PRE_FATE.params_PFGsoil</a></code></p></dd>
+    <dt>tab.disp</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>16 x 3</code> containing data from <code>PFG.traits</code> (<em>PFG, type, 
+    dispersal</em>) <br /> to be used with the function 
+    <code><a href='PRE_FATE.params_PFGdispersal.html'>PRE_FATE.params_PFGdispersal</a></code></p></dd>
+    <dt>tab.dist</dt><dd><p>a <code>data.frame</code> of dimension 
+    <code>16 x 3</code> containing data from <code>PFG.traits</code> (<em>PFG, type, 
+    dist_tolerance</em>) <br /> to be used with the function 
+    <code><a href='PRE_FATE.params_PFGdisturbance.html'>PRE_FATE.params_PFGdisturbance</a></code></p></dd>
   
 </dl>
 

@@ -274,6 +274,7 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits
     mat.traits$soil_tol_max = as.numeric(mat.traits$soil_contrib) + 
       as.numeric(mat.traits$soil_tolerance)
     mat.traits = mat.traits[, -which(colnames(mat.traits) == "soil_tolerance")]
+    ind.factor = ind.factor[which(ind.factor != "soil_tolerance")]
   }
   
   
@@ -325,13 +326,20 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits
   cat("\n ---------- PRODUCING PLOT(S) \n")
   
   mat.traits.melt = mat.traits
-  for (i in ind.factor) mat.traits.melt[, i] = as.numeric(as.factor(mat.traits.melt[, i]))
+  if (length(ind.factor) > 0){
+    for (i in ind.factor) mat.traits.melt[, i] = as.numeric(as.factor(mat.traits.melt[, i]))
+  }
   mat.traits.melt = melt(mat.traits.melt, id.vars = c("species", "PFG"))
   mat.traits.melt$variable = as.character(mat.traits.melt$variable)
   mat.traits.melt$variable = factor(mat.traits.melt$variable, names_traits.factor)
   
   mat.traits.pfg.melt = mat.traits.pfg
-  for (i in ind.factor) mat.traits.pfg.melt[, i] = as.numeric(as.factor(mat.traits.pfg.melt[, i]))
+  if (length(ind.factor) > 0){
+    for (i in ind.factor) {
+      tmp = as.numeric(as.character(mat.traits.pfg.melt[, i]))
+      mat.traits.pfg.melt[, i] = as.numeric(factor(tmp, levels(mat.traits[,i])))
+    }
+  }
   mat.traits.pfg.melt = melt(mat.traits.pfg.melt, id.vars = c("no.species", "PFG"))
   mat.traits.pfg.melt$variable = as.character(mat.traits.pfg.melt$variable)
   mat.traits.pfg.melt$variable = factor(mat.traits.pfg.melt$variable, names_traits.factor)
