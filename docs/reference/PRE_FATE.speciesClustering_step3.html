@@ -323,17 +323,20 @@ below :</em></p><dl>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>DISPERSAL</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>LIGHT</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>MOISTURE</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>NITROGEN</span>)
 
 
 <span class='co'>## Compute traits per PFG : with one specific graphic ----------------------------------------</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>mat.traits</span>) <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"species"</span>, <span class='st'>"PFG"</span>, <span class='st'>"GROUP"</span>, <span class='st'>"DISPERSAL"</span>
-                         , <span class='st'>"light"</span>, <span class='st'>"NITROGEN"</span>, <span class='st'>"MOISTURE"</span>, <span class='st'>"height"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>mat.traits</span>) <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"species"</span>, <span class='st'>"PFG"</span>, <span class='st'>"GROUP"</span>, <span class='st'>"maturity"</span>, <span class='st'>"longevity"</span>
+                         , <span class='st'>"height"</span>, <span class='st'>"DISPERSAL"</span>, <span class='st'>"light"</span>, <span class='st'>"soil_contrib"</span>
+                         , <span class='st'>"soil_tolerance"</span>, <span class='st'>"GRAZ_MOW_TOLERANCE"</span>)
 <span class='kw'>sp.PFG</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step3</span>(mat.traits = <span class='kw'>mat.traits</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.PFG</span>)
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>tab</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>maturity_longevity</span>)
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>height_light</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.PFG</span><span class='op'>$</span><span class='kw'>plot</span><span class='op'>$</span><span class='kw'>soil</span>)
 
 
 </pre>
