@@ -49,8 +49,8 @@
 ##'   (phanerophyte) for now}
 ##'   \item{(\emph{maturity})}{the age from which the PFG can reproduce}
 ##'   \item{(\emph{longevity})}{the maximum or average lifespan of the PFG}
-##'   \item{(\emph{age_above_150cm})}{the maximum height stratum that the PFG 
-##'   can reach \cr \cr}
+##'   \item{(\emph{age_above_150cm})}{the age from which the PFG reaches 150 cm
+##'   (\code{1000} otherwise) \cr \cr}
 ##'   
 ##'   \item{nameDist}{the name of each perturbation (several can be defined at 
 ##'   the same time) \cr \cr}
@@ -250,10 +250,83 @@
 ##' 
 ##' @examples
 ##' 
+##' ## Create a skeleton folder with the default name ('FATE_simulation')
+##' PRE_FATE.skeletonDirectory()
 ##' 
-##' ## ----------------------------------------------------------------------------------------- ##
-##'                                     
+##' 
+##' mat.char = data.frame(PFG = paste0('PFG', 1:6)
+##'                       , type = c('C', 'C', 'H', 'H', 'P', 'P')
+##'                       , maturity = c(5, 5, 3, 3, 8, 9)
+##'                       , longevity = c(12, 200, 25, 4, 110, 70)
+##'                       , age_above_150cm = c(1000, 100, 1000, 1000, 10, 12))
+##' 
+##' mat.tol = data.frame(nameDist = 'grazing'
+##'                      , PFG = paste0('PFG', 1:6)
+##'                      , strategy_tol = c('indifferent', 'grazing_herbs_1'
+##'                                         , 'grazing_herbs_1', 'grazing_herbs_2'
+##'                                         , 'indifferent', 'grazing_trees_2'))
+##' 
+##' ## Create PFG response to disturbance parameter files (with PFG characteristics) -------------
+##' PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_simulation'
+##'                                , mat.PFG.dist = mat.char
+##'                                , mat.PFG.tol = mat.tol)
+##'                                                         
+##' 
+##' ## Create PFG response to disturbance parameter files (with all values) ----------------------
+##' mat.tol = expand.grid(responseStage = 1:3
+##'                       , PFG = paste0('PFG', 1:6)
+##'                       , nameDist = 'Mowing')
+##' mat.tol$breakAge = c(1, 4, 10
+##'                      , 1, 4, 10
+##'                      , 1, 2, 50
+##'                      , 1, 2, 20
+##'                      , 2, 6, 95
+##'                      , 3, 8, 55)
+##' mat.tol$resproutAge = c(0, 0, 4
+##'                         , 0, 0, 4
+##'                         , 0, 0, 2
+##'                         , 0, 0, 2
+##'                         , 0, 2, 5
+##'                         , 0, 4, 7)
+##' mat.tol$killedIndiv = c(10, 10, 5
+##'                         , 10, 10, 5
+##'                         , 10, 10, 5
+##'                         , 10, 10, 5
+##'                         , 10, 7, 4
+##'                         , 10, 6, 3)
+##' mat.tol$resproutIndiv = c(0, 0, 5
+##'                           , 0, 0, 5
+##'                           , 0, 0, 3
+##'                           , 0, 0, 3
+##'                           , 0, 1, 4
+##'                           , 0, 2, 5)
+##' str(mat.tol)
+##' 
+##' PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_simulation'
+##'                                , mat.PFG.tol = mat.tol)
+##'                                                         
+##'                                                         
+##' ## -------------------------------------------------------------------------------------------
+##'
 ##' ## Load example data
+##' data(DATASET_Bauges_parameters)
+##' 
+##' ## PFG traits for disturbance
+##' tab.traits = DATASET_Bauges_parameters$tab.dist
+##' tab.traits$nameDist = "grazing"
+##' tab.traits$strategy_tol = "indifferent"
+##' tab.traits$strategy_tol[which(tab.traits$dist_tolerance == "1")] = "grazing_herbs_1"
+##' tab.traits$strategy_tol[which(tab.traits$dist_tolerance == "2")] = "grazing_herbs_2"
+##' tab.traits$strategy_tol[which(tab.traits$dist_tolerance == "3")] = "grazing_herbs_3"
+##' tab.traits$strategy_tol[which(tab.traits$type == "P")] = "grazing_trees_1"
+##' str(tab.traits)
+##' 
+##' ## Create a skeleton folder
+##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+##' 
+##' ## Create PFG response to disturbance parameter files (give warnings) ------------------------
+##' PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_Bauges'
+##'                                , mat.PFG.tol = tab.traits[, c('nameDist', 'PFG', 'strategy_tol')])
 ##'                                                            
 ##' 
 ##' @export

@@ -63,18 +63,34 @@
 ##' ## Create a skeleton folder with the default name ('FATE_simulation')
 ##' PRE_FATE.skeletonDirectory()
 ##' 
-##' ## Create PFG dispersal parameter files
-##' PRE_FATE.params_PFGdispersal(name.simulation = "FATE_simulation"
-##'                             , mat.PFG.disp = data.frame(PFG = c("PFG1", "PFG2", "PFG3")
-##'                                                         , d50 = c(50, 50, 10)
-##'                                                         , d99 = c(1000, 1500, 2000)
-##'                                                         , ldd = c(10000, 5000, 10000)))
-##' 
-##' 
-##' 
-##' ## ----------------------------------------------------------------------------------------- ##
-##'   
+##' ## Create PFG dispersal parameter files -----------------------------------------------------
+##' PRE_FATE.params_PFGdispersal(name.simulation = 'FATE_simulation'
+##'                              , mat.PFG.disp = data.frame(PFG = paste0('PFG', 1:6)
+##'                                                          , d50 = c(10, 25, 100, 100, 500, 1000)
+##'                                                          , d99 = c(500, 600, 300, 300, 1250, 1200)
+##'                                                          , ldd = c(1500, 1500, 900, 900, 1500, 2000)))
+##'                                                         
+##'                                                         
+##' ## -------------------------------------------------------------------------------------------
+##'
 ##' ## Load example data
+##' data(DATASET_Bauges_parameters)
+##' 
+##' ## PFG traits for dispersal
+##' tab.traits = DATASET_Bauges_parameters$tab.disp
+##' tab.traits$dispersal = as.numeric(as.character(tab.traits$dispersal))
+##' tab.traits$d99 = round(exp(tab.traits$dispersal)/10) * 10
+##' tab.traits$d50 = tab.traits$d99 * 0.5
+##' tab.traits$ldd = tab.traits$d99 * 1.8
+##' str(tab.traits)
+##' 
+##' ## Create a skeleton folder
+##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+##' 
+##' ## Create PFG dispersal parameter files -----------------------------------------------------
+##' PRE_FATE.params_PFGdispersal(name.simulation = 'FATE_Bauges'
+##'                              , mat.PFG.disp = tab.traits[, c('PFG', 'd50', 'd99', 'ldd')])
+##' 
 ##' 
 ##' @export
 ##' 

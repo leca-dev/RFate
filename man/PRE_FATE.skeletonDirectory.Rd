@@ -84,11 +84,11 @@ structure.
 }
 \examples{
 
-## Create a skeleton folder with the default name ('FATE_simulation')
+## Create a skeleton folder with the default name ('FATE_simulation') ------------------------
 PRE_FATE.skeletonDirectory()
 
-## Create a skeleton folder with a specific name
-PRE_FATE.skeletonDirectory(name.simulation = "FATE_AlpineForest")
+## Create a skeleton folder with a specific name ---------------------------------------------
+PRE_FATE.skeletonDirectory(name.simulation = 'FATE_AlpineForest')
 
 }
 \seealso{

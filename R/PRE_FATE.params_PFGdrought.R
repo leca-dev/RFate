@@ -223,11 +223,70 @@
 ##' 
 ##' @examples
 ##' 
+##' ## Create a skeleton folder with the default name ('FATE_simulation')
+##' PRE_FATE.skeletonDirectory()
 ##' 
-##' ## ----------------------------------------------------------------------------------------- ##
-##'                                     
-##' ## Load example data
-##'                                                            
+##' 
+##' mat.char = data.frame(PFG = paste0('PFG', 1:6)
+##'                       , type = c('C', 'C', 'H', 'H', 'P', 'P')
+##'                       , maturity = c(5, 5, 3, 3, 8, 9)
+##'                       , longevity = c(12, 200, 25, 4, 110, 70)
+##'                       , age_above_150cm = c(1000, 100, 1000, 1000, 10, 12))
+##' 
+##' mat.tol = data.frame(nameDist = 'immediate'
+##'                      , PFG = paste0('PFG', 1:6)
+##'                      , strategy_tol = c('herbs_cham_1', 'herbs_cham_2'
+##'                                         , 'herbs_cham_2', 'herbs_cham_3'
+##'                                         , 'trees_1', 'trees_3'))
+##' 
+##' mat.drought = data.frame(PFG = paste0('PFG', 1:6)
+##'                          , threshold_moderate = c(0.5, 0.2, 1, 1, 0.8, 0.5)
+##'                          , threshold_severe = c(0.1, 0.1, 0.8, 0.9, 0.4, 0.2)
+##'                          , strategy_drou = c('chamaephytes', 'trees_shrubs', 'herbs'
+##'                                              , 'herbs', 'trees_shrubs', 'trees_shrubs'))
+##' 
+##' ## Create PFG response to drought parameter files (with PFG characteristics) -----------------
+##' PRE_FATE.params_PFGdrought(name.simulation = 'FATE_simulation'
+##'                            , mat.PFG.dist = mat.char
+##'                            , mat.PFG.tol = mat.tol
+##'                            , mat.PFG.drought = mat.drought)
+##' 
+##' 
+##' ## Create PFG response to drought parameter files (with all values) --------------------------
+##' mat.tol = expand.grid(responseStage = 1:3
+##'                       , PFG = paste0('PFG', 1:6)
+##'                       , nameDist = 'delayed')
+##' mat.tol$breakAge = c(1, 4, 10
+##'                      , 1, 4, 10
+##'                      , 1, 2, 50
+##'                      , 1, 2, 20
+##'                      , 2, 6, 95
+##'                      , 3, 8, 55)
+##' mat.tol$resproutAge = c(0, 0, 4
+##'                         , 0, 0, 4
+##'                         , 0, 0, 2
+##'                         , 0, 0, 2
+##'                         , 0, 2, 5
+##'                         , 0, 4, 7)
+##' mat.tol$killedIndiv = c(10, 10, 5
+##'                         , 10, 10, 5
+##'                         , 10, 10, 5
+##'                         , 10, 10, 5
+##'                         , 10, 7, 4
+##'                         , 10, 6, 3)
+##' mat.tol$resproutIndiv = c(0, 0, 5
+##'                           , 0, 0, 5
+##'                           , 0, 0, 3
+##'                           , 0, 0, 3
+##'                           , 0, 1, 4
+##'                           , 0, 2, 5)
+##' str(mat.tol)
+##' 
+##' PRE_FATE.params_PFGdrought(name.simulation = 'FATE_simulation'
+##'                            , mat.PFG.tol = mat.tol
+##'                            , mat.PFG.drought = mat.drought)
+##'                                                         
+##'                                                         
 ##' 
 ##' @export
 ##' 

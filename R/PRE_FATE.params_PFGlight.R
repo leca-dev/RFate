@@ -216,7 +216,7 @@
 ##' ## Create a skeleton folder with the default name ('FATE_simulation')
 ##' PRE_FATE.skeletonDirectory()
 ##' 
-##' ## Create PFG light parameter files (with strategies) ---------------------------------------
+##' ## Create PFG light parameter files (with strategies) ----------------------------------------
 ##' PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
 ##'                          , mat.PFG.light = data.frame(PFG = paste0('PFG', 1:6)
 ##'                                                       , strategy_ag = c('shade_lover', 'indifferent'
@@ -225,10 +225,10 @@
 ##'                          , mat.PFG.tol = data.frame(PFG = paste0('PFG', 1:6)
 ##'                                                     , strategy_tol = c('undergrowth', 'ubiquist'
 ##'                                                                       , 'ubiquist', 'semi_shade'
-##'                                                                       , 'pioneer', 'full_light'))
+##'                                                                       , 'pioneer', 'full_light')))
 ##'                                                         
 ##' 
-##' ## Create PFG succession parameter files (with all values) -----------------------------------
+##' ## Create PFG light parameter files (with all values) ----------------------------------------
 ##' mat.tol = expand.grid(resources = c('Low', 'Medium', 'High')
 ##'                       , lifeStage = c('Germinant', 'Immature', 'Mature')
 ##'                       , PFG = paste0('PFG', 1:6))
@@ -260,9 +260,9 @@
 ##' ## Create a skeleton folder
 ##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
 ##' 
-##' ## Create PFG succession parameter files -----------------------------------------------------
+##' ## Create PFG light parameter files ----------------------------------------------------------
 ##' PRE_FATE.params_PFGlight(name.simulation = 'FATE_Bauges'
-##'                               , mat.PFG.light = tab.traits)
+##'                          , mat.PFG.light = tab.traits)
 ##' 
 ##' 
 ##' @export

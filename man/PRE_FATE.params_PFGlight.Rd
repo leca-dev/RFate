@@ -212,11 +212,57 @@ each PFG :
 }
 \examples{
 
+## Create a skeleton folder with the default name ('FATE_simulation')
+PRE_FATE.skeletonDirectory()
 
-## ----------------------------------------------------------------------------------------- ##
+## Create PFG light parameter files (with strategies) ----------------------------------------
+PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
+                         , mat.PFG.light = data.frame(PFG = paste0('PFG', 1:6)
+                                                      , strategy_ag = c('shade_lover', 'indifferent'
+                                                                        , 'indifferent', 'shade_lover'
+                                                                        , 'light_lover', 'light_lover'))
+                         , mat.PFG.tol = data.frame(PFG = paste0('PFG', 1:6)
+                                                    , strategy_tol = c('undergrowth', 'ubiquist'
+                                                                      , 'ubiquist', 'semi_shade'
+                                                                      , 'pioneer', 'full_light')))
+                                                        
+
+## Create PFG light parameter files (with all values) ----------------------------------------
+mat.tol = expand.grid(resources = c('Low', 'Medium', 'High')
+                      , lifeStage = c('Germinant', 'Immature', 'Mature')
+                      , PFG = paste0('PFG', 1:6))
+mat.tol$tolerance = c(8, 8, 4, 8, 5, 4, 9, 4, 4
+                      , rep(9, 9)
+                      , rep(9, 9)
+                      , 8, 8, 6, 8, 6, 6, 9, 5, 5
+                      , 8, 8, 8, 5, 6, 9, 3, 4, 9
+                      , 8, 8, 8, 5, 5, 9, 5, 5, 9)
+
+PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
+                         , mat.PFG.light = data.frame(PFG = paste0('PFG', 1:6)
+                                                      , active_germ_low = c(9, 8, 8, 8, 5, 5)
+                                                      , active_germ_medium = rep(8, 6)
+                                                      , active_germ_high = c(4, 8, 8, 5, 9, 9))
+                         , mat.PFG.tol = mat.tol)
+                                                        
+                                                        
+## -------------------------------------------------------------------------------------------
 
 ## Load example data
-                         
+data(DATASET_Bauges_parameters)
+
+## PFG traits for light
+tab.traits = DATASET_Bauges_parameters$tab.light
+colnames(tab.traits) = c('PFG', 'type', 'light_need')
+str(tab.traits)
+
+## Create a skeleton folder
+PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+
+## Create PFG light parameter files ----------------------------------------------------------
+PRE_FATE.params_PFGlight(name.simulation = 'FATE_Bauges'
+                         , mat.PFG.light = tab.traits)
+
 
 }
 \seealso{

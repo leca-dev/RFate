@@ -319,6 +319,8 @@ is weighted by the number of traits used</strong>.</p>
 
 <span class='co'>## Species traits</span>
 <span class='kw'>tab.traits</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='kw'>dom.traits</span>
+<span class='kw'>tab.traits</span> <span class='op'>=</span> <span class='kw'>tab.traits</span>[, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"species"</span>, <span class='st'>"GROUP"</span>, <span class='st'>"MATURITY"</span>, <span class='st'>"LONGEVITY"</span>
+                            , <span class='st'>"HEIGHT"</span>, <span class='st'>"DISPERSAL"</span>, <span class='st'>"LIGHT"</span>, <span class='st'>"NITROGEN"</span>)]
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tab.traits</span>)
 
 <span class='co'>## Species niche overlap (similarity distance)</span>
