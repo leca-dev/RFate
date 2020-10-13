@@ -62,7 +62,7 @@ can be represented as well using the various **`FATE` add-on modules** :
 disturbances (mowing, grazing, fire..), drought event, invasive species.
 
 <div style="text-align:center;">
-<img src="articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></img>
+<img src="https://leca-dev.gitub.io/RFate/articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></img>
 </div>
 
 <br/>
@@ -76,26 +76,26 @@ vegetation model as well as for the `R`package.
 
 **0. Understand how `FATE` works :**
 
-- [the litterature](articles/fate_tutorial_0_publications.html)
-- [and the software](articles/fate_tutorial_0_modelling_framework.html)
+- [the litterature](https://leca-dev.gitub.io/RFate/articles/fate_tutorial_0_publications.html)
+- [and the software](https://leca-dev.gitub.io/RFate/articles/fate_tutorial_0_modelling_framework.html)
 
 **1. Build PFG :**
 
-- [the principle](articles/fate_tutorial_1_PFG.html)
-- [and the tools](articles/rfate_tutorial_1_PFG.html)
+- [the principle](https://leca-dev.gitub.io/RFate/articles/fate_tutorial_1_PFG.html)
+- [and the tools](https://leca-dev.gitub.io/RFate/articles/rfate_tutorial_1_PFG.html)
     
 **2. Run a `FATE` simulation :**
 
-- [understand how to run a simulation,](articles/fate_tutorial_2_RUN_SIMULATION.html)
-- [the different modules that can be used,](articles/fate_tutorial_3_MODULES.html)
-- [and how to prepare the corresponding parameter files](articles/rfate_tutorial_2_params.html)
+- [understand how to run a simulation,](https://leca-dev.gitub.io/RFate/articles/fate_tutorial_2_RUN_SIMULATION.html)
+- [the different modules that can be used,](https://leca-dev.gitub.io/RFate/articles/fate_tutorial_3_MODULES.html)
+- [and how to prepare the corresponding parameter files](https://leca-dev.gitub.io/RFate/articles/rfate_tutorial_2_params.html)
     
 **3. Analyze the outputs :**
 
-- [transform results and produce graphics](articles/rfate_tutorial_3_graphics.html)
+- [transform results and produce graphics](https://leca-dev.gitub.io/RFate/articles/rfate_tutorial_3_graphics.html)
 
 
 <div class="zoom">
-<p><img src="articles/pictures/SCHEMA_FATE_WORKFLOW.png" alt="Main workflow"></img></p>
+<p><img src="https://leca-dev.gitub.io/RFate/articles/pictures/SCHEMA_FATE_WORKFLOW.png" alt="Main workflow"></img></p>
 </div>
 
