@@ -266,10 +266,10 @@ fi
     $as_echo "$0: be upgraded to zsh 4.3.4 or later."
   else
     $as_echo "$0: Please tell bug-autoconf@gnu.org and
-$0: maya.gueguen@univ-grenoble-alpes.fr about your system, including
-$0: any error possibly output before this message. Then
-$0: install a modern shell, or manually run the script
-$0: under such a shell if you do have one."
+$0: maya.gueguen@univ-grenoble-alpes.fr about your system,
+$0: including any error possibly output before this
+$0: message. Then install a modern shell, or manually run
+$0: the script under such a shell if you do have one."
   fi
   exit 1
 fi
