@@ -3,7 +3,7 @@
 
 #' FATE Wrapper
 #'
-#' This function runs a FATE dynamical landscape vegetation simulation.
+#' This function runs a \code{FATE} dynamical landscape vegetation simulation.
 #'
 #' @param simulParam a \code{string} corresponding to the name of a 
 #' parameter file that will be contained into the \code{PARAM_SIMUL} folder 
@@ -11,12 +11,34 @@
 #' @param no_CPU (\emph{optional}) default \code{1}. \cr The number of 
 #' resources that can be used to parallelize the simulation
 #' @param verboseLevel (\emph{optional}) default \code{0}. \cr The logger 
-#' verbose level
+#' verbose level : a \code{FATE} simulation can render different levels of 
+#' information (from \code{0} to \code{4}, see 
+#' \href{FATE#details}{\code{Details}}).
+#' 
+#' @details This function allows to run a vegetation simulation with the 
+#' \code{FATE} model, based on a simulation folder and a species simulation 
+#' parameter file.
+#' 
+#' A \code{FATE} simulation can be parallelized, using the \code{no_CPU} 
+#' parameter, given that the user machine is multi-core !
+#' 
+#' Quantity of informations are rendered by the software into the \code{R} 
+#' console, and the \code{verboseLevel} parameter allows to filter which 
+#' level of information is printed :
+#' 
+#' \describe{
+#'   \item{0. }{shows any message}
+#'   \item{1. }{shows any message, except debug}
+#'   \item{2. }{shows only warning and error messages}
+#'   \item{3. }{shows only error messages}
+#'   \item{4. }{mute}
+#' }
 #'
 #' @return None
 #'
 #' @examples \dontrun{FATE()}
 #'
+#' @author Damien Georges
 #' @author Isabelle Boulangeat, \email{isabelle.boulangeat@inrae.fr}
 #' @author Maya Guéguen, \email{maya.gueguen@univ-grenoble-alpes.fr}
 #'
