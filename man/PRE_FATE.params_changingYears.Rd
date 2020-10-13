@@ -146,10 +146,10 @@ these temporal changes :
 }
 \examples{
 
-## Create a skeleton folder with the default name ('FATE_simulation')
+## Create a skeleton folder with the default name ('FATE_simulation') ------------------------
 PRE_FATE.skeletonDirectory()
 
-## Create a Changing_times parameter file
+## Create a Changing_times parameter file ----------------------------------------------------
 PRE_FATE.params_changingYears(name.simulation = "FATE_simulation"
                               , type.changing = "DIST"
                               , mat.changing = data.frame(year = c(50,50,80,80)

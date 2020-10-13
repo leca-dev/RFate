@@ -253,13 +253,6 @@ is known, and depending on the number of set of parameters asked to be
 obtained at the end, each range is more or less finely cut and values are 
 drawn in order to explore the whole space of combinations.
 }
-\examples{
-
-
-## Load example data
-
-
-}
 \seealso{
 \code{\link[SPOT]{designLHD}},
 \code{\link{PRE_FATE.skeletonDirectory}},

@@ -221,11 +221,6 @@
 ##' \code{\link{PRE_FATE.params_PFGlight}},
 ##' 
 ##' 
-##' @examples
-##' 
-##' 
-##' ## Load example data
-##' 
 ##' 
 ##' @export
 ##' 

@@ -261,12 +261,7 @@
 ##' \code{\link{PRE_FATE.params_changingYears}},
 ##' \code{\link{.setPattern}}
 ##' 
-##' @examples
 ##' 
-##'            
-##' ## ----------------------------------------------------------------------------------------- ##
-##'                                 
-##' ## Load example data
 ##' 
 ##' @export
 ##' 

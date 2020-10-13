@@ -261,14 +261,6 @@ needed by the program to run.
   \code{--PFG_PARAMS_DISPERSAL--} flag (must be \emph{PFG Albert} too).
 }
 }
-\examples{
-
-           
-## ----------------------------------------------------------------------------------------- ##
-                                
-## Load example data
-
-}
 \seealso{
 \code{\link{PRE_FATE.skeletonDirectory}},
 \code{\link{PRE_FATE.params_globalParameters}},

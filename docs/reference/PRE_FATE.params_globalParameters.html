@@ -952,55 +952,48 @@ file, and if so, some additional parameters will be required :</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
+<span class='co'>## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span>
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
 
-<span class='co'>## Create a Global_parameters file</span>
+<span class='co'>## Create a Global_parameters file------------------------------------------------------------</span>
 <span class='fu'>PRE_FATE.params_globalParameters</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
                                  , required.no_PFG = <span class='fl'>3</span>
                                  , required.no_strata = <span class='fl'>5</span>
-                                 , required.simul_duration = <span class='fl'>100</span>
-                                 , required.seeding_duration = <span class='fl'>10</span>
+                                 , required.simul_duration = <span class='fl'>500</span>
+                                 , required.seeding_duration = <span class='fl'>50</span>
                                  , required.seeding_timestep = <span class='fl'>1</span>
                                  , required.seeding_input = <span class='fl'>100</span>
-                                 , required.max_abund_low = <span class='fl'>30000</span>
-                                 , required.max_abund_medium = <span class='fl'>50000</span>
-                                 , required.max_abund_high = <span class='fl'>90000</span>
+                                 , required.max_abund_low = <span class='fl'>3000</span>
+                                 , required.max_abund_medium = <span class='fl'>5000</span>
+                                 , required.max_abund_high = <span class='fl'>9000</span>
                                  , doLight = <span class='fl'>TRUE</span>
-                                 , LIGHT.thresh_medium = <span class='fl'>130000</span>
-                                 , LIGHT.thresh_low = <span class='fl'>190000</span>
+                                 , LIGHT.thresh_medium = <span class='fl'>4000</span>
+                                 , LIGHT.thresh_low = <span class='fl'>7000</span>
                                  , doDispersal = <span class='fl'>TRUE</span>
                                  , DISPERSAL.mode = <span class='fl'>1</span>
                                  , doHabSuitability = <span class='fl'>TRUE</span>
-                                 , HABSUIT.mode = <span class='fl'>1</span>
-                                 )
+                                 , HABSUIT.mode = <span class='fl'>1</span>)
                                    
-<span class='co'>## Create SEVERAL Global_parameters files</span>
+<span class='co'>## Create SEVERAL Global_parameters files ----------------------------------------------------</span>
 <span class='fu'>PRE_FATE.params_globalParameters</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
                                  , required.no_PFG = <span class='fl'>3</span>
                                  , required.no_strata = <span class='fl'>5</span>
-                                 , required.simul_duration = <span class='fl'>100</span>
-                                 , required.seeding_duration = <span class='fl'>10</span>
+                                 , required.simul_duration = <span class='fl'>500</span>
+                                 , required.seeding_duration = <span class='fl'>50</span>
                                  , required.seeding_timestep = <span class='fl'>1</span>
                                  , required.seeding_input = <span class='fl'>100</span>
-                                 , required.max_abund_low = <span class='fl'>30000</span>
-                                 , required.max_abund_medium = <span class='fl'>50000</span>
-                                 , required.max_abund_high = <span class='fl'>90000</span>
+                                 , required.max_abund_low = <span class='fl'>3000</span>
+                                 , required.max_abund_medium = <span class='fl'>5000</span>
+                                 , required.max_abund_high = <span class='fl'>9000</span>
                                  , doLight = <span class='fl'>TRUE</span>
-                                 , LIGHT.thresh_medium = <span class='fl'>130000</span>
-                                 , LIGHT.thresh_low = <span class='fl'>190000</span>
+                                 , LIGHT.thresh_medium = <span class='fl'>4000</span>
+                                 , LIGHT.thresh_low = <span class='fl'>7000</span>
                                  , doDispersal = <span class='fl'>TRUE</span>
                                  , DISPERSAL.mode = <span class='fl'>1</span>
                                  , doHabSuitability = <span class='fl'>TRUE</span>
-                                 , HABSUIT.mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>)
-                                 )
+                                 , HABSUIT.mode = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>,<span class='fl'>2</span>))
 
 
-
-<span class='co'>## ----------------------------------------------------------------------------------------- ##</span>
-                 
-<span class='co'>## Load example data</span>
-                                 
 
 </pre>
   </div>

@@ -621,55 +621,48 @@
 ##' 
 ##' @examples
 ##' 
-##' ## Create a skeleton folder with the default name ('FATE_simulation')
+##' ## Create a skeleton folder with the default name ('FATE_simulation') ------------------------
 ##' PRE_FATE.skeletonDirectory()
 ##' 
-##' ## Create a Global_parameters file
+##' ## Create a Global_parameters file------------------------------------------------------------
 ##' PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
 ##'                                  , required.no_PFG = 3
 ##'                                  , required.no_strata = 5
-##'                                  , required.simul_duration = 100
-##'                                  , required.seeding_duration = 10
+##'                                  , required.simul_duration = 500
+##'                                  , required.seeding_duration = 50
 ##'                                  , required.seeding_timestep = 1
 ##'                                  , required.seeding_input = 100
-##'                                  , required.max_abund_low = 30000
-##'                                  , required.max_abund_medium = 50000
-##'                                  , required.max_abund_high = 90000
+##'                                  , required.max_abund_low = 3000
+##'                                  , required.max_abund_medium = 5000
+##'                                  , required.max_abund_high = 9000
 ##'                                  , doLight = TRUE
-##'                                  , LIGHT.thresh_medium = 130000
-##'                                  , LIGHT.thresh_low = 190000
+##'                                  , LIGHT.thresh_medium = 4000
+##'                                  , LIGHT.thresh_low = 7000
 ##'                                  , doDispersal = TRUE
 ##'                                  , DISPERSAL.mode = 1
 ##'                                  , doHabSuitability = TRUE
-##'                                  , HABSUIT.mode = 1
-##'                                  )
+##'                                  , HABSUIT.mode = 1)
 ##'                                    
-##' ## Create SEVERAL Global_parameters files
+##' ## Create SEVERAL Global_parameters files ----------------------------------------------------
 ##' PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
 ##'                                  , required.no_PFG = 3
 ##'                                  , required.no_strata = 5
-##'                                  , required.simul_duration = 100
-##'                                  , required.seeding_duration = 10
+##'                                  , required.simul_duration = 500
+##'                                  , required.seeding_duration = 50
 ##'                                  , required.seeding_timestep = 1
 ##'                                  , required.seeding_input = 100
-##'                                  , required.max_abund_low = 30000
-##'                                  , required.max_abund_medium = 50000
-##'                                  , required.max_abund_high = 90000
+##'                                  , required.max_abund_low = 3000
+##'                                  , required.max_abund_medium = 5000
+##'                                  , required.max_abund_high = 9000
 ##'                                  , doLight = TRUE
-##'                                  , LIGHT.thresh_medium = 130000
-##'                                  , LIGHT.thresh_low = 190000
+##'                                  , LIGHT.thresh_medium = 4000
+##'                                  , LIGHT.thresh_low = 7000
 ##'                                  , doDispersal = TRUE
 ##'                                  , DISPERSAL.mode = 1
 ##'                                  , doHabSuitability = TRUE
-##'                                  , HABSUIT.mode = c(1,2)
-##'                                  )
+##'                                  , HABSUIT.mode = c(1,2))
 ##' 
 ##' 
-##' 
-##' ## ----------------------------------------------------------------------------------------- ##
-##'                  
-##' ## Load example data
-##'                                  
 ##' 
 ##' @export
 ##' 
