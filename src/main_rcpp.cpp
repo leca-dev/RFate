@@ -368,6 +368,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		simulMap->setFGparams(fg_vec_tmp);
 	}
 
+	simulMap->getGlobalParameters().setNoCPU(no_CPU);
 	logg.info("\n*** NoCPU = ", simulMap->getGlobalParameters().getNoCPU());
 	fileStats << "Number of CPU used : "
 						<< simulMap->getGlobalParameters().getNoCPU()
