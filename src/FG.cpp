@@ -507,39 +507,39 @@ void FG::show()
 	logg.debug("\n*********************************************",
              "\n** Functional Group Parameters:",
              "\n*********************************************\n",
-             "m_Name = ", m_Name,
-             "m_M = ", m_M,
-             "m_L = ", m_L,
-             "m_MaxA = ", m_MaxA,
-             "m_ImmSize = ", m_ImmSize,
-             "m_MaxStratum = ", m_MaxStratum,
-             "m_Strata = ", m_Strata,
-             "m_PoolL = ", m_PoolL,
-             "m_InnateDorm = ", m_InnateDorm,
-             "m_PotentialFecundity = ", m_PotentialFecundity,
-             "m_ActiveGerm = (column: resource) ", m_ActiveGerm,
-             "m_Tolerance = (line: life stage, column: resource)", m_Tolerance,
-             "m_Dispersed = ", m_Dispersed,
-             "m_disp50 = ", m_disp50,
-             "m_disp99 = ", m_disp99,
-             "m_dispLD = ", m_dispLD,
-             "** m_DistResponse =");
+             "\nm_Name = ", m_Name,
+             "\nm_M = ", m_M,
+             "\nm_L = ", m_L,
+             "\nm_MaxA = ", m_MaxA,
+             "\nm_ImmSize = ", m_ImmSize,
+             "\nm_MaxStratum = ", m_MaxStratum,
+             "\nm_Strata = ", m_Strata,
+             "\nm_PoolL = ", m_PoolL,
+             "\nm_InnateDorm = ", m_InnateDorm,
+             "\nm_PotentialFecundity = ", m_PotentialFecundity,
+             "\nm_ActiveGerm = (column: resource) ", m_ActiveGerm,
+             "\nm_Tolerance = (line: life stage, column: resource)", m_Tolerance,
+             "\nm_Dispersed = ", m_Dispersed,
+             "\nm_disp50 = ", m_disp50,
+             "\nm_disp99 = ", m_disp99,
+             "\nm_dispLD = ", m_dispLD,
+             "\n** m_DistResponse =");
 	m_DistResponse.show();
-  logg.debug("m_SoilContrib = ", m_SoilContrib,
-             "m_SoilLow = ", m_SoilLow,
-             "m_SoilHigh = ", m_SoilHigh,
-             "m_SoilActiveGerm = (column: resource) ", m_SoilActiveGerm,
-             "m_SoilTolerance = (line: life stage, column: resource)", m_SoilTolerance,
-             "** m_FireResponse =");
+  logg.debug("\nm_SoilContrib = ", m_SoilContrib,
+             "\nm_SoilLow = ", m_SoilLow,
+             "\nm_SoilHigh = ", m_SoilHigh,
+             "\nm_SoilActiveGerm = (column: resource) ", m_SoilActiveGerm,
+             "\nm_SoilTolerance = (line: life stage, column: resource)", m_SoilTolerance,
+             "\n** m_FireResponse =");
 	m_FireResponse.show();
-  logg.debug("m_Flamm = ", m_Flamm,
-             "** m_DroughtResponse =");
+  logg.debug("\nm_Flamm = ", m_Flamm,
+             "\n** m_DroughtResponse =");
 	m_DroughtResponse.show();
-	logg.debug("m_DroughtSD = ", m_DroughtSD,
-             "m_CountModToSev = ", m_CountModToSev,
-             "m_CountSevMort = ", m_CountSevMort,
-             "m_DroughtRecovery = ", m_DroughtRecovery,
-             "m_IsAlien = ", m_IsAlien);
+	logg.debug("\nm_DroughtSD = ", m_DroughtSD,
+             "\nm_CountModToSev = ", m_CountModToSev,
+             "\nm_CountSevMort = ", m_CountSevMort,
+             "\nm_DroughtRecovery = ", m_DroughtRecovery,
+             "\nm_IsAlien = ", m_IsAlien);
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/

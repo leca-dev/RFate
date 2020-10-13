@@ -230,5 +230,5 @@ void FGresponse::show()
 						 "\nm_BreakAge = (line: perturbation, column: reaction level)", m_BreakAge,
 						 "\nm_ResprAge = (line: perturbation, column: reaction level)", m_ResprAge,
 						 "\nm_Fates = (block: perturbation, line: reaction level, column: plant behaviour)", m_Fates,
-						 "m_DormBreaks = ", m_DormBreaks);
+						 "\nm_DormBreaks = ", m_DormBreaks);
 }
