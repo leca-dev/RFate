@@ -1,6 +1,6 @@
 
-path.reference = "https://mayagueguen.github.io/RFate/reference/"
-path.articles = "https://mayagueguen.github.io/RFate/articles/"
+path.reference = "https://leca-dev.github.io/RFate/reference/"
+path.articles = "https://leca-dev.github.io/RFate/articles/"
 
 ###################################################################################################################################
 
