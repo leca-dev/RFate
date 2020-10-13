@@ -32,6 +32,37 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-cogs'></i> Run
                )
                , column(2
                         , br()
+                        , actionButton(inputId = "HELP.panel3"
+                                       , label = "Need some help"
+                                       , icon = icon("question-circle")
+                                       , width = "100%"
+                                       , style = button.style.help)
+               )
+             ) ## END fluidRow
+             , fluidRow(
+               column(5
+                      , div(id = "help3_3"
+                            , numericInput(inputId = "run.opt.no_CPU"
+                                           , label = param.style("Number of CPU")
+                                           , value = 1
+                                           , min = 1
+                                           , width = "100%")
+                      )
+               )
+               , column(5
+                        , div(id = "help3_4"
+                              , sliderInput(inputId = "run.opt.verbose_level"
+                                            , label = param.style("Verbose level")
+                                            , min = 0
+                                            , max = 4
+                                            , value = 1
+                                            , step = 1
+                                            , round = TRUE
+                                            , width = "100%")
+                        )
+               )
+               , column(2
+                        , br()
                         , actionButton(inputId = "run"
                                        , label = "Run"
                                        , icon = icon("play-circle")
@@ -54,11 +85,11 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-cogs'></i> Run
                                                                                 , "a <span style='font-family:Monospace;'>string</span> that corresponds to
                                                                                 the file name of the <span style='font-family:Monospace;'>FATE</span> executable"
                                                            )
-                                                           )
                                      )
-                                     )
-                                     ) ## END fluidRow
-                        ) ## END sidebarPanel
+                        )
+               )
+             ) ## END fluidRow
+           ) ## END sidebarPanel
            
            # Output
            , mainPanel(
@@ -66,20 +97,12 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-cogs'></i> Run
              wellPanel(id = "main.panel"
                        , style = border.style
                        , fluidRow(
-                         column(6
-                                , wellPanel(id = "main.panel1",
-                                            br(),
-                                            HTML("<strong>ERRORS</strong>")
-                                )
+                         div(id = "help3_5"
+                             , column(6, wellPanel(id = "main.panel1", br(), HTML("<strong>ERRORS :</strong> see in R console")))
+                             , column(6, wellPanel(id = "main.panel2", br(), HTML("<strong>OUTPUTS :</strong> see in R console")))
                          )
-                         , column(6
-                                  , wellPanel(id = "main.panel2",
-                                              br(),
-                                              HTML("<strong>OUTPUTS</strong>")
-                                  )
-                         )
-                       )
+                       ) ## END fluidRow
              ) ## END wellPanel
            ) ## END mainPanel
-                        ) ## END sidebarLayout
-             ) ## tabPanel
+         ) ## END sidebarLayout
+) ## tabPanel

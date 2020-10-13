@@ -154,7 +154,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                          column(4, br())
                          , column(4, br())
                          # , column(4, HTML("<img src='./ARBRES.png' width='200px' />"))
-                         , column(4, HTML(paste0("<img src='https://leca-dev.github.io/RFate/docs/articles/pictures/logo-leca.png'"
+                         , column(4, HTML(paste0("<img src='https://leca-dev.github.io/RFate/articles/pictures/logo-leca.png'"
                                                  , " width='200px' alt='LOGO LECA' style='float:right;' />")))
                        )## END fluidRow
              ) ## END wellPanel

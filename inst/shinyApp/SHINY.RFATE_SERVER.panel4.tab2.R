@@ -41,6 +41,7 @@ observeEvent(input$create.temporalEvolution, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating PFG abundance tables with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()), "</li>"
@@ -64,6 +65,7 @@ observeEvent(input$create.temporalEvolution, {
   removeModal()
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 ####################################################################
@@ -72,6 +74,7 @@ observeEvent(input$create.evolutionCoverage, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating evolution coverage graphic with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()),"</li>"
@@ -98,6 +101,7 @@ observeEvent(input$create.evolutionCoverage, {
   })
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 
@@ -107,6 +111,7 @@ observeEvent(input$create.evolutionPixels, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   if (input$graph.opt.cells_ID)
   {
@@ -140,6 +145,7 @@ observeEvent(input$create.evolutionPixels, {
   })
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 
@@ -149,6 +155,7 @@ observeEvent(input$create.evolutionStability, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating evolution of habitat composition graphic with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()), "</li>"
@@ -176,5 +183,6 @@ observeEvent(input$create.evolutionStability, {
   }
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 

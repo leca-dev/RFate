@@ -20,7 +20,7 @@ get_traits = eventReactive(list(input$species.traits, input$compute.distance), {
     if (extension(input$species.traits$name) %in% c(".txt", ".csv"))
     {
       sp.traits = fread(input$species.traits$datapath)
-	  sp.traits = as.data.frame(sp.traits, stringsAsFactors = FALSE)
+      sp.traits = as.data.frame(sp.traits, stringsAsFactors = FALSE)
       
       if (length(which(colnames(sp.traits) == "species")) == 1)
       {

@@ -78,6 +78,7 @@ observeEvent(input$create.relativeAbund, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating relative PFG abundance maps with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()), "</li>"
@@ -99,6 +100,7 @@ observeEvent(input$create.relativeAbund, {
   removeModal()
 
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 
@@ -108,6 +110,7 @@ observeEvent(input$create.binaryMaps, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating PFG binary maps with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()), "</li>"
@@ -136,6 +139,7 @@ observeEvent(input$create.binaryMaps, {
   removeModal()
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 ####################################################################
@@ -144,6 +148,7 @@ observeEvent(input$create.validationStat, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   graph.mat.PFG.obs = graph.opt.ras_habitat = ""
   if (is.data.frame(input$graph.mat.PFG.obs))
@@ -195,6 +200,7 @@ observeEvent(input$create.validationStat, {
   # shinyjs::show("plot.validationStat")
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 ####################################################################
@@ -203,6 +209,7 @@ observeEvent(input$create.PFGvsHS, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating maps of PFG habitat suitability vs simulated occurrences with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()), "</li>"
@@ -227,6 +234,7 @@ observeEvent(input$create.PFGvsHS, {
   })
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
 ####################################################################
@@ -235,6 +243,7 @@ observeEvent(input$create.PFGmap, {
   
   path.init = getwd()
   setwd(get_path.folder())
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
   
   showModal(modalDialog(HTML(paste0("Creating maps of PFG richness, relative cover, CWM with : <ul>"
                                     , "<li><strong>folder :</strong> ", basename(get_name.simul()), "</li>"
@@ -265,5 +274,6 @@ observeEvent(input$create.PFGmap, {
   })
   
   setwd(path.init)
+  cat(paste0("\n\n >>>>> Directory sets to : ", getwd(), " <<<<<\n\n"))
 })
 
