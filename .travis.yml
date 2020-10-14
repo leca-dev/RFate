@@ -14,6 +14,13 @@ addons:
       - libproj-dev
       - libgeos-dev
 
+jobs:
+  include:
+  - r: "3.6.3"
+    env:
+      GDALVERSION="2.3.3"
+      PROJVERSION="4.9.3"
+
 matrix:
   include:
   - r: devel
