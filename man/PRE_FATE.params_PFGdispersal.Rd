@@ -63,12 +63,14 @@ dispersed into 3 different concentric circles :
 ## Create a skeleton folder with the default name ('FATE_simulation')
 PRE_FATE.skeletonDirectory()
 
+mat.disp = data.frame(PFG = paste0('PFG', 1:6)
+                      , d50 = c(10, 25, 100, 100, 500, 1000)
+                      , d99 = c(500, 600, 300, 300, 1250, 1200)
+                      , ldd = c(1500, 1500, 900, 900, 1500, 2000))
+
 ## Create PFG dispersal parameter files -----------------------------------------------------
 PRE_FATE.params_PFGdispersal(name.simulation = 'FATE_simulation'
-                             , mat.PFG.disp = data.frame(PFG = paste0('PFG', 1:6)
-                                                         , d50 = c(10, 25, 100, 100, 500, 1000)
-                                                         , d99 = c(500, 600, 300, 300, 1250, 1200)
-                                                         , ldd = c(1500, 1500, 900, 900, 1500, 2000)))
+                             , mat.PFG.disp = mat.disp)
                                                         
                                                         
 ## -------------------------------------------------------------------------------------------

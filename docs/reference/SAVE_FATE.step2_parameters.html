@@ -199,31 +199,31 @@ used to build a FATE simulation folder." />
 used to build a <code>FATE</code> simulation folder.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>SAVE_FATE.step2_parameters</span>(
-  <span class='kw'>name.dataset</span>,
-  name.simulation = <span class='fl'>NA</span>,
-  <span class='kw'>strata.limits</span>,
-  <span class='kw'>mat.PFG.succ</span>,
-  mat.PFG.light = <span class='kw'>NULL</span>,
-  mat.PFG.light.tol = <span class='kw'>NULL</span>,
-  mat.PFG.soil = <span class='kw'>NULL</span>,
-  mat.PFG.soil.tol = <span class='kw'>NULL</span>,
-  mat.PFG.disp = <span class='kw'>NULL</span>,
-  mat.PFG.dist = <span class='kw'>NULL</span>,
-  mat.PFG.dist.tol = <span class='kw'>NULL</span>,
-  mat.PFG.drought = <span class='kw'>NULL</span>,
-  mat.PFG.drought.tol = <span class='kw'>NULL</span>,
-  rasters = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name.MASK = <span class='fl'>NA</span>, name.DIST = <span class='fl'>NA</span>, name.DROUGHT = <span class='fl'>NA</span>, name.FIRE = <span class='fl'>NA</span>,
-    name.ELEVATION = <span class='fl'>NA</span>, name.SLOPE = <span class='fl'>NA</span>),
-  multipleSet = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(name.simulation.1 = <span class='fl'>NA</span>, name.simulation.2 = <span class='fl'>NA</span>, file.simulParam.1
-    = <span class='fl'>NA</span>, file.simulParam.2 = <span class='fl'>NA</span>, no_simulations = <span class='fl'>NA</span>, opt.percent_maxAbund = <span class='fl'>NA</span>,
-    opt.percent_seeding = <span class='fl'>NA</span>, opt.percent_light = <span class='fl'>NA</span>, opt.percent_soil = <span class='fl'>NA</span>,
-    do.max_abund_low = <span class='fl'>NA</span>, do.max_abund_medium = <span class='fl'>NA</span>, do.max_abund_high = <span class='fl'>NA</span>,
-    do.seeding_duration = <span class='fl'>NA</span>, do.seeding_timestep = <span class='fl'>NA</span>, do.seeding_input = <span class='fl'>NA</span>,
-    do.no_strata = <span class='fl'>NA</span>, do.LIGHT.thresh_medium = <span class='fl'>NA</span>, do.LIGHT.thresh_low = <span class='fl'>NA</span>,
-    do.SOIL.init = <span class='fl'>NA</span>, do.SOIL.retention = <span class='fl'>NA</span>, do.DISPERSAL.mode = <span class='fl'>NA</span>,     
-    do.HABSUIT.mode = <span class='fl'>NA</span>)
-)</pre>
+    <pre class="usage"><span class='fu'>SAVE_FATE.step2_parameters</span><span class='op'>(</span>
+  <span class='va'>name.dataset</span>,
+  name.simulation <span class='op'>=</span> <span class='cn'>NA</span>,
+  <span class='va'>strata.limits</span>,
+  <span class='va'>mat.PFG.succ</span>,
+  mat.PFG.light <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.light.tol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.soil <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.soil.tol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.disp <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.dist <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.dist.tol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.drought <span class='op'>=</span> <span class='cn'>NULL</span>,
+  mat.PFG.drought.tol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  rasters <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name.MASK <span class='op'>=</span> <span class='cn'>NA</span>, name.DIST <span class='op'>=</span> <span class='cn'>NA</span>, name.DROUGHT <span class='op'>=</span> <span class='cn'>NA</span>, name.FIRE <span class='op'>=</span> <span class='cn'>NA</span>,
+    name.ELEVATION <span class='op'>=</span> <span class='cn'>NA</span>, name.SLOPE <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>,
+  multipleSet <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>name.simulation.1 <span class='op'>=</span> <span class='cn'>NA</span>, name.simulation.2 <span class='op'>=</span> <span class='cn'>NA</span>, file.simulParam.1
+    <span class='op'>=</span> <span class='cn'>NA</span>, file.simulParam.2 <span class='op'>=</span> <span class='cn'>NA</span>, no_simulations <span class='op'>=</span> <span class='cn'>NA</span>, opt.percent_maxAbund <span class='op'>=</span> <span class='cn'>NA</span>,
+    opt.percent_seeding <span class='op'>=</span> <span class='cn'>NA</span>, opt.percent_light <span class='op'>=</span> <span class='cn'>NA</span>, opt.percent_soil <span class='op'>=</span> <span class='cn'>NA</span>,
+    do.max_abund_low <span class='op'>=</span> <span class='cn'>NA</span>, do.max_abund_medium <span class='op'>=</span> <span class='cn'>NA</span>, do.max_abund_high <span class='op'>=</span> <span class='cn'>NA</span>,
+    do.seeding_duration <span class='op'>=</span> <span class='cn'>NA</span>, do.seeding_timestep <span class='op'>=</span> <span class='cn'>NA</span>, do.seeding_input <span class='op'>=</span> <span class='cn'>NA</span>,
+    do.no_strata <span class='op'>=</span> <span class='cn'>NA</span>, do.LIGHT.thresh_medium <span class='op'>=</span> <span class='cn'>NA</span>, do.LIGHT.thresh_low <span class='op'>=</span> <span class='cn'>NA</span>,
+    do.SOIL.init <span class='op'>=</span> <span class='cn'>NA</span>, do.SOIL.retention <span class='op'>=</span> <span class='cn'>NA</span>, do.DISPERSAL.mode <span class='op'>=</span> <span class='cn'>NA</span>,     
+    do.HABSUIT.mode <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

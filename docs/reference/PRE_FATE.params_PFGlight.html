@@ -201,12 +201,12 @@ light-related parameters for each PFG (one file for each of them) used in
 the light module of <code>FATE</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.params_PFGlight</span>(
-  <span class='kw'>name.simulation</span>,
-  <span class='kw'>mat.PFG.light</span>,
-  mat.PFG.tol = <span class='kw'>NULL</span>,
-  opt.folder.name = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.params_PFGlight</span><span class='op'>(</span>
+  <span class='va'>name.simulation</span>,
+  <span class='va'>mat.PFG.light</span>,
+  mat.PFG.tol <span class='op'>=</span> <span class='cn'>NULL</span>,
+  opt.folder.name <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -408,55 +408,62 @@ each PFG :</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span><span class='op'>)</span>
+
 
 <span class='co'>## Create PFG light parameter files (with strategies) ----------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGlight</span>(name.simulation = <span class='st'>'FATE_simulation'</span>
-                         , mat.PFG.light = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(PFG = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>)
-                                                      , strategy_ag = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'shade_lover'</span>, <span class='st'>'indifferent'</span>
-                                                                        , <span class='st'>'indifferent'</span>, <span class='st'>'shade_lover'</span>
-                                                                        , <span class='st'>'light_lover'</span>, <span class='st'>'light_lover'</span>))
-                         , mat.PFG.tol = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(PFG = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>)
-                                                    , strategy_tol = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'undergrowth'</span>, <span class='st'>'ubiquist'</span>
-                                                                      , <span class='st'>'ubiquist'</span>, <span class='st'>'semi_shade'</span>
-                                                                      , <span class='st'>'pioneer'</span>, <span class='st'>'full_light'</span>)))
+<span class='va'>mat.ag</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                    , strategy_ag <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'shade_lover'</span>, <span class='st'>'indifferent'</span>
+                                      , <span class='st'>'indifferent'</span>, <span class='st'>'shade_lover'</span>
+                                      , <span class='st'>'light_lover'</span>, <span class='st'>'light_lover'</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>mat.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                     , strategy_tol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'undergrowth'</span>, <span class='st'>'ubiquist'</span>
+                                        , <span class='st'>'ubiquist'</span>, <span class='st'>'semi_shade'</span>
+                                        , <span class='st'>'pioneer'</span>, <span class='st'>'full_light'</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='fu'>PRE_FATE.params_PFGlight</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
+                         , mat.PFG.light <span class='op'>=</span> <span class='va'>mat.ag</span>
+                         , mat.PFG.tol <span class='op'>=</span> <span class='va'>mat.tol</span><span class='op'>)</span>
                                                         
 
 <span class='co'>## Create PFG light parameter files (with all values) ----------------------------------------</span>
-<span class='kw'>mat.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span>(resources = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Low'</span>, <span class='st'>'Medium'</span>, <span class='st'>'High'</span>)
-                      , lifeStage = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'Germinant'</span>, <span class='st'>'Immature'</span>, <span class='st'>'Mature'</span>)
-                      , PFG = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>))
-<span class='kw'>mat.tol</span><span class='op'>$</span><span class='kw'>tolerance</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>9</span>, <span class='fl'>4</span>, <span class='fl'>4</span>
-                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>9</span>, <span class='fl'>9</span>)
-                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>9</span>, <span class='fl'>9</span>)
+<span class='va'>mat.ag</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                    , active_germ_low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>
+                    , active_germ_medium <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>6</span><span class='op'>)</span>
+                    , active_germ_high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>
+
+<span class='va'>mat.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Low'</span>, <span class='st'>'Medium'</span>, <span class='st'>'High'</span><span class='op'>)</span>
+                      , lifeStage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Germinant'</span>, <span class='st'>'Immature'</span>, <span class='st'>'Mature'</span><span class='op'>)</span>
+                      , PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>mat.tol</span><span class='op'>$</span><span class='va'>tolerance</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>9</span>, <span class='fl'>4</span>, <span class='fl'>4</span>
+                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span>
+                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span>
                       , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>
                       , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>9</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>9</span>
-                      , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span>)
+                      , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span><span class='op'>)</span>
 
-<span class='fu'>PRE_FATE.params_PFGlight</span>(name.simulation = <span class='st'>'FATE_simulation'</span>
-                         , mat.PFG.light = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(PFG = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>)
-                                                      , active_germ_low = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span>)
-                                                      , active_germ_medium = <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>8</span>, <span class='fl'>6</span>)
-                                                      , active_germ_high = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>9</span>))
-                         , mat.PFG.tol = <span class='kw'>mat.tol</span>)
+<span class='fu'>PRE_FATE.params_PFGlight</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
+                         , mat.PFG.light <span class='op'>=</span> <span class='va'>mat.ag</span>
+                         , mat.PFG.tol <span class='op'>=</span> <span class='va'>mat.tol</span><span class='op'>)</span>
                                                         
                                                         
 <span class='co'>## -------------------------------------------------------------------------------------------</span>
 
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_parameters</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_parameters</span><span class='op'>)</span>
 
 <span class='co'>## PFG traits for light</span>
-<span class='kw'>tab.traits</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='kw'>tab.light</span>
-<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span>(<span class='kw'>tab.traits</span>) <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'PFG'</span>, <span class='st'>'type'</span>, <span class='st'>'light_need'</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tab.traits</span>)
+<span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.light</span>
+<span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>colnames</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='st'>'type'</span>, <span class='st'>'light_need'</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>(name.simulation = <span class='st'>'FATE_Bauges'</span>)
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG light parameter files ----------------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGlight</span>(name.simulation = <span class='st'>'FATE_Bauges'</span>
-                         , mat.PFG.light = <span class='kw'>tab.traits</span>)
+<span class='fu'>PRE_FATE.params_PFGlight</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
+                         , mat.PFG.light <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>)</span>
 
 
 </pre>

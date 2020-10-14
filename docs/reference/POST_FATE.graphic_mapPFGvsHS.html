@@ -207,12 +207,12 @@ suitability and simulated occurrences for one (or several) specific
 <code>FATE</code> simulation year.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(
-  <span class='kw'>name.simulation</span>,
-  file.simulParam = <span class='kw'>NULL</span>,
-  <span class='kw'>years</span>,
-  opt.stratum = <span class='st'>"all"</span>
-)</pre>
+    <pre class="usage"><span class='fu'>POST_FATE.graphic_mapPFGvsHS</span><span class='op'>(</span>
+  <span class='va'>name.simulation</span>,
+  file.simulParam <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>years</span>,
+  opt.stratum <span class='op'>=</span> <span class='st'>"all"</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -285,20 +285,20 @@ and that the folders <code>BIN_perPFG_allStrata</code> and
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
-<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                             , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
-                             , years = <span class='fl'>850</span>)
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>                      
+<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
+                             , file.simulParam <span class='op'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
+                             , years <span class='op'>=</span> <span class='fl'>850</span><span class='op'>)</span>
                                     
-<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                             , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
-                             , years = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>850</span>, <span class='fl'>950</span>))
+<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
+                             , file.simulParam <span class='op'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
+                             , years <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>850</span>, <span class='fl'>950</span><span class='op'>)</span><span class='op'>)</span>
                                     
-<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
-                             , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
-                             , years = <span class='fl'>850</span>
-                             , opt.stratum = <span class='fl'>2</span>)
-}
+<span class='fu'>POST_FATE.graphic_mapPFGvsHS</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
+                             , file.simulParam <span class='op'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
+                             , years <span class='op'>=</span> <span class='fl'>850</span>
+                             , opt.stratum <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='op'>}</span>
                                     
                                     
 
