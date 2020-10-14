@@ -6,7 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FATE with R — RFate • RFate</title>
+<title>Shiny application to apply RFate functions and run 
+FATE simulation — RFATE • RFate</title>
 
 
 <!-- jquery -->
@@ -39,16 +40,12 @@
 
 
 
-<meta property="og:title" content="FATE with R — RFate" />
-<meta property="og:description" content="&amp;#8220;FATE-HD is a dynamic landscape vegetation model that simulates
- interactions between plant modelling entities (e.g. species or plant
- functional groups), their population dynamics and dispersal, whilst taking
- into account external drivers such as disturbance regimes, and environmental
- variations. The model is built on past conceptual and technical developments
- (Albert et al., 2008;
- Midgley et al., 2010)
- but has been entirely recoded in C++ and revisited.&amp;#8221;
-(Boulangeat, 2014)" />
+<meta property="og:title" content="Shiny application to apply RFate functions and run 
+FATE simulation — RFATE" />
+<meta property="og:description" content="This shiny application allows to use all 
+the RFate functions (PRE_FATE, FATE and 
+POST_FATE), from the building of PFG to the treatment of FATE 
+output files." />
 
 
 
@@ -196,39 +193,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>FATE with R</h1>
-    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/RFate-package.R'><code>R/RFate-package.R</code></a></small>
-    <div class="hidden name"><code>RFate.Rd</code></div>
+    <h1>Shiny application to apply <code>RFate</code> functions and run 
+<code>FATE</code> simulation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/RFATE.R'><code>R/RFATE.R</code></a></small>
+    <div class="hidden name"><code>RFATE.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>&#8220;FATE-HD is a dynamic landscape vegetation model that simulates
- interactions between plant modelling entities (e.g. species or plant
- functional groups), their population dynamics and dispersal, whilst taking
- into account external drivers such as disturbance regimes, and environmental
- variations. The model is built on past conceptual and technical developments
- (<a href='https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/j.1365-2664.2007.01416.x'>Albert et al., 2008</a>;
- <a href='https://onlinelibrary.wiley.com/doi/full/10.1111/j.1600-0587.2009.06000.x'>Midgley et al., 2010</a>)
- but has been entirely recoded in C++ and revisited.&#8221;
-(<a href='https://onlinelibrary.wiley.com/doi/full/10.1111/gcb.12466'>Boulangeat, 2014</a>)</p>
+    <p>This <code>shiny</code> application allows to use all 
+the <code>RFate</code> functions (<code>PRE_FATE</code>, <code>FATE</code> and 
+<code>POST_FATE</code>), from the building of PFG to the treatment of <code>FATE</code> 
+output files.</p>
     </div>
 
+    <pre class="usage"><span class='fu'>RFATE</span>()</pre>
 
 
-    <h2 class="hasAnchor" id="rfate-functions"><a class="anchor" href="#rfate-functions"></a>RFate functions</h2>
-
-    
-
-<p><code>runFate</code></p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
-    <p>Maya Guéguen [aut, cre],
-        Isabelle Boulangeat [aut],
-        Damien Georges [aut],
-        Guillaume Dupouy [aut],
-        Bjoern Reineking [ctb],
-        Billur Bektas [ctb]</p>
-<p>Maintainer: Maya Guéguen &lt;maya.gueguen@univ-grenoble-alpes.fr&gt;</p>
+    <p>Maya Guéguen</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
