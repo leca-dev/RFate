@@ -3,22 +3,23 @@ Type: Package
 Title: FATE with R
 Version: 1.0
 Date: 2020-09-15
-Authors@R: c(person("Maya", "Guéguen", role = c("aut", "cre")
-                    , email = "maya.gueguen@univ-grenoble-alpes.fr"),
-             person("Wilfried", "Thuiller", role = "aut"
+Authors@R: c(person("Wilfried", "Thuiller", role = "aut"
                     , email = "wilfried.thuiller@univ-grenoble-alpes.fr"),
+             person("Damien", "Georges", role = "aut"),
              person("Isabelle", "Boulangeat", role = "aut"
                     , email = "isabelle.boulangeat@inrae.fr"),
-             person("Damien", "Georges", role = "aut"),
+             person("Maya", "Guéguen", role = c("aut", "cre")
+                    , email = "maya.gueguen@univ-grenoble-alpes.fr"),
              person("Guillaume", "Dupouy", role = "aut"
                     , email = "guillaume.dupouy@inrae.fr"),
              person("Bjoern", "Reineking", role = "ctb"
                     , email = "bjoern.reineking@inrae.fr"),
              person("Billur", "Bektas", role = "ctb"
                     , email = "billur.bektas@univ-grenoble-alpes.fr"))
-Author: Maya Guéguen [aut, cre],
-        Isabelle Boulangeat [aut],
+Author: Wilfried Thuiller [aut],
         Damien Georges [aut],
+        Isabelle Boulangeat [aut],
+        Maya Guéguen [aut, cre],
         Guillaume Dupouy [aut],
         Bjoern Reineking [ctb],
         Billur Bektas [ctb]
@@ -53,6 +54,6 @@ Suggests:
     testthat,
     covr,
     knitr, rmarkdown
-LinkingTo: Rcpp, RcppThread, BH, stringi
+LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
 Language: en-US

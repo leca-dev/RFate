@@ -3,7 +3,8 @@ citHeader("To cite RFate in publications use:")
 citEntry(
   entry = "Manual",
   title = "RFate package : vegetation modelling with FATE",
-  author = personList(as.person("Maya Guéguen"), as.person("Isabelle Boulangeat"), as.person("Damien Georges")),
+  author = personList(as.person("Isabelle Boulangeat"), as.person("Damien Georges"),
+                      as.person("Maya Guéguen"), as.person("Wilfried Thuiller")),
   year = "2020",
   version = "1.0",
   url = "https://leca-dev.github.io/RFate/",
