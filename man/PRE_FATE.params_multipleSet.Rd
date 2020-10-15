@@ -156,12 +156,12 @@ file :
     \item MAX_ABUND_MEDIUM 
     \item MAX_ABUND_HIGH \cr \cr
   }
-  If the simulation includes \emph{light competition} :
+  If the simulation includes \emph{light interaction} :
   \itemize{
     \item LIGHT_THRESH_MEDIUM
     \item LIGHT_THRESH_LOW
   }
-  If the simulation includes \emph{soil competition} :
+  If the simulation includes \emph{soil interaction} :
   \itemize{
     \item SOIL_INIT
     \item SOIL_RETENTION

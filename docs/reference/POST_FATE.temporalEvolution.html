@@ -206,13 +206,13 @@ soil resources if those modules were activated, in a <code>FATE</code>
 simulation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>POST_FATE.temporalEvolution</span><span class='op'>(</span>
-  <span class='va'>name.simulation</span>,
-  file.simulParam <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>no_years</span>,
-  opt.ras_habitat <span class='op'>=</span> <span class='cn'>NULL</span>,
-  opt.no_CPU <span class='op'>=</span> <span class='fl'>1</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>POST_FATE.temporalEvolution</span>(
+  <span class='kw'>name.simulation</span>,
+  file.simulParam = <span class='kw'>NULL</span>,
+  <span class='kw'>no_years</span>,
+  opt.ras_habitat = <span class='kw'>NULL</span>,
+  opt.no_CPU = <span class='fl'>1</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -333,12 +333,12 @@ also contain information about the pixel habitat. <br /> <br /></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>                      
-<span class='fu'>POST_FATE.temporalEvolution</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
-                            , file.simulParam <span class='op'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                            , no_years <span class='op'>=</span> <span class='fl'>50</span>
-                            , opt.no_CPU <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='op'>}</span>
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {                      
+<span class='fu'>POST_FATE.temporalEvolution</span>(name.simulation = <span class='st'>"FATE_simulation"</span>
+                            , file.simulParam = <span class='st'>"Simul_parameters_V1.txt"</span>
+                            , no_years = <span class='fl'>50</span>
+                            , opt.no_CPU = <span class='fl'>1</span>)
+}
                                                         
                                                         
                                                         

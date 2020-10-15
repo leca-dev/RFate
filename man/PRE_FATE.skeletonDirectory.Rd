@@ -55,9 +55,9 @@ The tree structure is detailed below :
     \describe{
       \item{\code{SUCC}}{life history parameter files \cr 
       (see \code{\link{PRE_FATE.params_PFGsuccession}})}
-      \item{\code{LIGHT}}{response to light competition parameter files \cr 
+      \item{\code{LIGHT}}{response to light interaction parameter files \cr 
       (see \code{\link{PRE_FATE.params_PFGlight}})}
-      \item{\code{SOIL}}{response to soil competition parameter files \cr 
+      \item{\code{SOIL}}{response to soil interaction parameter files \cr 
       (see \code{\link{PRE_FATE.params_PFGsoil}})}
       \item{\code{DISP}}{dispersal parameter files \cr 
       (see \code{\link{PRE_FATE.params_PFGdispersal}})}

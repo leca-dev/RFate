@@ -201,7 +201,7 @@ get_update.global = function(file.globalParam)
                                  , flag.split = " "
                                  , is.num = TRUE)
     , "doLight" = .getParam(params.lines = file.globalParam
-                            , flag = "DO_LIGHT_COMPETITION"
+                            , flag = "DO_LIGHT_INTERACTION"
                             , flag.split = " "
                             , is.num = TRUE)
     , "LIGHT.thresh_medium" = .getParam(params.lines = file.globalParam
@@ -213,7 +213,7 @@ get_update.global = function(file.globalParam)
                                      , flag.split = " "
                                      , is.num = TRUE)
     , "doSoil" = .getParam(params.lines = file.globalParam
-                           , flag = "DO_SOIL_COMPETITION"
+                           , flag = "DO_SOIL_INTERACTION"
                            , flag.split = " "
                            , is.num = TRUE)
     , "SOIL.init" = .getParam(params.lines = file.globalParam

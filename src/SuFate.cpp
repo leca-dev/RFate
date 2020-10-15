@@ -116,7 +116,7 @@ void SuFate::show()
 
 void SuFate::CalculateEnvironment()
 {
-	if (m_GSP->getDoLightCompetition() || m_GSP->getDoSoilCompetition())
+	if (m_GSP->getDoLightInteraction() || m_GSP->getDoSoilInteraction())
 	{
 		vector< int > stProfile(m_GSP->getNoStrata(), 0);
 		int noFG = int(m_Comm.getFuncGroupList().size());
@@ -206,7 +206,7 @@ void SuFate::CalculateEnvironment()
 		} // end loop on PFG
 
 		/* compute the weighted mean of soil contributions (optional) */
-		if (m_GSP->getDoSoilCompetition())
+		if (m_GSP->getDoSoilInteraction())
 		{
 			double soilResource = 0.0;
 			if (noFG_pres > 0)
@@ -233,7 +233,7 @@ void SuFate::CalculateEnvironment()
 
 		/* attribute light values to each stratum (optional) */
 		/* Work down the strata calculating */
-		if (m_GSP->getDoLightCompetition())
+		if (m_GSP->getDoLightInteraction())
 		{
 			int XAbove = 0;
 			for (int Stm = (m_GSP->getNoStrata() - 1); Stm >= 0; Stm--) /* resource availabilities */
@@ -260,7 +260,7 @@ void SuFate::CheckSurvival()
 {
 	unsigned noFG = m_Comm.getFuncGroupList().size();
 
-	if (m_GSP->getDoSoilCompetition())
+	if (m_GSP->getDoSoilInteraction())
 	{
 		for (unsigned fg = 0; fg < noFG; fg++)
 		{
@@ -292,7 +292,7 @@ void SuFate::CheckSurvival()
 		}
 	}
 
-	if (m_GSP->getDoLightCompetition())
+	if (m_GSP->getDoLightInteraction())
 	{
 		for (unsigned fg = 0; fg < noFG; fg++)
 		{
@@ -476,7 +476,7 @@ void SuFate::DoSuccessionPart1(vector<unsigned> isDrought)
 	{
 		/* 2. Kill established plants which cannot */
 		/* tolerate current resource availability  */
-		/* do soil (optional) and light competition */
+		/* do soil (optional) and light interaction */
 		CheckSurvival();
 
 		/* 1. Age established plants   */
@@ -496,8 +496,8 @@ void SuFate::DoSuccessionPart1(vector<unsigned> isDrought)
 
 void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 {
-	bool doLight = m_GSP->getDoLightCompetition();
-	bool doSoil = m_GSP->getDoSoilCompetition();
+	bool doLight = m_GSP->getDoLightInteraction();
+	bool doSoil = m_GSP->getDoSoilInteraction();
 
 	unsigned noFG = m_Comm.getFuncGroupList().size();
 	for (unsigned fg = 0; fg < noFG; fg++)

@@ -287,10 +287,10 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 {
 	bool wrong_identifier = false;
 
-	bool doLight = glob_params.getDoLightCompetition();
+	bool doLight = glob_params.getDoLightInteraction();
 	bool doDisp = glob_params.getDoDispersal();
 	bool doDist = glob_params.getDoDisturbances();
-	bool doSoil = glob_params.getDoSoilCompetition();
+	bool doSoil = glob_params.getDoSoilInteraction();
 	bool doFire = glob_params.getDoFireDisturbances();
 	bool doDrought = glob_params.getDoDroughtDisturbances();
 

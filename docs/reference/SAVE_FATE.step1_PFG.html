@@ -199,21 +199,21 @@ used to build a set of Plant Functional Groups." />
 used to build a set of Plant Functional Groups.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>SAVE_FATE.step1_PFG</span><span class='op'>(</span>
-  <span class='va'>name.dataset</span>,
-  <span class='va'>mat.observations</span>,
-  rules.selectDominant <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>doRuleA <span class='op'>=</span> <span class='cn'>NA</span>, rule.A1 <span class='op'>=</span> <span class='cn'>NA</span>, rule.A2_quantile <span class='op'>=</span> <span class='cn'>NA</span>, doRuleB <span class='op'>=</span>
-    <span class='cn'>NA</span>, rule.B1_percentage <span class='op'>=</span> <span class='cn'>NA</span>, rule.B1_number <span class='op'>=</span> <span class='cn'>NA</span>, rule.B2 <span class='op'>=</span> <span class='cn'>NA</span>, doRuleC <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>,
-  <span class='va'>mat.traits</span>,
-  mat.overlap <span class='op'>=</span> <span class='cn'>NA</span>,
-  rules.speciesDistance <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>opt.maxPercent.NA <span class='op'>=</span> <span class='cn'>NA</span>, opt.maxPercent.similarSpecies <span class='op'>=</span> <span class='cn'>NA</span>,
-    opt.min.sd <span class='op'>=</span> <span class='cn'>NA</span><span class='op'>)</span>,
-  <span class='va'>mat.species.DIST</span>,
-  clust.evaluation <span class='op'>=</span> <span class='cn'>NA</span>,
-  <span class='va'>no.clusters</span>,
-  <span class='va'>determ.all</span>,
-  <span class='va'>mat.traits.PFG</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>SAVE_FATE.step1_PFG</span>(
+  <span class='kw'>name.dataset</span>,
+  <span class='kw'>mat.observations</span>,
+  rules.selectDominant = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(doRuleA = <span class='fl'>NA</span>, rule.A1 = <span class='fl'>NA</span>, rule.A2_quantile = <span class='fl'>NA</span>, doRuleB =
+    <span class='fl'>NA</span>, rule.B1_percentage = <span class='fl'>NA</span>, rule.B1_number = <span class='fl'>NA</span>, rule.B2 = <span class='fl'>NA</span>, doRuleC = <span class='fl'>NA</span>),
+  <span class='kw'>mat.traits</span>,
+  mat.overlap = <span class='fl'>NA</span>,
+  rules.speciesDistance = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(opt.maxPercent.NA = <span class='fl'>NA</span>, opt.maxPercent.similarSpecies = <span class='fl'>NA</span>,
+    opt.min.sd = <span class='fl'>NA</span>),
+  <span class='kw'>mat.species.DIST</span>,
+  clust.evaluation = <span class='fl'>NA</span>,
+  <span class='kw'>no.clusters</span>,
+  <span class='kw'>determ.all</span>,
+  <span class='kw'>mat.traits.PFG</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">

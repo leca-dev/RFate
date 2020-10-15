@@ -494,8 +494,8 @@ class SimulMap
 	 * FATE simulation :
 	 *   - abundances per PFG and per stratum
 	 *   - abundances per PFG for all strata
-	 *   - light resources (if light competition activated)
-	 *   - soil resources (if soil competition activated)
+	 *   - light resources (if light interaction activated)
+	 *   - soil resources (if soil interaction activated)
 	 *
 	 * \param saveDir : string with the simulation results folder path
 	 * \param year : current year of simulation

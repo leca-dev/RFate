@@ -36,7 +36,7 @@
 ##' \code{1 000} to rescale abundance values of intermediate PFG
 ##' @param required.max_abund_high an \code{integer} in the order of 
 ##' \code{1 000} to rescale abundance values of tall PFG
-##' @param doLight default \code{FALSE}.\cr If \code{TRUE}, light competition 
+##' @param doLight default \code{FALSE}. \cr If \code{TRUE}, light interaction 
 ##' is activated in the \code{FATE} simulation, and associated parameters are 
 ##' required
 ##' @param LIGHT.thresh_medium (\emph{optional}) \cr an \code{integer} in the 
@@ -51,7 +51,7 @@
 ##' resources are \code{low}. PFG abundances higher than 
 ##' \code{LIGHT.thresh_medium} and lower than this threshold imply 
 ##' \strong{medium amount of light}.
-##' @param doSoil default \code{FALSE}. \cr If \code{TRUE}, soil competition is 
+##' @param doSoil default \code{FALSE}. \cr If \code{TRUE}, soil interaction is 
 ##' activated in the \code{FATE} simulation, and associated parameters 
 ##' are required
 ##' @param SOIL.init (\emph{optional}) \cr a \code{double} corresponding to the 
@@ -532,18 +532,18 @@
 ##'   \item MAX_ABUND_HIGH \cr \cr
 ##' }
 ##' 
-##' If the simulation includes \emph{light competition} :
+##' If the simulation includes \emph{light interaction} :
 ##' 
 ##' \itemize{
-##'   \item DO_LIGHT_COMPETITION
+##'   \item DO_LIGHT_INTERACTION
 ##'   \item LIGHT_THRESH_MEDIUM
 ##'   \item LIGHT_THRESH_LOW
 ##' }
 ##' 
-##' If the simulation includes \emph{soil competition} :
+##' If the simulation includes \emph{soil interaction} :
 ##' 
 ##' \itemize{
-##'   \item DO_SOIL_COMPETITION
+##'   \item DO_SOIL_INTERACTION
 ##'   \item SOIL_INIT
 ##'   \item SOIL_RETENTION
 ##' }
@@ -864,26 +864,26 @@ PRE_FATE.params_globalParameters = function(
     params.LIGHT = list(as.numeric(doLight)
                         , as.integer(LIGHT.thresh_medium)
                         , as.integer(LIGHT.thresh_low))
-    names.params.list.LIGHT = c("DO_LIGHT_COMPETITION"
+    names.params.list.LIGHT = c("DO_LIGHT_INTERACTION"
                                 , "LIGHT_THRESH_MEDIUM"
                                 , "LIGHT_THRESH_LOW")
   } else
   {
     params.LIGHT = list(as.numeric(doLight))
-    names.params.list.LIGHT = "DO_LIGHT_COMPETITION"
+    names.params.list.LIGHT = "DO_LIGHT_INTERACTION"
   }
   if (doSoil)
   {
     params.SOIL = list(as.numeric(doSoil)
                        , as.integer(SOIL.init)
                        , as.integer(SOIL.retention))
-    names.params.list.SOIL = c("DO_SOIL_COMPETITION"
+    names.params.list.SOIL = c("DO_SOIL_INTERACTION"
                                , "SOIL_INIT"
                                , "SOIL_RETENTION")
   } else
   {
     params.SOIL = list(as.numeric(doSoil))
-    names.params.list.SOIL = "DO_SOIL_COMPETITION"
+    names.params.list.SOIL = "DO_SOIL_INTERACTION"
   }
   if (doDispersal)
   {

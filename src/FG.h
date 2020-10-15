@@ -32,9 +32,9 @@ using namespace std;
  * Basic and required parameters concern FG identification, life history and
  * propagule biology.
  * Additional parameters need to be specified if the following modules are on :
- *  - light competition
+ *  - light interaction
  *  - dispersal
- *  - soil competition
+ *  - soil interaction
  *  - disturbance(s)
  *  - fire(s)
  *  - drought(s)
@@ -61,7 +61,7 @@ class FG
 	bool m_InnateDorm; /*!< Do FG seeds have Innate dormancy properties */
 	int m_PotentialFecundity; /*!< Potential Fecundity of mature plants */
 
-	/* Light competition module */
+	/* Light interaction module */
 	vector<Fract> m_ActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
 	vector< vector<bool> > m_Tolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
 
@@ -71,7 +71,7 @@ class FG
 	double m_disp99; /*!< Distance where 99% of seeds are dispersed */
 	double m_dispLD; /*!< Long distance dispersal */
 
-	/* Soil competition module */
+	/* Soil interaction module */
 	double m_SoilContrib; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
 	double m_SoilLow; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
 	double m_SoilHigh; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
@@ -158,13 +158,13 @@ class FG
 	 *	\param PFG_LifeHistoryFile : path to text file containing well-formatted
 	 * life history related parameters
 	 *	\param PFG_LightFile : path to text file containing well-formatted light
-	 * competition related parameters
+	 * interaction related parameters
 	 *	\param PFG_DispersalFile : path to text file containing well-formatted
 	 * dispersal related parameters
 	 *	\param PFG_DisturbancesFile : path to text file containing well-formatted
 	 * disturbances related parameters
 	 *	\param PFG_SoilFile : path to text file containing well-formatted soil
-	 * competition related parameters
+	 * interaction related parameters
 	 *	\param PFG_FireFile : path to text file containing well-formatted fire
 	 * related parameters
 	 *	\param PFG_DroughtFile : path to text file containing well-formatted
@@ -210,15 +210,15 @@ class FG
 	void getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile);
 
 	/*!
-	 *	\brief Part of constructor (OPTIONAL : light competition model)
+	 *	\brief Part of constructor (OPTIONAL : light interaction model)
 	 *
-	 *	FG part of constructor (OPTIONAL : light competition model)
+	 *	FG part of constructor (OPTIONAL : light interaction model)
 	 *
 	 * param glob_params : GSP class object containing global simulation
 	 * related parameters, and modules specific (e.g number of strata, number of
 	 * disturbances...)
 	 *	\param PFG_LightFile : path to text file containing well-formatted light
-	 * competition related parameters
+	 * interaction related parameters
 	 */
 	void getLightParams(const GSP& glob_params, const string& PFG_LightFile);
 
@@ -249,15 +249,15 @@ class FG
 	void getDistParams(const GSP& glob_params, const string& PFG_DisturbancesFile);
 
 	/*!
-	 *	\brief Part of constructor (OPTIONAL : soil competition model)
+	 *	\brief Part of constructor (OPTIONAL : soil interaction model)
 	 *
-	 *	FG part of constructor (OPTIONAL : soil competition model)
+	 *	FG part of constructor (OPTIONAL : soil interaction model)
 	 *
 	 * param glob_params : GSP class object containing global simulation
 	 * related parameters, and modules specific (e.g number of strata, number of
 	 * disturbances...)
 	 *	\param PFG_SoilFile : path to text file containing well-formatted soil
-	 * competition related parameters
+	 * interaction related parameters
 	 */
 	void getSoilParams(const GSP& glob_params, const string& PFG_SoilFile);
 

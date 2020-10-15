@@ -201,7 +201,7 @@ information into relative abundances or average recovery values
 (between 0 and 100).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.abundBraunBlanquet</span><span class='op'>(</span><span class='va'>abund</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.abundBraunBlanquet</span>(<span class='kw'>abund</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -247,9 +247,9 @@ France). Typologie phytosociologique et essai de reconstitution des séries
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='va'>abund_BB</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='st'>"+"</span>, <span class='st'>"r"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>100</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-<span class='va'>abund</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.abundBraunBlanquet</span><span class='op'>(</span><span class='va'>abund_BB</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>abund</span><span class='op'>)</span>
+<span class='kw'>abund_BB</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='st'>"+"</span>, <span class='st'>"r"</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>), size = <span class='fl'>100</span>, replace = <span class='fl'>TRUE</span>)
+<span class='kw'>abund</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.abundBraunBlanquet</span>(<span class='kw'>abund_BB</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>abund</span>)
 
 </pre>
   </div>

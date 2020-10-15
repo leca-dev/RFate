@@ -308,9 +308,9 @@ class FOPL
 	void show();
 
 	/*!
-	 *	\brief Check existence of parameter files retrieved : light competition
+	 *	\brief Check existence of parameter files retrieved : light interaction
 	 *
-	 *	This function checks if all the files related to light competition module
+	 *	This function checks if all the files related to light interaction module
 	 * exist.
 	 */
 	void checkCorrectParams_light();
@@ -339,9 +339,9 @@ class FOPL
 	void checkCorrectParams_dist();
 
 	/*!
-	 *	\brief Check existence of parameter files retrieved : soil competition
+	 *	\brief Check existence of parameter files retrieved : soil interaction
 	 *
-	 *	This function checks if all the files related to soil competition module
+	 *	This function checks if all the files related to soil interaction module
 	 * exist.
 	 */
 	void checkCorrectParams_soil();
@@ -391,11 +391,11 @@ class FOPL
 	 * exist. It takes into account which modules are activated or not, and
 	 * hence which files should be checked for existence.
 	 *
-	 * \param doLight : is light competition module activated
+	 * \param doLight : is light interaction module activated
 	 * \param doHabSuit : is habitat suitability module activated
 	 * \param doDisp : is dispersal module activated
 	 * \param doDist : is disturbances module activated
-	 * \param doSoil : is soil competition module activated
+	 * \param doSoil : is soil interaction module activated
 	 * \param doFire : is fire disturbances module activated
 	 * \param doDrought : is drought disturbances module activated
 	 * \param doAliens : is aliens introduction module activated

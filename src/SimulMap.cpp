@@ -84,7 +84,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIFE_HISTORY-- ",
 							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoLightCompetition() &&
+	if (m_glob_params.getDoLightInteraction() &&
 			noFG!=(int)file_of_params.getFGLight().size())
 	{
 		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIGHT-- ",
@@ -108,7 +108,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISTURBANCES-- ",
 							 "do not match in term of number!");
 	}
-	if (m_glob_params.getDoSoilCompetition() &&
+	if (m_glob_params.getDoSoilInteraction() &&
 			noFG!=(int)file_of_params.getFGSoil().size())
 	{
 		logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_SOIL-- ",
@@ -128,11 +128,11 @@ SimulMap::SimulMap(FOPL file_of_params)
 	}
 
 	/* check for parameters file */
-	file_of_params.checkCorrectParams(m_glob_params.getDoLightCompetition(),
+	file_of_params.checkCorrectParams(m_glob_params.getDoLightInteraction(),
 												m_glob_params.getDoHabSuitability(),
 												m_glob_params.getDoDispersal(),
 												m_glob_params.getDoDisturbances(),
-												m_glob_params.getDoSoilCompetition(),
+												m_glob_params.getDoSoilInteraction(),
 												m_glob_params.getDoFireDisturbances(),
 												m_glob_params.getDoDroughtDisturbances(),
 												m_glob_params.getDoAliensIntroduction());
@@ -1760,7 +1760,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 		delete [] abunValues3;
 	} // end loop on Stratum*/
 
-	if (m_glob_params.getDoSoilCompetition())
+	if (m_glob_params.getDoSoilInteraction())
 	{
 		logg.info("> Saving soil outputs");
 		float *soilValues = new float[m_Mask.getXncell()*m_Mask.getYncell()];
@@ -1811,7 +1811,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 		}
 	}
 
-	if (m_glob_params.getDoLightCompetition())
+	if (m_glob_params.getDoLightInteraction())
 	{
 		logg.info("> Saving light outputs");
 

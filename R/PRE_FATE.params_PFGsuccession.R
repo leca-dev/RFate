@@ -449,7 +449,7 @@ PRE_FATE.params_PFGsuccession = function(
   
   #############################################################################
   
-  ## GET height strata limits (for light competition and PFG growth)
+  ## GET height strata limits (for light interaction and PFG growth)
   ## n strata (+ germinants = 0)
   if (strata.limits_reduce)
   {

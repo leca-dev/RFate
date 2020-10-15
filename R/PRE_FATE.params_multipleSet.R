@@ -180,12 +180,12 @@
 ##'     \item MAX_ABUND_MEDIUM 
 ##'     \item MAX_ABUND_HIGH \cr \cr
 ##'   }
-##'   If the simulation includes \emph{light competition} :
+##'   If the simulation includes \emph{light interaction} :
 ##'   \itemize{
 ##'     \item LIGHT_THRESH_MEDIUM
 ##'     \item LIGHT_THRESH_LOW
 ##'   }
-##'   If the simulation includes \emph{soil competition} :
+##'   If the simulation includes \emph{soil interaction} :
 ##'   \itemize{
 ##'     \item SOIL_INIT
 ##'     \item SOIL_RETENTION
@@ -951,7 +951,7 @@ PRE_FATE.params_multipleSet = function(
                         , stringsAsFactors = FALSE))
     }
     cat("\n")
-    if ("DO_LIGHT_COMPETITION 1" %in% TOKEEP.global)
+    if ("DO_LIGHT_INTERACTION 1" %in% TOKEEP.global)
     {
       if (is.null(SUCC_LIGHT.simul$LIGHT) || length(SUCC_LIGHT.simul$LIGHT) == 0)
       {
@@ -996,7 +996,7 @@ PRE_FATE.params_multipleSet = function(
                                       , opt.folder.name = paste0(rownames(params.space)[i])
         ))
       
-      if ("DO_LIGHT_COMPETITION 1" %in% TOKEEP.global)
+      if ("DO_LIGHT_INTERACTION 1" %in% TOKEEP.global)
       {
         .quiet(
           PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation_MULTIPLE_SET"
@@ -1026,11 +1026,11 @@ PRE_FATE.params_multipleSet = function(
                                  , flag.split = " "
                                  , is.num = TRUE)
     doLight = .getParam(params.lines = tmp_global_param
-                        , flag = "DO_LIGHT_COMPETITION"
+                        , flag = "DO_LIGHT_INTERACTION"
                         , flag.split = " "
                         , is.num = TRUE)
     doSoil = .getParam(params.lines = tmp_global_param
-                       , flag = "DO_SOIL_COMPETITION"
+                       , flag = "DO_SOIL_INTERACTION"
                        , flag.split = " "
                        , is.num = TRUE)
     doDisturbances = .getParam(params.lines = tmp_global_param

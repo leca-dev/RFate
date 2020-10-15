@@ -91,12 +91,12 @@
                          , is.num = TRUE)
   doLight <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
                                              , file.globalParam)
-                       , flag = "DO_LIGHT_COMPETITION"
+                       , flag = "DO_LIGHT_INTERACTION"
                        , flag.split = " "
                        , is.num = TRUE)
   doSoil <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
                                             , file.globalParam)
-                      , flag = "DO_SOIL_COMPETITION"
+                      , flag = "DO_SOIL_INTERACTION"
                       , flag.split = " "
                       , is.num = TRUE)
   doHabsuit <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)

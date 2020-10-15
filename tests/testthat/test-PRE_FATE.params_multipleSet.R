@@ -428,20 +428,20 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                                            , no_simulations = 10
                                            , do.DISPERSAL.mode = FALSE
                                            , do.no_strata = FALSE)
-               , "Wrong type of data!\n `flag` (DO_LIGHT_COMPETITION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
+               , "Wrong type of data!\n `flag` (DO_LIGHT_INTERACTION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
-  cat("MAX_ABUND_LOW 10000\nTRUC 3\nDO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0"
+  cat("MAX_ABUND_LOW 10000\nTRUC 3\nDO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0"
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
                                            , no_simulations = 10
                                            , do.DISPERSAL.mode = FALSE
                                            , do.no_strata = FALSE)
-               , "Wrong type of data!\n `flag` (DO_SOIL_COMPETITION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
+               , "Wrong type of data!\n `flag` (DO_SOIL_INTERACTION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nTRUC 3\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -452,7 +452,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nTRUC 3\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -463,7 +463,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -474,7 +474,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -485,7 +485,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -497,7 +497,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -509,7 +509,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -521,7 +521,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -534,7 +534,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -547,7 +547,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
-             , "DO_LIGHT_COMPETITION 0\nDO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0")
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
   
   ## TEST file.simulParam.1 and mask
@@ -674,8 +674,8 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
                , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
                , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
-               , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0\n"
-               , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+               , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
+               , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
         , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
     
     file.create("FATE_simulation/PARAM_SIMUL/toto.txt")
@@ -767,8 +767,8 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
                , "MAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
                , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
-               , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0\n"
-               , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+               , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
+               , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
         , file = "FATE_simulation2/DATA/GLOBAL_PARAMETERS/glob.txt")
   }
   
@@ -800,8 +800,8 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 10\nMAX_ABUND_MEDIUM 60000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
-             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0\n"
-             , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
+             , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation2/DATA/GLOBAL_PARAMETERS/glob.txt")
   
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
@@ -831,8 +831,8 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
-             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0\n"
-             , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
+             , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation2/DATA/GLOBAL_PARAMETERS/glob.txt")
   fi = readLines("FATE_simulation2/PARAM_SIMUL/toto.txt")
   fi = sub("FATE_simulation2/DATA/MASK/mask.txt", "FATE_simulation2/DATA/MASK/maski.txt", fi)
@@ -1072,8 +1072,8 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
-             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0\n"
-             , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
+             , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
   expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                              , file.simulParam.1 = "toto.txt"
@@ -1099,8 +1099,8 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
-             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 1\n"
-             , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
+             , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -1177,9 +1177,9 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
-             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 1\n"
+             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
              , "LIGHT_THRESH_MEDIUM 5\n"
-             , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+             , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
@@ -1205,9 +1205,9 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
-             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 1\n"
+             , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
              , "LIGHT_THRESH_MEDIUM 5\nLIGHT_THRESH_LOW 10\n"
-             , "DO_SOIL_COMPETITION 0\nDO_DISTURBANCES 0\n")
+             , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
   expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                              , file.simulParam.1 = "toto.txt"
@@ -1263,8 +1263,8 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario SOIL", {
                , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
                , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
                , "DO_DISPERSAL 0\n"
-               , "DO_HAB_SUITABILITY 0\nDO_LIGHT_COMPETITION 0\n"
-               , "DO_SOIL_COMPETITION 1\nSOIL_INIT 0.1\nSOIL_RETENTION 0.1\n"
+               , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
+               , "DO_SOIL_INTERACTION 1\nSOIL_INIT 0.1\nSOIL_RETENTION 0.1\n"
                , "DO_DISTURBANCES 0\n")
         , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
     

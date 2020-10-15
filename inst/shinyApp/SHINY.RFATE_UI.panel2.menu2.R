@@ -204,8 +204,8 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                                  , size = "l"
                                                                  , content = help.HTML(html.file = paste0(path.articles, "fate_tutorial_3_MODULES.html")
                                                                                        , target.anchor = 'class="section level1'
-                                                                                       , target.class = "light-module-competition"
-                                                                                       , web.address = paste0(path.articles, "fate_tutorial_3_MODULES.html#light-module-competition"))
+                                                                                       , target.class = "light-module-interaction"
+                                                                                       , web.address = paste0(path.articles, "fate_tutorial_3_MODULES.html#light-module-interaction"))
                                                     ) ## END fluidRow
                                         ) ## END main.panel1
                                   )

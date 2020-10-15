@@ -79,14 +79,14 @@ below :}
   \item{\code{height}, \code{light}}{to visualize the PFG light 
   preference, and help decide and understand the choice of the height 
   limits of strata in \code{FATE} (see 
-  \href{../articles/fate_tutorial_3_MODULES.html#light-module-competition}{LIGHT 
-  competition module})}
+  \href{../articles/fate_tutorial_3_MODULES.html#light-module-interaction}{LIGHT 
+  interaction module})}
   \item{\code{soil_contrib}, \cr \code{soil_tol_min}, \cr 
   \code{soil_tol_max}}{to visualize the PFG soil preference, and help 
-  parameterize the global parameters of the soil competition module 
+  parameterize the global parameters of the soil interaction module 
   within \code{FATE} (see 
-  \href{../articles/fate_tutorial_3_MODULES.html#soil-module-competition}{SOIL 
-  competition module})}
+  \href{../articles/fate_tutorial_3_MODULES.html#soil-module-interaction}{SOIL 
+  interaction module})}
   \item{\cr \code{soil_contrib}, \cr \code{soil_tolerance}}{same as the 
   previous one, but \code{soil_tol_min} and \code{soil_tol_max} values 
   are obtained by adding or removing \code{soil_tolerance} to 

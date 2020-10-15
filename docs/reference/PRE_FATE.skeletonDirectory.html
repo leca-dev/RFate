@@ -199,7 +199,7 @@ tree to run a FATE simulation." />
 tree to run a <code>FATE</code> simulation.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.skeletonDirectory</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.skeletonDirectory</span>(name.simulation = <span class='st'>"FATE_simulation"</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -249,9 +249,9 @@ used by a <code>FATE</code> simulation. <br /> <br /></p>
     <dl>
       <dt><code>SUCC</code></dt><dd><p>life history parameter files <br /> 
       (see <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code>)</p></dd>
-      <dt><code>LIGHT</code></dt><dd><p>response to light competition parameter files <br /> 
+      <dt><code>LIGHT</code></dt><dd><p>response to light interaction parameter files <br /> 
       (see <code><a href='PRE_FATE.params_PFGlight.html'>PRE_FATE.params_PFGlight</a></code>)</p></dd>
-      <dt><code>SOIL</code></dt><dd><p>response to soil competition parameter files <br /> 
+      <dt><code>SOIL</code></dt><dd><p>response to soil interaction parameter files <br /> 
       (see <code><a href='PRE_FATE.params_PFGsoil.html'>PRE_FATE.params_PFGsoil</a></code>)</p></dd>
       <dt><code>DISP</code></dt><dd><p>dispersal parameter files <br /> 
       (see <code><a href='PRE_FATE.params_PFGdispersal.html'>PRE_FATE.params_PFGdispersal</a></code>)</p></dd>
@@ -291,10 +291,10 @@ structure.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span>
-<span class='fu'>PRE_FATE.skeletonDirectory</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'>PRE_FATE.skeletonDirectory</span>()
 
 <span class='co'>## Create a skeleton folder with a specific name ---------------------------------------------</span>
-<span class='fu'>PRE_FATE.skeletonDirectory</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_AlpineForest'</span><span class='op'>)</span>
+<span class='fu'>PRE_FATE.skeletonDirectory</span>(name.simulation = <span class='st'>'FATE_AlpineForest'</span>)
 
 </pre>
   </div>

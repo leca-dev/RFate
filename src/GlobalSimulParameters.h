@@ -51,8 +51,8 @@ class GSP
 	int m_MaxAbundMedium; /*!< Maximum abundance or space a PFG can occupy : medium value */
 	int m_MaxAbundHigh; /*!< Maximum abundance or space a PFG can occupy : high value */
 
-	/* Light competition module */
-	bool m_DoLightCompetition; /*!< Unable or not Light competition module */
+	/* Light interaction module */
+	bool m_DoLightInteraction; /*!< Unable or not Light interaction module */
 	int m_LightThreshLow; /*!< Threshold to transform PFG abundances into Low light resources */
 	int m_LightThreshMedium; /*!< Threshold to transform PFG abundances into Medium light resources */
 
@@ -70,8 +70,8 @@ class GSP
 	int m_NoDistSub; /*!< Number of disturbances subdivision (no of way to react to dist) */
 	vector<int> m_FreqDist; /*!< Frequency of each disturbance in years */
 
-	/* Soil competition module */
-	bool m_DoSoilCompetition; /*!< Unable or not Soil competition module */
+	/* Soil interaction module */
+	bool m_DoSoilInteraction; /*!< Unable or not Soil interaction module */
 	double m_SoilInit; /*!< Initialization soil value */
 	double m_SoilRetention; /*!< Percentage of soil from previous year to keep */
 
@@ -121,7 +121,7 @@ class GSP
 		ar & m_MaxAbundLow;
 		ar & m_MaxAbundMedium;
 		ar & m_MaxAbundHigh;
-		ar & m_DoLightCompetition;
+		ar & m_DoLightInteraction;
 		ar & m_LightThreshLow;
 		ar & m_LightThreshMedium;
 		ar & m_DoHabSuitability;
@@ -132,7 +132,7 @@ class GSP
 		ar & m_NoDist;
 		ar & m_NoDistSub;
 		ar & m_FreqDist;
-		ar & m_DoSoilCompetition;
+		ar & m_DoSoilInteraction;
 		ar & m_SoilInit;
 		ar & m_SoilRetention;
 		ar & m_DoFireDisturbances;
@@ -200,7 +200,7 @@ class GSP
 	 * medium value
 	 *	\param maxAbundHigh : maximum abundance or space a PFG can occupy :
 	 * high value
-	 *	\param doLightCompetition : unable or not Light competition module
+	 *	\param doLightInteraction : unable or not Light interaction module
 	 *	\param lightThreshLow : threshold to transform PFG abundances into Low
 	 * light resources
 	 *	\param lightThreshMedium : threshold to transform PFG abundances into
@@ -213,7 +213,7 @@ class GSP
 	 *	\param noDist : number of disturbances involved
 	 *	\param noDistSub : number of way a FG can react to a disturbance
 	 *  \param freqDist : the frequency of each disturbance
-	 *	\param doSoilCompetition : unable or not Soil competition module
+	 *	\param doSoilInteraction : unable or not Soil interaction module
 	 *	\param soilInit : initialization soil value
 	 *	\param soilRetention : percentage of soil from previous year to keep
 	 *	\param doFireDisturbances : unable or not Fire disturbances module
@@ -256,7 +256,7 @@ class GSP
 	const int& maxAbundLow,
 	const int& maxAbundMedium,
 	const int& maxAbundHigh,
-	const bool& doLightCompetition,
+	const bool& doLightInteraction,
 	const int& lightThreshLow,
 	const int& lightThreshMedium,
 	const bool& doHabSuitability,
@@ -267,7 +267,7 @@ class GSP
 	const int& noDist,
 	const int& noDistSub,
 	const vector<int>& freqDist,
-	const bool& doSoilCompetition,
+	const bool& doSoilInteraction,
 	const double& soilInit,
 	const double& soilRetention,
 	const bool& doFireDisturbances,
@@ -320,7 +320,7 @@ class GSP
 		m_MaxAbundLow == o.m_MaxAbundLow &&
 		m_MaxAbundMedium == o.m_MaxAbundMedium &&
 		m_MaxAbundHigh == o.m_MaxAbundHigh &&
-		m_DoLightCompetition == o.m_DoLightCompetition &&
+		m_DoLightInteraction == o.m_DoLightInteraction &&
 		m_LightThreshLow == o.m_LightThreshLow &&
 		m_LightThreshMedium == o.m_LightThreshMedium &&
 		m_DoHabSuitability == o.m_DoHabSuitability &&
@@ -331,7 +331,7 @@ class GSP
 		m_NoDist == o.m_NoDist &&
 		m_NoDistSub == o.m_NoDistSub &&
 		m_FreqDist == o.m_FreqDist &&
-		m_DoSoilCompetition == o.m_DoSoilCompetition &&
+		m_DoSoilInteraction == o.m_DoSoilInteraction &&
 		m_SoilInit == o.m_SoilInit &&
 		m_SoilRetention == o.m_SoilRetention &&
 		m_DoFireDisturbances == o.m_DoFireDisturbances &&
@@ -372,7 +372,7 @@ class GSP
 	const int& getMaxAbundLow() const;
 	const int& getMaxAbundMedium() const;
 	const int& getMaxAbundHigh() const;
-	const bool& getDoLightCompetition() const;
+	const bool& getDoLightInteraction() const;
 	const int& getLightThreshLow() const;
 	const int& getLightThreshMedium() const;
 	const bool& getDoHabSuitability() const;
@@ -383,7 +383,7 @@ class GSP
 	const int& getNoDist() const;
 	const int& getNoDistSub() const;
 	const vector<int>& getFreqDist() const;
-	const bool& getDoSoilCompetition() const;
+	const bool& getDoSoilInteraction() const;
 	const double& getSoilInit() const;
 	const double& getSoilRetention() const;
 	const bool& getDoFireDisturbances() const;
@@ -419,7 +419,7 @@ class GSP
 	void setMaxAbundLow(const int& maxAbundLow);
 	void setMaxAbundMedium(const int& maxAbundMedium);
 	void setMaxAbundHigh(const int& maxAbundHigh);
-	void setDoLightCompetition(const bool& doLightCompetition);
+	void setDoLightInteraction(const bool& doLightInteraction);
 	void setLightThreshLow(const int& lightThreshLow);
 	void setLightThreshMedium(const int& lightThreshMedium);
 	void setDoHabSuitability(const bool& doHabSuitability);
@@ -430,7 +430,7 @@ class GSP
 	void setNoDist(const int& noDist);
 	void setNoDistSub(const int& noDistSub);
 	void setFreqDist(const vector<int>& freqDist);
-	void setDoSoilCompetition(const bool& doSoilCompetition);
+	void setDoSoilInteraction(const bool& doSoilInteraction);
 	void setSoilInit(const double& soilInit);
 	void setSoilRetention(const double& soilRetention);
 	void setDoFireDisturbances(const bool& doFireDisturbances);

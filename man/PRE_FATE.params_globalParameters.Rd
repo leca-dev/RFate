@@ -95,7 +95,7 @@ duration is not over}
 \item{required.max_abund_high}{an \code{integer} in the order of 
 \code{1 000} to rescale abundance values of tall PFG}
 
-\item{doLight}{default \code{FALSE}.\cr If \code{TRUE}, light competition 
+\item{doLight}{default \code{FALSE}. \cr If \code{TRUE}, light interaction 
 is activated in the \code{FATE} simulation, and associated parameters are 
 required}
 
@@ -113,7 +113,7 @@ resources are \code{low}. PFG abundances higher than
 \code{LIGHT.thresh_medium} and lower than this threshold imply 
 \strong{medium amount of light}.}
 
-\item{doSoil}{default \code{FALSE}. \cr If \code{TRUE}, soil competition is 
+\item{doSoil}{default \code{FALSE}. \cr If \code{TRUE}, soil interaction is 
 activated in the \code{FATE} simulation, and associated parameters 
 are required}
 
@@ -273,18 +273,18 @@ parameters :
   \item MAX_ABUND_HIGH \cr \cr
 }
 
-If the simulation includes \emph{light competition} :
+If the simulation includes \emph{light interaction} :
 
 \itemize{
-  \item DO_LIGHT_COMPETITION
+  \item DO_LIGHT_INTERACTION
   \item LIGHT_THRESH_MEDIUM
   \item LIGHT_THRESH_LOW
 }
 
-If the simulation includes \emph{soil competition} :
+If the simulation includes \emph{soil interaction} :
 
 \itemize{
-  \item DO_SOIL_COMPETITION
+  \item DO_SOIL_INTERACTION
   \item SOIL_INIT
   \item SOIL_RETENTION
 }

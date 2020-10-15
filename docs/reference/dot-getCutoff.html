@@ -201,7 +201,7 @@ values into binary values while optimising sensitivity and specificity
 values based on observations</p>
     </div>
 
-    <pre class="usage"><span class='fu'>.getCutoff</span><span class='op'>(</span><span class='va'>Obs</span>, <span class='va'>Fit</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>.getCutoff</span>(<span class='kw'>Obs</span>, <span class='kw'>Fit</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -221,13 +221,13 @@ values based on observations</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
-<span class='va'>vec.obs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>60</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>40</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>vec.pred</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0.2</span>, <span class='fl'>0.01</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>50</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-             , <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.15</span>, <span class='fl'>1</span>, <span class='fl'>0.01</span><span class='op'>)</span>, size <span class='op'>=</span> <span class='fl'>50</span>, replace <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span><span class='op'>)</span>
+<span class='kw'>vec.obs</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>0</span>, <span class='fl'>60</span>), <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>, <span class='fl'>40</span>))
+<span class='kw'>vec.pred</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>0.2</span>, <span class='fl'>0.01</span>), size = <span class='fl'>50</span>, replace = <span class='fl'>TRUE</span>)
+             , <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span>(x = <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0.15</span>, <span class='fl'>1</span>, <span class='fl'>0.01</span>), size = <span class='fl'>50</span>, replace = <span class='fl'>TRUE</span>))
 <span class='co'>## plot(vec.obs, vec.pred)</span>
 
-<span class='va'>cutoff</span> <span class='op'>=</span> <span class='fu'>.getCutoff</span><span class='op'>(</span>Obs <span class='op'>=</span> <span class='va'>vec.obs</span>, Fit <span class='op'>=</span> <span class='va'>vec.pred</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>cutoff</span><span class='op'>)</span>
+<span class='kw'>cutoff</span> <span class='op'>=</span> <span class='fu'>.getCutoff</span>(Obs = <span class='kw'>vec.obs</span>, Fit = <span class='kw'>vec.pred</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>cutoff</span>)
 
 </pre>
   </div>

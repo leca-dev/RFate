@@ -574,11 +574,11 @@ PRE_FATE.params_simulParameters = function(
     
     do.SUCC = 1
     do.LIGHT = .getParam(params.lines = globi
-                         , flag = "DO_LIGHT_COMPETITION"
+                         , flag = "DO_LIGHT_INTERACTION"
                          , flag.split = " "
                          , is.num = TRUE)
     do.SOIL = .getParam(params.lines = globi
-                        , flag = "DO_SOIL_COMPETITION"
+                        , flag = "DO_SOIL_INTERACTION"
                         , flag.split = " "
                         , is.num = TRUE)
     do.DISP = .getParam(params.lines = globi

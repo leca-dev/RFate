@@ -24,11 +24,11 @@ using namespace std;
 GSP::GSP() : m_NoCPU(1), m_NoFG(0), m_NoStrata(0), m_SimulDuration(0),
 m_SeedingDuration(0), m_SeedingTimeStep(0), m_SeedingInput(0),
 m_MaxAbundLow(0), m_MaxAbundMedium(0), m_MaxAbundHigh(0),
-m_DoLightCompetition(false), m_LightThreshLow(0), m_LightThreshMedium(0),
+m_DoLightInteraction(false), m_LightThreshLow(0), m_LightThreshMedium(0),
 m_DoHabSuitability(false), m_HabSuitMode(1),
 m_DoDispersal(false), m_DispersalMode(1),
 m_DoDisturbances(false), m_NoDist(0), m_NoDistSub(0), m_FreqDist(0,0),
-m_DoSoilCompetition(false), m_SoilInit(0.0), m_SoilRetention(0.0),
+m_DoSoilInteraction(false), m_SoilInit(0.0), m_SoilRetention(0.0),
 m_DoFireDisturbances(false), m_NoFireDist(0), m_NoFireDistSub(0), m_FreqFireDist(0,0),
 m_FireIgnitMode(1), m_FireNeighMode(1), m_FirePropMode(1), m_FireQuotaMode(1),
 m_FireIgnitNo(0,0), m_FireIgnitNoHist(0), m_FireIgnitFlammMax(0), m_FireIgnitLogis(0,0),
@@ -42,11 +42,11 @@ m_DoAliensIntroduction(false), m_FreqAliens(0,0)
 GSP::GSP(const int& noCPU, const int& noFG, const int& noStrata, const int& simulDuration,
 const int& seedingDuration, const int& seedingTimeStep, const int& seedingInput,
 const int& maxAbundLow, const int& maxAbundMedium, const int& maxAbundHigh,
-const bool& doLightCompetition, const int& lightThreshLow, const int& lightThreshMedium,
+const bool& doLightInteraction, const int& lightThreshLow, const int& lightThreshMedium,
 const bool& doHabSuitability, const int& habSuitMode,
 const bool& doDispersal, const int& dispersalMode,
 const bool& doDisturbances, const int& noDist, const int& noDistSub, const vector<int>& freqDist,
-const bool& doSoilCompetition, const double& soilInit, const double& soilRetention,
+const bool& doSoilInteraction, const double& soilInit, const double& soilRetention,
 const bool& doFireDisturbances, const int& noFireDist, const int& noFireDistSub, const vector<int>& freqFireDist,
 const int& fireIgnitMode, const int& fireNeighMode, const int& firePropMode, const int& fireQuotaMode,
 const vector<int>& fireIgnitNo, const vector<int>& fireIgnitNoHist,
@@ -58,11 +58,11 @@ const bool& doAliensIntroduction, const vector<int>& freqAliens) : m_NoFG(noFG),
 m_SimulDuration(simulDuration),
 m_SeedingDuration(seedingDuration), m_SeedingTimeStep(seedingTimeStep),
 m_MaxAbundLow(maxAbundLow), m_MaxAbundMedium(maxAbundMedium), m_MaxAbundHigh(maxAbundHigh),
-m_DoLightCompetition(doLightCompetition), m_LightThreshLow(lightThreshLow), m_LightThreshMedium(lightThreshMedium),
+m_DoLightInteraction(doLightInteraction), m_LightThreshLow(lightThreshLow), m_LightThreshMedium(lightThreshMedium),
 m_DoHabSuitability(doHabSuitability), m_HabSuitMode(habSuitMode),
 m_DoDispersal(doDispersal), m_DispersalMode(dispersalMode),
 m_DoDisturbances(doDisturbances), m_NoDist(noDist), m_NoDistSub(noDistSub), m_FreqDist(freqDist),
-m_DoSoilCompetition(doSoilCompetition), m_SoilInit(soilInit), m_SoilRetention(soilRetention),
+m_DoSoilInteraction(doSoilInteraction), m_SoilInit(soilInit), m_SoilRetention(soilRetention),
 m_DoFireDisturbances(doFireDisturbances), m_NoFireDist(noFireDist), m_NoFireDistSub(noFireDistSub), m_FreqFireDist(freqFireDist),
 m_FireIgnitMode(fireIgnitMode), m_FireNeighMode(fireNeighMode), m_FirePropMode(firePropMode), m_FireQuotaMode(fireQuotaMode),
 m_FireIgnitNo(fireIgnitNo), m_FireIgnitNoHist(fireIgnitNoHist), m_FireIgnitFlammMax(fireIgnitFlammMax), m_FireIgnitLogis(fireIgnitLogis),
@@ -168,10 +168,10 @@ GSP::GSP(const string globalParamsFile)
 		logg.error("!!! Parameter SEEDING_INPUT : must be superior to 0!");
 	}
 
-	/* GET OPTIONAL parameters : light competition */
-	v_int = GlobParms.get_val<int>("DO_LIGHT_COMPETITION", true);
-	if (v_int.size()) m_DoLightCompetition = bool(v_int[0]); else m_DoLightCompetition = false;
-	if (m_DoLightCompetition)
+	/* GET OPTIONAL parameters : light interaction */
+	v_int = GlobParms.get_val<int>("DO_LIGHT_INTERACTION", true);
+	if (v_int.size()) m_DoLightInteraction = bool(v_int[0]); else m_DoLightInteraction = false;
+	if (m_DoLightInteraction)
 	{
 		m_LightThreshLow = GlobParms.get_val<int>("LIGHT_THRESH_LOW")[0];
 		m_LightThreshMedium = GlobParms.get_val<int>("LIGHT_THRESH_MEDIUM")[0];
@@ -234,10 +234,10 @@ GSP::GSP(const string globalParamsFile)
 		m_FreqDist = vector<int>(1,0);
 	}
 
-	/* GET OPTIONAL parameters : soil competition */
-	v_int = GlobParms.get_val<int>("DO_SOIL_COMPETITION", true);
-	if (v_int.size()) m_DoSoilCompetition = bool(v_int[0]); else m_DoSoilCompetition = false;
-	if (m_DoSoilCompetition)
+	/* GET OPTIONAL parameters : soil interaction */
+	v_int = GlobParms.get_val<int>("DO_SOIL_INTERACTION", true);
+	if (v_int.size()) m_DoSoilInteraction = bool(v_int[0]); else m_DoSoilInteraction = false;
+	if (m_DoSoilInteraction)
 	{
 		m_SoilInit = GlobParms.get_val<double>("SOIL_INIT")[0];
 		m_SoilRetention = GlobParms.get_val<double>("SOIL_RETENTION")[0];
@@ -397,7 +397,7 @@ const int& GSP::getSeedingInput() const{ return m_SeedingInput; }
 const int& GSP::getMaxAbundLow() const{ return m_MaxAbundLow; }
 const int& GSP::getMaxAbundMedium() const{ return m_MaxAbundMedium; }
 const int& GSP::getMaxAbundHigh() const{ return m_MaxAbundHigh; }
-const bool& GSP::getDoLightCompetition() const{ return m_DoLightCompetition; }
+const bool& GSP::getDoLightInteraction() const{ return m_DoLightInteraction; }
 const int& GSP::getLightThreshLow() const{ return m_LightThreshLow; }
 const int& GSP::getLightThreshMedium() const{ return m_LightThreshMedium; }
 const bool& GSP::getDoHabSuitability() const{ return m_DoHabSuitability; }
@@ -408,7 +408,7 @@ const bool& GSP::getDoDisturbances() const{ return m_DoDisturbances; }
 const int& GSP::getNoDist() const{ return m_NoDist; }
 const int& GSP::getNoDistSub() const{ return m_NoDistSub; }
 const vector<int>& GSP::getFreqDist() const{ return m_FreqDist; }
-const bool& GSP::getDoSoilCompetition() const{ return m_DoSoilCompetition; }
+const bool& GSP::getDoSoilInteraction() const{ return m_DoSoilInteraction; }
 const double& GSP::getSoilInit() const{ return m_SoilInit; }
 const double& GSP::getSoilRetention() const{ return m_SoilRetention; }
 const bool& GSP::getDoFireDisturbances() const{ return m_DoFireDisturbances; }
@@ -444,7 +444,7 @@ void GSP::setSeedingInput(const int& seedingInput){ m_SeedingInput = seedingInpu
 void GSP::setMaxAbundLow(const int& maxAbundLow){ m_MaxAbundLow = maxAbundLow; }
 void GSP::setMaxAbundMedium(const int& maxAbundMedium){ m_MaxAbundMedium = maxAbundMedium; }
 void GSP::setMaxAbundHigh(const int& maxAbundHigh){ m_MaxAbundHigh = maxAbundHigh; }
-void GSP::setDoLightCompetition(const bool& doLightCompetition){ m_DoLightCompetition = doLightCompetition; }
+void GSP::setDoLightInteraction(const bool& doLightInteraction){ m_DoLightInteraction = doLightInteraction; }
 void GSP::setLightThreshLow(const int& lightThreshLow){ m_LightThreshLow = lightThreshLow; }
 void GSP::setLightThreshMedium(const int& lightThreshMedium){ m_LightThreshMedium = lightThreshMedium; }
 void GSP::setDoHabSuitability(const bool& doHabSuitability){ m_DoHabSuitability = doHabSuitability; }
@@ -455,7 +455,7 @@ void GSP::setDoDisturbances(const bool& doDisturbances){ m_DoDisturbances = doDi
 void GSP::setNoDist(const int& noDist){ m_NoDist = noDist; }
 void GSP::setNoDistSub(const int& noDistSub){ m_NoDistSub = noDistSub; }
 void GSP::setFreqDist(const vector<int>& freqDist){ m_FreqDist = freqDist; }
-void GSP::setDoSoilCompetition(const bool& doSoilCompetition){ m_DoSoilCompetition = doSoilCompetition; }
+void GSP::setDoSoilInteraction(const bool& doSoilInteraction){ m_DoSoilInteraction = doSoilInteraction; }
 void GSP::setSoilInit(const double& soilInit){ m_SoilInit = soilInit; }
 void GSP::setSoilRetention(const double& soilRetention){ m_SoilRetention = soilRetention; }
 void GSP::setDoFireDisturbances(const bool& doFireDisturbances){ m_DoFireDisturbances = doFireDisturbances; }
@@ -498,7 +498,7 @@ void GSP::show()
 						 "\nm_MaxAbundLow = ", m_MaxAbundLow,
 						 "\nm_MaxAbundMedium = ", m_MaxAbundMedium,
 						 "\nm_MaxAbundHigh = ", m_MaxAbundHigh,
-						 "\nm_DoLightCompetition = ", m_DoLightCompetition,
+						 "\nm_DoLightInteraction = ", m_DoLightInteraction,
 						 "\nm_LightThreshLow = ", m_LightThreshLow,
 						 "\nm_LightThreshMedium = ", m_LightThreshMedium,
 						 "\nm_DoHabSuitability = ", m_DoHabSuitability,
@@ -509,7 +509,7 @@ void GSP::show()
 						 "\nm_NoDist = ", m_NoDist,
 						 "\nm_NoDistSub = ", m_NoDistSub,
 						 "\nm_FreqDist = ", m_FreqDist,
-						 "\nm_DoSoilCompetition = ", m_DoSoilCompetition,
+						 "\nm_DoSoilInteraction = ", m_DoSoilInteraction,
 						 "\nm_SoilInit = ", m_SoilInit,
 						 "\nm_SoilRetention = ", m_SoilRetention,
 						 "\nm_DoFireDisturbances = ", m_DoFireDisturbances,

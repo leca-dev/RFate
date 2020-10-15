@@ -76,10 +76,10 @@ the light module of \code{FATE}.
 }
 \details{
 The \strong{light module} allows the user to add the effect of 
-\strong{light competition} within a primary vegetation succession. \cr \cr
+\strong{light interaction} within a primary vegetation succession. \cr \cr
 
 Several parameters, given within \code{mat.PFG.light} or \code{mat.PFG.tol}, 
-are required for each PFG in order to set up this light competition :
+are required for each PFG in order to set up this light interaction :
 
 \describe{
   \item{PFG}{the concerned plant functional group \cr \cr}

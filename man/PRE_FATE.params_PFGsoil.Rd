@@ -83,10 +83,10 @@ used in the soil module of \code{FATE}.
 }
 \details{
 The \strong{soil module} allows the user to add the effect of 
-\strong{soil competition} within a primary vegetation succession. \cr \cr
+\strong{soil interaction} within a primary vegetation succession. \cr \cr
 
 Several parameters, given within \code{mat.PFG.soil} or \code{mat.PFG.tol}, 
-are required for each PFG in order to set up the soil competition :
+are required for each PFG in order to set up the soil interaction :
 
 \describe{
   \item{PFG}{the concerned plant functional group \cr \cr}

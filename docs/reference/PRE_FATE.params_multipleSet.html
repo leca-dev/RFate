@@ -204,30 +204,30 @@ using Latin Hypercube Sampling to help find best combination of parameters
 (see <code>Details</code>)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.params_multipleSet</span><span class='op'>(</span>
-  <span class='va'>name.simulation.1</span>,
-  name.simulation.2 <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>file.simulParam.1</span>,
-  file.simulParam.2 <span class='op'>=</span> <span class='cn'>NULL</span>,
-  <span class='va'>no_simulations</span>,
-  opt.percent_maxAbund <span class='op'>=</span> <span class='fl'>0.5</span>,
-  opt.percent_seeding <span class='op'>=</span> <span class='fl'>0.5</span>,
-  opt.percent_light <span class='op'>=</span> <span class='fl'>0.5</span>,
-  opt.percent_soil <span class='op'>=</span> <span class='fl'>0.5</span>,
-  do.max_abund_low <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.max_abund_medium <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.max_abund_high <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.seeding_duration <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.seeding_timestep <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.seeding_input <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.no_strata <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.LIGHT.thresh_medium <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.LIGHT.thresh_low <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.SOIL.init <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.SOIL.retention <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.DISPERSAL.mode <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  do.HABSUIT.mode <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.params_multipleSet</span>(
+  <span class='kw'>name.simulation.1</span>,
+  name.simulation.2 = <span class='kw'>NULL</span>,
+  <span class='kw'>file.simulParam.1</span>,
+  file.simulParam.2 = <span class='kw'>NULL</span>,
+  <span class='kw'>no_simulations</span>,
+  opt.percent_maxAbund = <span class='fl'>0.5</span>,
+  opt.percent_seeding = <span class='fl'>0.5</span>,
+  opt.percent_light = <span class='fl'>0.5</span>,
+  opt.percent_soil = <span class='fl'>0.5</span>,
+  do.max_abund_low = <span class='fl'>TRUE</span>,
+  do.max_abund_medium = <span class='fl'>TRUE</span>,
+  do.max_abund_high = <span class='fl'>TRUE</span>,
+  do.seeding_duration = <span class='fl'>TRUE</span>,
+  do.seeding_timestep = <span class='fl'>TRUE</span>,
+  do.seeding_input = <span class='fl'>TRUE</span>,
+  do.no_strata = <span class='fl'>TRUE</span>,
+  do.LIGHT.thresh_medium = <span class='fl'>TRUE</span>,
+  do.LIGHT.thresh_low = <span class='fl'>TRUE</span>,
+  do.SOIL.init = <span class='fl'>TRUE</span>,
+  do.SOIL.retention = <span class='fl'>TRUE</span>,
+  do.DISPERSAL.mode = <span class='fl'>TRUE</span>,
+  do.HABSUIT.mode = <span class='fl'>TRUE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -399,10 +399,10 @@ file :</p>
 <li><p>MAX_ABUND_LOW</p></li>
 <li><p>MAX_ABUND_MEDIUM</p></li>
 <li><p>MAX_ABUND_HIGH <br /> <br /></p></li>
-</ul><p>If the simulation includes <em>light competition</em> :</p><ul>
+</ul><p>If the simulation includes <em>light interaction</em> :</p><ul>
 <li><p>LIGHT_THRESH_MEDIUM</p></li>
 <li><p>LIGHT_THRESH_LOW</p></li>
-</ul><p>If the simulation includes <em>soil competition</em> :</p><ul>
+</ul><p>If the simulation includes <em>soil interaction</em> :</p><ul>
 <li><p>SOIL_INIT</p></li>
 <li><p>SOIL_RETENTION</p></li>
 </ul><p>If the simulation includes <em>dispersal</em> :</p><ul>

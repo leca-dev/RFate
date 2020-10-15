@@ -91,8 +91,8 @@ with the function [PRE_FATE.params_changingYears](../reference/PRE_FATE.params_c
 
 - **Succession files** : related to the life history with the function [PRE_FATE.params_PFGsuccession](../reference/PRE_FATE.params_PFGsuccession.html)
 - **Dispersal files** : related to the dispersal ability with the function [PRE_FATE.params_PFGdispersal](../reference/PRE_FATE.params_PFGdispersal.html)
-- **Light files** : related to the light competition with the function [PRE_FATE.params_PFGlight](../reference/PRE_FATE.params_PFGlight.html)
-- **Soil files** : related to the soil competition with the function [PRE_FATE.params_PFGsoil](../reference/PRE_FATE.params_PFGsoil.html)
+- **Light files** : related to the light interaction with the function [PRE_FATE.params_PFGlight](../reference/PRE_FATE.params_PFGlight.html)
+- **Soil files** : related to the soil interaction with the function [PRE_FATE.params_PFGsoil](../reference/PRE_FATE.params_PFGsoil.html)
 - **Disturbance files** : related to the response to perturbations in terms of resprouting and mortality  
 with the function [PRE_FATE.params_PFGdisturbance](../reference/PRE_FATE.params_PFGdisturbance.html)
 - **Drought files** : related to the response to drought in terms of resprouting and mortality  
