@@ -69,7 +69,7 @@ jobs:
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
         run: |
-          sudo apt install libgdal-dev libproj-dev libgeos-dev libudunits2-dev libgfortran3
+          sudo apt install libgdal-dev libproj-dev libgeos-dev libudunits2-dev libgfortran3 libicu-dev
           while read -r cmd
           do
             eval sudo $cmd
