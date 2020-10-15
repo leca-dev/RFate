@@ -250,7 +250,7 @@ Coordinates<double> ReadRasterCoordinates( string file_name )
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void testDirExist(const string& param, const string& dir_name)
+void testDirExist(const string& param, const string& dir_name, const bool& optional)
 {
 	if (dir_name != "0")
 	{
@@ -261,6 +261,9 @@ void testDirExist(const string& param, const string& dir_name)
 			logg.warning("!!! Parameter ", param, " : the directory ", dir_name,
 									 " has been created.");
 		}
+	} else if (optional == false)
+	{
+	  logg.error("!!! Parameter ", param, " has not been given. Please check!");
 	}
 }
 

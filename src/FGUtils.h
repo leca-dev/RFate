@@ -281,8 +281,9 @@ Coordinates<double> ReadCoordinates( string file_name );
  *
  *	\param param : name of the corresponding parameter
  * \param dir_name : path to a folder on hard drive
+ * \param optional : is the folder optional (true) or not
  */
-void testDirExist(const string& param, const string& dir_name);
+void testDirExist(const string& param, const string& dir_name, const bool& optional);
 
 /*!
  *	\brief Test file existence
@@ -294,7 +295,7 @@ void testDirExist(const string& param, const string& dir_name);
  *
  *	\param param : name of the corresponding parameter
  * \param file_name : path to a file on hard drive
- * \param optional : is the file is optional (true) or not
+ * \param optional : is the file optional (true) or not
  */
 void testFileExist(const string& param, const string& file_name, const bool& optional);
 

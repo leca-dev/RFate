@@ -216,7 +216,7 @@ void FOPL::show()
 
 void FOPL::checkCorrectParams_light()
 {
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/LIGHT/");
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/LIGHT/", false);
 	testFileExist("--PFG_PARAMS_LIGHT--",m_FGLight, false);
 }
 
@@ -230,7 +230,7 @@ void FOPL::checkCorrectParams_habSuit()
 
 void FOPL::checkCorrectParams_disp()
 {
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/DISPERSAL/");
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/DISPERSAL/", false);
 	testFileExist("--PFG_PARAMS_DISPERSAL--",m_FGDispersal, false);
 }
 
@@ -245,7 +245,7 @@ void FOPL::checkCorrectParams_dist()
 
 void FOPL::checkCorrectParams_soil()
 {
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/SOIL/");
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/SOIL/", false);
 	testFileExist("--PFG_PARAMS_SOIL--",m_FGSoil, false);
 }
 
@@ -290,10 +290,10 @@ const bool& doSoil, const bool& doFire, const bool& doDrought, const bool& doAli
 	testFileExist("--GLOBAL_PARAMS--",m_GlobSimulParams, false);
 	testFileExist("--SAVED_STATE--",m_SavedState, true);
 
-	testDirExist("--SAVING_DIR--",m_SavingDir);
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_perStrata/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_allStrata/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_allPFG_perStrata/");
+	testDirExist("--SAVING_DIR--",m_SavingDir, false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_perStrata/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_allStrata/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_allPFG_perStrata/", false);
 
 	testFileExist("--SAVING_YEARS_MAPS--",m_SavingTimesMaps, true);
 	testFileExist("--SAVING_YEARS_OBJECTS--",m_SavingTimesObjects, true);
@@ -324,13 +324,13 @@ void FOPL::checkCorrectParams()
 	testFileExist("--GLOBAL_PARAMS--",m_GlobSimulParams, false);
 	testFileExist("--SAVED_STATE--",m_SavedState, true);
 
-	testDirExist("--SAVING_DIR--",m_SavingDir);
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_perStrata/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_allStrata/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_allPFG_perStrata/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/SOIL/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/LIGHT/");
-	testDirExist("--SAVING_DIR--",m_SavingDir+"/DISPERSAL/");
+	testDirExist("--SAVING_DIR--",m_SavingDir, false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_perStrata/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_perPFG_allStrata/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/ABUND_allPFG_perStrata/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/SOIL/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/LIGHT/", false);
+	testDirExist("--SAVING_DIR--",m_SavingDir+"/DISPERSAL/", false);
 
 	testFileExist("--SAVING_YEARS_MAPS--",m_SavingTimesMaps, true);
 	testFileExist("--SAVING_YEARS_OBJECTS--",m_SavingTimesObjects, true);

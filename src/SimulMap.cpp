@@ -1664,14 +1664,16 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 				GDALClose( rasOutput ); // Once we're done, close properly the dataset
 
 				// Compress file
-				ostringstream ossCompressCommand;
-				ossCompressCommand <<  "gzip -9 -f " << newFile;
-				string strCompressCommand = ossCompressCommand.str();
-				int compress_ok = system(strCompressCommand.c_str());
-				if (compress_ok != 0)
-				{
-					logg.warning("Compression failed for ", newFile);
-				}
+				#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX) || defined(__APPLE__)
+  				ostringstream ossCompressCommand;
+  				ossCompressCommand <<  "gzip -9 -f " << newFile;
+  				string strCompressCommand = ossCompressCommand.str();
+  				int compress_ok = system(strCompressCommand.c_str());
+  				if (compress_ok != 0)
+  				{
+  					logg.warning("Compression failed for ", newFile);
+  				}
+				#endif
 			}
 			delete [] abunValues1;
 		} // end loop on Stratum
@@ -1697,14 +1699,16 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			GDALClose( rasOutput ); // Once we're done, close properly the dataset
 
 			// Compress file
-			ostringstream ossCompressCommand;
-			ossCompressCommand <<  "gzip -9 -f " << newFile;
-			string strCompressCommand = ossCompressCommand.str();
-			int compress_ok = system(strCompressCommand.c_str());
-			if (compress_ok != 0)
-			{
-				logg.warning("Compression failed for ", newFile);
-			}
+			#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX) || defined(__APPLE__)
+  			ostringstream ossCompressCommand;
+  			ossCompressCommand <<  "gzip -9 -f " << newFile;
+  			string strCompressCommand = ossCompressCommand.str();
+  			int compress_ok = system(strCompressCommand.c_str());
+  			if (compress_ok != 0)
+  			{
+  			  logg.warning("Compression failed for ", newFile);
+  			}
+			#endif
 		}
 		delete [] abunValues2;
 	} // end loop on PFG
@@ -1801,14 +1805,16 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 		delete [] soilValues;
 
 		// Compress file
-		ostringstream ossCompressCommand;
-		ossCompressCommand <<  "gzip -9 -f " << newFile;
-		string strCompressCommand = ossCompressCommand.str();
-		int compress_ok = system(strCompressCommand.c_str());
-		if (compress_ok != 0)
-		{
-			logg.warning("Compression failed for ", newFile);
-		}
+		#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX) || defined(__APPLE__)
+  		ostringstream ossCompressCommand;
+  		ossCompressCommand <<  "gzip -9 -f " << newFile;
+  		string strCompressCommand = ossCompressCommand.str();
+  		int compress_ok = system(strCompressCommand.c_str());
+  		if (compress_ok != 0)
+  		{
+  		  logg.warning("Compression failed for ", newFile);
+  		}
+		#endif
 	}
 
 	if (m_glob_params.getDoLightInteraction())
@@ -1858,14 +1864,16 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 			delete [] lightValues;
 
 			// Compress file
-			ostringstream ossCompressCommand;
-			ossCompressCommand <<  "gzip -9 -f " << newFile;
-			string strCompressCommand = ossCompressCommand.str();
-			int compress_ok = system(strCompressCommand.c_str());
-			if (compress_ok != 0)
-			{
-				logg.warning("Compression failed for ", newFile);
-			}
+			#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX) || defined(__APPLE__)
+  			ostringstream ossCompressCommand;
+  			ossCompressCommand <<  "gzip -9 -f " << newFile;
+  			string strCompressCommand = ossCompressCommand.str();
+  			int compress_ok = system(strCompressCommand.c_str());
+  			if (compress_ok != 0)
+  			{
+  			  logg.warning("Compression failed for ", newFile);
+  			}
+			#endif
 		}
 	}
 
