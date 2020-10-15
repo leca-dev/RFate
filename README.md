@@ -1,5 +1,6 @@
 [![Travis build status](https://travis-ci.org/leca-dev/RFate.svg?branch=RFate)](https://travis-ci.org/leca-dev/RFate)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/leca-dev/RFate?branch=RFate&svg=true)](https://ci.appveyor.com/project/leca-dev/RFate)
+[![R build status](https://github.com/leca-dev/RFate/workflows/R-CMD-check/badge.svg)](https://github.com/leca-dev/RFate/actions)
 [![Coverage status](https://codecov.io/gh/leca-dev/RFate/branch/RFate/graph/badge.svg)](https://codecov.io/github/leca-dev/RFate?branch=RFate)
 
 
