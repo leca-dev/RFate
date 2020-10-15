@@ -12,5 +12,8 @@ coverage:
         threshold: 1%
         
 ignore:
-  - "src/"
-  - "inst/shinyApp/"
+  - "R/UTILS.loadData.R"
+  - "R/UTILS.adaptMaps.R"
+  - "R/UTILS.upscaleMaps.R"
+  - "src"
+  - "inst/shinyApp"
