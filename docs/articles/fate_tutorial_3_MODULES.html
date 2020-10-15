@@ -470,8 +470,12 @@ FATE_simulation/DATA/PFGS/DROUGHT/DROUGHT_PFG2.txt
 FATE_simulation/DATA/MASK/DROUGHT_init.tif
 </pre>
 <p>Like habitat suitability or disturbances maps, the drought index map can be changed through simulation time.<br>
-Two supplementary type of files are then needed : 1. a file with each row indicating each simulation year of change 2. as many files as the number of years indicated in the previous file,<br>
-and inside them, one line with a path for a new map of drought index</p>
+Two supplementary type of files are then needed :</p>
+<ol style="list-style-type: decimal">
+<li>a file with each row indicating each simulation year of change</li>
+<li>as many files as the number of years indicated in the previous file,<br>
+and inside them, one line with a path for a new map of drought index</li>
+</ol>
 <pre class="grey">
 --DROUGHT_CHANGEMASK_YEARS--
 FATE_simulation/DATA/SCENARIO/DROUGHT_changingmask_years.txt
@@ -649,6 +653,17 @@ FATE_simulation/DATA/MASK/slope.tif
 </ul>
 <pre class="bash">
 FLAMMABILITY 6
+</pre>
+<ul>
+<li>In <a href="../reference/PRE_FATE.params_PFGdisturbance.html">FIRE</a> files (given with the <code>--PFG_PARAMS_FIRE--</code> flag in <em>SimulParameters</em> file) :</li>
+</ul>
+<pre class="bash">
+NAME PFG1
+BREAK_AGE 1 4 20
+RESPR_AGE 0 1 3 12
+FATES 8 0 6 4 5 5 4 6
+PROP_KILLED 0 0
+ACTIVATED_SEED 0 0
 </pre>
 </div>
 </div>
