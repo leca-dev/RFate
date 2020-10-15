@@ -14,9 +14,6 @@ on:
   pull_request:
     branches: [ RFate ]
     
-env:
-  - _R_CHECK_SYSTEM_CLOCK_=0
-
 
 jobs:
   R-CMD-check:
