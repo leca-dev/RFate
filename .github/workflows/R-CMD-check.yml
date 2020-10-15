@@ -17,14 +17,6 @@ on:
 env:
   - _R_CHECK_SYSTEM_CLOCK_=0
 
-addons:
-  apt:
-    packages:	
-      - gdal-bin
-      - proj-bin
-      - libgdal-dev
-      - libproj-dev
-      - libgeos-dev
 
 jobs:
   R-CMD-check:
@@ -80,6 +72,7 @@ jobs:
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
         run: |
+          sudo apt install libgdal-dev libproj-dev libgeos-dev libudunits2-dev
           while read -r cmd
           do
             eval sudo $cmd
@@ -87,6 +80,9 @@ jobs:
       - name: Install system dependencies on macOS
         if: runner.os == 'macOS'
         run: |
+          # conflicts with gfortran from r-lib/actions when linking gcc
+          rm '/usr/local/bin/gfortran'
+          brew install pkg-config gdal proj geos
           # XQuartz is needed by vdiffr
           brew cask install xquartz
           # Use only binary packages
