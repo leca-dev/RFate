@@ -13,6 +13,18 @@ on:
     branches: [ RFate ]
   pull_request:
     branches: [ RFate ]
+    
+env:
+  - _R_CHECK_SYSTEM_CLOCK_=0
+
+addons:
+  apt:
+    packages:	
+      - gdal-bin
+      - proj-bin
+      - libgdal-dev
+      - libproj-dev
+      - libgeos-dev
 
 jobs:
   R-CMD-check:
