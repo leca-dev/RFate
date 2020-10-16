@@ -57,10 +57,7 @@ jobs:
           remotes::install_cran("covr")
         shell: Rscript {0}
 
-      # TODO: Remove remotes::install_github() after covr > 3.5.0 is released
-      #       c.f. https://github.com/r-lib/covr/commit/cc710804aeff6f337777465bf902914197c0b713
       - name: Test coverage
         run: |
-          remotes::install_github("r-lib/covr")
           covr::codecov()
         shell: Rscript {0}

@@ -1,4 +1,5 @@
 [![R build status](https://github.com/leca-dev/RFate/workflows/R-CMD-check/badge.svg)](https://github.com/leca-dev/RFate/actions)
+[![Coverage status](https://github.com/leca-dev/RFate/workflows/CODECOV-check/badge.svg)](https://github.com/leca-dev/RFate/actions)
 [![Coverage status](https://codecov.io/gh/leca-dev/RFate/branch/RFate/graph/badge.svg)](https://codecov.io/gh/leca-dev/RFate/branch/RFate)
 
 
