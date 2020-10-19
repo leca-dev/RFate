@@ -55,8 +55,11 @@ It depends on the amount of seeds produced by mature plants and affects each PFG
 
 <br/>
 
-<div style="text-align:center;">
-<img src="pictures/SCHEMA_FATE_successionCycle_0.png" alt="SCHEMA FATE successionCycle 0" style="width:800px;"></img>
+<!-- <div style="text-align:center;"> -->
+<!-- <img src="pictures/SCHEMA_FATE_successionCycle_00.png" alt="SCHEMA FATE successionCycle 0" style="width:1000px;"></img> -->
+<!-- </div> -->
+<div class="zoom">
+<p><img src="pictures/SCHEMA_FATE_successionCycle_00.png" alt="SCHEMA FATE successionCycle 0"></img></p>
 </div>
 
 <br/><br/>

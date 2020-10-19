@@ -30,9 +30,9 @@ A plant functional group, or **PFG**, is "*a set of representative species [that
 
 <div style="text-align:center;">
 
-<img src="pictures/SCHEMA_CRS_triangle.png" alt="CRS triangle" style="width:400px;"></img>
+<img src="pictures/SCHEMA_CRS_triangle.png" alt="CRS triangle" style="width:500px;"></img>
 
-<img src="pictures/SCHEMA_vegetationLayers.jpg" alt="Vegetation layers" style="width:700px;"></img>
+<img src="pictures/SCHEMA_vegetationLayers.jpg" alt="Vegetation layers" style="width:800px;"></img>
 
 </div>
 
