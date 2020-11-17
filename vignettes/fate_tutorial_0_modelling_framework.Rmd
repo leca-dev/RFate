@@ -101,10 +101,13 @@ The timestep is at the year level : seasonality is not included within each time
 
 Light and soil resources are **proportional to the abundance of the PFG community** of the pixel. They are both converted into **qualitative classes** (`Low`, `Medium` or `High`), for each **height stratum** (concerning light) and for each **PFG** (according to its tolerance, regarding soil). The response of each PFG to each resource level is defined **in function of age** (`Germinant`, `Immature` and `Mature`), in a semi-binary way for light (*bottom right*), and in a more quantitative way for soil (*bottom left*).
 
+<br/>
 
-<img src="pictures/SCHEMA_FATE_interaction_GIF.gif" alt="SCHEMA FATE interaction Light and Soil"></img>
+<div style="text-align:center;">
+<embed src="pictures/SCHEMA_FATE_interaction_PDF.pdf" width='700' height='700' allowfullscreen webkitallowfullscreen></embed>
+</div>
 
-
+<br/><br/>
 
 ## <i class="fas fa-square-root-alt"></i> Structural equations
 

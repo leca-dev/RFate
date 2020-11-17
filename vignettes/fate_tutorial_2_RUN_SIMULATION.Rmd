@@ -78,7 +78,7 @@ A good way to start is to create this skeleton directory, and then copy or creat
 
 <br/>
 
-When all data and parameter files have been produced and correctly referred in a [SimulParameters](../reference/PRE_FATE.params_simulParameters.html) file, a `FATE` simulation can be run using the [FATE.run](../reference/FATE.run.html) function : 
+When all data and parameter files have been produced and correctly referred in a [SimulParameters](../reference/PRE_FATE.params_simulParameters.html) file, a `FATE` simulation can be run using the [FATE](../reference/FATE.html) function : 
 
 - the simulation will start, and the software will print messages into the console indicating what the software is doing.
 - depending on the simulation duration, the size and the resolution of the study area, the number of Plant Functional Groups (PFG) involved, ... running the full simulation **could take a while**.
