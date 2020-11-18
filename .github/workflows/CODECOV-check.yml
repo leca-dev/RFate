@@ -14,14 +14,7 @@ on:
 
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master # Check out your repository
-    - run: yarn # Install dependencies
-    - run: yarn test # Run test
-    - run: bash <(curl -s https://codecov.io/bash) # Upload to Codecov
-    
+  CODECOV-check:
     runs-on: ubuntu-latest
 
     strategy:
