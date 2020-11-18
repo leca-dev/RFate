@@ -1,0 +1,4 @@
+{
+  "homepage": "https://leca-dev.github.io/RFate",
+  "deploy": "gh-pages -d build"
+}
