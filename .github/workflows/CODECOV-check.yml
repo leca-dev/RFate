@@ -1,17 +1,14 @@
+
+name: CODECOV-check
+
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [ RFate ]
   pull_request:
-    branches:
-      - main
-      - master
-
-name: test-coverage
+    branches: [ RFate ]
 
 jobs:
-  test-coverage:
+  CODECOV-check:
     runs-on: macOS-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
