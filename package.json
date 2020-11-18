@@ -1,5 +1,3 @@
-// package.json
-
 {
   // Make sure jest creates lcov reports
   "jest": {
