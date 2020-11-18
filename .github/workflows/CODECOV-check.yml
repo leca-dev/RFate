@@ -17,7 +17,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@RFate # Check out your repository
+    - uses: actions/checkout@master # Check out your repository
     - run: yarn # Install dependencies
     - run: yarn test --coverage # Run test
     - run: bash <(curl -s https://codecov.io/bash) # Upload to Codecov
