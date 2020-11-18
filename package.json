@@ -1,11 +1,12 @@
 {
   "name": "RFate",
   "version": "1.0",
+  "homepage": "https://leca-dev.github.io/RFate",
   "jest": {
     "collectCoverage": true,
     "coverageReporters": ["json", "html"]
   },
   "scripts": {
-    "test": "./node_modules/.bin/jest  --coverage"
+    "test": "jest  --coverage"
   }
 }
