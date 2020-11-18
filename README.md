@@ -54,7 +54,7 @@ It uses **plant functional groups (PFG)** and integrates important
 mechanisms driving vegetation dynamics, structure and diversity, 
 such as **demographic cycle**, obviously, but also **seeds dispersal**, 
 **abiotic filtering** or **biotic interactions** (through the competition 
-for resources like light availability or soil suitability).
+for resources like light availability or soil nutrient availability).
 
 If **primary succession** is the most obvious ecological process that 
 can be modelled with `FATE`, events related to **secondary succession** 

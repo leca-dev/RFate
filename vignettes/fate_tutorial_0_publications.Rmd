@@ -28,6 +28,10 @@ resource_files:
   - pictures/art_2017_Barros_JAE_1.png
   - papers/Barros_2017_Journal_Applied_Ecology_SupMat_COMPRESSED.7z
   - pictures/art_2017_Barros_JAE_2.png
+  - papers/Barros_2018_Plos_One_COMPRESSED.pdf
+  - pictures/art_2018_Barros_PO_1.png
+  - papers/Barros_2018_Plos_One_SupMat.7z
+  - pictures/art_2018_Barros_PO_2.png
   - papers/Carboni_2017_Global_Change_Biology_COMPRESSED.pdf
   - pictures/art_2017_Carboni_GCB_1.png
   - papers/Carboni_2017_Global_Change_Biology_SupMat_COMPRESSED.pdf
@@ -118,6 +122,12 @@ ________________________________________________________________________________
 <a href="papers/Barros_2017_Journal_Applied_Ecology_SupMat_COMPRESSED.7z" class="download" title="Download as PDF">
 <img src="pictures/art_2017_Barros_JAE_2.png" alt="Barros 2017 Journal of Applied Ecology (SupMat)" style="width:350px">
 </a>
+<a href="papers/Barros_2018_Plos_One_COMPRESSED.pdf" class="download" title="Download as PDF">
+<img src="pictures/art_2018_Barros_PO_1.png" alt="Barros 2018 Plos One (PAPER)" style="width:350px">
+</a>
+<a href="papers/Barros_2018_Plos_One_SupMat.7z" class="download" title="Download as PDF">
+<img src="pictures/art_2018_Barros_PO_2.png" alt="Barros 2018 Plos One (SupMat)" style="width:350px">
+</a>
 <a href="papers/Carboni_2017_Global_Change_Biology_COMPRESSED.pdf" class="download" title="Download as PDF">
 <img src="pictures/art_2017_Carboni_GCB_1.png" alt="Carboni 2017 Global Change Biology (PAPER)" style="width:350px">
 </a>
@@ -138,6 +148,8 @@ ________________________________________________________________________________
 - **Barros** C., Thuiller W., Georges D., Boulangeat I., Münkemüller T. and Bellwood D. (**2016**), *N‐dimensional hypervolumes to study stability of complex ecosystems*. Ecol Lett, 19: 729-742. https://doi.org/10.1111/ele.12617
 
 - **Barros** C., Guéguen M., Douzet R., Carboni M., Boulangeat I., Zimmermann N. E., Münkemüller T., Thuiller W. and Mori A. (**2017**), *Extreme climate events counteract the effects of climate and land‐use changes in Alpine tree lines*. J Appl Ecol, 54: 39-50. https://doi.org/10.1111/1365-2664.12742
+
+- **Barros** C., Thuiller W. and Münkemüller T. (**2018**), *Drought effects on the stability of forest-grassland ecotones under gradual climate change*. PLoS ONE 13(10): e0206138. https://doi.org/10.1371/journal.pone.0206138
 
 - **Carboni** M., Guéguen M., Barros C., Georges D., Boulangeat I., Douzet R., Klonner G., Van Kleunen M., Essl F., Bossdorf O., Haeuser E., Talluto M. V., Moser D., Block S., Conti L., Dullinger I., Münkemüller T. and Thuiller W. (**2018**). *Simulating plant invasion dynamics in mountain ecosystems under global change scenarios*. Glob Change Biol, 24:e289–e302. https://doi.org/10.1111/gcb.13879
 
