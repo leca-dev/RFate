@@ -1,5 +1,4 @@
 {
-  // Make sure jest creates lcov reports
   "jest": {
     "collectCoverage": true,
     "coverageReporters": ["html", "lcov"]
