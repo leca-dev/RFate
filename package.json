@@ -1,4 +1,8 @@
 {
+  "name": "RFate",
+  "license": "GPL-3.0",
+  "repository": { "type": "git", "url": "https://github.com/leca-dev/RFate.git" },
   "homepage": "https://leca-dev.github.io/RFate",
+  "scripts": { "test": "mocha" },
   "deploy": "gh-pages -d build"
 }
