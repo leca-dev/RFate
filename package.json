@@ -1,11 +1,11 @@
 {
   "name": "RFate",
   "version": "1.0",
+ "jest": {
+    "collectCoverage": true,
+    "coverageReporters": ["json", "html"]
+  },
   "scripts": {
-    "test": "jest --coverage",
-    "jest": {
-      "collectCoverage": true,
-      "coverageReporters": ["html", "lcov"]
-    }
+    "test": "jest  --coverage"
   }
 }
