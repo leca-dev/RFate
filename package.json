@@ -1,4 +1,7 @@
 {
   "homepage": "https://leca-dev.github.io/RFate",
-  "deploy": "gh-pages -d build"
+  "deploy": "gh-pages -d build",
+  "scripts": {
+    "test": "mocha"
+  }
 }
