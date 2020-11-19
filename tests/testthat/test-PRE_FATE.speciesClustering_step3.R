@@ -169,7 +169,7 @@ test_that("PRE_FATE.speciesClustering_step3 gives correct output", {
                                           , prob = c(0.5, 0.3, 0.2))
                           , stringsAsFactors = FALSE)
   mat.traits$light = ordered(factor(mat.traits$light, 1:5))
-  tmp6 = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
+  tmp6 = suppressWarnings(PRE_FATE.speciesClustering_step3(mat.traits = mat.traits))
   expect_output(str(tmp6), "List")
   expect_output(str(tmp6$tab), "5 variables")
   expect_equal(length(tmp6$plot), 3)

@@ -309,9 +309,10 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.tol", 
 test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 1, LIGHT_TOL scenario 0", {
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
-  expect_message(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                          , mat.PFG.light = data.frame(PFG = 1, type = "H")
-                                          , mat.PFG.tol = NULL)
+  
+  expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                                           , mat.PFG.light = data.frame(PFG = 1, type = "H")
+                                                           , mat.PFG.tol = NULL))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
   expect_warning(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                           , mat.PFG.light = data.frame(PFG = 1, type = "H")
@@ -331,10 +332,10 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
                                           , mat.PFG.tol = NULL
                                           , opt.folder.name = NA)
                  , "As `opt.folder.name` does not contain character value, it will be ignored")
-  expect_message(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                          , mat.PFG.light = data.frame(PFG = 1, type = "H")
-                                          , mat.PFG.tol = NULL
-                                          , opt.folder.name = "TEST")
+  expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                                           , mat.PFG.light = data.frame(PFG = 1, type = "H")
+                                                           , mat.PFG.tol = NULL
+                                                           , opt.folder.name = "TEST"))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/TEST/LIGHT_1.txt has been successfully created !")
 })
 
@@ -343,10 +344,10 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
 test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 2, LIGHT_TOL scenario 0", {
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
-  expect_message(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                          , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
-                                                                       , active_germ_medium = 5, active_germ_high = 9)
-                                          , mat.PFG.tol = NULL)
+  expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                                           , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
+                                                                                        , active_germ_medium = 5, active_germ_high = 9)
+                                                           , mat.PFG.tol = NULL))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
 
@@ -355,9 +356,9 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
 test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 3, LIGHT_TOL scenario 0", {
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
-  expect_message(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
-                                          , mat.PFG.tol = NULL)
+  expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                                           , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
+                                                           , mat.PFG.tol = NULL))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
 
@@ -390,8 +391,10 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
 test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 3, LIGHT_TOL scenario 3", {
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
-  expect_message(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
-                                          , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "Low", tolerance = 3))
+  expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                                           , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
+                                                           , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
+                                                                                      , resources = "Low", tolerance = 3)))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
+

@@ -148,8 +148,8 @@ test_that("POST_FATE.graphic_evolutionStability gives error with wrong data : cs
                                                               , maturity = c(5, 5, 3, 3, 8, 9)
                                                               , longevity = c(12, 200, 25, 4, 110, 70)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -200,8 +200,8 @@ test_that("POST_FATE.graphic_evolutionStability gives correct outputs :", {
                                                               , maturity = c(5, 5, 3, 3, 8, 9)
                                                               , longevity = c(12, 200, 25, 4, 110, 70)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")

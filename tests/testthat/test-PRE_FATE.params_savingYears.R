@@ -27,6 +27,7 @@ test_that("PRE_FATE.params_savingYears gives error with wrong data : name.simula
 
 ## INPUTS
 test_that("PRE_FATE.params_savingYears gives error with wrong data : years.maps and years.objects", {
+  if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
   
   ## TEST years.maps / years.objects : NULL
@@ -74,6 +75,7 @@ test_that("PRE_FATE.params_savingYears gives error with wrong data : years.maps 
 test_that("PRE_FATE.params_savingYears gives correct output", {
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
+  
   expect_message(PRE_FATE.params_savingYears(name.simulation = "FATE_simulation", years.maps = 1)
                  , "The parameter file FATE_simulation/DATA/SAVE/SAVE_YEARS_maps.txt has been successfully created !")
   expect_message(PRE_FATE.params_savingYears(name.simulation = "FATE_simulation", years.objects = 1)
@@ -92,6 +94,7 @@ test_that("PRE_FATE.params_savingYears gives correct output", {
   
   expect_message(PRE_FATE.params_savingYears(name.simulation = "FATE_simulation", years.maps = 1, opt.folder.name = "scen1")
                  , "The parameter file FATE_simulation/DATA/SAVE/scen1/SAVE_YEARS_maps.txt has been successfully created !")
+  unlink("FATE_simulation/DATA/SAVE/scen1", recursive = TRUE)
   expect_message(PRE_FATE.params_savingYears(name.simulation = "FATE_simulation", years.objects = 1, opt.folder.name = "scen1")
                  , "The parameter file FATE_simulation/DATA/SAVE/scen1/SAVE_YEARS_objects.txt has been successfully created !")
 })

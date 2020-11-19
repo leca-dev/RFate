@@ -193,8 +193,8 @@ test_that("POST_FATE.graphic_mapPFG gives error with wrong data : rasters", {
                                                             , maturity = c(5, 5, 3, 3, 8, 9)
                                                             , longevity = c(12, 200, 25, 4, 110, 70)))
   
-  PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                  , name.MASK = "map_mask.tif")
+  suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                   , name.MASK = "map_mask.tif"))
   
   dir.create("FATE_simulation/RESULTS/SIMUL_V1")
   dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -291,8 +291,8 @@ test_that("POST_FATE.graphic_mapPFG gives correct outputs :", {
                                                         , soil_tol_min = c(1, 2, 2, 1.5, 1, 2)
                                                         , soil_tol_max = c(3, 3, 5, 4.5, 2, 4)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")

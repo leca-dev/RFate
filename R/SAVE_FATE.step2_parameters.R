@@ -211,7 +211,7 @@ SAVE_FATE.step2_parameters = function(name.dataset
   
   .testParam_notChar.m("name.dataset", name.dataset)
   
-  if (!is.na(name.simulation))
+  if (length(name.simulation) == 1 && !is.na(name.simulation))
   {
     ## CHECK parameter name.simulation
     .testParam_existFolder(name.simulation, "DATA/")
@@ -222,6 +222,10 @@ SAVE_FATE.step2_parameters = function(name.dataset
     name.arch_paramsimul = paste0(name.arch, "_PARAM_SIMUL.zip")
     zip(zipfile  = name.arch_data, files = paste0(name.simulation, "/DATA/"), flags = "-r")
     zip(zipfile  = name.arch_paramsimul, files = paste0(name.simulation, "/PARAM_SIMUL/"), flags = "-r")
+  } else
+  {
+    name.simulation = NA
+    warning(paste0("Missing data!\n `name.simulation` must contain a character value of length > 0"))
   }
   
   ## CHECK parameter strata.limits

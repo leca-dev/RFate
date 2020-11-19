@@ -2082,6 +2082,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Soil
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
@@ -2099,6 +2100,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Dispersal
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
@@ -2115,6 +2117,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Habitat suitability
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
@@ -2131,6 +2134,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Disturbances
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
@@ -2149,6 +2153,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Drought
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
@@ -2165,6 +2170,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Aliens
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
@@ -2182,6 +2188,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Fire
+  file.remove("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5

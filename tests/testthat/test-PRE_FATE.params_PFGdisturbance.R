@@ -360,11 +360,11 @@ test_that(paste0("PRE_FATE.params_PFGdisturbance gives correct output : "
                  , "BREAK_AGES scenario 0, RESPR_AGES scenario 0, FATES scenario 2"), {
                    if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
                    PRE_FATE.skeletonDirectory()
-                   expect_message(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
-                                                                 , mat.PFG.dist = NULL
-                                                                 , mat.PFG.tol = data.frame(nameDist = "MOW"
-                                                                                            , PFG = 1
-                                                                                            , strategy_tol = "indifferent"))
+                   expect_message(suppressWarnings(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
+                                                                                  , mat.PFG.dist = NULL
+                                                                                  , mat.PFG.tol = data.frame(nameDist = "MOW"
+                                                                                                             , PFG = 1
+                                                                                                             , strategy_tol = "indifferent")))
                                   , "The parameter file FATE_simulation/DATA/PFGS/DIST/DIST_1.txt has been successfully created !")
                    expect_warning(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
                                                                  , mat.PFG.dist = NULL
@@ -392,12 +392,12 @@ test_that(paste0("PRE_FATE.params_PFGdisturbance gives correct output : "
                                                                                             , strategy_tol = "indifferent")
                                                                  , opt.folder.name = NA)
                                   , "As `opt.folder.name` does not contain character value, it will be ignored")
-                   expect_message(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
-                                                                 , mat.PFG.dist = NULL
-                                                                 , mat.PFG.tol = data.frame(nameDist = "MOW"
-                                                                                            , PFG = 1
-                                                                                            , strategy_tol = "indifferent")
-                                                                 , opt.folder.name = "TEST")
+                   expect_message(suppressWarnings(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
+                                                                                  , mat.PFG.dist = NULL
+                                                                                  , mat.PFG.tol = data.frame(nameDist = "MOW"
+                                                                                                             , PFG = 1
+                                                                                                             , strategy_tol = "indifferent")
+                                                                                  , opt.folder.name = "TEST"))
                                   , "The parameter file FATE_simulation/DATA/PFGS/DIST/TEST/DIST_1.txt has been successfully created !")
                  })
 

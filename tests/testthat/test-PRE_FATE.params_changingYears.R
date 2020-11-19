@@ -178,6 +178,8 @@ test_that("PRE_FATE.params_changingYears gives correct output", {
                                                                            , order = c(1,2)
                                                                            , new.value = c("A","B")))
                  , "The parameter file FATE_simulation/DATA/SCENARIO/DIST_changingmask_years.txt has been successfully created !")
+  file.remove("FATE_simulation/DATA/SCENARIO/DIST_changingmask_years.txt")
+  file.remove("FATE_simulation/DATA/SCENARIO/DIST_changingmask_files_t10.txt")
   expect_message(PRE_FATE.params_changingYears(name.simulation = "FATE_simulation"
                                                , type.changing = "DIST"
                                                , mat.changing = data.frame(year = c(10,10)
@@ -215,6 +217,7 @@ test_that("PRE_FATE.params_changingYears gives correct output", {
                                                                            , new.value = c("A","B"))
                                                , opt.folder.name = "scen1")
                  , "The parameter file FATE_simulation/DATA/SCENARIO/scen1/DIST_changingmask_years.txt has been successfully created !")
+  unlink("FATE_simulation/DATA/SCENARIO/scen1", recursive = TRUE)
   expect_message(PRE_FATE.params_changingYears(name.simulation = "FATE_simulation"
                                                , type.changing = "DIST"
                                                , mat.changing = data.frame(year = c(10,10)
@@ -231,6 +234,8 @@ test_that("PRE_FATE.params_changingYears gives correct output", {
                                                                            , order = c(1,2)
                                                                            , new.value = c(1,2)))
                  , "The parameter file FATE_simulation/DATA/SCENARIO/ALIENS_changingfreq_years.txt has been successfully created !")
+  file.remove("FATE_simulation/DATA/SCENARIO/ALIENS_changingfreq_years.txt")
+  file.remove("FATE_simulation/DATA/SCENARIO/ALIENS_changingfreq_files_t10.txt")
   expect_message(PRE_FATE.params_changingYears(name.simulation = "FATE_simulation"
                                                , type.changing = "ALIENS_F"
                                                , mat.changing = data.frame(year = c(10,10)

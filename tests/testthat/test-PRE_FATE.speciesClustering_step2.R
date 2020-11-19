@@ -131,18 +131,18 @@ test_that("PRE_FATE.speciesClustering_step2 gives right output", {
   sp.CLUST1 = PRE_FATE.speciesClustering_step1(mat.species.DIST = sp.DIST)
   
   
-  sp.CLUST2 = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1$clust.dendrograms[[1]]
-                                               , no.clusters = 3
-                                               , mat.species.DIST = sp.DIST[[1]])
+  sp.CLUST2 = suppressWarnings(PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1$clust.dendrograms[[1]]
+                                                                , no.clusters = 3
+                                                                , mat.species.DIST = sp.DIST[[1]]))
   
   expect_output(str(sp.CLUST2), "List")
   expect_equal(length(sp.CLUST2), 4)
   expect_output(str(sp.CLUST2$determ.all), "10 variables")
   
   
-  sp.CLUST2 = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1$clust.dendrograms
-                                               , no.clusters = c(3,3,3)
-                                               , mat.species.DIST = sp.DIST)
+  sp.CLUST2 = suppressWarnings(PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1$clust.dendrograms
+                                                                , no.clusters = c(3,3,3)
+                                                                , mat.species.DIST = sp.DIST))
   
   expect_output(str(sp.CLUST2), "List")
   expect_equal(length(sp.CLUST2), 4)

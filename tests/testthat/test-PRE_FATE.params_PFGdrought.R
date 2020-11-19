@@ -729,15 +729,15 @@ test_that(paste0("PRE_FATE.params_PFGdrought gives correct output : "
                  , "BREAK_AGES scenario 0, RESPR_AGES scenario 0, FATES scenario 2, COUNTER scenario 2"), {
                    if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
                    PRE_FATE.skeletonDirectory()
-                   expect_message(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
-                                                             , mat.PFG.dist = NULL
-                                                             , mat.PFG.tol = data.frame(nameDist = "immediate"
-                                                                                        , PFG = 1
-                                                                                        , strategy_tol = "herbs_cham_1")
-                                                             , mat.PFG.drought = data.frame(PFG = 1
-                                                                                            , threshold_moderate = 3
-                                                                                            , threshold_severe = 1
-                                                                                            , strategy_drou = "herbs"))
+                   expect_message(suppressWarnings(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
+                                                                              , mat.PFG.dist = NULL
+                                                                              , mat.PFG.tol = data.frame(nameDist = "immediate"
+                                                                                                         , PFG = 1
+                                                                                                         , strategy_tol = "herbs_cham_1")
+                                                                              , mat.PFG.drought = data.frame(PFG = 1
+                                                                                                             , threshold_moderate = 3
+                                                                                                             , threshold_severe = 1
+                                                                                                             , strategy_drou = "herbs")))
                                   , "The parameter file FATE_simulation/DATA/PFGS/DROUGHT/DROUGHT_1.txt has been successfully created !")
                    expect_warning(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
                                                              , mat.PFG.dist = NULL
@@ -781,16 +781,16 @@ test_that(paste0("PRE_FATE.params_PFGdrought gives correct output : "
                                                                                             , strategy_drou = "herbs")
                                                              , opt.folder.name = NA)
                                   , "As `opt.folder.name` does not contain character value, it will be ignored")
-                   expect_message(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
-                                                             , mat.PFG.dist = NULL
-                                                             , mat.PFG.tol = data.frame(nameDist = "immediate"
-                                                                                        , PFG = 1
-                                                                                        , strategy_tol = "herbs_cham_1")
-                                                             , mat.PFG.drought = data.frame(PFG = 1
-                                                                                            , threshold_moderate = 3
-                                                                                            , threshold_severe = 1
-                                                                                            , strategy_drou = "herbs")
-                                                             , opt.folder.name = "TEST")
+                   expect_message(suppressWarnings(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
+                                                                              , mat.PFG.dist = NULL
+                                                                              , mat.PFG.tol = data.frame(nameDist = "immediate"
+                                                                                                         , PFG = 1
+                                                                                                         , strategy_tol = "herbs_cham_1")
+                                                                              , mat.PFG.drought = data.frame(PFG = 1
+                                                                                                             , threshold_moderate = 3
+                                                                                                             , threshold_severe = 1
+                                                                                                             , strategy_drou = "herbs")
+                                                                              , opt.folder.name = "TEST"))
                                   , "The parameter file FATE_simulation/DATA/PFGS/DROUGHT/TEST/DROUGHT_1.txt has been successfully created !")
                  })
 

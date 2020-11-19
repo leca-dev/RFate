@@ -13,9 +13,3 @@ test_that(".loadPackage gives message / warning / error with missing data", {
   expect_error(.loadPackage(factor(1)), "`package.name` must contain a character value")
 })
 
-
-## OUTPUTS
-test_that(".loadPackage gives correct output", {
-  # expect_error(.loadPackage("FakePackage"), "package failed!")
-  # expect_message(.loadPackage("reshape2"), "package succeeded!")
-})
