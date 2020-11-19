@@ -34,7 +34,7 @@ z-index: 10;
 
 ## <i class="fa fa-tools"></i> Installing `RFate` package
 
-From [GitHub](https://github.com/leca-dev/RFate) using [devtools](https://cran.r-project.org/web/packages/devtools/index.html) :
+From [GitHub](https://github.com/leca-dev/RFate) using [devtools](https://cran.r-project.org/package=devtools) :
 
 <pre class = "bash">
 library(devtools)

@@ -203,17 +203,15 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
     stop("No data given!\n (missing `mat.species.DIST` information)")
   }
   ## CHECK parameter mat.species.DIST
-  if(class(mat.species.DIST) == "list") ##is.list(mat.species.DIST))
+  if(sum(class(mat.species.DIST) == "list") > 0)
   {
     if (length(mat.species.DIST) > 0)
     {
       for (i in 1:length(mat.species.DIST))
       {
-        if (class(mat.species.DIST[[i]]) %in% c("dist", "niolap"))
+        if (sum(class(mat.species.DIST[[i]]) %in% c("dist", "niolap", "matrix")) > 0)
         {
           mat.species.DIST[[i]] = as.matrix(mat.species.DIST[[i]])
-        } else if (class(mat.species.DIST[[i]]) == "matrix") #is.matrix(mat.species.DIST[[i]]))
-        {
           if (ncol(mat.species.DIST[[i]]) != nrow(mat.species.DIST[[i]]))
           {
             stop(paste0("Wrong dimension(s) of data!\n `mat.species.DIST[[",
@@ -244,11 +242,9 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
     }
   } else
   {
-    if (class(mat.species.DIST) %in% c("dist", "niolap"))
+    if (sum(class(mat.species.DIST) %in% c("dist", "niolap", "matrix")) > 0)
     {
       mat.species.DIST = as.matrix(mat.species.DIST)
-    } else if (class(mat.species.DIST) == "matrix") #is.matrix(mat.species.DIST))
-    {
       if (ncol(mat.species.DIST) != nrow(mat.species.DIST))
       {
         stop(paste0("Wrong dimension(s) of data!\n `mat.species.DIST` "
@@ -384,48 +380,68 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
   }
   
   clust.evaluation = foreach(group = combi$GROUP, no.clusters = combi$no.clusters) %do%
-  {
-    
-    k1 = no.clusters
-    k2 = no.clusters + 1
-    c1 = cutree(clust.dendrograms[[group]], k = k1)
-    c2 = cutree(clust.dendrograms[[group]], k = k2)
-    stats = cluster.stats(mat.species.DIST[[group]], c1, c2)
-    
-    ## Dunn index : ratio of the smallest distance between observations
-    ## not in the same cluster to the largest intra-cluster distance.
-    ## Value between zero and infinity, and should be maximized.
-    mdunn = dunn(mat.species.DIST[[group]], c1)
-    
-    ## Meila's VI index (Variation of Information) : measures the amount of 
-    ## information lost and gained in changing between 2 clusterings.
-    ## Should be minimized (?)
-    mVI = stats$vi
-    
-    ## Value between zero and one. Should be maximized.
-    R2 = stats$average.between / (stats$average.between + stats$average.within)
-    
-    ## Calinski and Harabasz index : 
-    ## The higher the value, the "better" is the solution.
-    ch = stats$ch
-    
-    ## Corrected rand index : measure of the similarity between two data clusterings.
-    ## Value between 0 and 1, with 0 indicating that the two data clusters do not agree
-    ## on any pair of points and 1 indicating that the data clusters are exactly the same.
-    Rand = stats$corrected.rand
-    
-    ## Average silhouette width :
-    ## Observations with a large s(i) (almost 1) are very well clustered,
-    ## a small s(i) (around 0) means that the observation lies between two clusters,
-    ## and observations with a negative s(i) are probably placed in the wrong cluster.
-    ## Should be maximized.
-    av.sil = stats$avg.silwidth
-    
-    return(data.frame(GROUP = group_names[group]
-                      , no.clusters
-                      , mdunn, mVI, R2, ch, Rand, av.sil
-                      , stringsAsFactors = FALSE))
-  }
+    {
+      
+      k1 = no.clusters
+      k2 = no.clusters + 1
+      c1 = cutree(clust.dendrograms[[group]], k = k1)
+      c2 = cutree(clust.dendrograms[[group]], k = k2)
+      stats = cluster.stats(mat.species.DIST[[group]], c1, c2)
+      
+      ## Dunn index : ratio of the smallest distance between observations
+      ## not in the same cluster to the largest intra-cluster distance.
+      ## Value between zero and infinity, and should be maximized.
+      # mdunn = dunn(mat.species.DIST[[group]], c1) ## PB WITH R 4.0 and matrix class
+      dunn.fun = function(distance, clusters) ## EXTRACTED from dunn function from clValid package
+      {
+        nc <- max(clusters)
+        interClust <- matrix(NA, nc, nc)
+        intraClust <- rep(NA, nc)
+        for (i in 1:nc) {
+          c1 <- which(clusters == i)
+          for (j in i:nc) {
+            if (j == i) 
+              intraClust[i] <- max(distance[c1, c1])
+            if (j > i) {
+              c2 <- which(clusters == j)
+              interClust[i, j] <- min(distance[c1, c2])
+            }
+          }
+        }
+        dunn <- min(interClust, na.rm = TRUE)/max(intraClust)
+        return(dunn)
+      }
+      mdunn = dunn.fun(mat.species.DIST[[group]], c1)
+      
+      ## Meila's VI index (Variation of Information) : measures the amount of 
+      ## information lost and gained in changing between 2 clusterings.
+      ## Should be minimized (?)
+      mVI = stats$vi
+      
+      ## Value between zero and one. Should be maximized.
+      R2 = stats$average.between / (stats$average.between + stats$average.within)
+      
+      ## Calinski and Harabasz index : 
+      ## The higher the value, the "better" is the solution.
+      ch = stats$ch
+      
+      ## Corrected rand index : measure of the similarity between two data clusterings.
+      ## Value between 0 and 1, with 0 indicating that the two data clusters do not agree
+      ## on any pair of points and 1 indicating that the data clusters are exactly the same.
+      Rand = stats$corrected.rand
+      
+      ## Average silhouette width :
+      ## Observations with a large s(i) (almost 1) are very well clustered,
+      ## a small s(i) (around 0) means that the observation lies between two clusters,
+      ## and observations with a negative s(i) are probably placed in the wrong cluster.
+      ## Should be maximized.
+      av.sil = stats$avg.silwidth
+      
+      return(data.frame(GROUP = group_names[group]
+                        , no.clusters
+                        , mdunn, mVI, R2, ch, Rand, av.sil
+                        , stringsAsFactors = FALSE))
+    }
   clust.evaluation = do.call(rbind, clust.evaluation)
   clust.evaluation = melt(clust.evaluation, id.vars = c("GROUP","no.clusters"))
   
@@ -436,25 +452,25 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
   
   clust.evaluation.optim = foreach(group = combi$GROUP
                                    , variable = combi$variable) %do%
-  {
-    tmp = clust.evaluation[which(clust.evaluation$GROUP == group &
-                                   clust.evaluation$variable == variable),]
-    if(variable == "mVI")
     {
-      optim = unique(sort(tmp$value, decreasing = F))[1:3]
-      ind.optim = which(tmp$value %in% optim)
-    } else {
-      optim = unique(sort(tmp$value, decreasing = T))[1:3]
-      ind.optim = which(tmp$value %in% optim)
+      tmp = clust.evaluation[which(clust.evaluation$GROUP == group &
+                                     clust.evaluation$variable == variable),]
+      if(variable == "mVI")
+      {
+        optim = unique(sort(tmp$value, decreasing = F))[1:3]
+        ind.optim = which(tmp$value %in% optim)
+      } else {
+        optim = unique(sort(tmp$value, decreasing = T))[1:3]
+        ind.optim = which(tmp$value %in% optim)
+      }
+      optim.clust = tmp$no.clusters[ind.optim]
+      optim.val = tmp$value[ind.optim]
+      return(data.frame(GROUP = group
+                        , variable
+                        , optim.clust
+                        , optim.val
+                        , stringsAsFactors = FALSE))
     }
-    optim.clust = tmp$no.clusters[ind.optim]
-    optim.val = tmp$value[ind.optim]
-    return(data.frame(GROUP = group
-                      , variable
-                      , optim.clust
-                      , optim.val
-                      , stringsAsFactors = FALSE))
-  }
   clust.evaluation.optim = do.call(rbind, clust.evaluation.optim)
   
   

@@ -144,7 +144,8 @@
 
       
 
-      </header><div class="row">
+      </header><script src="fate_tutorial_2_RUN_SIMULATION_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="fate_tutorial_2_RUN_SIMULATION_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="fate_tutorial_2_RUN_SIMULATION_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>FATE tutorial 2 - Run a simulation</h1>
@@ -173,8 +174,8 @@ pre.grey {
 }
 </style>
 <p><br><br></p>
-<p>"<em>The recurring suggestions are that models should explicitly (i) include spatiotemporal dynamics; (ii) consider multiple species in interactions and (iii) account for the processes shaping biodiversity distribution.</em>"</p>
-<p><code>FATE</code> is a "<em>a biodiversity model that meets this challenge at regional scale by combining phenomenological and process-based approaches and using well-defined plant functional group</em>". (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>The recurring suggestions are that models should explicitly (i) include spatiotemporal dynamics; (ii) consider multiple species in interactions and (iii) account for the processes shaping biodiversity distribution.</em>”</p>
+<p><code>FATE</code> is a “<em>a biodiversity model that meets this challenge at regional scale by combining phenomenological and process-based approaches and using well-defined plant functional group</em>”. (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
 <p><br><br></p>
 <div id="what-fate-needs-to-be-run" class="section level1">
 <h1 class="hasAnchor">
@@ -229,19 +230,19 @@ See <a href="rfate_tutorial_2_params.html">Build parameter files</a> <code>RFate
 <p>When all data and parameter files have been produced and correctly referred in a <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file, a <code>FATE</code> simulation can be run using the <a href="../reference/FATE.html">FATE</a> function :</p>
 <ul>
 <li>the simulation will start, and the software will print messages into the console indicating what the software is doing.</li>
-<li>depending on the simulation duration, the size and the resolution of the study area, the number of Plant Functional Groups (PFG) involved, ... running the full simulation <strong>could take a while</strong>.</li>
+<li>depending on the simulation duration, the size and the resolution of the study area, the number of Plant Functional Groups (PFG) involved, … running the full simulation <strong>could take a while</strong>.</li>
 </ul>
 <p><br></p>
 <p><strong>Note :</strong> the folder from which the command is sent must be adapted based on how paths to files have been given within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</p>
 <ul>
 <li><p>If all paths are <strong>absolute</strong><br>
-(i.e. including the root, such as <em><code>/home/username/FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
+(i.e. including the root, such as <em><code>/home/username/FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
 there should not be any problem.<br>
 The only requirement then is to also give absolute path to the simulation folder, if not in the current directory.</p></li>
 <li><p>If all paths are <strong>relative</strong><br>
-(i.e. starting from a specific folder, such as <em><code>FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
+(i.e. starting from a specific folder, such as <em><code>FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
 then the <code>FATE</code> simulation must be run from this specific folder<br>
-(i.e. here from the folder containing the <em><code>FATE_simulation</code></em> folder).</p></li>
+(i.e. here from the folder containing the <em><code>FATE_simulation</code></em> folder).</p></li>
 </ul>
 <p><br><br></p>
 </div>
@@ -272,7 +273,7 @@ then the <code>FATE</code> simulation must be run from this specific folder<br>
 <li><em><code>LIGHT/</code></em></li>
 <li><em><code>SOIL/</code></em></li>
 </ul>
-<p>These ouputs can then be used as is, or post-treated with functions from the <a href="https://leca-dev.github.io/RFate/">RFate</a> package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).</p>
+<p>These ouputs can then be used as is, or post-treated with functions from the <a href="https://leca-dev.github.io/RFate/">RFate</a> package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).</p>
 <p><br></p>
 <div style="text-align:center;">
 See <a href="rfate_tutorial_3_graphics.html">Build graphics</a> <code>RFate</code> tutorial

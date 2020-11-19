@@ -78,8 +78,8 @@ Here is an example of functional traits that can be used to build Plant Function
 #### Response to interactions
 
 - Height to represent the competitive ability for light
-- Indicator value for light requirement ([Ellenberg et al. 1991](https://doi.org/10.1016/S0367-2530(17)32260-0 "Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. & Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248."), [Landolt et al. 2010]("" "Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne."))
-- Indicator value for soil requirement ([Ellenberg et al. 1991](https://doi.org/10.1016/S0367-2530(17)32260-0 "Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. & Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248."), [Landolt et al. 2010]("" "Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne."))
+- Indicator value for light requirement ([Ellenberg et al. 1991]("https://doi.org/10.1016/S0367-2530(17)32260-0" "Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. & Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248."), [Landolt et al. 2010]("" "Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne."))
+- Indicator value for soil requirement ([Ellenberg et al. 1991]("https://doi.org/10.1016/S0367-2530(17)32260-0" "Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. & Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248."), [Landolt et al. 2010]("" "Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne."))
 
 #### Response to disturbances
 
