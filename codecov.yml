@@ -17,3 +17,6 @@ ignore:
   - "R/UTILS.upscaleMaps.R"
   - "src"
   - "inst/shinyApp"
+
+fixes:
+  - "/home/runner/work/RFate/RFate/::" # Correct paths
