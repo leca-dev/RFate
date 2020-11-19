@@ -7,11 +7,14 @@ on:
   pull_request:
     branches: [ RFate ]
 
+
 jobs:
   CODECOV-check:
     runs-on: ubuntu-16.04
+    
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      
     steps:
       - uses: actions/checkout@v2
 
