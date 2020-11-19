@@ -6,6 +6,9 @@ on:
     branches: [ RFate ]
   pull_request:
     branches: [ RFate ]
+    
+before_install:
+  - export DISPLAY=:99.0
 
 
 jobs:
