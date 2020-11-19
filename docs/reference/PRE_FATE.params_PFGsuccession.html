@@ -201,13 +201,13 @@ succession parameters for each PFG (one file for each of them) used in the
 core module of <code>FATE</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.params_PFGsuccession</span>(
-  <span class='kw'>name.simulation</span>,
-  <span class='kw'>mat.PFG.succ</span>,
-  strata.limits = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span>, <span class='fl'>2000</span>, <span class='fl'>5000</span>, <span class='fl'>10000</span>),
-  strata.limits_reduce = <span class='fl'>TRUE</span>,
-  opt.folder.name = <span class='kw'>NULL</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>
+  <span class='va'>name.simulation</span>,
+  <span class='va'>mat.PFG.succ</span>,
+  strata.limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span>, <span class='fl'>2000</span>, <span class='fl'>5000</span>, <span class='fl'>10000</span><span class='op'>)</span>,
+  strata.limits_reduce <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  opt.folder.name <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -410,48 +410,48 @@ all PFG :</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>()
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG succession parameter files -----------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsuccession</span>(name.simulation = <span class='st'>'FATE_simulation'</span>
-                              , mat.PFG.succ = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(PFG = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>)
-                                                          , type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'C'</span>, <span class='st'>'C'</span>, <span class='st'>'H'</span>, <span class='st'>'H'</span>, <span class='st'>'P'</span>, <span class='st'>'P'</span>)
-                                                          , height = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>250</span>, <span class='fl'>36</span>, <span class='fl'>68</span>, <span class='fl'>1250</span>, <span class='fl'>550</span>)
-                                                          , maturity = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>9</span>)
-                                                          , longevity = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span>)))
+<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
+                              , mat.PFG.succ <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                                                          , type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>, <span class='st'>'C'</span>, <span class='st'>'H'</span>, <span class='st'>'H'</span>, <span class='st'>'P'</span>, <span class='st'>'P'</span><span class='op'>)</span>
+                                                          , height <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>250</span>, <span class='fl'>36</span>, <span class='fl'>68</span>, <span class='fl'>1250</span>, <span class='fl'>550</span><span class='op'>)</span>
+                                                          , maturity <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>9</span><span class='op'>)</span>
+                                                          , longevity <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
                                                         
 
 <span class='co'>## Create PFG succession parameter files (with immature_size) --------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsuccession</span>(name.simulation = <span class='st'>'FATE_simulation'</span>
-                              , mat.PFG.succ = <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(PFG = <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span>)
-                                                          , type = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'C'</span>, <span class='st'>'C'</span>, <span class='st'>'H'</span>, <span class='st'>'H'</span>, <span class='st'>'P'</span>, <span class='st'>'P'</span>)
-                                                          , height = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>250</span>, <span class='fl'>36</span>, <span class='fl'>68</span>, <span class='fl'>1250</span>, <span class='fl'>550</span>)
-                                                          , maturity = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>9</span>)
-                                                          , longevity = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span>)
-                                                          , immature_size = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>5</span>)))
+<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
+                              , mat.PFG.succ <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                                                          , type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>, <span class='st'>'C'</span>, <span class='st'>'H'</span>, <span class='st'>'H'</span>, <span class='st'>'P'</span>, <span class='st'>'P'</span><span class='op'>)</span>
+                                                          , height <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>250</span>, <span class='fl'>36</span>, <span class='fl'>68</span>, <span class='fl'>1250</span>, <span class='fl'>550</span><span class='op'>)</span>
+                                                          , maturity <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>3</span>, <span class='fl'>8</span>, <span class='fl'>9</span><span class='op'>)</span>
+                                                          , longevity <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>12</span>, <span class='fl'>200</span>, <span class='fl'>25</span>, <span class='fl'>4</span>, <span class='fl'>110</span>, <span class='fl'>70</span><span class='op'>)</span>
+                                                          , immature_size <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>8</span>, <span class='fl'>10</span>, <span class='fl'>10</span>, <span class='fl'>1</span>, <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
                                                         
                                                         
 <span class='co'>## -------------------------------------------------------------------------------------------</span>
 
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_parameters</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_parameters</span><span class='op'>)</span>
 
 <span class='co'>## PFG traits for succession</span>
-<span class='kw'>tab.traits</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='kw'>tab.succ</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tab.traits</span>)
+<span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.succ</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span>(name.simulation = <span class='st'>'FATE_Bauges'</span>)
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG succession parameter files -----------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsuccession</span>(name.simulation = <span class='st'>'FATE_Bauges'</span>
-                              , mat.PFG.succ = <span class='kw'>tab.traits</span>)
+<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
+                              , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG succession parameter files (fixing strata limits) ------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsuccession</span>(name.simulation = <span class='st'>'FATE_Bauges'</span>
-                              , mat.PFG.succ = <span class='kw'>tab.traits</span>
-                              , strata.limits = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span>)
-                              , strata.limits_reduce = <span class='fl'>FALSE</span>)
+<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
+                              , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.traits</span>
+                              , strata.limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span><span class='op'>)</span>
+                              , strata.limits_reduce <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
                                                         
 
 </pre>
@@ -466,7 +466,7 @@ all PFG :</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Maya Guéguen, Isabelle Boulangeat, Damien Georges, Guillaume Dupouy.</p>
+  <p>Developed by <a href='http://www.will.chez-alice.fr/'>Wilfried Thuiller</a>, Damien Georges, <a href='https://iboulangeat.github.io/'>Isabelle Boulangeat</a>, <a href='https://mayagueguen.github.io'>Maya Guéguen</a>, Guillaume Dupouy.</p>
 </div>
 
 <div class="pkgdown">

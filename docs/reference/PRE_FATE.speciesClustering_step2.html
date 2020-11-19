@@ -203,11 +203,11 @@ the <code><a href='PRE_FATE.speciesClustering_step1.html'>PRE_FATE.speciesCluste
 these groups by identifying determinant species in each of them.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.speciesClustering_step2</span>(
-  <span class='kw'>clust.dendrograms</span>,
-  <span class='kw'>no.clusters</span>,
-  <span class='kw'>mat.species.DIST</span>
-)</pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.speciesClustering_step2</span><span class='op'>(</span>
+  <span class='va'>clust.dendrograms</span>,
+  <span class='va'>no.clusters</span>,
+  <span class='va'>mat.species.DIST</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -319,42 +319,42 @@ species based on these PFG. <br /> <br /></p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>DATASET_Bauges_PFG</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_PFG</span><span class='op'>)</span>
 
 <span class='co'>## Species dissimilarity distance (niche overlap + traits distance)</span>
-<span class='kw'>tab.dist</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='kw'>dom.dist_total</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>tab.dist</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span>(<span class='kw'>tab.dist</span>[[<span class='fl'>1</span>]])[<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>]
+<span class='va'>tab.dist</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='va'>dom.dist_total</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.dist</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>tab.dist</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>
 
 
 <span class='co'>## Build dendrograms -------------------------------------------------------------------------</span>
-<span class='kw'>sp.CLUST</span> <span class='op'>=</span> <span class='fu'><a href='PRE_FATE.speciesClustering_step1.html'>PRE_FATE.speciesClustering_step1</a></span>(mat.species.DIST = <span class='kw'>tab.dist</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.CLUST</span>)
+<span class='va'>sp.CLUST</span> <span class='op'>=</span> <span class='fu'><a href='PRE_FATE.speciesClustering_step1.html'>PRE_FATE.speciesClustering_step1</a></span><span class='op'>(</span>mat.species.DIST <span class='op'>=</span> <span class='va'>tab.dist</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>)</span>
 
 
 <span class='co'>## Number of clusters per group</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.CLUST</span><span class='op'>$</span><span class='kw'>plot.clustNo</span>)
-<span class='kw'>no.clusters</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>plot.clustNo</span><span class='op'>)</span>
+<span class='va'>no.clusters</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span><span class='op'>)</span>
 
 <span class='co'>## Find determinant species ------------------------------------------------------------------</span>
-<span class='kw'>sp.DETERM</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step2</span>(clust.dendrograms = <span class='kw'>sp.CLUST</span><span class='op'>$</span><span class='kw'>clust.dendrograms</span>
-                                             , no.clusters = <span class='kw'>no.clusters</span>
-                                             , mat.species.DIST = <span class='kw'>tab.dist</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='kw'>sp.DETERM</span>)
+<span class='va'>sp.DETERM</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step2</span><span class='op'>(</span>clust.dendrograms <span class='op'>=</span> <span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>clust.dendrograms</span>
+                                             , no.clusters <span class='op'>=</span> <span class='va'>no.clusters</span>
+                                             , mat.species.DIST <span class='op'>=</span> <span class='va'>tab.dist</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>determ.sp</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>determ.all</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>determ.sp</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>determ.all</span><span class='op'>)</span>
 
 <span class='co'>## Species names</span>
-<span class='kw'>sp.NAMES</span> <span class='op'>=</span> <span class='kw'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='kw'>sp.names</span>
-<span class='kw'>sp.NAMES</span><span class='op'>$</span><span class='kw'>species</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span>(<span class='st'>"X"</span>, <span class='kw'>sp.NAMES</span><span class='op'>$</span><span class='kw'>species</span>)
-<span class='kw'>determ</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>determ.all</span>, <span class='kw'>sp.NAMES</span>, by = <span class='st'>"species"</span>, all.x = <span class='fl'>TRUE</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='kw'>determ</span>)
+<span class='va'>sp.NAMES</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='va'>sp.names</span>
+<span class='va'>sp.NAMES</span><span class='op'>$</span><span class='va'>species</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"X"</span>, <span class='va'>sp.NAMES</span><span class='op'>$</span><span class='va'>species</span><span class='op'>)</span>
+<span class='va'>determ</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/merge.html'>merge</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>determ.all</span>, <span class='va'>sp.NAMES</span>, by <span class='op'>=</span> <span class='st'>"species"</span>, all.x <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>determ</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>plot.distance</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>plot.PCO</span><span class='op'>$</span><span class='kw'>Chamaephyte</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>plot.PCO</span><span class='op'>$</span><span class='kw'>Herbaceous</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='kw'>sp.DETERM</span><span class='op'>$</span><span class='kw'>plot.PCO</span><span class='op'>$</span><span class='kw'>Phanerophyte</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>plot.distance</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>plot.PCO</span><span class='op'>$</span><span class='va'>Chamaephyte</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>plot.PCO</span><span class='op'>$</span><span class='va'>Herbaceous</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.DETERM</span><span class='op'>$</span><span class='va'>plot.PCO</span><span class='op'>$</span><span class='va'>Phanerophyte</span><span class='op'>)</span>
 
 
 </pre>
@@ -369,7 +369,7 @@ species based on these PFG. <br /> <br /></p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Maya Guéguen, Isabelle Boulangeat, Damien Georges, Guillaume Dupouy.</p>
+  <p>Developed by <a href='http://www.will.chez-alice.fr/'>Wilfried Thuiller</a>, Damien Georges, <a href='https://iboulangeat.github.io/'>Isabelle Boulangeat</a>, <a href='https://mayagueguen.github.io'>Maya Guéguen</a>, Guillaume Dupouy.</p>
 </div>
 
 <div class="pkgdown">
