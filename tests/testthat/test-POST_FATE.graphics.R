@@ -123,8 +123,8 @@ test_that("POST_FATE.graphics gives correct outputs :", {
                                                         , soil_tol_min = c(1, 2, 2, 1.5, 1, 2)
                                                         , soil_tol_max = c(3, 3, 5, 4.5, 2, 4)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -166,25 +166,25 @@ test_that("POST_FATE.graphics gives correct outputs :", {
   }
   
   
-  simulGraphics = POST_FATE.graphics(name.simulation = "FATE_simulation"
-                                     , years = 1
-                                     , no_years = 10
-                                     , opt.ras_habitat = "FATE_simulation/DATA/MASK/map_hab.tif"
-                                     , doFunc.evolCov = TRUE
-                                     , doFunc.evolPix = TRUE
-                                     , doFunc.evolStab = TRUE
-                                     , doFunc.valid = TRUE
-                                     , valid.mat.PFG.obs = mat.PFG.obs
-                                     , doFunc.mapPFGvsHS = TRUE
-                                     , doFunc.mapPFG = TRUE
-                                     , mapPFGvsHS.stratum = 2
-                                     , binMap.method = 1
-                                     , mapPFG.doBinary = TRUE
-                                     , opt.doPlot = TRUE)
-
+  simulGraphics = suppressWarnings(POST_FATE.graphics(name.simulation = "FATE_simulation"
+                                                      , years = 1
+                                                      , no_years = 10
+                                                      , opt.ras_habitat = "FATE_simulation/DATA/MASK/map_hab.tif"
+                                                      , doFunc.evolCov = TRUE
+                                                      , doFunc.evolPix = TRUE
+                                                      , doFunc.evolStab = TRUE
+                                                      , doFunc.valid = TRUE
+                                                      , valid.mat.PFG.obs = mat.PFG.obs
+                                                      , doFunc.mapPFGvsHS = TRUE
+                                                      , doFunc.mapPFG = TRUE
+                                                      , mapPFGvsHS.stratum = 2
+                                                      , binMap.method = 1
+                                                      , mapPFG.doBinary = TRUE
+                                                      , opt.doPlot = TRUE))
+  
   expect_output(str(simulGraphics), "List")
   expect_equal(length(simulGraphics), 1)
-
+  
   expect_output(str(simulGraphics[[1]]), "List")
   expect_equal(length(simulGraphics[[1]]), 6)
 })

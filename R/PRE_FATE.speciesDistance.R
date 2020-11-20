@@ -200,11 +200,9 @@ PRE_FATE.speciesDistance = function(mat.traits
                 , "a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"))
   } else
   {
-    if (!.testParam_notInClass(mat.overlap, c("dist", "niolap")))
+    if (!.testParam_notInClass(mat.overlap, c("dist", "niolap", "matrix"), FALSE))
     {
       mat.overlap = as.matrix(mat.overlap)
-    } else if (is.matrix(mat.overlap))
-    {
       if (ncol(mat.overlap) != nrow(mat.overlap))
       {
         stop(paste0("Wrong dimension(s) of data!\n `mat.overlap` does not have the same number of rows ("

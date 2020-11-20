@@ -203,13 +203,13 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
     stop("No data given!\n (missing `mat.species.DIST` information)")
   }
   ## CHECK parameter mat.species.DIST
-  if(sum(class(mat.species.DIST) == "list") > 0)
+  if(!.testParam_notInClass(mat.species.DIST, "list"))
   {
     if (length(mat.species.DIST) > 0)
     {
       for (i in 1:length(mat.species.DIST))
       {
-        if (sum(class(mat.species.DIST[[i]]) %in% c("dist", "niolap", "matrix")) > 0)
+        if (!.testParam_notInClass(mat.species.DIST[[i]], c("dist", "niolap", "matrix"), FALSE))
         {
           mat.species.DIST[[i]] = as.matrix(mat.species.DIST[[i]])
           if (ncol(mat.species.DIST[[i]]) != nrow(mat.species.DIST[[i]]))
@@ -242,7 +242,7 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
     }
   } else
   {
-    if (sum(class(mat.species.DIST) %in% c("dist", "niolap", "matrix")) > 0)
+    if (!.testParam_notInClass(mat.species.DIST, c("dist", "niolap", "matrix"), FALSE))
     {
       mat.species.DIST = as.matrix(mat.species.DIST)
       if (ncol(mat.species.DIST) != nrow(mat.species.DIST))

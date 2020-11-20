@@ -214,13 +214,13 @@ test_that("POST_FATE.graphic_evolutionStability gives correct outputs :", {
       writeRaster(map_1, filename = paste0("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata/"
                                            , "Abund_YEAR_1_PFG", i, "_STRATA_all.tif"), overwrite = TRUE)
     }
-    tempEvol = POST_FATE.temporalEvolution(name.simulation = "FATE_simulation"
-                                           , no_years = 10
-                                           , opt.ras_habitat = "FATE_simulation/DATA/MASK/map_hab.tif")
+    tempEvol = suppressWarnings(POST_FATE.temporalEvolution(name.simulation = "FATE_simulation"
+                                                            , no_years = 10
+                                                            , opt.ras_habitat = "FATE_simulation/DATA/MASK/map_hab.tif"))
   }
   
-  expect_message(POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"
-                                                      , opt.doPlot = FALSE)
+  expect_message(suppressWarnings(POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"
+                                                                       , opt.doPlot = FALSE))
                  , "> POST_FATE_TABLE_HAB_evolution_stability1_SIMUL_V1")
   expect_warning(POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"
                                                       , opt.doPlot = FALSE)
@@ -237,9 +237,9 @@ test_that("POST_FATE.graphic_evolutionStability gives correct outputs :", {
       writeRaster(map_1, filename = paste0("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata/"
                                            , "Abund_YEAR_5_PFG", i, "_STRATA_all.tif"), overwrite = TRUE)
     }
-    tempEvol = POST_FATE.temporalEvolution(name.simulation = "FATE_simulation"
-                                           , no_years = 10
-                                           , opt.ras_habitat = "FATE_simulation/DATA/MASK/map_hab.tif")
+    tempEvol = suppressWarnings(POST_FATE.temporalEvolution(name.simulation = "FATE_simulation"
+                                                            , no_years = 10
+                                                            , opt.ras_habitat = "FATE_simulation/DATA/MASK/map_hab.tif"))
   }
   
   expect_message(POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"

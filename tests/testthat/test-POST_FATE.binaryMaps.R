@@ -271,10 +271,6 @@ test_that("POST_FATE.binaryMaps gives error with wrong data : rasters", {
                , "The folder FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_perStrata/ does not contain adequate files")
   file.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_perStrata/Abund_YEAR_1_PFG1_STRATA_1.tif")
   
-  # expect_error(POST_FATE.binaryMaps(name.simulation = "FATE_simulation"
-  #                                   , years = 1
-  #                                   , method = 1)
-  #              , "Cannot create a RasterLayer object from this file.")
 })
 
 
@@ -406,9 +402,9 @@ test_that("POST_FATE.binaryMaps gives correct outputs : correct", {
                               , Y = mat.PFG.obs[, 2])
     mat.PFG.obs$obs = sample(c(0, 1), nrow(mat.PFG.obs), prob = c(0.6, 0.4), replace = TRUE)
     
-    validStats = POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
-                                                        , years = 1
-                                                        , mat.PFG.obs = mat.PFG.obs)
+    validStats = suppressWarnings(POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
+                                                                         , years = 1
+                                                                         , mat.PFG.obs = mat.PFG.obs))
   }
   
   ## TEST output : method 1
@@ -432,10 +428,12 @@ test_that("POST_FATE.binaryMaps gives correct outputs : correct", {
                          , full.names = TRUE))
   file.remove(list.files("FATE_simulation/RESULTS/SIMUL_V1/BIN_perPFG_perStrata/"
                          , full.names = TRUE))
-  expect_message(POST_FATE.binaryMaps(name.simulation = "FATE_simulation"
-                                      , years = 1
-                                      , method = 2
-                                      , method2.cutoff = data.frame(year = 1, PFG = "PFG1", cutoff = 1))
+  expect_message(suppressWarnings(POST_FATE.binaryMaps(name.simulation = "FATE_simulation"
+                                                       , years = 1
+                                                       , method = 2
+                                                       , method2.cutoff = data.frame(year = 1
+                                                                                     , PFG = "PFG1"
+                                                                                     , cutoff = 1)))
                  , "> Binary_YEAR_1_PFG1_STRATA_1.tif")
   expect_warning(POST_FATE.binaryMaps(name.simulation = "FATE_simulation"
                                       , years = 1

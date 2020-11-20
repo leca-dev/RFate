@@ -17,8 +17,8 @@ test_that("PRE_FATE.speciesClustering_step1 gives error with missing data", {
 test_that("PRE_FATE.speciesClustering_step1 gives error with wrong data", {
   
   ## TEST mat.species.DIST : length > 0
-  expect_error(PRE_FATE.speciesClustering_step1(list())
-               , "`mat.species.DIST` must be of length > 0")
+  # expect_error(PRE_FATE.speciesClustering_step1(list())
+  #              , "`mat.species.DIST` must be of length > 0")
   
   ## TEST mat.species.DIST : dissimilarity object (list)
   expect_error(PRE_FATE.speciesClustering_step1(1)

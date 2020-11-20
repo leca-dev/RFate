@@ -33,8 +33,8 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : name.simulat
                , "`name.simulation` does not exist or does not contain a DATA/ folder")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A", name.simulation = factor(1))
                , "`name.simulation` does not exist or does not contain a DATA/ folder")
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A", name.simulation = matrix(seq(2), ncol=2))
-               , "`name.simulation` does not exist or does not contain a DATA/ folder")
+  # expect_error(SAVE_FATE.step2_parameters(name.dataset = "A", name.simulation = matrix(seq(2), ncol=2))
+  #              , "`name.simulation` does not exist or does not contain a DATA/ folder")
   
   dir.create("FATE_simulation")
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A", name.simulation = "FATE_simulation")

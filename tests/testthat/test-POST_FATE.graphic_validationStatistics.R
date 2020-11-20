@@ -234,8 +234,8 @@ test_that("POST_FATE.graphic_validationStatistics gives error with wrong data : 
                                                             , maturity = c(5, 5, 3, 3, 8, 9)
                                                             , longevity = c(12, 200, 25, 4, 110, 70)))
   
-  PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                  , name.MASK = "map_mask.tif")
+  suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                   , name.MASK = "map_mask.tif"))
   
   dir.create("FATE_simulation/RESULTS/SIMUL_V1")
   dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -257,10 +257,6 @@ test_that("POST_FATE.graphic_validationStatistics gives error with wrong data : 
                , "The folder FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata/ does not contain adequate files")
   
   file.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata/Abund_YEAR_1_PFG1_STRATA_all.tif")
-  # expect_error(POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
-  #                                                     , years = 1
-  #                                                     , mat.PFG.obs = data.frame(PFG = "PFG1", X = 1, Y = 1, obs = 1))
-  #              , "Cannot create a RasterLayer object from this file.")
 })
 
 
@@ -300,8 +296,8 @@ test_that("POST_FATE.graphic_validationStatistics gives correct outputs : warnin
                                                             , maturity = c(5, 5, 3, 3, 8, 9)
                                                             , longevity = c(12, 200, 25, 4, 110, 70)))
   
-  PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                  , name.MASK = "map_mask.tif")
+  suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                   , name.MASK = "map_mask.tif"))
   
   dir.create("FATE_simulation/RESULTS/SIMUL_V1")
   dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -384,8 +380,8 @@ test_that("POST_FATE.graphic_validationStatistics gives correct outputs : correc
                                                               , maturity = c(5, 5, 3, 3, 8, 9)
                                                               , longevity = c(12, 200, 25, 4, 110, 70)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -412,15 +408,14 @@ test_that("POST_FATE.graphic_validationStatistics gives correct outputs : correc
   }
   
   ## TEST output
-  expect_message(POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
-                                                        , years = 1
-                                                        , mat.PFG.obs = mat.PFG.obs)
+  expect_message(suppressWarnings(POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
+                                                                         , years = 1
+                                                                         , mat.PFG.obs = mat.PFG.obs))
                  , "The output file POST_FATE_TABLE_YEAR_1_validationStatistics_SIMUL_V1.csv has been successfully created !")
   
-  
-  validStats = POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
-                                                      , years = 1
-                                                      , mat.PFG.obs = mat.PFG.obs)
+  validStats = suppressWarnings(POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
+                                                                       , years = 1
+                                                                       , mat.PFG.obs = mat.PFG.obs))
   
   expect_output(str(validStats), "List")
   expect_equal(length(validStats), 1)

@@ -205,12 +205,13 @@
 }
 
 ###############################################################################
-.testParam_notInClass = function(param, inList)
+.testParam_notInClass = function(param, inList, allElements = TRUE)
 {
   if (missing(param) ||
       is.null(param) ||
       length(param) == 0 ||
-      sum(!(class(param) %in% inList), na.rm = TRUE) > 0)
+      (allElements == TRUE && sum(!(class(param) %in% inList), na.rm = TRUE) > 0) ||
+      (allElements == FALSE && sum(!(class(param) %in% inList), na.rm = TRUE) == length(class(param))))
   {
     return(TRUE)
   } else

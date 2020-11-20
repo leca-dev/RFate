@@ -127,8 +127,8 @@ test_that("POST_FATE.graphic_mapPFGvsHS gives error with wrong data : rasters", 
                                                               , maturity = c(5, 5, 3, 3, 8, 9)
                                                               , longevity = c(12, 200, 25, 4, 110, 70)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -138,17 +138,15 @@ test_that("POST_FATE.graphic_mapPFGvsHS gives error with wrong data : rasters", 
   }
   
   ## TEST RESULTS folder
-  expect_error(POST_FATE.graphic_mapPFGvsHS(name.simulation = "FATE_simulation", years = 1)
+  expect_error(suppressWarnings(POST_FATE.graphic_mapPFGvsHS(name.simulation = "FATE_simulation", years = 1))
                , "The folder FATE_simulation/RESULTS/SIMUL_V1/BIN_perPFG_allStrata/ does not contain adequate files")
-  expect_error(POST_FATE.graphic_mapPFGvsHS(name.simulation = "FATE_simulation"
-                                            , years = 1
-                                            , opt.stratum = 1)
+  expect_error(suppressWarnings(POST_FATE.graphic_mapPFGvsHS(name.simulation = "FATE_simulation"
+                                                             , years = 1
+                                                             , opt.stratum = 1))
                , "The folder FATE_simulation/RESULTS/SIMUL_V1/BIN_perPFG_perStrata/ does not contain adequate files")
   
   
   file.create("FATE_simulation/RESULTS/SIMUL_V1/BIN_perPFG_allStrata/Binary_YEAR_1_PFG1_STRATA_all.tif")
-  # expect_error(POST_FATE.graphic_mapPFGvsHS(name.simulation = "FATE_simulation", years = 1)
-  #              , "Cannot create a RasterLayer object from this file.")
   
 })
 
@@ -195,8 +193,8 @@ test_that("POST_FATE.graphic_mapPFGvsHS gives correct outputs :", {
                                                               , maturity = c(5, 5, 3, 3, 8, 9)
                                                               , longevity = c(12, 200, 25, 4, 110, 70)))
     
-    PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
-                                    , name.MASK = "map_mask.tif")
+    suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
+                                                     , name.MASK = "map_mask.tif"))
     
     dir.create("FATE_simulation/RESULTS/SIMUL_V1")
     dir.create("FATE_simulation/RESULTS/SIMUL_V1/ABUND_perPFG_allStrata")
@@ -222,10 +220,10 @@ test_that("POST_FATE.graphic_mapPFGvsHS gives correct outputs :", {
                               , X = mat.PFG.obs[, 1]
                               , Y = mat.PFG.obs[, 2])
     mat.PFG.obs$obs = sample(c(0, 1), nrow(mat.PFG.obs), prob = c(0.6, 0.4), replace = TRUE)
-    validStat = POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
-                                                       , years = 1
-                                                       , mat.PFG.obs = mat.PFG.obs
-                                                       , opt.doPlot = FALSE)
+    validStat = suppressWarnings(POST_FATE.graphic_validationStatistics(name.simulation = "FATE_simulation"
+                                                                        , years = 1
+                                                                        , mat.PFG.obs = mat.PFG.obs
+                                                                        , opt.doPlot = FALSE))
     POST_FATE.binaryMaps(name.simulation = "FATE_simulation", years = 1, method = 1)
   }
   
@@ -239,7 +237,7 @@ test_that("POST_FATE.graphic_mapPFGvsHS gives correct outputs :", {
   PFGvsHS = POST_FATE.graphic_mapPFGvsHS(name.simulation = "FATE_simulation"
                                          , years = 1
                                          , opt.stratum = 1)
-
+  
   expect_output(str(PFGvsHS), "List")
   expect_equal(length(PFGvsHS), 1)
   

@@ -90,6 +90,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : mat.observa
                , "`mat.observations$abund` must contain numeric values", fixed = TRUE)
 })
 
+
 ## INPUTS
 test_that("SAVE_FATE.step1_PFG gives error with wrong type of data : doRuleA / doRuleB / doRuleC", {
   
@@ -291,11 +292,12 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits", {
   ## TEST mat.traits$species : different values
   expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
                                    , mat.observations = data.frame(species = "1"
-                                                                   ,sites = "A"
+                                                                   , sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c(1,1), 2, 3))
+                                   , mat.traits = data.frame(species = c(1,1), GROUP = 1, 2, 3))
                , "`mat.traits$species` must contain different values", fixed = TRUE)
 })
+
 
 ## INPUTS
 test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
@@ -305,14 +307,14 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3))
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3))
                , "`mat.overlap` must be either a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"
                , fixed = TRUE)
   expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = 1)
                , "`mat.overlap` must be either a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"
                , fixed = TRUE)
@@ -322,7 +324,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame())
                , "`mat.overlap` does not have the appropriate number of rows (>=2, at least 2 species) or columns (species, raster)"
                , fixed = TRUE)
@@ -330,7 +332,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame(1, 2))
                , "`mat.overlap` does not have the appropriate number of rows (>=2, at least 2 species) or columns (species, raster)"
                , fixed = TRUE)
@@ -340,14 +342,14 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame(c(1, 1), 2))
                , "Column names of `mat.overlap` must be `species` and `raster`", fixed = TRUE)
   expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame(species = c(1, 1), 2))
                , "Column names of `mat.overlap` must be `species` and `raster`", fixed = TRUE)
   
@@ -356,7 +358,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame(species = c(1, 1)
                                                               , raster = 2))
                , "`mat.overlap$species` must contain different values", fixed = TRUE)
@@ -366,7 +368,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame(species = c(1, 2)
                                                               , raster = 2))
                , "`mat.overlap$raster` must contain file names which exist", fixed = TRUE)
@@ -377,7 +379,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = data.frame(species = c(1, 2)
                                                               , raster = "a.txt"))
                , "`mat.overlap$raster` must contain file names with appropriate extension (`.tif`, `.img`, `.asc`)"
@@ -388,7 +390,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(seq(2), ncol=2))
                , "`mat.overlap` does not have the same number of rows (1) and columns (2)"
                , fixed = TRUE)
@@ -396,12 +398,13 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.overlap", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(seq(2), ncol=1))
                , "`mat.overlap` does not have the same number of rows (2) and columns (1)"
                , fixed = TRUE)
   
 })
+
 
 ## INPUTS
 test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistance", {
@@ -411,7 +414,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , rules.speciesDistance = c("opt.maxPercent.NA" = "a"
                                                                , "opt.maxPercent.similarSpecies" = 1
@@ -422,7 +425,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , rules.speciesDistance = c("opt.maxPercent.NA" = 1.5
                                                                , "opt.maxPercent.similarSpecies" = 1
@@ -435,7 +438,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , rules.speciesDistance = c("opt.maxPercent.NA" = 1
                                                                , "opt.maxPercent.similarSpecies" = "a"
@@ -446,7 +449,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , rules.speciesDistance = c("opt.maxPercent.NA" = 1
                                                                , "opt.maxPercent.similarSpecies" = 1.5
@@ -460,7 +463,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , rules.speciesDistance = c("opt.maxPercent.NA" = 1
                                                                , "opt.maxPercent.similarSpecies" = 1
@@ -471,7 +474,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , rules.speciesDistance = c("opt.maxPercent.NA" = 1
                                                                , "opt.maxPercent.similarSpecies" = 1
@@ -486,21 +489,21 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : rules.speciesDistan
 test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", {
   
   ## TEST mat.species.DIST : length > 0
-  expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
-                                   , mat.observations = data.frame(species = "1"
-                                                                   ,sites = "A"
-                                                                   , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
-                                   , mat.overlap = matrix(1)
-                                   , mat.species.DIST = list())
-               , "`mat.species.DIST` must be of length > 0")
+  # expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
+  #                                  , mat.observations = data.frame(species = "1"
+  #                                                                  ,sites = "A"
+  #                                                                  , abund = 5)
+  #                                  , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
+  #                                  , mat.overlap = matrix(1)
+  #                                  , mat.species.DIST = list())
+  #              , "`mat.species.DIST` must be of length > 0")
   
   ## TEST mat.species.DIST : dissimilarity object (list)
   expect_error(SAVE_FATE.step1_PFG(name.dataset = "A"
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = 1)
                , "`mat.species.DIST` must be a dissimilarity object (`dist`, `niolap`, `matrix`) or a list of dissimilarity objects"
@@ -509,7 +512,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = "a")
                , "`mat.species.DIST` must be a dissimilarity object (`dist`, `niolap`, `matrix`) or a list of dissimilarity objects"
@@ -518,7 +521,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = factor("A"))
                , "`mat.species.DIST` must be a dissimilarity object (`dist`, `niolap`, `matrix`) or a list of dissimilarity objects"
@@ -529,7 +532,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = data.frame(1))
                , "`mat.species.DIST` must be a dissimilarity object (`dist`, `niolap`, `matrix`)"
@@ -538,7 +541,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = list(NA))
                , "`mat.species.DIST[[1]]` must be a dissimilarity object (`dist`, `niolap`, `matrix`)"
@@ -547,7 +550,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = list(1))
                , "`mat.species.DIST[[1]]` must be a dissimilarity object (`dist`, `niolap`, `matrix`)"
@@ -556,7 +559,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = list("a"))
                , "`mat.species.DIST[[1]]` must be a dissimilarity object (`dist`, `niolap`, `matrix`)"
@@ -565,7 +568,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = list(list()))
                , "`mat.species.DIST[[1]]` must be a dissimilarity object (`dist`, `niolap`, `matrix`)"
@@ -576,7 +579,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1:8, ncol = 4))
                , "`mat.species.DIST` does not have the same number of rows (2) and columns (4)"
@@ -585,7 +588,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.species.DIST", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = list(matrix(1:9, ncol=3)
                                                              , matrix(1:8, ncol=4)))
@@ -601,7 +604,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : clust.evaluation", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = NA)
@@ -610,7 +613,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : clust.evaluation", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = list(1,NA))
@@ -621,7 +624,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : clust.evaluation", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame())
@@ -631,7 +634,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : clust.evaluation", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(1))
@@ -641,7 +644,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : clust.evaluation", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(1,2))
@@ -653,7 +656,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : clust.evaluation", 
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(c(1,1), 2, 3, 4))
@@ -671,7 +674,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4))
@@ -680,7 +683,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -690,7 +693,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -700,7 +703,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -710,7 +713,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -720,7 +723,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -730,7 +733,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -742,7 +745,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : no.clusters", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -760,7 +763,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : determ.all", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -771,7 +774,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : determ.all", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -784,7 +787,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : determ.all", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -796,7 +799,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : determ.all", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -808,7 +811,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : determ.all", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -822,7 +825,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : determ.all", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -840,7 +843,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -853,7 +856,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -868,7 +871,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -882,7 +885,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -896,7 +899,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -912,7 +915,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)
@@ -928,7 +931,7 @@ test_that("SAVE_FATE.step1_PFG gives error with wrong data : mat.traits.PFG", {
                                    , mat.observations = data.frame(species = "1"
                                                                    ,sites = "A"
                                                                    , abund = 5)
-                                   , mat.traits = data.frame(species = c("A", "B"), 2, 3)
+                                   , mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                    , mat.overlap = matrix(1)
                                    , mat.species.DIST = matrix(1)
                                    , clust.evaluation = data.frame(GROUP = 1, no.clusters = 2, variable = 3, value = 4)

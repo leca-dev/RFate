@@ -230,7 +230,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
     }
   }
   rules.selectDominant = rules.selectDominant[names.rules.selectDominant]
-  rules.selectDominant = sapply(rules.selectDominant, function(x) as.numeric(as.character(x)))
+  rules.selectDominant = sapply(rules.selectDominant, function(x) suppressWarnings(as.numeric(as.character(x))))
   if (length(which(is.na(rules.selectDominant))) < 8)
   {
     .testParam_notInValues.m("rules.selectDominant['doRuleA']", rules.selectDominant['doRuleA'], c(0, 1))
@@ -281,11 +281,9 @@ SAVE_FATE.step1_PFG = function(name.dataset
                 , "a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"))
   } else
   {
-    if (!.testParam_notInClass(mat.overlap, c("dist", "niolap")))
+    if (!.testParam_notInClass(mat.overlap, c("dist", "niolap", "matrix"), FALSE))
     {
       mat.overlap = as.matrix(mat.overlap)
-    } else if (is.matrix(mat.overlap))
-    {
       if (ncol(mat.overlap) != nrow(mat.overlap))
       {
         stop(paste0("Wrong dimension(s) of data!\n `mat.overlap` does not have the same number of rows ("
@@ -343,7 +341,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
     }
   }
   rules.speciesDistance = rules.speciesDistance[names.rules.speciesDistance]
-  rules.speciesDistance = sapply(rules.speciesDistance, function(x) as.numeric(as.character(x)))
+  rules.speciesDistance = sapply(rules.speciesDistance, function(x) suppressWarnings(as.numeric(as.character(x))))
   if (length(which(is.na(rules.speciesDistance))) < 3)
   {
     .testParam_notBetween.m("rules.speciesDistance['opt.maxPercent.NA']"
@@ -358,17 +356,15 @@ SAVE_FATE.step1_PFG = function(name.dataset
     stop("No data given!\n (missing `mat.species.DIST` information)")
   }
   ## CHECK parameter mat.species.DIST
-  if(class(mat.species.DIST) == "list") ##is.list(mat.species.DIST))
+  if(!.testParam_notInClass(mat.species.DIST, "list"))
   {
     if (length(mat.species.DIST) > 0)
     {
       for (i in 1:length(mat.species.DIST))
       {
-        if (class(mat.species.DIST[[i]]) %in% c("dist", "niolap"))
+        if (!.testParam_notInClass(mat.species.DIST[[i]], c("dist", "niolap", "matrix"), FALSE))
         {
           mat.species.DIST[[i]] = as.matrix(mat.species.DIST[[i]])
-        } else if (class(mat.species.DIST[[i]]) == "matrix") #is.matrix(mat.species.DIST[[i]]))
-        {
           if (ncol(mat.species.DIST[[i]]) != nrow(mat.species.DIST[[i]]))
           {
             stop(paste0("Wrong dimension(s) of data!\n `mat.species.DIST[[",
@@ -399,11 +395,9 @@ SAVE_FATE.step1_PFG = function(name.dataset
     }
   } else
   {
-    if (class(mat.species.DIST) %in% c("dist", "niolap"))
+    if (!.testParam_notInClass(mat.species.DIST, c("dist", "niolap", "matrix"), FALSE))
     {
       mat.species.DIST = as.matrix(mat.species.DIST)
-    } else if (is.matrix(mat.species.DIST))
-    {
       if (ncol(mat.species.DIST) != nrow(mat.species.DIST))
       {
         stop(paste0("Wrong dimension(s) of data!\n `mat.species.DIST` "
@@ -447,7 +441,7 @@ SAVE_FATE.step1_PFG = function(name.dataset
     stop("No data given!\n (missing `no.clusters` information)")
   } else
   {
-    if (class(mat.species.DIST) == "list" && length(no.clusters) != length(mat.species.DIST))
+    if (!.testParam_notInClass(mat.species.DIST, "list") && length(no.clusters) != length(mat.species.DIST))
     {
       stop("Wrong type of data!\n `no.clusters` must have the same length than `mat.species.DIST`")
     } else if (length(no.clusters) != 1)

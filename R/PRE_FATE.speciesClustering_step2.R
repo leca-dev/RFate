@@ -209,7 +209,6 @@ PRE_FATE.speciesClustering_step2 = function(clust.dendrograms
   }
   ## CHECK parameter mat.species.DIST
   if (.testParam_notInClass(mat.species.DIST, c("list","dist")))
-    
   {
     stop("No data given!\n (missing `mat.species.DIST` information which must be a dist object, or a list of dist objects)")
   } else

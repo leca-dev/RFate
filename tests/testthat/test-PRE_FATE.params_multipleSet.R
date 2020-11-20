@@ -382,116 +382,116 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                                            , no_simulations = 10)
                , "The file ./FATE_simulation/glob.txt is empty. Please check.")
   cat("Yo", file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10))
                , "The flag --PFG_PARAMS_LIFE_HISTORY-- in the file FATE_simulation/PARAM_SIMUL/toto.txt does not contain any value. Please check."
                , fixed = TRUE)
   
   
   ## TEST file.simulParam.1 and globalParam file
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag.split` ( ) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat("MAX_ABUND_LOW 10000", file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.no_strata = FALSE
-                                           , do.DISPERSAL.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.no_strata = FALSE
+                                                            , do.DISPERSAL.mode = FALSE))
                , "The file ./FATE_simulation/glob.txt does not contain any of the required parameter values (NO_PFG, SIMULATION_DURATION, ...). Please check."
                , fixed = TRUE)
   cat("MAX_ABUND_LOW 10000\nTRUC 3", file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (DO_DISPERSAL) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat("MAX_ABUND_LOW 10000\nTRUC 3\nDO_DISPERSAL 0"
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (DO_HAB_SUITABILITY) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat("MAX_ABUND_LOW 10000\nTRUC 3\nDO_DISPERSAL 0\nDO_HAB_SUITABILITY 0"
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (DO_LIGHT_INTERACTION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat("MAX_ABUND_LOW 10000\nTRUC 3\nDO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0"
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (DO_SOIL_INTERACTION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nTRUC 3\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (DO_DISTURBANCES) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nTRUC 3\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (NO_PFG) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (NO_STRATA) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (SIMULATION_DURATION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (SEEDING_DURATION) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
@@ -499,11 +499,11 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (SEEDING_TIMESTEP) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
@@ -511,11 +511,11 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (SEEDING_INPUT) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
@@ -523,11 +523,11 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (MAX_ABUND_MEDIUM) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
@@ -536,11 +536,11 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (MAX_ABUND_HIGH) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
@@ -551,47 +551,47 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
       , file = "FATE_simulation/glob.txt")
   
   ## TEST file.simulParam.1 and mask
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "The flag --MASK-- in the file FATE_simulation/PARAM_SIMUL/toto.txt does not contain any value. Please check."
                , fixed = TRUE)
   cat("--GLOBAL_PARAMS--\nFATE_simulation/glob.txt\n--MASK--\n--END_OF_FILE--\n"
       , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `name.MASK` must contain a character value of length > 0"
                , fixed = TRUE)
   cat("--GLOBAL_PARAMS--\nFATE_simulation/glob.txt\n--MASK--\nmask.txt\n--END_OF_FILE--\n"
       , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong name file given!\n `FATE_simulation_MULTIPLE_SET/DATA/MASK/mask.txt` does not exist")
   dir.create("FATE_simulation/DATA/MASK")
   file.create("FATE_simulation/DATA/MASK/mask.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong name file given!\n `FATE_simulation_MULTIPLE_SET/DATA/MASK/mask.txt` does not exist")
   cat("--GLOBAL_PARAMS--\nFATE_simulation/glob.txt\n--MASK--\nFATE_simulation/DATA/MASK/mask.txt\n--END_OF_FILE--\n"
       , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
   
   ## TEST file.simulParam.1 and SUCC files
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.no_strata = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "There is not the same number of files (`.txt` file starting with `SUCC`) into the FATE_simulation_MULTIPLE_SET/DATA/PFGS/SUCC/ folder as the number of PFG indicated into the file FATE_simulation_MULTIPLE_SET/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"
                , fixed = TRUE)
   dir.create("FATE_simulation/DATA/PFGS")
@@ -632,19 +632,19 @@ test_that("PRE_FATE.params_multipleSet gives correct output", {
   
   
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.no_strata = FALSE)
+  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                              , file.simulParam.1 = "toto.txt"
+                                                              , no_simulations = 10
+                                                              , do.DISPERSAL.mode = FALSE
+                                                              , do.no_strata = FALSE))
                  , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !"
                  , fixed = TRUE)
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.no_strata = FALSE)
+  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                              , file.simulParam.1 = "toto.txt"
+                                                              , no_simulations = 10
+                                                              , do.DISPERSAL.mode = FALSE
+                                                              , do.no_strata = FALSE))
                  , "The parameter file FATE_simulation_MULTIPLE_SET/PARAM_SIMUL/Simul_parameters_V1.txt has been successfully created !"
                  , fixed = TRUE)
 })
@@ -692,11 +692,11 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
   
   ## TEST all but do.DISPERSAL.mode and do.no_strata (and light / soil / habsuit not activated)
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.no_strata = FALSE)
+  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                              , file.simulParam.1 = "toto.txt"
+                                                              , no_simulations = 10
+                                                              , do.DISPERSAL.mode = FALSE
+                                                              , do.no_strata = FALSE))
                  , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !"
                  , fixed = TRUE)
   
@@ -756,8 +756,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                       , all.files = TRUE
                                       , full.names = TRUE
                                       , recursive = TRUE
-                                      , include.dirs = FALSE))
-              , recursive = TRUE)
+                                      , include.dirs = FALSE)))
     fi = readLines("FATE_simulation2/PARAM_SIMUL/toto.txt")
     fi = sub("FATE_simulation/", "FATE_simulation2/", fi)
     cat(fi, file = "FATE_simulation2/PARAM_SIMUL/toto.txt", sep = "\n")
@@ -774,24 +773,24 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
   
   ## TEST do.max_abund_low ==> 2 folders
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , name.simulation.2 = "FATE_simulation2"
-                                           , file.simulParam.2 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = TRUE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = FALSE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , name.simulation.2 = "FATE_simulation2"
+                                                            , file.simulParam.2 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = TRUE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = FALSE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "The files do not contain the same parameters to be evaluated."
                , fixed = TRUE)
   
@@ -945,22 +944,22 @@ test_that("PRE_FATE.params_multipleSet gives error for other conditions / scenar
   }
   
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = TRUE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = FALSE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = TRUE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = FALSE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "The global parameter file indicated in FATE_simulation/PARAM_SIMUL/toto.txt does not contain any of the required parameter values (MAX_ABUND_LOW). Please check."
                , fixed = TRUE)
   
@@ -1023,22 +1022,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "FATE_simulation/DATA/PFGS/SUCC/SUCC_2.txt\nFATE_simulation/DATA/PFGS/SUCC/SUCC_3.txt\n"
              , "--END_OF_FILE--\n")
       , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = TRUE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = FALSE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = TRUE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "Wrong type of data!\n `flag.split` ( ) is not found within `params.lines` (./FATE_simulation/DATA/PFGS/SUCC/SUCC_1.txt)"
                , fixed = TRUE)
   
@@ -1048,22 +1047,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
       , file = "FATE_simulation/DATA/PFGS/SUCC/SUCC_2.txt")
   cat(paste0("NAME FG3\nTYPE P\nHEIGHT 1100\nMATURITY 20\nLONGEVITY 80\n")
       , file = "FATE_simulation/DATA/PFGS/SUCC/SUCC_3.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = TRUE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = FALSE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = TRUE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "Wrong type of data!\n `flag.split` ( ) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   
@@ -1075,22 +1074,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
-  expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10
-                                             , do.max_abund_low = FALSE
-                                             , do.max_abund_medium = FALSE
-                                             , do.max_abund_high = FALSE
-                                             , do.seeding_duration = FALSE
-                                             , do.seeding_timestep = FALSE
-                                             , do.seeding_input = FALSE
-                                             , do.no_strata = TRUE
-                                             , do.LIGHT.thresh_medium = FALSE
-                                             , do.LIGHT.thresh_low = FALSE
-                                             , do.SOIL.init = FALSE
-                                             , do.SOIL.retention = FALSE
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.HABSUIT.mode = FALSE)
+  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                              , file.simulParam.1 = "toto.txt"
+                                                              , no_simulations = 10
+                                                              , do.max_abund_low = FALSE
+                                                              , do.max_abund_medium = FALSE
+                                                              , do.max_abund_high = FALSE
+                                                              , do.seeding_duration = FALSE
+                                                              , do.seeding_timestep = FALSE
+                                                              , do.seeding_input = FALSE
+                                                              , do.no_strata = TRUE
+                                                              , do.LIGHT.thresh_medium = FALSE
+                                                              , do.LIGHT.thresh_low = FALSE
+                                                              , do.SOIL.init = FALSE
+                                                              , do.SOIL.retention = FALSE
+                                                              , do.DISPERSAL.mode = FALSE
+                                                              , do.HABSUIT.mode = FALSE))
                  , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/PFGS/SUCC/REP-1/SUCC_FG1.txt has been successfully created !")
   
   
@@ -1102,22 +1101,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = TRUE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = FALSE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = TRUE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "The flag --PFG_PARAMS_LIGHT-- in the file FATE_simulation/PARAM_SIMUL/toto.txt does not contain any value. Please check.")
   
   cat(paste0("--GLOBAL_PARAMS--\nFATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt\n"
@@ -1128,22 +1127,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "FATE_simulation/DATA/PFGS/SUCC/SUCC_2.txt\nFATE_simulation/DATA/PFGS/SUCC/SUCC_3.txt\n"
              , "--END_OF_FILE--\n")
       , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = TRUE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = FALSE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = TRUE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "`flag` (LIGHT) is not found within `params.lines` (./FATE_simulation/DATA/PFGS/SUCC/SUCC_1.txt)"
                , fixed = TRUE)
   
@@ -1153,22 +1152,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
       , file = "FATE_simulation/DATA/PFGS/SUCC/SUCC_2.txt")
   cat(paste0("NAME FG3\nTYPE P\nHEIGHT 1100\nMATURITY 20\nLONGEVITY 80\nLIGHT 5\n")
       , file = "FATE_simulation/DATA/PFGS/SUCC/SUCC_3.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = TRUE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = FALSE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = TRUE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "`flag` (LIGHT_THRESH_MEDIUM) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   
@@ -1181,22 +1180,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "LIGHT_THRESH_MEDIUM 5\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
-  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                           , file.simulParam.1 = "toto.txt"
-                                           , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
-                                           , do.seeding_duration = FALSE
-                                           , do.seeding_timestep = FALSE
-                                           , do.seeding_input = FALSE
-                                           , do.no_strata = TRUE
-                                           , do.LIGHT.thresh_medium = FALSE
-                                           , do.LIGHT.thresh_low = FALSE
-                                           , do.SOIL.init = FALSE
-                                           , do.SOIL.retention = FALSE
-                                           , do.DISPERSAL.mode = FALSE
-                                           , do.HABSUIT.mode = FALSE)
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.max_abund_low = FALSE
+                                                            , do.max_abund_medium = FALSE
+                                                            , do.max_abund_high = FALSE
+                                                            , do.seeding_duration = FALSE
+                                                            , do.seeding_timestep = FALSE
+                                                            , do.seeding_input = FALSE
+                                                            , do.no_strata = TRUE
+                                                            , do.LIGHT.thresh_medium = FALSE
+                                                            , do.LIGHT.thresh_low = FALSE
+                                                            , do.SOIL.init = FALSE
+                                                            , do.SOIL.retention = FALSE
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.HABSUIT.mode = FALSE))
                , "`flag` (LIGHT_THRESH_LOW) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   
@@ -1209,22 +1208,22 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
              , "LIGHT_THRESH_MEDIUM 5\nLIGHT_THRESH_LOW 10\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
       , file = "FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
-  expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10
-                                             , do.max_abund_low = FALSE
-                                             , do.max_abund_medium = FALSE
-                                             , do.max_abund_high = FALSE
-                                             , do.seeding_duration = FALSE
-                                             , do.seeding_timestep = FALSE
-                                             , do.seeding_input = FALSE
-                                             , do.no_strata = TRUE
-                                             , do.LIGHT.thresh_medium = FALSE
-                                             , do.LIGHT.thresh_low = FALSE
-                                             , do.SOIL.init = FALSE
-                                             , do.SOIL.retention = FALSE
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.HABSUIT.mode = FALSE)
+  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                              , file.simulParam.1 = "toto.txt"
+                                                              , no_simulations = 10
+                                                              , do.max_abund_low = FALSE
+                                                              , do.max_abund_medium = FALSE
+                                                              , do.max_abund_high = FALSE
+                                                              , do.seeding_duration = FALSE
+                                                              , do.seeding_timestep = FALSE
+                                                              , do.seeding_input = FALSE
+                                                              , do.no_strata = TRUE
+                                                              , do.LIGHT.thresh_medium = FALSE
+                                                              , do.LIGHT.thresh_low = FALSE
+                                                              , do.SOIL.init = FALSE
+                                                              , do.SOIL.retention = FALSE
+                                                              , do.DISPERSAL.mode = FALSE
+                                                              , do.HABSUIT.mode = FALSE))
                  , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/PFGS/LIGHT/REP-1/LIGHT_FG1.txt has been successfully created !")
   
 })
@@ -1279,7 +1278,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario SOIL", {
         , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
   }
   
-
+  
   expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                              , file.simulParam.1 = "toto.txt"
                                              , no_simulations = 10
