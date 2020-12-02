@@ -5,11 +5,23 @@ codecov:
 comment: false
 
 coverage:
+  precision: 1
+  round: down
+  range: "50...75"
   status:
     project:
       default:
-        target: auto
+        target: 75%
         threshold: 1%
+      RFate:
+        paths:
+          - R
+      FATE:
+        paths:
+          - src
+      shinyRFate:
+        paths:
+          - inst/shinyApp
     patch:
       default:
         target: auto
