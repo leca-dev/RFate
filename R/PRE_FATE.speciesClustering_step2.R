@@ -137,15 +137,15 @@
 ##' str(sp.DETERM$determ.all)
 ##' 
 ##' ## Species names
-##' sp.NAMES = DATASET_Bauges_PFG$sp.names
-##' sp.NAMES$species = paste0("X", sp.NAMES$species)
-##' determ = merge(sp.DETERM$determ.all, sp.NAMES, by = "species", all.x = TRUE)
-##' str(determ)
+##' # sp.NAMES = DATASET_Bauges_PFG$sp.names
+##' # sp.NAMES$species = paste0("X", sp.NAMES$species)
+##' # determ = merge(sp.DETERM$determ.all, sp.NAMES, by = "species", all.x = TRUE)
+##' # str(determ)
 ##' 
-##' plot(sp.DETERM$plot.distance)
-##' plot(sp.DETERM$plot.PCO$Chamaephyte)
-##' plot(sp.DETERM$plot.PCO$Herbaceous)
-##' plot(sp.DETERM$plot.PCO$Phanerophyte)
+##' # plot(sp.DETERM$plot.distance)
+##' # plot(sp.DETERM$plot.PCO$Chamaephyte)
+##' # plot(sp.DETERM$plot.PCO$Herbaceous)
+##' # plot(sp.DETERM$plot.PCO$Phanerophyte)
 ##' 
 ##' 
 ##' @export

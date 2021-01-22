@@ -465,7 +465,8 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.pco</span><span class='op'>$</span><span class='va'>Axis1_Axis2</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.pco</span><span class='op'>$</span><span class='va'>Axis1_Axis3</span><span class='op'>)</span>
 
-<span class='co'>## Habitat, change parameters ----------------------------------------------------------------</span>
+<span class='co'>## Habitat, change parameters (!quite long!) -------------------------------------------------</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='va'>tab.select</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>, <span class='st'>"habitat"</span><span class='op'>)</span><span class='op'>]</span>
 <span class='va'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span><span class='op'>(</span>mat.observations <span class='op'>=</span> <span class='va'>tab.select</span>
                                     , doRuleA <span class='op'>=</span> <span class='cn'>TRUE</span>
@@ -481,6 +482,7 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.C</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.pco</span><span class='op'>$</span><span class='va'>Axis1_Axis2</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.pco</span><span class='op'>$</span><span class='va'>Axis1_Axis3</span><span class='op'>)</span>
+<span class='op'>}</span>
                                     
 <span class='co'>## Robustness (!quite long!) -----------------------------------------------------------------</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>

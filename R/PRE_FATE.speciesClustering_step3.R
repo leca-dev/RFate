@@ -117,12 +117,12 @@
 ##' 
 ##' ## Compute traits per PFG : no specific graphic ----------------------------------------------
 ##' sp.PFG = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
-##' names(sp.PFG)
-##' str(sp.PFG$tab)
-##' names(sp.PFG$plot)
-##' plot(sp.PFG$plot$DISPERSAL)
-##' plot(sp.PFG$plot$LIGHT)
-##' plot(sp.PFG$plot$NITROGEN)
+##' # names(sp.PFG)
+##' # str(sp.PFG$tab)
+##' # names(sp.PFG$plot)
+##' # plot(sp.PFG$plot$DISPERSAL)
+##' # plot(sp.PFG$plot$LIGHT)
+##' # plot(sp.PFG$plot$NITROGEN)
 ##' 
 ##' 
 ##' ## Compute traits per PFG : with one specific graphic ----------------------------------------
@@ -130,12 +130,12 @@
 ##'                          , "height", "DISPERSAL", "light", "soil_contrib"
 ##'                          , "soil_tolerance", "GRAZ_MOW_TOLERANCE")
 ##' sp.PFG = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
-##' names(sp.PFG)
-##' str(sp.PFG$tab)
-##' names(sp.PFG$plot)
-##' plot(sp.PFG$plot$maturity_longevity)
-##' plot(sp.PFG$plot$height_light)
-##' plot(sp.PFG$plot$soil)
+##' # names(sp.PFG)
+##' # str(sp.PFG$tab)
+##' # names(sp.PFG$plot)
+##' # plot(sp.PFG$plot$maturity_longevity)
+##' # plot(sp.PFG$plot$height_light)
+##' # plot(sp.PFG$plot$soil)
 ##' 
 ##' 
 ##' @export

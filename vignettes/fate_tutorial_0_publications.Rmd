@@ -143,7 +143,7 @@ ________________________________________________________________________________
 
 <br/>
 
-- **Boulangeat** I., Georges D., Dentant C., Bonet R., Van Es J., Abdulhak S., Zimmermann N. E. and Thuiller W. (**2014**), *Anticipating the spatio‐temporal response of plant diversity and vegetation structure to climate and land use change in a protected area*. Ecography, 37: 1230-1239. https://doi:10.1111/ecog.00694
+- **Boulangeat** I., Georges D., Dentant C., Bonet R., Van Es J., Abdulhak S., Zimmermann N. E. and Thuiller W. (**2014**), *Anticipating the spatio‐temporal response of plant diversity and vegetation structure to climate and land use change in a protected area*. Ecography, 37: 1230-1239. https://doi.org/10.1111/ecog.00694
 
 - **Barros** C., Thuiller W., Georges D., Boulangeat I., Münkemüller T. and Bellwood D. (**2016**), *N‐dimensional hypervolumes to study stability of complex ecosystems*. Ecol Lett, 19: 729-742. https://doi.org/10.1111/ele.12617
 

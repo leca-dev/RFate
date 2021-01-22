@@ -227,7 +227,8 @@
 ##' plot(sp.SELECT$plot.pco$Axis1_Axis2)
 ##' plot(sp.SELECT$plot.pco$Axis1_Axis3)
 ##' 
-##' ## Habitat, change parameters ----------------------------------------------------------------
+##' ## Habitat, change parameters (!quite long!) -------------------------------------------------
+##' \dontrun{
 ##' tab.select = tab[, c("sites", "species", "abund", "habitat")]
 ##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.select
 ##'                                     , doRuleA = TRUE
@@ -243,6 +244,7 @@
 ##' plot(sp.SELECT$plot.C)
 ##' plot(sp.SELECT$plot.pco$Axis1_Axis2)
 ##' plot(sp.SELECT$plot.pco$Axis1_Axis3)
+##' }
 ##'                                     
 ##' ## Robustness (!quite long!) -----------------------------------------------------------------
 ##' \dontrun{
