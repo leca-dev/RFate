@@ -1,23 +1,24 @@
 ### HEADER #####################################################################
-##' @title Upscale / crop all raster maps of a \code{FATE} simulation folder
+##' @title Upscale / downscale / crop all raster maps of a \code{FATE} 
+##' simulation folder
 ##' 
-##' @name .upscaleMaps
+##' @name .scaleMaps
 ##' @aliases .cropMaps
 ##' 
 ##' @usage
-##' .upscaleMaps(name.simulation, resolution)
+##' .scaleMaps(name.simulation, resolution)
 ##' .cropMaps(name.simulation, extent)
 ##'
 ##' @author Maya Guéguen
 ##' 
 ##' @description These functions scan all the raster files within a 
-##' \code{FATE} simulation folder and upscale / crop them to the specified 
-##' resolution / extent.
+##' \code{FATE} simulation folder and upscale / downscale / crop them 
+##' to the specified resolution / extent.
 ##' 
 ##' @param name.simulation a \code{string} corresponding to the main directory 
 ##' or simulation name of the \code{FATE} simulation
 ##' @param resolution an \code{integer} corresponding to the new resolution to 
-##' upscale all the maps
+##' upscale/downscale all the maps
 ##' @param extent a \code{vector} of 4 \code{numeric} values corresponding to 
 ##' the new extent to crop all the maps
 ##' 
@@ -36,9 +37,9 @@ NULL
 
 ##' @export
 
-.upscaleMaps = function(name.simulation
-                        , resolution
-                        
+.scaleMaps = function(name.simulation
+                      , resolution
+                      
 ){
   .testParam_existFolder(name.simulation, "")
   name.simulation = sub("/$", "", name.simulation)
@@ -77,7 +78,7 @@ NULL
     ras = raster(fi)
     old.res = unique(res(ras))
     old.proj = projection(ras)
-    if (old.res <= resolution)
+    if (old.res != resolution)
     {
       if (!is.na(old.proj))
       {
@@ -91,7 +92,7 @@ NULL
                                 , method = proj.method
                                 , filename = fi
                                 , overwrite = TRUE)
-        message(paste0("\n The raster file ", fi, " has been successfully upscaled !"))
+        message(paste0("\n The raster file ", fi, " has been successfully rescaled !"))
       } else
       {
         warning(paste0("\n The raster file ", fi
@@ -99,8 +100,9 @@ NULL
       }
     } else
     {
-      warning(paste0("\n The raster file ", fi, " has a coarser resolution (", old.res
-                     , ") than the one resquested (", resolution, "). Please check."))
+      warning(paste0("\n The raster file ", fi
+                     , " has the same resolution than the one requested ("
+                     , resolution, "). Please check."))
     }
   }
 }
@@ -109,8 +111,8 @@ NULL
 ##' @export
 
 .cropMaps = function(name.simulation
-                    , extent
-                    
+                     , extent
+                     
 ){
   .testParam_existFolder(name.simulation, "")
   name.simulation = sub("/$", "", name.simulation)

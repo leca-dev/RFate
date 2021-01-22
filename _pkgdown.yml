@@ -133,6 +133,6 @@ reference:
       - ".setParam"
       - ".setPattern"
       - ".adaptMaps"
-      - ".upscaleMaps"
+      - ".scaleMaps"
       - ".getCutoff"
       - ".unzip_ALL"
