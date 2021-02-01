@@ -7,6 +7,8 @@
 ##' @aliases .zip_ALL
 ##' @aliases .zip
 ##' 
+##' @author Maya Guéguen
+##' 
 ##' @usage
 ##' .unzip_ALL(folder_name, no_cores)
 ##' .unzip(folder_name, list_files, no_cores)

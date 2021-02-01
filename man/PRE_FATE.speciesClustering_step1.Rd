@@ -172,7 +172,7 @@ plot(sp.CLUST$plot.clustNo)
 \code{\link{PRE_FATE.speciesClustering_step2}}
 }
 \author{
-Maya Guéguen
+Isabelle Boulangeat, Maya Guéguen
 }
 \keyword{Average}
 \keyword{Calinski}

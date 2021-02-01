@@ -38,9 +38,7 @@
 #'
 #' @examples \dontrun{FATE()}
 #'
-#' @author Damien Georges
-#' @author Isabelle Boulangeat, \email{isabelle.boulangeat@inrae.fr}
-#' @author Maya Guéguen, \email{maya.gueguen@univ-grenoble-alpes.fr}
+#' @author Damien Georges, Isabelle Boulangeat, Maya Guéguen
 #'
 #' @export
 FATE <- function(simulParam, no_CPU = 1L, verboseLevel = 0L) {

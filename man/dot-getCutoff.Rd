@@ -29,3 +29,6 @@ cutoff = .getCutoff(Obs = vec.obs, Fit = vec.pred)
 str(cutoff)
 
 }
+\author{
+Damien Georges
+}

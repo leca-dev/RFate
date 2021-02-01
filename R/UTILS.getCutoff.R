@@ -2,6 +2,8 @@
 ##' @title Find cutoff to transform abundance values into binary values
 ##' 
 ##' @name .getCutoff
+##' 
+##' @author Damien Georges
 ##'
 ##' @description This function finds the best cutoff to transform abundance 
 ##' values into binary values while optimising sensitivity and specificity 

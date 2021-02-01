@@ -289,7 +289,7 @@ plot(sp.SELECT$plot.robustness$`All dataset`)
 \code{\link[ade4]{dudi.pco}}
 }
 \author{
-Maya Guéguen
+Isabelle Boulangeat, Maya Guéguen
 }
 \keyword{abundance,}
 \keyword{class}

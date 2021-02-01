@@ -60,5 +60,5 @@ readLines("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
 
 }
 \author{
-Maya Guéguen
+Damien Georges, Maya Guéguen
 }

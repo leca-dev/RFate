@@ -5,7 +5,7 @@
 ##' 
 ##' @name POST_FATE.graphic_validationStatistics
 ##'
-##' @author Maya Guéguen
+##' @author Isabelle Boulangeat, Damien Georges, Maya Guéguen
 ##' 
 ##' @description This script is designed to produce a graphical representation 
 ##' of several statistics (sensitivity, specificity, TSS, AUC) for quality 

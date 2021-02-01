@@ -9,7 +9,7 @@
 ##' @description This script is designed to produce a set of graphical 
 ##' representations for a \code{FATE} simulation. Graphics can be of three 
 ##' types : 1) representing an evolution through time (of abundance, light, 
-##' soil) ; 2) vizualising the goodness of the modelisation (presence/absence, 
+##' soil) ; 2) visualizing the goodness of the modelisation (presence/absence, 
 ##' validation statistics) : 3) or representing a spatial distribution for a 
 ##' specific year (richness, abundance, light, soil).
 ##' 

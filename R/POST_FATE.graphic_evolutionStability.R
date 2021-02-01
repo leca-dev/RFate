@@ -4,7 +4,7 @@
 ##' 
 ##' @name POST_FATE.graphic_evolutionStability
 ##'
-##' @author Maya Guéguen
+##' @author Ceres Barros, Maya Guéguen
 ##' 
 ##' @description This script is designed to produce one graphical representation 
 ##' for a \code{FATE} simulation : the evolution through time of the total 

@@ -144,7 +144,7 @@ POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"
 \code{\link{POST_FATE.temporalEvolution}}
 }
 \author{
-Maya Guéguen
+Ceres Barros, Maya Guéguen
 }
 \keyword{FATE,}
 \keyword{abundance}

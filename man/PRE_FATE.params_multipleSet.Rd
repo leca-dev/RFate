@@ -261,7 +261,7 @@ drawn in order to explore the whole space of combinations.
 \code{\link{PRE_FATE.params_PFGlight}},
 }
 \author{
-Maya Guéguen
+Billur Bektas, Maya Guéguen
 }
 \keyword{FATE,}
 \keyword{Hypercube}

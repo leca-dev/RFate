@@ -3,7 +3,7 @@
 ##' 
 ##' @name .getParam
 ##'
-##' @author Maya Guéguen
+##' @author Damien Georges, Maya Guéguen
 ##' 
 ##' @description This function extracts from a text file the value(s) of a 
 ##' given parameter.

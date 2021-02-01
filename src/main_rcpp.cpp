@@ -225,9 +225,7 @@ void changeFreq(int year, string change_type, vector<int>& freq_change_times,
 //'
 //' @examples \dontrun{FATE()}
 //'
-//' @author Damien Georges
-//' @author Isabelle Boulangeat, \email{isabelle.boulangeat@inrae.fr}
-//' @author Maya Guéguen, \email{maya.gueguen@univ-grenoble-alpes.fr}
+//' @author Damien Georges, Isabelle Boulangeat, Maya Guéguen
 //'
 //' @export
 // [[Rcpp::export]]

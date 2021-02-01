@@ -743,7 +743,7 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
 \code{\link{PRE_FATE.params_simulParameters}}
 }
 \author{
-Maya Guéguen
+Isabelle Boulangeat, Damien Georges, Maya Guéguen
 }
 \keyword{FATE,}
 \keyword{simulation}

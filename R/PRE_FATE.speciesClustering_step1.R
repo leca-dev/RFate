@@ -3,7 +3,7 @@
 ##' 
 ##' @name PRE_FATE.speciesClustering_step1
 ##'
-##' @author Maya Guéguen
+##' @author Isabelle Boulangeat, Maya Guéguen
 ##' 
 ##' @description This script is designed to create clusters of species based 
 ##' on a distance matrix between those species. Several metrics are computed 

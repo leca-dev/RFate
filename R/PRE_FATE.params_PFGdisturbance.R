@@ -4,7 +4,7 @@
 ##' 
 ##' @name PRE_FATE.params_PFGdisturbance
 ##'
-##' @author Maya Guéguen
+##' @author Isabelle Boulangeat, Damien Georges, Maya Guéguen
 ##' 
 ##' @description This script is designed to create parameter files containing 
 ##' response to disturbance parameters for each PFG (one file for each of them) 

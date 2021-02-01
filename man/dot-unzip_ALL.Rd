@@ -28,3 +28,6 @@ number of computing resources that can be used to parallelize the
 These functions compress (\code{.tif}, \code{.img}) or 
 decompress (\code{.gz}) files contained in a given folder.
 }
+\author{
+Maya Guéguen
+}

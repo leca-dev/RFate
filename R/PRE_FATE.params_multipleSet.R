@@ -4,7 +4,7 @@
 ##' 
 ##' @name PRE_FATE.params_multipleSet
 ##'
-##' @author Maya Guéguen
+##' @author Billur Bektas, Maya Guéguen
 ##' 
 ##' @description This script is designed to create multiple sets of parameters 
 ##' using Latin Hypercube Sampling to help find best combination of parameters 

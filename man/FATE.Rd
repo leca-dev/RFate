@@ -50,9 +50,5 @@ level of information is printed :
 
 }
 \author{
-Damien Georges
-
-Isabelle Boulangeat, \email{isabelle.boulangeat@inrae.fr}
-
-Maya Guéguen, \email{maya.gueguen@univ-grenoble-alpes.fr}
+Damien Georges, Isabelle Boulangeat, Maya Guéguen
 }

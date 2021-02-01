@@ -336,7 +336,7 @@ PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_Bauges'
 \code{\link{PRE_FATE.params_globalParameters}}
 }
 \author{
-Maya Guéguen
+Isabelle Boulangeat, Damien Georges, Maya Guéguen
 }
 \keyword{FATE,}
 \keyword{disturbance,}

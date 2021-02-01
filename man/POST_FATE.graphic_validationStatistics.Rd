@@ -141,7 +141,7 @@ exists. \cr \cr
 \code{\link{POST_FATE.binaryMaps}}
 }
 \author{
-Maya Guéguen
+Isabelle Boulangeat, Damien Georges, Maya Guéguen
 }
 \keyword{FATE,}
 \keyword{area}

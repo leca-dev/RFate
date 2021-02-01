@@ -14,6 +14,3 @@ that will be loaded or installed}
 This function loads a \code{R} package and install it if 
 necessary.
 }
-\author{
-Maya Guéguen
-}

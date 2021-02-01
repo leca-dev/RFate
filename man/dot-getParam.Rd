@@ -60,5 +60,5 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
 
 }
 \author{
-Maya Guéguen
+Damien Georges, Maya Guéguen
 }

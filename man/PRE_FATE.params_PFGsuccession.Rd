@@ -261,7 +261,7 @@ PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Bauges'
 \code{\link{PRE_FATE.params_PFGdisturbance}}
 }
 \author{
-Maya Guéguen
+Isabelle Boulangeat, Damien Georges, Maya Guéguen
 }
 \keyword{FATE,}
 \keyword{height,}

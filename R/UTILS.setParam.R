@@ -3,7 +3,7 @@
 ##' 
 ##' @name .setParam
 ##'
-##' @author Maya Guéguen
+##' @author Damien Georges, Maya Guéguen
 ##' 
 ##' @description This function finds in a text file the value(s) of a given 
 ##' parameter, and replace it with new value(s).

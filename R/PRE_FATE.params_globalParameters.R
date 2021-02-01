@@ -4,7 +4,7 @@
 ##' 
 ##' @name PRE_FATE.params_globalParameters
 ##'
-##' @author Maya Guéguen
+##' @author Isabelle Boulangeat, Damien Georges, Maya Guéguen
 ##' 
 ##' @description This script is designed to create parameter file(s) 
 ##' containing \code{GLOBAL PARAMETERS} used in \code{FATE} model.

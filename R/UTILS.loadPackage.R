@@ -3,8 +3,6 @@
 ##' 
 ##' @name .loadPackage
 ##'
-##' @author Maya Guéguen
-##' 
 ##' @description This function loads a \code{R} package and install it if 
 ##' necessary.
 ##' 

@@ -3,7 +3,7 @@
 ##'
 ##' @name PRE_FATE.selectDominant
 ##'
-##' @author Maya Guéguen
+##' @author Isabelle Boulangeat, Maya Guéguen
 ##' 
 ##' @description This script is designed to select dominant species from 
 ##' abundance records, and habitat if the information is available.
