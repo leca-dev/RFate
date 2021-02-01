@@ -24,8 +24,27 @@
 #include <assert.h> // to check objects equivalences
 
 #if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
+  /* to get virtual and physical memory information */
+  #include "sys/types.h" // Unix-Mac
+  #include "sys/sysinfo.h" // Unix
+  
+  /* to get CPU information */
+  #include "sys/times.h" // Unix
+  #include "sys/vtimes.h" // Unix
+  
 	#include "gdal.h"
 	#include <ogr_spatialref.h>
+#elif defined(__APPLE__)
+  /* to get virtual and physical memory information */
+  #include <mach/mach.h>  // Mac
+  #include <mach/vm_statistics.h> // Mac
+  #include <mach/mach_types.h> // Mac
+  #include <mach/mach_init.h> // Mac
+  #include <mach/mach_host.h> // Mac
+#else
+  /* to get virtual and physical memory information */
+  #include "windows.h" // Windows
+  #include "psapi.h" // Windows
 #endif
 
 #include "gdal_priv.h" // to read raster files
@@ -62,10 +81,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 /*============================================================================*/
 
 #if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
-	/* to get virtual and physical memory information */
-	#include "sys/types.h" // Unix-Mac
-	#include "sys/sysinfo.h" // Unix
-
+	// /* to get virtual and physical memory information */
 	struct sysinfo memInfo; // Unix
 
 	/* MEMORY CURRENTLY USED BY CURRENT PROCESS : Unix */
@@ -87,7 +103,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 		{
 			if (strcmp(typeMEM.c_str(),"virtual") == 0)
 			{
-				if (strncmp(line, "VmSize:", 7)==0)
+				if (strncmp(line, "VmSize:", 7) == 0)
 				{ // FOR VIRTUAL MEMORY
 					result = parseLine(line);
 					break;
@@ -105,16 +121,84 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 		fclose(file);
 		return result;
 	}
+
+	
+ 	/* to get CPU information */
+	static clock_t lastCPU, lastSysCPU, lastUserCPU;
+	static int numProcessors = 0;
+	
+	double getCpuUsed()
+	{
+	  struct tms timeSample;
+	  clock_t now = times(&timeSample);
+	  double percent = 0.0;
+	  
+	  if (now <= lastCPU || timeSample.tms_stime < lastSysCPU || timeSample.tms_utime < lastUserCPU)
+	  { //Overflow detection. Just skip this value.
+	    percent = -1.0;
+	  } else
+	  {
+	    percent = (timeSample.tms_stime - lastSysCPU) + (timeSample.tms_utime - lastUserCPU);
+	    percent /= (now - lastCPU);
+	    percent /= numProcessors;
+	    percent *= 100;
+	  }
+	  lastCPU = now;
+	  lastSysCPU = timeSample.tms_stime;
+	  lastUserCPU = timeSample.tms_utime;
+	  return percent;
+	}
 #elif defined(__APPLE__)
 	/* to get virtual and physical memory information */
-	#include <mach/mach.h>  // Mac
-	#include <mach/vm_statistics.h> // Mac
-	#include <mach/mach_types.h> // Mac
-	#include <mach/mach_init.h> // Mac
-	#include <mach/mach_host.h> // Mac
 
 	struct task_basic_info t_info; // Mac
 	mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT; // Mac
+#else
+	/* to get virtual and physical memory information */
+	int getMemUsed(string typeMEM)
+	{ //Note: this value is in KB!
+	  PROCESS_MEMORY_COUNTERS_EX pmc;
+	  GetProcessMemoryInfo(GetCurrentProcess(), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof(pmc));
+	  SIZE_T virtualMemUsedByMe = pmc.PrivateUsage;
+	  SIZE_T physMemUsedByMe = pmc.WorkingSetSize;
+
+	  if (strcmp(typeMEM.c_str(),"virtual") == 0)
+	  {
+	    // return static_cast<int>(pmc.PrivateUsage);
+	    return static_cast<int>(virtualMemUsedByMe);
+	  } else if (strcmp(typeMEM.c_str(),"physical") == 0)
+	  {
+	    // return static_cast<int>(pmc.WorkingSetSize);
+	    return static_cast<int>(physMemUsedByMe);
+	  }
+	  return -1;
+	}
+
+	/* to get CPU information */
+	static ULARGE_INTEGER lastCPU, lastSysCPU, lastUserCPU;
+	static int numProcessors;
+	static HANDLE self;
+	double getCpuUsed()
+	{
+	  FILETIME ftime, fsys, fuser;
+	  ULARGE_INTEGER now, sys, user;
+	  double percent;
+
+	  GetSystemTimeAsFileTime(&ftime);
+	  memcpy(&now, &ftime, sizeof(FILETIME));
+
+	  GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
+	  memcpy(&sys, &fsys, sizeof(FILETIME));
+	  memcpy(&user, &fuser, sizeof(FILETIME));
+	  percent = (sys.QuadPart - lastSysCPU.QuadPart) + (user.QuadPart - lastUserCPU.QuadPart);
+	  percent /= (now.QuadPart - lastCPU.QuadPart);
+	  percent /= numProcessors;
+	  lastCPU = now;
+	  lastUserCPU = user;
+	  lastSysCPU = sys;
+
+	  return percent * 100;
+	}
 #endif
 
 /*============================================================================*/
@@ -280,17 +364,72 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		/* TOTAL PHYSICAL MEMORY (RAM) */
 		long long totalPhysMem = memInfo.totalram;
 		totalPhysMem *= memInfo.mem_unit;
+		
+		/* NUMBER OF PROCESSORS */
+		{
+		  FILE* file = fopen("/proc/cpuinfo", "r");
+		  struct tms timeSample;
+		  char line[128];
+		  
+		  lastCPU = times(&timeSample);
+		  lastSysCPU = timeSample.tms_stime;
+		  lastUserCPU = timeSample.tms_utime;
+		  while (fgets(line, 128, file) != NULL)
+		  {
+		    if (strncmp(line, "processor", 9) == 0)
+		    {
+		      numProcessors++;
+		    }
+		  }
+		  fclose(file);
+		}
 
 		fileStats << "TOTAL VIRTUAL MEMORY : " << totalVirtualMem << endl;
 		fileStats << "TOTAL PHYSICAL MEMORY : " << totalPhysMem << endl;
-		fileStats << "Initial VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
-		fileStats << "Initial PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
-	#elif defined(__APPLE__)
+		fileStats << "NUMBER OF PROCESSORS : " << numProcessors << endl;
+		fileStats << "Initial VIRTUAL MEMORY USED : " << getMemUsed("virtual") << endl;
+		fileStats << "Initial PHYSICAL MEMORY USED : " << getMemUsed("physical") << endl;
+		fileStats << "Initial PERCENTAGE OF CPU USED : " << getCpuUsed() << endl;
+  #elif defined(__APPLE__)
 		/* Memory consuming measurement */
 		vm_size_t page_size; // Mac
 		mach_port_t mach_port; // Mac
 		mach_msg_type_number_t count; // Mac
 		vm_statistics64_data_t vm_stats; // Mac
+  #else
+		MEMORYSTATUSEX memInfo;
+		memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+		GlobalMemoryStatusEx(&memInfo);
+		DWORDLONG totalVirtualMem = memInfo.ullTotalPageFile;
+		/* Note: The name "TotalPageFile" is a bit misleading here.
+		 * In reality this parameter gives the "Virtual Memory Size",
+		 * which is size of swap file plus installed RAM.
+		 */
+		DWORDLONG totalPhysMem = memInfo.ullTotalPhys;
+		
+		/* NUMBER OF PROCESSORS */
+		{
+		  SYSTEM_INFO sysInfo;
+		  FILETIME ftime, fsys, fuser;
+
+		  GetSystemInfo(&sysInfo);
+		  numProcessors = sysInfo.dwNumberOfProcessors;
+
+		  GetSystemTimeAsFileTime(&ftime);
+		  memcpy(&lastCPU, &ftime, sizeof(FILETIME));
+
+		  self = GetCurrentProcess();
+		  GetProcessTimes(self, &ftime, &ftime, &fsys, &fuser);
+		  memcpy(&lastSysCPU, &fsys, sizeof(FILETIME));
+		  memcpy(&lastUserCPU, &fuser, sizeof(FILETIME));
+		}
+		
+		fileStats << "TOTAL VIRTUAL MEMORY : " << totalVirtualMem << endl;
+		fileStats << "TOTAL PHYSICAL MEMORY : " << totalPhysMem << endl;
+		fileStats << "NUMBER OF PROCESSORS : " << numProcessors << endl;
+		fileStats << "Initial VIRTUAL MEMORY USED : " << getMemUsed("virtual") << endl;
+		fileStats << "Initial PHYSICAL MEMORY USED : " << getMemUsed("physical") << endl;
+		fileStats << "Initial PERCENTAGE OF CPU USED : " << getCpuUsed() << endl;
 	#endif
 
 	/*==========================================================================*/
@@ -439,22 +578,28 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		if (year%10==0)
 		{
 			#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX)
-				fileStats << "Year " << year << ", VIRTUAL MEMORY used : " << getMemUsed("virtual") << endl;
-				fileStats << "Year " << year << ", PHYSICAL MEMORY used : " << getMemUsed("physical") << endl;
-			#elif defined(__APPLE__)
+				fileStats << "Year " << year << ", VIRTUAL MEMORY USED : " << getMemUsed("virtual") << endl;
+				fileStats << "Year " << year << ", PHYSICAL MEMORY USED : " << getMemUsed("physical") << endl;
+				fileStats << "Year " << year << ", PERCENTAGE OF CPU USED : " << getCpuUsed() << endl;
+      #elif defined(__APPLE__)
 				if (KERN_SUCCESS != task_info(mach_task_self(), TASK_BASIC_INFO, (task_info_t)&t_info, &t_info_count)) { return -1; }
 				fileStats << "Year " << year << ", RESIDENT SIZE : " << t_info.resident_size << endl;
-				fileStats << "Year " << year << ", VIRTUAL MEMORY used : " << t_info.virtual_size << endl;
+				fileStats << "Year " << year << ", VIRTUAL MEMORY USED : " << t_info.virtual_size << endl;
 
 				mach_port = mach_host_self();
 				count = sizeof(vm_stats) / sizeof(natural_t);
-				if (KERN_SUCCESS == host_page_size(mach_port, &page_size) && KERN_SUCCESS == host_statistics64(mach_port, HOST_VM_INFO,(host_info64_t)&vm_stats, &count))
+				if (KERN_SUCCESS == host_page_size(mach_port, &page_size) &&
+            KERN_SUCCESS == host_statistics64(mach_port, HOST_VM_INFO,(host_info64_t)&vm_stats, &count))
 				{
 					long long free_memory = (int64_t)vm_stats.free_count * (int64_t)page_size;
 					long long used_memory = ((int64_t)vm_stats.active_count + (int64_t)vm_stats.inactive_count + (int64_t)vm_stats.wire_count) *  (int64_t)page_size;
 					fileStats << "Year " << year << ", PHYSICAL FREE MEMORY : " << free_memory << endl;
 					fileStats << "Year " << year << ", PHYSICAL USED MEMORY : " << used_memory << endl;
 				}
+      #else
+				fileStats << "Year " << year << ", VIRTUAL MEMORY USED : " << getMemUsed("virtual") << endl;
+				fileStats << "Year " << year << ", PHYSICAL MEMORY USED : " << getMemUsed("physical") << endl;
+				fileStats << "Year " << year << ", PERCENTAGE OF CPU USED : " << getCpuUsed() << endl;
 			#endif
 
 			time(&End);
