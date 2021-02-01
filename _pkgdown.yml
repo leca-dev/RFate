@@ -14,8 +14,8 @@ navbar:
     - home
     - FATE
     - RFate
-    - reference
     - interface
+    - reference
     right:
     - download
     - github

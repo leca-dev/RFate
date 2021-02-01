@@ -27,6 +27,9 @@
 ##' \code{| 3 ............ | ............ 25-50 | ............... 37.5 |} \cr
 ##' \code{| 4 ............ | ............ 50-75 | ............... 62.5 |} \cr
 ##' \code{| 5 ............ | ........... 75-100 | ............... 87.5 |} \cr
+##' ##' ____________________________________________________________ \cr
+##' \code{| 0 ............ | .................. | .................. 0 |} \cr
+##' \code{| NA ........... | .................. | ................. NA |} \cr
 ##' 
 ##' 
 ##' \emph{\cr \cr
@@ -67,7 +70,7 @@ PRE_FATE.abundBraunBlanquet = function(abund){
   } else
   {
     abund = as.character(abund)
-    .testParam_notInValues.m("abund", abund, c(NA, "NA", "+", "r", 1:5))
+    .testParam_notInValues.m("abund", abund, c(NA, "NA", 0, "+", "r", 1:5))
   }
   
   ## Convert Braun-Blanquet abundance classes into median coverage percentage
@@ -76,6 +79,8 @@ PRE_FATE.abundBraunBlanquet = function(abund){
       x = as.character(x)
       if (is.na(x) | x == "") {
         return(NA)
+      } else if (x == "0") {
+        return(0)
       } else if (x == "+" | x == "r") {
         return(0.5)
       } else if (x == "1") {
