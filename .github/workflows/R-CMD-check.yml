@@ -73,7 +73,7 @@ jobs:
           rm '/usr/local/bin/gfortran'
           brew install pkg-config gdal proj geos
           # XQuartz is needed by vdiffr
-          brew cask install xquartz
+          brew install --cask xquartz
 
       - name: Install dependencies
         run: |
