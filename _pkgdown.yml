@@ -18,6 +18,7 @@ navbar:
     - reference
     right:
     - download
+    - news
     - github
   components:
     home:
@@ -67,6 +68,10 @@ navbar:
       text: 'Download Current Version'
       icon: fa-rocket fa-lg
       href: archive/RFate_1.0.tar.gz
+    news:
+      text: 'News'
+      icon: far fa-newspaper
+      href: articles/news.html
     github:
       icon: fa-github fa-lg
       href: https://github.com/leca-dev/RFate.git

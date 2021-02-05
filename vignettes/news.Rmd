@@ -1,0 +1,55 @@
+---
+title: "NEWS"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{NEWS}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+<style>
+.zoom p {
+width:250px;
+margin-left: auto;
+margin-right: auto;
+}
+.zoom p:hover {
+width:900px;
+position: relative;
+z-index: 10;
+}
+.column {
+  float: left;
+  width: 30%;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+
+<br/><br/>
+
+
+## <i class="fas fa-boxes"></i> Package releases
+
+Original version was `FATE-HD`, developed and used in papers such as [Boulangeat 2014](), [Carboni], [Barros]. It was only `C++` code, and all modules were linked together (`LIGHT`, `DISPERSAL`, `HABSUIT`, `SEEDING`, `DISTURBANCE`).
+
+Refinements to the model, and integration of the `C++` code within an `R` package, as well as new modules development, were meant to facilitate the use and spread of the `FATE` model.
+
+#### Version 1.0.0
+
+- all steps included in one tool (`PRE-FATE`, `FATE`, `POST-FATE`), that can be easily installed on all OS (Mac, Unix, Windows)
+- a simplification of some structural equations of the model (see [FATE tutorial - Modelling framework](fate_tutorial_0_modelling_framework.html))
+- 8 modules that can be turned on/off (see [FATE tutorial - Modules](fate_tutorial_3_MODULES.html))
+- a [`shiny` interface](interface_tutorial_0_presentation.html), and a complete documentation and manual (*! coming soon !*), with meaningful examples from real dataset
+
+
+<br/><br/>
+
+

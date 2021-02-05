@@ -121,7 +121,7 @@ Light and soil resources are **proportional to the abundance of the PFG communit
 **Influence of environment (habitat suitability) :**  
 
 - **getEnv...() functions** :  
-All the $\text{getEnv}...()$ functions represent the influence of the habitat suitability if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file).  
+All the $\text{getEnv}...()$ functions represent the influence of the habitat suitability if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](./../reference/PRE_FATE.params_globalParameters.html) file).  
 They can have effect on different processes, such as mortality, recruitment or fecundity, depending on whether the habitat within the pixel is suitable or not for the considered PFG.
   
 <br/>
@@ -132,7 +132,7 @@ Each year (timestep), the values contained in each PFG habitat suitability maps 
   - if superior, the environment is considered suitable for the PFG (hence $\text{getEnv}...()$ functions will return `1`)
   - otherwise, the environment is considered unsuitable for the PFG (hence $\text{getEnv}...()$ functions will return `0`)
 
-Depending on the parameterisation chosen, (see `HABSUIT_OPTION` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file), the reference value can be set in two different ways.
+Depending on the parameterisation chosen, (see `HABSUIT_OPTION` parameter in [GlobalParameter](./../reference/PRE_FATE.params_globalParameters.html) file), the reference value can be set in two different ways.
 
 <br/>
 
@@ -171,13 +171,13 @@ $$\text{Lifespan} - \text{Maturity}$$
 **Carrying capacity (mature vs immature) :**  
 
 - **Immature** :  
-Depending on the PFG life-form (herbaceous, chamaephytes, phanerophytes), immature individuals may no take as much space as mature individuals (e.g. young tree vs old tree). Hence, when calculating total abundance of plants, which is used as a proxy of space occupation, abundance of immature individuals is weighted by their relative size compare to mature individuals : $\text{ImmSize}$ (see `IMM_SIZE` parameter in [Succession](reference/PRE_FATE.params_PFGsuccession.html) files).
+Depending on the PFG life-form (herbaceous, chamaephytes, phanerophytes), immature individuals may no take as much space as mature individuals (e.g. young tree vs old tree). Hence, when calculating total abundance of plants, which is used as a proxy of space occupation, abundance of immature individuals is weighted by their relative size compare to mature individuals : $\text{ImmSize}$ (see `IMM_SIZE` parameter in [Succession](./../reference/PRE_FATE.params_PFGsuccession.html) files).
 
 <br/>
 
 
 - **Mature - Global carrying capacity** :  
-$\text{MaxAbund} \in {1,2,3}$ defines the maximum space occupied by a mature PFG. It should be proportional to the number of strata the PFG can occupy, with taller PFG generally occupying more space (see `MAX_ABUNDANCE` parameter in [Succession](reference/PRE_FATE.params_PFGsuccession.html) files and `MAX_ABUND_{...}` parameters in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file).
+$\text{MaxAbund} \in {1,2,3}$ defines the maximum space occupied by a mature PFG. It should be proportional to the number of strata the PFG can occupy, with taller PFG generally occupying more space (see `MAX_ABUNDANCE` parameter in [Succession](./../reference/PRE_FATE.params_PFGsuccession.html) files) and is converted to abundance-related values when contributing to structural equations (see `MAX_ABUND_{...}` parameters in [GlobalParameter](./../reference/PRE_FATE.params_globalParameters.html) file).
 
 <br/>
 
@@ -186,12 +186,6 @@ $\text{MaxAbund} \in {1,2,3}$ defines the maximum space occupied by a mature PFG
 Hence, the maximum space occupied by a mature PFG per year of maturity is defined by :
 
 $$\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}$$
-
-<br/>
-
-<div style="text-align:center;">
-<img src="pictures/SCHEMA_FATE_seedCycle.png" alt="SCHEMA FATE seedCycle" style="width:600px;"></img>
-</div>
 
 <br/>
 
@@ -214,9 +208,9 @@ A condition is set to help regulate populations : new individuals only grow if t
 <br/>
 
 - **Condition on pixel resources** :  
-$MaxRecruit$ corresponds to percentage of seeds that will germinate depending on the pixel resources (light, soil) in stratum 0 (which represents the enforced dormancy) (see `ACTIVE_GERM` parameter in [Light](reference/PRE_FATE.params_PFGlight.html) and [Soil](reference/PRE_FATE.params_PFGsoil.html) files).  
+$MaxRecruit$ corresponds to percentage of seeds that will germinate depending on the pixel resources (light, soil) in stratum 0 (which represents the enforced dormancy) (see `ACTIVE_GERM` parameter in [Light](./../reference/PRE_FATE.params_PFGlight.html) and [Soil](./../reference/PRE_FATE.params_PFGsoil.html) files).  
 The number of germinating seeds is obtained by weighting the number of available seeds by this germination rate.  
-If the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file), the habitat must be suitable, otherwise the recruitment will be null.
+If the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](./../reference/PRE_FATE.params_globalParameters.html) file), the habitat must be suitable, otherwise the recruitment will be null.
 
 \begin{align}
 \text{RecruitmentRate} &= \text{GerminationRate} &* \text{ getEnvRecrRate}() \\
@@ -230,14 +224,30 @@ If the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalPara
 **Fecundity :**  
 
 - **Potential fecundity** :  
-Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see `POTENTIAL_FECUNDITY` parameter in [Succession](reference/PRE_FATE.params_PFGsuccession.html) files). Due to lack of empirical data, this amount is often set at the same value for all PFG.
+Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see `POTENTIAL_FECUNDITY` parameter in [Succession](./../reference/PRE_FATE.params_PFGsuccession.html) files). Due to lack of empirical data, this amount is often set at the same value for all PFG.
 
 <br/>
 
 - **Produced seeds** :  
-At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](reference/PRE_FATE.params_globalParameters.html) file) (no seeds produced if the habitat is not suitable) :
+At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](./../reference/PRE_FATE.params_globalParameters.html) file) (no seeds produced if the habitat is not suitable) :
 
 $$\text{Fecundity} = min(1, \frac{\text{AbundMature}}{\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}}) * \text{PotentialFecund} * \text{getEnvFecund}()$$
 
 If $\frac{\text{AbundMature}}{\frac{\text{MaxAbund}}{\text{Lifespan} - \text{Maturity}}} \geqslant 1$, the PFG has reached its annual carrying capacity : it is in optimal conditions and will produce its maximum amount of seeds ($\text{PotentialFecund}$). Otherwise, this amount will be reduced in proportion.
+
+<br/><br/>
+
+------------------------------
+
+**ANNUAL SEED CYCLE :** (*combining all previous information*)
+
+Germination occurs depending on the current abundance of the PFG inside the pixel : if it reaches the carrying capacity of the PFG = $\text{MaxAbund} * (1 + \text{ImmSize})$, no seed germinates. The number of produced seeds is proportional to the current abundance of mature individuals only.
+
+<br/>
+
+<div style="text-align:center;">
+<img src="pictures/SCHEMA_FATE_seedCycle.png" alt="SCHEMA FATE seedCycle" style="width:600px;"></img>
+</div>
+
+<br/>
 
