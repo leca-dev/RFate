@@ -42,6 +42,6 @@
 #'
 #' @export
 FATE <- function(simulParam, no_CPU = 1L, verboseLevel = 0L) {
-    .Call('_RFate_FATE', PACKAGE = 'RFate', simulParam, no_CPU, verboseLevel)
+    .Call(`_RFate_FATE`, simulParam, no_CPU, verboseLevel)
 }
 

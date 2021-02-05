@@ -1,6 +1,6 @@
 ### HEADER #####################################################################
 ##' 
-##' @useDynLib RFate
+##' @useDynLib RFate, .registration = TRUE
 ##' 
 ##' @importFrom Rcpp sourceCpp
 ##' 
