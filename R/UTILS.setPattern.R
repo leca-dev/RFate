@@ -69,7 +69,7 @@
   #############################################################################
   
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/$", "", name.simulation)
+  name.simulation = sub("/", "", name.simulation)
   
   .testParam_notChar.m("pattern.tofind", pattern.tofind)
   .testParam_notChar.m("pattern.toreplace", pattern.toreplace)
@@ -104,7 +104,7 @@
     if (length(grep(pattern.tofind, params.lines)) > 0){
       params.lines = sub(pattern.tofind, pattern.toreplace, params.lines)
       cat(params.lines, sep = "\n", file = fi, append = FALSE)
-      message(paste0("\n The parameter file ", fi
+      message(paste0("The parameter file ", fi
                      , " has been successfully corrected !\n"))
     }
   }

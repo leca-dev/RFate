@@ -42,7 +42,7 @@ NULL
                       
 ){
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/$", "", name.simulation)
+  name.simulation = sub("/", "", name.simulation)
   
   if (.testParam_notNum(resolution) ||
       sum(resolution <= 0) > 0){
@@ -92,15 +92,15 @@ NULL
                                 , method = proj.method
                                 , filename = fi
                                 , overwrite = TRUE)
-        message(paste0("\n The raster file ", fi, " has been successfully rescaled !"))
+        message(paste0("The raster file ", fi, " has been successfully rescaled !"))
       } else
       {
-        warning(paste0("\n The raster file ", fi
+        warning(paste0("The raster file ", fi
                        , " does not contain projection information. Please check."))
       }
     } else
     {
-      warning(paste0("\n The raster file ", fi
+      warning(paste0("The raster file ", fi
                      , " has the same resolution than the one requested ("
                      , resolution, "). Please check."))
     }
@@ -115,7 +115,7 @@ NULL
                      
 ){
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/$", "", name.simulation)
+  name.simulation = sub("/", "", name.simulation)
   
   if (.testParam_notNum(extent) ||
       length(extent) != 4){
@@ -153,11 +153,11 @@ NULL
     if (!is.na(old.proj))
     {
       ras.new = crop(x = ras, y = extent, filename = fi, overwrite = TRUE)
-      message(paste0("\n The raster file ", fi
+      message(paste0("The raster file ", fi
                      , " has been successfully cropped !"))
     } else
     {
-      warning(paste0("\n The raster file ", fi
+      warning(paste0("The raster file ", fi
                      , " does not contain projection information. Please check."))
     }
   }

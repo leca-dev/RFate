@@ -133,7 +133,7 @@
     }
   }
   cat(params.lines, sep = "\n", file = param.name, append = FALSE)
-  message(paste0("\n The parameter file ", param.name
+  message(paste0("The parameter file ", param.name
                  , " has been successfully corrected !\n"))
 }
 

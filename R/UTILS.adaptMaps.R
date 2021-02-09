@@ -35,7 +35,7 @@
                       
 ){
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/$", "", name.simulation)
+  name.simulation = sub("/", "", name.simulation)
   
   .testParam_notChar.m("extension.old", extension.old)
   .testParam_notInValues.m("extension.new", extension.new, c("tif", "img"))
@@ -54,9 +54,10 @@
   {
     new_fi = sub(paste0(".", extension.old, "$"), paste0(".", extension.new), fi)
     ras = raster(fi)
-    ras[which(is.na(ras))] = 0
+    ind_na = which(is.na(ras))
+    if (length(ind_na) > 0) ras[ind_na] = 0
     writeRaster(ras, filename = new_fi, overwrite = TRUE)
-    message(paste0("\n The raster file ", fi
+    message(paste0("The raster file ", fi
                    , " has been successfully changed and saved ("
                    , new_fi, ") !"))
   }
