@@ -396,7 +396,7 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
   expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                                            , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
                                                            , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
-                                                                                      , resources = "Low", tolerance = 3)))
+                                                                                      , resources = "Low", tolerance = 1)))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
 

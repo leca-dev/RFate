@@ -48,7 +48,7 @@ NULL
 
 .unzip = function(folder_name, list_files, no_cores = 1)
 {
-  list_files = paste0(folder_name, list_files)
+  list_files = paste0(folder_name, "/", list_files)
   list_files = grep(pattern = ".gz$", list_files, value = TRUE)
   list_files = list_files[file.exists(list_files)]
   if (length(list_files) > 0)
@@ -84,7 +84,7 @@ NULL
 
 .zip = function(folder_name, list_files, no_cores = 1)
 {
-  list_files = paste0(folder_name, list_files)
+  list_files = paste0(folder_name, "/", list_files)
   list_files = grep(pattern = ".tif$|.img$", list_files, value = TRUE)
   list_files = list_files[file.exists(list_files)]
   if (length(list_files) > 0)

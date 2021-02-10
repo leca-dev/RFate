@@ -429,8 +429,8 @@ test_that("PRE_FATE.params_PFGsuccession gives correct output", {
                                                                            , height = 10
                                                                            , maturity = 5
                                                                            , longevity = 12)
-                                               , opt.folder.name = "scen1")
-                 , "The parameter file FATE_simulation/DATA/PFGS/SUCC/scen1/SUCC_PFG1.txt has been successfully created !")
+                                               , opt.folder.name = "scen2")
+                 , "The parameter file FATE_simulation/DATA/PFGS/SUCC/scen2/SUCC_PFG1.txt has been successfully created !")
 })
 
 

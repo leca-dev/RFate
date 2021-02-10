@@ -54,7 +54,7 @@
   {
     new_fi = sub(paste0(".", extension.old, "$"), paste0(".", extension.new), fi)
     ras = raster(fi)
-    ind_na = which(is.na(ras))
+    ind_na = which(is.na(ras[]))
     if (length(ind_na) > 0) ras[ind_na] = 0
     writeRaster(ras, filename = new_fi, overwrite = TRUE)
     message(paste0("The raster file ", fi
