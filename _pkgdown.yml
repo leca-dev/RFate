@@ -17,7 +17,6 @@ navbar:
     - interface
     - reference
     right:
-    - download
     - news
     - github
   components:
@@ -64,10 +63,6 @@ navbar:
       icon: fas fa-desktop
       href: articles/interface_tutorial_0_presentation.html
     articles:
-    download:
-      text: 'Download Current Version'
-      icon: fa-rocket fa-lg
-      href: archive/RFate_1.0.tar.gz
     news:
       text: 'News'
       icon: far fa-newspaper

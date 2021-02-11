@@ -241,12 +241,12 @@ mat.ag = data.frame(PFG = paste0('PFG', 1:6)
 mat.tol = expand.grid(resources = c('Low', 'Medium', 'High')
                       , lifeStage = c('Germinant', 'Immature', 'Mature')
                       , PFG = paste0('PFG', 1:6))
-mat.tol$tolerance = c(8, 8, 4, 8, 5, 4, 9, 4, 4
-                      , rep(9, 9)
-                      , rep(9, 9)
-                      , 8, 8, 6, 8, 6, 6, 9, 5, 5
-                      , 8, 8, 8, 5, 6, 9, 3, 4, 9
-                      , 8, 8, 8, 5, 5, 9, 5, 5, 9)
+mat.tol$tolerance = c(1, 1, 0, 1, 0, 0, 1, 0, 0
+                      , rep(1, 9)
+                      , rep(1, 9)
+                      , 1, 1, 1, 1, 1, 1, 1, 0, 0
+                      , 1, 1, 1, 0, 1, 1, 0, 0, 1
+                      , 1, 1, 1, 0, 0, 1, 0, 0, 1)
 
 PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
                          , mat.PFG.light = mat.ag

@@ -172,6 +172,13 @@ the light module of FATE." />
   </a>
 </li>
 <li>
+  <a href="../articles/news.html">
+    <span class="far fa far fa-newspaper"></span>
+     
+    News
+  </a>
+</li>
+<li>
   <a href="https://github.com/leca-dev/RFate.git">
     <span class="fa fa-github fa-lg"></span>
      
@@ -436,12 +443,12 @@ each PFG :</p>
 <span class='va'>mat.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Low'</span>, <span class='st'>'Medium'</span>, <span class='st'>'High'</span><span class='op'>)</span>
                       , lifeStage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Germinant'</span>, <span class='st'>'Immature'</span>, <span class='st'>'Mature'</span><span class='op'>)</span>
                       , PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>mat.tol</span><span class='op'>$</span><span class='va'>tolerance</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>9</span>, <span class='fl'>4</span>, <span class='fl'>4</span>
-                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span>
-                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span>
-                      , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>
-                      , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>6</span>, <span class='fl'>9</span>, <span class='fl'>3</span>, <span class='fl'>4</span>, <span class='fl'>9</span>
-                      , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span><span class='op'>)</span>
+<span class='va'>mat.tol</span><span class='op'>$</span><span class='va'>tolerance</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>
+                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>9</span><span class='op'>)</span>
+                      , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>9</span><span class='op'>)</span>
+                      , <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>
+                      , <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>
+                      , <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>
 
 <span class='fu'>PRE_FATE.params_PFGlight</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
                          , mat.PFG.light <span class='op'>=</span> <span class='va'>mat.ag</span>
