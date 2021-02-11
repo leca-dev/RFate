@@ -279,7 +279,7 @@ POST_FATE.graphics = function(
   
   #############################################################################
   
-  res = foreach (abs.simulParam = abs.simulParams) %do%
+  res = foreach (abs.simulParam = abs.simulParams, .errorhandling = "remove") %do%
   {
     
     ## Get temporal evolution -----------------------------------------------

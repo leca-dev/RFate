@@ -24,12 +24,6 @@ These functions scan all the raster files within a
 \code{FATE} simulation folder and upscale / downscale / crop them 
 to the specified resolution / extent.
 }
-\examples{
-
-## Load example data
-
-
-}
 \author{
 Maya Guéguen
 }

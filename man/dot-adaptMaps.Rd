@@ -5,27 +5,40 @@
 \title{Adapt all raster maps of a \code{FATE} simulation folder (change NA 
 to 0, and save as .tif)}
 \usage{
-.adaptMaps(name.simulation, extension.old, extension.new)
+.adaptMaps(
+  name.simulation,
+  opt.name.file = NULL,
+  extension.old,
+  extension.new = NULL,
+  opt.name.MASK = NULL
+)
 }
 \arguments{
 \item{name.simulation}{a \code{string} corresponding to the main directory 
 or simulation name of the \code{FATE} simulation}
 
+\item{opt.name.file}{(\emph{optional}) \cr a \code{string} corresponding
+to the complete or partial name of the file in which to search and change 
+the pattern}
+
 \item{extension.old}{a \code{string} corresponding to the extension of 
 raster files to be found}
 
-\item{extension.new}{a \code{string} (either \code{tif} or \code{img}) 
-corresponding to the new extension to save all the maps}
+\item{extension.new}{(\emph{optional}) \cr a \code{string} (either 
+\code{tif} or \code{img}) corresponding to the new extension to save all 
+the maps}
+
+\item{opt.name.MASK}{(\emph{optional}) default \code{NULL}. \cr 
+A \code{string} corresponding to the file name of a raster 
+mask, with either \code{0} or \code{1} within each pixel, \code{1} 
+corresponding to the cells of the studied area in which the succession 
+(core) module of the \code{FATE} simulation will take place (see 
+\href{PRE_FATE.params_globalParameters.html#details}{\code{PRE_FATE.params_globalParameters}})}
 }
 \description{
 This function scan all the raster files within a \code{FATE} 
-simulation folder, change all NA values to 0 and save them with the 
-specified extension.
-}
-\examples{
-
-## Load example data
-
+simulation folder, change all NA values to 0, potentially reproject onto 
+a raster mask and save them with the specified extension.
 }
 \author{
 Maya Guéguen

@@ -23,10 +23,6 @@
 ##' the new extent to crop all the maps
 ##' 
 ##' 
-##' @examples 
-##'
-##' ## Load example data
-##' 
 ##' 
 ##' @importFrom raster raster projectRaster writeRaster res projection extent 
 ##' crop nlayers
