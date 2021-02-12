@@ -105,9 +105,10 @@ The process is as follows :
     probably placed in the wrong cluster. Should be maximized.}
   }
   \strong{A graphic is produced, giving the values of these metrics in 
-  function of the number of clusters used. Number of clusters with 
-  evaluation metrics' values among the 3 best are highlighted to help the 
-  user to make his/her optimal choice (see \file{.pdf} output file).}
+  function of the number of clusters used. Number of clusters are 
+  highlighted in function of evaluation metrics' values to help the 
+  user to make his/her optimal choice : the brighter (yellow-ish) the 
+  better (see \file{.pdf} output file).}
   }
 }
 

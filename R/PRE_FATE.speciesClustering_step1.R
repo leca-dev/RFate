@@ -74,9 +74,10 @@
 ##'     probably placed in the wrong cluster. Should be maximized.}
 ##'   }
 ##'   \strong{A graphic is produced, giving the values of these metrics in 
-##'   function of the number of clusters used. Number of clusters with 
-##'   evaluation metrics' values among the 3 best are highlighted to help the 
-##'   user to make his/her optimal choice (see \file{.pdf} output file).}
+##'   function of the number of clusters used. Number of clusters are 
+##'   highlighted in function of evaluation metrics' values to help the 
+##'   user to make his/her optimal choice : the brighter (yellow-ish) the 
+##'   better (see \file{.pdf} output file).}
 ##'   }
 ##' }
 ##' 
@@ -186,6 +187,7 @@
 ##' @importFrom ggplot2 ggplot ggsave aes_string
 ##' geom_line geom_point geom_vline geom_label
 ##' scale_color_manual scale_linetype_discrete 
+##' scale_color_viridis_c scale_alpha
 ##' facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##' 
@@ -339,7 +341,7 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
     geom_label(data = clust.choice[which(clust.choice$GROUP == tail(levels(clust.choice$GROUP), 1)), ]
                , aes_string(label = "clust.method")
                , hjust = -0.1) +
-    scale_linetype_discrete(guide = F) +
+    scale_linetype_discrete("") +
     labs(x="", y = ""
          , title = "STEP A : Choice of clustering method"
          , subtitle = paste0("Similarity between input and clustering distances "
@@ -447,52 +449,63 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
   
   
   ## Find number of cluster which give optimal variable values ----------------
-  combi = expand.grid(GROUP = group_names
-                      , variable = unique(clust.evaluation$variable))
-  
-  clust.evaluation.optim = foreach(group = combi$GROUP
-                                   , variable = combi$variable) %do%
+  # combi = expand.grid(GROUP = group_names
+  #                     , variable = unique(clust.evaluation$variable))
+  # 
+  # clust.evaluation.optim = foreach(group = combi$GROUP
+  #                                  , variable = combi$variable) %do%
+  #   {
+  #     tmp = clust.evaluation[which(clust.evaluation$GROUP == group &
+  #                                    clust.evaluation$variable == variable),]
+  #     if(variable == "mVI")
+  #     {
+  #       optim = unique(sort(tmp$value, decreasing = F))[1:3]
+  #       ind.optim = which(tmp$value %in% optim)
+  #     } else {
+  #       optim = unique(sort(tmp$value, decreasing = T))[1:3]
+  #       ind.optim = which(tmp$value %in% optim)
+  #     }
+  #     optim.clust = tmp$no.clusters[ind.optim]
+  #     optim.val = tmp$value[ind.optim]
+  #     return(data.frame(GROUP = group
+  #                       , variable
+  #                       , optim.clust
+  #                       , optim.val
+  #                       , stringsAsFactors = FALSE))
+  #   }
+  # clust.evaluation.optim = do.call(rbind, clust.evaluation.optim)
+  clust.evaluation.optim = split(clust.evaluation
+                                 , list(clust.evaluation$GROUP, clust.evaluation$variable))
+  clust.evaluation.optim = foreach(ii = 1:length(clust.evaluation.optim), .combine = "rbind") %do%
     {
-      tmp = clust.evaluation[which(clust.evaluation$GROUP == group &
-                                     clust.evaluation$variable == variable),]
-      if(variable == "mVI")
-      {
-        optim = unique(sort(tmp$value, decreasing = F))[1:3]
-        ind.optim = which(tmp$value %in% optim)
-      } else {
-        optim = unique(sort(tmp$value, decreasing = T))[1:3]
-        ind.optim = which(tmp$value %in% optim)
-      }
-      optim.clust = tmp$no.clusters[ind.optim]
-      optim.val = tmp$value[ind.optim]
-      return(data.frame(GROUP = group
-                        , variable
-                        , optim.clust
-                        , optim.val
-                        , stringsAsFactors = FALSE))
+      tab = clust.evaluation.optim[[ii]]
+      ord = ifelse(length(grep("mVI", names(clust.evaluation.optim)[ii])) > 0, FALSE, TRUE)
+      tab$ORDER = NA
+      tab$ORDER[order(tab$value, decreasing = ord)] = nrow(tab):1
+      return(tab)
     }
-  clust.evaluation.optim = do.call(rbind, clust.evaluation.optim)
   
   
   ## GRAPHICAL REPRESENTATION -------------------------------------------------
   colRamp = colorRampPalette(c('#8e0152','#c51b7d','#de77ae','#7fbc41','#4d9221','#276419'))
   
-  pp2 = ggplot(clust.evaluation, aes_string(x = "no.clusters", y = "value")) +
+  pp2 = ggplot(clust.evaluation.optim, aes_string(x = "no.clusters", y = "value")) +
     facet_grid("variable ~ GROUP", scales = "free") +
+    geom_vline(aes_string(xintercept = "no.clusters"
+                          , color = "ORDER", alpha = "ORDER")
+               , lwd = 4) +
+    scale_color_viridis_c(guide = FALSE) +
+    scale_alpha(range = c(0.1, 0.8)) +
     geom_line() +
     geom_point() +
-    geom_vline(data = clust.evaluation.optim
-               , aes_string(xintercept = "optim.clust", color = "group")
-               , lwd = 4
-               , alpha = 0.3) +
-    scale_color_manual(guide = F, values = colRamp(length(group_names))) +
     labs(x = "", y = ""
          , title = "STEP B : Choice of number of clusters"
          , subtitle = paste0("Evolution of clustering evaluation variables with "
                              , "the number of clusters in each group.\n"
                              , "All values except that of mVI must be maximized "
                              , "(check function's help for more details about the measures).\n"
-                             , "The number of clusters with values among the 3 best are highlighted.")) +
+                             , "Values are highlighted to help finding the number of clusters to keep : "
+                             , "the brighter (yellow-ish) the better.")) +
     .getGraphics_theme()
   
   plot(pp2)

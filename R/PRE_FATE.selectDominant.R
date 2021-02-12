@@ -273,6 +273,7 @@
 ##' @importFrom FD gowdis
 ##' @importFrom ade4 is.euclid quasieuclid dudi.pco inertia.dudi
 ##' @importFrom ape as.phylo plot.phylo
+##' @importFrom betapart beta.pair
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
 ##' geom_point geom_hline geom_vline geom_histogram geom_segment geom_path 
@@ -1413,27 +1414,39 @@ PRE_FATE.selectDominant = function(mat.observations
                   tmp.sp2 = tmp.sp1[which(tmp.sp1 %in% sel.sp)]
                   percent1 = length(tmp.sp2) / length(tmp.sp1)
                   percent2 = length(tmp.sp2) / length(sel.sp)
+                  all.sp = union(sel.sp, tmp.sp1)
+                  tmp.all = matrix(0, nrow = length(all.sp), ncol = 2, dimnames = list(all.sp, c("O", "S")))
+                  tmp.all = as.data.frame(t(tmp.all))
+                  tmp.all["O", sel.sp] = 1
+                  tmp.all["S", tmp.sp1] = 1
+                  beta.val = beta.pair(x = tmp.all)
+                  
                   return(data.frame(type = i.type
                                     , percent = i.percent
                                     , rep = i.rep
-                                    , analysis = c("percent", "all")
-                                    , value = c(percent1, percent2)
+                                    , analysis = c("percent", "all", names(beta.val))
+                                    , value = c(percent1, percent2, 1 - unlist(beta.val))
                                     , stringsAsFactors = FALSE))
                 }
               
               ## PLOT
               tab.plot = rbind(tab.noSp, tab.simSp)
-              tab.plot$analysis = factor(tab.plot$analysis, c("no.sp", "all", "percent"))
+              tab.plot$analysis = factor(tab.plot$analysis, c("no.sp", "all", "percent"
+                                                              , "beta.sor", "beta.sne", "beta.sim"))
               tab.plot$percent_fac = factor(tab.plot$percent, seq(0, 1, 0.1))
               tab.plot$percent_num = as.numeric(tab.plot$percent_fac)
               
               pp_rob = ggplot(tab.plot, aes_string(y = "value", color = "type")) +
                 geom_boxplot(aes_string(x = "percent_fac"), na.rm = TRUE) +
                 geom_smooth(aes_string(x = "percent_num"), method = "loess", na.rm = TRUE) +
-                facet_wrap(analysis ~ ., ncol = 3
+                facet_wrap(~ analysis
+                           , ncol = 3
                            , labeller = as_labeller(c("no.sp" = "a"
                                                       , "all" = "b"
-                                                      , "percent" = "c"))) +
+                                                      , "percent" = "c"
+                                                      , "beta.sor" = "d"
+                                                      , "beta.sne" = "e"
+                                                      , "beta.sim" = "f"))) +
                 scale_x_discrete(name = "\nPercentage of observations (%)"
                                  , breaks = seq(0, 1, 0.2)
                                  , labels = seq(0, 1, 0.2) * 100
@@ -1447,10 +1460,13 @@ PRE_FATE.selectDominant = function(mat.observations
                 labs(title = paste0("STEP 2 : Selected dominant species - robustness(", i.subset, ")")
                      , subtitle = paste0("Selection is run on a subset S, keeping only a "
                                          , "percentage of releves (blue) "
-                                         , "or sites (red) from original data set O :\n"
+                                         , "or sites (red) from original data set O :\n\n"
                                          , "  > a = number(S species) / number(O species) \n"
                                          , "  > b = number(S & O species) / number(O species) \n"
-                                         , "  > c = number(S & O species) / number(S species) \n"
+                                         , "  > c = number(S & O species) / number(S species) \n\n"
+                                         , "  > d = (1 - Sorensen dissimilarity) \n"
+                                         , "  > e = (1 - nestedness-fraction of Sorensen dissimilarity) \n"
+                                         , "  > f = (1 - turnover-fraction of Sorensen dissimilarity) \n"
                                          , "\n")) +
                 .getGraphics_theme() +
                 theme(axis.title = element_text(size = 12))
