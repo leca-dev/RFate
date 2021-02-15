@@ -348,10 +348,10 @@ void SuFate::CheckSurvival()
 						/* check if plants are able to survive in this strata */
 						if (ayTemp >= this->getMatTime(fg))
 						{ // only mature plants
-							survive = FGparams->getTolerance(Mature , m_LightR.getResource(st));
+							survive = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
 						} else
 						{
-							survive = FGparams->getTolerance(Immature , m_LightR.getResource(st));
+							survive = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
 						}
 						if (survive)
 						{ /* If plants survives */
@@ -619,10 +619,10 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		bool doRecruit = true;
 		if (doLight && doSoil)
 		{
-			doRecruit = ( FGparams->getTolerance()[ Germinant ][ m_LightR.getResource(0) ] && (soilRes == RMedium) );
+			doRecruit = ( FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] && (soilRes == RMedium) );
 		} else if (doLight)
 		{
-			doRecruit = FGparams->getTolerance()[ Germinant ][ m_LightR.getResource(0) ];
+			doRecruit = FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ];
 		} else if (doSoil)
 		{
 			doRecruit = (soilRes == RMedium);

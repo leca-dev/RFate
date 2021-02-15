@@ -235,6 +235,7 @@
 ##' 
 ##' ## PFG traits for succession
 ##' tab.traits = DATASET_Bauges_parameters$tab.succ
+##' tab.traits$height = round(exp(tab.traits$height))
 ##' str(tab.traits)
 ##' 
 ##' ## Create a skeleton folder

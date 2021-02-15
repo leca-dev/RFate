@@ -438,6 +438,7 @@ all PFG :</p>
 
 <span class='co'>## PFG traits for succession</span>
 <span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.succ</span>
+<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>height</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>height</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>

@@ -16,15 +16,25 @@
 ##' 
 ##' \strong{Steps :}
 ##' 
-##' 1. find dominant species and build PFG
+##' \strong{1. find dominant species and build PFG}
 ##' 
-##' 2. prepare parameter files for a \code{FATE} simulation
+##' \emph{!!! The data values inside this 1st dataset were retrieved AFTER 
+##' the original building of Bauges PFG. \cr They do not match the original 
+##' values, hence the difficulty finding back the PFG used in the 2nd
+##' dataset presented below !!! \cr\cr}
+##' 
+##' \strong{2. prepare parameter files for a \code{FATE} simulation \cr\cr}
 ##' 
 ##' \emph{Base de données du Conservatoire Botanique National Alpin - 2018}
 ##' 
 ##' @format
 ##' 
 ##' \strong{\cr \cr >> DATASET_Bauges_PFG << \cr \cr}
+##' 
+##' \emph{!!! The data values inside this 1st dataset were retrieved AFTER 
+##' the original building of Bauges PFG. \cr They do not match the original 
+##' values, hence the difficulty finding back the PFG used in the 2nd
+##' dataset presented below !!!}
 ##' 
 ##' A \code{list} object with 7 elements to help finding dominant 
 ##' species and building Plant Functional Groups in Bauges area :

@@ -84,8 +84,8 @@ class FG
 	int m_PotentialFecundity; /*!< Potential Fecundity of mature plants */
 
 	/* Light interaction module */
-	vector<Fract> m_ActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
-	vector< vector<bool> > m_Tolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
+	vector<Fract> m_LightActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
+	vector< vector<bool> > m_LightTolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
 
 	/* Dispersal module */
 	bool m_Dispersed; /*!< Is FG widely dispersed ? */
@@ -136,8 +136,8 @@ class FG
 		ar & m_PoolL;
 		ar & m_InnateDorm;
 		ar & m_PotentialFecundity;
-		ar & m_ActiveGerm;
-		ar & m_Tolerance;
+		ar & m_LightActiveGerm;
+		ar & m_LightTolerance;
 		ar & m_Dispersed;
 		ar & m_disp50;
 		ar & m_disp99;
@@ -336,8 +336,8 @@ class FG
 		m_PoolL == o.m_PoolL &&
 		m_InnateDorm == o.m_InnateDorm &&
 		m_PotentialFecundity == o.m_PotentialFecundity &&
-		m_ActiveGerm == o.m_ActiveGerm &&
-		m_Tolerance == o.m_Tolerance &&
+		m_LightActiveGerm == o.m_LightActiveGerm &&
+		m_LightTolerance == o.m_LightTolerance &&
 		m_Dispersed == o.m_Dispersed &&
 		m_disp50 == o.m_disp50 &&
 		m_disp99 == o.m_disp99 &&
@@ -364,13 +364,13 @@ class FG
 		}
 		for (unsigned i=0; i<Rcount; i++)
 		{
-			is_equal = ( is_equal && m_ActiveGerm[i] == o.m_ActiveGerm[i] );
+			is_equal = ( is_equal && m_LightActiveGerm[i] == o.m_LightActiveGerm[i] );
 		}
 		for (unsigned i=0; i<LScount; i++)
 		{
 			for (unsigned j=0; j<Rcount; j++)
 			{
-				is_equal = ( is_equal && m_Tolerance[i][j] == o.m_Tolerance[i][j] );
+				is_equal = ( is_equal && m_LightTolerance[i][j] == o.m_LightTolerance[i][j] );
 			}
 		}*/
 	}
@@ -393,8 +393,8 @@ class FG
 	const int& getPotentialFecund() const;
 	const vector<Fract> getMaxRecruitLight() const;
 	const Fract& getMaxRecruitLight(const Resource& r) const;
-	const vector< vector<bool> >& getTolerance() const;
-	const bool getTolerance(LifeStage ls, Resource r) const;
+	const vector< vector<bool> >& getLightTolerance() const;
+	const bool getLightTolerance(LifeStage ls, Resource r) const;
 	const bool& getDispersed() const;
 	const double& getDisp50() const;
 	const double& getDisp99() const;
