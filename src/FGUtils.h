@@ -66,9 +66,9 @@ using namespace std;
 enum Abund
 {
 	ANone, /*!< No individuals */
-	ALow, /*!< Low Abundance (< 2 000 000 virtual individuals) */
-	AMedium, /*!< Medium Abundance (< 7 000 000 virtual individuals) */
-	AHigh, /*!< High Abundance (> 7 000 000 virtual individuals) */
+	ALow, /*!< Low Abundance (< AA virtual individuals) */
+	AMedium, /*!< Medium Abundance (< BB virtual individuals) */
+	AHigh, /*!< High Abundance (> CC virtual individuals) */
 	Acount
 };
 

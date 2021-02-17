@@ -12,28 +12,44 @@ resource_files:
   - pictures/art_2010_Midgley_Ecography.png
   - papers/Boulangeat_2012_Global_Change_Biology_COMPRESSED.pdf
   - papers/Boulangeat_2012_Global_Change_Biology_SupMat.pdf
-  - pictures/art_2012_Boulangeat_GCB.png
+  - pictures/art_2012_Boulangeat_GCB.PNG
   - papers/Boulangeat_2014_Global_Change_Biology_COMPRESSED.pdf
   - papers/Boulangeat_2014_Global_Change_Biology_SupMat_COMPRESSED.pdf
-  - pictures/art_2014_Boulangeat_GCB.png
+  - pictures/art_2014_Boulangeat_GCB.PNG
   - papers/Boulangeat_2014_Ecography.pdf
   - pictures/art_2014_Boulangeat_Ecography.png
   - papers/Barros_2016_Ecology_Letters_COMPRESSED.pdf
   - papers/Barros_2016_Ecology_Letters_SupMat1_COMPRESSED.pdf
-  - pictures/art_2016_Barros_EL.png
+  - pictures/art_2016_Barros_EL.PNG
   - papers/Barros_2017_Journal_Applied_Ecology_COMPRESSED.pdf
   - papers/Barros_2017_Journal_Applied_Ecology_SupMat_COMPRESSED.7z
-  - pictures/art_2017_Barros_JAE.png
+  - pictures/art_2017_Barros_JAE.PNG
   - papers/Barros_2018_Plos_One_COMPRESSED.pdf
   - papers/Barros_2018_Plos_One_SupMat.7z
-  - pictures/art_2018_Barros_PO.png
+  - pictures/art_2018_Barros_PO.PNG
   - papers/Carboni_2017_Global_Change_Biology_COMPRESSED.pdf
   - papers/Carboni_2017_Global_Change_Biology_SupMat_COMPRESSED.pdf
-  - pictures/art_2017_Carboni_GCB.png
+  - pictures/art_2017_Carboni_GCB.PNG
   - papers/Thuiller_2017_Diversity_Distributions.pdf
   - papers/Thuiller_2017_Diversity_Distributions_SupMat_COMPRESSED.pdf
-  - pictures/art_2017_Thuiller_DD.png
+  - pictures/art_2017_Thuiller_DD.PNG
 ---
+
+<style>
+.zoom p {
+width:600px;
+margin-left: auto;
+margin-right: auto;
+}
+.zoom p:hover {
+width:1200px;
+}
+</style>
+
+<div class="zoom">
+<p><img src="pictures/SCHEMA_FATE_WORKFLOW_papers.PNG" alt="SCHEMA FATE WORKFLOW papers"></img></p>
+</div>
+<br/><br/>
 
 ## <i class="fa fa-battery-quarter"></i> Origins (FATE / LAMOS / BioMove)
 
@@ -42,9 +58,6 @@ resource_files:
 <a href="papers/Moore_Noble_1990_JEM.pdf" class="download" title="Download as PDF">
 <img src="pictures/art_1990_Moore_Noble_JEM.png" alt="Moore & Noble 1990 Journal of Environmental Management" style="width:350px">
 </a>
-<!-- <a href="papers/Lavorel_2000_Workshop.pdf" class="download" title="Download as PDF"> -->
-<!-- <img src="pictures/art_2000_Lavorel_Workshop.png" alt="Lavorel 2000 Landscape Fire modeling Workshop" style="width:350px"> -->
-<!-- </a> -->
 <a href="papers/Midgley_2010_Ecography.pdf" class="download" title="Download as PDF">
 <img src="pictures/art_2010_Midgley_Ecography.png" alt="Midgley 2010 Ecography" style="width:350px">
 </a>
@@ -73,10 +86,10 @@ ________________________________________________________________________________
 <br/>
 
 <a href="papers/Boulangeat_2012_Global_Change_Biology_COMPRESSED.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2012_Boulangeat_GCB.png" alt="Boulangeat 2012 Global Change Biology (PAPER)" style="width:350px">
+<img src="pictures/art_2012_Boulangeat_GCB.PNG" alt="Boulangeat 2012 Global Change Biology (PAPER)" style="width:350px">
 </a>
 <a href="papers/Boulangeat_2014_Global_Change_Biology_COMPRESSED.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2014_Boulangeat_GCB.png" alt="Boulangeat 2014 Global Change Biology (PAPER)" style="width:350px">
+<img src="pictures/art_2014_Boulangeat_GCB.PNG" alt="Boulangeat 2014 Global Change Biology (PAPER)" style="width:350px">
 </a>
 
 <br/>
@@ -101,19 +114,19 @@ ________________________________________________________________________________
 <img src="pictures/art_2014_Boulangeat_Ecography.png" alt="Boulangeat 2014 Ecography" style="width:350px">
 </a>
 <a href="papers/Barros_2016_Ecology_Letters_COMPRESSED.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2016_Barros_EL.png" alt="Barros 2016 Ecology Letters (PAPER)" style="width:350px">
+<img src="pictures/art_2016_Barros_EL.PNG" alt="Barros 2016 Ecology Letters (PAPER)" style="width:350px">
 </a>
 <a href="papers/Barros_2017_Journal_Applied_Ecology_COMPRESSED.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2017_Barros_JAE.png" alt="Barros 2017 Journal of Applied Ecology (PAPER)" style="width:350px">
+<img src="pictures/art_2017_Barros_JAE.PNG" alt="Barros 2017 Journal of Applied Ecology (PAPER)" style="width:350px">
 </a>
 <a href="papers/Barros_2018_Plos_One_COMPRESSED.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2018_Barros_PO.png" alt="Barros 2018 Plos One (PAPER)" style="width:350px">
+<img src="pictures/art_2018_Barros_PO.PNG" alt="Barros 2018 Plos One (PAPER)" style="width:350px">
 </a>
 <a href="papers/Carboni_2017_Global_Change_Biology_COMPRESSED.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2017_Carboni_GCB.png" alt="Carboni 2017 Global Change Biology (PAPER)" style="width:350px">
+<img src="pictures/art_2017_Carboni_GCB.PNG" alt="Carboni 2017 Global Change Biology (PAPER)" style="width:350px">
 </a>
 <a href="papers/Thuiller_2017_Diversity_Distributions.pdf" class="download" title="Download as PDF">
-<img src="pictures/art_2017_Thuiller_DD.png" alt="Thuiller 2017 Diversity Distributions (PAPER)" style="width:350px">
+<img src="pictures/art_2017_Thuiller_DD.PNG" alt="Thuiller 2017 Diversity Distributions (PAPER)" style="width:350px">
 </a>
 
 <br/>

@@ -96,6 +96,6 @@ vegetation model as well as for the `R`package.
 
 
 <div class="zoom">
-<p><img src="https://leca-dev.github.io/RFate/articles/pictures/SCHEMA_FATE_WORKFLOW.png" alt="Main workflow"></img></p>
+<p><img src="https://leca-dev.github.io/RFate/articles/pictures/SCHEMA_FATE_WORKFLOW_functions.png" alt="Main workflow"></img></p>
 </div>
 

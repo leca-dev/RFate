@@ -156,6 +156,7 @@ void SuFate::CalculateEnvironment()
 
 			/* Create a vector with stratum break ages */
 			vector<int> bkStratAges = FGparams->getStrata();
+			int maxAbund = (int)FGparams->getMaxAbund();
 
 			if (m_Comm.getNoCohort(fg) > 0)
 			{
@@ -443,9 +444,9 @@ double SuFate::calcFecund(int fg)
 	/* get mature Abundance */
 	if (this->getMatTime(fg) <= this->getLifeSpan(fg))
 	{
-		matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /
-		(double) ( m_GSP->AbundToInt(FGparams->getMaxAbund())
-		/ (this->getLifeSpan(fg) - this->getMatTime(fg)) );
+		matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)); // /
+		//(double) ( m_GSP->AbundToInt(FGparams->getMaxAbund())
+		/// (this->getLifeSpan(fg) - this->getMatTime(fg)) );
 	}
 	return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
 }

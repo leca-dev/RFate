@@ -165,14 +165,14 @@ GSP::GSP(const string globalParamsFile)
 	m_MaxAbundLow = GlobParms.get_val<int>("MAX_ABUND_LOW")[0];
 	m_MaxAbundMedium = GlobParms.get_val<int>("MAX_ABUND_MEDIUM")[0];
 	m_MaxAbundHigh = GlobParms.get_val<int>("MAX_ABUND_HIGH")[0];
-	if (m_MaxAbundLow > m_MaxAbundMedium)
-	{
-		logg.error("!!! Parameter MAX_ABUND_LOW : must be inferior to MAX_ABUND_MEDIUM!");
-	}
-	if (m_MaxAbundMedium > m_MaxAbundHigh)
-	{
-		logg.error("!!! Parameter MAX_ABUND_MEDIUM : must be inferior to MAX_ABUND_HIGH!");
-	}
+	// if (m_MaxAbundLow > m_MaxAbundMedium)
+	// {
+	// 	logg.error("!!! Parameter MAX_ABUND_LOW : must be inferior to MAX_ABUND_MEDIUM!");
+	// }
+	// if (m_MaxAbundMedium > m_MaxAbundHigh)
+	// {
+	// 	logg.error("!!! Parameter MAX_ABUND_MEDIUM : must be inferior to MAX_ABUND_HIGH!");
+	// }
 
 	/* GET OPTIONAL parameters : seeding */
 	v_int = GlobParms.get_val<int>("SEEDING_DURATION", true);
