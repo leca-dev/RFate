@@ -314,8 +314,7 @@ test_that("POST_FATE.graphic_evolutionPixels gives correct outputs :", {
                  , "The values given in `opt.cells_ID` do not match with any cells of the studied area")
   
   plotPix = suppressWarnings(POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
-                                                               , opt.cells_ID = c(1,2,3)
-                                                               , opt.fixedScale = FALSE))
+                                                               , opt.cells_ID = c(1,2,3)))
   expect_output(str(plotPix), "List")
   expect_equal(length(plotPix), 1)
   

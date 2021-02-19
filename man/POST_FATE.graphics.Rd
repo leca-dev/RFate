@@ -83,8 +83,7 @@ window that will be used to calculate metrics of habitat stability (see
 \item{evol.fixedScale}{(\emph{optional}) default \code{TRUE}. \cr If 
 \code{FALSE}, the ordinate scale will be adapted for each PFG for the 
 graphical representation of the  evolution of abundances through time (see 
-\code{\link{POST_FATE.graphic_evolutionCoverage}}, 
-\code{\link{POST_FATE.graphic_evolutionPixels}})}
+\code{\link{POST_FATE.graphic_evolutionCoverage}})}
 
 \item{doFunc.valid}{default \code{TRUE}. \cr If \code{TRUE}, 
 \code{\link{POST_FATE.graphic_validationStatistics}} function will be run.}

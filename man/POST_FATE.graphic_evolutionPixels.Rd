@@ -9,7 +9,6 @@ POST_FATE.graphic_evolutionPixels(
   name.simulation,
   file.simulParam = NULL,
   opt.cells_ID = NULL,
-  opt.fixedScale = TRUE,
   opt.doPlot = TRUE
 )
 }
@@ -23,10 +22,6 @@ the \code{PARAM_SIMUL} folder of the \code{FATE} simulation}
 
 \item{opt.cells_ID}{(\emph{optional}) default \code{NULL}. \cr The cells ID 
 of the studied area for which PFG abundances will be extracted}
-
-\item{opt.fixedScale}{(\emph{optional}) default \code{TRUE}. \cr If 
-\code{FALSE}, the ordinate scale will be adapted for each PFG for the 
-graphical representation of the evolution of abundances through time}
 
 \item{opt.doPlot}{(\emph{optional}) default \code{TRUE}. \cr If \code{TRUE}, 
 plot(s) will be processed, otherwise only the calculation and reorganization 
@@ -108,10 +103,6 @@ activated).
 \dontrun{                      
 POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
                                   , file.simulParam = "Simul_parameters_V1.txt")
-                                    
-POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
-                                  , file.simulParam = "Simul_parameters_V1.txt"
-                                  , opt.fixedScale = FALSE)
 }
                                     
 

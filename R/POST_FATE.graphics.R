@@ -52,8 +52,7 @@
 ##' @param evol.fixedScale (\emph{optional}) default \code{TRUE}. \cr If 
 ##' \code{FALSE}, the ordinate scale will be adapted for each PFG for the 
 ##' graphical representation of the  evolution of abundances through time (see 
-##' \code{\link{POST_FATE.graphic_evolutionCoverage}}, 
-##' \code{\link{POST_FATE.graphic_evolutionPixels}})
+##' \code{\link{POST_FATE.graphic_evolutionCoverage}})
 ##' @param doFunc.valid default \code{TRUE}. \cr If \code{TRUE}, 
 ##' \code{\link{POST_FATE.graphic_validationStatistics}} function will be run.
 ##' @param valid.mat.PFG.obs a \code{data.frame} with 4 columns : \code{PFG}, 
@@ -307,7 +306,6 @@ POST_FATE.graphics = function(
         res.evolutionPixels = POST_FATE.graphic_evolutionPixels(name.simulation = name.simulation
                                                                 , file.simulParam = abs.simulParam
                                                                 , opt.cells_ID = evolPix.cells_ID
-                                                                , opt.fixedScale = evol.fixedScale
                                                                 , opt.doPlot = opt.doPlot)
       }
       if (doFunc.evolStab)

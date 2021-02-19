@@ -210,7 +210,6 @@ area.</p>
   <span class='va'>name.simulation</span>,
   file.simulParam <span class='op'>=</span> <span class='cn'>NULL</span>,
   opt.cells_ID <span class='op'>=</span> <span class='cn'>NULL</span>,
-  opt.fixedScale <span class='op'>=</span> <span class='cn'>TRUE</span>,
   opt.doPlot <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -232,12 +231,6 @@ the <code>PARAM_SIMUL</code> folder of the <code>FATE</code> simulation</p></td>
       <th>opt.cells_ID</th>
       <td><p>(<em>optional</em>) default <code>NULL</code>. <br /> The cells ID 
 of the studied area for which PFG abundances will be extracted</p></td>
-    </tr>
-    <tr>
-      <th>opt.fixedScale</th>
-      <td><p>(<em>optional</em>) default <code>TRUE</code>. <br /> If 
-<code>FALSE</code>, the ordinate scale will be adapted for each PFG for the 
-graphical representation of the evolution of abundances through time</p></td>
     </tr>
     <tr>
       <th>opt.doPlot</th>
@@ -318,10 +311,6 @@ activated).</p>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>                      
 <span class='fu'>POST_FATE.graphic_evolutionPixels</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
                                   , file.simulParam <span class='op'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span><span class='op'>)</span>
-                                    
-<span class='fu'>POST_FATE.graphic_evolutionPixels</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
-                                  , file.simulParam <span class='op'>=</span> <span class='st'>"Simul_parameters_V1.txt"</span>
-                                  , opt.fixedScale <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='op'>}</span>
                                     
 

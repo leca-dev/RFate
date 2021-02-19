@@ -46,7 +46,7 @@ Depends: R (>= 3.6)
 Imports:
     Rcpp,
     graphics, grDevices, methods, stats, utils, R.utils,
-    ggplot2, ggthemes, ggrepel, ggExtra, gridExtra, cowplot,
+    ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
     reshape2, foreach, SPOT, data.table,
     raster, rgdal,
     phyloclim, FD, fpc, clValid, ade4, PresenceAbsence, betapart,

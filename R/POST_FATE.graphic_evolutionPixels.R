@@ -18,9 +18,6 @@
 ##' the \code{PARAM_SIMUL} folder of the \code{FATE} simulation
 ##' @param opt.cells_ID (\emph{optional}) default \code{NULL}. \cr The cells ID 
 ##' of the studied area for which PFG abundances will be extracted
-##' @param opt.fixedScale (\emph{optional}) default \code{TRUE}. \cr If 
-##' \code{FALSE}, the ordinate scale will be adapted for each PFG for the 
-##' graphical representation of the evolution of abundances through time
 ##' @param opt.doPlot (\emph{optional}) default \code{TRUE}. \cr If \code{TRUE}, 
 ##' plot(s) will be processed, otherwise only the calculation and reorganization 
 ##' of outputs will occur, be saved and returned
@@ -103,10 +100,6 @@
 ##' \dontrun{                      
 ##' POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
 ##'                                   , file.simulParam = "Simul_parameters_V1.txt")
-##'                                     
-##' POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
-##'                                   , file.simulParam = "Simul_parameters_V1.txt"
-##'                                   , opt.fixedScale = FALSE)
 ##' }
 ##'                                     
 ##' 
@@ -122,10 +115,11 @@
 ##' @importFrom foreach foreach %do%
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
-##' geom_line geom_area
-##' scale_color_manual scale_fill_manual
+##' geom_line geom_point
+##' scale_color_manual
 ##' facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
+##' @importFrom ggnewscale new_scale_color
 ##'
 ## END OF HEADER ###############################################################
 
@@ -134,7 +128,6 @@ POST_FATE.graphic_evolutionPixels = function(
   name.simulation
   , file.simulParam = NULL
   , opt.cells_ID = NULL
-  , opt.fixedScale = TRUE
   , opt.doPlot = TRUE
 ){
   
@@ -190,7 +183,7 @@ POST_FATE.graphic_evolutionPixels = function(
     years = years[which(!(years %in% c("TYPE", "GROUP", "ID.pixel", "X", "Y", "HAB")))]
     years = as.numeric(years)
     
-    strata = paste0("Stratum ", (GLOB_SIM$no_STRATA - 1):0)
+    strata = paste0("Stratum ", 0:(GLOB_SIM$no_STRATA - 1))
     
     ## Get resources tables ---------------------------------------------------
     if (GLOB_SIM$doLight)
@@ -289,8 +282,8 @@ POST_FATE.graphic_evolutionPixels = function(
       names(val_col1) = c(strata, GLOB_SIM$PFG, "soil")
       
       vec_col2 = c('#FEC44F', '#FB9A29', '#EC7014', '#CC4C02', '#993404', '#662506')
-      val_col2 = colorRampPalette(vec_col2)(GLOB_SIM$no_STRATA)
-      names(val_col2) = strata
+      val_col2 = rev(colorRampPalette(vec_col2)(3))
+      names(val_col2) = 1:3
       
       
       pp = ggplot(distriAbund, aes_string(x = "YEAR", y = "value")) +
@@ -301,12 +294,13 @@ POST_FATE.graphic_evolutionPixels = function(
                   , aes_string(color = "GROUP")
                   , lwd = 0.7) +
         scale_color_manual("", values = val_col1) +
-        geom_area(data = distriAbund[which(distriAbund$TYPE == "light"),]
-                  , aes_string(fill = "GROUP")
-                  , position = "identity", alpha= 0.4) +
-        scale_fill_manual("", values = val_col2) +
-        facet_grid("TYPE ~ ID.pixel"
-                   , scales = ifelse(opt.fixedScale, "fixed", "free_y")) +
+        new_scale_color() +
+        geom_point(data = distriAbund[which(distriAbund$TYPE == "light"), ]
+                   , aes_string(x = "YEAR", y = "as.numeric(GROUP)", color = "factor(value)")
+                   , alpha = 0.4, pch = 15, size = 15
+                   , inherit.aes = FALSE) +
+        scale_color_manual("", values = val_col2, labels = c("Low", "Medium", "High")) +
+        facet_grid("TYPE ~ ID.pixel", scales = "free_y") +
         labs(x = "", y = ""
              , title = paste0("GRAPH A : evolution of species' abundance")
              , subtitle = paste0("For each PFG, the line represents the "
