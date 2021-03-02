@@ -126,7 +126,7 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 
 	/* Potential fecundity parameter filling  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 	v_int = SuccParams.get_val<int>("POTENTIAL_FECUNDITY", true);
-	if (v_int.size()) m_PotentialFecundity = v_int[0]; else m_PotentialFecundity = 100.0;
+	if (v_int.size()) m_PotentialFecundity = v_int[0]; else m_PotentialFecundity = glob_params.getPotentialFecundity();
 
 	logg.info("> Life History parameters provided");
 }

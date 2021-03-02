@@ -69,6 +69,9 @@ class SuFate
 
 	/* community attributes */
 	Community m_Comm; /*!< Vector of FG Communities : state of each FG population at one time in one space */
+	
+	/* plant resources attribute */
+	double m_PlantR; /*!< Plant resources in the pixel */
 
 	/* light resources attributes */
 	LightResources m_LightR; /*!< Light Resources state in each stratum */
@@ -92,6 +95,7 @@ class SuFate
 	{
 		ar & m_CellID;
 		ar & m_Comm;
+		ar & m_PlantR;
 		ar & m_LightR;
 		ar & m_SoilR;
 		ar & m_SeedRainMap; // ALREADY SAVED in SimulMap.h
@@ -126,8 +130,9 @@ class SuFate
 	 *
 	 *	SuFate full constructor
 	 *
-	 *	\param cellID : id of pixel this succession model is linked to
+	 * \param cellID : id of pixel this succession model is linked to
 	 * \param comm : community of the pixel
+	 * \param plantR : plant resources of the pixel
 	 * \param lightR : light resources of the pixel
 	 * \param soilR : soil resources of the pixel
 	 * \param seedRainMap : pointer to the simulation seeds rain maps
@@ -136,7 +141,7 @@ class SuFate
 	 * related parameters, and modules specific (e.g number of strata, number of
 	 * disturbances...)
 	 */
-	SuFate(unsigned cellID, Community comm, LightResources lightR, double soilR,
+	SuFate(unsigned cellID, Community comm, double plantR, LightResources lightR, double soilR,
 	IntMapPtr seedRainMap, IntMapPtr SeedProdMap, GSPPtr gspPtr);
 
 	/*-------------------------------------------*/
@@ -158,6 +163,7 @@ class SuFate
 	{
 		return (m_CellID == o.m_CellID &&
 		m_Comm == o.m_Comm &&
+		m_PlantR == o.m_PlantR &&
 		m_LightR == o.m_LightR &&
 		m_SoilR == o.m_SoilR &&
 		*m_SeedRainMap == *(o.m_SeedRainMap) &&
@@ -171,6 +177,7 @@ class SuFate
 
 	const unsigned getCellID() const;
 	const Community getCommunity() const;
+	double getPlantResources();
 	LightResources getLightResources();
 	double getSoilResources();
 	SpatialStack<double, int> getSeedRain();
@@ -188,6 +195,7 @@ class SuFate
 	GSPPtr getGSP_();
 
 	void setCommunity(const Community comm);
+	void setPlantResources(double plantR);
 	void setLightResources(const LightResources lightR);
 	void setSoilResources(double soilR);
 	void setSeedRain(unsigned fg, int seedRain);
@@ -379,6 +387,19 @@ class SuFate
 	 * \return : lifespan of the PFG (no dependence on environment)
 	 */
 	int getLifeSpan(int fg);
+	
+	/*!
+	 *	\brief Get MaxAbund per PFG adapted to pixel
+	 *
+	 * MaxAbund is fixed per pixel. Each PFG can occupy a certain amount 
+	 * of the pixel space given no other PFG are present. If other PFG are 
+	 * present, maximum abundance of the PFG according to the pixel 
+	 * community is calculated.
+	 *
+	 *	\param fg : id of considered PFG
+	 * \return : MaxAbund of the PFG (no dependence on environment)
+	 */
+	int getMaxAbund(int fg);
 
 	/*-------------------------------------------*/
 

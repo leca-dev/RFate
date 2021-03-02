@@ -69,14 +69,16 @@ class GSP
 	int m_SeedingDuration; /*!< Seeding duration */
 	int m_SeedingTimeStep; /*!< Seeding time step */
 	int m_SeedingInput; /*!< Number of seeds introduced during seeding */
+  int m_PotentialFecundity; /*!< Potential Fecundity of mature plants (maximum value of seeds produced in optimal conditions) */
 	int m_MaxAbundLow; /*!< Maximum abundance or space a PFG can occupy : low value */
 	int m_MaxAbundMedium; /*!< Maximum abundance or space a PFG can occupy : medium value */
 	int m_MaxAbundHigh; /*!< Maximum abundance or space a PFG can occupy : high value */
+  int m_MaxAbundPixel; /*!< Maximum abundance or space a pixel can have */
 
 	/* Light interaction module */
 	bool m_DoLightInteraction; /*!< Unable or not Light interaction module */
-	int m_LightThreshLow; /*!< Threshold to transform PFG abundances into Low light resources */
-	int m_LightThreshMedium; /*!< Threshold to transform PFG abundances into Medium light resources */
+	double m_LightThreshLow; /*!< Relative threshold to transform PFG abundances into Low light resources */
+	double m_LightThreshMedium; /*!< Relative threshold to transform PFG abundances into Medium light resources */
 
 	/* Habitat suitability module */
 	bool m_DoHabSuitability; /*!< Unable or not habitat suitability module */
@@ -140,9 +142,11 @@ class GSP
 		ar & m_SeedingDuration;
 		ar & m_SeedingTimeStep;
 		ar & m_SeedingInput;
+		ar & m_PotentialFecundity;
 		ar & m_MaxAbundLow;
 		ar & m_MaxAbundMedium;
 		ar & m_MaxAbundHigh;
+		ar & m_MaxAbundPixel;
 		ar & m_DoLightInteraction;
 		ar & m_LightThreshLow;
 		ar & m_LightThreshMedium;
@@ -216,17 +220,20 @@ class GSP
 	 *	\param seedingDuration : seeding duration (in years)
 	 *	\param seedingTimeStep : seeding time step (in years)
 	 *	\param seedingInput : number of seeds dispersed each year during seeding
+	 *	\param potentialFecundity : potential fecundity of mature plants 
+	 (maximum value of seeds produced in optimal conditions)
 	 *	\param maxAbundLow : maximum abundance or space a PFG can occupy : low
 	 * value
 	 *	\param maxAbundMedium : maximum abundance or space a PFG can occupy :
 	 * medium value
 	 *	\param maxAbundHigh : maximum abundance or space a PFG can occupy :
 	 * high value
+	 *	\param maxAbundPixel : maximum abundance or space a pixel can have
 	 *	\param doLightInteraction : unable or not Light interaction module
-	 *	\param lightThreshLow : threshold to transform PFG abundances into Low
-	 * light resources
-	 *	\param lightThreshMedium : threshold to transform PFG abundances into
-	 * Medium light resources
+	 *	\param lightThreshLow : relative threshold to transform PFG abundances 
+	 *	into Low light resources
+	 *	\param lightThreshMedium : relative threshold to transform PFG abundances 
+	 *	into Medium light resources
 	 *	\param doHabSuitability : unable or not Habitat suitability module
 	 *	\param habSuitMode : option to draw the habitat suitability ref
 	 *	\param doDispersal : unable or not Dispersal module
@@ -275,12 +282,14 @@ class GSP
 	const int& seedingDuration,
 	const int& seedingTimeStep,
 	const int& seedingInput,
+	const int& potentialFecundity,
 	const int& maxAbundLow,
 	const int& maxAbundMedium,
 	const int& maxAbundHigh,
+	const int& maxAbundPixel,
 	const bool& doLightInteraction,
-	const int& lightThreshLow,
-	const int& lightThreshMedium,
+	const double& lightThreshLow,
+	const double& lightThreshMedium,
 	const bool& doHabSuitability,
 	const int& habSuitMode,
 	const bool& doDispersal,
@@ -339,9 +348,11 @@ class GSP
 		m_SeedingDuration == o.m_SeedingDuration &&
 		m_SeedingTimeStep == o.m_SeedingTimeStep &&
 		m_SeedingInput == o.m_SeedingInput &&
+		m_PotentialFecundity == o.m_PotentialFecundity &&
 		m_MaxAbundLow == o.m_MaxAbundLow &&
 		m_MaxAbundMedium == o.m_MaxAbundMedium &&
 		m_MaxAbundHigh == o.m_MaxAbundHigh &&
+		m_MaxAbundPixel == o.m_MaxAbundPixel &&
 		m_DoLightInteraction == o.m_DoLightInteraction &&
 		m_LightThreshLow == o.m_LightThreshLow &&
 		m_LightThreshMedium == o.m_LightThreshMedium &&
@@ -391,12 +402,14 @@ class GSP
 	const int& getSeedingDuration() const;
 	const int& getSeedingTimeStep() const;
 	const int& getSeedingInput() const;
+	const int& getPotentialFecundity() const;
 	const int& getMaxAbundLow() const;
 	const int& getMaxAbundMedium() const;
 	const int& getMaxAbundHigh() const;
+	const int& getMaxAbundPixel() const;
 	const bool& getDoLightInteraction() const;
-	const int& getLightThreshLow() const;
-	const int& getLightThreshMedium() const;
+	const double& getLightThreshLow() const;
+	const double& getLightThreshMedium() const;
 	const bool& getDoHabSuitability() const;
 	const int& getHabSuitMode() const;
 	const bool& getDoDispersal() const;
@@ -438,12 +451,14 @@ class GSP
 	void setSeedingDuration(const int& seedingDuration);
 	void setSeedingTimeStep(const int& seedingTimeStep);
 	void setSeedingInput(const int& seedingInput);
+	void setPotentialFecundity(const int& potentialFecundity);
 	void setMaxAbundLow(const int& maxAbundLow);
 	void setMaxAbundMedium(const int& maxAbundMedium);
 	void setMaxAbundHigh(const int& maxAbundHigh);
+	void setMaxAbundPixel(const int& maxAbundPixel);
 	void setDoLightInteraction(const bool& doLightInteraction);
-	void setLightThreshLow(const int& lightThreshLow);
-	void setLightThreshMedium(const int& lightThreshMedium);
+	void setLightThreshLow(const double& lightThreshLow);
+	void setLightThreshMedium(const double& lightThreshMedium);
 	void setDoHabSuitability(const bool& doHabSuitability);
 	void setHabSuitMode(const int& habSuitMode);
 	void setDoDispersal(const bool& doDispersal);

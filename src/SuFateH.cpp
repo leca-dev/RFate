@@ -28,19 +28,23 @@ using namespace std;
 /* Constructors                                                                                    */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-SuFateH::SuFateH() : SuFate(), m_EnvSuitMapPtr(new SpatialStack<double,double>()), m_EnvSuitRefMapPtr(new SpatialStack<double,double>())
+SuFateH::SuFateH() : SuFate(), m_EnvSuitMapPtr(new SpatialStack<double,double>()),
+m_EnvSuitRefMapPtr(new SpatialStack<double,double>())
 {
 	/* Nothing to do */
 }
 
-SuFateH::SuFateH(unsigned cellID) : SuFate(cellID), m_EnvSuitMapPtr(new SpatialStack<double,double>()), m_EnvSuitRefMapPtr(new SpatialStack<double,double>())
+SuFateH::SuFateH(unsigned cellID) : SuFate(cellID), m_EnvSuitMapPtr(new SpatialStack<double,double>()), 
+m_EnvSuitRefMapPtr(new SpatialStack<double,double>())
 {
 	/* Nothing to do */
 }
 
-SuFateH::SuFateH(unsigned cellID, Community comm, LightResources lightR, double soilR, IntMapPtr seedRainMap, IntMapPtr seedProdMap,
-GSPPtr gspPtr, DoubleMapPtr envSuitMapPtr, DoubleMapPtr envSuitRefMapPtr) :
-SuFate( cellID, comm, lightR, soilR, seedRainMap, seedProdMap, gspPtr), m_EnvSuitMapPtr(envSuitMapPtr), m_EnvSuitRefMapPtr(envSuitRefMapPtr)
+SuFateH::SuFateH(unsigned cellID, Community comm, double plantR, LightResources lightR, double soilR,
+IntMapPtr seedRainMap, IntMapPtr seedProdMap, GSPPtr gspPtr,
+DoubleMapPtr envSuitMapPtr, DoubleMapPtr envSuitRefMapPtr) :
+SuFate( cellID, comm, plantR, lightR, soilR, seedRainMap, seedProdMap, gspPtr), 
+m_EnvSuitMapPtr(envSuitMapPtr), m_EnvSuitRefMapPtr(envSuitRefMapPtr)
 {
 	/* Nothing to do */
 }

@@ -44,9 +44,9 @@ using namespace std;
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 GSP::GSP() : m_NoCPU(1), m_NoFG(0), m_NoStrata(0), m_SimulDuration(0),
-m_SeedingDuration(0), m_SeedingTimeStep(0), m_SeedingInput(0),
-m_MaxAbundLow(0), m_MaxAbundMedium(0), m_MaxAbundHigh(0),
-m_DoLightInteraction(false), m_LightThreshLow(0), m_LightThreshMedium(0),
+m_SeedingDuration(0), m_SeedingTimeStep(0), m_SeedingInput(0), m_PotentialFecundity(0),
+m_MaxAbundLow(0), m_MaxAbundMedium(0), m_MaxAbundHigh(0), m_MaxAbundPixel(0),
+m_DoLightInteraction(false), m_LightThreshLow(0.0), m_LightThreshMedium(0.0),
 m_DoHabSuitability(false), m_HabSuitMode(1),
 m_DoDispersal(false), m_DispersalMode(1),
 m_DoDisturbances(false), m_NoDist(0), m_NoDistSub(0), m_FreqDist(0,0),
@@ -62,9 +62,9 @@ m_DoAliensIntroduction(false), m_FreqAliens(0,0)
 }
 
 GSP::GSP(const int& noCPU, const int& noFG, const int& noStrata, const int& simulDuration,
-const int& seedingDuration, const int& seedingTimeStep, const int& seedingInput,
-const int& maxAbundLow, const int& maxAbundMedium, const int& maxAbundHigh,
-const bool& doLightInteraction, const int& lightThreshLow, const int& lightThreshMedium,
+const int& seedingDuration, const int& seedingTimeStep, const int& seedingInput, const int& potentialFecundity,
+const int& maxAbundLow, const int& maxAbundMedium, const int& maxAbundHigh, const int& maxAbundPixel,
+const bool& doLightInteraction, const double& lightThreshLow, const double& lightThreshMedium,
 const bool& doHabSuitability, const int& habSuitMode,
 const bool& doDispersal, const int& dispersalMode,
 const bool& doDisturbances, const int& noDist, const int& noDistSub, const vector<int>& freqDist,
@@ -78,8 +78,8 @@ const vector<double>& firePropLogis, const int& fireQuotaMax,
 const bool& doDroughtDisturbances, const int& noDroughtSub, const string& chronoPost, const string& chronoCurr,
 const bool& doAliensIntroduction, const vector<int>& freqAliens) : m_NoFG(noFG), m_NoStrata(noStrata),
 m_SimulDuration(simulDuration),
-m_SeedingDuration(seedingDuration), m_SeedingTimeStep(seedingTimeStep),
-m_MaxAbundLow(maxAbundLow), m_MaxAbundMedium(maxAbundMedium), m_MaxAbundHigh(maxAbundHigh),
+m_SeedingDuration(seedingDuration), m_SeedingTimeStep(seedingTimeStep), m_PotentialFecundity(potentialFecundity),
+m_MaxAbundLow(maxAbundLow), m_MaxAbundMedium(maxAbundMedium), m_MaxAbundHigh(maxAbundHigh), m_MaxAbundPixel(maxAbundPixel),
 m_DoLightInteraction(doLightInteraction), m_LightThreshLow(lightThreshLow), m_LightThreshMedium(lightThreshMedium),
 m_DoHabSuitability(doHabSuitability), m_HabSuitMode(habSuitMode),
 m_DoDispersal(doDispersal), m_DispersalMode(dispersalMode),
@@ -162,17 +162,23 @@ GSP::GSP(const string globalParamsFile)
 	{
 		logg.error("!!! Parameter SIMULATION_DURATION : must be superior to 0!");
 	}
+	m_PotentialFecundity = GlobParms.get_val<int>("POTENTIAL_FECUNDITY")[0];
+	if (m_PotentialFecundity <= 0)
+	{
+	  logg.error("!!! Parameter POTENTIAL_FECUNDITY : must be superior to 0!");
+	}
 	m_MaxAbundLow = GlobParms.get_val<int>("MAX_ABUND_LOW")[0];
 	m_MaxAbundMedium = GlobParms.get_val<int>("MAX_ABUND_MEDIUM")[0];
 	m_MaxAbundHigh = GlobParms.get_val<int>("MAX_ABUND_HIGH")[0];
-	// if (m_MaxAbundLow > m_MaxAbundMedium)
-	// {
-	// 	logg.error("!!! Parameter MAX_ABUND_LOW : must be inferior to MAX_ABUND_MEDIUM!");
-	// }
-	// if (m_MaxAbundMedium > m_MaxAbundHigh)
-	// {
-	// 	logg.error("!!! Parameter MAX_ABUND_MEDIUM : must be inferior to MAX_ABUND_HIGH!");
-	// }
+	m_MaxAbundPixel = GlobParms.get_val<int>("MAX_ABUND_PIXEL")[0];
+	if (m_MaxAbundLow > m_MaxAbundMedium)
+	{
+		logg.error("!!! Parameter MAX_ABUND_LOW : must be inferior or equal to MAX_ABUND_MEDIUM!");
+	}
+	if (m_MaxAbundMedium > m_MaxAbundHigh)
+	{
+		logg.error("!!! Parameter MAX_ABUND_MEDIUM : must be inferior or equal to MAX_ABUND_HIGH!");
+	}
 
 	/* GET OPTIONAL parameters : seeding */
 	v_int = GlobParms.get_val<int>("SEEDING_DURATION", true);
@@ -195,16 +201,32 @@ GSP::GSP(const string globalParamsFile)
 	if (v_int.size()) m_DoLightInteraction = bool(v_int[0]); else m_DoLightInteraction = false;
 	if (m_DoLightInteraction)
 	{
-		m_LightThreshLow = GlobParms.get_val<int>("LIGHT_THRESH_LOW")[0];
-		m_LightThreshMedium = GlobParms.get_val<int>("LIGHT_THRESH_MEDIUM")[0];
+		m_LightThreshLow = GlobParms.get_val<double>("LIGHT_THRESH_LOW")[0];
+		m_LightThreshMedium = GlobParms.get_val<double>("LIGHT_THRESH_MEDIUM")[0];
 		if (m_LightThreshLow < m_LightThreshMedium)
 		{
-			logg.error("!!! Parameter LIGHT_THRESH_LOW : must be superior to LIGHT_THRESH_MEDIUM!");
+			logg.error("!!! Parameter LIGHT_THRESH_LOW : must be superior or equal to LIGHT_THRESH_MEDIUM!");
+		}
+		if (m_LightThreshLow < 0.0)
+		{
+		  logg.error("!!! Parameter LIGHT_THRESH_LOW : must be superior or equal to 0!");
+		}
+		if (m_LightThreshLow > 1.0)
+		{
+		  logg.error("!!! Parameter LIGHT_THRESH_LOW : must be inferior or equal to 1!");
+		}
+		if (m_LightThreshMedium < 0.0)
+		{
+		  logg.error("!!! Parameter LIGHT_THRESH_MEDIUM : must be superior or equal to 0!");
+		}
+		if (m_LightThreshMedium > 1.0)
+		{
+		  logg.error("!!! Parameter LIGHT_THRESH_MEDIUM : must be inferior or equal to 1!");
 		}
 	} else
 	{
-		m_LightThreshLow = 0;
-		m_LightThreshMedium = 0;
+		m_LightThreshLow = 0.0;
+		m_LightThreshMedium = 0.0;
 	}
 
 	/* GET OPTIONAL parameters : habitat suitability */
@@ -416,12 +438,14 @@ const int& GSP::getSimulDuration() const{ return m_SimulDuration; }
 const int& GSP::getSeedingDuration() const{ return m_SeedingDuration; }
 const int& GSP::getSeedingTimeStep() const{ return m_SeedingTimeStep; }
 const int& GSP::getSeedingInput() const{ return m_SeedingInput; }
+const int& GSP::getPotentialFecundity() const{ return m_PotentialFecundity; }
 const int& GSP::getMaxAbundLow() const{ return m_MaxAbundLow; }
 const int& GSP::getMaxAbundMedium() const{ return m_MaxAbundMedium; }
 const int& GSP::getMaxAbundHigh() const{ return m_MaxAbundHigh; }
+const int& GSP::getMaxAbundPixel() const{ return m_MaxAbundPixel; }
 const bool& GSP::getDoLightInteraction() const{ return m_DoLightInteraction; }
-const int& GSP::getLightThreshLow() const{ return m_LightThreshLow; }
-const int& GSP::getLightThreshMedium() const{ return m_LightThreshMedium; }
+const double& GSP::getLightThreshLow() const{ return m_LightThreshLow; }
+const double& GSP::getLightThreshMedium() const{ return m_LightThreshMedium; }
 const bool& GSP::getDoHabSuitability() const{ return m_DoHabSuitability; }
 const int& GSP::getHabSuitMode() const{ return m_HabSuitMode; }
 const bool& GSP::getDoDispersal() const{ return m_DoDispersal; }
@@ -463,12 +487,14 @@ void GSP::setSimulDuration(const int& simulDuration){ m_SimulDuration = simulDur
 void GSP::setSeedingDuration(const int& seedingDuration){ m_SeedingDuration = seedingDuration; }
 void GSP::setSeedingTimeStep(const int& seedingTimeStep){ m_SeedingTimeStep = seedingTimeStep; }
 void GSP::setSeedingInput(const int& seedingInput){ m_SeedingInput = seedingInput; }
+void GSP::setPotentialFecundity(const int& potentialFecundity){ m_PotentialFecundity = potentialFecundity; }
 void GSP::setMaxAbundLow(const int& maxAbundLow){ m_MaxAbundLow = maxAbundLow; }
 void GSP::setMaxAbundMedium(const int& maxAbundMedium){ m_MaxAbundMedium = maxAbundMedium; }
 void GSP::setMaxAbundHigh(const int& maxAbundHigh){ m_MaxAbundHigh = maxAbundHigh; }
+void GSP::setMaxAbundPixel(const int& maxAbundPixel){ m_MaxAbundPixel = maxAbundPixel; }
 void GSP::setDoLightInteraction(const bool& doLightInteraction){ m_DoLightInteraction = doLightInteraction; }
-void GSP::setLightThreshLow(const int& lightThreshLow){ m_LightThreshLow = lightThreshLow; }
-void GSP::setLightThreshMedium(const int& lightThreshMedium){ m_LightThreshMedium = lightThreshMedium; }
+void GSP::setLightThreshLow(const double& lightThreshLow){ m_LightThreshLow = lightThreshLow; }
+void GSP::setLightThreshMedium(const double& lightThreshMedium){ m_LightThreshMedium = lightThreshMedium; }
 void GSP::setDoHabSuitability(const bool& doHabSuitability){ m_DoHabSuitability = doHabSuitability; }
 void GSP::setHabSuitMode(const int& habSuitMode){ m_HabSuitMode = habSuitMode; }
 void GSP::setDoDispersal(const bool& doDispersal){ m_DoDispersal = doDispersal; }
@@ -517,9 +543,11 @@ void GSP::show()
 						 "\nm_SeedingDuration = ", m_SeedingDuration,
 						 "\nm_SeedingTimeStep = ", m_SeedingTimeStep,
 						 "\nm_SeedingInput = ", m_SeedingInput,
+						 "\nm_PotentialFecundity = ", m_PotentialFecundity,
 						 "\nm_MaxAbundLow = ", m_MaxAbundLow,
 						 "\nm_MaxAbundMedium = ", m_MaxAbundMedium,
 						 "\nm_MaxAbundHigh = ", m_MaxAbundHigh,
+						 "\nm_MaxAbundPixel = ", m_MaxAbundPixel,
 						 "\nm_DoLightInteraction = ", m_DoLightInteraction,
 						 "\nm_LightThreshLow = ", m_LightThreshLow,
 						 "\nm_LightThreshMedium = ", m_LightThreshMedium,

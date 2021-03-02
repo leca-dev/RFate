@@ -408,10 +408,12 @@ SimulMap::SimulMap(FOPL file_of_params)
     SuFatePtr succModel_ptr; // ptr on succession model
     if (m_glob_params.getDoHabSuitability() == false)
     { // FATE succession model
-      succModel_ptr = new SuFate(i, Comm_std, lr_std, m_glob_params.getSoilInit(), m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr);
+      succModel_ptr = new SuFate(i, Comm_std, m_glob_params.getMaxAbundPixel(), lr_std, m_glob_params.getSoilInit()
+                                   , m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr);
     } else if (m_glob_params.getDoHabSuitability() == true)
     { // FATEH succession model
-      succModel_ptr = new SuFateH(i, Comm_std, lr_std, m_glob_params.getSoilInit(), m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr, &m_EnvSuitMap, &m_EnvSuitRefMap );
+      succModel_ptr = new SuFateH(i, Comm_std, m_glob_params.getMaxAbundPixel(), lr_std, m_glob_params.getSoilInit()
+                                    , m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr, &m_EnvSuitMap, &m_EnvSuitRefMap );
     }
     succModel_ptr_list.emplace_back(succModel_ptr);
   }
