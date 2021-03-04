@@ -6,6 +6,7 @@ vignette: >
   %\VignetteEngine{knitr::knitr}
   %\VignetteEncoding{UTF-8}
 resource_files:
+  - pictures/SCHEMA_FATE_WORKFLOW_papers.png
   - papers/Moore_Noble_1990_JEM.pdf
   - pictures/art_1990_Moore_Noble_JEM.png
   - papers/Midgley_2010_Ecography.pdf

@@ -130,7 +130,7 @@
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fab fa-github"></span>
      
   </a>
 </li>
@@ -198,6 +198,7 @@ SIMULATION_DURATION 950
 SEEDING_DURATION 300
 SEEDING_TIMESTEP 1
 SEEDING_INPUT 100
+POTENTIAL_FECUNDITY 100
 MAX_ABUND_LOW 1000
 MAX_ABUND_MEDIUM 5000
 MAX_ABUND_HIGH 8000
@@ -245,7 +246,10 @@ IMM_SIZE 1
 CHANG_STR_AGES 0 14 38 110 344
 SEED_POOL_LIFE 0 0
 SEED_DORMANCY 0
-POTENTIAL_FECUNDITY 100
+</pre>
+The maximum number of seeds produced each year can also be specified per PFG :
+<pre class="grey">
+POTENTIAL_FECUNDITY 150
 </pre>
 <p><br></p>
 </div>
@@ -262,8 +266,8 @@ POTENTIAL_FECUNDITY 100
 </ul>
 <pre class="bash">
 DO_LIGHT_INTERACTION 1
-LIGHT_THRESH_MEDIUM 13000
-LIGHT_THRESH_LOW 19000
+LIGHT_THRESH_MEDIUM 4000
+LIGHT_THRESH_LOW 7000
 </pre>
 <ul>
 <li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
