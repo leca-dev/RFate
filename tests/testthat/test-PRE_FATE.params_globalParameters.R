@@ -91,19 +91,16 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
                                                 , required.seeding_duration = NA)
                , "`required.seeding_duration` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
                                                 , required.seeding_duration = NULL)
                , "`required.seeding_duration` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
                                                 , required.seeding_duration = "")
                , "`required.seeding_duration` must be an integer > 0")
 })
@@ -115,22 +112,16 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
                                                 , required.seeding_timestep = NA)
                , "`required.seeding_timestep` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
                                                 , required.seeding_timestep = NULL)
                , "`required.seeding_timestep` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
                                                 , required.seeding_timestep = "")
                , "`required.seeding_timestep` must be an integer > 0")
 })
@@ -142,27 +133,39 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
                                                 , required.seeding_input = NA)
                , "`required.seeding_input` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
                                                 , required.seeding_input = NULL)
                , "`required.seeding_input` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
                                                 , required.seeding_input = "")
                , "`required.seeding_input` must be an integer > 0")
+})
+
+## INPUTS
+test_that("PRE_FATE.params_globalParameters gives error with wrong data : required.potential_fecundity", {
+  
+  ## TEST required.potential_fecundity : integer
+  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+                                                , required.no_PFG = 5
+                                                , required.no_strata = 2
+                                                , required.potential_fecundity = NA)
+               , "`required.potential_fecundity` must be an integer > 0")
+  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+                                                , required.no_PFG = 5
+                                                , required.no_strata = 2
+                                                , required.potential_fecundity = NULL)
+               , "`required.potential_fecundity` must be an integer > 0")
+  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+                                                , required.no_PFG = 5
+                                                , required.no_strata = 2
+                                                , required.potential_fecundity = "")
+               , "`required.potential_fecundity` must be an integer > 0")
 })
 
 ## INPUTS
@@ -172,37 +175,21 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = NA)
                , "`required.max_abund_low` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = NULL)
                , "`required.max_abund_low` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = "")
                , "`required.max_abund_low` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = -1)
                , "`required.max_abund_low` must be an integer > 0")
 })
@@ -214,40 +201,24 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = NA)
                , "`required.max_abund_medium` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = NULL)
                , "`required.max_abund_medium` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = "")
                , "`required.max_abund_medium` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = -1)
                , "`required.max_abund_medium` must be an integer > 0")
@@ -260,10 +231,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = NA)
@@ -271,10 +238,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = NULL)
@@ -282,10 +245,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = "")
@@ -293,10 +252,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = -1)
@@ -310,10 +265,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 1
                                                 , required.max_abund_high = 9000)
@@ -323,10 +274,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 1)
@@ -340,10 +287,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -353,10 +296,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -366,10 +305,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -379,10 +314,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -398,10 +329,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -412,10 +339,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -426,10 +349,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -440,10 +359,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -460,10 +375,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -480,10 +391,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -493,10 +400,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -506,10 +409,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -525,10 +424,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -539,10 +434,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -553,10 +444,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -567,10 +454,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -581,10 +464,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -601,10 +480,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DISPER
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -614,10 +489,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DISPER
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -627,10 +498,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DISPER
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -640,10 +507,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DISPER
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -659,10 +522,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : HABSUI
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -672,10 +531,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : HABSUI
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -685,10 +540,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : HABSUI
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -698,10 +549,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : HABSUI
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -717,10 +564,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -730,10 +573,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -743,10 +582,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -762,10 +597,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -776,10 +607,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -790,10 +617,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -810,10 +633,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -825,10 +644,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -840,10 +655,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -855,10 +666,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -872,10 +679,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -894,10 +697,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DROUGH
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -907,10 +706,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DROUGH
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -920,10 +715,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DROUGH
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -939,10 +730,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -952,10 +739,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -965,10 +748,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -984,10 +763,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -998,10 +773,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1012,10 +783,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1026,10 +793,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1042,10 +805,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1063,10 +822,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1076,10 +831,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1089,10 +840,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1108,10 +855,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1122,10 +865,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1136,10 +875,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1156,10 +891,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1171,10 +902,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1186,10 +913,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1201,10 +924,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1218,10 +937,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1240,10 +955,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1256,10 +967,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1272,10 +979,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1288,10 +991,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1310,10 +1009,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1326,10 +1021,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1343,10 +1034,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1366,10 +1053,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1382,10 +1065,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1399,10 +1078,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1422,10 +1097,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1439,10 +1110,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1458,10 +1125,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1481,10 +1144,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1498,10 +1157,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1516,10 +1171,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1540,10 +1191,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1557,10 +1204,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1574,10 +1217,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1597,10 +1236,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1615,10 +1250,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1635,10 +1266,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1659,10 +1286,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1677,10 +1300,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1695,10 +1314,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1719,10 +1334,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1737,10 +1348,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1756,10 +1363,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1777,10 +1380,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1798,10 +1397,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1824,10 +1419,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1843,10 +1434,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1864,10 +1451,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1889,10 +1472,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1908,10 +1487,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1927,10 +1502,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1952,10 +1523,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1972,10 +1539,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -1992,10 +1555,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.simul_duration = 100
-                                                , required.seeding_duration = 100
-                                                , required.seeding_timestep = 100
-                                                , required.seeding_input = 100
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
@@ -2022,10 +1581,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario clas
                                                   , opt.no_CPU = "a"
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000)
@@ -2035,10 +1590,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario clas
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000)
@@ -2047,10 +1598,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario clas
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000)
@@ -2069,10 +1616,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2087,10 +1630,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2105,10 +1644,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2122,10 +1657,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2139,10 +1670,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2158,10 +1685,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2193,10 +1716,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2227,10 +1746,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : warning round
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000.5
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000)
@@ -2240,10 +1755,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : warning round
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000.5
                                                   , required.max_abund_high = 9000)
@@ -2253,10 +1764,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : warning round
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000.5)
@@ -2266,10 +1773,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : warning round
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
@@ -2282,10 +1785,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : warning round
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.simul_duration = 100
-                                                  , required.seeding_duration = 100
-                                                  , required.seeding_timestep = 100
-                                                  , required.seeding_input = 100
                                                   , required.max_abund_low = 3000
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000

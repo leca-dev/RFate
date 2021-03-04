@@ -15,6 +15,7 @@ PRE_FATE.params_globalParameters(
   required.seeding_duration = 300,
   required.seeding_timestep = 1,
   required.seeding_input = 100,
+  required.potential_fecundity = 100,
   required.max_abund_low,
   required.max_abund_medium,
   required.max_abund_high,
@@ -86,14 +87,20 @@ is not over (\emph{in years})}
 of seeds attributed to each PFG at each time step, and until the seeding 
 duration is not over}
 
+\item{required.potential_fecundity}{an \code{integer} corresponding to the 
+maximum number of seeds produced each year by a PFG (it can also be 
+specified within PFG succession files (see 
+\href{PRE_FATE.params_PFGsuccession.html#details}{\code{PRE_FATE.params_PFGsuccession}})
+otherwise this value will be used)}
+
 \item{required.max_abund_low}{an \code{integer} in the order of 
-\code{1 000} to rescale abundance values of small PFG}
+\code{1 000} to rescale abundance values of tall PFG}
 
 \item{required.max_abund_medium}{an \code{integer} in the order of 
 \code{1 000} to rescale abundance values of intermediate PFG}
 
 \item{required.max_abund_high}{an \code{integer} in the order of 
-\code{1 000} to rescale abundance values of tall PFG}
+\code{1 000} to rescale abundance values of small PFG}
 
 \item{doLight}{default \code{FALSE}. \cr If \code{TRUE}, light interaction 
 is activated in the \code{FATE} simulation, and associated parameters are 
@@ -268,6 +275,7 @@ parameters :
   \item SEEDING_DURATION
   \item SEEDING_TIMESTEP
   \item SEEDING_INPUT
+  \item POTENTIAL_FECUNDITY
   \item MAX_ABUND_LOW
   \item MAX_ABUND_MEDIUM 
   \item MAX_ABUND_HIGH \cr \cr
@@ -367,6 +375,28 @@ define general characteristics of the simulation :
     \item{no_STRATA}{the number of height strata that will be used into the 
     succession module. \cr This number should match with the maximum number 
     of strata possible defined into the PFG \file{SUCC} files.}
+  }
+  }
+  \item{Abundance equilibrium}{ \cr
+  \describe{
+    \item{potential_fecundity}{the maximum number of seeds produced each 
+    year by each PFG in optimal conditions (meaning with its abundance of 
+    mature individuals reaching its maximum abundance, defined through 
+    \code{max_abund} parameter within succession file (see 
+    \code{\link{PRE_FATE.params_PFGsuccession}}) and corresponding to 
+    \code{max_abund_low}, \code{max_abund_medium} or \code{max_abund_high} 
+    defined here)}
+    \item{max_abund_low / medium / high}{abundance regulation thresholds for 
+    tall / intermediate / small PFG respectively within a pixel (\emph{in 
+    arbitrary abundance units})} \cr
+    Each PFG is assigned with one of these 3 values (see 
+    \code{\link{PRE_FATE.params_PFGsuccession}}) to be a broad proxy of the 
+    amount of space it can occupy within a pixel (herbaceous should be more 
+    numerous than phanerophytes). These thresholds help regulate the PFG 
+    fecundity :
+    \deqn{fecundity = \frac{matAbund}{MaxAbund} * \text{required.potential_fecundity}}
+    and recruitment happens only if :
+    \deqn{totAbund < MaxAbund * (1 + ImmSize)}
   }
   }
   \item{Simulation timing}{ \cr
@@ -699,6 +729,7 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                  , required.seeding_duration = 50
                                  , required.seeding_timestep = 1
                                  , required.seeding_input = 100
+                                 , required.potential_fecundity = 100
                                  , required.max_abund_low = 3000
                                  , required.max_abund_medium = 5000
                                  , required.max_abund_high = 9000
@@ -718,6 +749,7 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                  , required.seeding_duration = 50
                                  , required.seeding_timestep = 1
                                  , required.seeding_input = 100
+                                 , required.potential_fecundity = 100
                                  , required.max_abund_low = 3000
                                  , required.max_abund_medium = 5000
                                  , required.max_abund_high = 9000

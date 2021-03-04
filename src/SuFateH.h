@@ -102,7 +102,6 @@ class SuFateH : public SuFate
 	 *
 	 *\param cellID : id of pixel this succession model is linked to
 	 * \param comm : community of the pixel
-	 * \param plantR : plant resources of the pixel
 	 * \param lightR : light resources of the pixel
 	 * \param soilR : soil resources of the pixel
 	 * \param seedRainMap : pointer to the simulation seeds rain maps
@@ -115,7 +114,7 @@ class SuFateH : public SuFate
 	 * \param envSuitRefMapPtr : pointer to SpatialStack class object containing
 	 * habitat reference maps (between 0 and 1) for each FG
 	 */
-	SuFateH(unsigned cellID, Community comm, double plantR, LightResources lightR, double soilR,
+	SuFateH(unsigned cellID, Community comm, LightResources lightR, double soilR,
 	IntMapPtr seedRainMap, IntMapPtr SeedProdMap, GSPPtr gspPtr,
 	DoubleMapPtr envSuitMapPtr, DoubleMapPtr envSuitRefMapPtr);
 

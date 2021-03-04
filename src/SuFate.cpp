@@ -29,7 +29,7 @@ using namespace std;
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 SuFate::SuFate() : m_CellID(0),
-m_Comm(Community()), m_PlantR(0.0), m_LightR(LightResources()), m_SoilR(0.0),
+m_Comm(Community()), m_LightR(LightResources()), m_SoilR(0.0),
 m_SeedRainMap(new SpatialStack<double,int>()), m_SeedProdMap(new SpatialStack<double,int>()),
 m_GSP(new GSP())
 {
@@ -37,16 +37,16 @@ m_GSP(new GSP())
 }
 
 SuFate::SuFate(unsigned cellID) : m_CellID(cellID),
-m_Comm(Community()), m_PlantR(0.0), m_LightR(LightResources()), m_SoilR(0.0),
+m_Comm(Community()), m_LightR(LightResources()), m_SoilR(0.0),
 m_SeedRainMap(new SpatialStack<double,int>()), m_SeedProdMap(new SpatialStack<double,int>()),
 m_GSP(new GSP())
 {
 	/* Nothing to do */
 }
 
-SuFate::SuFate(unsigned cellID, Community comm, double plantR, LightResources lightR, double soilR,
+SuFate::SuFate(unsigned cellID, Community comm, LightResources lightR, double soilR,
 IntMapPtr seedRainMap, IntMapPtr seedProdMap, GSPPtr gspPtr) : m_CellID(cellID),
-m_Comm(comm), m_PlantR(plantR), m_LightR(lightR), m_SoilR(soilR),
+m_Comm(comm), m_LightR(lightR), m_SoilR(soilR),
 m_SeedRainMap(seedRainMap), m_SeedProdMap(seedProdMap),
 m_GSP(gspPtr)
 {
@@ -68,7 +68,6 @@ SuFate::~SuFate()
 
 const unsigned SuFate::getCellID() const { return m_CellID; }
 const Community SuFate::getCommunity() const { return m_Comm; }
-double SuFate::getPlantResources() { return m_PlantR; }
 LightResources SuFate::getLightResources() { return m_LightR; }
 double SuFate::getSoilResources() { return m_SoilR; }
 SpatialStack<double, int> SuFate::getSeedRain() { return *m_SeedRainMap; }
@@ -86,7 +85,6 @@ int* SuFate::getSeedProd_(unsigned fg) { return &( (*m_SeedProdMap)( m_CellID, f
 GSPPtr SuFate::getGSP_() { return m_GSP; }
 
 void SuFate::setCommunity(const Community comm) { m_Comm.setFuncGroupList(comm.getFuncGroupList()); }
-void SuFate::setPlantResources(double plantR) { m_PlantR = plantR; }
 void SuFate::setLightResources(const LightResources lightR) { m_LightR.setResourceList(lightR.getResourceList()); }
 void SuFate::setSoilResources(double soilR) { m_SoilR = soilR; }
 void SuFate::setSeedRain(unsigned fg, int seedRain) { m_SeedRainMap->setValue(m_CellID, fg, seedRain); }
@@ -119,9 +117,6 @@ void SuFate::show()
  	{
  		logg.debug(" ", (*m_SeedProdMap)(m_CellID, i));  // TODO : make a method somewhere
  	}
- 	
- 	/* print plant conditions */
- 	logg.debug("Plant resources = ", m_PlantR);
 
  	/* print light condition */
  	m_LightR.show();
@@ -141,21 +136,7 @@ void SuFate::show()
 
 void SuFate::CalculateEnvironment()
 {
-  /* calculate PFG WM MaxAbund of the pixel */
-  int noFG = int(m_Comm.getFuncGroupList().size());
-  double plantR = 0.0;
-  for (int fg=0; fg < noFG; fg++)
-  {
-    if (m_Comm.getNoCohort(fg) > 0)
-    {
-      FGPtr FGparams = m_Comm.getFuncGroup_(fg)->getFGparams_();
-      plantR += m_GSP->AbundToInt(FGparams->getMaxAbund()) * (1 + FGparams->getImmSize());
-    }
-  }
-  if (plantR == 0.0) plantR = m_GSP->getMaxAbundPixel();
-  setPlantResources(plantR);
-  
-  
+
   /* if light and/or soil interaction, calculate abundances per stratum */
 	if (m_GSP->getDoLightInteraction() || m_GSP->getDoSoilInteraction())
 	{
@@ -279,10 +260,10 @@ void SuFate::CalculateEnvironment()
 			int XAbove = 0;
 			for (int Stm = (m_GSP->getNoStrata() - 1); Stm >= 0; Stm--) /* resource availabilities */
 			{
-				if (XAbove < m_GSP->getLightThreshMedium() * m_GSP->getMaxAbundPixel())
+				if (XAbove < m_GSP->getLightThreshMedium())
 				{
 					m_LightR.setResource(Stm,RHigh);
-				} else if (XAbove < m_GSP->getLightThreshLow() * m_GSP->getMaxAbundPixel())
+				} else if (XAbove < m_GSP->getLightThreshLow())
 				{
 					m_LightR.setResource(Stm,RMedium);
 				} else
@@ -453,24 +434,17 @@ int SuFate::getLifeSpan(int fg)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-int SuFate::getMaxAbund(int fg)
-{
-  return ceil( 1.0 * m_GSP->getMaxAbundPixel() * 
-               m_GSP->AbundToInt(m_Comm.getFuncGroup_(fg)->getFGparams_()->getMaxAbund())  / m_PlantR );
-}
-
-/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-
 double SuFate::calcFecund(int fg)
 {
 	FuncGroupPtr FuncG = m_Comm.getFuncGroup_(fg);
 	FGPtr FGparams = FuncG->getFGparams_();
 
-	double matAbund = 0;
+	double matAbund = 0.0;
 	/* get mature Abundance */
 	if (this->getMatTime(fg) < this->getLifeSpan(fg))
 	{
-	  matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /  this->getMaxAbund(fg);
+	  matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /
+	    m_GSP->AbundToInt(FGparams->getMaxAbund());
 	}
 	return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
 }
@@ -657,8 +631,8 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		{
 			// do recruitment only if abundance is < to max abund * (1 + ImmSize)
 			double totAbund = FuncG->totalNumAbund( 1, this->getLifeSpan(fg) );
-		  //if (totAbund < (FGparams->getMaxAbund() * (1 + FGparams->getImmSize())))
-		  if (totAbund < (this->getMaxAbund(fg) * (1 + FGparams->getImmSize())))
+		  double totMaxAbund = 1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund()) * (1 + FGparams->getImmSize());
+		  if (totAbund < totMaxAbund)
 			{
 				double envRecruit = getEnvRecrRate(fg);
 				if (isDrought[fg]){ envRecruit = 0.0; }

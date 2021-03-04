@@ -212,6 +212,7 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
   required.seeding_duration <span class='op'>=</span> <span class='fl'>300</span>,
   required.seeding_timestep <span class='op'>=</span> <span class='fl'>1</span>,
   required.seeding_input <span class='op'>=</span> <span class='fl'>100</span>,
+  required.potential_fecundity <span class='op'>=</span> <span class='fl'>100</span>,
   <span class='va'>required.max_abund_low</span>,
   <span class='va'>required.max_abund_medium</span>,
   <span class='va'>required.max_abund_high</span>,
@@ -304,9 +305,17 @@ of seeds attributed to each PFG at each time step, and until the seeding
 duration is not over</p></td>
     </tr>
     <tr>
+      <th>required.potential_fecundity</th>
+      <td><p>an <code>integer</code> corresponding to the 
+maximum number of seeds produced each year by a PFG (it can also be 
+specified within PFG succession files (see 
+<a href='PRE_FATE.params_PFGsuccession.html#details'><code>PRE_FATE.params_PFGsuccession</code></a>)
+otherwise this value will be used)</p></td>
+    </tr>
+    <tr>
       <th>required.max_abund_low</th>
       <td><p>an <code>integer</code> in the order of 
-<code>1 000</code> to rescale abundance values of small PFG</p></td>
+<code>1 000</code> to rescale abundance values of tall PFG</p></td>
     </tr>
     <tr>
       <th>required.max_abund_medium</th>
@@ -316,7 +325,7 @@ duration is not over</p></td>
     <tr>
       <th>required.max_abund_high</th>
       <td><p>an <code>integer</code> in the order of 
-<code>1 000</code> to rescale abundance values of tall PFG</p></td>
+<code>1 000</code> to rescale abundance values of small PFG</p></td>
     </tr>
     <tr>
       <th>doLight</th>
@@ -560,6 +569,7 @@ parameters :</p>
 <li><p>SEEDING_DURATION</p></li>
 <li><p>SEEDING_TIMESTEP</p></li>
 <li><p>SEEDING_INPUT</p></li>
+<li><p>POTENTIAL_FECUNDITY</p></li>
 <li><p>MAX_ABUND_LOW</p></li>
 <li><p>MAX_ABUND_MEDIUM</p></li>
 <li><p>MAX_ABUND_HIGH <br /> <br /></p></li>
@@ -647,6 +657,26 @@ define general characteristics of the simulation :</p>
     <dt>no_STRATA</dt><dd><p>the number of height strata that will be used into the 
     succession module. <br /> This number should match with the maximum number 
     of strata possible defined into the PFG <code class="file">SUCC</code> files.</p></dd></dl></p></dd>
+  <dt>Abundance equilibrium</dt><dd><p><br />
+  <dl>
+    <dt>potential_fecundity</dt><dd><p>the maximum number of seeds produced each 
+    year by each PFG in optimal conditions (meaning with its abundance of 
+    mature individuals reaching its maximum abundance, defined through 
+    <code>max_abund</code> parameter within succession file (see 
+    <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code>) and corresponding to 
+    <code>max_abund_low</code>, <code>max_abund_medium</code> or <code>max_abund_high</code> 
+    defined here)</p></dd>
+    <dt>max_abund_low / medium / high</dt><dd><p>abundance regulation thresholds for 
+    tall / intermediate / small PFG respectively within a pixel (<em>in 
+    arbitrary abundance units</em>)</p></dd> 
+    Each PFG is assigned with one of these 3 values (see 
+    <a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a>) to be a broad proxy of the 
+    amount of space it can occupy within a pixel (herbaceous should be more 
+    numerous than phanerophytes). These thresholds help regulate the PFG 
+    fecundity :
+    fecundity = \frac{matAbund}{MaxAbund} * \text{required.potential_fecundity}
+    and recruitment happens only if :
+    totAbund &lt; MaxAbund * (1 + ImmSize)</dl></p></dd>
   <dt>Simulation timing</dt><dd><p><br />
   <dl>
     <dt>simul_duration</dt><dd><p>the duration of simulation (<em>in years</em>)</p></dd>
@@ -963,6 +993,7 @@ file, and if so, some additional parameters will be required :</p>
                                  , required.seeding_duration <span class='op'>=</span> <span class='fl'>50</span>
                                  , required.seeding_timestep <span class='op'>=</span> <span class='fl'>1</span>
                                  , required.seeding_input <span class='op'>=</span> <span class='fl'>100</span>
+                                 , required.potential_fecundity <span class='op'>=</span> <span class='fl'>100</span>
                                  , required.max_abund_low <span class='op'>=</span> <span class='fl'>3000</span>
                                  , required.max_abund_medium <span class='op'>=</span> <span class='fl'>5000</span>
                                  , required.max_abund_high <span class='op'>=</span> <span class='fl'>9000</span>
@@ -982,6 +1013,7 @@ file, and if so, some additional parameters will be required :</p>
                                  , required.seeding_duration <span class='op'>=</span> <span class='fl'>50</span>
                                  , required.seeding_timestep <span class='op'>=</span> <span class='fl'>1</span>
                                  , required.seeding_input <span class='op'>=</span> <span class='fl'>100</span>
+                                 , required.potential_fecundity <span class='op'>=</span> <span class='fl'>100</span>
                                  , required.max_abund_low <span class='op'>=</span> <span class='fl'>3000</span>
                                  , required.max_abund_medium <span class='op'>=</span> <span class='fl'>5000</span>
                                  , required.max_abund_high <span class='op'>=</span> <span class='fl'>9000</span>

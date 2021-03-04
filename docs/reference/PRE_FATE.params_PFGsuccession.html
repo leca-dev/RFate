@@ -270,7 +270,7 @@ parameters :</p>
   <dt>SEED_DORMANCY</dt><dd><p>are the seeds dormant or not <em>(<code>0</code>: No 
   <code>1</code>: Yes)</em></p></dd>
   <dt>POTENTIAL_<br /> FECUNDITY</dt><dd><p>maximum number of seeds produced by the 
-  PFG <br /> <em>(set by default to <code>100</code>)</em></p></dd>
+  PFG</p></dd>
   <dt>IS_ALIEN</dt><dd><p>is the PFG an alien or not <em>(<code>0</code>: No <code>1</code>: 
   Yes)</em></p></dd>
   <dt>FLAMMABILITY</dt><dd><p>how easily the PFG burns <em>(<code>numeric</code>)</em>
@@ -300,7 +300,8 @@ each PFG in order to set up this life cycle :</p>
   <dt>(<em>max_abundance</em>)</dt><dd><p>the maximum abundance of mature PFG in 
   favorable conditions</p></dd>
   <dt>(<em>potential_fecundity</em>)</dt><dd><p>the maximum number of seeds produced 
-  by the PFG</p></dd>
+  by the PFG <br /> (otherwise the value is given within the global parameter 
+  file, see <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>)</p></dd>
   <dt>(<em>immature_size</em>)</dt><dd><p>the relative size of immature versus mature 
   plants</p></dd>
   <dt>(<em>is_alien</em>)</dt><dd><p>if the PFG is to be considered as an alien 
@@ -386,8 +387,9 @@ all PFG :</p>
   <br /> <br />
   Two methods to define this number are available :
   <ul>
-<li><p>from <strong>predefined rules</strong> : same value for all PFG 
-    (<code>100%</code>)</p></li>
+<li><p>from <strong>predefined rules</strong> : same value for all PFG, given 
+    within the global parameter file <br /> (see 
+    <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>)</p></li>
 <li><p>from <strong>user data</strong> : <br />
       <em>with the values contained within the <code>potential_fecundity</code> 
       column, if provided <br /> <br /></em></p></li>

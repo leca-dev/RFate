@@ -44,7 +44,8 @@
 ##'   \item{(\emph{max_abundance})}{the maximum abundance of mature PFG in 
 ##'   favorable conditions}
 ##'   \item{(\emph{potential_fecundity})}{the maximum number of seeds produced 
-##'   by the PFG}
+##'   by the PFG \cr (otherwise the value is given within the global parameter 
+##'   file, see \code{\link{PRE_FATE.params_globalParameters}})}
 ##'   \item{(\emph{immature_size})}{the relative size of immature versus mature 
 ##'   plants}
 ##'   \item{(\emph{is_alien})}{if the PFG is to be considered as an alien 
@@ -143,8 +144,9 @@
 ##'   \cr \cr
 ##'   Two methods to define this number are available :
 ##'   \itemize{
-##'     \item from \strong{predefined rules} : same value for all PFG 
-##'     (\code{100\%})
+##'     \item from \strong{predefined rules} : same value for all PFG, given 
+##'     within the global parameter file \cr (see 
+##'     \code{\link{PRE_FATE.params_globalParameters}})
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{potential_fecundity} 
 ##'       column, if provided \cr \cr}
@@ -182,7 +184,7 @@
 ##'   \item{SEED_DORMANCY}{are the seeds dormant or not \emph{(\code{0}: No 
 ##'   \code{1}: Yes)}}
 ##'   \item{POTENTIAL_\cr FECUNDITY}{maximum number of seeds produced by the 
-##'   PFG \cr \emph{(set by default to \code{100})}}
+##'   PFG}
 ##'   \item{IS_ALIEN}{is the PFG an alien or not \emph{(\code{0}: No \code{1}: 
 ##'   Yes)}}
 ##'   \item{FLAMMABILITY}{how easily the PFG burns \emph{(\code{numeric})}
@@ -612,7 +614,7 @@ PRE_FATE.params_PFGsuccession = function(
     POTENTIAL_FECUNDITY = mat.PFG.succ$potential_fecundity
   } else
   {
-    POTENTIAL_FECUNDITY = rep(100, no.PFG)
+    POTENTIAL_FECUNDITY = rep("", no.PFG)
   }
   
   #############################################################################
