@@ -43,6 +43,11 @@ test_that("PRE_FATE.speciesDistance gives error with wrong data : mat.traits", {
   ## TEST mat.traits$species : different values
   expect_error(suppressWarnings(PRE_FATE.speciesDistance(mat.traits = data.frame(species = c(1,1), 2, 3)))
                , "`mat.traits$species` must contain different values", fixed = TRUE)
+  
+  ## TEST mat.traits$GROUP : correct values
+  expect_error(PRE_FATE.speciesDistance(mat.traits = data.frame(species = c("A", "B"), GROUP = c(1,""), 2, 3))
+               , "`mat.traits$GROUP` must contain a character value of length > 0"
+               , fixed = TRUE)
 })
 
 ## INPUTS
@@ -50,11 +55,11 @@ test_that("PRE_FATE.speciesDistance gives error with wrong data : mat.overlap", 
   
   ## TEST mat.overlap : correct object
   expect_error(PRE_FATE.speciesDistance(mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3))
-               , "`mat.overlap` must be either a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"
+               , "`mat.overlap` must be either a data.frame or a similarity distance object (`dist`, `niolap`, `matrix`)"
                , fixed = TRUE)
   expect_error(PRE_FATE.speciesDistance(mat.traits = data.frame(species = c("A", "B"), GROUP = 1, 2, 3)
                                         , mat.overlap = 1)
-               , "`mat.overlap` must be either a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"
+               , "`mat.overlap` must be either a data.frame or a similarity distance object (`dist`, `niolap`, `matrix`)"
                , fixed = TRUE)
   
   ## TEST mat.overlap : correct number of rows and columns

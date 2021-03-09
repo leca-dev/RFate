@@ -26,7 +26,7 @@
 ##'     \item{\code{species}}{the ID of each studied species}
 ##'     \item{\code{raster}}{path to raster file with species distribution}
 ##'   }
-##'   \item a dissimilarity structure representing the niche overlap between 
+##'   \item a similarity structure representing the niche overlap between 
 ##'   each pair of species. \cr It can be a \code{dist} object, a 
 ##'   \code{niolap} object, or simply a \code{matrix}.
 ##' }
@@ -192,12 +192,13 @@ PRE_FATE.speciesDistance = function(mat.traits
     mat.traits$species = as.character(mat.traits$species)
     mat.traits$GROUP = as.character(mat.traits$GROUP)
     .testParam_samevalues.m("mat.traits$species", mat.traits$species)
+    .testParam_notChar.m("mat.traits$GROUP", mat.traits$GROUP)
   }
   ## CHECK parameter mat.overlap
   if(missing(mat.overlap) || is.null(mat.overlap))
   {
     stop(paste0("Wrong type of data!\n `mat.overlap` must be either "
-                , "a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"))
+                , "a data.frame or a similarity distance object (`dist`, `niolap`, `matrix`)"))
   } else
   {
     if (!.testParam_notInClass(mat.overlap, c("dist", "niolap", "matrix"), FALSE))
@@ -243,7 +244,7 @@ PRE_FATE.speciesDistance = function(mat.traits
     } else
     {
       stop(paste0("Wrong type of data!\n `mat.overlap` must be either "
-                  , "a data.frame or a dissimilarity object (`dist`, `niolap`, `matrix`)"))
+                  , "a data.frame or a similarity distance object (`dist`, `niolap`, `matrix`)"))
     }
   }
   ## CHECK parameter opt
@@ -324,13 +325,30 @@ PRE_FATE.speciesDistance = function(mat.traits
   cat("\n  Number of species : ", length(names_species.overlap))
   cat("\n")
   
+  ## Remove species with no overlap
+  no_NA_values = apply(mat.overlap, 2, function(x) sum(is.na(x)))
+  ind_NA_values = which(no_NA_values >= nrow(mat.overlap) - 1)
+  if (length(ind_NA_values) > 0)
+  {
+    warning(paste0("Missing data!\n `mat.overlap` contains some species with no overlap values : "
+                   , paste0(colnames(mat.overlap)[ind_NA_values], collapse = ", ")
+                   , "\nThese species will not be taken into account ! \n\n"
+    ))
+    mat.overlap = mat.overlap[-ind_NA_values, -ind_NA_values]
+    names_species.overlap = sort(unique(colnames(mat.overlap)))
+    if (nrow(mat.overlap) <= 1)
+    {
+      stop("Wrong dimension(s) of data!\n `mat.overlap` does not have the appropriate number of rows (>=2)")
+    }
+  }
+  
   ## SPLIT INFORMATION by species type
   mat.overlap.split = lapply(species.split, function(x) {
     ind = which(rownames(mat.overlap) %in% x)
     return(mat.overlap[ind, ind])
   })
   
-  ## Transform into similarity distances (instead of dissimilarity)
+  ## Transform into dissimilarity distances (instead of similarity)
   mat.overlap.split = lapply(mat.overlap.split, function(x) {
     return(as.dist(1 - x)) ## 1- (x/max(x[upper.tri(x)]))
   })

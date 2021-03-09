@@ -30,7 +30,7 @@ divide the species into data subsets (see
     \item{\code{species}}{the ID of each studied species}
     \item{\code{raster}}{path to raster file with species distribution}
   }
-  \item a dissimilarity structure representing the niche overlap between 
+  \item a similarity structure representing the niche overlap between 
   each pair of species. \cr It can be a \code{dist} object, a 
   \code{niolap} object, or simply a \code{matrix}.
 }}
