@@ -272,7 +272,7 @@ test_that("PRE_FATE.selectDominant right results", {
                                  , opt.doPlot = FALSE)
   
   expect_output(str(tmp1), "List")
-  expect_equal(length(tmp1), 2)
+  expect_equal(length(tmp1), 4)
   expect_output(str(tmp1$tab.rules), "data.frame")
   expect_output(str(tmp1$tab.rules), "7 variables")
   
@@ -282,7 +282,7 @@ test_that("PRE_FATE.selectDominant right results", {
                                  , opt.doPlot = FALSE)
   
   expect_output(str(tmp2), "List")
-  expect_equal(length(tmp2), 2)
+  expect_equal(length(tmp2), 4)
   expect_output(str(tmp2$tab.rules), "data.frame")
   expect_output(str(tmp2$tab.rules), "7 variables")
   
@@ -292,7 +292,7 @@ test_that("PRE_FATE.selectDominant right results", {
                                  , opt.doPlot = FALSE)
   
   expect_output(str(tmp3), "List")
-  expect_equal(length(tmp3), 2)
+  expect_equal(length(tmp3), 4)
   expect_output(str(tmp3$tab.rules), "data.frame")
   expect_output(str(tmp3$tab.rules), "9 variables")
   

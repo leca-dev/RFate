@@ -143,12 +143,13 @@
 ##' but not meeting criterion A1 are also considered as "\emph{Not selected}".
 ##' 
 ##'   
-##' @return A \code{list} containing one \code{vector}, two \code{data.frame} 
-##' objects with the following columns, and up to five \code{ggplot2} objects :
+##' @return A \code{list} containing one \code{vector}, four or five 
+##' \code{data.frame} objects with the following columns, and up to five 
+##' \code{ggplot2} objects :
 ##' 
 ##' \describe{
 ##'   \item{species.selected}{the names of the selected species}
-##'   \item{tab.rules}{ \cr
+##'   \item{tab.rules}{
 ##'     \describe{
 ##'       \item{\code{A1,A2,B1,B2, hab}}{if the rule has been used, if the 
 ##'       species fullfills this condition or not}
@@ -168,6 +169,10 @@
 ##'       \item{\code{rep}}{the repetition ID}
 ##'     }
 ##'   }
+##'   \item{tab.dom.AB}{table containing sums of abundances for all selected 
+##'   species (sites in rows, species in columns)}
+##'   \item{tab.dom.PA}{table containing counts of presences for all selected 
+##'   species (sites in rows, species in columns)}
 ##'   \item{plot.A}{\code{ggplot2} object, representing the selection of 
 ##'   species according to rules A1 and A2}
 ##'   \item{plot.B}{\code{ggplot2} object, representing the selection of 
@@ -841,6 +846,51 @@ PRE_FATE.selectDominant = function(mat.observations
     cat("\n")
   }
   
+  #############################################################################
+  ## BUILD SITES x SPECIES MATRIX FOR DOMINANT SPECIES ONLY
+  #############################################################################
+  
+  tab.dom.AB = tapply(X = sel.obs$abund
+                      , INDEX = list(sel.obs$sites, sel.obs$species)
+                      , FUN = sum)
+  tab.dom.PA = tapply(X = sel.obs$abund
+                      , INDEX = list(sel.obs$sites, sel.obs$species)
+                      , FUN = length)
+  
+  ## Change sum of abundBB and NA to 1 in tab.dom.PA
+  tab.dom.PA[which(tab.dom.PA[] > 0)] = 1
+  
+  ## Change NA into real 0 if information about sites was given
+  # for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])
+  # {
+  #   ind = which(rownames(tab.dom.AB) == si)
+  #   tab.dom.AB[ind, which(is.na(tab.dom.AB[ind, ]))] = 0
+  #   ind = which(rownames(tab.dom.PA) == si)
+  #   tab.dom.PA[ind, which(is.na(tab.dom.PA[ind, ]))] = 0
+  # }
+  
+  
+  write.csv(tab.dom.AB
+            , file = paste0("PRE_FATE_DOMINANT_TABLE_sitesXspecies_AB"
+                            , end_filename
+                            , ".csv")
+            , row.names = FALSE)
+  write.csv(tab.dom.PA
+            , file = paste0("PRE_FATE_DOMINANT_TABLE_sitesXspecies_PA"
+                            , end_filename
+                            , ".csv")
+            , row.names = FALSE)
+  
+  
+  message(paste0("\n The output files \n"
+                 , " > PRE_FATE_DOMINANT_TABLE_sitesXspecies_AB"
+                 , end_filename
+                 , ".csv \n"
+                 , " > PRE_FATE_DOMINANT_TABLE_sitesXspecies_PA"
+                 , end_filename
+                 , ".csv \n"
+                 , "have been successfully created !\n"))
+  
   
   #############################################################################
   ## GRAPHICS TO HELP ADJUST PARAMETERS TO SELECT DOMINANT SPECIES
@@ -1497,6 +1547,8 @@ PRE_FATE.selectDominant = function(mat.observations
   if (opt.doRobustness) {
     results$tab.robustness = RULES.robustness
   }
+  results$tab.dom.AB = tab.dom.AB
+  results$tab.dom.PA = tab.dom.PA
   if (opt.doPlot) {
     if (doRuleA && exists("pp_tot")) results$plot.A = pp_tot
     if (doRuleB && exists("pp_B")) results$plot.B = list(abs = pp_B, rel = pp_B.rel)

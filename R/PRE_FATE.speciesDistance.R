@@ -31,6 +31,10 @@
 ##'   \code{niolap} object, or simply a \code{matrix}.
 ##' }
 ##' 
+##' @param opt.weights (\emph{optional}) default \code{NULL}. \cr 
+##' A \code{vector} of two \code{double} (between \code{0} and \code{1}) 
+##' corresponding to the weights for traits and overlap distances 
+##' respectively. They must sum up to \code{1}.
 ##' @param opt.maxPercent.NA (\emph{optional}) default \code{0}. \cr Maximum 
 ##' percentage of missing values (\code{NA}) allowed for each trait (between 
 ##' \code{0} and \code{1})
@@ -162,6 +166,7 @@
 
 PRE_FATE.speciesDistance = function(mat.traits
                                     , mat.overlap
+                                    , opt.weights = NULL
                                     , opt.maxPercent.NA = 0
                                     , opt.maxPercent.similarSpecies = 0.25
                                     , opt.min.sd = 0.3
@@ -246,8 +251,69 @@ PRE_FATE.speciesDistance = function(mat.traits
       stop(paste0("Wrong type of data!\n `mat.overlap` must be either "
                   , "a data.frame or a similarity distance object (`dist`, `niolap`, `matrix`)"))
     }
+    
+    # {
+    #   ## Calculate PCA for all environment
+    #   pca.env = dudi.pca(pts.var[, c("bio1", "bio12", "slope", "dem", "CESBIO2018")], scannf = F, nf = 2)
+    #   scores.env = pca.env$li
+    #   
+    #   ## Calculate overlap matrix
+    #   grid.list = foreach(ii = 1:ncol(tab.dom.PA)) %do%
+    #     {
+    #       cat(" ", ii)
+    #       si.01 = rownames(tab.dom.PA)[which(!is.na(tab.dom.PA[, ii]))]
+    #       si.1 = rownames(tab.dom.PA)[which(tab.dom.PA[, ii] > 0)]
+    #       if (length(si.1) > 5)
+    #       {
+    #         ce.01 = sites$CELL[which(sites$sites %in% si.01)]
+    #         ce.1 = sites$CELL[which(sites$sites %in% si.1)]
+    #         ind.01 = which(pts.var$CELL %in% ce.01)
+    #         ind.1 = which(pts.var$CELL %in% ce.1)
+    #         scores.sp1.01 = suprow(pca.env, pts.var[ind.01, c("bio1", "bio12", "slope", "dem", "CESBIO2018")])$li
+    #         scores.sp1.1 = suprow(pca.env, pts.var[ind.1, c("bio1", "bio12", "slope", "dem", "CESBIO2018")])$li
+    #         grid.clim.sp1 = ecospat.grid.clim.dyn(glob = scores.env
+    #                                               , glob1 = scores.sp1.01
+    #                                               , sp = scores.sp1.1
+    #                                               , R = 100, th.sp = 0)
+    #         return(grid.clim.sp1)
+    #       } else { return(NULL) }
+    #     }
+    #   
+    #   n.sel = length(sp.SELECT$species.selected)
+    #   mat.overlap = matrix(NA, nrow = n.sel, ncol = n.sel
+    #                        , dimnames = list(sp.SELECT$species.selected, sp.SELECT$species.selected))
+    #   (mat.overlap[1:5, 1:5])
+    #   for (ii in 1:(n.sel-1))
+    #   {
+    #     cat(" ", ii)
+    #     
+    #     if (!is.null(grid.list[[ii]]))
+    #     {
+    #       for(jj in (ii+1):n.sel)
+    #       {
+    #         if (!is.null(grid.list[[jj]]))
+    #         {
+    #           res = ecospat::ecospat.niche.overlap(grid.list[[ii]], grid.list[[jj]], cor = TRUE)$D
+    #           mat.overlap[ii, jj] = res
+    #         }
+    #       }
+    #     }
+    #   }
+    # }
   }
   ## CHECK parameter opt
+  if (!.testParam_notDef(opt.weights))
+  {
+    if (length(opt.weights) != 2)
+    {
+      stop("Wrong type of data!\n `opt.weights` must contain 2 values summing up to 1")
+    }
+    .testParam_notBetween.m("opt.weights", opt.weights, 0, 1)
+    if (sum(opt.weights) != 1)
+    {
+      stop("Wrong type of data!\n `opt.weights` must contain 2 values summing up to 1")
+    }
+  }
   .testParam_notBetween.m("opt.maxPercent.NA", opt.maxPercent.NA, 0, 1)
   .testParam_notBetween.m("opt.maxPercent.similarSpecies", opt.maxPercent.similarSpecies, 0, 1)
   .testParam_notBetween.m("opt.min.sd", opt.min.sd, 0, 1)
@@ -587,7 +653,14 @@ PRE_FATE.speciesDistance = function(mat.traits
     tmp.gower = as.matrix(mat.species.gower.split[[x]])
     tmp.overlap = as.matrix(mat.overlap.split[[x]])
     n.traits = ncol(mat.traits.split[[x]])
-    mat = (tmp.overlap + n.traits * tmp.gower) / (n.traits + 1)
+    wei.traits = n.traits
+    wei.overlap = 1
+    if (!.testParam_notDef(opt.weights))
+    {
+      wei.traits = opt.weights[1]
+      wei.overlap = opt.weights[2]
+    }
+    mat = (wei.overlap * tmp.overlap + wei.traits * tmp.gower) / (wei.traits + wei.overlap)
     return(as.dist(mat)) 
   })
   names(mat.species.DIST) = names_groups

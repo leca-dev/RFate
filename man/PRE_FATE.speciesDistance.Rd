@@ -8,6 +8,7 @@ overlap}
 PRE_FATE.speciesDistance(
   mat.traits,
   mat.overlap,
+  opt.weights = NULL,
   opt.maxPercent.NA = 0,
   opt.maxPercent.similarSpecies = 0.25,
   opt.min.sd = 0.3
@@ -34,6 +35,11 @@ divide the species into data subsets (see
   each pair of species. \cr It can be a \code{dist} object, a 
   \code{niolap} object, or simply a \code{matrix}.
 }}
+
+\item{opt.weights}{(\emph{optional}) default \code{NULL}. \cr 
+A \code{vector} of two \code{double} (between \code{0} and \code{1}) 
+corresponding to the weights for traits and overlap distances 
+respectively. They must sum up to \code{1}.}
 
 \item{opt.maxPercent.NA}{(\emph{optional}) default \code{0}. \cr Maximum 
 percentage of missing values (\code{NA}) allowed for each trait (between 

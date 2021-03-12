@@ -74,12 +74,13 @@ plot(s) will be processed, otherwise only the calculation and reorganization
 of outputs will occur, be saved and returned.}
 }
 \value{
-A \code{list} containing one \code{vector}, two \code{data.frame} 
-objects with the following columns, and up to five \code{ggplot2} objects :
+A \code{list} containing one \code{vector}, four or five 
+\code{data.frame} objects with the following columns, and up to five 
+\code{ggplot2} objects :
 
 \describe{
   \item{species.selected}{the names of the selected species}
-  \item{tab.rules}{ \cr
+  \item{tab.rules}{
     \describe{
       \item{\code{A1,A2,B1,B2, hab}}{if the rule has been used, if the 
       species fullfills this condition or not}
@@ -99,6 +100,10 @@ objects with the following columns, and up to five \code{ggplot2} objects :
       \item{\code{rep}}{the repetition ID}
     }
   }
+  \item{tab.dom.AB}{table containing sums of abundances for all selected 
+  species (sites in rows, species in columns)}
+  \item{tab.dom.PA}{table containing counts of presences for all selected 
+  species (sites in rows, species in columns)}
   \item{plot.A}{\code{ggplot2} object, representing the selection of 
   species according to rules A1 and A2}
   \item{plot.B}{\code{ggplot2} object, representing the selection of 

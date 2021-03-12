@@ -300,12 +300,12 @@ of outputs will occur, be saved and returned.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>list</code> containing one <code>vector</code>, two <code>data.frame</code> 
-objects with the following columns, and up to five <code>ggplot2</code> objects :</p>
+    <p>A <code>list</code> containing one <code>vector</code>, four or five 
+<code>data.frame</code> objects with the following columns, and up to five 
+<code>ggplot2</code> objects :</p>
 <dl>
   <dt>species.selected</dt><dd><p>the names of the selected species</p></dd>
-  <dt>tab.rules</dt><dd><p><br />
-    <dl>
+  <dt>tab.rules</dt><dd><p><dl>
       <dt><code>A1,A2,B1,B2, hab</code></dt><dd><p>if the rule has been used, if the 
       species fullfills this condition or not</p></dd>
       <dt><code>species</code></dt><dd><p>the concerned species</p></dd>
@@ -319,6 +319,10 @@ objects with the following columns, and up to five <code>ggplot2</code> objects 
       <code>sites</code>)</p></dd>
       <dt><code>percent</code></dt><dd><p>the concerned percentage of values extraction</p></dd>
       <dt><code>rep</code></dt><dd><p>the repetition ID</p></dd></dl></p></dd>
+  <dt>tab.dom.AB</dt><dd><p>table containing sums of abundances for all selected 
+  species (sites in rows, species in columns)</p></dd>
+  <dt>tab.dom.PA</dt><dd><p>table containing counts of presences for all selected 
+  species (sites in rows, species in columns)</p></dd>
   <dt>plot.A</dt><dd><p><code>ggplot2</code> object, representing the selection of 
   species according to rules A1 and A2</p></dd>
   <dt>plot.B</dt><dd><p><code>ggplot2</code> object, representing the selection of 
