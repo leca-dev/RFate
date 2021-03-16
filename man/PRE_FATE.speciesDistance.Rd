@@ -7,7 +7,8 @@ overlap}
 \usage{
 PRE_FATE.speciesDistance(
   mat.traits,
-  mat.overlap,
+  mat.overlap.option,
+  mat.overlap.object,
   opt.weights = NULL,
   opt.maxPercent.NA = 0,
   opt.maxPercent.similarSpecies = 0.25,
@@ -24,16 +25,30 @@ divide the species into data subsets (see
 \item{\code{...}}{one column for each functional trait}
 }}
 
-\item{mat.overlap}{two options :
+\item{mat.overlap.option}{a \code{string} corresponding to the way to 
+calculate the distance between species based on niche overlap (either 
+\code{PCA}, \code{raster} or \code{dist}, see 
+\href{PRE_FATE.speciesDistance#details}{\code{Details}})}
+
+\item{mat.overlap.object}{three options, depending on the value of 
+\code{mat.overlap.option} :
 \itemize{
-  \item a \code{data.frame} with 2 columns :
+  \item (\code{PCA} option) a \code{list} with 2 elements :
+  \describe{
+    \item{\code{tab.dom.PA}}{a \code{matrix} or \code{data.frame} with 
+    sites in rows and species in columns, containing either \code{NA}, 
+    \code{0} or \code{1},  (see \code{\link{PRE_FATE.selectDominant}})}
+    \item{\code{tab.env}}{a \code{matrix} or \code{data.frame} with 
+    sites in rows and environmental variables in columns}
+  }
+  \item (\code{raster} option) a \code{data.frame} with 2 columns :
   \describe{
     \item{\code{species}}{the ID of each studied species}
     \item{\code{raster}}{path to raster file with species distribution}
   }
-  \item a similarity structure representing the niche overlap between 
-  each pair of species. \cr It can be a \code{dist} object, a 
-  \code{niolap} object, or simply a \code{matrix}.
+  \item (\code{dist} option) a similarity structure representing the 
+  niche overlap between each pair of species. It can be a \code{dist} 
+  object, a \code{niolap} object, or simply a \code{matrix}.
 }}
 
 \item{opt.weights}{(\emph{optional}) default \code{NULL}. \cr 
@@ -53,12 +68,15 @@ allowed for each trait (between \code{0} and \code{1})}
 standard deviation allowed for each trait (trait unit)}
 }
 \value{
-A \code{dist} object corresponding to the distance between each pair 
-of species, or a \code{list} of \code{dist} objects, one for each
-\code{GROUP} value. \cr \cr
+A \code{list} of 3 \code{dist} objects (functional distances, 
+overlap distances, and combination of both according to the weights given 
+(or not) by the \code{opt.weights} parameter), each of them corresponding 
+to : the distance between each pair of species, or a \code{list} of 
+\code{dist} objects, one for each \code{GROUP} value. \cr \cr
 
-The information is written in \file{PRE_FATE_DOMINANT_speciesDistance.csv} 
-file (or if necessary, one file is created for each group).
+The information for the combination of both distances is written in 
+\file{PRE_FATE_DOMINANT_speciesDistance.csv} file (or if necessary, one 
+file is created for each group).
 }
 \description{
 This script is designed to create a distance matrix between 
@@ -96,7 +114,9 @@ based on two types of distance information :
   }
   \item{\strong{Niche overlap : }}{
   \itemize{
-    \item If a \code{data.frame} is given, the degree of niche overlap will 
+    \item If \code{PCA} option is selected, the degree of niche overlap will 
+    be computed using the \code{\link[ecospat.niche.overlap]{ecospat}}. 
+    \item If \code{raster} option is selected, the degree of niche overlap will 
     be computed using the \code{\link[phyloclim]{niche.overlap}}. \cr \cr \cr
   }
   }
@@ -105,8 +125,19 @@ based on two types of distance information :
 Functional distances and niche overlap informations are then 
 \strong{combined} according to the following formula :
 
-\deqn{\text{mat.DIST}_{sub-group} = \frac{[ \text{mat.OVERLAP}_{sub-group} +
-\text{mat.FUNCTIONAL}_{sub-group} * n_{traits} ]}{[ n_{traits} + 1 ]}}
+\deqn{\text{mat.DIST}_{sub-group} = \frac{[\text{wei.FUNC} * 
+\text{mat.FUNCTIONAL}_{sub-group} + \text{wei.OVER} * 
+\text{mat.OVERLAP}_{sub-group}]}{[ \text{wei.FUNC} + \text{wei.OVER} ]}}
+
+with :
+
+\deqn{\text{wei.FUNC} = \text{opt.weights}[1]}
+\deqn{\text{wei.OVER} = \text{opt.weights}[2]}
+
+if \code{opt.weights} is given, otherwise :
+
+\deqn{\text{wei.FUNC} = n_{traits}}
+\deqn{\text{wei.OVER} = 1}
 
 meaning that \strong{distance matrix obtained from functional information 
 is weighted by the number of traits used}.
@@ -161,6 +192,7 @@ str(sp.DIST)
 }
 \seealso{
 \code{\link[FD]{gowdis}},
+\code{\link[ecospat]{ecospat.niche.overlap}}
 \code{\link[phyloclim]{niche.overlap}}
 }
 \author{

@@ -850,6 +850,7 @@ PRE_FATE.selectDominant = function(mat.observations
   ## BUILD SITES x SPECIES MATRIX FOR DOMINANT SPECIES ONLY
   #############################################################################
   
+  ## Transform observations of selected species into sites x species tables
   tab.dom.AB = tapply(X = sel.obs$abund
                       , INDEX = list(sel.obs$sites, sel.obs$species)
                       , FUN = sum)
@@ -859,15 +860,6 @@ PRE_FATE.selectDominant = function(mat.observations
   
   ## Change sum of abundBB and NA to 1 in tab.dom.PA
   tab.dom.PA[which(tab.dom.PA[] > 0)] = 1
-  
-  ## Change NA into real 0 if information about sites was given
-  # for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])
-  # {
-  #   ind = which(rownames(tab.dom.AB) == si)
-  #   tab.dom.AB[ind, which(is.na(tab.dom.AB[ind, ]))] = 0
-  #   ind = which(rownames(tab.dom.PA) == si)
-  #   tab.dom.PA[ind, which(is.na(tab.dom.PA[ind, ]))] = 0
-  # }
   
   
   write.csv(tab.dom.AB

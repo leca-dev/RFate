@@ -49,7 +49,7 @@ Imports:
     ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
     reshape2, foreach, SPOT, data.table,
     raster, rgdal,
-    phyloclim, FD, fpc, clValid, ade4, PresenceAbsence, betapart,
+    phyloclim, FD, fpc, clValid, ade4, PresenceAbsence, betapart, ecospat,
     RColorBrewer, colorspace,
     ape, shiny,
     parallel, doParallel
