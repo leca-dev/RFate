@@ -443,10 +443,17 @@ double SuFate::calcFecund(int fg)
 	/* get mature Abundance */
 	if (this->getMatTime(fg) < this->getLifeSpan(fg))
 	{
-	  matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /
-	    m_GSP->AbundToInt(FGparams->getMaxAbund());
-	}
-	return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
+	  // matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /
+	  //   (1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund()));
+	  matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg));
+	 }
+	// if (matAbund > 0)
+	// {
+	//   cout << "PFG : " << fg << ", MAT ABUND : " << matAbund << endl;
+	//   cout << "PFG : " << fg << ", FECUND : " << min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg) << endl;
+	// }
+	// return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
+	return min(matAbund, 1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund())) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -631,7 +638,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		{
 			// do recruitment only if abundance is < to max abund * (1 + ImmSize)
 			double totAbund = FuncG->totalNumAbund( 1, this->getLifeSpan(fg) );
-		  double totMaxAbund = 1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund()) * (1 + FGparams->getImmSize());
+		  double totMaxAbund = (1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund())) * (1.0 + FGparams->getImmSize());
 		  if (totAbund < totMaxAbund)
 			{
 				double envRecruit = getEnvRecrRate(fg);
@@ -650,7 +657,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			setSeedProd(fg, 0.0);
 		} else
 		{
-			setSeedProd(fg, max(0.0, this->calcFecund(fg)));
+			setSeedProd(fg, (int)(max(0.0, this->calcFecund(fg))));
 		}
 	}
 }// end of SuFate::DoSuccessionPart2(...)
