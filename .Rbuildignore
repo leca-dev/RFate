@@ -10,3 +10,4 @@
 ^docs$
 ^windows$
 ^FATE_simulation$
+^data-raw$
