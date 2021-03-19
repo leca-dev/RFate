@@ -74,11 +74,17 @@ class GSP
 	int m_MaxAbundMedium; /*!< Maximum abundance or space a PFG can occupy : medium value */
 	int m_MaxAbundHigh; /*!< Maximum abundance or space a PFG can occupy : high value */
 
+  /* Saving parameters */
+  bool m_DoSavingPFGStratum; /*!< Unable or not the saving of abundance maps per PFG per stratum */
+  bool m_DoSavingPFG; /*!< Unable or not the saving of abundance maps per PFG (sum over strata) */
+  bool m_DoSavingStratum; /*!< Unable or not the saving of abundance maps per stratum (sum over PFG) */
+
 	/* Light interaction module */
 	bool m_DoLightInteraction; /*!< Unable or not Light interaction module */
 	int m_LightThreshLow; /*!< Threshold to transform PFG abundances into Low light resources */
 	int m_LightThreshMedium; /*!< Threshold to transform PFG abundances into Medium light resources */
-
+	bool m_LightSaving; /*!< Unable or not the saving of light resources maps */
+	
 	/* Habitat suitability module */
 	bool m_DoHabSuitability; /*!< Unable or not habitat suitability module */
 	int m_HabSuitMode; /*!< Option to draw the habitat suitability ref */
@@ -86,7 +92,8 @@ class GSP
 	/* Dispersal module */
 	bool m_DoDispersal; /*!< Unable or not dispersal module */
 	int m_DispersalMode; /*!< Option to disperse the seeds */
-
+	bool m_DispersalSaving; /*!< Unable or not the saving of dispersal maps after dispersal */
+	
 	/* Disturbances module */
 	bool m_DoDisturbances; /*!< Unable or not disturbance module */
 	int m_NoDist; /*!< Number of disturbances */
@@ -97,7 +104,8 @@ class GSP
 	bool m_DoSoilInteraction; /*!< Unable or not Soil interaction module */
 	double m_SoilInit; /*!< Initialization soil value */
 	double m_SoilRetention; /*!< Percentage of soil from previous year to keep */
-
+	bool m_SoilSaving; /*!< Unable or not the saving of soil resources maps */
+	
 	/* Fire disturbance module */
 	bool m_DoFireDisturbances; /*!< Unable or not fire disturbance module */
 	int m_NoFireDist; /*!< Number of fire disturbances */
@@ -145,13 +153,18 @@ class GSP
 		ar & m_MaxAbundLow;
 		ar & m_MaxAbundMedium;
 		ar & m_MaxAbundHigh;
+		ar & m_DoSavingPFGStratum;
+		ar & m_DoSavingPFG;
+		ar & m_DoSavingStratum;
 		ar & m_DoLightInteraction;
 		ar & m_LightThreshLow;
 		ar & m_LightThreshMedium;
+		ar & m_LightSaving;
 		ar & m_DoHabSuitability;
 		ar & m_HabSuitMode;
 		ar & m_DoDispersal;
 		ar & m_DispersalMode;
+		ar & m_DispersalSaving;
 		ar & m_DoDisturbances;
 		ar & m_NoDist;
 		ar & m_NoDistSub;
@@ -159,6 +172,7 @@ class GSP
 		ar & m_DoSoilInteraction;
 		ar & m_SoilInit;
 		ar & m_SoilRetention;
+		ar & m_SoilSaving;
 		ar & m_DoFireDisturbances;
 		ar & m_NoFireDist;
 		ar & m_NoFireDistSub;
@@ -226,15 +240,24 @@ class GSP
 	 * medium value
 	 *	\param maxAbundHigh : maximum abundance or space a PFG can occupy :
 	 * high value
+	 *  \param doSavingPFGStratum : unable or not the saving of abundance maps 
+	 * per PFG per stratum
+	 *  \param doSavingPFG : unable or not the saving of abundance maps 
+	 * per PFG (sum over strata)
+	 *  \param doSavingStratum : unable or not the saving of abundance maps 
+	 * per stratum (sum over PFG)
 	 *	\param doLightInteraction : unable or not Light interaction module
 	 *	\param lightThreshLow : threshold to transform PFG abundances into Low
 	 * light resources
 	 *	\param lightThreshMedium : threshold to transform PFG abundances into
 	 * Medium light resources
+	 *  \param lightSaving : unable or not the saving of light resources maps
 	 *	\param doHabSuitability : unable or not Habitat suitability module
 	 *	\param habSuitMode : option to draw the habitat suitability ref
 	 *	\param doDispersal : unable or not Dispersal module
 	 *  \param dispersalMode : option to disperse the seeds
+	 *  \param dispersalSaving : unable or not the saving of dispersal maps 
+	 *  after dispersal
 	 *	\param doDisturbances : unable or not Disturbances module
 	 *	\param noDist : number of disturbances involved
 	 *	\param noDistSub : number of way a FG can react to a disturbance
@@ -242,6 +265,7 @@ class GSP
 	 *	\param doSoilInteraction : unable or not Soil interaction module
 	 *	\param soilInit : initialization soil value
 	 *	\param soilRetention : percentage of soil from previous year to keep
+	 *  \param soilSaving : unable or not the saving of soil resources maps
 	 *	\param doFireDisturbances : unable or not Fire disturbances module
 	 *	\param noFireDist : number of fire disturbances involved
 	 *	\param noFireDistSub : number of way a FG can react to a fire disturbance
@@ -283,13 +307,18 @@ class GSP
 	const int& maxAbundLow,
 	const int& maxAbundMedium,
 	const int& maxAbundHigh,
+	const bool& doSavingPFGStratum,
+	const bool& doSavingPFG,
+	const bool& doSavingStratum,
 	const bool& doLightInteraction,
 	const int& lightThreshLow,
 	const int& lightThreshMedium,
+	const bool& lightSaving,
 	const bool& doHabSuitability,
 	const int& habSuitMode,
 	const bool& doDispersal,
 	const int& dispersalMode,
+	const bool& dispersalSaving,
 	const bool& doDisturbances,
 	const int& noDist,
 	const int& noDistSub,
@@ -297,6 +326,7 @@ class GSP
 	const bool& doSoilInteraction,
 	const double& soilInit,
 	const double& soilRetention,
+	const bool& soilSaving,
 	const bool& doFireDisturbances,
 	const int& noFireDist,
 	const int& noFireDistSub,
@@ -348,13 +378,18 @@ class GSP
 		m_MaxAbundLow == o.m_MaxAbundLow &&
 		m_MaxAbundMedium == o.m_MaxAbundMedium &&
 		m_MaxAbundHigh == o.m_MaxAbundHigh &&
+		m_DoSavingPFGStratum == o.m_DoSavingPFGStratum &&
+		m_DoSavingPFG == o.m_DoSavingPFG &&
+		m_DoSavingStratum == o.m_DoSavingStratum &&
 		m_DoLightInteraction == o.m_DoLightInteraction &&
 		m_LightThreshLow == o.m_LightThreshLow &&
 		m_LightThreshMedium == o.m_LightThreshMedium &&
+		m_LightSaving == o.m_LightSaving &&
 		m_DoHabSuitability == o.m_DoHabSuitability &&
 		m_HabSuitMode == o.m_HabSuitMode &&
 		m_DoDispersal == o.m_DoDispersal &&
 		m_DispersalMode == o.m_DispersalMode &&
+		m_DispersalSaving == o.m_DispersalSaving &&
 		m_DoDisturbances == o.m_DoDisturbances &&
 		m_NoDist == o.m_NoDist &&
 		m_NoDistSub == o.m_NoDistSub &&
@@ -362,6 +397,7 @@ class GSP
 		m_DoSoilInteraction == o.m_DoSoilInteraction &&
 		m_SoilInit == o.m_SoilInit &&
 		m_SoilRetention == o.m_SoilRetention &&
+		m_SoilSaving == o.m_SoilSaving &&
 		m_DoFireDisturbances == o.m_DoFireDisturbances &&
 		m_NoFireDist == o.m_NoFireDist &&
 		m_NoFireDistSub == o.m_NoFireDistSub &&
@@ -402,13 +438,18 @@ class GSP
 	const int& getMaxAbundMedium() const;
 	const int& getMaxAbundHigh() const;
 	const int& getMaxAbundPixel() const;
+	const bool& getDoSavingPFGStratum() const;
+	const bool& getDoSavingPFG() const;
+	const bool& getDoSavingStratum() const;
 	const bool& getDoLightInteraction() const;
 	const int& getLightThreshLow() const;
 	const int& getLightThreshMedium() const;
+	const bool& getLightSaving() const;
 	const bool& getDoHabSuitability() const;
 	const int& getHabSuitMode() const;
 	const bool& getDoDispersal() const;
 	const int& getDispersalMode() const;
+	const bool& getDispersalSaving() const;
 	const bool& getDoDisturbances() const;
 	const int& getNoDist() const;
 	const int& getNoDistSub() const;
@@ -416,6 +457,7 @@ class GSP
 	const bool& getDoSoilInteraction() const;
 	const double& getSoilInit() const;
 	const double& getSoilRetention() const;
+	const bool& getSoilSaving() const;
 	const bool& getDoFireDisturbances() const;
 	const int& getNoFireDist() const;
 	const int& getNoFireDistSub() const;
@@ -450,13 +492,18 @@ class GSP
 	void setMaxAbundLow(const int& maxAbundLow);
 	void setMaxAbundMedium(const int& maxAbundMedium);
 	void setMaxAbundHigh(const int& maxAbundHigh);
+	void setDoSavingPFGStratum(const bool& doSavingPFGStratum);
+	void setDoSavingPFG(const bool& doSavingPFG);
+	void setDoSavingStratum(const bool& doSavingStratum);
 	void setDoLightInteraction(const bool& doLightInteraction);
 	void setLightThreshLow(const int& lightThreshLow);
 	void setLightThreshMedium(const int& lightThreshMedium);
+	void setLightSaving(const bool& lightSaving);
 	void setDoHabSuitability(const bool& doHabSuitability);
 	void setHabSuitMode(const int& habSuitMode);
 	void setDoDispersal(const bool& doDispersal);
 	void setDispersalMode(const int& dispersalMode);
+	void setDispersalSaving(const bool& dispersalSaving);
 	void setDoDisturbances(const bool& doDisturbances);
 	void setNoDist(const int& noDist);
 	void setNoDistSub(const int& noDistSub);
@@ -464,6 +511,7 @@ class GSP
 	void setDoSoilInteraction(const bool& doSoilInteraction);
 	void setSoilInit(const double& soilInit);
 	void setSoilRetention(const double& soilRetention);
+	void setSoilSaving(const bool& soilSaving);
 	void setDoFireDisturbances(const bool& doFireDisturbances);
 	void setNoFireDist(const int& noFireDist);
 	void setNoFireDistSub(const int& noFireDistSub);

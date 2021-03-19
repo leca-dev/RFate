@@ -1650,214 +1650,187 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
   // Create output with same datatype as first input band.
   //GDALDataType inputDataType = GDALGetRasterDataType(GDALGetRasterBand(rasInput,1)); //GDT_Byte
   
-  logg.info(">>> Saving PFG abund outputs");
-  
-  /* 1. ABUND PER PFG and PER STRATA */
-  logg.info("> Saving abund per PFG & per strata");
-  /* 2. ABUND PER PFG for ALL STRATA */
-  logg.info("> Saving abund per PFG for all strata");
-  omp_set_num_threads( m_glob_params.getNoCPU() );
-#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-  { // loop on PFG
-    //logg.info(">>>>> PFG ", fg);
-    vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
-    GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-    for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+  if (m_glob_params.getDoSavingPFGStratum() ||
+      m_glob_params.getDoSavingPFG() ||
+      m_glob_params.getDoSavingStratum())
+  {
+    logg.info(">>> Saving PFG abund outputs");
+    
+    if (m_glob_params.getDoSavingPFGStratum() || m_glob_params.getDoSavingPFG())
     {
-      abunValues2[pixId] = 0;
-    }
-    bool positiveVal2 = false;
-    for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
-    { // loop on Stratum
-      //logg.info(">>>>> Stratum ", strat);
-      // Calculate abundance values.
-      GUInt16 *abunValues1 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-      for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
-      {
-        abunValues1[pixId] = 0;
-      }
-      bool positiveVal1 = false;
+      /* 1. ABUND PER PFG and PER STRATA */
+      logg.info("> Saving abund per PFG & per strata");
+      /* 2. ABUND PER PFG for ALL STRATA */
+      logg.info("> Saving abund per PFG for all strata");
+      omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        //logg.info(">>>>> PFG ", fg);
+        vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
+        GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        {
+          abunValues2[pixId] = 0;
+        }
+        bool positiveVal2 = false;
+        for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
+        { // loop on Stratum
+          //logg.info(">>>>> Stratum ", strat);
+          // Calculate abundance values.
+          GUInt16 *abunValues1 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+          for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+          {
+            abunValues1[pixId] = 0;
+          }
+          bool positiveVal1 = false;
 #pragma omp parallel for ordered
-      for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
-      { // loop on pixels
-        unsigned cell_ID = m_MaskCells[pixId];
-        int abundTmp = (int)(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
-        abunValues1[cell_ID] = abundTmp;
-        abunValues2[cell_ID] += abundTmp;
-        if (abundTmp>0)
+          for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
+          { // loop on pixels
+            unsigned cell_ID = m_MaskCells[pixId];
+            int abundTmp = (int)(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            abunValues1[cell_ID] = abundTmp;
+            abunValues2[cell_ID] += abundTmp;
+            if (abundTmp>0)
+            {
+              positiveVal1 = true;
+              positiveVal2 = true;
+            }
+          } // end loop on pixels
+          
+          if (m_glob_params.getDoSavingPFGStratum() && positiveVal1)
+          {
+            // Create the output file only if the PFG is present somewhere.
+            string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+
+              "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+            //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
+            //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt16, NULL );
+            GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+            CPLAssert( rasOutput != NULL );
+            GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
+            GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
+            
+            //GDALRasterBand * hBand = rasOutput->GetRasterBand( strat );
+            GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
+            CPLErr rasterAccess = GDALRasterIO(
+              hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+              abunValues1, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+            );
+            if (rasterAccess > 0)
+            {
+              logg.warning("Writing ", newFile, " raster: acces status ",
+                           rasterAccess);
+            }
+            GDALClose( rasOutput ); // Once we're done, close properly the dataset
+            
+            compressFile(newFile);
+          }
+          delete [] abunValues1;
+        } // end loop on Stratum
+        if (m_glob_params.getDoSavingPFG() && positiveVal2)
         {
-          positiveVal1 = true;
-          positiveVal2 = true;
+          // Create the output file only if the PFG is present somewhere.
+          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
+          GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+          CPLAssert( rasOutput != NULL );
+          GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
+          GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
+          
+          GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
+          CPLErr rasterAccess = GDALRasterIO(
+            hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+            abunValues2, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+          );
+          if (rasterAccess > 0)
+          {
+            logg.warning("Writing ", newFile, " raster: acces status ",
+                         rasterAccess);
+          }
+          GDALClose( rasOutput ); // Once we're done, close properly the dataset
+          
+          compressFile(newFile);
         }
-      } // end loop on pixels
-      
-      if (positiveVal1)
-      {
-        // Create the output file only if the PFG is present somewhere.
-        string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+
-          "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
-        //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
-        //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt16, NULL );
-        GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
-        CPLAssert( rasOutput != NULL );
-        GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-        GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
-        
-        //GDALRasterBand * hBand = rasOutput->GetRasterBand( strat );
-        GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-        CPLErr rasterAccess = GDALRasterIO(
-          hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-          abunValues1, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
-        );
-        if (rasterAccess > 0)
+        delete [] abunValues2;
+      } // end loop on PFG
+    }
+    
+    if (m_glob_params.getDoSavingStratum())
+    {
+      /* 3. ABUND PER STRATA for ALL PFG */
+      logg.info("> Saving abund per strata for all PFG");
+      for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
+      { // loop on Stratum
+        // Calculate abundance values.
+        GUInt16 *abunValues3 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
-          logg.warning("Writing ", newFile, " raster: acces status ",
-                       rasterAccess);
+          abunValues3[pixId] = 0;
         }
-        GDALClose( rasOutput ); // Once we're done, close properly the dataset
+        bool positiveVal3 = false;
+#pragma omp parallel for ordered
+        for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
+        { // loop on pixels
+          unsigned cell_ID = m_MaskCells[pixId];
+          int abundTmp = 0;
+          for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+          { // loop on PFG
+            vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
+            abundTmp += (int)(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+          }
+          abunValues3[cell_ID] = abundTmp;
+          if (abundTmp>0)
+          {
+            positiveVal3 = true;
+          }
+        } // end loop on pixels
         
-        compressFile(newFile);
-      }
-      delete [] abunValues1;
-    } // end loop on Stratum
-    if (positiveVal2)
-    {
-      // Create the output file only if the PFG is present somewhere.
-      string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
-      GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
-      CPLAssert( rasOutput != NULL );
-      GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-      GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
-      
-      GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-      CPLErr rasterAccess = GDALRasterIO(
-        hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-        abunValues2, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
-      );
-      if (rasterAccess > 0)
-      {
-        logg.warning("Writing ", newFile, " raster: acces status ",
-                     rasterAccess);
-      }
-      GDALClose( rasOutput ); // Once we're done, close properly the dataset
-      
-      compressFile(newFile);
+        if (positiveVal3)
+        {
+          // Create the output file only if the PFG is present somewhere.
+          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_allPFG_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+          GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+          CPLAssert( rasOutput != NULL );
+          GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
+          GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
+          
+          GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
+          GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), abunValues3, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
+          GDALClose( rasOutput ); // Once we're done, close properly the dataset
+          
+          compressFile(newFile);
+        }
+        delete [] abunValues3;
+      } // end loop on Stratum*/
     }
-    delete [] abunValues2;
-  } // end loop on PFG
-  
-  /* 3. ABUND PER STRATA for ALL PFG */
-  /*	logg.info("> Saving abund per strata for all PFG");
-  for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
-  { // loop on Stratum
-  // Calculate abundance values.
-  GUInt16 *abunValues3 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-  for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
-  {
-  abunValues3[pixId] = 0;
-  }
-  bool positiveVal = false;
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
-  int abundTmp = 0;
-  for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-  { // loop on PFG
-  vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
-  double abundTmp_double = m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 );
-  abundTmp_double = 10000 * abundTmp_double / double(m_NamespaceCons.getGlobalHighAbund());
-  abundTmp += int(min( abundTmp_double, 10000.0)); // have to be divided by 100 to have true percentage
-  } // end loop on PFG
-  abunValues3[*cell_ID] = abundTmp;
-  if (abundTmp>0) positiveVal = true;
-  } // end loop on pixels
-  
-  if (positiveVal)
-  {
-  // Create the output file only if the PFG is present somewhere.
-  string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_allPFG_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
-  GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
-  CPLAssert( rasOutput != NULL );
-  GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-  GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
-  
-  GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-  GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), abunValues3, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
-  GDALClose( rasOutput ); // Once we're done, close properly the dataset
-  
-  compressFile(newFile);
-  }
-  delete [] abunValues3;
-  } // end loop on Stratum*/
-  
-  if (m_glob_params.getDoSoilInteraction())
-  {
-    logg.info("> Saving soil outputs");
-    float *soilValues = new float[m_Mask.getXncell()*m_Mask.getYncell()];
-    // fill our file pix by pix
-    omp_set_num_threads( m_glob_params.getNoCPU() );
-#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-    for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
-    {
-      soilValues[pixId] = 0;
-    }
-    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
-    {
-      unsigned cell_ID = m_MaskCells[ID];
-      soilValues[cell_ID] = m_SuccModelMap(cell_ID)->getSoilResources();
-    }
-    // Create the output file.
-    string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+boost::lexical_cast<string>(year)+prevFile_path.extension().string();
-    GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
-    CPLAssert( rasOutput != NULL );
-    
-    GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-    double outputGeoTransform[6]; // Write out the GeoTransform.
-    GDALGetGeoTransform( rasInput, outputGeoTransform );
-    GDALSetGeoTransform( rasOutput, outputGeoTransform );
-    
-    GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-    CPLErr rasterAccess = GDALRasterIO(
-      hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-      soilValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
-    );
-    if (rasterAccess > 0)
-    {
-      logg.warning("Writing ", newFile, " raster: acces status ",
-                   rasterAccess);
-    }
-    GDALClose( rasOutput ); // Once we're done, close properly the dataset
-    
-    delete [] soilValues;
-    
-    compressFile(newFile);
   }
   
-  if (m_glob_params.getDoLightInteraction())
+  
+  
+  if ((m_glob_params.getDoSoilInteraction() && m_glob_params.getSoilSaving()) ||
+      (m_glob_params.getDoLightInteraction() && m_glob_params.getSoilSaving()) ||
+      (m_glob_params.getDoDispersal() && m_glob_params.getDispersalSaving()))
   {
-    logg.info("> Saving light outputs");
+    logg.info(">>> Saving pixel resources outputs");
     
-    for (int strat=0; strat<m_glob_params.getNoStrata(); strat++)
-    { // loop on Stratum
-      // Calculate light values.
-      GUInt16 *lightValues = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+    if (m_glob_params.getDoSoilInteraction() && m_glob_params.getSoilSaving())
+    {
+      logg.info("> Saving soil values");
+      float *soilValues = new float[m_Mask.getXncell()*m_Mask.getYncell()];
       // fill our file pix by pix
       omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
       for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
       {
-        lightValues[pixId] = 0;
+        soilValues[pixId] = 0;
       }
       for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
       {
         unsigned cell_ID = m_MaskCells[ID];
-        lightValues[cell_ID] = ResourceToDouble(m_SuccModelMap(cell_ID)->getLightResources().getResource(strat));
+        soilValues[cell_ID] = m_SuccModelMap(cell_ID)->getSoilResources();
       }
-      
       // Create the output file.
-      string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+boost::lexical_cast<string>(year)+
-        "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
-      GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+      string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+boost::lexical_cast<string>(year)+prevFile_path.extension().string();
+      GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
       CPLAssert( rasOutput != NULL );
       
       GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
@@ -1868,7 +1841,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
       CPLErr rasterAccess = GDALRasterIO(
         hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-        lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+        soilValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
       );
       if (rasterAccess > 0)
       {
@@ -1877,52 +1850,105 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       }
       GDALClose( rasOutput ); // Once we're done, close properly the dataset
       
-      delete [] lightValues;
+      delete [] soilValues;
       
       compressFile(newFile);
     }
-  }
-  
-  /* BONUS. DISPERSAL MAPS PER PFG */
-  /*if (m_glob_params.getDoDispersal())
-  {
-  logg.info(">>> Saving DISPERSAL SEED MAPs");
-  for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-  { // loop on PFG
-  GUInt16 *seedValues = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-  
-  // fill our file pix by pix
-  omp_set_num_threads( m_glob_params.getNoCPU() );
+    
+    
+    
+    if (m_glob_params.getDoLightInteraction() && m_glob_params.getLightSaving())
+    {
+      logg.info("> Saving light values");
+      
+      for (int strat=0; strat<m_glob_params.getNoStrata(); strat++)
+      { // loop on Stratum
+        // Calculate light values.
+        GUInt16 *lightValues = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        // fill our file pix by pix
+        omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
-  {
-  seedValues[pixId] = 0;
+        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        {
+          lightValues[pixId] = 0;
+        }
+        for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+        {
+          unsigned cell_ID = m_MaskCells[ID];
+          lightValues[cell_ID] = ResourceToDouble(m_SuccModelMap(cell_ID)->getLightResources().getResource(strat));
+        }
+        
+        // Create the output file.
+        string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+boost::lexical_cast<string>(year)+
+          "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+        GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+        CPLAssert( rasOutput != NULL );
+        
+        GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
+        double outputGeoTransform[6]; // Write out the GeoTransform.
+        GDALGetGeoTransform( rasInput, outputGeoTransform );
+        GDALSetGeoTransform( rasOutput, outputGeoTransform );
+        
+        GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
+        CPLErr rasterAccess = GDALRasterIO(
+          hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+          lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+        );
+        if (rasterAccess > 0)
+        {
+          logg.warning("Writing ", newFile, " raster: acces status ",
+                       rasterAccess);
+        }
+        GDALClose( rasOutput ); // Once we're done, close properly the dataset
+        
+        delete [] lightValues;
+        
+        compressFile(newFile);
+      }
+    }
+    
+    
+    
+    if (m_glob_params.getDoDispersal() && m_glob_params.getDispersalSaving())
+    {
+      logg.info(">>> Saving seeds after dispersal");
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        GUInt16 *seedValues = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        
+        // fill our file pix by pix
+        omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        {
+          seedValues[pixId] = 0;
+        }
+        for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+        {
+          unsigned cell_ID = m_MaskCells[ID];
+          seedValues[cell_ID] = m_SeedMapOut(cell_ID,fg);
+        }
+        
+        // Create the output file only if the PFG is present somewhere.
+        string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
+        GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
+        CPLAssert( rasOutput != NULL );
+        
+        GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
+        double outputGeoTransform[6]; // Write out the GeoTransform.
+        GDALGetGeoTransform( rasInput, outputGeoTransform );
+        GDALSetGeoTransform( rasOutput, outputGeoTransform );
+        
+        GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
+        GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
+        GDALClose( rasOutput ); // Once we're done, close properly the dataset
+        
+        delete [] seedValues;
+        
+        compressFile(newFile);
+      } // end loop on PFG
+    }
   }
-  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
-  {
-  unsigned cell_ID = m_MaskCells[ID];
-  seedValues[cell_ID] = m_SeedMapOut(cell_ID,fg);
-  }
-  
-  // Create the output file only if the PFG is present somewhere.
-  string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
-  GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
-  CPLAssert( rasOutput != NULL );
-  
-  GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-  double outputGeoTransform[6]; // Write out the GeoTransform.
-  GDALGetGeoTransform( rasInput, outputGeoTransform );
-  GDALSetGeoTransform( rasOutput, outputGeoTransform );
-  
-  GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-  GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
-  GDALClose( rasOutput ); // Once we're done, close properly the dataset
-  
-  delete [] seedValues;
-  
-  compressFile(newFile);
-  } // end loop on PFG
-  }*/
   
   GDALClose( rasInput );
   
