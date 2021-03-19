@@ -246,6 +246,10 @@ PRE_FATE.speciesDistance = function(mat.traits
                     ,ncol(mat.overlap)
                     ,")"))
       }
+      if (unique(diag(mat.overlap)) != 1)
+      {
+        stop("Wrong type of data!\n `mat.overlap.object` must be a similarity distance object (`dist`, `niolap`, `matrix`)")
+      }
     } else
     {
       stop("Wrong type of data!\n `mat.overlap.object` must be a similarity distance object (`dist`, `niolap`, `matrix`)")
@@ -346,7 +350,9 @@ PRE_FATE.speciesDistance = function(mat.traits
       if (sum(extension(mat.overlap$raster) %in% c(".tif", ".img", ".asc")) == nrow(mat.overlap))
       {
         raster.list = lapply(mat.overlap$raster, function(x) as(raster(x), "SpatialGridDataFrame"))
-        overlap.mat = as.matrix(niche.overlap(raster.list))
+        overlap.mat = t(niche.overlap(raster.list))
+        overlap.mat = as.matrix(as.dist(overlap.mat))
+        diag(overlap.mat) = 1
         rownames(overlap.mat) = colnames(overlap.mat) = mat.overlap$species
         mat.overlap = overlap.mat
       } else
@@ -728,6 +734,9 @@ PRE_FATE.speciesDistance = function(mat.traits
   ## SAVE results
   if(length(mat.species.DIST) == 1)
   {
+    mat.FUNCTIONAL = as.matrix(mat.species.gower.split[[1]])
+    mat.OVERLAP = as.matrix(mat.overlap.split[[1]])
+    
     mat.species.DIST = mat.species.DIST[[1]]
     toSave = as.matrix(mat.species.DIST)
     rownames(toSave) = colnames(toSave)
@@ -739,6 +748,9 @@ PRE_FATE.speciesDistance = function(mat.traits
                    , "has been successfully created !\n"))
   } else
   {
+    mat.FUNCTIONAL = lapply(mat.species.gower.split, as.matrix)
+    mat.OVERLAP = lapply(mat.overlap.split, as.matrix)
+    
     for (i in 1:length(mat.species.DIST))
     {
       toSave = as.matrix(mat.species.DIST[[i]])
@@ -756,8 +768,8 @@ PRE_FATE.speciesDistance = function(mat.traits
                    , "have been successfully created !\n"))
   }
   
-  return(list(mat.FUNCTIONAL = mat.species.gower.split
-              , mat.OVERLAP = mat.overlap.split
+  return(list(mat.FUNCTIONAL = mat.FUNCTIONAL
+              , mat.OVERLAP = mat.OVERLAP
               , mat.ALL = mat.species.DIST))
 }
 

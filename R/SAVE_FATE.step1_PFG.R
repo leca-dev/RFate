@@ -521,7 +521,8 @@ SAVE_FATE.step1_PFG = function(name.dataset
   
   name.dataset = paste0("FATE_dataset_", name.dataset, "_step1_PFG")
   assign(name.dataset, results)
-  save(name.dataset, file = paste0(name.dataset, ".RData"))
+  eval(parse(text = paste0('save(', name.dataset, ', file = paste0(name.dataset, ".RData"))')))
+  
   
   #############################################################################
   
