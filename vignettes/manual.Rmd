@@ -1,0 +1,272 @@
+---
+title: "Manual & Examples"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Manual & Examples}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+---
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+<style>
+.zoom p {
+width:250px;
+margin-left: auto;
+margin-right: auto;
+}
+.zoom p:hover {
+width:900px;
+position: relative;
+z-index: 10;
+}
+.column {
+  float: left;
+  width: 30%;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+</style>
+
+
+<br/><br/>
+
+
+## <i class="fas fa-book-medical"></i> Manual (Version 1.0.0)
+
+More informations about the Champsaur example dataset can be found [here](./../reference/dot-loadData.html).
+
+
+<br/><br/>
+
+
+## <i class="fas fa-code"></i> Complete code example
+
+
+### 1. Building Plant Functional Group
+
+```R
+library(RFate)
+
+.loadData("Champsaur_PFG")
+
+
+###################################################################################################
+## DOMINANT SPECIES
+###################################################################################################
+
+## Species observations
+tab.occ = Champsaur_PFG$sp.observations
+str(tab.occ)
+
+## Run selection ----------------------------------------------------------------------------------
+sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ[, c("sites", "species", "abund")]
+                                    , doRuleA = TRUE
+                                    , rule.A1 = 10
+                                    , rule.A2_quantile = 0.88
+                                    , doRuleB = TRUE
+                                    , rule.B1_percentage = 0.25
+                                    , rule.B1_number = 10
+                                    , rule.B2 = 0.5
+                                    , doRuleC = FALSE
+                                    , opt.doRobustness = TRUE
+                                    , opt.robustness_percent = seq(0.1, 0.9, 0.1)
+                                    , opt.robustness_rep = 10)
+
+## Explore results
+names(sp.SELECT)
+str(sp.SELECT[1:5])
+str(sp.SELECT$tab.rules)
+plot(sp.SELECT$plot.A)
+plot(sp.SELECT$plot.B$abs)
+plot(sp.SELECT$plot.B$rel)
+plot(sp.SELECT$plot.pco$Axis1_Axis2)
+# plot(sp.SELECT$plot.pco$Axis1_Axis3)
+str(sp.SELECT$tab.robustness)
+names(sp.SELECT$plot.robustness)
+plot(sp.SELECT$plot.robustness$`All dataset`)
+
+
+## Prepare data to calculate pairwise species distance --------------------------------------------
+
+mat.habitat = Champsaur_PFG$mat.habitat
+mat.overlap = Champsaur_PFG$mat.overlap
+
+## Transform dissimilarity matrices into similarity distances
+mat.habitat = 1 - mat.habitat
+mat.overlap = 1 - mat.overlap
+
+## Combine distances of habitat preferences and niche overlap
+## to have one matrix to reflect the species niches
+ind.sp = intersect(colnames(mat.overlap), colnames(mat.habitat))
+wei.habi = 0.4
+wei.over = 0.6
+mat.env = (wei.habi * mat.habitat[ind.sp, ind.sp] + wei.over * mat.overlap[ind.sp, ind.sp]) / (wei.habi + wei.over)
+
+(mat.habitat[ind.sp, ind.sp][1:5, 1:5])
+(mat.overlap[ind.sp, ind.sp][1:5, 1:5])
+(mat.env[1:5, 1:5])
+
+
+tab.traits.P = sp.traits.P
+tab.traits.C = sp.traits.C
+tab.traits.H = sp.traits.H
+
+str(tab.traits.P)
+str(tab.traits.C)
+str(tab.traits.H)
+  
+
+
+###################################################################################################
+## PHANEROPHYTE
+###################################################################################################
+
+## Calculate pairwise species distance ------------------------------------------------------------
+  
+sp.DIST.P = PRE_FATE.speciesDistance(mat.traits = tab.traits.P
+                                     , mat.overlap.option = "dist"
+                                     , mat.overlap.object = mat.env
+                                     , opt.weights = c(0.3, 0.7)
+                                     , opt.maxPercent.NA = 0.25
+                                     , opt.maxPercent.similarSpecies = 0.5
+                                     , opt.min.sd = 0.5)
+                                     
+str(sp.DIST.P)
+{
+  require(foreach)
+  require(ggplot2)
+  require(ggdendro)
+  pp = foreach(x = names(sp.DIST)) %do%
+  {
+    hc = hclust(sp.DIST[[x]])
+    pp = ggdendrogram(hc, rotate = TRUE) +
+      labs(title = paste0("Hierarchical clustering based on species distance "
+                          , ifelse(length(names(sp.DIST)) > 1
+                          , paste0("(group ", x, ")")
+                          , "")))
+    return(pp)
+  }
+  plot(pp[[1]])
+  plot(pp[[2]])
+  plot(pp[[3]])
+}
+                                     
+## Build clusters and choose final groups number --------------------------------------------------
+                                
+sp.CLUST1.P = PRE_FATE.speciesClustering_step1(sp.DIST.P$mat.ALL)
+sp.CLUST2.P = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.P$clust.dendrograms
+                                               , no.clusters = 5
+                                               , mat.species.DIST = sp.DIST.P$mat.ALL)
+
+names(sp.CLUST2.P)
+str(sp.CLUST2.P$determ.sp)
+str(sp.CLUST2.P$determ.all)
+plot(sp.DETERM$plot.distance)
+plot(sp.DETERM$plot.PCO$Phanerophyte)
+
+
+
+###################################################################################################
+## CHAMAEPHYTE
+###################################################################################################
+
+## Calculate pairwise species distance ------------------------------------------------------------
+  
+sp.DIST.C = PRE_FATE.speciesDistance(mat.traits = tab.traits.C
+                                     , mat.overlap.option = "dist"
+                                     , mat.overlap.object = mat.env
+                                     , opt.weights = c(0.3, 0.7)
+                                     , opt.maxPercent.NA = 0.25
+                                     , opt.maxPercent.similarSpecies = 0.5
+                                     , opt.min.sd = 0.5)
+
+## Build clusters and choose final groups number --------------------------------------------------
+                                
+sp.CLUST1.C = PRE_FATE.speciesClustering_step1(sp.DIST.C$mat.ALL)
+sp.CLUST2.C = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.C$clust.dendrograms
+                                               , no.clusters = 3
+                                               , mat.species.DIST = sp.DIST.C$mat.ALL)
+
+
+
+###################################################################################################
+## HERBACEOUS
+###################################################################################################
+
+## Rearrange data (more difficult to distinguish groups among herbaceous species) -----------------
+
+## Separate some species quite different from the rest
+PFG_wetlands = c("15735", "15211", "10429", "17167", "40501", "16522", "40514", "14782", "40445")
+tab.traits.H = tab.traits.H[-which(tab.traits.H$species %in% PFG_wetlands), ]
+  
+## Put more weights on niche overlap
+ind.sp = intersect(colnames(mat.overlap), colnames(mat.habitat))
+wei.habi = 0.2
+wei.over = 0.8
+mat.env = (wei.habi * mat.habitat[ind.sp, ind.sp] + wei.over * mat.overlap[ind.sp, ind.sp]) / (wei.habi + wei.over)
+
+## Calculate pairwise species distance ------------------------------------------------------------
+  
+sp.DIST.H = PRE_FATE.speciesDistance(mat.traits = tab.traits.H
+                                     , mat.overlap.option = "dist"
+                                     , mat.overlap.object = mat.env
+                                     , opt.weights = c(0, 1)
+                                     , opt.maxPercent.NA = 0.25
+                                     , opt.maxPercent.similarSpecies = 0.5
+                                     , opt.min.sd = 0.5)
+                                     
+                                     
+## Build clusters and choose final groups number --------------------------------------------------
+                                
+sp.CLUST1.H = PRE_FATE.speciesClustering_step1(sp.DIST.H$mat.ALL)
+sp.CLUST2.H = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.H$clust.dendrograms
+                                               , no.clusters = 7
+                                               , mat.species.DIST = sp.DIST.H$mat.ALL)
+
+
+
+###################################################################################################
+## PLANT FUNCTIONAL GROUPS
+###################################################################################################
+
+tab.PFG = Champsaur_PFG$PFG.species
+
+tab.traits = Champsaur_PFG$sp.traits
+tab.summary = tab.traits[, c("species", "MATURITY", "LONGEVITY", "HEIGHT", "LIGHT"
+                             , "DISPERSAL", "NITROGEN", "NITROGEN_TOLERANCE", "LDMC", "LNC")]
+colnames(tab.summary) = c("species", "maturity", "longevity", "height", "light"
+                          , "dispersal", "soil_contrib", "soil_tolerance", "LDMC", "LNC")
+tab.summary$soil_contrib = as.numeric(tab.summary$soil_contrib)
+tab.summary$soil_tolerance = ifelse(tab.summary$soil_tolerance == 1, 0.5, 1)
+tab.summary = merge(tab.PFG[, c("PFG", "species")], tab.summary, by = "species", all.x = TRUE)
+head(tab.summary)
+
+## Calculate trait values per PFG -----------------------------------------------------------------
+
+PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary)
+
+```
+
+
+### 2. Creating `FATE` parameter files
+
+pouf
+
+### 3. Running a `FATE` simulation
+
+pif
+
+### 4. Analyzing results
+
+paf
+
+<br/><br/>
+
+
+
+

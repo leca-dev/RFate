@@ -17,6 +17,7 @@ navbar:
     - interface
     - reference
     right:
+    - manual
     - news
     - github
   components:
@@ -63,6 +64,10 @@ navbar:
       icon: fas fa-desktop
       href: articles/interface_tutorial_0_presentation.html
     articles:
+    manual:
+      text: 'Manual & Examples'
+      icon: fas fa-stethoscope
+      href: articles/manual.html
     news:
       text: 'News'
       icon: far fa-newspaper
@@ -76,7 +81,7 @@ reference:
   - title: Datasets
     desc:  Used in the examples.
     contents:
-      - "DATASET_Bauges_PFG"
+      - ".loadData"
   - title: Interface
     desc:  Graphical User Interface (shiny application)
     contents:
