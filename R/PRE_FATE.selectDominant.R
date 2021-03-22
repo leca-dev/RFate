@@ -1467,7 +1467,7 @@ PRE_FATE.selectDominant = function(mat.observations
                                     , percent = i.percent
                                     , rep = i.rep
                                     , analysis = c("percent", "all", names(beta.val))
-                                    , value = c(percent1, percent2, 1 - unlist(beta.val))
+                                    , value = c(percent1, percent2, unlist(beta.val))
                                     , stringsAsFactors = FALSE))
                 }
               
@@ -1493,7 +1493,7 @@ PRE_FATE.selectDominant = function(mat.observations
                                  , breaks = seq(0, 1, 0.2)
                                  , labels = seq(0, 1, 0.2) * 100
                                  , drop = FALSE) +
-                scale_y_continuous(name = "Percentage of similarity (%)\n"
+                scale_y_continuous(name = "Percentage of dissimilarity (%)              Percentage of similarity (%)\n"
                                    , breaks = seq(0, 1, 0.1)
                                    , labels = seq(0, 1, 0.1) * 100) +
                 scale_color_manual(guide = FALSE

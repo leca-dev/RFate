@@ -1146,19 +1146,19 @@ PRE_FATE.params_multipleSet = function(
         , doDisturbances = doDisturbances
         , DIST.no = ifelse(doDisturbances
                            , .getParam(params.lines = tmp_global_param
-                                       , flag = "NO_DISTURBANCES"
+                                       , flag = "DIST_NO"
                                        , flag.split = " "
                                        , is.num = TRUE)
                            , NULL)
         , DIST.no_sub = ifelse(doDisturbances
                                , .getParam(params.lines = tmp_global_param
-                                           , flag = "NO_SUBDISTURBANCES"
+                                           , flag = "DIST_NOSUB"
                                            , flag.split = " "
                                            , is.num = TRUE)
                                , NULL)
         , DIST.freq = unlist(ifelse(doDisturbances
                                     , list(.getParam(params.lines = tmp_global_param
-                                                     , flag = "FREQ_DISTURBANCES"
+                                                     , flag = "DIST_FREQ"
                                                      , flag.split = " "
                                                      , is.num = TRUE))
                                     , NULL))
