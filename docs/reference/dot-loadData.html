@@ -165,6 +165,13 @@
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
+  <a href="../articles/manual.html">
+    <span class="fas fa-stethoscope"></span>
+     
+    Manual &amp; Examples
+  </a>
+</li>
+<li>
   <a href="../articles/news.html">
     <span class="far fa-newspaper"></span>
      
@@ -227,15 +234,19 @@ that will be loaded</p></td>
 Group :</p>  
 <p></p><dl>
     <dt>sp.observations</dt><dd><p>a <code>data.frame</code> of dimension 
-    <code>127257 x 3</code> <br />
+    <code>127257 x 5</code> <br />
     containing releves data about plant species in Champsaur <br />
     to be used with the <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code> function
     <ul>
 <li><p><strong>sites</strong> : sites ID</p></li>
 <li><p><strong>species</strong> : species ID</p></li>
+<li><p><strong>abundBB</strong> : Braun-Blanquet abundance</p></li>
 <li><p><strong>abund</strong> : relative abundance obtained from the 
       <code>abund_BB</code> column with the 
       <code><a href='PRE_FATE.abundBraunBlanquet.html'>PRE_FATE.abundBraunBlanquet</a></code> function</p></li>
+<li><p><strong>habitat</strong> : habitat classes from 
+      [CESBIO2018](http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018<!-- %20/) -->
+      (with some classes gathering)</p></li>
 </ul></p></dd>
     <dt>rules.selectDominant</dt><dd><p>a <code>vector</code> containing parameters to be 
     given to the <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code> function <br />

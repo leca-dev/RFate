@@ -9,6 +9,9 @@ PRE_FATE.params_globalParameters(
   name.simulation,
   opt.no_CPU = 1,
   opt.replacePrevious = FALSE,
+  opt.saving_abund_PFG_stratum = TRUE,
+  opt.saving_abund_PFG = TRUE,
+  opt.saving_abund_stratum = FALSE,
   required.no_PFG,
   required.no_strata,
   required.simul_duration = 1000,
@@ -22,11 +25,14 @@ PRE_FATE.params_globalParameters(
   doLight = FALSE,
   LIGHT.thresh_medium,
   LIGHT.thresh_low,
+  LIGHT.saving = TRUE,
   doSoil = FALSE,
   SOIL.init,
   SOIL.retention,
+  SOIL.saving = TRUE,
   doDispersal = FALSE,
   DISPERSAL.mode = 1,
+  DISPERSAL.saving = FALSE,
   doHabSuitability = FALSE,
   HABSUIT.mode = 1,
   doDisturbances = FALSE,
@@ -67,6 +73,21 @@ the \code{FATE} simulation}
 \item{opt.replacePrevious}{(\emph{optional}) default \code{FALSE}. \cr 
 If \code{TRUE}, pre-existing files inside 
 \code{name.simulation/DATA/GLOBAL_PARAMETERS} folder will be replaced}
+
+\item{opt.saving_abund_PFG_stratum}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, and saving years have been defined within the 
+\emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
+pixel abundances per PFG per stratum are saved}
+
+\item{opt.saving_abund_PFG}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, and saving years have been defined within the 
+\emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
+pixel abundances per PFG are saved}
+
+\item{opt.saving_abund_stratum}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, and saving years have been defined within the 
+\emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
+pixel abundances per stratum are saved}
 
 \item{required.no_PFG}{an \code{integer} corresponding to the number of PFG}
 
@@ -120,6 +141,11 @@ resources are \code{low}. PFG abundances higher than
 \code{LIGHT.thresh_medium} and lower than this threshold imply 
 \strong{medium amount of light}.}
 
+\item{LIGHT.saving}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, and saving years have been defined within the 
+\emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
+pixel light resources are saved}
+
 \item{doSoil}{default \code{FALSE}. \cr If \code{TRUE}, soil interaction is 
 activated in the \code{FATE} simulation, and associated parameters 
 are required}
@@ -132,6 +158,11 @@ simulation}
 to the percentage of soil value of the previous simulation year that will 
 be kept in the calculation of the soil value of the current simulation year}
 
+\item{SOIL.saving}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, and saving years have been defined within the 
+\emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
+pixel soil resources are saved}
+
 \item{doDispersal}{default \code{FALSE}. \cr If \code{TRUE}, seed dispersal 
 is activated in the \code{FATE} simulation, and associated parameters are 
 required}
@@ -140,6 +171,11 @@ required}
 to the way of simulating the seed dispersal for each PFG, either packets 
 kernel (\code{1}), exponential kernel (\code{2}) or exponential kernel with 
 probability (\code{3})}
+
+\item{DISPERSAL.saving}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, and saving years have been defined within the 
+\emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
+pixel dispersed seeds per PFG are saved}
 
 \item{doHabSuitability}{default \code{FALSE}. \cr If \code{TRUE}, habitat 
 suitability is activated in the \code{FATE} simulation, and associated 
@@ -269,6 +305,9 @@ parameters :
 
 \itemize{
   \item NO_CPU
+  \item SAVING_ABUND_PFG_STRATUM
+  \item SAVING_ABUND_PFG
+  \item SAVING_ABUND_STRATUM 
   \item NO_PFG
   \item NO_STRATA
   \item SIMULATION_DURATION
@@ -287,6 +326,7 @@ If the simulation includes \emph{light interaction} :
   \item DO_LIGHT_INTERACTION
   \item LIGHT_THRESH_MEDIUM
   \item LIGHT_THRESH_LOW
+  \item LIGHT_SAVING
 }
 
 If the simulation includes \emph{soil interaction} :
@@ -295,6 +335,7 @@ If the simulation includes \emph{soil interaction} :
   \item DO_SOIL_INTERACTION
   \item SOIL_INIT
   \item SOIL_RETENTION
+  \item SOIL_SAVING
 }
 
 If the simulation includes \emph{dispersal} :
@@ -302,6 +343,7 @@ If the simulation includes \emph{dispersal} :
 \itemize{
   \item DO_DISPERSAL
   \item DISPERSAL_MODE
+  \item DISPERSAL_SAVING
 }
 
 If the simulation includes \emph{habitat suitability} :
@@ -379,24 +421,22 @@ define general characteristics of the simulation :
   }
   \item{Abundance equilibrium}{ \cr
   \describe{
-    \item{potential_fecundity}{the maximum number of seeds produced each 
-    year by each PFG in optimal conditions (meaning with its abundance of 
-    mature individuals reaching its maximum abundance, defined through 
-    \code{max_abund} parameter within succession file (see 
-    \code{\link{PRE_FATE.params_PFGsuccession}}) and corresponding to 
-    \code{max_abund_low}, \code{max_abund_medium} or \code{max_abund_high} 
-    defined here)}
+    \item{potential_fecundity}{the number of seeds produced each year by 
+    each mature individual. \cr Maximal number of seeds produced per pixel 
+    is limited by PFG maximum abundance, meaning that maximum fecundity 
+    per PFG per pixel is equal to 
+    \eqn{MaxAbund * \text{required.potential_fecundity}}}
     \item{max_abund_low / medium / high}{abundance regulation thresholds for 
-    tall / intermediate / small PFG respectively within a pixel (\emph{in 
-    arbitrary abundance units})} \cr
+    tall / intermediate / small PFG within a pixel (\emph{in `FATE` arbitrary 
+    abundance units}). \cr
     Each PFG is assigned with one of these 3 values (see 
     \code{\link{PRE_FATE.params_PFGsuccession}}) to be a broad proxy of the 
     amount of space it can occupy within a pixel (herbaceous should be more 
     numerous than phanerophytes). These thresholds help regulate the PFG 
     fecundity :
-    \deqn{fecundity = \frac{matAbund}{MaxAbund} * \text{required.potential_fecundity}}
+    \deqn{fecundity = min(matAbund, MaxAbund) * \text{required.potential_fecundity}}
     and recruitment happens only if :
-    \deqn{totAbund < MaxAbund * (1 + ImmSize)}
+    \deqn{totAbund < MaxAbund * (1 + ImmSize)}}
   }
   }
   \item{Simulation timing}{ \cr

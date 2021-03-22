@@ -205,7 +205,7 @@ SIMULATION_DURATION 950
 SEEDING_DURATION 300
 SEEDING_TIMESTEP 1
 SEEDING_INPUT 100
-POTENTIAL_FECUNDITY 100
+POTENTIAL_FECUNDITY 10
 MAX_ABUND_LOW 1000
 MAX_ABUND_MEDIUM 5000
 MAX_ABUND_HIGH 8000
@@ -215,6 +215,12 @@ The number of computer resources can also be given :
 NO_CPU 6
 </pre>
 <p>If so, some parts of the main loop of the code will be parallelized on the amount of indicated resources.</p>
+Finally, several parameters are available to select which outputs should be saved on when running the simulation :
+<pre class="grey">
+SAVING_ABUND_PFG_STRATUM 1
+SAVING_ABUND_PFG 1
+SAVING_ABUND_STRATUM 0
+</pre>
 <ul>
 <li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
 </ul>
@@ -230,7 +236,7 @@ FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt
 FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt
 --END_OF_FILE--
 </pre>
-<p>The years for which must be saved abundance maps for each PFG can also be indicated,<br>
+<p>The years for which outputs must be saved can also be indicated,<br>
 as well as years to save a copy of the simulation object :</p>
 <pre class="grey">
 --SAVING_YEARS_ARRAYS--
@@ -256,7 +262,7 @@ SEED_DORMANCY 0
 </pre>
 The maximum number of seeds produced each year can also be specified per PFG :
 <pre class="grey">
-POTENTIAL_FECUNDITY 150
+POTENTIAL_FECUNDITY 50
 </pre>
 <p><br></p>
 </div>
@@ -275,6 +281,9 @@ POTENTIAL_FECUNDITY 150
 DO_LIGHT_INTERACTION 1
 LIGHT_THRESH_MEDIUM 4000
 LIGHT_THRESH_LOW 7000
+</pre>
+<pre class="grey">
+LIGHT_SAVING 1
 </pre>
 <ul>
 <li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
@@ -311,6 +320,9 @@ DO_SOIL_INTERACTION 1
 SOIL_INIT 2.5
 SOIL_RETENTION 0.8
 </pre>
+<pre class="grey">
+SOIL_SAVING 1
+</pre>
 <ul>
 <li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
 </ul>
@@ -346,6 +358,9 @@ SOIL_TOL 1 10 0 5 10 4 9 10 8
 <pre class="bash">
 DO_DISPERSAL 1
 DISPERSAL_MODE 1
+</pre>
+<pre class="grey">
+DISPERSAL_SAVING 0
 </pre>
 <ul>
 <li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>

@@ -101,7 +101,7 @@ with the function [PRE_FATE.params_PFGdrought](../reference/PRE_FATE.params_PFGd
 *3. Parameter management*
 
 - **SimulParameters file** : containing all links to the files created with the previous functions.  
-This is the file that will be given as the only argument to the [FATE.run](../reference/FATE.run.html) function.  
+This is the file that will be given as the only argument to the [FATE](../reference/FATE.html) function.  
 It can be created with the function [PRE_FATE.params_simulParameters](../reference/PRE_FATE.params_simulParameters.html)
 - **Multiple set of files** : to duplicate simulation folder and scan global parameters space with Latin Hypercube Sampling.  
 Folders can be created with the function [PRE_FATE.params_multipleSet](../reference/PRE_FATE.params_multipleSet.html)

@@ -190,7 +190,7 @@ $\text{MaxAbund} \in {1,2,3}$ defines the maximum abundance that can be reached 
 A condition is set to help regulate populations : new individuals only grow if there is not yet too many individuals within the pixel, i.e. if the total abundance of the PFG does not exceed its global carrying capacity :
 
 \begin{align}
-\text{totAbund} &= \text{AbundMature} &+ \text{AbundImmature} * \text{ImmSize} \\
+\text{totAbund} &= \text{MatureAbund} &+ \text{AbundImmature} * \text{ImmSize} \\
 \text{globalCC} &= \text{MaxAbund} &+ \text{MaxAbund} * \text{ImmSize}\\
 &\text{if (totAbund} < \text{globalCC)} \\
 &\{ \\
@@ -217,16 +217,16 @@ If the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalPara
 **Fecundity :**  
 
 - **Potential fecundity** :  
-Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see `POTENTIAL_FECUNDITY` parameter in [Succession](./../reference/PRE_FATE.params_PFGsuccession.html) files). Due to lack of empirical data, this amount is often set at the same value for all PFG.
+Each PFG can produce a fixed amount of seeds per individual (see `POTENTIAL_FECUNDITY` parameter in [Succession](./../reference/PRE_FATE.params_PFGsuccession.html) files). Due to lack of empirical data, this amount is often set at the same value for all PFG.
 
 <br/>
 
 - **Produced seeds** :  
 At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the module is selected (see `DO_HABITAT_SUITABILITY` parameter in [GlobalParameter](./../reference/PRE_FATE.params_globalParameters.html) file) (no seeds produced if the habitat is not suitable) :
 
-$$\text{Fecundity} = min(1, \frac{\text{AbundMature}}{\text{MaxAbund}}) * \text{PotentialFecund} * \text{getEnvFecund}()$$
+$$\text{Fecundity} = min(\text{MatureAbund}, \text{MaxAbund}) * \text{PotentialFecund} * \text{getEnvFecund}()$$
 
-If $\frac{\text{AbundMature}}{\text{MaxAbund}} \geqslant 1$, the PFG has reached its annual carrying capacity : it is in optimal conditions and will produce its maximum amount of seeds ($\text{PotentialFecund}$). Otherwise, this amount will be reduced in proportion.
+If $\text{MatureAbund} \geqslant \text{MaxAbund}$, the PFG has reached its annual carrying capacity : it is in optimal conditions and will produce its maximum amount of seeds ($\text{MaxAbund} * \text{PotentialFecund}$). Otherwise, this amount will be reduced in proportion.
 
 <br/><br/>
 

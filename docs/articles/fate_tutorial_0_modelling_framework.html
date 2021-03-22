@@ -328,7 +328,7 @@ Depending on the PFG life-form (herbaceous, chamaephytes, phanerophytes), immatu
 A condition is set to help regulate populations : new individuals only grow if there is not yet too many individuals within the pixel, i.e. if the total abundance of the PFG does not exceed its global carrying capacity :</li>
 </ul>
 <p><span class="math display">\[\begin{align}
-\text{totAbund} &amp;= \text{AbundMature} &amp;+ \text{AbundImmature} * \text{ImmSize} \\
+\text{totAbund} &amp;= \text{MatureAbund} &amp;+ \text{AbundImmature} * \text{ImmSize} \\
 \text{globalCC} &amp;= \text{MaxAbund} &amp;+ \text{MaxAbund} * \text{ImmSize}\\
 &amp;\text{if (totAbund} &lt; \text{globalCC)} \\
 &amp;\{ \\
@@ -352,7 +352,7 @@ If the module is selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in 
 <ul>
 <li>
 <strong>Potential fecundity</strong> :<br>
-Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see <code>POTENTIAL_FECUNDITY</code> parameter in <a href="./../reference/PRE_FATE.params_PFGsuccession.html">Succession</a> files). Due to lack of empirical data, this amount is often set at the same value for all PFG.</li>
+Each PFG can produce a fixed amount of seeds per individual (see <code>POTENTIAL_FECUNDITY</code> parameter in <a href="./../reference/PRE_FATE.params_PFGsuccession.html">Succession</a> files). Due to lack of empirical data, this amount is often set at the same value for all PFG.</li>
 </ul>
 <p><br></p>
 <ul>
@@ -360,8 +360,8 @@ Each PFG can produce a fixed maximum amount of seeds in optimal conditions (see 
 <strong>Produced seeds</strong> :<br>
 At each time step, the number of seeds that will be produced by a PFG depends both on the number of mature individuals of this PFG within the considered pixel, and on the suitability of the pixel if the module is selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in <a href="./../reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a> file) (no seeds produced if the habitat is not suitable) :</li>
 </ul>
-<p><span class="math display">\[\text{Fecundity} = min(1, \frac{\text{AbundMature}}{\text{MaxAbund}}) * \text{PotentialFecund} * \text{getEnvFecund}()\]</span></p>
-<p>If <span class="math inline">\(\frac{\text{AbundMature}}{\text{MaxAbund}} \geqslant 1\)</span>, the PFG has reached its annual carrying capacity : it is in optimal conditions and will produce its maximum amount of seeds (<span class="math inline">\(\text{PotentialFecund}\)</span>). Otherwise, this amount will be reduced in proportion.</p>
+<p><span class="math display">\[\text{Fecundity} = min(\text{MatureAbund}, \text{MaxAbund}) * \text{PotentialFecund} * \text{getEnvFecund}()\]</span></p>
+<p>If <span class="math inline">\(\text{MatureAbund} \geqslant \text{MaxAbund}\)</span>, the PFG has reached its annual carrying capacity : it is in optimal conditions and will produce its maximum amount of seeds (<span class="math inline">\(\text{MaxAbund} * \text{PotentialFecund}\)</span>). Otherwise, this amount will be reduced in proportion.</p>
 <p><br><br></p>
 <hr>
 <p><strong>ANNUAL SEED CYCLE :</strong> (<em>combining all previous information</em>)</p>

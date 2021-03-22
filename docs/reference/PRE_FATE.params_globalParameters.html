@@ -213,6 +213,9 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
   <span class='va'>name.simulation</span>,
   opt.no_CPU <span class='op'>=</span> <span class='fl'>1</span>,
   opt.replacePrevious <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  opt.saving_abund_PFG_stratum <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  opt.saving_abund_PFG <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  opt.saving_abund_stratum <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>required.no_PFG</span>,
   <span class='va'>required.no_strata</span>,
   required.simul_duration <span class='op'>=</span> <span class='fl'>1000</span>,
@@ -226,11 +229,14 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
   doLight <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>LIGHT.thresh_medium</span>,
   <span class='va'>LIGHT.thresh_low</span>,
+  LIGHT.saving <span class='op'>=</span> <span class='cn'>TRUE</span>,
   doSoil <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>SOIL.init</span>,
   <span class='va'>SOIL.retention</span>,
+  SOIL.saving <span class='op'>=</span> <span class='cn'>TRUE</span>,
   doDispersal <span class='op'>=</span> <span class='cn'>FALSE</span>,
   DISPERSAL.mode <span class='op'>=</span> <span class='fl'>1</span>,
+  DISPERSAL.saving <span class='op'>=</span> <span class='cn'>FALSE</span>,
   doHabSuitability <span class='op'>=</span> <span class='cn'>FALSE</span>,
   HABSUIT.mode <span class='op'>=</span> <span class='fl'>1</span>,
   doDisturbances <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -279,6 +285,27 @@ the <code>FATE</code> simulation</p></td>
       <td><p>(<em>optional</em>) default <code>FALSE</code>. <br /> 
 If <code>TRUE</code>, pre-existing files inside 
 <code>name.simulation/DATA/GLOBAL_PARAMETERS</code> folder will be replaced</p></td>
+    </tr>
+    <tr>
+      <th>opt.saving_abund_PFG_stratum</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br /> If <code>TRUE</code>, and saving years have been defined within the 
+<em>Simul_parameters</em> file with the <code>SAVING_YEARS_MAPS</code> flag, 
+pixel abundances per PFG per stratum are saved</p></td>
+    </tr>
+    <tr>
+      <th>opt.saving_abund_PFG</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br /> If <code>TRUE</code>, and saving years have been defined within the 
+<em>Simul_parameters</em> file with the <code>SAVING_YEARS_MAPS</code> flag, 
+pixel abundances per PFG are saved</p></td>
+    </tr>
+    <tr>
+      <th>opt.saving_abund_stratum</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br /> If <code>TRUE</code>, and saving years have been defined within the 
+<em>Simul_parameters</em> file with the <code>SAVING_YEARS_MAPS</code> flag, 
+pixel abundances per stratum are saved</p></td>
     </tr>
     <tr>
       <th>required.no_PFG</th>
@@ -359,6 +386,13 @@ resources are <code>low</code>. PFG abundances higher than
 <strong>medium amount of light</strong>.</p></td>
     </tr>
     <tr>
+      <th>LIGHT.saving</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br /> If <code>TRUE</code>, and saving years have been defined within the 
+<em>Simul_parameters</em> file with the <code>SAVING_YEARS_MAPS</code> flag, 
+pixel light resources are saved</p></td>
+    </tr>
+    <tr>
       <th>doSoil</th>
       <td><p>default <code>FALSE</code>. <br /> If <code>TRUE</code>, soil interaction is 
 activated in the <code>FATE</code> simulation, and associated parameters 
@@ -377,6 +411,13 @@ to the percentage of soil value of the previous simulation year that will
 be kept in the calculation of the soil value of the current simulation year</p></td>
     </tr>
     <tr>
+      <th>SOIL.saving</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br /> If <code>TRUE</code>, and saving years have been defined within the 
+<em>Simul_parameters</em> file with the <code>SAVING_YEARS_MAPS</code> flag, 
+pixel soil resources are saved</p></td>
+    </tr>
+    <tr>
       <th>doDispersal</th>
       <td><p>default <code>FALSE</code>. <br /> If <code>TRUE</code>, seed dispersal 
 is activated in the <code>FATE</code> simulation, and associated parameters are 
@@ -388,6 +429,13 @@ required</p></td>
 to the way of simulating the seed dispersal for each PFG, either packets 
 kernel (<code>1</code>), exponential kernel (<code>2</code>) or exponential kernel with 
 probability (<code>3</code>)</p></td>
+    </tr>
+    <tr>
+      <th>DISPERSAL.saving</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br /> If <code>TRUE</code>, and saving years have been defined within the 
+<em>Simul_parameters</em> file with the <code>SAVING_YEARS_MAPS</code> flag, 
+pixel dispersed seeds per PFG are saved</p></td>
     </tr>
     <tr>
       <th>doHabSuitability</th>
@@ -570,6 +618,9 @@ the maximum quantity limit (either steps, resources, cells)</p></td>
 parameters :</p>
 <ul>
 <li><p>NO_CPU</p></li>
+<li><p>SAVING_ABUND_PFG_STRATUM</p></li>
+<li><p>SAVING_ABUND_PFG</p></li>
+<li><p>SAVING_ABUND_STRATUM</p></li>
 <li><p>NO_PFG</p></li>
 <li><p>NO_STRATA</p></li>
 <li><p>SIMULATION_DURATION</p></li>
@@ -587,6 +638,7 @@ parameters :</p>
 <li><p>DO_LIGHT_INTERACTION</p></li>
 <li><p>LIGHT_THRESH_MEDIUM</p></li>
 <li><p>LIGHT_THRESH_LOW</p></li>
+<li><p>LIGHT_SAVING</p></li>
 </ul>
 
 <p>If the simulation includes <em>soil interaction</em> :</p>
@@ -594,12 +646,14 @@ parameters :</p>
 <li><p>DO_SOIL_INTERACTION</p></li>
 <li><p>SOIL_INIT</p></li>
 <li><p>SOIL_RETENTION</p></li>
+<li><p>SOIL_SAVING</p></li>
 </ul>
 
 <p>If the simulation includes <em>dispersal</em> :</p>
 <ul>
 <li><p>DO_DISPERSAL</p></li>
 <li><p>DISPERSAL_MODE</p></li>
+<li><p>DISPERSAL_SAVING</p></li>
 </ul>
 
 <p>If the simulation includes <em>habitat suitability</em> :</p>
@@ -666,24 +720,22 @@ define general characteristics of the simulation :</p>
     of strata possible defined into the PFG <code class="file">SUCC</code> files.</p></dd></dl></p></dd>
   <dt>Abundance equilibrium</dt><dd><p><br />
   <dl>
-    <dt>potential_fecundity</dt><dd><p>the maximum number of seeds produced each 
-    year by each PFG in optimal conditions (meaning with its abundance of 
-    mature individuals reaching its maximum abundance, defined through 
-    <code>max_abund</code> parameter within succession file (see 
-    <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code>) and corresponding to 
-    <code>max_abund_low</code>, <code>max_abund_medium</code> or <code>max_abund_high</code> 
-    defined here)</p></dd>
+    <dt>potential_fecundity</dt><dd><p>the number of seeds produced each year by 
+    each mature individual. <br /> Maximal number of seeds produced per pixel 
+    is limited by PFG maximum abundance, meaning that maximum fecundity 
+    per PFG per pixel is equal to 
+    \(MaxAbund * \text{required.potential_fecundity}\)</p></dd>
     <dt>max_abund_low / medium / high</dt><dd><p>abundance regulation thresholds for 
-    tall / intermediate / small PFG respectively within a pixel (<em>in 
-    arbitrary abundance units</em>)</p></dd> 
+    tall / intermediate / small PFG within a pixel (<em>in `FATE` arbitrary 
+    abundance units</em>). <br />
     Each PFG is assigned with one of these 3 values (see 
-    <a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a>) to be a broad proxy of the 
+    <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code>) to be a broad proxy of the 
     amount of space it can occupy within a pixel (herbaceous should be more 
     numerous than phanerophytes). These thresholds help regulate the PFG 
     fecundity :
-    fecundity = \frac{matAbund}{MaxAbund} * \text{required.potential_fecundity}
+    $$fecundity = min(matAbund, MaxAbund) * \text{required.potential_fecundity}$$
     and recruitment happens only if :
-    totAbund &lt; MaxAbund * (1 + ImmSize)</dl></p></dd>
+    $$totAbund &lt; MaxAbund * (1 + ImmSize)$$</p></dd></dl></p></dd>
   <dt>Simulation timing</dt><dd><p><br />
   <dl>
     <dt>simul_duration</dt><dd><p>the duration of simulation (<em>in years</em>)</p></dd>

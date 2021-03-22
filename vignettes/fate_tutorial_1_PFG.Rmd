@@ -100,10 +100,10 @@ Since the basic idea of building Functional Group is to gather a lot of elements
 **This is the first step : the selection of dominant species.**
 
 In order to identify similarities between selected dominant species in terms of habitat, the climatic or environmental niche of each species is calculated and is compared with all the other dominant species niches.  
-**The overlap of species climatic niches is obtained in second step.**
+**The overlap of species environmental niches is obtained in second step.**
 
 Functional traits related to the fundamental process of growth are retrieved for each dominant species and mixed together to calculate functional distances between species.  
-**Overlap of climatic niches and functional distances are combined to form a matrix of species pairwise distances.**
+**Overlap of environmental niches and functional distances are combined to form a matrix of species pairwise distances.**
 
 Finally, based on this distance matrix, **species are clustered to find the best combination and obtain Functional Groups.**
 

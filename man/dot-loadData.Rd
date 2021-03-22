@@ -23,15 +23,19 @@ Group :
   
   \describe{
     \item{sp.observations}{a \code{data.frame} of dimension 
-    \code{127257 x 3} \cr
+    \code{127257 x 5} \cr
     containing releves data about plant species in Champsaur \cr
     to be used with the \code{\link{PRE_FATE.selectDominant}} function
     \itemize{
       \item \strong{sites} : sites ID
       \item \strong{species} : species ID
+      \item \strong{abundBB} : Braun-Blanquet abundance
       \item \strong{abund} : relative abundance obtained from the 
       \code{abund_BB} column with the 
       \code{\link{PRE_FATE.abundBraunBlanquet}} function
+      \item \strong{habitat} : habitat classes from 
+      [CESBIO2018](http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018%20/)
+      (with some classes gathering)
     }
     }
     \item{rules.selectDominant}{a \code{vector} containing parameters to be 

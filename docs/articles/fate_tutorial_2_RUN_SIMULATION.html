@@ -256,7 +256,7 @@ then the <code>FATE</code> simulation must be run from this specific folder<br>
 <h1 class="hasAnchor">
 <a href="#how-to-handle-the-results" class="anchor"></a>How to handle the results ?</h1>
 <p><br></p>
-<p>Once the simulation is completed, the directory defined under the flag <code>--SAVING_DIR--</code> within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file must contain the following directories :</p>
+<p>Once the simulation is completed, the directory defined under the flag <code>--SAVING_DIR--</code> within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file can contain the following directories (depending on the parameters selected and the modules activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file) :</p>
 <ul>
 <li><em><code>ABUND_allPFG_perStrata/</code></em></li>
 <li><em><code>ABUND_perPFG_allStrata/</code></em></li>
@@ -274,8 +274,9 @@ then the <code>FATE</code> simulation must be run from this specific folder<br>
 <em><code>ABUND_perPFG_allStrata/</code></em> : a file represents <strong>one specific year</strong>, and the abundance of <strong>a specific PFG</strong> within <strong>all strata</strong>
 </li>
 </ul>
-<p>If the corresponding modules were activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file, the following folders should also contain files :</p>
+<p>If the corresponding modules were activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file, the following folders may also exist and contain output files :</p>
 <ul>
+<li><em><code>DISPERSAL/</code></em></li>
 <li><em><code>LIGHT/</code></em></li>
 <li><em><code>SOIL/</code></em></li>
 </ul>

@@ -103,7 +103,7 @@ then the `FATE` simulation must be run from this specific folder
 
 <br/>
 
-Once the simulation is completed, the directory defined under the flag `--SAVING_DIR--` within the [SimulParameters](../reference/PRE_FATE.params_simulParameters.html) file must contain the following directories :
+Once the simulation is completed, the directory defined under the flag `--SAVING_DIR--` within the [SimulParameters](../reference/PRE_FATE.params_simulParameters.html) file can contain the following directories (depending on the parameters selected and the modules activated within the [GlobalParameters](../reference/PRE_FATE.params_globalParameters.html) file) :
 
 - *`ABUND_allPFG_perStrata/`*
 - *`ABUND_perPFG_allStrata/`*
@@ -115,8 +115,9 @@ Each of them contains raster files with the abundance of Plant Functional Groups
 - *`ABUND_allPFG_perStrata`/* : a file represents **one specific year**, and the abundance of **all PFGs** in **a specific stratum**
 - *`ABUND_perPFG_allStrata/`* : a file represents **one specific year**, and the abundance of **a specific PFG** within **all strata**
 
-If the corresponding modules were activated within the [GlobalParameters](../reference/PRE_FATE.params_globalParameters.html) file, the following folders should also contain files :
+If the corresponding modules were activated within the [GlobalParameters](../reference/PRE_FATE.params_globalParameters.html) file, the following folders may also exist and contain output files :
 
+- *`DISPERSAL/`*
 - *`LIGHT/`*
 - *`SOIL/`*
 

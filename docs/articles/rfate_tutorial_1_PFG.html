@@ -183,9 +183,9 @@ See <a href="fate_tutorial_1_PFG.html">Principle of PFG</a> <code>FATE</code> tu
 <li>with the function <a href="../reference/PRE_FATE.selectDominant.html">PRE_FATE.selectDominant</a>
 </li>
 </ul>
-<p><strong>2. Overlap of species climatic niches</strong></p>
+<p><strong>2. Overlap of species environmental niches</strong></p>
 <ul>
-<li>with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)</li>
+<li>with either Principal Component Analysis (PCA) or Species Distribution Models (SDM) (but see <a href="../reference/PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a>)</li>
 </ul>
 <p><strong>3. Calculation of species pairwise distance</strong></p>
 <ul>
@@ -218,19 +218,19 @@ with the function <a href="../reference/PRE_FATE.speciesClustering_step3.html">P
 </ul>
 <p>with the function <a href="../reference/PRE_FATE.selectDominant.html">PRE_FATE.selectDominant</a></p>
 </div>
-<div id="overlap-of-species-climatic-niches" class="section level4">
+<div id="overlap-of-species-environmental-niches" class="section level4">
 <h4 class="hasAnchor">
-<a href="#overlap-of-species-climatic-niches" class="anchor"></a>2. Overlap of species climatic niches</h4>
+<a href="#overlap-of-species-environmental-niches" class="anchor"></a>2. Overlap of species environmental niches</h4>
 <p>with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)</p>
 <ul>
 <li>
 <em>Option 1: Principal Component analysis</em>
 <ul>
 <li>Gather <strong>environmental data</strong> for the studied area</li>
-<li>Compute <strong>PCA</strong> over environment to create a <em>climatic space</em>
+<li>Compute <strong>PCA</strong> over environment to create a <em>climatic/habitat space</em>
 </li>
-<li>Calculate the <strong>density of each species</strong> within this <em>climatic space</em> from the PCA</li>
-<li>For each pair of species, compute the <strong>overlap</strong> of the 2 considered species within the <em>climatic space</em>
+<li>Calculate the <strong>density of each species</strong> within this <em>climatic/habitat space</em> from the PCA</li>
+<li>For each pair of species, compute the <strong>overlap</strong> of the 2 considered species within the <em>climatic/habitat space</em>
 </li>
 </ul>
 </li>
@@ -242,7 +242,7 @@ with the function <a href="../reference/PRE_FATE.speciesClustering_step3.html">P
 <ul>
 <li>Gather <strong>environmental data</strong> for the studied area</li>
 <li>For each dominant species, compute a <strong>species distribution model</strong> (SDM)<br>
-combining environmental data and occurrences to determine the <em>climatic niche</em> of the species</li>
+combining environmental data and occurrences to determine the <em>climatic/habitat niche</em> of the species</li>
 <li>With these SDMs, calculate the <strong>niche overlap</strong> of each pair of species</li>
 </ul>
 </li>
@@ -255,7 +255,7 @@ combining environmental data and occurrences to determine the <em>climatic niche
 <ul>
 <li>Gather <strong>traits data</strong> for all dominant species within the studied area<br>
 (traits need to be related to fundamental process of growth : light tolerance, dispersal, height…)</li>
-<li>Compute <strong>dissimilarity distances</strong> between pairs of species based on these traits and taking also into account the overlap of the 2 species within the <em>climatic space</em> (see previous step)</li>
+<li>Compute <strong>dissimilarity distances</strong> between pairs of species based on these traits and taking also into account the overlap of the 2 species within the <em>climatic/habitat space</em> (see previous step)</li>
 </ul>
 <p><em>For further details about the data, please refer to</em> <a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.">Boulangeat, 2012</a>.</p>
 </div>

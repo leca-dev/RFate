@@ -33,9 +33,10 @@ It contains documentation and functions to create and organize all input files r
 
 - with the function [PRE_FATE.selectDominant](../reference/PRE_FATE.selectDominant.html)  
 
-**2. Overlap of species climatic niches**  
+**2. Overlap of species environmental niches**  
 
 - with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)
+(but see [PRE_FATE.speciesDistance](../reference/PRE_FATE.speciesDistance.html))
 
 **3. Calculation of species pairwise distance**  
 
@@ -63,21 +64,21 @@ with the function [PRE_FATE.speciesClustering_step3](../reference/PRE_FATE.speci
 with the function [PRE_FATE.selectDominant](../reference/PRE_FATE.selectDominant.html)  
 
 
-#### 2. Overlap of species climatic niches
+#### 2. Overlap of species environmental niches
 with either Principal Component Analysis (PCA) or Species Distribution Models (SDM)
 
 - *Option 1: Principal Component analysis*
     - Gather **environmental data** for the studied area
-    - Compute **PCA** over environment to create a *climatic space*
-    - Calculate the **density of each species** within this *climatic space* from the PCA
-    - For each pair of species, compute the **overlap** of the 2 considered species within the *climatic space*
+    - Compute **PCA** over environment to create a *climatic/habitat space*
+    - Calculate the **density of each species** within this *climatic/habitat space* from the PCA
+    - For each pair of species, compute the **overlap** of the 2 considered species within the *climatic/habitat space*
 
 <br/>
 
 - *Option 2: Species Distribution Models*
     - Gather **environmental data** for the studied area
     - For each dominant species, compute a **species distribution model** (SDM)  
-    combining environmental data and occurrences to determine the *climatic niche* of the species
+    combining environmental data and occurrences to determine the *climatic/habitat niche* of the species
     - With these SDMs, calculate the **niche overlap** of each pair of species
 
 
@@ -86,7 +87,7 @@ by combining overlap and functional distances with the function [PRE_FATE.specie
 
 - Gather **traits data** for all dominant species within the studied area  
 (traits need to be related to fundamental process of growth : light tolerance, dispersal, height...)
-- Compute **dissimilarity distances** between pairs of species based on these traits and taking also into account the overlap of the 2 species within the *climatic space* (see previous step)
+- Compute **dissimilarity distances** between pairs of species based on these traits and taking also into account the overlap of the 2 species within the *climatic/habitat space* (see previous step)
 
 *For further details about the data, please refer to* [Boulangeat, 2012](http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf "Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475."). 
 
