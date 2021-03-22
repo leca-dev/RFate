@@ -215,33 +215,30 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' data(DATASET_Bauges_PFG)
+##' .loadData("Champsaur_PFG")
 ##' 
 ##' ## Species observations
-##' tab = DATASET_Bauges_PFG$sp.observations
-##' str(tab)
+##' tab = Champsaur_PFG$sp.observations
 ##' 
-##' ## No habitat, no robustness -----------------------------------------------------------------
-##' tab.select = tab[, c("sites", "species", "abund")]
-##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.select)
+##' ## No habitat, no robustness -------------------------------------------------
+##' tab.occ = tab[, c("sites", "species", "abund")]
+##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ)
 ##' names(sp.SELECT)
 ##' str(sp.SELECT$tab.rules)
 ##' plot(sp.SELECT$plot.A)
 ##' plot(sp.SELECT$plot.B$abs)
 ##' plot(sp.SELECT$plot.B$rel)
-##' plot(sp.SELECT$plot.pco$Axis1_Axis2)
-##' plot(sp.SELECT$plot.pco$Axis1_Axis3)
 ##' 
-##' ## Habitat, change parameters (!quite long!) -------------------------------------------------
+##' ## Habitat, change parameters, no robustness (!quite long!) --------------------
 ##' \dontrun{
-##' tab.select = tab[, c("sites", "species", "abund", "habitat")]
-##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.select
+##' tab.occ = tab[, c("sites", "species", "abund", "habitat")]
+##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ
 ##'                                     , doRuleA = TRUE
 ##'                                     , rule.A1 = 10
 ##'                                     , rule.A2_quantile = 0.9
 ##'                                     , doRuleB = TRUE
 ##'                                     , rule.B1_percentage = 0.2
-##'                                     , rule.B1_number = 3
+##'                                     , rule.B1_number = 10
 ##'                                     , rule.B2 = 0.4
 ##'                                     , doRuleC = TRUE)
 ##' names(sp.SELECT)
@@ -250,16 +247,15 @@
 ##' plot(sp.SELECT$plot.pco$Axis1_Axis2)
 ##' plot(sp.SELECT$plot.pco$Axis1_Axis3)
 ##' }
-##'                                     
-##' ## Robustness (!quite long!) -----------------------------------------------------------------
+##' 
+##' ## No habitat, robustness (!quite long!) --------------------
 ##' \dontrun{
-##' tab.select = tab[, c("sites", "species", "abund")]
-##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.select
+##' tab.occ = tab[, c("sites", "species", "abund")]
+##' sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ
 ##'                                     , opt.doRobustness = TRUE
-##'                                     , opt.robustness_percent = c(0.2, 0.8)
-##'                                     , opt.robustness_rep = 3)
+##'                                     , opt.robustness_percent = seq(0.1,0.9,0.1)
+##'                                     , opt.robustness_rep = 10)
 ##' names(sp.SELECT)
-##' str(sp.SELECT$tab.rules)
 ##' str(sp.SELECT$tab.robustness)
 ##' names(sp.SELECT$plot.robustness)
 ##' plot(sp.SELECT$plot.robustness$`All dataset`)

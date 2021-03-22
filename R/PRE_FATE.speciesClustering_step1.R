@@ -136,16 +136,21 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' data(DATASET_Bauges_PFG)
+##' .loadData("Champsaur_PFG")
 ##' 
-##' ## Species dissimilarity distance (niche overlap + traits distance)
-##' tab.dist = DATASET_Bauges_PFG$dom.dist_total
+##' ## Species dissimilarity distances (niche overlap + traits distance)
+##' tab.dist = list("Phanerophyte" = Champsaur_PFG$sp.DIST.P$mat.ALL
+##'                 , "Chamaephyte" = Champsaur_PFG$sp.DIST.C$mat.ALL
+##'                 , "Herbaceous" = Champsaur_PFG$sp.DIST.H$mat.ALL)
 ##' str(tab.dist)
 ##' as.matrix(tab.dist[[1]])[1:5, 1:5]
 ##' 
-##' ## Build dendrograms -------------------------------------------------------------------------
+##' ## Build dendrograms ---------------------------------------------------------
 ##' sp.CLUST = PRE_FATE.speciesClustering_step1(mat.species.DIST = tab.dist)
 ##' names(sp.CLUST)
+##' str(sp.CLUST$clust.evaluation)
+##' plot(sp.CLUST$plot.clustMethod)
+##' plot(sp.CLUST$plot.clustNo)
 ##' 
 ##' \dontrun{
 ##' require(foreach)
@@ -166,10 +171,6 @@
 ##' plot(pp[[3]])
 ##' }
 ##' 
-##' str(sp.CLUST$clust.evaluation)
-##' 
-##' plot(sp.CLUST$plot.clustMethod)
-##' plot(sp.CLUST$plot.clustNo)
 ##' 
 ##' 
 ##' @export

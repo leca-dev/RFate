@@ -99,43 +99,44 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' data(DATASET_Bauges_PFG)
+##' .loadData("Champsaur_PFG")
 ##' 
 ##' ## Species traits
-##' tab.traits = DATASET_Bauges_PFG$dom.traits
+##' tab.traits = Champsaur_PFG$sp.traits
 ##' str(tab.traits)
 ##' 
 ##' ## Determinant species
-##' sp.DETERM = DATASET_Bauges_PFG$dom.determ
-##' str(sp.DETERM)
+##' tab.PFG = Champsaur_PFG$PFG.species
+##' str(tab.PFG)
 ##' 
 ##' ## Merge traits and PFG informations
-##' mat.traits = merge(sp.DETERM[, c("species", "PFG")]
+##' mat.traits = merge(tab.PFG[which(tab.PFG$DETERMINANT==TRUE), c("species","PFG")]
 ##'                    , tab.traits
 ##'                    , by = "species", all.x = TRUE)
+##' str(mat.traits)
+##' 
+##' ## Keep only traits of interest
+##' mat.traits = mat.traits[, c("PFG", "species", "MATURITY", "LONGEVITY"
+##'                            , "HEIGHT", "LIGHT", "DISPERSAL"
+##'                            , "NITROGEN", "NITROGEN_TOLERANCE", "LDMC", "LNC")]
+##' colnames(mat.traits) = c("PFG", "species", "maturity", "longevity"
+##'                          , "height", "light", "dispersal"
+##'                          , "soil_contrib", "soil_tolerance", "LDMC", "LNC")
+##' mat.traits$soil_contrib = as.numeric(mat.traits$soil_contrib)
+##' mat.traits$soil_tolerance = ifelse(mat.traits$soil_tolerance == 1, 0.5, 1)
+##' 
+##' ## Compute traits per PFG : with one specific graphic ------------------------
+##' PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
+##' 
+##' names(PFG.traits)
+##' str(PFG.traits$tab)
+##' names(PFG.traits$plot)
+##' plot(PFG.traits$plot$maturity_longevity)
+##' plot(PFG.traits$plot$height_light)
+##' plot(PFG.traits$plot$soil)
 ##' 
 ##' 
-##' ## Compute traits per PFG : no specific graphic ----------------------------------------------
-##' sp.PFG = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
-##' # names(sp.PFG)
-##' # str(sp.PFG$tab)
-##' # names(sp.PFG$plot)
-##' # plot(sp.PFG$plot$DISPERSAL)
-##' # plot(sp.PFG$plot$LIGHT)
-##' # plot(sp.PFG$plot$NITROGEN)
 ##' 
-##' 
-##' ## Compute traits per PFG : with one specific graphic ----------------------------------------
-##' colnames(mat.traits) = c("species", "PFG", "GROUP", "maturity", "longevity"
-##'                          , "height", "DISPERSAL", "light", "soil_contrib"
-##'                          , "soil_tolerance", "GRAZ_MOW_TOLERANCE")
-##' sp.PFG = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
-##' # names(sp.PFG)
-##' # str(sp.PFG$tab)
-##' # names(sp.PFG$plot)
-##' # plot(sp.PFG$plot$maturity_longevity)
-##' # plot(sp.PFG$plot$height_light)
-##' # plot(sp.PFG$plot$soil)
 ##' 
 ##' 
 ##' @export

@@ -302,7 +302,7 @@
     cat("\n > Downloading `",data.name,"` dataset...\n")
     download.file(url = paste0("https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/", full.name)
                   , destfile = full.name
-                  , method = "wget")
+                  , method = "curl")
     if (!file.exists(full.name))
     {
       stop(paste0("Download of `", data.name,"` dataset failed!"))

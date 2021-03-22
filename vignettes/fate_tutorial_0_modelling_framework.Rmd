@@ -190,7 +190,7 @@ $\text{MaxAbund} \in {1,2,3}$ defines the maximum abundance that can be reached 
 A condition is set to help regulate populations : new individuals only grow if there is not yet too many individuals within the pixel, i.e. if the total abundance of the PFG does not exceed its global carrying capacity :
 
 \begin{align}
-\text{totAbund} &= \text{MatureAbund} &+ \text{AbundImmature} * \text{ImmSize} \\
+\text{totAbund} &= \text{MatureAbund} &+ \text{ImmatureAbund} * \text{ImmSize} \\
 \text{globalCC} &= \text{MaxAbund} &+ \text{MaxAbund} * \text{ImmSize}\\
 &\text{if (totAbund} < \text{globalCC)} \\
 &\{ \\

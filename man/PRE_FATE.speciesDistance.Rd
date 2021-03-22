@@ -145,49 +145,50 @@ is weighted by the number of traits used}.
 \examples{
 
 ## Load example data
-data(DATASET_Bauges_PFG)
+.loadData("Champsaur_PFG")
 
 ## Species traits
-tab.traits = DATASET_Bauges_PFG$dom.traits
+tab.traits = Champsaur_PFG$sp.traits
 tab.traits = tab.traits[, c("species", "GROUP", "MATURITY", "LONGEVITY"
                             , "HEIGHT", "DISPERSAL", "LIGHT", "NITROGEN")]
 str(tab.traits)
 
-## Species niche overlap (similarity distance)
-tab.overlap = DATASET_Bauges_PFG$dom.dist_overlap
+## Species niche overlap (dissimilarity distances)
+tab.overlap = 1 - Champsaur_PFG$mat.overlap ## transform into similarity
 tab.overlap[1:5, 1:5]
 
-## Give warnings -----------------------------------------------------------------------------
+## Give warnings -------------------------------------------------------------
 sp.DIST = PRE_FATE.speciesDistance(mat.traits = tab.traits
-                                   , mat.overlap = as.matrix(tab.overlap))
+                                   , mat.overlap.option = "dist"
+                                   , mat.overlap.object = tab.overlap)
+str(sp.DIST)
+
+## Change parameters to allow more NAs (and change traits used) --------------
+sp.DIST = PRE_FATE.speciesDistance(mat.traits = tab.traits
+                                   , mat.overlap.option = "dist"
+                                   , mat.overlap.object = tab.overlap
+                                   , opt.maxPercent.NA = 0.05
+                                   , opt.maxPercent.similarSpecies = 0.3
+                                   , opt.min.sd = 0.3)
 str(sp.DIST)
 
 \dontrun{
-require(foreach)
-require(ggplot2)
-require(ggdendro)
-pp = foreach(x = names(sp.DIST)) \%do\%
-{
-  hc = hclust(sp.DIST[[x]])
-  pp = ggdendrogram(hc, rotate = TRUE) +
-    labs(title = paste0("Hierarchical clustering based on species distance "
-                        , ifelse(length(names(sp.DIST)) > 1
-                        , paste0("(group ", x, ")")
-                        , "")))
-  return(pp)
-}
+require(foreach); require(ggplot2); require(ggdendro)
+pp = foreach(x = names(sp.DIST$mat.ALL)) \%do\%
+  {
+    hc = hclust(sp.DIST$mat.ALL[[x]])
+    pp = ggdendrogram(hc, rotate = TRUE) +
+      labs(title = paste0("Hierarchical clustering based on species distance "
+                          , ifelse(length(names(sp.DIST$mat.ALL)) > 1
+                                   , paste0("(group ", x, ")")
+                                   , "")))
+    return(pp)
+  }
 plot(pp[[1]])
 plot(pp[[2]])
 plot(pp[[3]])
 }
 
-## Change parameters to allow more NAs (and change traits used) ------------------------------
-sp.DIST = PRE_FATE.speciesDistance(mat.traits = tab.traits
-                                   , mat.overlap = as.matrix(tab.overlap)
-                                   , opt.maxPercent.NA = 0.05
-                                   , opt.maxPercent.similarSpecies = 0.3
-                                   , opt.min.sd = 0.3)
-str(sp.DIST)
 
 }
 \seealso{

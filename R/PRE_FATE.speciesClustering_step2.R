@@ -110,42 +110,37 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' data(DATASET_Bauges_PFG)
+##' .loadData("Champsaur_PFG")
 ##' 
-##' ## Species dissimilarity distance (niche overlap + traits distance)
-##' tab.dist = DATASET_Bauges_PFG$dom.dist_total
+##' ## Species dissimilarity distances (niche overlap + traits distance)
+##' tab.dist = list("Phanerophyte" = Champsaur_PFG$sp.DIST.P$mat.ALL
+##'                 , "Chamaephyte" = Champsaur_PFG$sp.DIST.C$mat.ALL
+##'                 , "Herbaceous" = Champsaur_PFG$sp.DIST.H$mat.ALL)
 ##' str(tab.dist)
 ##' as.matrix(tab.dist[[1]])[1:5, 1:5]
 ##' 
-##' 
-##' ## Build dendrograms -------------------------------------------------------------------------
+##' ## Build dendrograms ---------------------------------------------------------
 ##' sp.CLUST = PRE_FATE.speciesClustering_step1(mat.species.DIST = tab.dist)
 ##' names(sp.CLUST)
 ##' 
 ##' 
 ##' ## Number of clusters per group
 ##' plot(sp.CLUST$plot.clustNo)
-##' no.clusters = c(5, 5, 9)
+##' no.clusters = c(4, 3, 8) ## Phanerophyte, Chamaephyte, Herbaceous
+##' 
+##' 
 ##' 
 ##' ## Find determinant species ------------------------------------------------------------------
 ##' sp.DETERM = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST$clust.dendrograms
 ##'                                              , no.clusters = no.clusters
 ##'                                              , mat.species.DIST = tab.dist)
 ##' names(sp.DETERM)
-##' 
 ##' str(sp.DETERM$determ.sp)
 ##' str(sp.DETERM$determ.all)
-##' 
-##' ## Species names
-##' # sp.NAMES = DATASET_Bauges_PFG$sp.names
-##' # sp.NAMES$species = paste0("X", sp.NAMES$species)
-##' # determ = merge(sp.DETERM$determ.all, sp.NAMES, by = "species", all.x = TRUE)
-##' # str(determ)
-##' 
-##' # plot(sp.DETERM$plot.distance)
-##' # plot(sp.DETERM$plot.PCO$Chamaephyte)
-##' # plot(sp.DETERM$plot.PCO$Herbaceous)
-##' # plot(sp.DETERM$plot.PCO$Phanerophyte)
+##' plot(sp.DETERM$plot.distance)
+##' plot(sp.DETERM$plot.PCO$Chamaephyte)
+##' plot(sp.DETERM$plot.PCO$Herbaceous)
+##' plot(sp.DETERM$plot.PCO$Phanerophyte)
 ##' 
 ##' 
 ##' @export
@@ -321,7 +316,7 @@ PRE_FATE.speciesClustering_step2 = function(clust.dendrograms
                                   , color = interaction(determ$DETERMINANT, determ$GROUP)
                                   , shape = "DETERMINANT")) +
     scale_color_manual(guide = F, values = colRamp(length(colLev))) +
-    scale_shape_manual(guide = F, values = c("0" = 20, "1" = 8)) +
+    scale_shape_manual(guide = F, values = c("FALSE" = 20, "TRUE" = 8)) +
     geom_errorbar(aes_string(ymin = "allSp.min", ymax = "allSp.max")
                   , color = "darkblue") +
     geom_point(position = "jitter") +

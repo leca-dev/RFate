@@ -328,7 +328,7 @@ Depending on the PFG life-form (herbaceous, chamaephytes, phanerophytes), immatu
 A condition is set to help regulate populations : new individuals only grow if there is not yet too many individuals within the pixel, i.e. if the total abundance of the PFG does not exceed its global carrying capacity :</li>
 </ul>
 <p><span class="math display">\[\begin{align}
-\text{totAbund} &amp;= \text{MatureAbund} &amp;+ \text{AbundImmature} * \text{ImmSize} \\
+\text{totAbund} &amp;= \text{MatureAbund} &amp;+ \text{ImmatureAbund} * \text{ImmSize} \\
 \text{globalCC} &amp;= \text{MaxAbund} &amp;+ \text{MaxAbund} * \text{ImmSize}\\
 &amp;\text{if (totAbund} &lt; \text{globalCC)} \\
 &amp;\{ \\

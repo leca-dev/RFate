@@ -339,16 +339,21 @@ function.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_PFG</span><span class='op'>)</span>
+<span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>"Champsaur_PFG"</span><span class='op'>)</span>
 
-<span class='co'>## Species dissimilarity distance (niche overlap + traits distance)</span>
-<span class='va'>tab.dist</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_PFG</span><span class='op'>$</span><span class='va'>dom.dist_total</span>
+<span class='co'>## Species dissimilarity distances (niche overlap + traits distance)</span>
+<span class='va'>tab.dist</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='st'>"Phanerophyte"</span> <span class='op'>=</span> <span class='va'>Champsaur_PFG</span><span class='op'>$</span><span class='va'>sp.DIST.P</span><span class='op'>$</span><span class='va'>mat.ALL</span>
+                , <span class='st'>"Chamaephyte"</span> <span class='op'>=</span> <span class='va'>Champsaur_PFG</span><span class='op'>$</span><span class='va'>sp.DIST.C</span><span class='op'>$</span><span class='va'>mat.ALL</span>
+                , <span class='st'>"Herbaceous"</span> <span class='op'>=</span> <span class='va'>Champsaur_PFG</span><span class='op'>$</span><span class='va'>sp.DIST.H</span><span class='op'>$</span><span class='va'>mat.ALL</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.dist</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/matrix.html'>as.matrix</a></span><span class='op'>(</span><span class='va'>tab.dist</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>
 
-<span class='co'>## Build dendrograms -------------------------------------------------------------------------</span>
+<span class='co'>## Build dendrograms ---------------------------------------------------------</span>
 <span class='va'>sp.CLUST</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step1</span><span class='op'>(</span>mat.species.DIST <span class='op'>=</span> <span class='va'>tab.dist</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>clust.evaluation</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>plot.clustMethod</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>plot.clustNo</span><span class='op'>)</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RevolutionAnalytics/foreach'>foreach</a></span><span class='op'>)</span>
@@ -369,10 +374,6 @@ function.</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>pp</span><span class='op'>[[</span><span class='fl'>3</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>clust.evaluation</span><span class='op'>)</span>
-
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>plot.clustMethod</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.CLUST</span><span class='op'>$</span><span class='va'>plot.clustNo</span><span class='op'>)</span>
 
 
 </pre>
