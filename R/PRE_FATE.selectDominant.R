@@ -193,6 +193,9 @@
 ##'   \item{\file{TABLE_complete}}{the complete table of all species and the 
 ##'   selection rules described above (\code{tab.rules})}
 ##'   \item{\file{TABLE_species}}{only the names / ID of the species selected}
+##'   \item{\file{TABLE_sitesXspecies_AB}}{abundances table of selected species}
+##'   \item{\file{TABLE_sitesXspecies_PA}}{presence/absence table of selected 
+##'   species}
 ##' }
 ##' 
 ##' Up to six \file{PRE_FATE_DOMINANT_[...].pdf} files are also created : 
@@ -862,12 +865,12 @@ PRE_FATE.selectDominant = function(mat.observations
             , file = paste0("PRE_FATE_DOMINANT_TABLE_sitesXspecies_AB"
                             , end_filename
                             , ".csv")
-            , row.names = FALSE)
+            , row.names = TRUE)
   write.csv(tab.dom.PA
             , file = paste0("PRE_FATE_DOMINANT_TABLE_sitesXspecies_PA"
                             , end_filename
                             , ".csv")
-            , row.names = FALSE)
+            , row.names = TRUE)
   
   
   message(paste0("\n The output files \n"

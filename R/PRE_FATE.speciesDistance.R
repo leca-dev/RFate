@@ -29,7 +29,7 @@
 ##'   \describe{
 ##'     \item{\code{tab.dom.PA}}{a \code{matrix} or \code{data.frame} with 
 ##'     sites in rows and species in columns, containing either \code{NA}, 
-##'     \code{0} or \code{1},  (see \code{\link{PRE_FATE.selectDominant}})}
+##'     \code{0} or \code{1} (see \code{\link{PRE_FATE.selectDominant}})}
 ##'     \item{\code{tab.env}}{a \code{matrix} or \code{data.frame} with 
 ##'     sites in rows and environmental variables in columns}
 ##'   }
@@ -247,7 +247,7 @@ PRE_FATE.speciesDistance = function(mat.traits
                     ,ncol(mat.overlap)
                     ,")"))
       }
-      if (unique(diag(mat.overlap)) != 1)
+      if (length(unique(diag(mat.overlap))) > 1 || unique(diag(mat.overlap)) != 1)
       {
         stop("Wrong type of data!\n `mat.overlap.object` must be a similarity distance object (`dist`, `niolap`, `matrix`)")
       }

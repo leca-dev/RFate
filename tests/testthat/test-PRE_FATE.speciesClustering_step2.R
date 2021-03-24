@@ -125,15 +125,17 @@ test_that("PRE_FATE.speciesClustering_step2 gives right output", {
   mat.overlap = matrix(runif(100*100)
                        , ncol = 100
                        , dimnames = list(paste0("SP", 1:100), paste0("SP", 1:100)))
+  diag(mat.overlap) = 1
   
   sp.DIST = PRE_FATE.speciesDistance(mat.traits = mat.traits
-                                     , mat.overlap = mat.overlap)
-  sp.CLUST1 = PRE_FATE.speciesClustering_step1(mat.species.DIST = sp.DIST)
+                                     , mat.overlap.option = "dist"
+                                     , mat.overlap.object = mat.overlap)
+  sp.CLUST1 = PRE_FATE.speciesClustering_step1(mat.species.DIST = sp.DIST$mat.ALL)
   
   
   sp.CLUST2 = suppressWarnings(PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1$clust.dendrograms[[1]]
                                                                 , no.clusters = 3
-                                                                , mat.species.DIST = sp.DIST[[1]]))
+                                                                , mat.species.DIST = sp.DIST$mat.ALL[[1]]))
   
   expect_output(str(sp.CLUST2), "List")
   expect_equal(length(sp.CLUST2), 4)
@@ -142,7 +144,7 @@ test_that("PRE_FATE.speciesClustering_step2 gives right output", {
   
   sp.CLUST2 = suppressWarnings(PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1$clust.dendrograms
                                                                 , no.clusters = c(3,3,3)
-                                                                , mat.species.DIST = sp.DIST))
+                                                                , mat.species.DIST = sp.DIST$mat.ALL))
   
   expect_output(str(sp.CLUST2), "List")
   expect_equal(length(sp.CLUST2), 4)

@@ -20,6 +20,10 @@
 ##'   \item{\code{...}}{one column for each functional trait (see 
 ##'   \href{PRE_FATE.speciesClustering_step3#details}{\code{Details}})}
 ##' }
+##' @param opt.mat.PA (\emph{optional}) default \code{NULL}. \cr 
+##' a \code{data.frame} with sites in rows and species in columns, 
+##' containing either \code{NA}, \code{0} or \code{1} (see 
+##' \code{\link{PRE_FATE.selectDominant}})
 ##' 
 ##' @details
 ##' 
@@ -59,16 +63,19 @@
 ##'   \item{\cr \code{soil_contrib}, \cr \code{soil_tolerance}}{same as the 
 ##'   previous one, but \code{soil_tol_min} and \code{soil_tol_max} values 
 ##'   are obtained by adding or removing \code{soil_tolerance} to 
-##'   \code{soil_contrib}}
+##'   \code{soil_contrib} \cr \cr}
 ##' }
 ##' 
+##' If a sites x species table is provided (\code{opt.mat.PA}), a sites x PFG 
+##' table (containing \code{NA}, \code{0} or \code{1}) is also returned.
 ##' 
-##' @return A \code{list} containing one \code{data.frame} with the following 
-##' columns, and one \code{list} with as many \code{ggplot2} objects as 
-##' functional traits given in \code{mat.traits} :
+##' 
+##' @return A \code{list} containing one or two \code{data.frame} with the 
+##' following columns, and one \code{list} with as many \code{ggplot2} objects 
+##' as functional traits given in \code{mat.traits} :
 ##' 
 ##' \describe{
-##'   \item{tab}{ \cr
+##'   \item{tab.PFG.traits}{ \cr
 ##'   \describe{
 ##'     \item{\code{PFG}}{the concerned plant functional group}
 ##'     \item{\code{no.species}}{the number of species contained in this PFG}
@@ -77,6 +84,8 @@
 ##'     traits) of the values of the determinant species of this PFG}
 ##'   }
 ##'   }
+##'   \item{tab.PFG.PA}{table containing counts of presences for all PFG 
+##'   (sites in rows, PFG in columns)}
 ##'   \item{plot}{\cr
 ##'   \describe{
 ##'     \item{\code{...}}{one for each functional trait, 'specific' cases 
@@ -86,7 +95,8 @@
 ##'   }
 ##' }
 ##'     
-##' The information is written in \file{PRE_FATE_PFG_TABLE_traits.csv} and 
+##' The information is written in \file{PRE_FATE_PFG_TABLE_traits.csv}, 
+##' \file{PRE_FATE_PFG_TABLE_sitesXPFG_PA.csv} and 
 ##' \file{PRE_FATE_CLUSTERING_STEP_3_PFGtraitsValues.pdf} files. \cr
 ##' This \code{.csv} file can be used to build parameter files to run a 
 ##' \code{FATE} simulation (e.g. \code{\link{PRE_FATE.params_PFGsuccession}}).
@@ -157,7 +167,7 @@
 ## END OF HEADER ###############################################################
 
 
-PRE_FATE.speciesClustering_step3 = function(mat.traits
+PRE_FATE.speciesClustering_step3 = function(mat.traits, opt.mat.PA = NULL
 ){
   
   #############################################################################
@@ -191,6 +201,43 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits
   cat("\n\n #------------------------------------------------------------#")
   cat("\n # PRE_FATE.speciesClustering_step3 : PFG TRAIT VALUES")
   cat("\n #------------------------------------------------------------# \n")
+  
+  #############################################################################
+  
+  ## CHECK parameter opt.mat.PA
+  if (!is.null(opt.mat.PA))
+  {
+    if (.testParam_notDf(opt.mat.PA))
+    {
+      .stopMessage_beDataframe("opt.mat.PA")
+    } else
+    {
+      if (nrow(opt.mat.PA) == 0 || ncol(opt.mat.PA) != length(unique(mat.traits$species)))
+      {
+        .stopMessage_numRowCol("opt.mat.PA", length(unique(mat.traits$species)))
+      } else
+      {
+        mat.PA.pfg = matrix(NA, ncol = length(unique(mat.traits$PFG)), nrow = nrow(opt.mat.PA)
+                         , dimnames = list(rownames(opt.mat.PA), unique(mat.traits$PFG)))
+        for(pfg in colnames(mat.PA.pfg))
+        {
+          tmp = opt.mat.PA[, which(colnames(opt.mat.PA) %in% mat.traits$species[which(mat.traits$PFG == pfg)]), drop = FALSE]
+          no.NA = apply(tmp, 1, function(x) length(which(!is.na(x))))
+          
+          mat.PA.pfg[, pfg] = rowSums(tmp, na.rm = TRUE)
+          mat.PA.pfg[which(no.NA == 0), pfg] = NA
+        }
+        mat.PA.pfg[which(mat.PA.pfg[] > 0)] = 1
+        
+        write.csv(mat.PA.pfg
+                  , file = "PRE_FATE_PFG_TABLE_sitesXPFG_PA.csv"
+                  , row.names = TRUE)
+        
+        message(paste0("\n The parameter file PRE_FATE_PFG_TABLE_sitesXPFG_PA.csv "
+                       , "has been successfully created !\n"))
+      }
+    }
+  }
   
   #############################################################################
   
@@ -285,37 +332,37 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits
   ## CALCULATE MEDIAN TRAIT VALUE PER PFG -------------------------------------
   mat.traits.pfg = split(mat.traits, mat.traits$PFG)
   mat.traits.pfg = foreach(tab = mat.traits.pfg, .combine = "rbind") %do%
-  {
-    res.pfg = data.frame(PFG = unique(tab$PFG)
-                         , no.species = length(unique(tab$species))
-                         , stringsAsFactors = FALSE)
-    
-    tab.val = tab[ ,-which(colnames(tab) %in% c("species", "PFG")), drop = FALSE]
-    res.val = foreach(i = 1:ncol(tab.val), .combine = "cbind") %do%
     {
-      val = tab.val[, i]
-      if (is.factor(val) || is.character(val))
-      {
-        res = median(as.numeric(as.factor(val)), na.rm = TRUE)
-        res = levels(as.factor(val))[res]
-      } else
-      {
-        res = mean(as.numeric(val), na.rm = TRUE)
-        if (colnames(tab.val)[i] %in% c("soil_contrib", "soil_tol_min", "soil_tol_max"))
+      res.pfg = data.frame(PFG = unique(tab$PFG)
+                           , no.species = length(unique(tab$species))
+                           , stringsAsFactors = FALSE)
+      
+      tab.val = tab[ ,-which(colnames(tab) %in% c("species", "PFG")), drop = FALSE]
+      res.val = foreach(i = 1:ncol(tab.val), .combine = "cbind") %do%
         {
-          res = round(res, 2)
-        } else
-        {
-          res = round(res)
+          val = tab.val[, i]
+          if (is.factor(val) || is.character(val))
+          {
+            res = median(as.numeric(as.factor(val)), na.rm = TRUE)
+            res = levels(as.factor(val))[res]
+          } else
+          {
+            res = mean(as.numeric(val), na.rm = TRUE)
+            if (colnames(tab.val)[i] %in% c("soil_contrib", "soil_tol_min", "soil_tol_max"))
+            {
+              res = round(res, 2)
+            } else
+            {
+              res = round(res)
+            }
+          }
+          res = data.frame(res, stringsAsFactors = FALSE)
+          colnames(res) = colnames(tab.val)[i]
+          return(res)
         }
-      }
-      res = data.frame(res, stringsAsFactors = FALSE)
-      colnames(res) = colnames(tab.val)[i]
-      return(res)
+      
+      return(data.frame(res.pfg, res.val, stringsAsFactors = FALSE))
     }
-    
-    return(data.frame(res.pfg, res.val, stringsAsFactors = FALSE))
-  }
   
   write.csv(mat.traits.pfg
             , file = "PRE_FATE_PFG_TABLE_traits.csv"
@@ -355,8 +402,8 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits
   {
     ind.keep.sp = which(mat.traits.melt$variable %in% i.trait)
     ind.keep.pfg = which(mat.traits.pfg.melt$variable %in% i.trait)
-
-        
+    
+    
     pp.i = ggplot(mat.traits.melt[ind.keep.sp,]
                   , aes_string(x = "PFG", y = "value", fill = "variable")) +
       geom_boxplot(color = "grey60", na.rm = TRUE)
@@ -479,7 +526,11 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits
     dev.off()
   }
   
-  return(list(tab = mat.traits.pfg
-              , plot = pp_list))
+  results = list(tab.PFG.traits = mat.traits.pfg)
+  if (!is.null(opt.mat.PA)) {
+    results$tab.PFG.PA = mat.PA.pfg
+  }
+  results$plot = pp_list
+  return(results)
 }
 
