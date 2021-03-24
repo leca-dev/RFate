@@ -68,7 +68,8 @@
 ##'   \item{soil_tol_max}{the maximum soil value tolerated by the PFG (on the 
 ##'   same scale than \code{soil_contrib})}
 ##'   \item{(\emph{strategy_contrib})}{a \code{string} to choose the 
-##'   contribution strategy : \cr \code{ubiquist}, \code{tobedefined} \cr \cr}
+##'   contribution strategy : \cr \code{oligotrophic}, \code{mesotrophic}, 
+##'   \code{eutrophic} \cr \cr}
 ##'   
 ##'   \item{lifeStage}{the concerned life stage (\code{Germinant}, 
 ##'   \code{Immature}, \code{Mature})}
@@ -77,7 +78,8 @@
 ##'   \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
 ##'   corresponding to the proportion of surviving individuals}
 ##'   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
-##'   strategy : \cr \code{ubiquist}, \code{tobedefined} \cr \cr}
+##'   strategy : \cr \code{poor_lover}, \code{ubiquist}, \code{rich_lover} 
+##'   \cr \cr}
 ##' }
 ##' 
 ##' These values will allow to calculate or define a set of characteristics for 
@@ -123,8 +125,9 @@
 ##'       \describe{
 ##'         \item{}{\strong{\code{| ___ L ___ | ___ M ___ | ___ H ___ |}}}
 ##'         \item{}{\code{_____________________________________}}
-##'         \item{ubiquist}{\code{__________ 1.5 _ 2.5 _ 4.5 __________}}
-##'         \item{to be filled}{}
+##'         \item{oligotrophic}{\code{__________ 1 ___ 1.5 ___ 2 __________}}
+##'         \item{mesotrophic}{\code{__________ 1.5 _ 2.5 _ 4.5 __________}}
+##'         \item{eutrophic}{\code{__________ 3 ____ 4 ____ 5 __________}}
 ##'       }
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{soil_contrib}, 
@@ -150,14 +153,17 @@
 ##'         \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
 ##'         \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
 ##'         \item{}{\code{_____________________________________}}
-##'         \item{ubiquist}{\code{| 90 100 90 | 90 100 90 | 90 100 90 |}}
-##'         \item{to be filled}{}
+##'         \item{poor_lover}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
+##'         \item{ubiquist}{\code{| 90 100 80 | 90 100 80 | 90 100 80 |}}
+##'         \item{rich_lover}{\code{| 10 100 30 | 40 100 60 | 70 100 90 |}}
 ##'       }
-##'     \item from \strong{predefined rules} :
+##'     \item from \strong{predefined rules} (corresponding to the 
+##'     \code{poor_lover} strategy) :
 ##'       \describe{
 ##'         \item{(A)}{germinants are severely impacted by wrong soil conditions}
 ##'         \item{(B)}{immatures are half impacted by wrong soil conditions}
 ##'         \item{(C)}{matures are little impacted by wrong soil conditions}
+##'         \item{(D)}{for all life stages, not enough is better than too much}
 ##'       }
 ##'       \itemize{
 ##'         \item the values give the percentage of surviving individuals to the 
@@ -170,7 +176,7 @@
 ##'         \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
 ##'         \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
 ##'         \item{}{\code{_____________________________________}}
-##'         \item{}{\code{| 10 100 30 | 40 100 60 | 70 100 90 |}}
+##'         \item{}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
 ##'       }
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{lifeStage}, 
@@ -373,7 +379,7 @@ PRE_FATE.params_PFGsoil = function(
     {
       mat.PFG.soil$strategy_contrib = as.character(mat.PFG.soil$strategy_contrib)
       .testParam_notInValues.m("mat.PFG.soil$strategy_contrib", mat.PFG.soil$strategy_contrib
-                               , c("full_light", "pioneer", "ubiquist", "semi_shade", "undergrowth"))
+                               , c("oligotrophic", "mesotrophic", "eutrophic"))
     }
   }
   ## CHECK parameter mat.PFG.tol
@@ -410,7 +416,7 @@ PRE_FATE.params_PFGsoil = function(
       {
         mat.PFG.tol$strategy_tol = as.character(mat.PFG.tol$strategy_tol)
         .testParam_notInValues.m("mat.PFG.tol$strategy_tol", mat.PFG.tol$strategy_tol
-                                 , c("full_light", "pioneer", "ubiquist", "semi_shade", "undergrowth"))
+                                 , c("poor_lover", "ubiquist", "rich_lover"))
       }
     }
   }
@@ -500,11 +506,9 @@ PRE_FATE.params_PFGsoil = function(
     SOIL_CONTRIB = SOIL_LOW = SOIL_HIGH = vector(length = no.PFG)
     for (i in 1:no.PFG){
       tmp = switch(mat.PFG.soil$strategy_contrib[i]
-                   # , full_light = c(1,1,1,0,0,1,0,0,1)
-                   # , pioneer = c(1,1,1,0,1,1,0,1,1)
-                   , ubiquist = c(2.5, 1, 4)
-                   # , semi_shade = c(1,1,0,1,1,0,1,1,1)
-                   # , undergrowth = c(1,1,0,1,1,0,1,1,0)
+                   , oligotrophic = c(1, 1.5, 2)
+                   , mesotrophic = c(2.5, 1.5, 4.5)
+                   , eutrophic = c(3, 4, 5)
       )
       SOIL_CONTRIB[i] = tmp[1]
       SOIL_LOW[i] = tmp[2]
@@ -550,14 +554,14 @@ PRE_FATE.params_PFGsoil = function(
   
   if (is.null(mat.PFG.tol))
   {
-    SOIL_TOL[1, ] = 1 ## Germinant - Low soil conditions
-    SOIL_TOL[3, ] = 3 ## Germinant - High soil conditions
+    SOIL_TOL[1, ] = 3 ## Germinant - Low soil conditions
+    SOIL_TOL[3, ] = 1 ## Germinant - High soil conditions
     
-    SOIL_TOL[4, ] = 4 ## Immature - Low soil conditions
-    SOIL_TOL[6, ] = 6 ## Immature - High soil conditions
+    SOIL_TOL[4, ] = 6 ## Immature - Low soil conditions
+    SOIL_TOL[6, ] = 4 ## Immature - High soil conditions
     
-    SOIL_TOL[7, ] = 7 ## Mature - Low soil conditions
-    SOIL_TOL[9, ] = 9 ## Mature - High soil conditions
+    SOIL_TOL[7, ] = 9 ## Mature - Low soil conditions
+    SOIL_TOL[9, ] = 7 ## Mature - High soil conditions
   } else
   {
     if (sum(colnames(mat.PFG.tol) == "lifeStage") == 1)
@@ -582,11 +586,9 @@ PRE_FATE.params_PFGsoil = function(
     {
       for (i in 1:no.PFG){
         SOIL_TOL[, i] = switch(mat.PFG.tol$strategy_tol[i]
-                               # , full_light = c(1,1,1,0,0,1,0,0,1)
-                               # , pioneer = c(1,1,1,0,1,1,0,1,1)
-                               , ubiquist = c(9,10,9,9,10,9,9,10,9)
-                               # , semi_shade = c(1,1,0,1,1,0,1,1,1)
-                               # , undergrowth = c(1,1,0,1,1,0,1,1,0)
+                               , poor_lover = c(3,10,1,6,10,4,9,10,7)
+                               , ubiquist = c(9,10,8,9,10,8,9,10,8)
+                               , rich_lover = c(1,10,3,4,10,6,7,10,9)
         )
       }
     } else
