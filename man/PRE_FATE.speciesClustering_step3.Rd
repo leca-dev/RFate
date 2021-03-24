@@ -5,7 +5,7 @@
 \title{Calculate PFG traits values based on determinant species traits 
 values}
 \usage{
-PRE_FATE.speciesClustering_step3(mat.traits)
+PRE_FATE.speciesClustering_step3(mat.traits, opt.mat.PA = NULL)
 }
 \arguments{
 \item{mat.traits}{a \code{data.frame} with at least 3 columns :
@@ -17,14 +17,19 @@ PRE_FATE.speciesClustering_step3(mat.traits)
   \item{\code{...}}{one column for each functional trait (see 
   \href{PRE_FATE.speciesClustering_step3#details}{\code{Details}})}
 }}
+
+\item{opt.mat.PA}{(\emph{optional}) default \code{NULL}. \cr 
+a \code{data.frame} with sites in rows and species in columns, 
+containing either \code{NA}, \code{0} or \code{1} (see 
+\code{\link{PRE_FATE.selectDominant}})}
 }
 \value{
-A \code{list} containing one \code{data.frame} with the following 
-columns, and one \code{list} with as many \code{ggplot2} objects as 
-functional traits given in \code{mat.traits} :
+A \code{list} containing one or two \code{data.frame} with the 
+following columns, and one \code{list} with as many \code{ggplot2} objects 
+as functional traits given in \code{mat.traits} :
 
 \describe{
-  \item{tab}{ \cr
+  \item{tab.PFG.traits}{ \cr
   \describe{
     \item{\code{PFG}}{the concerned plant functional group}
     \item{\code{no.species}}{the number of species contained in this PFG}
@@ -33,6 +38,8 @@ functional traits given in \code{mat.traits} :
     traits) of the values of the determinant species of this PFG}
   }
   }
+  \item{tab.PFG.PA}{table containing counts of presences for all PFG 
+  (sites in rows, PFG in columns)}
   \item{plot}{\cr
   \describe{
     \item{\code{...}}{one for each functional trait, 'specific' cases 
@@ -42,7 +49,8 @@ functional traits given in \code{mat.traits} :
   }
 }
     
-The information is written in \file{PRE_FATE_PFG_TABLE_traits.csv} and 
+The information is written in \file{PRE_FATE_PFG_TABLE_traits.csv}, 
+\file{PRE_FATE_PFG_TABLE_sitesXPFG_PA.csv} and 
 \file{PRE_FATE_CLUSTERING_STEP_3_PFGtraitsValues.pdf} files. \cr
 This \code{.csv} file can be used to build parameter files to run a 
 \code{FATE} simulation (e.g. \code{\link{PRE_FATE.params_PFGsuccession}}).
@@ -90,8 +98,11 @@ below :}
   \item{\cr \code{soil_contrib}, \cr \code{soil_tolerance}}{same as the 
   previous one, but \code{soil_tol_min} and \code{soil_tol_max} values 
   are obtained by adding or removing \code{soil_tolerance} to 
-  \code{soil_contrib}}
+  \code{soil_contrib} \cr \cr}
 }
+
+If a sites x species table is provided (\code{opt.mat.PA}), a sites x PFG 
+table (containing \code{NA}, \code{0} or \code{1}) is also returned.
 }
 \examples{
 
@@ -126,7 +137,8 @@ mat.traits$soil_tolerance = ifelse(mat.traits$soil_tolerance == 1, 0.5, 1)
 PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
 
 names(PFG.traits)
-str(PFG.traits$tab)
+str(PFG.traits$tab.PFG.traits)
+str(PFG.traits$tab.PFG.PA)
 names(PFG.traits$plot)
 plot(PFG.traits$plot$maturity_longevity)
 plot(PFG.traits$plot$height_light)

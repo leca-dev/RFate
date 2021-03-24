@@ -46,9 +46,9 @@ parameters :
   \item{MATURITY}{PFG maturity age \emph{(in years)}}
   \item{LONGEVITY}{PFG life span \emph{(in years)}}
   \item{MAX_STRATUM}{maximum height stratum that the PFG can reach}
-  \item{MAX_ABUNDANCE}{maximum abundance / space (qualitative) that the PFG 
-  is able to produce / occupy \cr \emph{(\code{1}: Low \code{2}: Medium 
-  \code{3}: High)}}
+  \item{MAX_ABUNDANCE}{maximum abundance / space (quantitative) that the 
+  PFG is able to produce / occupy \cr \emph{(\code{1}: Low \code{2}: 
+  Medium \code{3}: High)}}
   \item{IMM_SIZE}{PFG immature relative size \emph{(from \code{0} to 
   \code{10}, corresponding to 0 to 100\%)}}
   \item{CHANG_STR_AGES}{ages at which the PFG goes in the upper stratum 
@@ -93,8 +93,7 @@ each PFG in order to set up this life cycle :
   \item{height}{the maximum or average height that reach the PFG}
   \item{maturity}{the age from which the PFG can reproduce}
   \item{longevity}{the maximum or average lifespan of the PFG \cr \cr}
-  \item{(\emph{max_abundance})}{the maximum abundance of mature PFG in 
-  favorable conditions}
+  \item{(\emph{max_abundance})}{the maximum abundance of mature PFG}
   \item{(\emph{potential_fecundity})}{the maximum number of seeds produced 
   by the PFG \cr (otherwise the value is given within the global parameter 
   file, see \code{\link{PRE_FATE.params_globalParameters}})}
@@ -136,11 +135,11 @@ and a set of characteristics for each PFG :
 
 \describe{
   \item{MAX_STRATUM}{= maximum stratum that each PFG can reach}
-  \item{MAX_ABUNDANCE}{= maximum abundance of mature PFG in favorable 
-  conditions \cr
+  \item{MAX_ABUNDANCE}{= maximum abundance of mature PFG \cr
    = It can be seen as a proxy of maximum carrying capacity for mature 
-  individuals \cr (\emph{and therefore as a proxy a quantity of shade 
-  produced as well, if the light module is activated}). \cr \cr
+  individuals \cr (\emph{and therefore as a broad proxy of the amount 
+  of space a PFG can occupy within a pixel (herbaceous should be more 
+  numerous than phanerophytes}). \cr \cr
   Two methods to define these abundances are available :
   \itemize{
     \item from \strong{predefined rules} (using \code{type}, 
@@ -148,12 +147,12 @@ and a set of characteristics for each PFG :
     \tabular{rcccc}{
       \strong{MAX_STRATUM} \tab \strong{1} \tab \strong{2} \tab 
       \strong{3} \tab \strong{+}\cr
-      \strong{\code{H} (herbaceous)} \tab \code{1} \tab \code{1} \tab 
+      \strong{\code{H} (herbaceous)} \tab \code{3} \tab \code{3} \tab 
       \code{2} \tab \code{2} \cr
-      \strong{\code{C} (chamaephyte)} \tab \code{1} \tab \code{2} \tab 
-      \code{2} \tab \code{3} \cr
-      \strong{\code{P} (phanerophyte)} \tab \code{1} \tab \code{2} \tab 
-      \code{3} \tab \code{3}
+      \strong{\code{C} (chamaephyte)} \tab \code{3} \tab \code{2} \tab 
+      \code{2} \tab \code{1} \cr
+      \strong{\code{P} (phanerophyte)} \tab \code{3} \tab \code{2} \tab 
+      \code{1} \tab \code{1}
     }
     \item from \strong{user data} : \cr
       \emph{with the values contained within the \code{max_abundance} 

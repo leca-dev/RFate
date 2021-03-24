@@ -244,6 +244,24 @@ z-index: 10;
 
 <span class="co">## Prepare data to calculate pairwise species distance --------------------------------------------</span>
 
+<span class="co"># ## Calculate mat.overlap matrix</span>
+<span class="co"># ## Add absences for community sites</span>
+<span class="co"># tab.dom.PA = sp.SELECT$tab.dom.PA</span>
+<span class="co"># for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])</span>
+<span class="co"># {</span>
+<span class="co">#   ind = which(rownames(tab.dom.PA) == si)</span>
+<span class="co">#   tab.dom.PA[ind, which(is.na(tab.dom.PA[ind, ]))] = 0</span>
+<span class="co"># }</span>
+<span class="co"># </span>
+<span class="co"># ## Prepare environmental (and traits) table</span>
+<span class="co"># tab.env = Champsaur_PFG$tab.env</span>
+<span class="co"># tmp.traits = Champsaur_PFG$sp.traits[, c("species", "HEIGHT", "HEIGHT_log")]</span>
+<span class="co"># sp.DIST = PRE_FATE.speciesDistance(mat.traits = tmp.traits</span>
+<span class="co">#                                    , mat.overlap.option = "PCA"</span>
+<span class="co">#                                    , mat.overlap.object = list(tab.dom.PA, tab.env))</span>
+<span class="co"># mat.overlap = sp.DIST$mat.OVERLAP</span>
+<span class="co"># (mat.overlap[1:5, 1:5])</span>
+
 <span class="va">mat.habitat</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">mat.habitat</span>
 <span class="va">mat.overlap</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">mat.overlap</span>
 
@@ -400,11 +418,200 @@ z-index: 10;
 <span class="co">## Calculate trait values per PFG -----------------------------------------------------------------</span>
 
 <span class="va">PFG.traits</span> <span class="op">=</span> <span class="fu"><a href="../reference/PRE_FATE.speciesClustering_step3.html">PRE_FATE.speciesClustering_step3</a></span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.summary</span><span class="op">)</span></code></pre></div>
+<p><br><br></p>
 </div>
 <div id="creating-fate-parameter-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#creating-fate-parameter-files" class="anchor"></a>2. Creating <code>FATE</code> parameter files</h3>
-<p>pouf</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span><span class="op">)</span>
+
+
+<span class="co">###################################################################################################</span>
+<span class="co">## BUILD PFG HABSUIT MAPS (biomod2 package)</span>
+<span class="co">###################################################################################################</span>
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va">biomod2</span><span class="op">)</span>
+
+<span class="co">## Species observations</span>
+<span class="va">tab.occ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.occ</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">tab.occ</span><span class="op">)</span>
+
+<span class="co">## Sites environmental table</span>
+<span class="va">tab.env</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.env</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">tab.env</span><span class="op">)</span>
+
+<span class="co">## Sites coordinates table</span>
+<span class="va">tab.xy</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.xy</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">tab.xy</span><span class="op">)</span>
+
+<span class="co">## Raster stack for projection</span>
+<span class="va">stk.var</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.var</span>
+
+<span class="co">## Run species distribution models ----------------------------------------------------------------</span>
+
+<span class="kw">for</span><span class="op">(</span><span class="va">pfg</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">tab.occ</span><span class="op">)</span><span class="op">)</span>
+<span class="op">{</span>
+  <span class="va">nrep</span> <span class="op">=</span> <span class="fl">5</span>
+  <span class="va">sp.name</span> <span class="op">=</span> <span class="va">pfg</span>
+  <span class="va">sp.occ</span> <span class="op">=</span> <span class="va">tab.occ</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">tab.occ</span><span class="op">[</span>, <span class="va">pfg</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="va">pfg</span><span class="op">]</span>
+  <span class="va">sp.xy</span> <span class="op">=</span> <span class="va">tab.xy</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">tab.occ</span><span class="op">[</span>, <span class="va">pfg</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">]</span>
+  <span class="va">sp.var</span> <span class="op">=</span> <span class="va">tab.env</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">tab.occ</span><span class="op">[</span>, <span class="va">pfg</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span>
+  
+  <span class="co">#########################################################################################</span>
+  <span class="co">## BELOW, MOST CHANGES WILL BE FOR MODELS PARAMETERS OR ADAPT DATA</span>
+  <span class="co">## ALL NEEDED DATA HAS BEEN PRESENTED PREVIOUSLY</span>
+  
+  <span class="co">## formating data in a biomod2 friendly way ------------------------------------</span>
+  <span class="va">bm.form</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_FormatingData.html">BIOMOD_FormatingData</a></span><span class="op">(</span>resp.var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">sp.occ</span><span class="op">)</span>
+                                  , expl.var <span class="op">=</span> <span class="va">sp.var</span>
+                                  , resp.xy <span class="op">=</span> <span class="va">sp.xy</span>
+                                  , resp.name <span class="op">=</span> <span class="va">sp.name</span><span class="op">)</span>
+  
+  <span class="co">## define models options -------------------------------------------------------</span>
+  <span class="va">bm.opt</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_ModelingOptions.html">BIOMOD_ModelingOptions</a></span><span class="op">(</span>GLM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"quadratic"</span>, interaction.level <span class="op">=</span> <span class="fl">0</span>, test <span class="op">=</span> <span class="st">"AIC"</span><span class="op">)</span>
+                                   , GAM <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>
+  
+  <span class="va">bm.mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_Modeling.html">BIOMOD_Modeling</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">bm.form</span>
+                            , models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'RF'</span>, <span class="st">'GLM'</span>, <span class="st">'GAM'</span><span class="op">)</span>
+                            , models.options <span class="op">=</span> <span class="va">bm.opt</span>
+                            , NbRunEval <span class="op">=</span> <span class="va">nrep</span>
+                            , DataSplit <span class="op">=</span> <span class="fl">70</span>
+                            , Prevalence <span class="op">=</span> <span class="fl">0.5</span>
+                            , VarImport <span class="op">=</span> <span class="fl">3</span>
+                            , models.eval.meth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'TSS'</span>,<span class="st">'ROC'</span><span class="op">)</span>
+                            , do.full.models <span class="op">=</span> <span class="cn">FALSE</span>
+                            , modeling.id <span class="op">=</span> <span class="st">'mod1'</span><span class="op">)</span>
+  
+  <span class="co">## run ensemble models ---------------------------------------------------------</span>
+  <span class="va">bm.em</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_EnsembleModeling.html">BIOMOD_EnsembleModeling</a></span><span class="op">(</span>modeling.output <span class="op">=</span> <span class="va">bm.mod</span>
+                                   , chosen.models <span class="op">=</span> <span class="st">"all"</span>
+                                   , em.by <span class="op">=</span> <span class="st">"all"</span>
+                                   , eval.metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'TSS'</span><span class="op">)</span>
+                                   , eval.metric.quality.threshold <span class="op">=</span> <span class="fl">0.4</span>
+                                   , models.eval.meth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'TSS'</span>, <span class="st">'ROC'</span><span class="op">)</span>
+                                   , prob.mean <span class="op">=</span> <span class="cn">FALSE</span>
+                                   , prob.mean.weight <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , prob.mean.weight.decay <span class="op">=</span> <span class="st">'proportional'</span>
+                                   , committee.averaging <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , VarImport <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+  
+  <span class="co">## project ensemble models -----------------------------------------------------</span>
+  <span class="va">bm.ef</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_EnsembleForecasting.html">BIOMOD_EnsembleForecasting</a></span><span class="op">(</span>EM.output <span class="op">=</span> <span class="va">bm.em</span>
+                                      , new.env <span class="op">=</span> <span class="va">stk.var</span>
+                                      , output.format <span class="op">=</span> <span class="st">".img"</span>
+                                      , proj.name <span class="op">=</span> <span class="st">"CURRENT_100m"</span>
+                                      , selected.models <span class="op">=</span> <span class="st">"all"</span>
+                                      , binary.meth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'TSS'</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span>
+
+
+
+<span class="co">###################################################################################################</span>
+<span class="co">## CREATE FATE PARAMETER FOLDER</span>
+<span class="co">###################################################################################################</span>
+
+<span class="fu"><a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span><span class="op">)</span>
+
+
+<span class="co">## Create PFG parameter files ---------------------------------------------------------------------</span>
+
+<span class="fu"><a href="../reference/PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                              , strata.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span>
+                              , strata.limits_reduce <span class="op">=</span> <span class="cn">FALSE</span>
+                              , mat.PFG.succ <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span><span class="op">)</span>
+
+
+<span class="fu"><a href="../reference/PRE_FATE.params_PFGdispersal.html">PRE_FATE.params_PFGdispersal</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                             , mat.PFG.disp <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.DISP</span><span class="op">)</span>
+
+
+<span class="fu"><a href="../reference/PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                         , mat.PFG.light <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.LIGHT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">]</span>
+                         , mat.PFG.tol <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.LIGHT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"strategy_tol"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+
+
+<span class="fu"><a href="../reference/PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                        , mat.PFG.soil <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SOIL</span><span class="op">)</span>
+
+
+<span class="va">tmp</span> <span class="op">=</span> <span class="fu">fread</span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv"</span><span class="op">)</span>
+<span class="va">tab.succ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span>
+<span class="va">tab.succ</span><span class="op">$</span><span class="va">age_above_150cm</span> <span class="op">=</span> <span class="va">tmp</span><span class="op">$</span><span class="va">CHANG_STR_AGES_to_str_4_150</span>
+
+<span class="fu"><a href="../reference/PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                               , mat.PFG.dist <span class="op">=</span> <span class="va">tab.succ</span>
+                               , mat.PFG.tol <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.DIST</span><span class="op">)</span>
+
+
+<span class="co">## Create simulation related parameter files ------------------------------------------------------</span>
+
+<span class="fu"><a href="../reference/PRE_FATE.params_changingYears.html">PRE_FATE.params_changingYears</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                              , type.changing <span class="op">=</span> <span class="st">"DIST"</span>
+                              , mat.changing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">600</span>, <span class="fl">601</span>, <span class="fl">800</span>, <span class="fl">801</span><span class="op">)</span>
+                                                          , order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>
+                                                          , new.value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MASK_mowing.img"</span>
+                                                                          , <span class="st">"MASK_noDisturb.img"</span>
+                                                                          , <span class="st">"MASK_mowing.img"</span>
+                                                                          , <span class="st">"MASK_noDisturb.img"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/PRE_FATE.params_savingYears.html">PRE_FATE.params_savingYears</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                            , years.maps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">1000</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">combi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>doLight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>, doSoil <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">combi</span><span class="op">)</span><span class="op">)</span>
+<span class="op">{</span>
+  <span class="fu"><a href="../reference/PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                                   , opt.saving_abund_PFG_stratum <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , opt.saving_abund_PFG <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , opt.saving_abund_stratum <span class="op">=</span> <span class="cn">FALSE</span>
+                                   , required.no_PFG <span class="op">=</span> <span class="fl">15</span>
+                                   , required.no_strata <span class="op">=</span> <span class="fl">7</span>
+                                   , required.simul_duration <span class="op">=</span> <span class="fl">1000</span>
+                                   , required.seeding_duration <span class="op">=</span> <span class="fl">300</span>
+                                   , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span>
+                                   , required.seeding_input <span class="op">=</span> <span class="fl">100</span>
+                                   , required.potential_fecundity <span class="op">=</span> <span class="fl">10</span>
+                                   , required.max_abund_low <span class="op">=</span> <span class="fl">100</span>
+                                   , required.max_abund_medium <span class="op">=</span> <span class="fl">200</span>
+                                   , required.max_abund_high <span class="op">=</span> <span class="fl">500</span>
+                                   , doLight <span class="op">=</span> <span class="va">combi</span><span class="op">$</span><span class="va">doLight</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span>
+                                   , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">400</span>
+                                   , LIGHT.thresh_low <span class="op">=</span> <span class="fl">600</span>
+                                   , LIGHT.saving <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , doSoil <span class="op">=</span> <span class="va">combi</span><span class="op">$</span><span class="va">doSoil</span><span class="op">[</span><span class="va">ii</span><span class="op">]</span>
+                                   , SOIL.init <span class="op">=</span> <span class="fl">2.5</span>
+                                   , SOIL.retention <span class="op">=</span> <span class="fl">0.8</span>
+                                   , SOIL.saving <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , doDispersal <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span>
+                                   , DISPERSAL.saving <span class="op">=</span> <span class="cn">FALSE</span>
+                                   , doHabSuitability <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , HABSUIT.mode <span class="op">=</span> <span class="fl">1</span>
+                                   , doDisturbances <span class="op">=</span> <span class="cn">TRUE</span>
+                                   , DIST.no <span class="op">=</span> <span class="fl">1</span>
+                                   , DIST.no_sub <span class="op">=</span> <span class="fl">4</span>
+                                   , DIST.freq <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="op">}</span>
+
+
+<span class="fu">writeRaster</span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span>
+            , filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/MASK/MASK_"</span>
+                                , <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">)</span>, <span class="st">".img"</span><span class="op">)</span>
+            , bylayer <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu">writeRaster</span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.wmean</span>
+            , filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/HABSUIT/HS_"</span>
+                                , <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.wmean</span><span class="op">)</span>, <span class="st">"_0.img"</span><span class="op">)</span>
+            , bylayer <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/HABSUIT/"</span><span class="op">)</span>
+                       , pattern <span class="op">=</span> <span class="st">".img.aux.xml$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+
+
+<span class="fu"><a href="../reference/PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                                , name.MASK <span class="op">=</span> <span class="st">"MASK_Champsaur.img"</span>
+                                , name.DIST <span class="op">=</span> <span class="st">"MASK_noDisturb.img"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="running-a-fate-simulation" class="section level3">
 <h3 class="hasAnchor">

@@ -124,6 +124,9 @@ The information is written in
   \item{\file{TABLE_complete}}{the complete table of all species and the 
   selection rules described above (\code{tab.rules})}
   \item{\file{TABLE_species}}{only the names / ID of the species selected}
+  \item{\file{TABLE_sitesXspecies_AB}}{abundances table of selected species}
+  \item{\file{TABLE_sitesXspecies_PA}}{presence/absence table of selected 
+  species}
 }
 
 Up to six \file{PRE_FATE_DOMINANT_[...].pdf} files are also created : 

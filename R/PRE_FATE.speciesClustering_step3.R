@@ -139,7 +139,8 @@
 ##' PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = mat.traits)
 ##' 
 ##' names(PFG.traits)
-##' str(PFG.traits$tab)
+##' str(PFG.traits$tab.PFG.traits)
+##' str(PFG.traits$tab.PFG.PA)
 ##' names(PFG.traits$plot)
 ##' plot(PFG.traits$plot$maturity_longevity)
 ##' plot(PFG.traits$plot$height_light)

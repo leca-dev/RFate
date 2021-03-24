@@ -114,7 +114,8 @@ are required for each PFG in order to set up the soil interaction :
   \item{soil_tol_max}{the maximum soil value tolerated by the PFG (on the 
   same scale than \code{soil_contrib})}
   \item{(\emph{strategy_contrib})}{a \code{string} to choose the 
-  contribution strategy : \cr \code{ubiquist}, \code{tobedefined} \cr \cr}
+  contribution strategy : \cr \code{oligotrophic}, \code{mesotrophic}, 
+  \code{eutrophic} \cr \cr}
   
   \item{lifeStage}{the concerned life stage (\code{Germinant}, 
   \code{Immature}, \code{Mature})}
@@ -123,7 +124,8 @@ are required for each PFG in order to set up the soil interaction :
   \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
   corresponding to the proportion of surviving individuals}
   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
-  strategy : \cr \code{ubiquist}, \code{tobedefined} \cr \cr}
+  strategy : \cr \code{poor_lover}, \code{ubiquist}, \code{rich_lover} 
+  \cr \cr}
 }
 
 These values will allow to calculate or define a set of characteristics for 
@@ -169,8 +171,9 @@ each PFG :
       \describe{
         \item{}{\strong{\code{| ___ L ___ | ___ M ___ | ___ H ___ |}}}
         \item{}{\code{_____________________________________}}
-        \item{ubiquist}{\code{__________ 1.5 _ 2.5 _ 4.5 __________}}
-        \item{to be filled}{}
+        \item{oligotrophic}{\code{__________ 1 ___ 1.5 ___ 2 __________}}
+        \item{mesotrophic}{\code{__________ 1.5 _ 2.5 _ 4.5 __________}}
+        \item{eutrophic}{\code{__________ 3 ____ 4 ____ 5 __________}}
       }
     \item from \strong{user data} : \cr
       \emph{with the values contained within the \code{soil_contrib}, 
@@ -196,14 +199,17 @@ each PFG :
         \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
         \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
         \item{}{\code{_____________________________________}}
-        \item{ubiquist}{\code{| 90 100 90 | 90 100 90 | 90 100 90 |}}
-        \item{to be filled}{}
+        \item{poor_lover}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
+        \item{ubiquist}{\code{| 90 100 80 | 90 100 80 | 90 100 80 |}}
+        \item{rich_lover}{\code{| 10 100 30 | 40 100 60 | 70 100 90 |}}
       }
-    \item from \strong{predefined rules} :
+    \item from \strong{predefined rules} (corresponding to the 
+    \code{poor_lover} strategy) :
       \describe{
         \item{(A)}{germinants are severely impacted by wrong soil conditions}
         \item{(B)}{immatures are half impacted by wrong soil conditions}
         \item{(C)}{matures are little impacted by wrong soil conditions}
+        \item{(D)}{for all life stages, not enough is better than too much}
       }
       \itemize{
         \item the values give the percentage of surviving individuals to the 
@@ -216,7 +222,7 @@ each PFG :
         \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
         \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
         \item{}{\code{_____________________________________}}
-        \item{}{\code{| 10 100 30 | 40 100 60 | 70 100 90 |}}
+        \item{}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
       }
     \item from \strong{user data} : \cr
       \emph{with the values contained within the \code{lifeStage}, 

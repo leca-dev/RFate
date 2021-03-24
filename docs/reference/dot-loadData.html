@@ -230,11 +230,12 @@ that will be loaded</p></td>
     <p><strong><br /><br />#########################################################<br /></strong>
 <strong>&gt;&gt;&gt; Champsaur_PFG</strong>
 <strong><br />#########################################################<br /><br /></strong></p>
-<p>A <code>list</code> object with 15 elements to help building the Plant Functional 
+<p>A <code>list</code> object with 18 elements to help building the Plant Functional 
 Group :</p>  
 <p></p><dl>
+    <dt>name.dataset</dt><dd><p><strong>Champsaur</strong></p></dd>
     <dt>sp.observations</dt><dd><p>a <code>data.frame</code> of dimension 
-    <code>127257 x 5</code> <br />
+    <code>127257 x 6</code> <br />
     containing releves data about plant species in Champsaur <br />
     to be used with the <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code> function
     <ul>
@@ -247,6 +248,8 @@ Group :</p>
 <li><p><strong>habitat</strong> : habitat classes from 
       [CESBIO2018](http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018<!-- %20/) -->
       (with some classes gathering)</p></li>
+<li><p><strong>TYPE</strong> : type of records, exhaustive (<code>COMMUNITY</code>) 
+      or single occurrences (<code>OCCURRENCE</code>)</p></li>
 </ul></p></dd>
     <dt>rules.selectDominant</dt><dd><p>a <code>vector</code> containing parameters to be 
     given to the <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code> function <br />
@@ -288,6 +291,13 @@ Group :</p>
     containing habitat dissimilarity distance (1 - Schoeners' D, obtained 
     with <code><a href='https://rdrr.io/pkg/FD/man/gowdis.html'>gowdis</a></code>) for dominant species <br />
     to be used with the <code><a href='PRE_FATE.speciesDistance.html'>PRE_FATE.speciesDistance</a></code> function</p></dd>
+    <dt>tab.dom.PA</dt><dd><p><code>matrix</code> of dimension <code>13654 x 264</code> <br />
+    containing dominant species occurrences and absences (obtained from 
+    <code>sp.SELECT</code> object and absences corrected with the <code>TYPE</code> 
+    information of <code>sp.observations</code>), to build <code>mat.overlap</code></p></dd>
+    <dt>tab.env</dt><dd><p><code>matrix</code> of dimension <code>13590 x 5</code> <br />
+    containing environmental values (bio1, bio12, slope, dem, CESBIO2018) 
+    for sites, to build <code>mat.overlap</code></p></dd>
     <dt>mat.overlap</dt><dd><p><code>matrix</code> of dimension <code>243 x 243</code> <br />
     containing niche overlap distance (1 - Schoeners' D, obtained with 
     <code><a href='https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html'>ecospat.niche.overlap</a></code>) for dominant species <br />
@@ -304,7 +314,6 @@ Group :</p>
     <code><a href='PRE_FATE.speciesDistance.html'>PRE_FATE.speciesDistance</a></code> function run for Herbaceous 
     dominant species with <code>mat.habitat</code>, <code>mat.overlap</code> and 
     <code>sp.traits.H</code> parameters</p></dd>
-    
     <dt>PFG.species</dt><dd><p><code>data.frame</code> of dimension <code>232 x 5</code> <br />
     containing dominant species information relative to PFG <br />
     obtained from the <code><a href='PRE_FATE.speciesClustering_step2.html'>PRE_FATE.speciesClustering_step2</a></code> 
@@ -318,7 +327,7 @@ Group :</p>
 <li><p><strong>species_name</strong> : species name (taxonomic)</p></li>
 <li><p><strong>species_genus</strong> : species genus (taxonomic)</p></li>
 </ul></p></dd>
-    <dt>PFG.traits</dt><dd><p><code>data.frame</code> of dimension <code>14 x 13</code> <br />
+    <dt>PFG.traits</dt><dd><p><code>data.frame</code> of dimension <code>15 x 12</code> <br />
     containing traits for plant functional groups <br />
     obtained from the <code><a href='PRE_FATE.speciesClustering_step3.html'>PRE_FATE.speciesClustering_step3</a></code> 
     function
@@ -341,135 +350,73 @@ Group :</p>
 <li><p><strong>LDMC</strong> : MEAN LDMC</p></li>
 <li><p><strong>LNC</strong> : MEAN LNC</p></li>
 </ul></p></dd>
+    <dt>PFG.PA</dt><dd><p><code>data.frame</code> of dimension <code>13654 x 15</code> <br />
+    containing PFG occurrences and absences obtained from 
+    <code>tab.dom.PA</code> object and the 
+    <code><a href='PRE_FATE.speciesClustering_step3.html'>PRE_FATE.speciesClustering_step3</a></code> function</p></dd>
   
 </dl>
   
 <p><strong><br /><br />#########################################################<br /></strong>
-<strong>&gt;&gt;&gt; Champsaur_PARAM</strong>
+<strong>&gt;&gt;&gt; Champsaur_params</strong>
 <strong><br />#########################################################<br /><br /></strong></p>  
-  
-
-<p><strong><br /><br /> PNE_PARAM</strong></p>
-<p>A <code>list</code> object with 13 elements to help building the simulation 
+<p>A <code>list</code> object with 12 elements to help building the simulation 
 files and folders to run a <code>FATE</code> simulation :</p>  
 <p></p><dl>
-    <dt>masks</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of dimension 
-    <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers (lcc) 
-    projection, containing 7 mask layers with binary values (0 or 1) to be 
+    <dt>name.dataset</dt><dd><p><strong>Champsaur</strong></p></dd>
+    <dt>tab.occ</dt><dd><p>a <code>data.frame</code> of dimension <code>13590 x 15</code> <br />
+    containing presence / absence (<code>NA</code>, <code>0</code> or <code>1</code>) values 
+    per site for each PFG</p></dd>
+    <dt>tab.env</dt><dd><p>a <code>data.frame</code> of dimension <code>13590 x 5</code> <br />
+    containing environmental values (bio1, bio12, slope, dem, CESBIO2018)  
+    for each site</p></dd>
+    <dt>tab.xy</dt><dd><p>a <code>data.frame</code> of dimension <code>13590 x 2</code> <br />
+    containing coordinates for each site</p></dd>
+    <dt>stk.var</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of dimension 
+    <code>358 x 427</code> with a resolution of <code>100m</code> and ETRS89 
+    projection, containing 3 layers with environmental values and to be 
+    used to produce PFG SDM</p></dd>
+    <dt>tab.SUCC</dt><dd><p>a <code>data.frame</code> of dimension <code>15 x 5</code> <br />
+    containing PFG characteristics (type, height, maturity, longevity) <br />
+    to be used with the <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code> 
+    function</p></dd>
+    <dt>tab.DISP</dt><dd><p>a <code>data.frame</code> of dimension <code>15 x 4</code> <br />
+    containing PFG characteristics (d50, d99, ldd) <br />
+    to be used with the <code><a href='PRE_FATE.params_PFGdispersal.html'>PRE_FATE.params_PFGdispersal</a></code> 
+    function</p></dd>
+    <dt>tab.DIST</dt><dd><p>a <code>data.frame</code> of dimension <code>15 x 3</code> <br />
+    containing PFG characteristics (strategy_tol) <br />
+    to be used with the <code><a href='PRE_FATE.params_PFGdisturbance.html'>PRE_FATE.params_PFGdisturbance</a></code> 
+    function</p></dd>
+    <dt>tab.LIGHT</dt><dd><p>a <code>data.frame</code> of dimension <code>15 x 3</code> <br />
+    containing PFG characteristics (strategy_tol) <br />
+    to be used with the <code><a href='PRE_FATE.params_PFGlight.html'>PRE_FATE.params_PFGlight</a></code> 
+    function</p></dd>
+    <dt>tab.SOIL</dt><dd><p>a <code>data.frame</code> of dimension <code>15 x 5</code> <br />
+    containing PFG characteristics (type, soil_contrib, soil_tol_min, 
+    soil_tol_max) <br />
+    to be used with the <code><a href='PRE_FATE.params_PFGsoil.html'>PRE_FATE.params_PFGsoil</a></code> 
+    function</p></dd>
+    <dt>stk.wmean</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of dimension 
+    <code>358 x 427</code> with a resolution of <code>100m</code> and ETRS89 
+    projection, containing 15 layers with habitat suitability values 
+    (between 0 and 1) for each PFG</p></dd>
+    <dt>stk.mask</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of dimension 
+    <code>358 x 427</code> with a resolution of <code>100m</code> and ETRS89 
+    projection, containing 3 mask layers with binary values (0 or 1) to be 
     used in a <code>FATE</code> simulation :
     <ul>
-<li><p><strong>maskEcrins</strong> : simulation map, where occurs succession</p></li>
+<li><p><strong>Champsaur</strong> : simulation map, where occurs succession</p></li>
 <li><p><strong>noDisturb</strong> : perturbation map, when there is none</p></li>
 <li><p><strong>mowing</strong> : perturbation map, where occurs mowing</p></li>
-<li><p><strong>grazing1</strong> : perturbation map, where occurs light grazing</p></li>
-<li><p><strong>grazing2</strong> : perturbation map, where occurs extensive 
-      grazing</p></li>
-<li><p><strong>grazing3</strong> : perturbation map, where occurs intensive 
-      grazing</p></li>
-<li><p><strong>grazingAll</strong> :  perturbation map, where occurs grazing, 
-      all types combined</p></li>
 </ul></p></dd>
-    <dt>HS_0</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of dimension 
-    <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers (lcc) 
-    projection, containing 24 layers with probability values (between 0 and 
-    1) representing Habitat Suitability for initialization phase and 
-    <em>equilibrium</em> or <em>current</em> time (0) for each PFG 
-    and to be used in a <code>FATE</code> simulation. <br />
-    These maps are coming from Species Distribution Models and methods to 
-    obtain them are described in Supplementary Materials of 
-    <em><a href='https://mayagueguen.github.io/FATE-WEBSITE/papers/Boulangeat_2014_GCB.pdf'>Boulangeat et al. 2014 GCB</a></em>.</p></dd>
-    <dt>HS_15</dt><dd><p>same as HS_0 but 15 years after equilibrium</p></dd>
-    <dt>HS_30</dt><dd><p>same as HS_0 but 30 years after equilibrium</p></dd>
-    <dt>HS_45</dt><dd><p>same as HS_0 but 45 years after equilibrium</p></dd>
-    <dt>HS_60</dt><dd><p>same as HS_0 but 60 years after equilibrium</p></dd>
-    <dt>HS_75</dt><dd><p>same as HS_0 but 75 years after equilibrium</p></dd>
-    <dt>HS_90</dt><dd><p>same as HS_0 but 90 years after equilibrium</p></dd>
-    <dt>strata_limits</dt><dd><p>a <code>vector</code> of length <code>5</code> <br />
-    containing height of stratum limits in centimeters <br />
-    to be used with the <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code> and 
-    <code><a href='PRE_FATE.params_PFGlight.html'>PRE_FATE.params_PFGlight</a></code> functions <br /></p></dd>
-    <dt>succ_light</dt><dd><p>a <code>data.frame</code> of dimension <code>24 x 6</code> <br />
-    containing traits for plant functional groups <br />
-    obtained from the <code><a href='PRE_FATE.speciesClustering_step3.html'>PRE_FATE.speciesClustering_step3</a></code> 
-    function <br />
-    to be used with the <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code> and 
-    <code><a href='PRE_FATE.params_PFGlight.html'>PRE_FATE.params_PFGlight</a></code> functions <br /></p></dd>
-    <dt>disp</dt><dd><p>a <code>data.frame</code> of dimension <code>24 x 4</code> <br />
-    containing dispersal values (in meters) for plant functional groups <br />
-    to be used with the <code><a href='PRE_FATE.params_PFGdispersal.html'>PRE_FATE.params_PFGdispersal</a></code> function 
-    <br /></p></dd>
-    <dt>dist</dt><dd><p>a <code>data.frame</code> of dimension <code>384 x 5</code> <br />
-    containing response of plant functional groups to disturbances <br />
-    to be used with the <code><a href='PRE_FATE.params_PFGdisturbance.html'>PRE_FATE.params_PFGdisturbance</a></code> 
-    function <br /></p></dd>
-    <dt>global</dt><dd><p>a <code>vector</code> of length <code>18</code> <br />
-    containing global parameter values for a <code>FATE</code> simulation in 
-    the PNE <br />
-    to be used with the <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code> 
-    function <br /></p></dd>
   
 </dl>
 
-
-<p><strong><br /><br /> PNE_RESULTS</strong></p>
-<p>A <code>list</code> object with 5 elements :</p>
-<dl>
-  <dt>evaluation</dt><dd><p>a <code>data.frame</code> of dimension <code>24 x 11</code> <br />
-    containing statistical metrics to evaluate the predictive quality of 
-    both Habitat Suitability models (HS) and <code>FATE</code> simulation 
-    outputs <br />
-    <ul>
-<li><p><strong>PFG</strong> : name of Plant Functional Group</p></li>
-<li><p><strong>nb.obs.absences</strong> : number of observed absences</p></li>
-<li><p><strong>nb.obs.presences</strong> : number of observed presences</p></li>
-<li><p><strong>specificity.FATE</strong> : proportion of actual negatives that 
-      are correctly identified as such by the <code>FATE</code> model (true 
-      negative rate)</p></li>
-<li><p><strong>specificity.HS</strong> : proportion of actual negatives that 
-      are correctly identified as such by the Habitat Suitability model 
-      (true negative rate)</p></li>
-<li><p><strong>sensitivity.FATE</strong> : proportion of actual positives that 
-      are correctly identified as such by the <code>FATE</code> model (true 
-      positive rate)</p></li>
-<li><p><strong>sensitivity.HS</strong> : proportion of actual positives that 
-      are correctly identified as such by the Habitat Suitability model 
-      (true positive rate)</p></li>
-<li><p><strong>TSS.FATE</strong> : True Skill Statistic for <code>FATE</code> 
-      model</p></li>
-<li><p><strong>TSS.HS</strong> : True Skill Statistic for Habitat Suitability 
-      model</p></li>
-<li><p><strong>error.rate.FATE</strong> : percentage of bad predictions for 
-      <code>FATE</code> model</p></li>
-<li><p><strong>error.rate.HS</strong> : percentage of bad predictions for 
-      Habitat Suitability model</p></li>
-</ul></p></dd>
-  <dt>abund_str.equilibrium</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of 
-  dimension <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers 
-  (lcc) projection, containing 120 layers representing <code>FATE</code> 
-  <strong>abundances for year 800 of initialization phase</strong> (= 
-  <em>equilibrium</em> or <em>current</em> time). <br />
-  Maps are per PFG and per height stratum.</p></dd>
-  <dt>forest_cover.init</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of 
-  dimension <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers 
-  (lcc) projection, containing 16 layers representing <code>FATE</code> 
-  <strong>relative forest cover through initialization phase (from year 50 
-  to 800)</strong>. <br />
-  Maps are summing all PFGs through all height strata above 1.5 meters. <br /></p></dd>
-  <dt>forest_cover <br /> CC_BAU</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of 
-  dimension <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers 
-  (lcc) projection, containing 14 layers representing <code>FATE</code> 
-  <strong>relative forest cover through Climate Change (CC) + 
-  Business-As-Usual (BAU) scenario (from year 850 to 1500)</strong>. <br />
-  Maps are summing all PFGs through all height strata above 1.5 meters. <br /></p></dd>
-  <dt>forest_cover<br /> CC_Abandon</dt><dd><p>a <code><a href='https://rdrr.io/pkg/raster/man/stack.html'>stack</a></code> object of 
-  dimension <code>782 x 619</code> with a resolution of <code>100m</code> and Lambers 
-  (lcc) projection, containing 14 layers representing <code>FATE</code> 
-  <strong>relative forest cover through Climate Change (CC) + Abandonment 
-  (BAU) scenario (from year 850 to 1500)</strong>. <br />
-  Maps are summing all PFGs through all height strata above 1.5 meters. <br /></p></dd>
-
-</dl>
-
+  
+<p><strong><br /><br />#########################################################<br /></strong>
+<strong>&gt;&gt;&gt; Champsaur_results</strong>
+<strong><br />#########################################################<br /><br /></strong></p>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Maya Guéguen</p>

@@ -93,6 +93,24 @@ plot(sp.SELECT$plot.robustness$`All dataset`)
 
 ## Prepare data to calculate pairwise species distance --------------------------------------------
 
+# ## Calculate mat.overlap matrix
+# ## Add absences for community sites
+# tab.dom.PA = sp.SELECT$tab.dom.PA
+# for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])
+# {
+#   ind = which(rownames(tab.dom.PA) == si)
+#   tab.dom.PA[ind, which(is.na(tab.dom.PA[ind, ]))] = 0
+# }
+# 
+# ## Prepare environmental (and traits) table
+# tab.env = Champsaur_PFG$tab.env
+# tmp.traits = Champsaur_PFG$sp.traits[, c("species", "HEIGHT", "HEIGHT_log")]
+# sp.DIST = PRE_FATE.speciesDistance(mat.traits = tmp.traits
+#                                    , mat.overlap.option = "PCA"
+#                                    , mat.overlap.object = list(tab.dom.PA, tab.env))
+# mat.overlap = sp.DIST$mat.OVERLAP
+# (mat.overlap[1:5, 1:5])
+
 mat.habitat = Champsaur_PFG$mat.habitat
 mat.overlap = Champsaur_PFG$mat.overlap
 
@@ -252,10 +270,201 @@ PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary)
 
 ```
 
+<br/><br/>
 
 ### 2. Creating `FATE` parameter files
 
-pouf
+```R
+library(RFate)
+
+.loadData("Champsaur_params")
+
+
+###################################################################################################
+## BUILD PFG HABSUIT MAPS (biomod2 package)
+###################################################################################################
+
+require(biomod2)
+
+## Species observations
+tab.occ = Champsaur_params$tab.occ
+str(tab.occ)
+
+## Sites environmental table
+tab.env = Champsaur_params$tab.env
+str(tab.env)
+
+## Sites coordinates table
+tab.xy = Champsaur_params$tab.xy
+str(tab.xy)
+
+## Raster stack for projection
+stk.var = Champsaur_params$stk.var
+
+## Run species distribution models ----------------------------------------------------------------
+
+for(pfg in colnames(tab.occ))
+{
+  nrep = 5
+  sp.name = pfg
+  sp.occ = tab.occ[which(!is.na(tab.occ[, pfg])), pfg]
+  sp.xy = tab.xy[which(!is.na(tab.occ[, pfg])), c("X", "Y")]
+  sp.var = tab.env[which(!is.na(tab.occ[, pfg])), ]
+  
+  #########################################################################################
+  ## BELOW, MOST CHANGES WILL BE FOR MODELS PARAMETERS OR ADAPT DATA
+  ## ALL NEEDED DATA HAS BEEN PRESENTED PREVIOUSLY
+  
+  ## formating data in a biomod2 friendly way ------------------------------------
+  bm.form <- BIOMOD_FormatingData(resp.var = as.matrix(sp.occ)
+                                  , expl.var = sp.var
+                                  , resp.xy = sp.xy
+                                  , resp.name = sp.name)
+  
+  ## define models options -------------------------------------------------------
+  bm.opt <- BIOMOD_ModelingOptions(GLM = list(type = "quadratic", interaction.level = 0, test = "AIC")
+                                   , GAM = list(k = 3))
+  
+  bm.mod <- BIOMOD_Modeling(data = bm.form
+                            , models = c('RF', 'GLM', 'GAM')
+                            , models.options = bm.opt
+                            , NbRunEval = nrep
+                            , DataSplit = 70
+                            , Prevalence = 0.5
+                            , VarImport = 3
+                            , models.eval.meth = c('TSS','ROC')
+                            , do.full.models = FALSE
+                            , modeling.id = 'mod1')
+  
+  ## run ensemble models ---------------------------------------------------------
+  bm.em <- BIOMOD_EnsembleModeling(modeling.output = bm.mod
+                                   , chosen.models = "all"
+                                   , em.by = "all"
+                                   , eval.metric = c('TSS')
+                                   , eval.metric.quality.threshold = 0.4
+                                   , models.eval.meth = c('TSS', 'ROC')
+                                   , prob.mean = FALSE
+                                   , prob.mean.weight = TRUE
+                                   , prob.mean.weight.decay = 'proportional'
+                                   , committee.averaging = TRUE
+                                   , VarImport = 3)
+  
+  ## project ensemble models -----------------------------------------------------
+  bm.ef <- BIOMOD_EnsembleForecasting(EM.output = bm.em
+                                      , new.env = stk.var
+                                      , output.format = ".img"
+                                      , proj.name = "CURRENT_100m"
+                                      , selected.models = "all"
+                                      , binary.meth = c('TSS'))
+}
+
+
+
+###################################################################################################
+## CREATE FATE PARAMETER FOLDER
+###################################################################################################
+
+PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur")
+
+
+## Create PFG parameter files ---------------------------------------------------------------------
+
+PRE_FATE.params_PFGsuccession(name.simulation = "FATE_Champsaur"
+                              , strata.limits = c(0, 20, 50, 150, 400, 1000, 2000)
+                              , strata.limits_reduce = FALSE
+                              , mat.PFG.succ = Champsaur_params$tab.SUCC)
+
+
+PRE_FATE.params_PFGdispersal(name.simulation = "FATE_Champsaur"
+                             , mat.PFG.disp = Champsaur_params$tab.DISP)
+
+
+PRE_FATE.params_PFGlight(name.simulation = "FATE_Champsaur"
+                         , mat.PFG.light = Champsaur_params$tab.LIGHT[, c("PFG", "type")]
+                         , mat.PFG.tol = Champsaur_params$tab.LIGHT[, c("PFG", "strategy_tol")])
+
+
+PRE_FATE.params_PFGsoil(name.simulation = "FATE_Champsaur"
+                        , mat.PFG.soil = Champsaur_params$tab.SOIL)
+
+
+tmp = fread("FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv")
+tab.succ = Champsaur_params$tab.SUCC
+tab.succ$age_above_150cm = tmp$CHANG_STR_AGES_to_str_4_150
+
+PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_Champsaur"
+                               , mat.PFG.dist = tab.succ
+                               , mat.PFG.tol = Champsaur_params$tab.DIST)
+
+
+## Create simulation related parameter files ------------------------------------------------------
+
+PRE_FATE.params_changingYears(name.simulation = "FATE_Champsaur"
+                              , type.changing = "DIST"
+                              , mat.changing = data.frame(year = c(600, 601, 800, 801)
+                                                          , order = rep(1, 4)
+                                                          , new.value = c("MASK_mowing.img"
+                                                                          , "MASK_noDisturb.img"
+                                                                          , "MASK_mowing.img"
+                                                                          , "MASK_noDisturb.img")))
+
+PRE_FATE.params_savingYears(name.simulation = "FATE_Champsaur"
+                            , years.maps = seq(10, 1000, 10))
+
+combi = expand.grid(doLight = c(FALSE, TRUE), doSoil = c(FALSE, TRUE))
+for (ii in 1:nrow(combi))
+{
+  PRE_FATE.params_globalParameters(name.simulation = "FATE_Champsaur"
+                                   , opt.saving_abund_PFG_stratum = TRUE
+                                   , opt.saving_abund_PFG = TRUE
+                                   , opt.saving_abund_stratum = FALSE
+                                   , required.no_PFG = 15
+                                   , required.no_strata = 7
+                                   , required.simul_duration = 1000
+                                   , required.seeding_duration = 300
+                                   , required.seeding_timestep = 1
+                                   , required.seeding_input = 100
+                                   , required.potential_fecundity = 10
+                                   , required.max_abund_low = 100
+                                   , required.max_abund_medium = 200
+                                   , required.max_abund_high = 500
+                                   , doLight = combi$doLight[ii]
+                                   , LIGHT.thresh_medium = 400
+                                   , LIGHT.thresh_low = 600
+                                   , LIGHT.saving = TRUE
+                                   , doSoil = combi$doSoil[ii]
+                                   , SOIL.init = 2.5
+                                   , SOIL.retention = 0.8
+                                   , SOIL.saving = TRUE
+                                   , doDispersal = TRUE
+                                   , DISPERSAL.mode = 1
+                                   , DISPERSAL.saving = FALSE
+                                   , doHabSuitability = TRUE
+                                   , HABSUIT.mode = 1
+                                   , doDisturbances = TRUE
+                                   , DIST.no = 1
+                                   , DIST.no_sub = 4
+                                   , DIST.freq = 1)
+}
+
+
+writeRaster(Champsaur_params$stk.mask
+            , filename = paste0("FATE_Champsaur/DATA/MASK/MASK_"
+                                , names(Champsaur_params$stk.mask), ".img")
+            , bylayer = TRUE)
+writeRaster(Champsaur_params$stk.wmean
+            , filename = paste0("FATE_Champsaur/DATA/PFGS/HABSUIT/HS_"
+                                , names(Champsaur_params$stk.wmean), "_0.img")
+            , bylayer = TRUE)
+file.remove(list.files(path = paste0("FATE_Champsaur/DATA/PFGS/HABSUIT/")
+                       , pattern = ".img.aux.xml$", full.names = TRUE))
+
+
+PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
+                                , name.MASK = "MASK_Champsaur.img"
+                                , name.DIST = "MASK_noDisturb.img")
+
+```
 
 ### 3. Running a `FATE` simulation
 

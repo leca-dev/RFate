@@ -18,12 +18,13 @@ that will be loaded}
 \strong{>>> Champsaur_PFG}
 \strong{\cr#########################################################\cr\cr}
 
-A \code{list} object with 15 elements to help building the Plant Functional 
+A \code{list} object with 18 elements to help building the Plant Functional 
 Group :
   
   \describe{
+    \item{name.dataset}{\strong{Champsaur}}
     \item{sp.observations}{a \code{data.frame} of dimension 
-    \code{127257 x 5} \cr
+    \code{127257 x 6} \cr
     containing releves data about plant species in Champsaur \cr
     to be used with the \code{\link{PRE_FATE.selectDominant}} function
     \itemize{
@@ -36,6 +37,8 @@ Group :
       \item \strong{habitat} : habitat classes from 
       [CESBIO2018](http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018%20/)
       (with some classes gathering)
+      \item \strong{TYPE} : type of records, exhaustive (\code{COMMUNITY}) 
+      or single occurrences (\code{OCCURRENCE})
     }
     }
     \item{rules.selectDominant}{a \code{vector} containing parameters to be 
@@ -84,6 +87,13 @@ Group :
     containing habitat dissimilarity distance (1 - Schoeners' D, obtained 
     with \code{\link[FD]{gowdis}}) for dominant species \cr
     to be used with the \code{\link{PRE_FATE.speciesDistance}} function}
+    \item{tab.dom.PA}{\code{matrix} of dimension \code{13654 x 264} \cr
+    containing dominant species occurrences and absences (obtained from 
+    \code{sp.SELECT} object and absences corrected with the \code{TYPE} 
+    information of \code{sp.observations}), to build \code{mat.overlap}}
+    \item{tab.env}{\code{matrix} of dimension \code{13590 x 5} \cr
+    containing environmental values (bio1, bio12, slope, dem, CESBIO2018) 
+    for sites, to build \code{mat.overlap}}
     \item{mat.overlap}{\code{matrix} of dimension \code{243 x 243} \cr
     containing niche overlap distance (1 - Schoeners' D, obtained with 
     \code{\link[ecospat]{ecospat.niche.overlap}}) for dominant species \cr
@@ -100,7 +110,6 @@ Group :
     \code{\link{PRE_FATE.speciesDistance}} function run for Herbaceous 
     dominant species with \code{mat.habitat}, \code{mat.overlap} and 
     \code{sp.traits.H} parameters}
-    
     \item{PFG.species}{\code{data.frame} of dimension \code{232 x 5} \cr
     containing dominant species information relative to PFG \cr
     obtained from the \code{\link{PRE_FATE.speciesClustering_step2}} 
@@ -115,7 +124,7 @@ Group :
       \item \strong{species_genus} : species genus (taxonomic)
     }
     }
-    \item{PFG.traits}{\code{data.frame} of dimension \code{14 x 13} \cr
+    \item{PFG.traits}{\code{data.frame} of dimension \code{15 x 12} \cr
     containing traits for plant functional groups \cr
     obtained from the \code{\link{PRE_FATE.speciesClustering_step3}} 
     function
@@ -139,142 +148,74 @@ Group :
       \item \strong{LNC} : MEAN LNC
     }
     }
+    \item{PFG.PA}{\code{data.frame} of dimension \code{13654 x 15} \cr
+    containing PFG occurrences and absences obtained from 
+    \code{tab.dom.PA} object and the 
+    \code{\link{PRE_FATE.speciesClustering_step3}} function}
   }
   
 \strong{\cr\cr#########################################################\cr}
-\strong{>>> Champsaur_PARAM}
+\strong{>>> Champsaur_params}
 \strong{\cr#########################################################\cr\cr}
   
-  
-
-\strong{\cr\cr PNE_PARAM}
-
-A \code{list} object with 13 elements to help building the simulation 
+A \code{list} object with 12 elements to help building the simulation 
 files and folders to run a \code{FATE} simulation :
   
   \describe{
-    \item{masks}{a \code{\link[raster]{stack}} object of dimension 
-    \code{782 x 619} with a resolution of \code{100m} and Lambers (lcc) 
-    projection, containing 7 mask layers with binary values (0 or 1) to be 
+    \item{name.dataset}{\strong{Champsaur}}
+    \item{tab.occ}{a \code{data.frame} of dimension \code{13590 x 15} \cr
+    containing presence / absence (\code{NA}, \code{0} or \code{1}) values 
+    per site for each PFG}
+    \item{tab.env}{a \code{data.frame} of dimension \code{13590 x 5} \cr
+    containing environmental values (bio1, bio12, slope, dem, CESBIO2018)  
+    for each site}
+    \item{tab.xy}{a \code{data.frame} of dimension \code{13590 x 2} \cr
+    containing coordinates for each site}
+    \item{stk.var}{a \code{\link[raster]{stack}} object of dimension 
+    \code{358 x 427} with a resolution of \code{100m} and ETRS89 
+    projection, containing 3 layers with environmental values and to be 
+    used to produce PFG SDM}
+    \item{tab.SUCC}{a \code{data.frame} of dimension \code{15 x 5} \cr
+    containing PFG characteristics (type, height, maturity, longevity) \cr
+    to be used with the \code{\link{PRE_FATE.params_PFGsuccession}} 
+    function}
+    \item{tab.DISP}{a \code{data.frame} of dimension \code{15 x 4} \cr
+    containing PFG characteristics (d50, d99, ldd) \cr
+    to be used with the \code{\link{PRE_FATE.params_PFGdispersal}} 
+    function}
+    \item{tab.DIST}{a \code{data.frame} of dimension \code{15 x 3} \cr
+    containing PFG characteristics (strategy_tol) \cr
+    to be used with the \code{\link{PRE_FATE.params_PFGdisturbance}} 
+    function}
+    \item{tab.LIGHT}{a \code{data.frame} of dimension \code{15 x 3} \cr
+    containing PFG characteristics (strategy_tol) \cr
+    to be used with the \code{\link{PRE_FATE.params_PFGlight}} 
+    function}
+    \item{tab.SOIL}{a \code{data.frame} of dimension \code{15 x 5} \cr
+    containing PFG characteristics (type, soil_contrib, soil_tol_min, 
+    soil_tol_max) \cr
+    to be used with the \code{\link{PRE_FATE.params_PFGsoil}} 
+    function}
+    \item{stk.wmean}{a \code{\link[raster]{stack}} object of dimension 
+    \code{358 x 427} with a resolution of \code{100m} and ETRS89 
+    projection, containing 15 layers with habitat suitability values 
+    (between 0 and 1) for each PFG}
+    \item{stk.mask}{a \code{\link[raster]{stack}} object of dimension 
+    \code{358 x 427} with a resolution of \code{100m} and ETRS89 
+    projection, containing 3 mask layers with binary values (0 or 1) to be 
     used in a \code{FATE} simulation :
     \itemize{
-      \item \strong{maskEcrins} : simulation map, where occurs succession
+      \item \strong{Champsaur} : simulation map, where occurs succession
       \item \strong{noDisturb} : perturbation map, when there is none
       \item \strong{mowing} : perturbation map, where occurs mowing
-      \item \strong{grazing1} : perturbation map, where occurs light grazing
-      \item \strong{grazing2} : perturbation map, where occurs extensive 
-      grazing
-      \item \strong{grazing3} : perturbation map, where occurs intensive 
-      grazing
-      \item \strong{grazingAll} :  perturbation map, where occurs grazing, 
-      all types combined
     }
-    }
-    \item{HS_0}{a \code{\link[raster]{stack}} object of dimension 
-    \code{782 x 619} with a resolution of \code{100m} and Lambers (lcc) 
-    projection, containing 24 layers with probability values (between 0 and 
-    1) representing Habitat Suitability for initialization phase and 
-    \emph{equilibrium} or \emph{current} time (0) for each PFG 
-    and to be used in a \code{FATE} simulation. \cr
-    These maps are coming from Species Distribution Models and methods to 
-    obtain them are described in Supplementary Materials of 
-    \emph{\href{https://mayagueguen.github.io/FATE-WEBSITE/papers/Boulangeat_2014_GCB.pdf}{Boulangeat et al. 2014 GCB}}.}
-    \item{HS_15}{same as HS_0 but 15 years after equilibrium}
-    \item{HS_30}{same as HS_0 but 30 years after equilibrium}
-    \item{HS_45}{same as HS_0 but 45 years after equilibrium}
-    \item{HS_60}{same as HS_0 but 60 years after equilibrium}
-    \item{HS_75}{same as HS_0 but 75 years after equilibrium}
-    \item{HS_90}{same as HS_0 but 90 years after equilibrium}
-    \item{strata_limits}{a \code{vector} of length \code{5} \cr
-    containing height of stratum limits in centimeters \cr
-    to be used with the \code{\link{PRE_FATE.params_PFGsuccession}} and 
-    \code{\link{PRE_FATE.params_PFGlight}} functions \cr}
-    \item{succ_light}{a \code{data.frame} of dimension \code{24 x 6} \cr
-    containing traits for plant functional groups \cr
-    obtained from the \code{\link{PRE_FATE.speciesClustering_step3}} 
-    function \cr
-    to be used with the \code{\link{PRE_FATE.params_PFGsuccession}} and 
-    \code{\link{PRE_FATE.params_PFGlight}} functions \cr}
-    \item{disp}{a \code{data.frame} of dimension \code{24 x 4} \cr
-    containing dispersal values (in meters) for plant functional groups \cr
-    to be used with the \code{\link{PRE_FATE.params_PFGdispersal}} function 
-    \cr}
-    \item{dist}{a \code{data.frame} of dimension \code{384 x 5} \cr
-    containing response of plant functional groups to disturbances \cr
-    to be used with the \code{\link{PRE_FATE.params_PFGdisturbance}} 
-    function \cr}
-    \item{global}{a \code{vector} of length \code{18} \cr
-    containing global parameter values for a \code{FATE} simulation in 
-    the PNE \cr
-    to be used with the \code{\link{PRE_FATE.params_globalParameters}} 
-    function \cr
     }
   }
 
-
-\strong{\cr\cr PNE_RESULTS}
-
-A \code{list} object with 5 elements :
-
-\describe{
-  \item{evaluation}{a \code{data.frame} of dimension \code{24 x 11} \cr
-    containing statistical metrics to evaluate the predictive quality of 
-    both Habitat Suitability models (HS) and \code{FATE} simulation 
-    outputs \cr
-    \itemize{
-      \item \strong{PFG} : name of Plant Functional Group
-      \item \strong{nb.obs.absences} : number of observed absences
-      \item \strong{nb.obs.presences} : number of observed presences
-      \item \strong{specificity.FATE} : proportion of actual negatives that 
-      are correctly identified as such by the \code{FATE} model (true 
-      negative rate)
-      \item \strong{specificity.HS} : proportion of actual negatives that 
-      are correctly identified as such by the Habitat Suitability model 
-      (true negative rate)
-      \item \strong{sensitivity.FATE} : proportion of actual positives that 
-      are correctly identified as such by the \code{FATE} model (true 
-      positive rate)
-      \item \strong{sensitivity.HS} : proportion of actual positives that 
-      are correctly identified as such by the Habitat Suitability model 
-      (true positive rate)
-      \item \strong{TSS.FATE} : True Skill Statistic for \code{FATE} 
-      model
-      \item \strong{TSS.HS} : True Skill Statistic for Habitat Suitability 
-      model
-      \item \strong{error.rate.FATE} : percentage of bad predictions for 
-      \code{FATE} model
-      \item \strong{error.rate.HS} : percentage of bad predictions for 
-      Habitat Suitability model
-    }
-    }
-  \item{abund_str.equilibrium}{a \code{\link[raster]{stack}} object of 
-  dimension \code{782 x 619} with a resolution of \code{100m} and Lambers 
-  (lcc) projection, containing 120 layers representing \code{FATE} 
-  \strong{abundances for year 800 of initialization phase} (= 
-  \emph{equilibrium} or \emph{current} time). \cr
-  Maps are per PFG and per height stratum.}
-  \item{forest_cover.init}{a \code{\link[raster]{stack}} object of 
-  dimension \code{782 x 619} with a resolution of \code{100m} and Lambers 
-  (lcc) projection, containing 16 layers representing \code{FATE} 
-  \strong{relative forest cover through initialization phase (from year 50 
-  to 800)}. \cr
-  Maps are summing all PFGs through all height strata above 1.5 meters. \cr
-  }
-  \item{forest_cover \cr CC_BAU}{a \code{\link[raster]{stack}} object of 
-  dimension \code{782 x 619} with a resolution of \code{100m} and Lambers 
-  (lcc) projection, containing 14 layers representing \code{FATE} 
-  \strong{relative forest cover through Climate Change (CC) + 
-  Business-As-Usual (BAU) scenario (from year 850 to 1500)}. \cr
-  Maps are summing all PFGs through all height strata above 1.5 meters. \cr
-    }
-  \item{forest_cover\cr CC_Abandon}{a \code{\link[raster]{stack}} object of 
-  dimension \code{782 x 619} with a resolution of \code{100m} and Lambers 
-  (lcc) projection, containing 14 layers representing \code{FATE} 
-  \strong{relative forest cover through Climate Change (CC) + Abandonment 
-  (BAU) scenario (from year 850 to 1500)}. \cr
-  Maps are summing all PFGs through all height strata above 1.5 meters. \cr
-  }
-}
+  
+\strong{\cr\cr#########################################################\cr}
+\strong{>>> Champsaur_results}
+\strong{\cr#########################################################\cr\cr}
 }
 \description{
 

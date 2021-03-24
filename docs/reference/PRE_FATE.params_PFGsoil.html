@@ -319,7 +319,8 @@ are required for each PFG in order to set up the soil interaction :</p>
   <dt>soil_tol_max</dt><dd><p>the maximum soil value tolerated by the PFG (on the 
   same scale than <code>soil_contrib</code>)</p></dd>
   <dt>(<em>strategy_contrib</em>)</dt><dd><p>a <code>string</code> to choose the 
-  contribution strategy : <br /> <code>ubiquist</code>, <code>tobedefined</code> <br /> <br /></p></dd>
+  contribution strategy : <br /> <code>oligotrophic</code>, <code>mesotrophic</code>, 
+  <code>eutrophic</code> <br /> <br /></p></dd>
   
   <dt>lifeStage</dt><dd><p>the concerned life stage (<code>Germinant</code>, 
   <code>Immature</code>, <code>Mature</code>)</p></dd>
@@ -328,7 +329,8 @@ are required for each PFG in order to set up the soil interaction :</p>
   <dt>tolerance</dt><dd><p>an <code>integer</code> between <code>0</code> and <code>10</code> 
   corresponding to the proportion of surviving individuals</p></dd>
   <dt>(<em>strategy_tol</em>)</dt><dd><p>a <code>string</code> to choose the tolerance 
-  strategy : <br /> <code>ubiquist</code>, <code>tobedefined</code> <br /> <br /></p></dd>
+  strategy : <br /> <code>poor_lover</code>, <code>ubiquist</code>, <code>rich_lover</code> 
+  <br /> <br /></p></dd>
 
 </dl>
 
@@ -367,8 +369,9 @@ each PFG :</p>
 </ul><p></p><dl>
         <dt></dt><dd><p><strong><code>| ___ L ___ | ___ M ___ | ___ H ___ |</code></strong></p></dd>
         <dt></dt><dd><p><code>_____________________________________</code></p></dd>
-        <dt>ubiquist</dt><dd><p><code>__________ 1.5 _ 2.5 _ 4.5 __________</code></p></dd>
-        <dt>to be filled</dt><dd><p></p></dd></dl></li>
+        <dt>oligotrophic</dt><dd><p><code>__________ 1 ___ 1.5 ___ 2 __________</code></p></dd>
+        <dt>mesotrophic</dt><dd><p><code>__________ 1.5 _ 2.5 _ 4.5 __________</code></p></dd>
+        <dt>eutrophic</dt><dd><p><code>__________ 3 ____ 4 ____ 5 __________</code></p></dd></dl></li>
 <li><p>from <strong>user data</strong> : <br />
       <em>with the values contained within the <code>soil_contrib</code>, 
       <code>soil_tol_min</code> and <code>soil_tol_max</code> columns, if provided <br /> <br /></em></p></li>
@@ -390,12 +393,15 @@ each PFG :</p>
         <dt></dt><dd><p><strong><code>| ___ g ___ | ___ i ___ | ___ m ___ |</code></strong></p></dd>
         <dt></dt><dd><p><strong><code>| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |</code></strong></p></dd>
         <dt></dt><dd><p><code>_____________________________________</code></p></dd>
-        <dt>ubiquist</dt><dd><p><code>| 90 100 90 | 90 100 90 | 90 100 90 |</code></p></dd>
-        <dt>to be filled</dt><dd><p></p></dd></dl></li>
-<li><p>from <strong>predefined rules</strong> :</p><dl>
+        <dt>poor_lover</dt><dd><p><code>| 30 100 10 | 60 100 40 | 90 100 70 |</code></p></dd>
+        <dt>ubiquist</dt><dd><p><code>| 90 100 80 | 90 100 80 | 90 100 80 |</code></p></dd>
+        <dt>rich_lover</dt><dd><p><code>| 10 100 30 | 40 100 60 | 70 100 90 |</code></p></dd></dl></li>
+<li><p>from <strong>predefined rules</strong> (corresponding to the 
+    <code>poor_lover</code> strategy) :</p><dl>
         <dt>(A)</dt><dd><p>germinants are severely impacted by wrong soil conditions</p></dd>
         <dt>(B)</dt><dd><p>immatures are half impacted by wrong soil conditions</p></dd>
-        <dt>(C)</dt><dd><p>matures are little impacted by wrong soil conditions</p></dd></dl><p></p><ul>
+        <dt>(C)</dt><dd><p>matures are little impacted by wrong soil conditions</p></dd>
+        <dt>(D)</dt><dd><p>for all life stages, not enough is better than too much</p></dd></dl><p></p><ul>
 <li><p>the values give the percentage of surviving individuals to the 
         concerned conditions</p></li>
 <li><p>with <code>g</code>: Germinant, <code>i</code>: Immature, <code>m</code>: Mature</p></li>
@@ -405,7 +411,7 @@ each PFG :</p>
         <dt></dt><dd><p><strong><code>| ___ g ___ | ___ i ___ | ___ m ___ |</code></strong></p></dd>
         <dt></dt><dd><p><strong><code>| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |</code></strong></p></dd>
         <dt></dt><dd><p><code>_____________________________________</code></p></dd>
-        <dt></dt><dd><p><code>| 10 100 30 | 40 100 60 | 70 100 90 |</code></p></dd></dl></li>
+        <dt></dt><dd><p><code>| 30 100 10 | 60 100 40 | 90 100 70 |</code></p></dd></dl></li>
 <li><p>from <strong>user data</strong> : <br />
       <em>with the values contained within the <code>lifeStage</code>, 
       <code>resources</code> and <code>tolerance</code> columns, if provided</em></p></li>

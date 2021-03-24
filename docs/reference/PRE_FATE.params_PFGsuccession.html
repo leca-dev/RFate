@@ -264,9 +264,9 @@ parameters :</p>
   <dt>MATURITY</dt><dd><p>PFG maturity age <em>(in years)</em></p></dd>
   <dt>LONGEVITY</dt><dd><p>PFG life span <em>(in years)</em></p></dd>
   <dt>MAX_STRATUM</dt><dd><p>maximum height stratum that the PFG can reach</p></dd>
-  <dt>MAX_ABUNDANCE</dt><dd><p>maximum abundance / space (qualitative) that the PFG 
-  is able to produce / occupy <br /> <em>(<code>1</code>: Low <code>2</code>: Medium 
-  <code>3</code>: High)</em></p></dd>
+  <dt>MAX_ABUNDANCE</dt><dd><p>maximum abundance / space (quantitative) that the 
+  PFG is able to produce / occupy <br /> <em>(<code>1</code>: Low <code>2</code>: 
+  Medium <code>3</code>: High)</em></p></dd>
   <dt>IMM_SIZE</dt><dd><p>PFG immature relative size <em>(from <code>0</code> to 
   <code>10</code>, corresponding to 0 to 100%)</em></p></dd>
   <dt>CHANG_STR_AGES</dt><dd><p>ages at which the PFG goes in the upper stratum 
@@ -304,8 +304,7 @@ each PFG in order to set up this life cycle :</p>
   <dt>height</dt><dd><p>the maximum or average height that reach the PFG</p></dd>
   <dt>maturity</dt><dd><p>the age from which the PFG can reproduce</p></dd>
   <dt>longevity</dt><dd><p>the maximum or average lifespan of the PFG <br /> <br /></p></dd>
-  <dt>(<em>max_abundance</em>)</dt><dd><p>the maximum abundance of mature PFG in 
-  favorable conditions</p></dd>
+  <dt>(<em>max_abundance</em>)</dt><dd><p>the maximum abundance of mature PFG</p></dd>
   <dt>(<em>potential_fecundity</em>)</dt><dd><p>the maximum number of seeds produced 
   by the PFG <br /> (otherwise the value is given within the global parameter 
   file, see <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>)</p></dd>
@@ -345,19 +344,19 @@ all PFG :</p>
 <p>and a set of characteristics for each PFG :</p>
 <dl>
   <dt>MAX_STRATUM</dt><dd><p>= maximum stratum that each PFG can reach</p></dd>
-  <dt>MAX_ABUNDANCE</dt><dd><p>= maximum abundance of mature PFG in favorable 
-  conditions <br />
+  <dt>MAX_ABUNDANCE</dt><dd><p>= maximum abundance of mature PFG <br />
    = It can be seen as a proxy of maximum carrying capacity for mature 
-  individuals <br /> (<em>and therefore as a proxy a quantity of shade 
-  produced as well, if the light module is activated</em>). <br /> <br />
+  individuals <br /> (<em>and therefore as a broad proxy of the amount 
+  of space a PFG can occupy within a pixel (herbaceous should be more 
+  numerous than phanerophytes</em>). <br /> <br />
   Two methods to define these abundances are available :
   <ul>
 <li><p>from <strong>predefined rules</strong> (using <code>type</code>, 
     <code>MAX_STRATUM</code>) : <br /> <br /></p><table class='table'>
 <tr><td><strong>MAX_STRATUM</strong></td><td><strong>1</strong></td><td><strong>2</strong></td><td><strong>3</strong></td><td><strong>+</strong></td></tr>
-<tr><td><strong><code>H</code> (herbaceous)</strong></td><td><code>1</code></td><td><code>1</code></td><td><code>2</code></td><td><code>2</code></td></tr>
-<tr><td><strong><code>C</code> (chamaephyte)</strong></td><td><code>1</code></td><td><code>2</code></td><td><code>2</code></td><td><code>3</code></td></tr>
-<tr><td><strong><code>P</code> (phanerophyte)</strong></td><td><code>1</code></td><td><code>2</code></td><td><code>3</code></td><td><code>3</code></td></tr>
+<tr><td><strong><code>H</code> (herbaceous)</strong></td><td><code>3</code></td><td><code>3</code></td><td><code>2</code></td><td><code>2</code></td></tr>
+<tr><td><strong><code>C</code> (chamaephyte)</strong></td><td><code>3</code></td><td><code>2</code></td><td><code>2</code></td><td><code>1</code></td></tr>
+<tr><td><strong><code>P</code> (phanerophyte)</strong></td><td><code>3</code></td><td><code>2</code></td><td><code>1</code></td><td><code>1</code></td></tr>
 </table>
 </li>
 <li><p>from <strong>user data</strong> : <br />

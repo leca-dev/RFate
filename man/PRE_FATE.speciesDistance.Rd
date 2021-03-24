@@ -37,7 +37,7 @@ calculate the distance between species based on niche overlap (either
   \describe{
     \item{\code{tab.dom.PA}}{a \code{matrix} or \code{data.frame} with 
     sites in rows and species in columns, containing either \code{NA}, 
-    \code{0} or \code{1},  (see \code{\link{PRE_FATE.selectDominant}})}
+    \code{0} or \code{1} (see \code{\link{PRE_FATE.selectDominant}})}
     \item{\code{tab.env}}{a \code{matrix} or \code{data.frame} with 
     sites in rows and environmental variables in columns}
   }

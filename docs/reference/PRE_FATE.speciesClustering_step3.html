@@ -213,7 +213,7 @@ median is used depending on the trait class (i.e. numeric or
 categorical).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.speciesClustering_step3</span><span class='op'>(</span><span class='va'>mat.traits</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>PRE_FATE.speciesClustering_step3</span><span class='op'>(</span><span class='va'>mat.traits</span>, opt.mat.PA <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -230,21 +230,30 @@ categorical).</p>
 
 </dl></td>
     </tr>
+    <tr>
+      <th>opt.mat.PA</th>
+      <td><p>(<em>optional</em>) default <code>NULL</code>. <br /> 
+a <code>data.frame</code> with sites in rows and species in columns, 
+containing either <code>NA</code>, <code>0</code> or <code>1</code> (see 
+<code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code>)</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>list</code> containing one <code>data.frame</code> with the following 
-columns, and one <code>list</code> with as many <code>ggplot2</code> objects as 
-functional traits given in <code>mat.traits</code> :</p>
+    <p>A <code>list</code> containing one or two <code>data.frame</code> with the 
+following columns, and one <code>list</code> with as many <code>ggplot2</code> objects 
+as functional traits given in <code>mat.traits</code> :</p>
 <dl>
-  <dt>tab</dt><dd><p><br />
+  <dt>tab.PFG.traits</dt><dd><p><br />
   <dl>
     <dt><code>PFG</code></dt><dd><p>the concerned plant functional group</p></dd>
     <dt><code>no.species</code></dt><dd><p>the number of species contained in this PFG</p></dd>
     <dt><code>...</code></dt><dd><p>one column for each functional trait, computed as the 
     <code>mean</code> (for numeric traits) or the <code>median</code> (for categorical 
     traits) of the values of the determinant species of this PFG</p></dd></dl></p></dd>
+  <dt>tab.PFG.PA</dt><dd><p>table containing counts of presences for all PFG 
+  (sites in rows, PFG in columns)</p></dd>
   <dt>plot</dt><dd><p><br />
   <dl>
     <dt><code>...</code></dt><dd><p>one for each functional trait, 'specific' cases 
@@ -253,7 +262,8 @@ functional traits given in <code>mat.traits</code> :</p>
 
 </dl>
     
-<p>The information is written in <code class="file">PRE_FATE_PFG_TABLE_traits.csv</code> and 
+<p>The information is written in <code class="file">PRE_FATE_PFG_TABLE_traits.csv</code>, 
+<code class="file">PRE_FATE_PFG_TABLE_sitesXPFG_PA.csv</code> and 
 <code class="file">PRE_FATE_CLUSTERING_STEP_3_PFGtraitsValues.pdf</code> files. <br />
 This <code>.csv</code> file can be used to build parameter files to run a 
 <code>FATE</code> simulation (e.g. <code><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></code>).</p>
@@ -292,10 +302,12 @@ below :</em></p><dl>
   <dt><br /> <code>soil_contrib</code>, <br /> <code>soil_tolerance</code></dt><dd><p>same as the 
   previous one, but <code>soil_tol_min</code> and <code>soil_tol_max</code> values 
   are obtained by adding or removing <code>soil_tolerance</code> to 
-  <code>soil_contrib</code></p></dd>
+  <code>soil_contrib</code> <br /> <br /></p></dd>
 
 </dl>
 
+<p>If a sites x species table is provided (<code>opt.mat.PA</code>), a sites x PFG 
+table (containing <code>NA</code>, <code>0</code> or <code>1</code>) is also returned.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='PRE_FATE.speciesClustering_step1.html'>PRE_FATE.speciesClustering_step1</a></code>,
@@ -337,7 +349,8 @@ below :</em></p><dl>
 <span class='va'>PFG.traits</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesClustering_step3</span><span class='op'>(</span>mat.traits <span class='op'>=</span> <span class='va'>mat.traits</span><span class='op'>)</span>
 
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>$</span><span class='va'>tab</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>$</span><span class='va'>tab.PFG.traits</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>$</span><span class='va'>tab.PFG.PA</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>$</span><span class='va'>plot</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>$</span><span class='va'>plot</span><span class='op'>$</span><span class='va'>maturity_longevity</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>PFG.traits</span><span class='op'>$</span><span class='va'>plot</span><span class='op'>$</span><span class='va'>height_light</span><span class='op'>)</span>
