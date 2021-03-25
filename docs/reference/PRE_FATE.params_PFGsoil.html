@@ -434,21 +434,31 @@ each PFG :</p>
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG soil parameter files (with strategies) -----------------------------------------</span>
+<span class='va'>tab.soil</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                      , strategy_ag <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'rich_lover'</span>, <span class='st'>'indifferent'</span> , <span class='st'>'indifferent'</span>
+                                        , <span class='st'>'rich_lover'</span>, <span class='st'>'indifferent'</span>, <span class='st'>'poor_lover'</span><span class='op'>)</span>
+                      , strategy_contrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'eutrophic'</span>, <span class='st'>'mesotrophic'</span>, <span class='st'>'mesotrophic'</span>
+                                             , <span class='st'>'mesotrophic'</span>, <span class='st'>'mesotrophic'</span>, <span class='st'>'oligotrophic'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>tab.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                     , strategy_tol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'rich_lover'</span>, <span class='st'>'ubiquist'</span>, <span class='st'>'poor_lover'</span>
+                                        , <span class='st'>'ubiquist'</span>, <span class='st'>'poor_lover'</span>, <span class='st'>'poor_lover'</span><span class='op'>)</span><span class='op'>)</span>
+
 <span class='fu'>PRE_FATE.params_PFGsoil</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
-                        , mat.PFG.soil <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
-                                                    , strategy_ag <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'rich_lover'</span>, <span class='st'>'indifferent'</span>
-                                                                      , <span class='st'>'indifferent'</span>, <span class='st'>'rich_lover'</span>
-                                                                      , <span class='st'>'indifferent'</span>, <span class='st'>'poor_lover'</span><span class='op'>)</span>
-                                                    , strategy_contrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>'ubiquist'</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
-                        , mat.PFG.tol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
-                                                   , strategy_tol <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>'ubiquist'</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+                        , mat.PFG.soil <span class='op'>=</span> <span class='va'>tab.soil</span>
+                        , mat.PFG.tol <span class='op'>=</span> <span class='va'>tab.tol</span><span class='op'>)</span>
                                                         
 
 <span class='co'>## Create PFG soil parameter files (with all values) -----------------------------------------</span>
-<span class='va'>mat.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Low'</span>, <span class='st'>'Medium'</span>, <span class='st'>'High'</span><span class='op'>)</span>
+<span class='va'>tab.soil</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                      , active_germ_low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>8</span>, <span class='fl'>8</span><span class='op'>)</span>
+                      , active_germ_medium <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>6</span><span class='op'>)</span>
+                      , active_germ_high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>4</span><span class='op'>)</span>
+                      , strategy_contrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'eutrophic'</span>, <span class='st'>'mesotrophic'</span>, <span class='st'>'mesotrophic'</span>
+                                             , <span class='st'>'mesotrophic'</span>, <span class='st'>'mesotrophic'</span>, <span class='st'>'oligotrophic'</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>tab.tol</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/expand.grid.html'>expand.grid</a></span><span class='op'>(</span>resources <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Low'</span>, <span class='st'>'Medium'</span>, <span class='st'>'High'</span><span class='op'>)</span>
                       , lifeStage <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'Germinant'</span>, <span class='st'>'Immature'</span>, <span class='st'>'Mature'</span><span class='op'>)</span>
                       , PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>mat.tol</span><span class='op'>$</span><span class='va'>tolerance</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>9</span>, <span class='fl'>4</span>, <span class='fl'>4</span>
+<span class='va'>tab.tol</span><span class='op'>$</span><span class='va'>tolerance</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>4</span>, <span class='fl'>9</span>, <span class='fl'>4</span>, <span class='fl'>4</span>
                       , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span>
                       , <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span>
                       , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>6</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>
@@ -456,29 +466,26 @@ each PFG :</p>
                       , <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>5</span>, <span class='fl'>5</span>, <span class='fl'>9</span><span class='op'>)</span>
 
 <span class='fu'>PRE_FATE.params_PFGsoil</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
-                        , mat.PFG.soil <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
-                                                    , active_germ_low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>6</span>, <span class='fl'>8</span>, <span class='fl'>8</span><span class='op'>)</span>
-                                                    , active_germ_medium <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>6</span><span class='op'>)</span>
-                                                    , active_germ_high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>4</span><span class='op'>)</span>
-                                                    , strategy_contrib <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='st'>'ubiquist'</span>, <span class='fl'>6</span><span class='op'>)</span><span class='op'>)</span>
-                        , mat.PFG.tol <span class='op'>=</span> <span class='va'>mat.tol</span><span class='op'>)</span>
+                        , mat.PFG.soil <span class='op'>=</span> <span class='va'>tab.soil</span>
+                        , mat.PFG.tol <span class='op'>=</span> <span class='va'>tab.tol</span><span class='op'>)</span>
                                                         
                                                         
 <span class='co'>## -------------------------------------------------------------------------------------------</span>
 
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_parameters</span><span class='op'>)</span>
-
-<span class='co'>## PFG traits for soil</span>
-<span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.soil</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
+<span class='va'>Champsaur_params</span> <span class='op'>=</span> <span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>'Champsaur_params'</span>, <span class='st'>'RData'</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span><span class='op'>)</span>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span><span class='op'>)</span>
+
+
+<span class='co'>## PFG traits for light</span>
+<span class='va'>tab.soil</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.SOIL</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.soil</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG soil parameter files -----------------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsoil</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
-                        , mat.PFG.soil <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>)</span>
+<span class='fu'>PRE_FATE.params_PFGsoil</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span>
+                           , mat.PFG.soil <span class='op'>=</span> <span class='va'>tab.soil</span><span class='op'>)</span>
 
 </pre>
   </div>

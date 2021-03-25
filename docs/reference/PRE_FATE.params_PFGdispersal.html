@@ -293,23 +293,39 @@ dispersed into 3 different concentric circles :</p>
                                                         
 <span class='co'>## -------------------------------------------------------------------------------------------</span>
 
-<span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_parameters</span><span class='op'>)</span>
+<span class='co'># ## Load example data</span>
+<span class='co'># Champsaur_PFG = .loadData('Champsaur_PFG', 'RData')</span>
+<span class='co'>#</span>
+<span class='co'># ## Build PFG traits for dispersal</span>
+<span class='co'># tab.traits = Champsaur_PFG$PFG.traits</span>
+<span class='co'># ## Dispersal values</span>
+<span class='co'># ##   = Short: 0.1-2m;    Medium: 40-100m;    Long: 400-500m</span>
+<span class='co'># ##   = Vittoz correspondance : 1-3: Short;    4-5: Medium;   6-7:Long</span>
+<span class='co'># corres = data.frame(dispersal = 1:7</span>
+<span class='co'>#                     , d50 = c(0.1, 0.5, 2, 40, 100, 400, 500)</span>
+<span class='co'>#                     , d99 = c(1, 5, 15, 150, 500, 1500, 5000)</span>
+<span class='co'>#                     , ldd = c(1000, 1000, 1000, 5000, 5000, 10000, 10000))</span>
+<span class='co'># tab.traits$d50 = corres$d50[tab.traits$dispersal]</span>
+<span class='co'># tab.traits$d99 = corres$d99[tab.traits$dispersal]</span>
+<span class='co'># tab.traits$ldd = corres$ldd[tab.traits$dispersal]</span>
+<span class='co'># str(tab.traits)</span>
 
-<span class='co'>## PFG traits for dispersal</span>
-<span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.disp</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>dispersal</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>as.numeric</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/character.html'>as.character</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>dispersal</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>d99</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>dispersal</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>10</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>10</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>d50</span> <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>d99</span> <span class='op'>*</span> <span class='fl'>0.5</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>ldd</span> <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>d99</span> <span class='op'>*</span> <span class='fl'>1.8</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
+
+<span class='co'>## Load example data</span>
+<span class='va'>Champsaur_params</span> <span class='op'>=</span> <span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>'Champsaur_params'</span>, <span class='st'>'RData'</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span><span class='op'>)</span>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span><span class='op'>)</span>
 
-<span class='co'>## Create PFG dispersal parameter files -----------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGdispersal</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
-                             , mat.PFG.disp <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='st'>'d50'</span>, <span class='st'>'d99'</span>, <span class='st'>'ldd'</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
+
+<span class='co'>## PFG traits for dispersal</span>
+<span class='va'>tab.disp</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.DISP</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.disp</span><span class='op'>)</span>
+
+<span class='co'>## Create PFG dispersal parameter files ------------------------------------------------------</span>
+<span class='fu'>PRE_FATE.params_PFGdispersal</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span>
+                             , mat.PFG.disp <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.DISP</span><span class='op'>)</span>
+
 
 
 </pre>

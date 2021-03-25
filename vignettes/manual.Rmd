@@ -11,26 +11,15 @@ vignette: >
 
 <style>
 .zoom p {
-width:250px;
+width:600px;
 margin-left: auto;
 margin-right: auto;
 }
 .zoom p:hover {
-width:900px;
-position: relative;
-z-index: 10;
-}
-.column {
-  float: left;
-  width: 30%;
-}
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+width:1200px;
 }
 </style>
+
 
 
 <br/><br/>
@@ -46,13 +35,18 @@ More informations about the Champsaur example dataset can be found [here](./../r
 
 ## <i class="fas fa-code"></i> Complete code example
 
+The different parts of the Champsaur example dataset can be downloaded with the [.loadData](./../reference/dot-loadData.html) function, or from the links below :
+
+- Champsaur PFG : &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.RData" class="download" title="Download as RData"><i class="fas fa-download"></i> `RData`</a> &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i> `7z`</a>
+- Champsaur params : &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.RData" class="download" title="Download as RData"><i class="fas fa-download"></i> `RData`</a> &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i> `7z`</a>
+
 
 ### 1. Building Plant Functional Group
 
 ```R
 library(RFate)
 
-.loadData("Champsaur_PFG")
+Champsaur_PFG = .loadData("Champsaur_PFG")
 
 
 ###################################################################################################
@@ -270,6 +264,15 @@ PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary)
 
 ```
 
+
+<br/><br/>
+
+A brief description of the Plant Functional Groups obtained for the Champsaur dataset is presented below. *italic* represents species that have been pointed out as `Not determinant` by the [PRE_FATE.speciesClustering_step2](./../reference/PRE_FATE.speciesClustering_step2.html) function (*difference between dominant and determinant species is explained in the [Details](./../reference/PRE_FATE.speciesClustering_step2.html#details) section of this function*), but in this example they have all been kept for consistency in concerned PFG.
+
+<div class="zoom">
+<p><img src="pictures/TABLE_FATE_EXAMPLE_PFG_Champsaur.png" alt="TABLE FATE EXAMPLE PFG Champsaur"></img></p>
+</div>
+
 <br/><br/>
 
 ### 2. Creating `FATE` parameter files
@@ -277,7 +280,7 @@ PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary)
 ```R
 library(RFate)
 
-.loadData("Champsaur_params")
+Champsaur_params = .loadData("Champsaur_params")
 
 
 ###################################################################################################
@@ -369,25 +372,48 @@ PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur")
 
 ## Create PFG parameter files ---------------------------------------------------------------------
 
+## SUCCESSION ---------------------------------------------------------------------------
 PRE_FATE.params_PFGsuccession(name.simulation = "FATE_Champsaur"
                               , strata.limits = c(0, 20, 50, 150, 400, 1000, 2000)
                               , strata.limits_reduce = FALSE
                               , mat.PFG.succ = Champsaur_params$tab.SUCC)
 
 
+## DISPERSAL ----------------------------------------------------------------------------
+# ## Load example data
+# Champsaur_PFG = .loadData("Champsaur_PFG")
+#
+# ## Build PFG traits for dispersal
+# tab.traits = Champsaur_PFG$PFG.traits
+# ## Dispersal values
+# ##   = Short: 0.1-2m;    Medium: 40-100m;    Long: 400-500m
+# ##   = Vittoz correspondance : 1-3: Short;    4-5: Medium;   6-7:Long
+# corres = data.frame(dispersal = 1:7
+#                     , d50 = c(0.1, 0.5, 2, 40, 100, 400, 500)
+#                     , d99 = c(1, 5, 15, 150, 500, 1500, 5000)
+#                     , ldd = c(1000, 1000, 1000, 5000, 5000, 10000, 10000))
+# tab.traits$d50 = corres$d50[tab.traits$dispersal]
+# tab.traits$d99 = corres$d99[tab.traits$dispersal]
+# tab.traits$ldd = corres$ldd[tab.traits$dispersal]
+# str(tab.traits)
+
 PRE_FATE.params_PFGdispersal(name.simulation = "FATE_Champsaur"
                              , mat.PFG.disp = Champsaur_params$tab.DISP)
 
 
+## LIGHT --------------------------------------------------------------------------------
 PRE_FATE.params_PFGlight(name.simulation = "FATE_Champsaur"
                          , mat.PFG.light = Champsaur_params$tab.LIGHT[, c("PFG", "type")]
                          , mat.PFG.tol = Champsaur_params$tab.LIGHT[, c("PFG", "strategy_tol")])
 
 
+## SOIL ---------------------------------------------------------------------------------
 PRE_FATE.params_PFGsoil(name.simulation = "FATE_Champsaur"
                         , mat.PFG.soil = Champsaur_params$tab.SOIL)
 
 
+## DISTURBANCE --------------------------------------------------------------------------
+require(data.table)
 tmp = fread("FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv")
 tab.succ = Champsaur_params$tab.SUCC
 tab.succ$age_above_150cm = tmp$CHANG_STR_AGES_to_str_4_150
@@ -399,18 +425,25 @@ PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_Champsaur"
 
 ## Create simulation related parameter files ------------------------------------------------------
 
+## CHANGING TIMES -----------------------------------------------------------------------
+tab.changing = data.frame(year = c(600, 601, 800, 801)
+                          , order = rep(1, 4)
+                          , new.value = c("MASK_mowing.img"
+                                          , "MASK_noDisturb.img"
+                                          , "MASK_mowing.img"
+                                          , "MASK_noDisturb.img"))
+
 PRE_FATE.params_changingYears(name.simulation = "FATE_Champsaur"
                               , type.changing = "DIST"
-                              , mat.changing = data.frame(year = c(600, 601, 800, 801)
-                                                          , order = rep(1, 4)
-                                                          , new.value = c("MASK_mowing.img"
-                                                                          , "MASK_noDisturb.img"
-                                                                          , "MASK_mowing.img"
-                                                                          , "MASK_noDisturb.img")))
+                              , mat.changing = tab.changing)
 
+
+## SAVING YEARS -------------------------------------------------------------------------
 PRE_FATE.params_savingYears(name.simulation = "FATE_Champsaur"
                             , years.maps = seq(10, 1000, 10))
 
+
+## GLOBAL PARAMS ------------------------------------------------------------------------
 combi = expand.grid(doLight = c(FALSE, TRUE), doSoil = c(FALSE, TRUE))
 for (ii in 1:nrow(combi))
 {
@@ -448,6 +481,7 @@ for (ii in 1:nrow(combi))
 }
 
 
+## SIMUL_PARAM --------------------------------------------------------------------------
 writeRaster(Champsaur_params$stk.mask
             , filename = paste0("FATE_Champsaur/DATA/MASK/MASK_"
                                 , names(Champsaur_params$stk.mask), ".img")
@@ -456,9 +490,13 @@ writeRaster(Champsaur_params$stk.wmean
             , filename = paste0("FATE_Champsaur/DATA/PFGS/HABSUIT/HS_"
                                 , names(Champsaur_params$stk.wmean), "_0.img")
             , bylayer = TRUE)
+            
+.adaptMaps(name.simulation = "FATE_Champsaur", extension.old = "img", extension.new = "img")
+
+file.remove(list.files(path = paste0("FATE_Champsaur/DATA/MASK/")
+                       , pattern = ".img.aux.xml$", full.names = TRUE))
 file.remove(list.files(path = paste0("FATE_Champsaur/DATA/PFGS/HABSUIT/")
                        , pattern = ".img.aux.xml$", full.names = TRUE))
-
 
 PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
                                 , name.MASK = "MASK_Champsaur.img"

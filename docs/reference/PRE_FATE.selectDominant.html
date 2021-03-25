@@ -219,6 +219,7 @@ abundance records, and habitat if the information is available.</p>
   opt.doRobustness <span class='op'>=</span> <span class='cn'>FALSE</span>,
   opt.robustness_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='fl'>0.1</span><span class='op'>)</span>,
   opt.robustness_rep <span class='op'>=</span> <span class='fl'>10</span>,
+  opt.doSitesSpecies <span class='op'>=</span> <span class='cn'>TRUE</span>,
   opt.doPlot <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span></pre>
 
@@ -296,6 +297,12 @@ to the percentages with which to build subsets to evaluate robustness</p></td>
       <td><p>(<em>optional</em>) default <code>10</code>. <br /> If 
 <code>opt.doRobustness = TRUE</code>, number of repetitions for each percentage 
 value defined by <code>opt.robustness_percent</code> to evaluate robustness</p></td>
+    </tr>
+    <tr>
+      <th>opt.doSitesSpecies</th>
+      <td><p>(<em>optional</em>) default <code>TRUE</code>. <br /> 
+If <code>TRUE</code>, building of abundances / occurrences tables for selected 
+species will be processed, saved and returned.</p></td>
     </tr>
     <tr>
       <th>opt.doPlot</th>
@@ -462,23 +469,24 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples">
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>"Champsaur_PFG"</span><span class='op'>)</span>
+<span class='va'>Champsaur_PFG</span> <span class='op'>=</span> <span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>'Champsaur_PFG'</span>, <span class='st'>'RData'</span><span class='op'>)</span>
 
 <span class='co'>## Species observations</span>
 <span class='va'>tab</span> <span class='op'>=</span> <span class='va'>Champsaur_PFG</span><span class='op'>$</span><span class='va'>sp.observations</span>
 
 <span class='co'>## No habitat, no robustness -------------------------------------------------</span>
-<span class='va'>tab.occ</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span><span class='op'>)</span><span class='op'>]</span>
+<span class='va'>tab.occ</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'sites'</span>, <span class='st'>'species'</span>, <span class='st'>'abund'</span><span class='op'>)</span><span class='op'>]</span>
 <span class='va'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span><span class='op'>(</span>mat.observations <span class='op'>=</span> <span class='va'>tab.occ</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>tab.rules</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>tab.dom.PA</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.A</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.B</span><span class='op'>$</span><span class='va'>abs</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>sp.SELECT</span><span class='op'>$</span><span class='va'>plot.B</span><span class='op'>$</span><span class='va'>rel</span><span class='op'>)</span>
 
 <span class='co'>## Habitat, change parameters, no robustness (!quite long!) --------------------</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>tab.occ</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span>, <span class='st'>"habitat"</span><span class='op'>)</span><span class='op'>]</span>
+<span class='va'>tab.occ</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'sites'</span>, <span class='st'>'species'</span>, <span class='st'>'abund'</span>, <span class='st'>'habitat'</span><span class='op'>)</span><span class='op'>]</span>
 <span class='va'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span><span class='op'>(</span>mat.observations <span class='op'>=</span> <span class='va'>tab.occ</span>
                                     , doRuleA <span class='op'>=</span> <span class='cn'>TRUE</span>
                                     , rule.A1 <span class='op'>=</span> <span class='fl'>10</span>
@@ -497,8 +505,9 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 
 <span class='co'>## No habitat, robustness (!quite long!) --------------------</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='va'>tab.occ</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"sites"</span>, <span class='st'>"species"</span>, <span class='st'>"abund"</span><span class='op'>)</span><span class='op'>]</span>
+<span class='va'>tab.occ</span> <span class='op'>=</span> <span class='va'>tab</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'sites'</span>, <span class='st'>'species'</span>, <span class='st'>'abund'</span><span class='op'>)</span><span class='op'>]</span>
 <span class='va'>sp.SELECT</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.selectDominant</span><span class='op'>(</span>mat.observations <span class='op'>=</span> <span class='va'>tab.occ</span>
+                                    , opt.doSitesSpecies <span class='op'>=</span> <span class='cn'>FALSE</span>
                                     , opt.doRobustness <span class='op'>=</span> <span class='cn'>TRUE</span>
                                     , opt.robustness_percent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.1</span>,<span class='fl'>0.9</span>,<span class='fl'>0.1</span><span class='op'>)</span>
                                     , opt.robustness_rep <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>

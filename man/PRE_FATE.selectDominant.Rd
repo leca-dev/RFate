@@ -17,6 +17,7 @@ PRE_FATE.selectDominant(
   opt.doRobustness = FALSE,
   opt.robustness_percent = seq(0.1, 0.9, 0.1),
   opt.robustness_rep = 10,
+  opt.doSitesSpecies = TRUE,
   opt.doPlot = TRUE
 )
 }
@@ -68,6 +69,10 @@ to the percentages with which to build subsets to evaluate robustness}
 \item{opt.robustness_rep}{(\emph{optional}) default \code{10}. \cr If 
 \code{opt.doRobustness = TRUE}, number of repetitions for each percentage 
 value defined by \code{opt.robustness_percent} to evaluate robustness}
+
+\item{opt.doSitesSpecies}{(\emph{optional}) default \code{TRUE}. \cr 
+If \code{TRUE}, building of abundances / occurrences tables for selected 
+species will be processed, saved and returned.}
 
 \item{opt.doPlot}{(\emph{optional}) default \code{TRUE}. \cr If \code{TRUE}, 
 plot(s) will be processed, otherwise only the calculation and reorganization 
@@ -235,23 +240,24 @@ but not meeting criterion A1 are also considered as "\emph{Not selected}".
 \examples{
 
 ## Load example data
-.loadData("Champsaur_PFG")
+Champsaur_PFG = .loadData('Champsaur_PFG', 'RData')
 
 ## Species observations
 tab = Champsaur_PFG$sp.observations
 
 ## No habitat, no robustness -------------------------------------------------
-tab.occ = tab[, c("sites", "species", "abund")]
+tab.occ = tab[, c('sites', 'species', 'abund')]
 sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ)
 names(sp.SELECT)
 str(sp.SELECT$tab.rules)
+str(sp.SELECT$tab.dom.PA)
 plot(sp.SELECT$plot.A)
 plot(sp.SELECT$plot.B$abs)
 plot(sp.SELECT$plot.B$rel)
 
 ## Habitat, change parameters, no robustness (!quite long!) --------------------
 \dontrun{
-tab.occ = tab[, c("sites", "species", "abund", "habitat")]
+tab.occ = tab[, c('sites', 'species', 'abund', 'habitat')]
 sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ
                                     , doRuleA = TRUE
                                     , rule.A1 = 10
@@ -270,8 +276,9 @@ plot(sp.SELECT$plot.pco$Axis1_Axis3)
 
 ## No habitat, robustness (!quite long!) --------------------
 \dontrun{
-tab.occ = tab[, c("sites", "species", "abund")]
+tab.occ = tab[, c('sites', 'species', 'abund')]
 sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ
+                                    , opt.doSitesSpecies = FALSE
                                     , opt.doRobustness = TRUE
                                     , opt.robustness_percent = seq(0.1,0.9,0.1)
                                     , opt.robustness_rep = 10)

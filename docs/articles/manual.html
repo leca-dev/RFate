@@ -167,24 +167,12 @@
 <p><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"></p>
 <style>
 .zoom p {
-width:250px;
+width:600px;
 margin-left: auto;
 margin-right: auto;
 }
 .zoom p:hover {
-width:900px;
-position: relative;
-z-index: 10;
-}
-.column {
-  float: left;
-  width: 30%;
-}
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
+width:1200px;
 }
 </style>
 <p><br><br></p>
@@ -197,13 +185,20 @@ z-index: 10;
 <div id="complete-code-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#complete-code-example" class="anchor"></a><i class="fas fa-code"></i> Complete code example</h2>
+<p>The different parts of the Champsaur example dataset can be downloaded with the <a href="./../reference/dot-loadData.html">.loadData</a> function, or from the links below :</p>
+<ul>
+<li>Champsaur PFG :    <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.RData" class="download" title="Download as RData"><i class="fas fa-download"></i> <code>RData</code></a>    <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i> <code>7z</code></a>
+</li>
+<li>Champsaur params :    <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.RData" class="download" title="Download as RData"><i class="fas fa-download"></i> <code>RData</code></a>    <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i> <code>7z</code></a>
+</li>
+</ul>
 <div id="building-plant-functional-group" class="section level3">
 <h3 class="hasAnchor">
 <a href="#building-plant-functional-group" class="anchor"></a>1. Building Plant Functional Group</h3>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_PFG"</span><span class="op">)</span>
+<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_PFG"</span><span class="op">)</span>
 
 
 <span class="co">###################################################################################################</span>
@@ -271,7 +266,7 @@ z-index: 10;
 
 <span class="co">## Combine distances of habitat preferences and niche overlap</span>
 <span class="co">## to have one matrix to reflect the species niches</span>
-<span class="va">ind.sp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.overlap</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.habitat</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ind.sp</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.overlap</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.habitat</span><span class="op">)</span><span class="op">)</span>
 <span class="va">wei.habi</span> <span class="op">=</span> <span class="fl">0.4</span>
 <span class="va">wei.over</span> <span class="op">=</span> <span class="fl">0.6</span>
 <span class="va">mat.env</span> <span class="op">=</span> <span class="op">(</span><span class="va">wei.habi</span> <span class="op">*</span> <span class="va">mat.habitat</span><span class="op">[</span><span class="va">ind.sp</span>, <span class="va">ind.sp</span><span class="op">]</span> <span class="op">+</span> <span class="va">wei.over</span> <span class="op">*</span> <span class="va">mat.overlap</span><span class="op">[</span><span class="va">ind.sp</span>, <span class="va">ind.sp</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">wei.habi</span> <span class="op">+</span> <span class="va">wei.over</span><span class="op">)</span>
@@ -315,7 +310,7 @@ z-index: 10;
     <span class="va">hc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html">hclust</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
     <span class="va">pp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html">ggdendrogram</a></span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"Hierarchical clustering based on species distance "</span>
-                          , <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span>
+                          , <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span>
                           , <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"(group "</span>, <span class="va">x</span>, <span class="st">")"</span><span class="op">)</span>
                           , <span class="st">""</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">pp</span><span class="op">)</span>
@@ -374,7 +369,7 @@ z-index: 10;
 <span class="va">tab.traits.H</span> <span class="op">=</span> <span class="va">tab.traits.H</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">tab.traits.H</span><span class="op">$</span><span class="va">species</span> <span class="op">%in%</span> <span class="va">PFG_wetlands</span><span class="op">)</span>, <span class="op">]</span>
   
 <span class="co">## Put more weights on niche overlap</span>
-<span class="va">ind.sp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.overlap</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.habitat</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ind.sp</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/setops.html">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.overlap</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">mat.habitat</span><span class="op">)</span><span class="op">)</span>
 <span class="va">wei.habi</span> <span class="op">=</span> <span class="fl">0.2</span>
 <span class="va">wei.over</span> <span class="op">=</span> <span class="fl">0.8</span>
 <span class="va">mat.env</span> <span class="op">=</span> <span class="op">(</span><span class="va">wei.habi</span> <span class="op">*</span> <span class="va">mat.habitat</span><span class="op">[</span><span class="va">ind.sp</span>, <span class="va">ind.sp</span><span class="op">]</span> <span class="op">+</span> <span class="va">wei.over</span> <span class="op">*</span> <span class="va">mat.overlap</span><span class="op">[</span><span class="va">ind.sp</span>, <span class="va">ind.sp</span><span class="op">]</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">wei.habi</span> <span class="op">+</span> <span class="va">wei.over</span><span class="op">)</span>
@@ -411,13 +406,19 @@ z-index: 10;
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">tab.summary</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"species"</span>, <span class="st">"maturity"</span>, <span class="st">"longevity"</span>, <span class="st">"height"</span>, <span class="st">"light"</span>
                           , <span class="st">"dispersal"</span>, <span class="st">"soil_contrib"</span>, <span class="st">"soil_tolerance"</span>, <span class="st">"LDMC"</span>, <span class="st">"LNC"</span><span class="op">)</span>
 <span class="va">tab.summary</span><span class="op">$</span><span class="va">soil_contrib</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="va">tab.summary</span><span class="op">$</span><span class="va">soil_contrib</span><span class="op">)</span>
-<span class="va">tab.summary</span><span class="op">$</span><span class="va">soil_tolerance</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">tab.summary</span><span class="op">$</span><span class="va">soil_tolerance</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="va">tab.summary</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html">merge</a></span><span class="op">(</span><span class="va">tab.PFG</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span>, <span class="va">tab.summary</span>, by <span class="op">=</span> <span class="st">"species"</span>, all.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="va">tab.summary</span><span class="op">$</span><span class="va">soil_tolerance</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html">ifelse</a></span><span class="op">(</span><span class="va">tab.summary</span><span class="op">$</span><span class="va">soil_tolerance</span> <span class="op">==</span> <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>
+<span class="va">tab.summary</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">tab.PFG</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"species"</span><span class="op">)</span><span class="op">]</span>, <span class="va">tab.summary</span>, by <span class="op">=</span> <span class="st">"species"</span>, all.x <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tab.summary</span><span class="op">)</span>
 
 <span class="co">## Calculate trait values per PFG -----------------------------------------------------------------</span>
 
 <span class="va">PFG.traits</span> <span class="op">=</span> <span class="fu"><a href="../reference/PRE_FATE.speciesClustering_step3.html">PRE_FATE.speciesClustering_step3</a></span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.summary</span><span class="op">)</span></code></pre></div>
+<p><br><br></p>
+<p>A brief description of the Plant Functional Groups obtained for the Champsaur dataset is presented below. <em>italic</em> represents species that have been pointed out as <code>Not determinant</code> by the <a href="./../reference/PRE_FATE.speciesClustering_step2.html">PRE_FATE.speciesClustering_step2</a> function (<em>difference between dominant and determinant species is explained in the <a href="./../reference/PRE_FATE.speciesClustering_step2.html#details">Details</a> section of this function</em>), but in this example they have all been kept for consistency in concerned PFG.</p>
+<div class="zoom">
+<p>
+<img src="pictures/TABLE_FATE_EXAMPLE_PFG_Champsaur.png" alt="TABLE FATE EXAMPLE PFG Champsaur"></p>
+</div>
 <p><br><br></p>
 </div>
 <div id="creating-fate-parameter-files" class="section level3">
@@ -426,7 +427,7 @@ z-index: 10;
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
-<span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span><span class="op">)</span>
+<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span><span class="op">)</span>
 
 
 <span class="co">###################################################################################################</span>
@@ -465,7 +466,7 @@ z-index: 10;
   <span class="co">## ALL NEEDED DATA HAS BEEN PRESENTED PREVIOUSLY</span>
   
   <span class="co">## formating data in a biomod2 friendly way ------------------------------------</span>
-  <span class="va">bm.form</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_FormatingData.html">BIOMOD_FormatingData</a></span><span class="op">(</span>resp.var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">sp.occ</span><span class="op">)</span>
+  <span class="va">bm.form</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/biomod2/man/BIOMOD_FormatingData.html">BIOMOD_FormatingData</a></span><span class="op">(</span>resp.var <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.matrix.html">as.matrix</a></span><span class="op">(</span><span class="va">sp.occ</span><span class="op">)</span>
                                   , expl.var <span class="op">=</span> <span class="va">sp.var</span>
                                   , resp.xy <span class="op">=</span> <span class="va">sp.xy</span>
                                   , resp.name <span class="op">=</span> <span class="va">sp.name</span><span class="op">)</span>
@@ -518,26 +519,49 @@ z-index: 10;
 
 <span class="co">## Create PFG parameter files ---------------------------------------------------------------------</span>
 
+<span class="co">## SUCCESSION ---------------------------------------------------------------------------</span>
 <span class="fu"><a href="../reference/PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                               , strata.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span>
                               , strata.limits_reduce <span class="op">=</span> <span class="cn">FALSE</span>
                               , mat.PFG.succ <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span><span class="op">)</span>
 
 
+<span class="co">## DISPERSAL ----------------------------------------------------------------------------</span>
+<span class="co"># ## Load example data</span>
+<span class="co"># Champsaur_PFG = .loadData("Champsaur_PFG")</span>
+<span class="co">#</span>
+<span class="co"># ## Build PFG traits for dispersal</span>
+<span class="co"># tab.traits = Champsaur_PFG$PFG.traits</span>
+<span class="co"># ## Dispersal values</span>
+<span class="co"># ##   = Short: 0.1-2m;    Medium: 40-100m;    Long: 400-500m</span>
+<span class="co"># ##   = Vittoz correspondance : 1-3: Short;    4-5: Medium;   6-7:Long</span>
+<span class="co"># corres = data.frame(dispersal = 1:7</span>
+<span class="co">#                     , d50 = c(0.1, 0.5, 2, 40, 100, 400, 500)</span>
+<span class="co">#                     , d99 = c(1, 5, 15, 150, 500, 1500, 5000)</span>
+<span class="co">#                     , ldd = c(1000, 1000, 1000, 5000, 5000, 10000, 10000))</span>
+<span class="co"># tab.traits$d50 = corres$d50[tab.traits$dispersal]</span>
+<span class="co"># tab.traits$d99 = corres$d99[tab.traits$dispersal]</span>
+<span class="co"># tab.traits$ldd = corres$ldd[tab.traits$dispersal]</span>
+<span class="co"># str(tab.traits)</span>
+
 <span class="fu"><a href="../reference/PRE_FATE.params_PFGdispersal.html">PRE_FATE.params_PFGdispersal</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                              , mat.PFG.disp <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.DISP</span><span class="op">)</span>
 
 
+<span class="co">## LIGHT --------------------------------------------------------------------------------</span>
 <span class="fu"><a href="../reference/PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                          , mat.PFG.light <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.LIGHT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">]</span>
                          , mat.PFG.tol <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.LIGHT</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"strategy_tol"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
 
 
+<span class="co">## SOIL ---------------------------------------------------------------------------------</span>
 <span class="fu"><a href="../reference/PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                         , mat.PFG.soil <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SOIL</span><span class="op">)</span>
 
 
-<span class="va">tmp</span> <span class="op">=</span> <span class="fu">fread</span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv"</span><span class="op">)</span>
+<span class="co">## DISTURBANCE --------------------------------------------------------------------------</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com">data.table</a></span><span class="op">)</span>
+<span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fread.html">fread</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv"</span><span class="op">)</span>
 <span class="va">tab.succ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span>
 <span class="va">tab.succ</span><span class="op">$</span><span class="va">age_above_150cm</span> <span class="op">=</span> <span class="va">tmp</span><span class="op">$</span><span class="va">CHANG_STR_AGES_to_str_4_150</span>
 
@@ -548,18 +572,25 @@ z-index: 10;
 
 <span class="co">## Create simulation related parameter files ------------------------------------------------------</span>
 
+<span class="co">## CHANGING TIMES -----------------------------------------------------------------------</span>
+<span class="va">tab.changing</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">600</span>, <span class="fl">601</span>, <span class="fl">800</span>, <span class="fl">801</span><span class="op">)</span>
+                          , order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>
+                          , new.value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MASK_mowing.img"</span>
+                                          , <span class="st">"MASK_noDisturb.img"</span>
+                                          , <span class="st">"MASK_mowing.img"</span>
+                                          , <span class="st">"MASK_noDisturb.img"</span><span class="op">)</span><span class="op">)</span>
+
 <span class="fu"><a href="../reference/PRE_FATE.params_changingYears.html">PRE_FATE.params_changingYears</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                               , type.changing <span class="op">=</span> <span class="st">"DIST"</span>
-                              , mat.changing <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">600</span>, <span class="fl">601</span>, <span class="fl">800</span>, <span class="fl">801</span><span class="op">)</span>
-                                                          , order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>
-                                                          , new.value <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"MASK_mowing.img"</span>
-                                                                          , <span class="st">"MASK_noDisturb.img"</span>
-                                                                          , <span class="st">"MASK_mowing.img"</span>
-                                                                          , <span class="st">"MASK_noDisturb.img"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+                              , mat.changing <span class="op">=</span> <span class="va">tab.changing</span><span class="op">)</span>
 
+
+<span class="co">## SAVING YEARS -------------------------------------------------------------------------</span>
 <span class="fu"><a href="../reference/PRE_FATE.params_savingYears.html">PRE_FATE.params_savingYears</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                             , years.maps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">1000</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
+
+<span class="co">## GLOBAL PARAMS ------------------------------------------------------------------------</span>
 <span class="va">combi</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span><span class="op">(</span>doLight <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span>, doSoil <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="cn">FALSE</span>, <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="kw">for</span> <span class="op">(</span><span class="va">ii</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">combi</span><span class="op">)</span><span class="op">)</span>
 <span class="op">{</span>
@@ -597,6 +628,7 @@ z-index: 10;
 <span class="op">}</span>
 
 
+<span class="co">## SIMUL_PARAM --------------------------------------------------------------------------</span>
 <span class="fu">writeRaster</span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span>
             , filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/MASK/MASK_"</span>
                                 , <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">)</span>, <span class="st">".img"</span><span class="op">)</span>
@@ -605,9 +637,13 @@ z-index: 10;
             , filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/HABSUIT/HS_"</span>
                                 , <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.wmean</span><span class="op">)</span>, <span class="st">"_0.img"</span><span class="op">)</span>
             , bylayer <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+            
+<span class="fu"><a href="../reference/.adaptMaps.html">.adaptMaps</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>, extension.old <span class="op">=</span> <span class="st">"img"</span>, extension.new <span class="op">=</span> <span class="st">"img"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/MASK/"</span><span class="op">)</span>
+                       , pattern <span class="op">=</span> <span class="st">".img.aux.xml$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/DATA/PFGS/HABSUIT/"</span><span class="op">)</span>
                        , pattern <span class="op">=</span> <span class="st">".img.aux.xml$"</span>, full.names <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
-
 
 <span class="fu"><a href="../reference/PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                                 , name.MASK <span class="op">=</span> <span class="st">"MASK_Champsaur.img"</span>

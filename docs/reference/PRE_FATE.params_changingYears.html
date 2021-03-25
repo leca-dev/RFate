@@ -370,15 +370,17 @@ these temporal changes :</p>
 <span class='co'>## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span>
 <span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span><span class='op'>)</span>
 
+<span class='va'>tab.changing</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>,<span class='fl'>50</span>,<span class='fl'>80</span>,<span class='fl'>80</span><span class='op'>)</span>
+                          , order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>
+                          , new.value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'FATE_simulation/DATA/MASK/MASK_DIST1_50.tif'</span>
+                                          , <span class='st'>'FATE_simulation/DATA/MASK/MASK_DIST2_50.tif'</span>
+                                          , <span class='st'>'FATE_simulation/DATA/MASK/MASK_DIST1_80.tif'</span>
+                                          , <span class='st'>'FATE_simulation/DATA/MASK/MASK_DIST2_80.tif'</span><span class='op'>)</span><span class='op'>)</span>
+
 <span class='co'>## Create a Changing_times parameter file ----------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_changingYears</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>"FATE_simulation"</span>
-                              , type.changing <span class='op'>=</span> <span class='st'>"DIST"</span>
-                              , mat.changing <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>year <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>50</span>,<span class='fl'>50</span>,<span class='fl'>80</span>,<span class='fl'>80</span><span class='op'>)</span>
-                                                          , order <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>,<span class='fl'>2</span>,<span class='fl'>1</span>,<span class='fl'>2</span><span class='op'>)</span>
-                                                          , new.value <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"MASK_DIST1_50.tif"</span>
-                                                                          , <span class='st'>"MASK_DIST2_50.tif"</span>
-                                                                          , <span class='st'>"MASK_DIST1_80.tif"</span>
-                                                                          , <span class='st'>"MASK_DIST2_80.tif"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>PRE_FATE.params_changingYears</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_simulation'</span>
+                              , type.changing <span class='op'>=</span> <span class='st'>'DIST'</span>
+                              , mat.changing <span class='op'>=</span> <span class='va'>tab.changing</span><span class='op'>)</span>
 
 </pre>
   </div>

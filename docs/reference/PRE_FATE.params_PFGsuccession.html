@@ -441,25 +441,27 @@ all PFG :</p>
                                                         
 <span class='co'>## -------------------------------------------------------------------------------------------</span>
 
-<span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_parameters</span><span class='op'>)</span>
 
-<span class='co'>## PFG traits for succession</span>
-<span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.succ</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>height</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>height</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
+<span class='co'>## Load example data</span>
+<span class='va'>Champsaur_params</span> <span class='op'>=</span> <span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>'Champsaur_params'</span>, <span class='st'>'RData'</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span><span class='op'>)</span>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span><span class='op'>)</span>
+
+
+
+<span class='co'>## PFG traits for succession</span>
+<span class='va'>tab.succ</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.SUCC</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.succ</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG succession parameter files -----------------------------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
-                              , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>)</span>
+<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span>
+                           , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.succ</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG succession parameter files (fixing strata limits) ------------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
-                              , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.traits</span>
-                              , strata.limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span><span class='op'>)</span>
+<span class='fu'>PRE_FATE.params_PFGsuccession</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span>
+                              , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.succ</span>
+                              , strata.limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span>, <span class='fl'>2000</span><span class='op'>)</span>
                               , strata.limits_reduce <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
                                                         
 

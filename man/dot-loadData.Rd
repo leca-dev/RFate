@@ -218,7 +218,16 @@ files and folders to run a \code{FATE} simulation :
 \strong{\cr#########################################################\cr\cr}
 }
 \description{
+This function loads one of the available datasets :
 
+\describe{
+  \item{Champsaur_PFG}{elements to create Plant Functional Groups (PFG) 
+  over Champsaur valley, in Ecrins National Park (PNE) \cr}
+  \item{Champsaur_params}{all necessary files to build the \code{FATE} 
+  simulation folder as well as the parameter files \cr}
+  \item{Champsaur_results}{results obtained from outputs of \code{FATE} 
+  simulation \cr}
+}
 }
 \author{
 Maya Guéguen

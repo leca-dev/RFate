@@ -109,7 +109,7 @@ species based on these PFG. \cr \cr
 \examples{
 
 ## Load example data
-.loadData("Champsaur_PFG")
+Champsaur_PFG = .loadData('Champsaur_PFG', 'RData')
 
 ## Species dissimilarity distances (niche overlap + traits distance)
 tab.dist = list("Phanerophyte" = Champsaur_PFG$sp.DIST.P$mat.ALL

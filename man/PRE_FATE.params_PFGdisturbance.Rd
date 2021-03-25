@@ -310,25 +310,36 @@ PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_simulation'
 ## -------------------------------------------------------------------------------------------
 
 ## Load example data
-data(DATASET_Bauges_parameters)
-
-## PFG traits for disturbance
-tab.traits = DATASET_Bauges_parameters$tab.dist
-tab.traits$nameDist = "grazing"
-tab.traits$strategy_tol = "indifferent"
-tab.traits$strategy_tol[which(tab.traits$dist_tolerance == "1")] = "grazing_herbs_1"
-tab.traits$strategy_tol[which(tab.traits$dist_tolerance == "2")] = "grazing_herbs_2"
-tab.traits$strategy_tol[which(tab.traits$dist_tolerance == "3")] = "grazing_herbs_3"
-tab.traits$strategy_tol[which(tab.traits$type == "P")] = "grazing_trees_1"
-str(tab.traits)
+Champsaur_params = .loadData('Champsaur_params', 'RData')
 
 ## Create a skeleton folder
-PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Champsaur')
+
+
+## PFG traits for succession
+tab.succ = Champsaur_params$tab.SUCC
+str(tab.succ)
+
+## Create PFG succession parameter files (fixing strata limits) --------------
+PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Champsaur'
+                           , mat.PFG.succ = tab.succ
+                           , strata.limits = c(0, 20, 50, 150, 400, 1000, 2000)
+                           , strata.limits_reduce = FALSE)
+
+require(data.table)
+tmp = fread('FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv')
+tab.succ = Champsaur_params$tab.SUCC
+tab.succ$age_above_150cm = tmp$CHANG_STR_AGES_to_str_4_150
+
+## PFG traits for disturbance
+tab.dist = Champsaur_params$tab.DIST
+str(tab.dist)
 
 ## Create PFG response to disturbance parameter files (give warnings) ------------------------
-PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_Bauges'
-                               , mat.PFG.tol = tab.traits[, c('nameDist', 'PFG', 'strategy_tol')])
-                                                           
+PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_Champsaur'
+                               , mat.PFG.dist = tab.succ
+                               , mat.PFG.tol = tab.dist)
+
 
 }
 \seealso{

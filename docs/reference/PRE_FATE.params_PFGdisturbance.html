@@ -510,25 +510,36 @@ each PFG :</p>
 <span class='co'>## -------------------------------------------------------------------------------------------</span>
 
 <span class='co'>## Load example data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>DATASET_Bauges_parameters</span><span class='op'>)</span>
-
-<span class='co'>## PFG traits for disturbance</span>
-<span class='va'>tab.traits</span> <span class='op'>=</span> <span class='va'>DATASET_Bauges_parameters</span><span class='op'>$</span><span class='va'>tab.dist</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>nameDist</span> <span class='op'>=</span> <span class='st'>"grazing"</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>strategy_tol</span> <span class='op'>=</span> <span class='st'>"indifferent"</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>strategy_tol</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>dist_tolerance</span> <span class='op'>==</span> <span class='st'>"1"</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>=</span> <span class='st'>"grazing_herbs_1"</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>strategy_tol</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>dist_tolerance</span> <span class='op'>==</span> <span class='st'>"2"</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>=</span> <span class='st'>"grazing_herbs_2"</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>strategy_tol</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>dist_tolerance</span> <span class='op'>==</span> <span class='st'>"3"</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>=</span> <span class='st'>"grazing_herbs_3"</span>
-<span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>strategy_tol</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/which.html'>which</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>$</span><span class='va'>type</span> <span class='op'>==</span> <span class='st'>"P"</span><span class='op'>)</span><span class='op'>]</span> <span class='op'>=</span> <span class='st'>"grazing_trees_1"</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
+<span class='va'>Champsaur_params</span> <span class='op'>=</span> <span class='fu'><a href='.loadData.html'>.loadData</a></span><span class='op'>(</span><span class='st'>'Champsaur_params'</span>, <span class='st'>'RData'</span><span class='op'>)</span>
 
 <span class='co'>## Create a skeleton folder</span>
-<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span><span class='op'>)</span>
+<span class='fu'><a href='PRE_FATE.skeletonDirectory.html'>PRE_FATE.skeletonDirectory</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span><span class='op'>)</span>
+
+
+<span class='co'>## PFG traits for succession</span>
+<span class='va'>tab.succ</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.SUCC</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.succ</span><span class='op'>)</span>
+
+<span class='co'>## Create PFG succession parameter files (fixing strata limits) --------------</span>
+<span class='fu'><a href='PRE_FATE.params_PFGsuccession.html'>PRE_FATE.params_PFGsuccession</a></span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span>
+                           , mat.PFG.succ <span class='op'>=</span> <span class='va'>tab.succ</span>
+                           , strata.limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>20</span>, <span class='fl'>50</span>, <span class='fl'>150</span>, <span class='fl'>400</span>, <span class='fl'>1000</span>, <span class='fl'>2000</span><span class='op'>)</span>
+                           , strata.limits_reduce <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://r-datatable.com'>data.table</a></span><span class='op'>)</span>
+<span class='va'>tmp</span> <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='st'>'FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv'</span><span class='op'>)</span>
+<span class='va'>tab.succ</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.SUCC</span>
+<span class='va'>tab.succ</span><span class='op'>$</span><span class='va'>age_above_150cm</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>$</span><span class='va'>CHANG_STR_AGES_to_str_4_150</span>
+
+<span class='co'>## PFG traits for disturbance</span>
+<span class='va'>tab.dist</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.DIST</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.dist</span><span class='op'>)</span>
 
 <span class='co'>## Create PFG response to disturbance parameter files (give warnings) ------------------------</span>
-<span class='fu'>PRE_FATE.params_PFGdisturbance</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Bauges'</span>
-                               , mat.PFG.tol <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'nameDist'</span>, <span class='st'>'PFG'</span>, <span class='st'>'strategy_tol'</span><span class='op'>)</span><span class='op'>]</span><span class='op'>)</span>
-                                                           
+<span class='fu'>PRE_FATE.params_PFGdisturbance</span><span class='op'>(</span>name.simulation <span class='op'>=</span> <span class='st'>'FATE_Champsaur'</span>
+                               , mat.PFG.dist <span class='op'>=</span> <span class='va'>tab.succ</span>
+                               , mat.PFG.tol <span class='op'>=</span> <span class='va'>tab.dist</span><span class='op'>)</span>
+
 
 </pre>
   </div>
