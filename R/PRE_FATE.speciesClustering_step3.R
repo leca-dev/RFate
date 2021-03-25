@@ -109,7 +109,7 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' .loadData("Champsaur_PFG")
+##' Champsaur_PFG = .loadData('Champsaur_PFG', 'RData')
 ##' 
 ##' ## Species traits
 ##' tab.traits = Champsaur_PFG$sp.traits
@@ -120,18 +120,18 @@
 ##' str(tab.PFG)
 ##' 
 ##' ## Merge traits and PFG informations
-##' mat.traits = merge(tab.PFG[which(tab.PFG$DETERMINANT==TRUE), c("species","PFG")]
+##' mat.traits = merge(tab.PFG[which(tab.PFG$DETERMINANT==TRUE), c('species','PFG')]
 ##'                    , tab.traits
-##'                    , by = "species", all.x = TRUE)
+##'                    , by = 'species', all.x = TRUE)
 ##' str(mat.traits)
 ##' 
 ##' ## Keep only traits of interest
-##' mat.traits = mat.traits[, c("PFG", "species", "MATURITY", "LONGEVITY"
-##'                            , "HEIGHT", "LIGHT", "DISPERSAL"
-##'                            , "NITROGEN", "NITROGEN_TOLERANCE", "LDMC", "LNC")]
-##' colnames(mat.traits) = c("PFG", "species", "maturity", "longevity"
-##'                          , "height", "light", "dispersal"
-##'                          , "soil_contrib", "soil_tolerance", "LDMC", "LNC")
+##' mat.traits = mat.traits[, c('PFG', 'species', 'MATURITY', 'LONGEVITY'
+##'                            , 'HEIGHT', 'LIGHT', 'DISPERSAL'
+##'                            , 'NITROGEN', 'NITROGEN_TOLERANCE', 'LDMC', 'LNC')]
+##' colnames(mat.traits) = c('PFG', 'species', 'maturity', 'longevity'
+##'                          , 'height', 'light', 'dispersal'
+##'                          , 'soil_contrib', 'soil_tolerance', 'LDMC', 'LNC')
 ##' mat.traits$soil_contrib = as.numeric(mat.traits$soil_contrib)
 ##' mat.traits$soil_tolerance = ifelse(mat.traits$soil_tolerance == 1, 0.5, 1)
 ##' 

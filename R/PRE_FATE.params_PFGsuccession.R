@@ -231,25 +231,27 @@
 ##'                                                         
 ##' ## -------------------------------------------------------------------------------------------
 ##'
+##'
 ##' ## Load example data
-##' data(DATASET_Bauges_parameters)
-##' 
-##' ## PFG traits for succession
-##' tab.traits = DATASET_Bauges_parameters$tab.succ
-##' tab.traits$height = round(exp(tab.traits$height))
-##' str(tab.traits)
+##' Champsaur_params = .loadData('Champsaur_params', 'RData')
 ##' 
 ##' ## Create a skeleton folder
-##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Champsaur')
+##' 
+##' 
+##' 
+##' ## PFG traits for succession
+##' tab.succ = Champsaur_params$tab.SUCC
+##' str(tab.succ)
 ##' 
 ##' ## Create PFG succession parameter files -----------------------------------------------------
-##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Bauges'
-##'                               , mat.PFG.succ = tab.traits)
+##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Champsaur'
+##'                            , mat.PFG.succ = tab.succ)
 ##' 
 ##' ## Create PFG succession parameter files (fixing strata limits) ------------------------------
-##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Bauges'
-##'                               , mat.PFG.succ = tab.traits
-##'                               , strata.limits = c(0, 20, 50, 150, 400, 1000)
+##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_Champsaur'
+##'                               , mat.PFG.succ = tab.succ
+##'                               , strata.limits = c(0, 20, 50, 150, 400, 1000, 2000)
 ##'                               , strata.limits_reduce = FALSE)
 ##'                                                         
 ##' 

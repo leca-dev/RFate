@@ -136,12 +136,12 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' .loadData("Champsaur_PFG")
+##' Champsaur_PFG = .loadData('Champsaur_PFG', 'Rdata')
 ##' 
 ##' ## Species dissimilarity distances (niche overlap + traits distance)
-##' tab.dist = list("Phanerophyte" = Champsaur_PFG$sp.DIST.P$mat.ALL
-##'                 , "Chamaephyte" = Champsaur_PFG$sp.DIST.C$mat.ALL
-##'                 , "Herbaceous" = Champsaur_PFG$sp.DIST.H$mat.ALL)
+##' tab.dist = list('Phanerophyte' = Champsaur_PFG$sp.DIST.P$mat.ALL
+##'                 , 'Chamaephyte' = Champsaur_PFG$sp.DIST.C$mat.ALL
+##'                 , 'Herbaceous' = Champsaur_PFG$sp.DIST.H$mat.ALL)
 ##' str(tab.dist)
 ##' as.matrix(tab.dist[[1]])[1:5, 1:5]
 ##' 
@@ -160,10 +160,10 @@
 ##' {
 ##'   hc = sp.CLUST$clust.dendrograms[[x]]
 ##'   pp = ggdendrogram(hc, rotate = TRUE) +
-##'     labs(title = paste0("Hierarchical clustering based on species distance "
+##'     labs(title = paste0('Hierarchical clustering based on species distance '
 ##'                         , ifelse(length(names(sp.CLUST$clust.dendrograms)) > 1
-##'                                  , paste0("(group ", x, ")")
-##'                                  , "")))
+##'                                  , paste0('(group ', x, ')')
+##'                                  , '')))
 ##'   return(pp)
 ##' }
 ##' plot(pp[[1]])

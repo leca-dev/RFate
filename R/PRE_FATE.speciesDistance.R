@@ -137,12 +137,12 @@
 ##' @examples
 ##' 
 ##' ## Load example data
-##' .loadData("Champsaur_PFG")
+##' Champsaur_PFG = .loadData('Champsaur_PFG', 'RData')
 ##' 
 ##' ## Species traits
 ##' tab.traits = Champsaur_PFG$sp.traits
-##' tab.traits = tab.traits[, c("species", "GROUP", "MATURITY", "LONGEVITY"
-##'                             , "HEIGHT", "DISPERSAL", "LIGHT", "NITROGEN")]
+##' tab.traits = tab.traits[, c('species', 'GROUP', 'MATURITY', 'LONGEVITY'
+##'                             , 'HEIGHT', 'DISPERSAL', 'LIGHT', 'NITROGEN')]
 ##' str(tab.traits)
 ##' 
 ##' ## Species niche overlap (dissimilarity distances)
@@ -151,13 +151,13 @@
 ##' 
 ##' ## Give warnings -------------------------------------------------------------
 ##' sp.DIST = PRE_FATE.speciesDistance(mat.traits = tab.traits
-##'                                    , mat.overlap.option = "dist"
+##'                                    , mat.overlap.option = 'dist'
 ##'                                    , mat.overlap.object = tab.overlap)
 ##' str(sp.DIST)
 ##' 
 ##' ## Change parameters to allow more NAs (and change traits used) --------------
 ##' sp.DIST = PRE_FATE.speciesDistance(mat.traits = tab.traits
-##'                                    , mat.overlap.option = "dist"
+##'                                    , mat.overlap.option = 'dist'
 ##'                                    , mat.overlap.object = tab.overlap
 ##'                                    , opt.maxPercent.NA = 0.05
 ##'                                    , opt.maxPercent.similarSpecies = 0.3
@@ -170,10 +170,10 @@
 ##'   {
 ##'     hc = hclust(sp.DIST$mat.ALL[[x]])
 ##'     pp = ggdendrogram(hc, rotate = TRUE) +
-##'       labs(title = paste0("Hierarchical clustering based on species distance "
+##'       labs(title = paste0('Hierarchical clustering based on species distance '
 ##'                           , ifelse(length(names(sp.DIST$mat.ALL)) > 1
-##'                                    , paste0("(group ", x, ")")
-##'                                    , "")))
+##'                                    , paste0('(group ', x, ')')
+##'                                    , '')))
 ##'     return(pp)
 ##'   }
 ##' plot(pp[[1]])

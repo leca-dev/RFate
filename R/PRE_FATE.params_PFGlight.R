@@ -257,19 +257,20 @@
 ##' ## -------------------------------------------------------------------------------------------
 ##'
 ##' ## Load example data
-##' data(DATASET_Bauges_parameters)
-##' 
-##' ## PFG traits for light
-##' tab.traits = DATASET_Bauges_parameters$tab.light
-##' colnames(tab.traits) = c('PFG', 'type', 'light_need')
-##' str(tab.traits)
+##' Champsaur_params = .loadData('Champsaur_params', 'RData')
 ##' 
 ##' ## Create a skeleton folder
-##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Champsaur')
+##' 
+##' 
+##' ## PFG traits for light
+##' tab.light = Champsaur_params$tab.LIGHT
+##' str(tab.light)
 ##' 
 ##' ## Create PFG light parameter files ----------------------------------------------------------
-##' PRE_FATE.params_PFGlight(name.simulation = 'FATE_Bauges'
-##'                          , mat.PFG.light = tab.traits)
+##' PRE_FATE.params_PFGlight(name.simulation = 'FATE_Champsaur'
+##'                          , mat.PFG.light = tab.light[, c('PFG', 'type')]
+##'                          , mat.PFG.tol = tab.light[, c('PFG', 'strategy_tol')])
 ##' 
 ##' 
 ##' @export

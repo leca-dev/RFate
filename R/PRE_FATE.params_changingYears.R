@@ -148,15 +148,17 @@
 ##' ## Create a skeleton folder with the default name ('FATE_simulation') ------------------------
 ##' PRE_FATE.skeletonDirectory()
 ##' 
+##' tab.changing = data.frame(year = c(50,50,80,80)
+##'                           , order = c(1,2,1,2)
+##'                           , new.value = c('FATE_simulation/DATA/MASK/MASK_DIST1_50.tif'
+##'                                           , 'FATE_simulation/DATA/MASK/MASK_DIST2_50.tif'
+##'                                           , 'FATE_simulation/DATA/MASK/MASK_DIST1_80.tif'
+##'                                           , 'FATE_simulation/DATA/MASK/MASK_DIST2_80.tif'))
+##' 
 ##' ## Create a Changing_times parameter file ----------------------------------------------------
-##' PRE_FATE.params_changingYears(name.simulation = "FATE_simulation"
-##'                               , type.changing = "DIST"
-##'                               , mat.changing = data.frame(year = c(50,50,80,80)
-##'                                                           , order = c(1,2,1,2)
-##'                                                           , new.value = c("MASK_DIST1_50.tif"
-##'                                                                           , "MASK_DIST2_50.tif"
-##'                                                                           , "MASK_DIST1_80.tif"
-##'                                                                           , "MASK_DIST2_80.tif")))
+##' PRE_FATE.params_changingYears(name.simulation = 'FATE_simulation'
+##'                               , type.changing = 'DIST'
+##'                               , mat.changing = tab.changing)
 ##' 
 ##' @export
 ##'

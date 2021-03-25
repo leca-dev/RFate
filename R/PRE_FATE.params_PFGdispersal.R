@@ -75,23 +75,39 @@
 ##'                                                         
 ##' ## -------------------------------------------------------------------------------------------
 ##'
-##' ## Load example data
-##' data(DATASET_Bauges_parameters)
+##' # ## Load example data
+##' # Champsaur_PFG = .loadData('Champsaur_PFG', 'RData')
+##' #
+##' # ## Build PFG traits for dispersal
+##' # tab.traits = Champsaur_PFG$PFG.traits
+##' # ## Dispersal values
+##' # ##   = Short: 0.1-2m;    Medium: 40-100m;    Long: 400-500m
+##' # ##   = Vittoz correspondance : 1-3: Short;    4-5: Medium;   6-7:Long
+##' # corres = data.frame(dispersal = 1:7
+##' #                     , d50 = c(0.1, 0.5, 2, 40, 100, 400, 500)
+##' #                     , d99 = c(1, 5, 15, 150, 500, 1500, 5000)
+##' #                     , ldd = c(1000, 1000, 1000, 5000, 5000, 10000, 10000))
+##' # tab.traits$d50 = corres$d50[tab.traits$dispersal]
+##' # tab.traits$d99 = corres$d99[tab.traits$dispersal]
+##' # tab.traits$ldd = corres$ldd[tab.traits$dispersal]
+##' # str(tab.traits)
 ##' 
-##' ## PFG traits for dispersal
-##' tab.traits = DATASET_Bauges_parameters$tab.disp
-##' tab.traits$dispersal = as.numeric(as.character(tab.traits$dispersal))
-##' tab.traits$d99 = round(exp(tab.traits$dispersal)/10) * 10
-##' tab.traits$d50 = tab.traits$d99 * 0.5
-##' tab.traits$ldd = tab.traits$d99 * 1.8
-##' str(tab.traits)
+##' 
+##' ## Load example data
+##' Champsaur_params = .loadData('Champsaur_params', 'RData')
 ##' 
 ##' ## Create a skeleton folder
-##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Bauges')
+##' PRE_FATE.skeletonDirectory(name.simulation = 'FATE_Champsaur')
 ##' 
-##' ## Create PFG dispersal parameter files -----------------------------------------------------
-##' PRE_FATE.params_PFGdispersal(name.simulation = 'FATE_Bauges'
-##'                              , mat.PFG.disp = tab.traits[, c('PFG', 'd50', 'd99', 'ldd')])
+##' 
+##' ## PFG traits for dispersal
+##' tab.disp = Champsaur_params$tab.DISP
+##' str(tab.disp)
+##' 
+##' ## Create PFG dispersal parameter files ------------------------------------------------------
+##' PRE_FATE.params_PFGdispersal(name.simulation = 'FATE_Champsaur'
+##'                              , mat.PFG.disp = Champsaur_params$tab.DISP)
+##' 
 ##' 
 ##' 
 ##' @export
