@@ -92,29 +92,29 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.soil", 
   ## TEST mat.PFG.soil$strategy_contrib : correct values
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1, type = "H", strategy_contrib = 1))
-               , "`mat.PFG.soil$strategy_contrib` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
+               , "`mat.PFG.soil$strategy_contrib` must be either `oligotrophic`, `mesotrophic` or `eutrophic`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1, type = "H", strategy_contrib = NA))
-               , "`mat.PFG.soil$strategy_contrib` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
+               , "`mat.PFG.soil$strategy_contrib` must be either `oligotrophic`, `mesotrophic` or `eutrophic`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1, type = "H", strategy_contrib = ""))
-               , "`mat.PFG.soil$strategy_contrib` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
+               , "`mat.PFG.soil$strategy_contrib` must be either `oligotrophic`, `mesotrophic` or `eutrophic`"
                , fixed = TRUE)
   
   
   ## TEST mat.PFG.soil$strategy_ag : correct values
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
-                                       , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = 1, strategy_contrib = "ubiquist"))
+                                       , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = 1, strategy_contrib = "mesotrophic"))
                , "`mat.PFG.soil$strategy_ag` must be either `poor_lover`, `indifferent` or `rich_lover`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
-                                       , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = NA, strategy_contrib = "ubiquist"))
+                                       , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = NA, strategy_contrib = "mesotrophic"))
                , "`mat.PFG.soil$strategy_ag` must be either `poor_lover`, `indifferent` or `rich_lover`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
-                                       , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = "", strategy_contrib = "ubiquist"))
+                                       , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = "", strategy_contrib = "mesotrophic"))
                , "`mat.PFG.soil$strategy_ag` must be either `poor_lover`, `indifferent` or `rich_lover`"
                , fixed = TRUE)
   
@@ -297,25 +297,25 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = NA)
                , "`mat.PFG.tol` must be a data.frame")
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = "")
                , "`mat.PFG.tol` must be a data.frame")
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = 1)
                , "`mat.PFG.tol` must be a data.frame")
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = matrix(1))
                , "`mat.PFG.tol` must be a data.frame")
   
@@ -324,14 +324,14 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame())
                , "`mat.PFG.tol` does not have the appropriate number of rows (>0) or columns (PFG, lifeStage, resources, tolerance, (strategy_tol)"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(1))
                , "`mat.PFG.tol` does not have the appropriate number of rows (>0) or columns (PFG, lifeStage, resources, tolerance, (strategy_tol)"
                , fixed = TRUE)
@@ -340,14 +340,14 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(1,2))
                , "Column names of `mat.PFG.tol` must be `PFG`, `lifeStage`, `resources`, `tolerance` and `(strategy_tol)`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(1,2,3,4))
                , "Column names of `mat.PFG.tol` must be `PFG`, `lifeStage`, `resources`, `tolerance` and `(strategy_tol)`"
                , fixed = TRUE)
@@ -357,7 +357,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = NA, lifeStage = 1
                                                                   , resources = 1, tolerance = 1))
                , "`mat.PFG.tol$PFG` must contain a character value of length > 0"
@@ -367,7 +367,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = 1
                                                                   , resources = 1, tolerance = 1))
                , "`mat.PFG.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
@@ -375,7 +375,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = NA
                                                                   , resources = 1, tolerance = 1))
                , "`mat.PFG.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
@@ -383,7 +383,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = ""
                                                                   , resources = 1, tolerance = 1))
                , "`mat.PFG.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
@@ -393,7 +393,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                   , resources = 1, tolerance = 1))
                , "`mat.PFG.tol$resources` must be either `Low`, `Medium` or `High`"
@@ -401,7 +401,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                   , resources = NA, tolerance = 1))
                , "`mat.PFG.tol$resources` must be either `Low`, `Medium` or `High`"
@@ -409,7 +409,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                   , resources = "", tolerance = 1))
                , "`mat.PFG.tol$resources` must be either `Low`, `Medium` or `High`"
@@ -420,7 +420,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                   , resources = "Low", tolerance = c(NA, 1)))
                , "`mat.PFG.tol$tolerance` must not contain NA values", fixed = TRUE)
@@ -429,7 +429,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                   , resources = "Low", tolerance = -1))
                , "`mat.PFG.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
@@ -437,7 +437,7 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                   , resources = "Low", tolerance = 1.5))
                , "`mat.PFG.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
@@ -447,23 +447,23 @@ test_that("PRE_FATE.params_PFGsoil gives error with wrong data : mat.PFG.tol", {
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = 1))
-               , "`mat.PFG.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
+               , "`mat.PFG.tol$strategy_tol` must be either `poor_lover`, `ubiquist` or `rich_lover`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = NA))
-               , "`mat.PFG.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
+               , "`mat.PFG.tol$strategy_tol` must be either `poor_lover`, `ubiquist` or `rich_lover`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                        , mat.PFG.soil = data.frame(PFG = 1
                                                                    , strategy_ag = "indifferent"
-                                                                   , strategy_contrib = "ubiquist")
+                                                                   , strategy_contrib = "mesotrophic")
                                        , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = factor("a")))
-               , "`mat.PFG.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
+               , "`mat.PFG.tol$strategy_tol` must be either `poor_lover`, `ubiquist` or `rich_lover`"
                , fixed = TRUE)
 })
 
@@ -548,7 +548,7 @@ test_that("PRE_FATE.params_PFGsoil gives correct output : ACTIVE_GERM scenario 3
   expect_message(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                          , mat.PFG.soil = data.frame(PFG = 1
                                                                      , strategy_ag = "poor_lover"
-                                                                     , strategy_contrib = "ubiquist")
+                                                                     , strategy_contrib = "mesotrophic")
                                          , mat.PFG.tol = NULL)
                  , "The parameter file FATE_simulation/DATA/PFGS/SOIL/SOIL_1.txt has been successfully created !")
 })
@@ -561,7 +561,7 @@ test_that("PRE_FATE.params_PFGsoil gives correct output : ACTIVE_GERM scenario 3
   expect_message(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                          , mat.PFG.soil = data.frame(PFG = 1
                                                                      , strategy_ag = "poor_lover"
-                                                                     , strategy_contrib = "ubiquist")
+                                                                     , strategy_contrib = "mesotrophic")
                                          , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                     , resources = "Low", tolerance = 3))
                  , "The parameter file FATE_simulation/DATA/PFGS/SOIL/SOIL_1.txt has been successfully created !")
@@ -576,7 +576,7 @@ test_that("PRE_FATE.params_PFGsoil gives correct output : ACTIVE_GERM scenario 3
   PRE_FATE.skeletonDirectory()
   expect_message(PRE_FATE.params_PFGsoil(name.simulation = "FATE_simulation"
                                          , mat.PFG.soil = data.frame(PFG = 1, strategy_ag = "poor_lover"
-                                                                     , strategy_contrib = "ubiquist")
+                                                                     , strategy_contrib = "mesotrophic")
                                          , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = "ubiquist"))
                  , "The parameter file FATE_simulation/DATA/PFGS/SOIL/SOIL_1.txt has been successfully created !")
 })
