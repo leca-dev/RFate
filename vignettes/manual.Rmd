@@ -27,13 +27,24 @@ width:1200px;
 
 ## <i class="fas fa-book-medical"></i> Manual (Version 1.0.0)
 
+<br/>
+
 More informations about the Champsaur example dataset can be found [here](./../reference/dot-loadData.html).
 
+<br/>
 
+<div style="text-align:center;">
+<embed src="RFate_v1.0_UserManual.pdf" width='800' height='600' allowfullscreen webkitallowfullscreen></embed>
+</div>
+
+
+<br/><br/>
 <br/><br/>
 
 
 ## <i class="fas fa-code"></i> Complete code example
+
+<br/>
 
 The different parts of the Champsaur example dataset can be downloaded with the [.loadData](./../reference/dot-loadData.html) function, or from the links below :
 
@@ -417,6 +428,7 @@ require(data.table)
 tmp = fread("FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv")
 tab.succ = Champsaur_params$tab.SUCC
 tab.succ$age_above_150cm = tmp$CHANG_STR_AGES_to_str_4_150
+tab.succ = tab.succ[, c('PFG', 'type', 'maturity', 'longevity', 'age_above_150cm')]
 
 PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_Champsaur"
                                , mat.PFG.dist = tab.succ

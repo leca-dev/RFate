@@ -530,6 +530,8 @@ each PFG :</p>
 <span class='va'>tmp</span> <span class='op'>=</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fread.html'>fread</a></span><span class='op'>(</span><span class='st'>'FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv'</span><span class='op'>)</span>
 <span class='va'>tab.succ</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.SUCC</span>
 <span class='va'>tab.succ</span><span class='op'>$</span><span class='va'>age_above_150cm</span> <span class='op'>=</span> <span class='va'>tmp</span><span class='op'>$</span><span class='va'>CHANG_STR_AGES_to_str_4_150</span>
+<span class='va'>tab.succ</span> <span class='op'>=</span> <span class='va'>tab.succ</span><span class='op'>[</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='st'>'type'</span>, <span class='st'>'maturity'</span>, <span class='st'>'longevity'</span>, <span class='st'>'age_above_150cm'</span><span class='op'>)</span><span class='op'>]</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.succ</span><span class='op'>)</span>
 
 <span class='co'>## PFG traits for disturbance</span>
 <span class='va'>tab.dist</span> <span class='op'>=</span> <span class='va'>Champsaur_params</span><span class='op'>$</span><span class='va'>tab.DIST</span>

@@ -329,6 +329,8 @@
 ##' tmp = fread('FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv')
 ##' tab.succ = Champsaur_params$tab.SUCC
 ##' tab.succ$age_above_150cm = tmp$CHANG_STR_AGES_to_str_4_150
+##' tab.succ = tab.succ[, c('PFG', 'type', 'maturity', 'longevity', 'age_above_150cm')]
+##' str(tab.succ)
 ##' 
 ##' ## PFG traits for disturbance
 ##' tab.dist = Champsaur_params$tab.DIST
