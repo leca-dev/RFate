@@ -79,7 +79,7 @@ get_obs = eventReactive(list(input$species.observations, input$select.dominant),
     if (extension(input$species.observations$name) %in% c(".txt", ".csv"))
     {
       sp.obs = fread(input$species.observations$datapath)
-	  sp.obs = as.data.frame(sp.obs, stringsAsFactors = FALSE)
+      sp.obs = as.data.frame(sp.obs, stringsAsFactors = FALSE)
       
       if (!is.null(sp.obs))
       {
@@ -115,6 +115,7 @@ output$table.observations = renderDataTable({
   }
 })
 
+
 ####################################################################
 
 observeEvent(input$select.dominant, {
@@ -124,8 +125,10 @@ observeEvent(input$select.dominant, {
 get_DOM = eventReactive(input$select.dominant, {
 
   sp.obs = get_obs()
-  if (!is.null(sp.obs))
+  if (!is.null(sp.obs) && length(grep("shinyalert", sp.obs)) == 0)
   {
+    sp.obs = sp.obs[, which(colnames(sp.obs) %in% c("sites", "species", "abund", "habitat"))]
+    
     rule.A1 = rule.A2_quantile = NULL
     if (!is.null(input$rule.A1)){
       rule.A1 = as.numeric(input$rule.A1)
@@ -183,6 +186,7 @@ get_DOM = eventReactive(input$select.dominant, {
                               , opt.doRobustness = input$doRobustness
                               , opt.robustness_percent = robustness_percent
                               , opt.robustness_rep = robustness_rep
+                              , opt.doSitesSpecies = input$doSitesSpecies
       )
     ))
     removeModal()

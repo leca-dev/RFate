@@ -26,6 +26,13 @@ tabPanel(title = HTML("<span class='tabPanel_title'>2. Pairwise distance</span>"
          ) ## END fluidRow
          , fluidRow(
            column(12
+                  , sliderInput(inputId = "opt.weights"
+                                , label = param.style("opt.weights [traits <---> overlap]")
+                                , min = 0
+                                , max = 1
+                                , value = 0.5
+                                , step = 0.05
+                                , width = "100%")
                   , sliderInput(inputId = "opt.maxPercent.NA"
                                 , label = param.style("opt.maxPercent.NA")
                                 , min = 0

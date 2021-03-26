@@ -120,14 +120,13 @@ observeEvent(input$compute.distance, {
 })
 
 get_DIST = eventReactive(input$compute.distance, {
-  
   ## GET species traits
   sp.traits = get_traits()
-  if (!is.null(sp.traits))
+  if (!is.null(sp.traits) && length(grep("shinyalert", sp.traits)) == 0)
   {
     ## GET selected dominant species
     sp.dom = get_dom()
-    if (!is.null(sp.dom))
+    if (!is.null(sp.dom) && length(grep("shinyalert", sp.dom)) == 0)
     {
       if (length(which(sp.traits$species %in% sp.dom)) > 0)
       {
@@ -138,8 +137,11 @@ get_DIST = eventReactive(input$compute.distance, {
         {
           if (extension(input$species.niche.distance$name) %in% c(".txt", ".csv"))
           {
-            sp.niche = fread(input$species.niche.distance$datapath)
+            sp.niche = fread(input$species.niche.distance$datapath, header = TRUE)
 			      sp.niche = as.data.frame(sp.niche, stringsAsFactors = FALSE)
+			      rownames(sp.niche) = sp.niche[, 1]
+			      sp.niche = sp.niche[, -1]
+			      sp.niche = as.matrix(sp.niche)
           } else if (extension(input$species.niche.distance$name) == ".RData")
           {
             sp.niche = get(load(input$species.niche.distance$datapath))
@@ -147,10 +149,17 @@ get_DIST = eventReactive(input$compute.distance, {
           {
             shinyalert(type = "warning", text = "You must provide a text or a RData file for the species.niche.distance !")
           }
+          if (unique(diag(sp.niche)) == 0)
+          {
+            sp.niche = 1 - sp.niche
+            showNotification("species.niche.distance has been transformed into similarity matrix !", type = "warning")
+          }
           
           if (length(which(colnames(sp.niche) %in% sp.dom)) > 0)
           {
             showModal(modalDialog(HTML(paste0("Compute distances between species based on traits and niche overlap, with parameters : <ul>"
+                                              , "<li><strong>opt.weights :</strong> ", as.numeric(input$opt.weights), " (traits) / "
+                                              ,  1 - as.numeric(input$opt.weights), " (overlap) </li>"
                                               , "<li><strong>opt.maxPercent.NA :</strong> ", as.numeric(input$opt.maxPercent.NA), "</li>"
                                               , "<li><strong>opt.maxPercent.similarSpecies :</strong> ", as.numeric(input$opt.maxPercent.similarSpecies), "</li>"
                                               , "<li><strong>opt.min.sd :</strong> ", as.numeric(input$opt.min.sd), "</li>"
@@ -160,7 +169,9 @@ get_DIST = eventReactive(input$compute.distance, {
             Sys.sleep(3)
             get_res = print_messages(as.expression(
                 PRE_FATE.speciesDistance(mat.traits = sp.traits
-                                         , mat.overlap = sp.niche
+                                         , mat.overlap.option = "dist"
+                                         , mat.overlap.object = sp.niche
+                                         , opt.weights = c(as.numeric(input$opt.weights), 1 - as.numeric(input$opt.weights))
                                          , opt.maxPercent.NA = as.numeric(input$opt.maxPercent.NA)
                                          , opt.maxPercent.similarSpecies = as.numeric(input$opt.maxPercent.similarSpecies)
                                          , opt.min.sd = as.numeric(input$opt.min.sd)

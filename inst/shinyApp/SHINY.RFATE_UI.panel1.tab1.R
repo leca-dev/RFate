@@ -31,7 +31,13 @@ tabPanel(title = HTML("<span class='tabPanel_title'>1. Dominant species</span>")
                                   , value = FALSE
                                   , width = "100%")
            )
-           , column(9, br())
+           , column(3
+                    , checkboxInput(inputId = "doSitesSpecies"
+                                    , label = param.style("doSitesSpecies")
+                                    , value = FALSE
+                                    , width = "100%")
+           )
+           , column(6, br())
          ) ## END fluidRow
          , fluidRow(
            column(6

@@ -35,6 +35,7 @@ observeEvent(RV$pfg.graph, {
   levels_graph.type = unique(RV$pfg.graph)
   levels_graph.type = factor(levels_graph.type, c("dom", "dist", "clust1", "clust2", "clust3"))
   levels_graph.type = sort(levels_graph.type)
+  print(levels_graph.type)
   pp = foreach(graph.type = levels_graph.type, .combine ="c") %do%
     {
       graph.type = as.character(graph.type)
@@ -46,7 +47,7 @@ observeEvent(RV$pfg.graph, {
                    , clust3 = { get_CLUST3() }
       )
       
-      if (!is.null(tab) && length(tab) > 1)
+      if (!is.null(tab) && length(tab) > 0)
       {
         colRamp = colorRampPalette(c('#8e0152','#c51b7d','#de77ae','#7fbc41','#4d9221','#276419'))
         
@@ -73,13 +74,18 @@ observeEvent(RV$pfg.graph, {
                       }
                     ## ---------------------------------------------------------------------------------------------------------- ##
                     , dist = {
-                      pp = foreach(x = names(tab)) %do%
+                      if (class(tab$mat.ALL) == "list"){
+                        tab = tab$mat.ALL
+                      } else {
+                        tab = list(tab$mat.ALL)
+                      }
+                      pp = foreach(x = 1:length(tab)) %do%
                         {
-                          hc = hclust(tab[[x]])
+                          hc = hclust(as.dist(tab[[x]]))
                           pp = ggdendrogram(hc, rotate = TRUE) +
                             labs(title = paste0("Hierarchical clustering based on species distance "
                                                 , ifelse(length(names(tab)) > 1
-                                                         , paste0("(group ", x, ")")
+                                                         , paste0("(group ", names(tab)[x], ")")
                                                          , "")))
                           return(pp)
                         }
