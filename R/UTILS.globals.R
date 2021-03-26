@@ -23,7 +23,7 @@ utils::globalVariables(names = c("i", "j"
                                  , "i.rep", "i.iter", "i.axis", "i.subset"))
 
 ## PRE_FATE.speciesclustering...
-utils::globalVariables(names = c("group", "no.clusters", "variable", "tab", "tr"
+utils::globalVariables(names = c("ii", "group", "no.clusters", "variable", "tab", "tr"
                                  , "isThere.longevity", "isThere.maturity"
                                  , "isThere.soil_contrib", "isThere.soil_tolerance"
                                  , "isThere.soil_tol_min", "isThere.soil_tol_max"

@@ -1794,7 +1794,15 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
           
           GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-          GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), abunValues3, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
+          CPLErr rasterAccess = GDALRasterIO(
+            hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+            abunValues3, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+          );
+          if (rasterAccess > 0)
+          {
+            logg.warning("Writing ", newFile, " raster: acces status ",
+                         rasterAccess);
+          }
           GDALClose( rasOutput ); // Once we're done, close properly the dataset
           
           compressFile(newFile);
@@ -1940,7 +1948,15 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         GDALSetGeoTransform( rasOutput, outputGeoTransform );
         
         GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-        GDALRasterIO( hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(), seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0 );
+        CPLErr rasterAccess = GDALRasterIO(
+          hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
+          seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
+        );
+        if (rasterAccess > 0)
+        {
+          logg.warning("Writing ", newFile, " raster: acces status ",
+                       rasterAccess);
+        }
         GDALClose( rasOutput ); // Once we're done, close properly the dataset
         
         delete [] seedValues;
