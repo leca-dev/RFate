@@ -666,9 +666,9 @@ PRE_FATE.speciesDistance = function(mat.traits
   if (length(toRemove) > 0)
   {
     mat.traits.split = mat.traits.split[-toRemove]
-    mat.overlap.split = mat.overlap.split[-toRemove]
     names_groups = names_groups[-toRemove]
   }
+  names_groups = intersect(names(mat.traits.split), names(mat.overlap.split))
   cat("\n")
   
   ## GOWER DISSIMILARITY FOR MIXED VARIABLES
@@ -691,14 +691,15 @@ PRE_FATE.speciesDistance = function(mat.traits
   # Keep only species present in both distance matrices (trait & overlap)
   names_species.traits_overlap = intersect(unlist(species.split), names_species.overlap)
   
-  mat.overlap.split = lapply(1:length(names_groups), function(x) {
+  mat.overlap.split = lapply(names_groups, function(x) {
     tmp = as.matrix(mat.overlap.split[[x]])
     ind = which(colnames(tmp) %in% names_species.traits_overlap)
     return(as.dist(tmp[ind, ind])) 
   })
+  names(mat.overlap.split) = names_groups
   
   cat("\n  Number of species : ", length(names_species.traits_overlap))
-  cat("\n  Groups : ", paste0(names(mat.species.gower.split), collapse = ", "))
+  cat("\n  Groups : ", paste0(names_groups, collapse = ", "))
   cat("\n  Number of species in each group : ", sapply(species.split, length))
   cat("\n  Number of NA values due to `gowdis` function : "
       , nrow(mat.traits) - sum(sapply(species.split, length)))
@@ -714,7 +715,7 @@ PRE_FATE.speciesDistance = function(mat.traits
   ## 1 PART for climatic distance between species (overlap)
   
   ## COMBINE TRAIT & OVERLAP DISTANCES
-  mat.species.DIST = lapply(1:length(names_groups), function(x) {
+  mat.species.DIST = lapply(names_groups, function(x) {
     tmp.gower = as.matrix(mat.species.gower.split[[x]])
     tmp.overlap = as.matrix(mat.overlap.split[[x]])
     wei.traits = ncol(mat.traits.split[[x]])

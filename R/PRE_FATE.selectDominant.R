@@ -451,6 +451,7 @@ PRE_FATE.selectDominant = function(mat.observations
     }
     if (!doRuleA && !doRuleB && !doRuleC) {
       cat("\n     Nothing! No rule selected! Please check.")
+      stop()
     }
     cat("\n\n")
   }
