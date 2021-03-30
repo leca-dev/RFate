@@ -364,6 +364,7 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
   clust.dendrograms = lapply(mat.species.DIST, function(x) {
     hclust(as.dist(x), method = clust.method)
   })
+  names(clust.dendrograms) = names(mat.species.DIST)
   
   cat("\n  Clustering method : ", clust.method)
   cat("\n  Clustering evaluation...")

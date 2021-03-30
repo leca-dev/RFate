@@ -12,6 +12,21 @@ output$UI.species.selected = renderUI({
   }
 })
 
+output$UI.opt.weights = renderUI({
+  if (input$doRuleWeights)
+  {
+    tagList(
+      sliderInput(inputId = "opt.weights"
+                  , label = param.style("opt.weights [traits <---> overlap]")
+                  , min = 0
+                  , max = 1
+                  , value = 0.5
+                  , step = 0.05
+                  , width = "100%")
+    )
+  }
+})
+
 ####################################################################
 
 get_traits = eventReactive(list(input$species.traits, input$compute.distance), {
@@ -157,9 +172,17 @@ get_DIST = eventReactive(input$compute.distance, {
           
           if (length(which(colnames(sp.niche) %in% sp.dom)) > 0)
           {
+            opt.weights = NULL
+            if (!is.null(input$doRuleWeights)){
+              opt.weights = c(as.numeric(input$opt.weights), 1 - as.numeric(input$opt.weights))
+            }
+            
             showModal(modalDialog(HTML(paste0("Compute distances between species based on traits and niche overlap, with parameters : <ul>"
-                                              , "<li><strong>opt.weights :</strong> ", as.numeric(input$opt.weights), " (traits) / "
-                                              ,  1 - as.numeric(input$opt.weights), " (overlap) </li>"
+                                              , ifelse(input$doRuleWeights
+                                                       , paste0("<li><strong>opt.weights :</strong> "
+                                                                , as.numeric(input$opt.weights), " (traits) / "
+                                                                ,  1 - as.numeric(input$opt.weights), " (overlap) </li>")
+                                                       , "")
                                               , "<li><strong>opt.maxPercent.NA :</strong> ", as.numeric(input$opt.maxPercent.NA), "</li>"
                                               , "<li><strong>opt.maxPercent.similarSpecies :</strong> ", as.numeric(input$opt.maxPercent.similarSpecies), "</li>"
                                               , "<li><strong>opt.min.sd :</strong> ", as.numeric(input$opt.min.sd), "</li>"
@@ -171,7 +194,7 @@ get_DIST = eventReactive(input$compute.distance, {
                 PRE_FATE.speciesDistance(mat.traits = sp.traits
                                          , mat.overlap.option = "dist"
                                          , mat.overlap.object = sp.niche
-                                         , opt.weights = c(as.numeric(input$opt.weights), 1 - as.numeric(input$opt.weights))
+                                         , opt.weights = opt.weights
                                          , opt.maxPercent.NA = as.numeric(input$opt.maxPercent.NA)
                                          , opt.maxPercent.similarSpecies = as.numeric(input$opt.maxPercent.similarSpecies)
                                          , opt.min.sd = as.numeric(input$opt.min.sd)

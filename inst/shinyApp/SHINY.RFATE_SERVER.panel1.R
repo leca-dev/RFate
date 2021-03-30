@@ -35,7 +35,6 @@ observeEvent(RV$pfg.graph, {
   levels_graph.type = unique(RV$pfg.graph)
   levels_graph.type = factor(levels_graph.type, c("dom", "dist", "clust1", "clust2", "clust3"))
   levels_graph.type = sort(levels_graph.type)
-  print(levels_graph.type)
   pp = foreach(graph.type = levels_graph.type, .combine ="c") %do%
     {
       graph.type = as.character(graph.type)
@@ -46,7 +45,6 @@ observeEvent(RV$pfg.graph, {
                    , clust2 = { get_CLUST2() }
                    , clust3 = { get_CLUST3() }
       )
-      
       if (!is.null(tab) && length(tab) > 0)
       {
         colRamp = colorRampPalette(c('#8e0152','#c51b7d','#de77ae','#7fbc41','#4d9221','#276419'))

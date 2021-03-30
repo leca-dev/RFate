@@ -16,9 +16,18 @@ output$UI.species.distance = renderUI({
 
 output$UI.no.clusters = renderUI({
   sp.clust = get_CLUST1()
-  if (!is.null(sp.clust))
+  if (!is.null(sp.clust) && length(grep("shinyalert", sp.clust)) == 0)
   {
-    group_names = names(sp.clust$clust.dendrograms)
+    if (length(sp.clust$clust.dendrograms) == 1) {
+      group_names = "ALL"
+      maxi = max(sp.clust$clust.evaluation$no.clusters)
+    } else {
+      group_names = names(sp.clust$clust.dendrograms)
+      maxi = sapply(group_names, function(i) { 
+        max(sp.clust$clust.evaluation$no.clusters[which(sp.clust$clust.evaluation$GROUP == i)])
+      })
+    }
+    names(maxi) = group_names
     lapply(group_names, function(i) {
       fluidRow(
         column(3, param.style(paste0("no.clust_", i)))
@@ -26,7 +35,7 @@ output$UI.no.clusters = renderUI({
                  , sliderInput(inputId = paste0("no.clust_", i)
                                , label = NULL
                                , min = 2
-                               , max = max(sp.clust$clust.evaluation$no.clusters[which(sp.clust$clust.evaluation$GROUP == i)])
+                               , max = maxi[i] #max(sp.clust$clust.evaluation$no.clusters[which(sp.clust$clust.evaluation$GROUP == i)])
                                , value = 2
                                , step = 1
                                , round = TRUE
@@ -49,6 +58,7 @@ get_dist = eventReactive(list(input$choice.distance, input$clustering.step1), {
       if (sum(sapply(input$species.distance$name, extension) %in% c(".txt", ".csv")) == nrow(input$species.distance))
       {
         end_filename = input$species.distance$datapath
+        names(end_filename) = input$species.distance$name
       } else
       {
         if (length(which(RV$pfg.graph == "clust1")) > 0)
@@ -72,13 +82,14 @@ get_dist = eventReactive(list(input$choice.distance, input$clustering.step1), {
   } else
   {
     end_filename = list.files(pattern = "^PRE_FATE_DOMINANT_speciesDistance")
+    names(end_filename) = end_filename
   }
   if (end_filename != "" && length(end_filename) > 0)
   {
     sp.dist = foreach(fi = end_filename) %do%
       {
         sp.di = fread(fi, header = TRUE, drop = 1)
-		sp.di = as.data.frame(sp.di, stringsAsFactors = FALSE)
+        sp.di = as.data.frame(sp.di, stringsAsFactors = FALSE)
         if (ncol(sp.di) == 0 || nrow(sp.di) == 0 || ncol(sp.di) != nrow(sp.di))
         {
           if (length(which(RV$pfg.graph == "clust1")) > 0)
@@ -100,7 +111,9 @@ get_dist = eventReactive(list(input$choice.distance, input$clustering.step1), {
       }
     if (sum(sapply(sp.dist, is.null)) == 0)
     {
-      names(sp.dist) = sub("^PRE_FATE_DOMINANT_speciesDistance", "", sub(".csv$", "", end_filename))
+      nam = sub("^PRE_FATE_DOMINANT_speciesDistance", "", sub(".csv$", "", names(end_filename)))
+      if (length(nam) == 1 && nchar(nam) == 0) nam = "ALL"
+      names(sp.dist) = nam
       return(sp.dist)
     }
   } else
@@ -118,11 +131,15 @@ get_dist = eventReactive(list(input$choice.distance, input$clustering.step1), {
 
 ####################################################################
 
+observeEvent(input$clustering.step1, {
+  RV$pfg.graph <- c(RV$pfg.graph, "clust1")
+})
+
 get_CLUST1 = eventReactive(input$clustering.step1, {
   
   ## GET species distance
   sp.dist = get_dist()
-  if (!is.null(sp.dist))
+  if (!is.null(sp.dist) && length(grep("shinyalert", sp.dist)) == 0)
   {
     showModal(modalDialog(HTML(paste0("Create hierarchical clusters (dendrograms) from dissimilarity matrix ..."))
                           , title = "PFG clustering : step 1"
@@ -133,7 +150,6 @@ get_CLUST1 = eventReactive(input$clustering.step1, {
     ))
     removeModal()
     
-    RV$pfg.graph <- c(RV$pfg.graph, "clust1")
     shinyjs::enable("clustering.step2")
     return(get_res)
   }
@@ -149,11 +165,11 @@ get_CLUST2 = eventReactive(input$clustering.step2, {
   
   ## GET species distance
   sp.dist = get_dist()
-  if (!is.null(sp.dist))
+  if (!is.null(sp.dist) && length(grep("shinyalert", sp.dist)) == 0)
   {
     ## GET species clusters
     sp.clust = get_CLUST1()
-    if (!is.null(sp.clust))
+    if (!is.null(sp.clust) && length(grep("shinyalert", sp.clust)) == 0)
     {
       no.clusters = foreach(i = names(sp.clust$clust.dendrograms), .combine = "c") %do%
         {
@@ -186,11 +202,11 @@ get_sp.pfg.traits = eventReactive(input$clustering.step3, {
   
   ## GET species traits
   sp.traits = get_traits()
-  if (!is.null(sp.traits))
+  if (!is.null(sp.traits) && length(grep("shinyalert", sp.traits)) == 0)
   {
     ## GET species determ
     sp.determ = get_CLUST2()
-    if (!is.null(sp.determ))
+    if (!is.null(sp.determ) && length(grep("shinyalert", sp.determ)) == 0)
     {
       sp.traits = as.data.frame(sp.traits)
       sp.traits$species = as.character(sp.traits$species)
@@ -216,7 +232,7 @@ get_CLUST3 = eventReactive(input$clustering.step3, {
 
   ## GET species-PFG traits
   sp.pfg.traits = get_sp.pfg.traits()
-  if (!is.null(sp.pfg.traits))
+  if (!is.null(sp.pfg.traits) && length(grep("shinyalert", sp.pfg.traits)) == 0)
   {
     showModal(modalDialog(HTML(paste0("Compute PFG traits values based on determinant species..."))
                           , title = "PFG clustering : step 3"
@@ -229,7 +245,7 @@ get_CLUST3 = eventReactive(input$clustering.step3, {
     
     shinyjs::show("table.traits.pfg")
     output$table.traits.pfg = renderDataTable({
-      get_res
+      get_res$tab.PFG.traits
     })
     
     return(get_res)

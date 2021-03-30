@@ -239,25 +239,27 @@ get_files = function(path_folder, skip.no = 2, opt.sub_folder = FALSE)
                      , flag.split
                      , is.num = TRUE
 ){
-  
-
   param.name = params.lines
   params.lines = readLines(params.lines)
-
+  
+  #############################################################################
+  
   if(flag.split == " "){
-    value.line = grep(flag, params.lines, value = TRUE) #params.lines[ind.flag]
+    value.line = grep(paste0(flag, " "), params.lines, value = TRUE)
     value.line = unlist(strsplit(value.line, split = flag.split))[-1]
   } else {
     ind.flag.split = grep(flag.split, params.lines)
     ind.flag = grep(paste0("--", flag, "--"), params.lines)
     if (length(ind.flag) == 0)
     {
-      stop(paste0("Wrong type of data!\n `flag` (", flag, ") is not found within `params.lines` (", param.name, ")"))
+      stop(paste0("Wrong type of data!\n `flag` (", flag
+                  , ") is not found within `params.lines` (", param.name, ")"))
     }
     ind.start = which(ind.flag.split == ind.flag)
     if (ind.flag.split[ind.start + 1] == ind.start + 1)
     {
-      stop(paste0("Wrong type of data!\n `flag` (", flag, ") does not contain any value"))
+      stop(paste0("Wrong type of data!\n `flag` (", flag
+                  , ") does not contain any value"))
     }
     
     ind1 = (ind.flag.split[ind.start] + 1)
@@ -307,10 +309,18 @@ checkboxInput  <- updateableInput("Checkbox")
 # Update a single Shiny input without specifying its type
 updateShinyInput <- function(session, id, value) {
   shinyUpdateInputId <- paste0("shiny-update-input-", id)
+  # shinyUpdateInputId <- id
   # print(shinyUpdateInputId)
+  # print(grep(id, names(session$input), value = TRUE))
   js$getInputType(id, shinyUpdateInputId)
+  # print(grep(id, names(session$input), value = TRUE))
   # print("yo")
-  shiny::observeEvent(session$input[[shinyUpdateInputId]], {
+  # print(names(session$input))
+  shiny::observeEvent(session$input[[id]], {
+    # print("yaaa")
+    # print(id)
+    # print(session$input[[id]])
+    # print(session$input[[shinyUpdateInputId]])
     inputType <- session$input[[shinyUpdateInputId]]
     # print(inputType)
     updateFunc <- sprintf("update%sInput", inputType)
