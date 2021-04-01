@@ -327,6 +327,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : do...", {
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
+                                           , do.potential_fecundity = FALSE
                                            , do.no_strata = FALSE
                                            , do.LIGHT.thresh_medium = FALSE
                                            , do.LIGHT.thresh_low = FALSE
@@ -454,6 +455,15 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
+  # expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+  #                                                           , file.simulParam.1 = "toto.txt"
+  #                                                           , no_simulations = 10
+  #                                                           , do.DISPERSAL.mode = FALSE
+  #                                                           , do.no_strata = FALSE))
+  #              , "The flag --MASK-- in the file FATE_simulation/PARAM_SIMUL/toto.txt does not contain any value. Please check."
+  #              , fixed = TRUE)
+  # cat("--GLOBAL_PARAMS--\nFATE_simulation/glob.txt\n--MASK--\nFATE_simulation/glob.txt\n--END_OF_FILE--\n"
+  #     , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
@@ -528,10 +538,22 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                                                             , no_simulations = 10
                                                             , do.DISPERSAL.mode = FALSE
                                                             , do.no_strata = FALSE))
+               , "Wrong type of data!\n `flag` (POTENTIAL_FECUNDITY) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
+               , fixed = TRUE)
+  cat(paste0("MAX_ABUND_LOW 10000\nNO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
+             , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
+             , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
+      , file = "FATE_simulation/glob.txt")
+  expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                                            , file.simulParam.1 = "toto.txt"
+                                                            , no_simulations = 10
+                                                            , do.DISPERSAL.mode = FALSE
+                                                            , do.no_strata = FALSE))
                , "Wrong type of data!\n `flag` (MAX_ABUND_MEDIUM) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
@@ -544,7 +566,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , "Wrong type of data!\n `flag` (MAX_ABUND_HIGH) is not found within `params.lines` (FATE_simulation_MULTIPLE_SET/tmp_global_param.txt)"
                , fixed = TRUE)
   cat(paste0("NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
@@ -565,7 +587,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                                                             , no_simulations = 10
                                                             , do.DISPERSAL.mode = FALSE
                                                             , do.no_strata = FALSE))
-               , "Wrong type of data!\n `name.MASK` must contain a character value of length > 0"
+               , "`name.MASK` must contain a character value of length > 0"
                , fixed = TRUE)
   cat("--GLOBAL_PARAMS--\nFATE_simulation/glob.txt\n--MASK--\nmask.txt\n--END_OF_FILE--\n"
       , file = "FATE_simulation/PARAM_SIMUL/toto.txt")
@@ -671,7 +693,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
     file.create("FATE_simulation/DATA/GLOBAL_PARAMETERS/glob.txt")
     cat(paste0("## Test file\n"
                , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-               , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+               , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
                , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
                , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
                , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
@@ -711,6 +733,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE
+                                             , do.potential_fecundity = FALSE
                                              , do.no_strata = FALSE
                                              , do.LIGHT.thresh_medium = FALSE
                                              , do.LIGHT.thresh_low = FALSE
@@ -732,6 +755,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE
+                                             , do.potential_fecundity = FALSE
                                              , do.no_strata = FALSE
                                              , do.LIGHT.thresh_medium = FALSE
                                              , do.LIGHT.thresh_low = FALSE
@@ -763,7 +787,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
     
     cat(paste0("## Test file\n"
                , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-               , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+               , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
                , "MAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
                , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
                , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
@@ -784,6 +808,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = FALSE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -796,7 +821,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
   
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 10\nMAX_ABUND_MEDIUM 60000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
@@ -815,6 +840,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
+                                           , do.potential_fecundity = FALSE
                                            , do.no_strata = FALSE
                                            , do.LIGHT.thresh_medium = FALSE
                                            , do.LIGHT.thresh_low = FALSE
@@ -827,7 +853,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
   
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
@@ -851,6 +877,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
+                                           , do.potential_fecundity = FALSE
                                            , do.no_strata = FALSE
                                            , do.LIGHT.thresh_medium = FALSE
                                            , do.LIGHT.thresh_low = FALSE
@@ -877,6 +904,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE
+                                             , do.potential_fecundity = FALSE
                                              , do.no_strata = FALSE
                                              , do.LIGHT.thresh_medium = FALSE
                                              , do.LIGHT.thresh_low = FALSE
@@ -899,6 +927,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
+                                           , do.potential_fecundity = FALSE
                                            , do.no_strata = FALSE
                                            , do.LIGHT.thresh_medium = FALSE
                                            , do.LIGHT.thresh_low = FALSE
@@ -953,6 +982,7 @@ test_that("PRE_FATE.params_multipleSet gives error for other conditions / scenar
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = FALSE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1007,6 +1037,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
+                                           , do.potential_fecundity = FALSE
                                            , do.no_strata = TRUE
                                            , do.LIGHT.thresh_medium = FALSE
                                            , do.LIGHT.thresh_low = FALSE
@@ -1031,6 +1062,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = TRUE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1056,6 +1088,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = TRUE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1068,7 +1101,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
@@ -1083,6 +1116,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                               , do.seeding_duration = FALSE
                                                               , do.seeding_timestep = FALSE
                                                               , do.seeding_input = FALSE
+                                                              , do.potential_fecundity = FALSE
                                                               , do.no_strata = TRUE
                                                               , do.LIGHT.thresh_medium = FALSE
                                                               , do.LIGHT.thresh_low = FALSE
@@ -1095,7 +1129,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
@@ -1110,6 +1144,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = TRUE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1136,6 +1171,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = TRUE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1161,6 +1197,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = TRUE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1173,7 +1210,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
@@ -1189,6 +1226,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
+                                                            , do.potential_fecundity = FALSE
                                                             , do.no_strata = TRUE
                                                             , do.LIGHT.thresh_medium = FALSE
                                                             , do.LIGHT.thresh_low = FALSE
@@ -1201,7 +1239,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+             , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
              , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
@@ -1217,6 +1255,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
                                                               , do.seeding_duration = FALSE
                                                               , do.seeding_timestep = FALSE
                                                               , do.seeding_input = FALSE
+                                                              , do.potential_fecundity = FALSE
                                                               , do.no_strata = TRUE
                                                               , do.LIGHT.thresh_medium = FALSE
                                                               , do.LIGHT.thresh_low = FALSE
@@ -1259,7 +1298,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario SOIL", {
     
     cat(paste0("## Test file\n"
                , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
-               , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\n"
+               , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
                , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
                , "DO_DISPERSAL 0\n"
                , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
@@ -1289,6 +1328,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario SOIL", {
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE
+                                             , do.potential_fecundity = FALSE
                                              , do.no_strata = TRUE
                                              , do.LIGHT.thresh_medium = FALSE
                                              , do.LIGHT.thresh_low = FALSE

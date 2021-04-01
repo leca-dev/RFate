@@ -29,13 +29,21 @@
 ##' @param no_simulations an \code{integer} corresponding to the number of set 
 ##' of parameters that will be produced according to Latin Hypercube Sampling 
 ##' (LHS)
+##' @param opt.folder.name (\emph{optional}) default 
+##' \code{FATE_simulation_MULTIPLE_SET}. \cr A \code{string} corresponding 
+##' to the name of the folder that will be created to store the results
+##' @param opt.seed (\emph{optional}) default \code{NULL}. \cr
+##' An \code{integer} to be given to \code{\link[base]{set.seed}} function, in 
+##' order to fix the produced results if needed, as 
+##' \code{\link[SPOT]{designLHD}} is also a random value generator
 ##' @param opt.percent_maxAbund default \code{0.5}. Amount of variation 
 ##' (between \code{0} and \code{1}) around the original value of 
 ##' \code{MAX_ABUND_LOW}, \code{MAX_ABUND_MEDIUM}, \code{MAX_ABUND_HIGH} if 
 ##' selected
 ##' @param opt.percent_seeding default \code{0.5}. Amount of variation (between 
 ##' \code{0} and \code{1}) around the original value of \code{SEEDING_DURATION}, 
-##' \code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT} if selected
+##' \code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT}, \code{POTENTIAL_FECUNDITY} 
+##' if selected
 ##' @param opt.percent_light default \code{0.5}. Amount of variation (between 
 ##' \code{0} and \code{1}) around the original value of 
 ##' \code{LIGHT_THRESH_MEDIUM}, \code{LIGHT_THRESH_LOW} if selected
@@ -60,6 +68,9 @@
 ##' @param do.seeding_input default \code{TRUE}. If \code{TRUE}, 
 ##' \code{SEEDING_INPUT} parameter within \emph{Global_parameters} file will be 
 ##' declined into a range of values
+##' @param do.potential_fecundity default \code{TRUE}. If \code{TRUE}, 
+##' \code{POTENTIAL_FECUNDITY} parameter within \emph{Global_parameters} file 
+##' will be declined into a range of values
 ##' @param do.no_strata default \code{TRUE}. If \code{TRUE}, \code{NO_STRATA} 
 ##' parameter within \emph{Global_parameters} file will be declined into a range 
 ##' of values, with potential impact on some parameters within PFG succession 
@@ -154,8 +165,6 @@
 ##' drawn in order to explore the whole space of combinations.
 ##' 
 ##' 
-##' 
-##' 
 ##' @return A new folder containing the different sets of parameters asked. 
 ##' 
 ##' Depending on what elements have been asked to be varied, three types of 
@@ -176,6 +185,7 @@
 ##'     \item SEEDING_DURATION
 ##'     \item SEEDING_TIMESTEP
 ##'     \item SEEDING_INPUT
+##'     \item POTENTIAL_FECUNDITY
 ##'     \item MAX_ABUND_LOW
 ##'     \item MAX_ABUND_MEDIUM 
 ##'     \item MAX_ABUND_HIGH \cr \cr
@@ -235,6 +245,8 @@ PRE_FATE.params_multipleSet = function(
   , file.simulParam.1
   , file.simulParam.2 = NULL
   , no_simulations
+  , opt.folder.name = "FATE_simulation_MULTIPLE_SET"
+  , opt.seed = NULL
   , opt.percent_maxAbund = 0.5
   , opt.percent_seeding = 0.5
   , opt.percent_light = 0.5
@@ -245,6 +257,7 @@ PRE_FATE.params_multipleSet = function(
   , do.seeding_duration = TRUE
   , do.seeding_timestep = TRUE
   , do.seeding_input = TRUE
+  , do.potential_fecundity = TRUE
   , do.no_strata = TRUE
   , do.LIGHT.thresh_medium = TRUE
   , do.LIGHT.thresh_low = TRUE
@@ -333,6 +346,12 @@ PRE_FATE.params_multipleSet = function(
     .testParam_notNum.m("opt.percent_soil", opt.percent_soil)
     .testParam_notBetween.m("opt.percent_soil", opt.percent_soil, 0, 1)
   }
+  ## CHECK parameter opt.folder.name
+  if (is.null(opt.folder.name) ||
+      (!is.null(opt.folder.name) && !is.character(opt.folder.name)) ||
+      .testParam_notChar(opt.folder.name)){
+    opt.folder.name = "FATE_simulation_MULTIPLE_SET"
+  }
   
   cat("\n\n #------------------------------------------------------------#")
   cat("\n # PRE_FATE.params_multipleSet")
@@ -347,6 +366,7 @@ PRE_FATE.params_multipleSet = function(
             , do.seeding_duration
             , do.seeding_timestep
             , do.seeding_input
+            , do.potential_fecundity
             , do.LIGHT.thresh_medium
             , do.LIGHT.thresh_low
             , do.SOIL.init
@@ -377,6 +397,9 @@ PRE_FATE.params_multipleSet = function(
   }
   if (do.seeding_input){
     get_checked[[2]] = c(get_checked[[2]], "seeding_input")
+  }
+  if (do.potential_fecundity){
+    get_checked[[2]] = c(get_checked[[2]], "potential_fecundity")
   }
   if (do.LIGHT.thresh_medium){
     get_checked[[3]] = c(get_checked[[3]], "light_thresh_medium")
@@ -409,6 +432,7 @@ PRE_FATE.params_multipleSet = function(
                           , "seeding_duration" = "SEEDING_DURATION"
                           , "seeding_timestep" = "SEEDING_TIMESTEP"
                           , "seeding_input" = "SEEDING_INPUT"
+                          , "potential_fecundity" = "POTENTIAL_FECUNDITY"
                           , "light_thresh_medium" = "LIGHT_THRESH_MEDIUM"
                           , "light_thresh_low" = "LIGHT_THRESH_LOW"
                           , "soil_init" = "SOIL_INIT"
@@ -418,7 +442,7 @@ PRE_FATE.params_multipleSet = function(
                           , "no_strata" = "NO_STRATA")
   
   
-  get_toSuppr = c("GLOBAL_PARAMS", "SAVE_DIR", "END_OF_FILE")
+  get_toSuppr = c("GLOBAL_PARAMS", "SAVING_DIR", "END_OF_FILE")
   if ("no_strata" %in% get_checked)
   {
     get_toSuppr = c(get_toSuppr, "PFG_PARAMS_LIFE_HISTORY", "PFG_PARAMS_LIGHT")
@@ -618,7 +642,7 @@ PRE_FATE.params_multipleSet = function(
         })
       }
       
-      todo = function(x, y) { return(as.vector(PARAMS1[[y]][x]) * get_sliders[y] / 100) }
+      todo = function(x, y) { return(as.vector(PARAMS1[[y]][x]) * get_sliders[y]) }
       PARAMS.ecart = ff()
       todo = function(x, y) { return(as.vector(PARAMS1[[y]][x]) - PARAMS.ecart[[y]][x]) }
       PARAMS.min = ff()
@@ -648,8 +672,8 @@ PRE_FATE.params_multipleSet = function(
           PARAMS.range[1, "soil_retention"] = 1
         }
       }
-      # ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_init", "soil_retention")))
-      ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_retention")))
+      ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_init", "soil_retention")))
+      # ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_retention")))
       if (length(which(PARAMS.range[1, ind_notSoil] < 1)) > 0)
       {
         PARAMS.range[1, which(PARAMS.range[1, ind_notSoil] < 1)] = 1
@@ -730,8 +754,8 @@ PRE_FATE.params_multipleSet = function(
             PARAMS.range[1, "soil_retention"] = 1
           }
         }
-        # ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_init", "soil_retention")))
-        ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_retention")))
+        ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_init", "soil_retention")))
+        # ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_retention")))
         if (length(which(PARAMS.range[1, ind_notSoil] < 1)) > 0)
         {
           PARAMS.range[1, which(PARAMS.range[1, ind_notSoil] < 1)] = 1
@@ -772,6 +796,7 @@ PRE_FATE.params_multipleSet = function(
             , "seeding_duration"
             , "seeding_timestep"
             , "seeding_input"
+            , "potential_fecundity"
             , "light_thresh_medium"
             , "light_thresh_low"
             , "soil_init"
@@ -810,6 +835,7 @@ PRE_FATE.params_multipleSet = function(
               , "seeding_duration"
               , "seeding_timestep"
               , "seeding_input"
+              , "potential_fecundity"
               , "light_thresh_medium"
               , "light_thresh_low"
               , "soil_init"
@@ -842,7 +868,10 @@ PRE_FATE.params_multipleSet = function(
       }
       
       ## Run Latin Hypercube Sampling
-      set.seed(sample(1:1000000, 1)) ## needed everytime as lhs is also a random value generator.
+      if (is.null(opt.seed)) {
+        opt.seed = sample(1:1000000, 1)
+      }
+      set.seed(opt.seed) ## needed everytime as lhs is also a random value generator.
       params.space = designLHD(x = NULL
                                , lower = unlist(params.ranges[1, , drop = FALSE])
                                , upper = unlist(params.ranges[2, , drop = FALSE])
@@ -853,6 +882,7 @@ PRE_FATE.params_multipleSet = function(
                                                             , "seeding_duration" = "integer"
                                                             , "seeding_timestep" = "integer"
                                                             , "seeding_input" = "integer"
+                                                            , "potential_fecundity" = "integer"
                                                             , "light_thresh_medium" = "integer"
                                                             , "light_thresh_low" = "integer"
                                                             , "soil_init" = "double"
@@ -904,7 +934,7 @@ PRE_FATE.params_multipleSet = function(
   cat("\n  3. Create new simulation folder... \n")
   
   ## CREATE NEW FOLDER
-  PRE_FATE.skeletonDirectory(name.simulation = "FATE_simulation_MULTIPLE_SET")
+  PRE_FATE.skeletonDirectory(name.simulation = opt.folder.name)
   
   ## Copy simulation files
   cat("\n ---------- Copy files that do not change...")
@@ -913,7 +943,7 @@ PRE_FATE.params_multipleSet = function(
   {
     cat("\n ", paste0(dirname(name.simulation.1), "/", fi))
     file.copy(from = paste0(dirname(name.simulation.1), "/", fi)
-              , to = paste0("FATE_simulation_MULTIPLE_SET/"
+              , to = paste0(opt.folder.name, "/"
                             , paste0(strsplit(fi, "/")[[1]][-1]
                                      , collapse = "/")))
   }
@@ -989,7 +1019,7 @@ PRE_FATE.params_multipleSet = function(
       cat("\n Selected strata.limits :", strata.limits)
       
       .quiet(
-        PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation_MULTIPLE_SET"
+        PRE_FATE.params_PFGsuccession(name.simulation = opt.folder.name
                                       , mat.PFG.succ = SUCC_table
                                       , strata.limits = strata.limits
                                       , strata.limits_reduce = FALSE
@@ -999,7 +1029,7 @@ PRE_FATE.params_multipleSet = function(
       if ("DO_LIGHT_INTERACTION 1" %in% TOKEEP.global)
       {
         .quiet(
-          PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation_MULTIPLE_SET"
+          PRE_FATE.params_PFGlight(name.simulation = opt.folder.name
                                    , mat.PFG.light = LIGHT_table
                                    , opt.folder.name = paste0(rownames(params.space)[i])
           ))
@@ -1011,10 +1041,12 @@ PRE_FATE.params_multipleSet = function(
   #############################################################################
   
   ## Get fixed global parameters
-  tmp_global_param = "FATE_simulation_MULTIPLE_SET/tmp_global_param.txt"
+  tmp_global_param = paste0(opt.folder.name, "/tmp_global_param.txt")
   writeLines(text = TOKEEP.global, con = tmp_global_param)
   
   cat("\n ---------- Create multiple global parameter files... \n")
+  tmp_notWorking <- vector()
+  tmp_errors <- vector()
   for (i in 1:nrow(params.space))
   {
     doDispersal = .getParam(params.lines = tmp_global_param
@@ -1038,9 +1070,9 @@ PRE_FATE.params_multipleSet = function(
                                , flag.split = " "
                                , is.num = TRUE)
     
-    suppressWarnings(
+    tryCatch({ suppressWarnings(
       PRE_FATE.params_globalParameters(
-        name.simulation = "FATE_simulation_MULTIPLE_SET"
+        name.simulation = opt.folder.name
         , opt.replacePrevious = FALSE
         , opt.no_CPU = ifelse(length(grep("NO_CPU", TOKEEP.global)) > 0
                               , .getParam(params.lines = tmp_global_param
@@ -1078,6 +1110,12 @@ PRE_FATE.params_multipleSet = function(
                                           , params.space$seeding_input[i]
                                           , .getParam(params.lines = tmp_global_param
                                                       , flag = "SEEDING_INPUT"
+                                                      , flag.split = " "
+                                                      , is.num = TRUE))
+        , required.potential_fecundity = ifelse("potential_fecundity" %in% colnames(params.space)
+                                          , params.space$potential_fecundity[i]
+                                          , .getParam(params.lines = tmp_global_param
+                                                      , flag = "POTENTIAL_FECUNDITY"
                                                       , flag.split = " "
                                                       , is.num = TRUE))
         , required.max_abund_low = ifelse("max_abund_low" %in% colnames(params.space)
@@ -1162,7 +1200,27 @@ PRE_FATE.params_multipleSet = function(
                                                      , flag.split = " "
                                                      , is.num = TRUE))
                                     , NULL))
-      ))
+      )) }
+    , error = function(e) 
+    {
+      tmp_notWorking <<- c(tmp_notWorking, i)
+      tmp_errors <<- c(tmp_errors, e$message)
+    })
+  }
+  tmp_working = 1:nrow(params.space)
+  if (length(tmp_notWorking) > 0)
+  {
+    if (length(tmp_notWorking) == nrow(params.space))
+    {
+      stop(paste0("All the global parameter files encountered errors. Please check. \n"
+                  , paste0(unique(tmp_errors), collapse = "\n")))
+    } else
+    {
+      tmp_working = tmp_working[-which(tmp_working %in% tmp_notWorking)]
+      warning(paste0("Some global parameter files (", paste0(tmp_notWorking, collapse = ", ")
+                     , ") encountered errors detailed below : \n"
+                     , paste0(unique(tmp_errors), collapse = "\n")))
+    }
   }
   
   #############################################################################
@@ -1173,20 +1231,20 @@ PRE_FATE.params_multipleSet = function(
     stop(paste0("The flag --MASK-- in the file ", file.simulParam.1
                 , " does not contain any value. Please check."))
   }
-  for (i in 1:nrow(params.space))
+  for (i in tmp_working)
   {
-    suppressWarnings(
-      PRE_FATE.params_simulParameters(
-        name.simulation = "FATE_simulation_MULTIPLE_SET"
-        , name.MASK = basename(TOKEEP.simul[which(TOKEEP.simul == "--MASK--") + 1])
-        , name.DIST = ifelse(length(grep("DIST_MASK", TOKEEP.simul)) > 0
-                             , basename(TOKEEP.simul[which(TOKEEP.simul == "--DIST_MASK--") + 1])
-                             , "")
-        , opt.global.name = paste0("Global_parameters_V", i, ".txt")
-        , opt.folder.name = ifelse("no_strata" %in% colnames(params.space)
-                                   , paste0(rownames(params.space)[i])
-                                   , "")
-      ))
+      suppressWarnings(
+        PRE_FATE.params_simulParameters(
+          name.simulation = opt.folder.name
+          , name.MASK = basename(TOKEEP.simul[which(TOKEEP.simul == "--MASK--") + 1])
+          , name.DIST = ifelse(length(grep("DIST_MASK", TOKEEP.simul)) > 0
+                               , basename(TOKEEP.simul[which(TOKEEP.simul == "--DIST_MASK--") + 1])
+                               , "")
+          , opt.global.name = paste0("Global_parameters_V", i, ".txt")
+          , opt.folder.name = ifelse("no_strata" %in% colnames(params.space)
+                                     , paste0(rownames(params.space)[i])
+                                     , "")
+        ))
   }
   
   cat("\n\n> Done!\n")

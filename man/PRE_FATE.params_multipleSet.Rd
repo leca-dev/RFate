@@ -11,6 +11,8 @@ PRE_FATE.params_multipleSet(
   file.simulParam.1,
   file.simulParam.2 = NULL,
   no_simulations,
+  opt.folder.name = "FATE_simulation_MULTIPLE_SET",
+  opt.seed = NULL,
   opt.percent_maxAbund = 0.5,
   opt.percent_seeding = 0.5,
   opt.percent_light = 0.5,
@@ -21,6 +23,7 @@ PRE_FATE.params_multipleSet(
   do.seeding_duration = TRUE,
   do.seeding_timestep = TRUE,
   do.seeding_input = TRUE,
+  do.potential_fecundity = TRUE,
   do.no_strata = TRUE,
   do.LIGHT.thresh_medium = TRUE,
   do.LIGHT.thresh_low = TRUE,
@@ -55,6 +58,15 @@ parameter ranges in comparison with values from \code{file.simulParam.1}}
 of parameters that will be produced according to Latin Hypercube Sampling 
 (LHS)}
 
+\item{opt.folder.name}{(\emph{optional}) default 
+\code{FATE_simulation_MULTIPLE_SET}. \cr A \code{string} corresponding 
+to the name of the folder that will be created to store the results}
+
+\item{opt.seed}{(\emph{optional}) default \code{NULL}. \cr
+An \code{integer} to be given to \code{\link[base]{set.seed}} function, in 
+order to fix the produced results if needed, as 
+\code{\link[SPOT]{designLHD}} is also a random value generator}
+
 \item{opt.percent_maxAbund}{default \code{0.5}. Amount of variation 
 (between \code{0} and \code{1}) around the original value of 
 \code{MAX_ABUND_LOW}, \code{MAX_ABUND_MEDIUM}, \code{MAX_ABUND_HIGH} if 
@@ -62,7 +74,8 @@ selected}
 
 \item{opt.percent_seeding}{default \code{0.5}. Amount of variation (between 
 \code{0} and \code{1}) around the original value of \code{SEEDING_DURATION}, 
-\code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT} if selected}
+\code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT}, \code{POTENTIAL_FECUNDITY} 
+if selected}
 
 \item{opt.percent_light}{default \code{0.5}. Amount of variation (between 
 \code{0} and \code{1}) around the original value of 
@@ -95,6 +108,10 @@ be declined into a range of values}
 \item{do.seeding_input}{default \code{TRUE}. If \code{TRUE}, 
 \code{SEEDING_INPUT} parameter within \emph{Global_parameters} file will be 
 declined into a range of values}
+
+\item{do.potential_fecundity}{default \code{TRUE}. If \code{TRUE}, 
+\code{POTENTIAL_FECUNDITY} parameter within \emph{Global_parameters} file 
+will be declined into a range of values}
 
 \item{do.no_strata}{default \code{TRUE}. If \code{TRUE}, \code{NO_STRATA} 
 parameter within \emph{Global_parameters} file will be declined into a range 
@@ -152,6 +169,7 @@ file :
     \item SEEDING_DURATION
     \item SEEDING_TIMESTEP
     \item SEEDING_INPUT
+    \item POTENTIAL_FECUNDITY
     \item MAX_ABUND_LOW
     \item MAX_ABUND_MEDIUM 
     \item MAX_ABUND_HIGH \cr \cr

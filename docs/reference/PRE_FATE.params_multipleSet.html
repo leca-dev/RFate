@@ -217,6 +217,8 @@ using Latin Hypercube Sampling to help find best combination of parameters
   <span class='va'>file.simulParam.1</span>,
   file.simulParam.2 <span class='op'>=</span> <span class='cn'>NULL</span>,
   <span class='va'>no_simulations</span>,
+  opt.folder.name <span class='op'>=</span> <span class='st'>"FATE_simulation_MULTIPLE_SET"</span>,
+  opt.seed <span class='op'>=</span> <span class='cn'>NULL</span>,
   opt.percent_maxAbund <span class='op'>=</span> <span class='fl'>0.5</span>,
   opt.percent_seeding <span class='op'>=</span> <span class='fl'>0.5</span>,
   opt.percent_light <span class='op'>=</span> <span class='fl'>0.5</span>,
@@ -227,6 +229,7 @@ using Latin Hypercube Sampling to help find best combination of parameters
   do.seeding_duration <span class='op'>=</span> <span class='cn'>TRUE</span>,
   do.seeding_timestep <span class='op'>=</span> <span class='cn'>TRUE</span>,
   do.seeding_input <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  do.potential_fecundity <span class='op'>=</span> <span class='cn'>TRUE</span>,
   do.no_strata <span class='op'>=</span> <span class='cn'>TRUE</span>,
   do.LIGHT.thresh_medium <span class='op'>=</span> <span class='cn'>TRUE</span>,
   do.LIGHT.thresh_low <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -274,6 +277,19 @@ of parameters that will be produced according to Latin Hypercube Sampling
 (LHS)</p></td>
     </tr>
     <tr>
+      <th>opt.folder.name</th>
+      <td><p>(<em>optional</em>) default 
+<code>FATE_simulation_MULTIPLE_SET</code>. <br /> A <code>string</code> corresponding 
+to the name of the folder that will be created to store the results</p></td>
+    </tr>
+    <tr>
+      <th>opt.seed</th>
+      <td><p>(<em>optional</em>) default <code>NULL</code>. <br />
+An <code>integer</code> to be given to <code><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></code> function, in 
+order to fix the produced results if needed, as 
+<code><a href='https://rdrr.io/pkg/SPOT/man/designLHD.html'>designLHD</a></code> is also a random value generator</p></td>
+    </tr>
+    <tr>
       <th>opt.percent_maxAbund</th>
       <td><p>default <code>0.5</code>. Amount of variation 
 (between <code>0</code> and <code>1</code>) around the original value of 
@@ -284,7 +300,8 @@ selected</p></td>
       <th>opt.percent_seeding</th>
       <td><p>default <code>0.5</code>. Amount of variation (between 
 <code>0</code> and <code>1</code>) around the original value of <code>SEEDING_DURATION</code>, 
-<code>SEEDING_TIMESTEP</code>, <code>SEEDING_INPUT</code> if selected</p></td>
+<code>SEEDING_TIMESTEP</code>, <code>SEEDING_INPUT</code>, <code>POTENTIAL_FECUNDITY</code> 
+if selected</p></td>
     </tr>
     <tr>
       <th>opt.percent_light</th>
@@ -333,6 +350,12 @@ be declined into a range of values</p></td>
       <td><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>SEEDING_INPUT</code> parameter within <em>Global_parameters</em> file will be 
 declined into a range of values</p></td>
+    </tr>
+    <tr>
+      <th>do.potential_fecundity</th>
+      <td><p>default <code>TRUE</code>. If <code>TRUE</code>, 
+<code>POTENTIAL_FECUNDITY</code> parameter within <em>Global_parameters</em> file 
+will be declined into a range of values</p></td>
     </tr>
     <tr>
       <th>do.no_strata</th>
@@ -403,6 +426,7 @@ file :</p>
 <li><p>SEEDING_DURATION</p></li>
 <li><p>SEEDING_TIMESTEP</p></li>
 <li><p>SEEDING_INPUT</p></li>
+<li><p>POTENTIAL_FECUNDITY</p></li>
 <li><p>MAX_ABUND_LOW</p></li>
 <li><p>MAX_ABUND_MEDIUM</p></li>
 <li><p>MAX_ABUND_HIGH <br /> <br /></p></li>
