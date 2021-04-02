@@ -10,7 +10,8 @@ observeEvent(input$required.simul_duration, {
 output$UI.doDispersal = renderUI({
   if (input$doDispersal)
   {
-    selectInput(inputId = "DISPERSAL.mode"
+    column(12
+           , selectInput(inputId = "DISPERSAL.mode"
                 , label = ""
                 , choices = c("(1) uniform kernel"
                               , "(2) exponential kernel"
@@ -18,6 +19,11 @@ output$UI.doDispersal = renderUI({
                 , selected = "(1) uniform kernel"
                 , multiple = FALSE
                 , width = "100%")
+           , checkboxInput(inputId = "DISPERSAL.saving"
+                           , label = param.style("DISPERSAL.saving")
+                           , value = FALSE
+                           , width = "100%")
+    )
   } 
 })
 
@@ -71,6 +77,10 @@ output$UI.doLight = renderUI({
                           , min = 1
                           , value = 8000
                           , width = "100%")
+           , checkboxInput(inputId = "LIGHT.saving"
+                           , label = param.style("LIGHT.saving")
+                           , value = TRUE
+                           , width = "100%")
     )
   }
 })
@@ -103,6 +113,10 @@ output$UI.doSoil = renderUI({
                          , value = 0.8
                          , step = 0.05
                          , width = "100%")
+           , checkboxInput(inputId = "SOIL.saving"
+                           , label = param.style("SOIL.saving")
+                           , value = TRUE
+                           , width = "100%")
     )
   }
 })
@@ -451,27 +465,35 @@ observeEvent(input$create.global, {
     get_res = print_messages(as.expression(
       PRE_FATE.params_globalParameters(name.simulation = input$name.simul
                                        , opt.no_CPU = input$opt.no_CPU
+                                       , opt.saving_abund_PFG_stratum = input$opt.saving_abund_PFG_stratum
+                                       , opt.saving_abund_PFG = input$opt.saving_abund_PFG
+                                       , opt.saving_abund_stratum = input$opt.saving_abund_stratum
                                        , required.no_PFG = input$required.no_PFG
                                        , required.no_strata = input$required.no_strata
                                        , required.simul_duration = input$required.simul_duration
                                        , required.seeding_duration = input$required.seeding_duration
                                        , required.seeding_timestep = input$required.seeding_timestep
                                        , required.seeding_input = input$required.seeding_input
+                                       , required.potential_fecundity = input$required.potential_fecundity
                                        , required.max_abund_low = input$required.max_abund_low
                                        , required.max_abund_medium = input$required.max_abund_medium
                                        , required.max_abund_high = input$required.max_abund_high
                                        , doDispersal = input$doDispersal
-                                       , DISPERSAL.mode = as.vector(c("(1) uniform kernel" = 1
-                                                                      , "(2) exponential kernel" = 2
-                                                                      , "(3) exponential kernel with probability" = 3)[input$DISPERSAL.mode])
+                                       , DISPERSAL.mode = switch (input$DISPERSAL.mode
+                                                                  , "(1) uniform kernel" = 1
+                                                                  , "(2) exponential kernel" = 2
+                                                                  , "(3) exponential kernel with probability" = 3)
+                                       , DISPERSAL.saving = input$DISPERSAL.saving
                                        , doHabSuitability = input$doHabSuitability
                                        , HABSUIT.mode = ifelse(input$HABSUIT.mode == "(1) random", 1, 2)
                                        , doLight = input$doLight
                                        , LIGHT.thresh_medium = input$LIGHT.thresh_medium
                                        , LIGHT.thresh_low = input$LIGHT.thresh_low
+                                       , LIGHT.saving = input$LIGHT.saving
                                        , doSoil = input$doSoil
                                        , SOIL.init = input$SOIL.init
-                                       , SOIL.retention = input$SOIL.retention
+                                       , SOIL.retention = as.numeric(input$SOIL.retention)
+                                       , SOIL.saving = input$SOIL.saving
                                        , doDisturbances = input$doDisturbances
                                        , DIST.no = input$DIST.no
                                        , DIST.no_sub = input$DIST.no_sub
@@ -484,7 +506,7 @@ observeEvent(input$create.global, {
                                        , doFire = input$doFire
                                        , FIRE.no = input$FIRE.no
                                        , FIRE.no_sub = input$FIRE.no_sub
-                                       , FIRE.freq = input$FIRE.freq
+                                       , FIRE.freq = rep(input$FIRE.freq, input$FIRE.no)
                                        , FIRE.ignit_mode = switch (input$FIRE.ignit_mode
                                                                    , "(1) random (fixed)" = 1
                                                                    , "(2) random (normal distribution)" = 2
@@ -497,9 +519,9 @@ observeEvent(input$create.global, {
                                        , FIRE.ignit_flammMax = input$FIRE.ignit_flammMax
                                        , FIRE.neigh_mode = switch (input$FIRE.neigh_mode
                                                                    , "(1) 8 neighbours" = 1
-                                                                   , "(2) extent (fixed)" =2
+                                                                   , "(2) extent (fixed)" = 2
                                                                    , "(3) extent (random)" = 3)
-                                       , FIRE.neigh_CC = input$FIRE.neigh_CC
+                                       , FIRE.neigh_CC = c(input$FIRE.neigh_CC1, input$FIRE.neigh_CC2, input$FIRE.neigh_CC3, input$FIRE.neigh_CC4)
                                        , FIRE.prop_mode = switch (input$FIRE.prop_mode
                                                                   , "(1) probability (fire intensity)" = 1
                                                                   , "(2) probability (% of plants consumed)" = 2

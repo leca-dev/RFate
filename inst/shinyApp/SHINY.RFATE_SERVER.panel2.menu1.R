@@ -148,6 +148,18 @@ get_update.global = function(file.globalParam)
                              , flag = "NO_CPU"
                              , flag.split = " "
                              , is.num = TRUE)
+    , "opt.saving_abund_PFG_stratum" = .getParam(params.lines = file.globalParam
+                                                 , flag = "SAVING_ABUND_PFG_STRATUM"
+                                                 , flag.split = " "
+                                                 , is.num = TRUE)
+    , "opt.saving_abund_PFG" = .getParam(params.lines = file.globalParam
+                                         , flag = "SAVING_ABUND_PFG"
+                                         , flag.split = " "
+                                         , is.num = TRUE)
+    , "opt.saving_abund_stratum" = .getParam(params.lines = file.globalParam
+                                             , flag = "SAVING_ABUND_STRATUM"
+                                             , flag.split = " "
+                                             , is.num = TRUE)
     , "required.no_PFG" = .getParam(params.lines = file.globalParam
                                     , flag = "NO_PFG"
                                     , flag.split = " "
@@ -172,6 +184,10 @@ get_update.global = function(file.globalParam)
                                            , flag = "SEEDING_INPUT"
                                            , flag.split = " "
                                            , is.num = TRUE)
+    , "required.potential_fecundity" = .getParam(params.lines = file.globalParam
+                                                 , flag = "POTENTIAL_FECUNDITY"
+                                                 , flag.split = " "
+                                                 , is.num = TRUE)
     , "required.max_abund_low" = .getParam(params.lines = file.globalParam
                                            , flag = "MAX_ABUND_LOW"
                                            , flag.split = " "
@@ -188,18 +204,24 @@ get_update.global = function(file.globalParam)
                                 , flag = "DO_DISPERSAL"
                                 , flag.split = " "
                                 , is.num = TRUE)
-    , "DISPERSAL.mode" = .getParam(params.lines = file.globalParam
-                                   , flag = "DISPERSAL_MODE"
-                                   , flag.split = " "
-                                   , is.num = TRUE)
+    , "DISPERSAL.mode" = c("(1) uniform kernel"
+                           , "(2) exponential kernel"
+                           , "(3) exponential kernel with probability")[.getParam(params.lines = file.globalParam
+                                                                                  , flag = "DISPERSAL_MODE"
+                                                                                  , flag.split = " "
+                                                                                  , is.num = TRUE)]
+    , "DISPERSAL.saving" = .getParam(params.lines = file.globalParam
+                                     , flag = "DISPERSAL_SAVING"
+                                     , flag.split = " "
+                                     , is.num = TRUE)
     , "doHabSuitability" = .getParam(params.lines = file.globalParam
                                      , flag = "DO_HAB_SUITABILITY"
                                      , flag.split = " "
                                      , is.num = TRUE)
-    , "HABSUIT.mode" = .getParam(params.lines = file.globalParam
-                                 , flag = "HABSUIT_MODE"
-                                 , flag.split = " "
-                                 , is.num = TRUE)
+    , "HABSUIT.mode" = c("(1) random", "(2) PFG specific")[.getParam(params.lines = file.globalParam
+                                                                     , flag = "HABSUIT_MODE"
+                                                                     , flag.split = " "
+                                                                     , is.num = TRUE)]
     , "doLight" = .getParam(params.lines = file.globalParam
                             , flag = "DO_LIGHT_INTERACTION"
                             , flag.split = " "
@@ -212,6 +234,10 @@ get_update.global = function(file.globalParam)
                                      , flag = "LIGHT_THRESH_LOW"
                                      , flag.split = " "
                                      , is.num = TRUE)
+    , "LIGHT.saving" = .getParam(params.lines = file.globalParam
+                                 , flag = "LIGHT_SAVING"
+                                 , flag.split = " "
+                                 , is.num = TRUE)
     , "doSoil" = .getParam(params.lines = file.globalParam
                            , flag = "DO_SOIL_INTERACTION"
                            , flag.split = " "
@@ -224,6 +250,10 @@ get_update.global = function(file.globalParam)
                                    , flag = "SOIL_RETENTION"
                                    , flag.split = " "
                                    , is.num = TRUE)
+    , "SOIL.saving" = .getParam(params.lines = file.globalParam
+                                , flag = "SOIL_SAVING"
+                                , flag.split = " "
+                                , is.num = TRUE)
     , "doDisturbances" = .getParam(params.lines = file.globalParam
                                    , flag = "DO_DISTURBANCES"
                                    , flag.split = " "
@@ -276,10 +306,14 @@ get_update.global = function(file.globalParam)
                               , flag = "FIRE_FREQ"
                               , flag.split = " "
                               , is.num = TRUE)
-    , "FIRE.ignit_mode" = .getParam(params.lines = file.globalParam
-                                    , flag = "FIRE_IGNIT_MODE"
-                                    , flag.split = " "
-                                    , is.num = TRUE)
+    , "FIRE.ignit_mode" = c("(1) random (fixed)"
+                            , "(2) random (normal distribution)"
+                            , "(3) random (historic distribution)"
+                            , "(4) probability (Li et al. 1997)"
+                            , "(5) map")[.getParam(params.lines = file.globalParam
+                                                   , flag = "FIRE_IGNIT_MODE"
+                                                   , flag.split = " "
+                                                   , is.num = TRUE)]
     , "FIRE.ignit_no" = .getParam(params.lines = file.globalParam
                                   , flag = "FIRE_IGNIT_NO"
                                   , flag.split = " "
@@ -288,46 +322,145 @@ get_update.global = function(file.globalParam)
                                       , flag = "FIRE_IGNIT_NOHIST"
                                       , flag.split = " "
                                       , is.num = TRUE)
-    , "FIRE.ignit_logis" = .getParam(params.lines = file.globalParam
-                                     , flag = "FIRE_IGNIT_LOGIS"
-                                     , flag.split = " "
-                                     , is.num = TRUE)
-    , "FIRE.ignit_flammmax" = .getParam(params.lines = file.globalParam
+    , "FIRE.ignit_logis1" = .getParam(params.lines = file.globalParam
+                                      , flag = "FIRE_IGNIT_LOGIS"
+                                      , flag.split = " "
+                                      , is.num = TRUE)[1]
+    , "FIRE.ignit_logis2" = .getParam(params.lines = file.globalParam
+                                      , flag = "FIRE_IGNIT_LOGIS"
+                                      , flag.split = " "
+                                      , is.num = TRUE)[2]
+    , "FIRE.ignit_logis3" = .getParam(params.lines = file.globalParam
+                                      , flag = "FIRE_IGNIT_LOGIS"
+                                      , flag.split = " "
+                                      , is.num = TRUE)[3]
+    , "FIRE.ignit_flammMax" = .getParam(params.lines = file.globalParam
                                         , flag = "FIRE_IGNIT_FLAMMMAX"
                                         , flag.split = " "
                                         , is.num = TRUE)
-    , "FIRE.neigh_mode" = .getParam(params.lines = file.globalParam
-                                    , flag = "FIRE_NEIGH_MODE"
-                                    , flag.split = " "
-                                    , is.num = TRUE)
-    , "FIRE.neigh_cc" = .getParam(params.lines = file.globalParam
-                                  , flag = "FIRE_NEIGH_CC"
-                                  , flag.split = " "
-                                  , is.num = TRUE)
-    , "FIRE.prop_mode" = .getParam(params.lines = file.globalParam
-                                   , flag = "FIRE_PROP_MODE"
+    , "FIRE.neigh_mode" = c("(1) 8 neighbours"
+                            , "(2) extent (fixed)"
+                            , "(3) extent (random)")[.getParam(params.lines = file.globalParam
+                                                               , flag = "FIRE_NEIGH_MODE"
+                                                               , flag.split = " "
+                                                               , is.num = TRUE)]
+    , "FIRE.neigh_CC1" = .getParam(params.lines = file.globalParam
+                                   , flag = "FIRE_NEIGH_CC"
                                    , flag.split = " "
-                                   , is.num = TRUE)
+                                   , is.num = TRUE)[1]
+    , "FIRE.neigh_CC2" = .getParam(params.lines = file.globalParam
+                                   , flag = "FIRE_NEIGH_CC"
+                                   , flag.split = " "
+                                   , is.num = TRUE)[2]
+    , "FIRE.neigh_CC3" = .getParam(params.lines = file.globalParam
+                                   , flag = "FIRE_NEIGH_CC"
+                                   , flag.split = " "
+                                   , is.num = TRUE)[3]
+    , "FIRE.neigh_CC4" = .getParam(params.lines = file.globalParam
+                                   , flag = "FIRE_NEIGH_CC"
+                                   , flag.split = " "
+                                   , is.num = TRUE)[4]
+    , "FIRE.prop_mode" = c("(1) probability (fire intensity)"
+                           , "(2) probability (% of plants consumed)"
+                           , "(3) maximum amount (PFG)"
+                           , "(4) maximum amount (soil)"
+                           , "(5) probability (Li et al. 1997)")[.getParam(params.lines = file.globalParam
+                                                                           , flag = "FIRE_PROP_MODE"
+                                                                           , flag.split = " "
+                                                                           , is.num = TRUE)]
     , "FIRE.prop_intensity" = .getParam(params.lines = file.globalParam
                                         , flag = "FIRE_PROP_INTENSITY"
                                         , flag.split = " "
                                         , is.num = TRUE)
-    , "FIRE.prop_logis" = .getParam(params.lines = file.globalParam
-                                    , flag = "FIRE_PROP_LOGIS"
-                                    , flag.split = " "
-                                    , is.num = TRUE)
-    , "FIRE.quota_mode" = .getParam(params.lines = file.globalParam
-                                    , flag = "FIRE_QUOTA_MODE"
-                                    , flag.split = " "
-                                    , is.num = TRUE)
+    , "FIRE.prop_logis1" = .getParam(params.lines = file.globalParam
+                                     , flag = "FIRE_PROP_LOGIS"
+                                     , flag.split = " "
+                                     , is.num = TRUE)[1]
+    , "FIRE.prop_logis2" = .getParam(params.lines = file.globalParam
+                                     , flag = "FIRE_PROP_LOGIS"
+                                     , flag.split = " "
+                                     , is.num = TRUE)[2]
+    , "FIRE.prop_logis3" = .getParam(params.lines = file.globalParam
+                                     , flag = "FIRE_PROP_LOGIS"
+                                     , flag.split = " "
+                                     , is.num = TRUE)[3]
+    , "FIRE.quota_mode" = c("(1) maximum step"
+                            , "(2) maximum amount"
+                            , "(3) maximum cells"
+                            , "(4) keep going")[.getParam(params.lines = file.globalParam
+                                                          , flag = "FIRE_QUOTA_MODE"
+                                                          , flag.split = " "
+                                                          , is.num = TRUE)]
     , "FIRE.quota_max" = .getParam(params.lines = file.globalParam
                                    , flag = "FIRE_QUOTA_MAX"
                                    , flag.split = " "
                                    , is.num = TRUE)
   )
+  type.param = list(
+    "opt.no_CPU" = "Numeric"
+    , "opt.saving_abund_PFG_stratum" = "Checkbox"
+    , "opt.saving_abund_PFG" = "Checkbox"
+    , "opt.saving_abund_stratum" = "Checkbox"
+    , "required.no_PFG" = "Numeric"
+    , "required.no_strata" = "Numeric"
+    , "required.simul_duration" = "Numeric"
+    , "required.seeding_duration" = "Numeric"
+    , "required.seeding_timestep" = "Numeric"
+    , "required.seeding_input" = "Numeric"
+    , "required.potential_fecundity" = "Numeric"
+    , "required.max_abund_low" = "Numeric"
+    , "required.max_abund_medium" = "Numeric"
+    , "required.max_abund_high" = "Numeric"
+    , "doDispersal" = "Checkbox"
+    , "DISPERSAL.mode" = "Select"
+    , "DISPERSAL.saving" = "Checkbox"
+    , "doHabSuitability" = "Checkbox"
+    , "HABSUIT.mode" = "Select"
+    , "doLight" = "Checkbox"
+    , "LIGHT.thresh_medium" = "Numeric"
+    , "LIGHT.thresh_low" = "Numeric"
+    , "LIGHT.saving" = "Checkbox"
+    , "doSoil" = "Checkbox"
+    , "SOIL.init" = "Numeric"
+    , "SOIL.retention" = "Slider"
+    , "SOIL.saving" = "Checkbox"
+    , "doDisturbances" = "Checkbox"
+    , "DIST.no" = "Numeric"
+    , "DIST.no_sub" = "Numeric"
+    , "DIST.freq" = "Numeric"
+    , "doDrought" = "Checkbox"
+    , "DROUGHT.no_sub" = "Numeric"
+    , "doAliens" = "Checkbox"
+    , "ALIENS.no" = "Numeric"
+    , "ALIENS.freq" = "Numeric"
+    , "doFire" = "Checkbox"
+    , "FIRE.no" = "Numeric"
+    , "FIRE.no_sub" = "Numeric"
+    , "FIRE.freq" = "Numeric"
+    , "FIRE.ignit_mode" = "Select"
+    , "FIRE.ignit_no" = "Numeric"
+    , "FIRE.ignit_nohist" = "TextArea"
+    , "FIRE.ignit_logis1" = "Numeric"
+    , "FIRE.ignit_logis2" = "Numeric"
+    , "FIRE.ignit_logis3" = "Numeric"
+    , "FIRE.ignit_flammMax" = "Numeric"
+    , "FIRE.neigh_mode" = "Select"
+    , "FIRE.neigh_CC1" = "Numeric"
+    , "FIRE.neigh_CC2" = "Numeric"
+    , "FIRE.neigh_CC3" = "Numeric"
+    , "FIRE.neigh_CC4" = "Numeric"
+    , "FIRE.prop_mode" = "Select"
+    , "FIRE.prop_intensity" = "TextArea"
+    , "FIRE.prop_logis1" = "Numeric"
+    , "FIRE.prop_logis2" = "Numeric"
+    , "FIRE.prop_logis3" = "Numeric"
+    , "FIRE.quota_mode" = "Select"
+    , "FIRE.quota_max" = "Numeric"
+  )
   
   ## update shiny input parameters
   updateShinyInputs(session = session
+                    , types = type.param
                     , updates = update.param)
 }
 
@@ -348,8 +481,21 @@ get_update.save = function(file.saveMaps, file.saveObjects, file.PFGsucc)
     , "PFG.folder" = sub(paste0(input$name.simul, "/DATA/PFGS/SUCC"), "", unique(dirname(file.PFGsucc)))
   )
   
+  type.param = list(
+    "save.maps.folder" = "Text"
+    , "save.maps.year1" = "Numeric"
+    , "save.maps.year2" = "Numeric"
+    , "save.maps.no" = "Numeric"
+    , "save.objects.folder" = "Text"
+    , "save.objects.year1" = "Numeric"
+    , "save.objects.year2" = "Numeric"
+    , "save.objects.year3" = "Numeric"
+    , "PFG.folder" = "Text"
+  )
+  
   ## update shiny input parameters
   updateShinyInputs(session = session
+                    , types = type.param
                     , updates = update.param)
 }
 
@@ -418,47 +564,52 @@ observeEvent(input$load.param, {
     {
       RV$names.PFG = sub(".txt", "", sub("SUCC_", "", basename(file.PFGsucc)))
       RV$mat.PFG.ALL = foreach(fi = file.PFGsucc, .combine = 'rbind') %do%
-      {
-        PFG = .getParam(params.lines = fi
-                        , flag = "NAME"
-                        , flag.split = " "
-                        , is.num = FALSE)
-        type = .getParam(params.lines = fi
-                         , flag = "TYPE"
-                         , flag.split = " "
-                         , is.num = FALSE)
-        height = .getParam(params.lines = fi
-                           , flag = "HEIGHT"
+        {
+          PFG = .getParam(params.lines = fi
+                          , flag = "NAME"
+                          , flag.split = " "
+                          , is.num = FALSE)
+          type = .getParam(params.lines = fi
+                           , flag = "TYPE"
                            , flag.split = " "
-                           , is.num = TRUE)
-        maturity = .getParam(params.lines = fi
-                             , flag = "MATURITY"
+                           , is.num = FALSE)
+          height = .getParam(params.lines = fi
+                             , flag = "HEIGHT"
                              , flag.split = " "
                              , is.num = TRUE)
-        longevity = .getParam(params.lines = fi
-                              , flag = "LONGEVITY"
-                              , flag.split = " "
-                              , is.num = TRUE)
-        max_stratum = .getParam(params.lines = fi
-                              , flag = "MAX_STRATUM"
-                              , flag.split = " "
-                              , is.num = TRUE)
-        max_abundance = .getParam(params.lines = fi
-                              , flag = "MAX_ABUNDANCE"
-                              , flag.split = " "
-                              , is.num = TRUE)
-        light = 0
-        
-        return(data.frame(PFG = ifelse(is.null(PFG), "", PFG)
-                          , type = ifelse(is.null(type), "", type)
-                          , height = ifelse(is.null(height), "", height)
-                          , maturity = ifelse(is.null(maturity), "", maturity)
-                          , longevity = ifelse(is.null(longevity), "", longevity)
-                          , max_stratum = ifelse(is.null(max_stratum), "", max_stratum)
-                          , max_abundance = ifelse(is.null(max_abundance), "", max_abundance)
-                          , light = 0
-        ))
-      }
+          maturity = .getParam(params.lines = fi
+                               , flag = "MATURITY"
+                               , flag.split = " "
+                               , is.num = TRUE)
+          longevity = .getParam(params.lines = fi
+                                , flag = "LONGEVITY"
+                                , flag.split = " "
+                                , is.num = TRUE)
+          max_stratum = .getParam(params.lines = fi
+                                  , flag = "MAX_STRATUM"
+                                  , flag.split = " "
+                                  , is.num = TRUE)
+          max_abundance = .getParam(params.lines = fi
+                                    , flag = "MAX_ABUNDANCE"
+                                    , flag.split = " "
+                                    , is.num = TRUE)
+          potential_fecundity = .getParam(params.lines = fi
+                                          , flag = "POTENTIAL_FECUNDITY"
+                                          , flag.split = " "
+                                          , is.num = TRUE)
+          light = 0
+          
+          return(data.frame(PFG = ifelse(is.null(PFG), "", PFG)
+                            , type = ifelse(is.null(type), "", type)
+                            , height = ifelse(is.null(height), "", height)
+                            , maturity = ifelse(is.null(maturity), "", maturity)
+                            , longevity = ifelse(is.null(longevity), "", longevity)
+                            , max_stratum = ifelse(is.null(max_stratum), "", max_stratum)
+                            , max_abundance = ifelse(is.null(max_abundance), "", max_abundance)
+                            , potential_fecundity = ifelse(is.null(potential_fecundity), "", potential_fecundity)
+                            , light = 0
+          ))
+        }
       if (length(file.PFGlight) > 0)
       {
         for(fi in file.PFGlight)
@@ -483,37 +634,37 @@ observeEvent(input$load.param, {
     if (length(file.PFGsoil) > 0 && nchar(file.PFGsoil) > 0)
     {
       RV$mat.PFG.soil = foreach(fi = file.PFGsoil, .combine = 'rbind') %do%
-      {
-        PFG = .getParam(params.lines = fi
-                        , flag = "NAME"
-                        , flag.split = " "
-                        , is.num = FALSE)
-        soil_contrib = .getParam(params.lines = fi
-                                 , flag = "SOIL_CONTRIB"
-                                 , flag.split = " "
-                                 , is.num = TRUE)
-        soil_tol_min = .getParam(params.lines = fi
-                                 , flag = "SOIL_LOW"
-                                 , flag.split = " "
-                                 , is.num = TRUE)
-        soil_tol_max = .getParam(params.lines = fi
-                                 , flag = "SOIL_HIGH"
-                                 , flag.split = " "
-                                 , is.num = TRUE)
-        soil_tol = .getParam(params.lines = fi
-                             , flag = "SOIL_TOL"
-                             , flag.split = " "
-                             , is.num = TRUE)
-        
-        return(data.frame(PFG = ifelse(is.null(PFG), "", PFG)
-                          , soil_contrib = ifelse(is.null(soil_contrib), "", soil_contrib)
-                          , soil_tol_min = ifelse(is.null(soil_tol_min), "", soil_tol_min)
-                          , soil_tol_max = ifelse(is.null(soil_tol_max), "", soil_tol_max)
-                          , lifeStage = rep(c("Germinant", "Immature", "Mature"), each = 3)
-                          , soilResources = rep(c("Low", "Medium", "High"), 3)
-                          , soil_tol = ifelse(is.null(soil_tol), "", soil_tol)
-        ))
-      }
+        {
+          PFG = .getParam(params.lines = fi
+                          , flag = "NAME"
+                          , flag.split = " "
+                          , is.num = FALSE)
+          soil_contrib = .getParam(params.lines = fi
+                                   , flag = "SOIL_CONTRIB"
+                                   , flag.split = " "
+                                   , is.num = TRUE)
+          soil_tol_min = .getParam(params.lines = fi
+                                   , flag = "SOIL_LOW"
+                                   , flag.split = " "
+                                   , is.num = TRUE)
+          soil_tol_max = .getParam(params.lines = fi
+                                   , flag = "SOIL_HIGH"
+                                   , flag.split = " "
+                                   , is.num = TRUE)
+          soil_tol = .getParam(params.lines = fi
+                               , flag = "SOIL_TOL"
+                               , flag.split = " "
+                               , is.num = TRUE)
+          
+          return(data.frame(PFG = ifelse(is.null(PFG), "", PFG)
+                            , soil_contrib = ifelse(is.null(soil_contrib), "", soil_contrib)
+                            , soil_tol_min = ifelse(is.null(soil_tol_min), "", soil_tol_min)
+                            , soil_tol_max = ifelse(is.null(soil_tol_max), "", soil_tol_max)
+                            , lifeStage = rep(c("Germinant", "Immature", "Mature"), each = 3)
+                            , soilResources = rep(c("Low", "Medium", "High"), 3)
+                            , soil_tol = ifelse(is.null(soil_tol), "", soil_tol)
+          ))
+        }
       if (length(file.PFGsucc) > 0 && nchar(file.PFGsucc) > 0)
       {
         RV$mat.PFG.soil = merge(RV$mat.PFG.soil, RV$mat.PFG.ALL[, c("PFG", "type")], by = "PFG", all.x = TRUE)
@@ -523,48 +674,48 @@ observeEvent(input$load.param, {
     if (length(file.PFGdisp) > 0 && nchar(file.PFGdisp) > 0)
     {
       RV$mat.PFG.disp = foreach(fi = file.PFGdisp, .combine = 'rbind') %do%
-      {
-        PFG = .getParam(params.lines = fi
-                        , flag = "NAME"
-                        , flag.split = " "
-                        , is.num = FALSE)
-        dd = .getParam(params.lines = fi
-                       , flag = "DISPERS_DIST"
-                       , flag.split = " "
-                       , is.num = TRUE)
-        
-        return(data.frame(PFG = ifelse(is.null(PFG), "", PFG)
-                          , d50 = ifelse(is.null(dd), "", dd[1])
-                          , d99 = ifelse(is.null(dd), "", dd[2])
-                          , ldd = ifelse(is.null(dd), "", dd[3])
-        ))
-      }
+        {
+          PFG = .getParam(params.lines = fi
+                          , flag = "NAME"
+                          , flag.split = " "
+                          , is.num = FALSE)
+          dd = .getParam(params.lines = fi
+                         , flag = "DISPERS_DIST"
+                         , flag.split = " "
+                         , is.num = TRUE)
+          
+          return(data.frame(PFG = ifelse(is.null(PFG), "", PFG)
+                            , d50 = ifelse(is.null(dd), "", dd[1])
+                            , d99 = ifelse(is.null(dd), "", dd[2])
+                            , ldd = ifelse(is.null(dd), "", dd[3])
+          ))
+        }
     }
     ## Disturbances
     if (length(file.PFGdist) > 0 && nchar(file.PFGdist) > 0)
     {
       res = foreach(fi = file.PFGdist) %do%
-      {
-        PFG = .getParam(params.lines = fi
-                        , flag = "NAME"
-                        , flag.split = " "
-                        , is.num = FALSE)
-        FATES = .getParam(params.lines = fi
-                          , flag = "FATES"
-                          , flag.split = " "
-                          , is.num = TRUE)
-        
-        no.dist = length(FATES) / (4 * 2)
-        ind_Kill = seq(1, 4 * 2, 2)
-        res = foreach(di = 1:no.dist, .combine = "rbind") %do%
         {
-          res = data.frame(name = paste0("DIST_", di), responseStage = 1:4)
-          eval(parse(text = paste0("res$KilledIndiv_", PFG, " = FATES[ind_Kill + (di -1) * 8]")))
-          eval(parse(text = paste0("res$ResproutIndiv_", PFG, " = FATES[ind_Kill + 1 + (di -1) * 8]")))
+          PFG = .getParam(params.lines = fi
+                          , flag = "NAME"
+                          , flag.split = " "
+                          , is.num = FALSE)
+          FATES = .getParam(params.lines = fi
+                            , flag = "FATES"
+                            , flag.split = " "
+                            , is.num = TRUE)
+          
+          no.dist = length(FATES) / (4 * 2)
+          ind_Kill = seq(1, 4 * 2, 2)
+          res = foreach(di = 1:no.dist, .combine = "rbind") %do%
+            {
+              res = data.frame(name = paste0("DIST_", di), responseStage = 1:4)
+              eval(parse(text = paste0("res$KilledIndiv_", PFG, " = FATES[ind_Kill + (di -1) * 8]")))
+              eval(parse(text = paste0("res$ResproutIndiv_", PFG, " = FATES[ind_Kill + 1 + (di -1) * 8]")))
+              return(res)
+            }
           return(res)
         }
-        return(res)
-      }
       RV$mat.PFG.dist = Reduce(f = function(x, y) merge(x, y, by = c("name", "responseStage")), x = res)
     }
     ## Changing
@@ -577,29 +728,29 @@ observeEvent(input$load.param, {
     {
       RV$mat.changing = foreach(ty = c("MASK", "HABSUIT", "DIST", "DROUGHT", "ALIENS", "FIRE")
                                 , .combine = 'rbind') %do%
-      {
-        file.change_m = switch (ty
-                                , "MASK" = file.changeMask_m
-                                , "HABSUIT" = file.changeHabsuit_m
-                                , "DIST" = file.changeDist_m
-                                , "DROUGHT" = file.changeDrought_m
-                                , "ALIENS" = file.changeAliens_m
-                                , "FIRE" = file.changeFire_m
-        )
-        if (length(file.change_m) > 0 && nchar(file.change_m) > 0)
         {
-          res = foreach(fi = file.change_m, .combine = "rbind") %do%
+          file.change_m = switch (ty
+                                  , "MASK" = file.changeMask_m
+                                  , "HABSUIT" = file.changeHabsuit_m
+                                  , "DIST" = file.changeDist_m
+                                  , "DROUGHT" = file.changeDrought_m
+                                  , "ALIENS" = file.changeAliens_m
+                                  , "FIRE" = file.changeFire_m
+          )
+          if (length(file.change_m) > 0 && nchar(file.change_m) > 0)
           {
-            li = readLines(fi)
-            return(data.frame(opt.folder.name = sub(paste0(input$name.simul, "/DATA/SCENARIO"), "", dirname(fi))
-                              , type.changing = ty
-                              , year = gsub("t|.txt", "", tail(strsplit(basename(fi), "_")[[1]], 1))
-                              , order = 1:length(li)
-                              , file.name = li))
+            res = foreach(fi = file.change_m, .combine = "rbind") %do%
+              {
+                li = readLines(fi)
+                return(data.frame(opt.folder.name = sub(paste0(input$name.simul, "/DATA/SCENARIO"), "", dirname(fi))
+                                  , type.changing = ty
+                                  , year = gsub("t|.txt", "", tail(strsplit(basename(fi), "_")[[1]], 1))
+                                  , order = 1:length(li)
+                                  , file.name = li))
+              }
+            return(res)
           }
-          return(res)
         }
-      }
     }
   }
 })

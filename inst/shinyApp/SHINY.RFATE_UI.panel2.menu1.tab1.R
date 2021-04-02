@@ -26,6 +26,12 @@ tabPanel(title = HTML("<span class='tabPanel_title'>Global parameters</span>")
                                      , value = 1000
                                      , min = 1
                                      , width = "100%")
+                      , numericInput(inputId = "opt.no_CPU"
+                                     , label = HTML(paste0("<i class='far fa-heart' style='font-size:15px;'></i>"
+                                                           , param.style(" opt.no_CPU")))
+                                     , value = 1
+                                     , min = 1
+                                     , width = "100%")
                )
                , column(4
                         , br()
@@ -47,6 +53,22 @@ tabPanel(title = HTML("<span class='tabPanel_title'>Global parameters</span>")
                                        , value = 9000
                                        , min = 1
                                        , width = "100%")
+                        , br()
+                        , checkboxInput(inputId = "opt.saving_abund_PFG_stratum"
+                                        , label = HTML(paste0("<i class='far fa-heart' style='font-size:15px;'></i>"
+                                                              , param.style(" opt.saving_abund_PFG_stratum")))
+                                        , value = TRUE
+                                        , width = "100%")
+                        , checkboxInput(inputId = "opt.saving_abund_PFG"
+                                        , label = HTML(paste0("<i class='far fa-heart' style='font-size:15px;'></i>"
+                                                              , param.style(" opt.saving_abund_PFG")))
+                                        , value = TRUE
+                                        , width = "100%")
+                        , checkboxInput(inputId = "opt.saving_abund_stratum"
+                                        , label = HTML(paste0("<i class='far fa-heart' style='font-size:15px;'></i>"
+                                                              , param.style(" opt.saving_abund_stratum")))
+                                        , value = TRUE
+                                        , width = "100%")
                )
                , column(4
                         , br()
@@ -68,11 +90,11 @@ tabPanel(title = HTML("<span class='tabPanel_title'>Global parameters</span>")
                                        , value = 100
                                        , min = 0
                                        , width = "100%")
-                        , numericInput(inputId = "opt.no_CPU"
+                        , numericInput(inputId = "required.potential_fecundity"
                                        , label = HTML(paste0("<i class='far fa-heart' style='font-size:15px;'></i>"
-                                                             , param.style(" opt.no_CPU")))
-                                       , value = 1
-                                       , min = 1
+                                                             , param.style(" required.potential_fecundity")))
+                                       , value = 10
+                                       , min = 0
                                        , width = "100%")
                )
              )

@@ -289,55 +289,24 @@ get_files = function(path_folder, skip.no = 2, opt.sub_folder = FALSE)
 
 ###################################################################################################################################
 
-# Create a function that wraps a Shiny input function in code that adds information about the tag type
-updateableInput <- function(inputType) {
-  function(...) {
-    shinyFuncName <- as.character(as.list(match.call()[1]))
-    shinyFunc <- get(shinyFuncName, envir = as.environment("package:shiny"))
-    shiny::tagAppendAttributes(shinyFunc(...), `data-input-type` = inputType)
-  }
-}
-
-# define what Shiny inputs you want to support
-# (the following three common input types are tested; the code here probably will
-# not work as-is for ALL inputs but you should be able to modify it slightly for other inputs)
-textInput <- updateableInput("Text")
-numericInput <- updateableInput("Numeric")
-selectInput <- updateableInput("Select")
-checkboxInput  <- updateableInput("Checkbox")
-
 # Update a single Shiny input without specifying its type
-updateShinyInput <- function(session, id, value) {
-  shinyUpdateInputId <- paste0("shiny-update-input-", id)
-  # shinyUpdateInputId <- id
-  # print(shinyUpdateInputId)
-  # print(grep(id, names(session$input), value = TRUE))
-  js$getInputType(id, shinyUpdateInputId)
-  # print(grep(id, names(session$input), value = TRUE))
-  # print("yo")
-  # print(names(session$input))
+updateShinyInput <- function(session, id, type, value) {
   shiny::observeEvent(session$input[[id]], {
-    # print("yaaa")
-    # print(id)
-    # print(session$input[[id]])
-    # print(session$input[[shinyUpdateInputId]])
-    inputType <- session$input[[shinyUpdateInputId]]
-    # print(inputType)
-    updateFunc <- sprintf("update%sInput", inputType)
-    funcParams <- list(session = session, inputId = id)    
-    if (inputType == "Select") {
+    updateFunc <- sprintf("update%sInput", type)
+    funcParams <- list(session = session, inputId = id)
+    if (type == "Select") {
       funcParams[['selected']] <- value
     } else {
       funcParams[['value']] <- value
-    }    
+    }
     do.call(updateFunc, funcParams)
   })
 }
 
 # Update multiple Shiny inputs simultaneously
-updateShinyInputs <- function(session, updates) {
+updateShinyInputs <- function(session, types, updates) {
   lapply(names(updates), function(id) {
-    updateShinyInput(session, id, updates[[id]])
+    updateShinyInput(session, id, types[[id]], updates[[id]])
   })
 }
 

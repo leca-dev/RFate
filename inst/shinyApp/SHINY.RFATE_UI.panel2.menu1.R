@@ -103,8 +103,7 @@ tabPanel(title = HTML("<p class='panel_title'><i class='fa fa-folder-plus'></i> 
                                   downloadButton(outputId = "FATE_simulation.zip"
                                                  , label = "Download folder"
                                                  , icon = icon("download")
-                                                 , width = "100%"
-                                                 , style = button.style
+                                                 , style = paste0(button.style, "width:100%;")
                                   )
                                 )
                           )
