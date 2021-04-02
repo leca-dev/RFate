@@ -13,6 +13,10 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
              fluidRow(
                column(3
                       , br()
+                      , directoryInput(inputId = 'dir.select'
+                                      , label = 'Define working directory')
+                      , br()
+                      , br()
                       , div(id = "help0_6"
                             , actionButton(inputId = "HELP.panel0"
                                            , label = "Need some help"

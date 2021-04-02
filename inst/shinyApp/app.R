@@ -28,6 +28,7 @@ if (!load.shinyDirectoryInput)
   }
   library(devtools)
   devtools::install_github('wleepang/shiny-directory-input')
+  # devtools::install_github("thomasp85/shinyFiles")
 }
 check.packages = sapply(list.packages, .loadPackage)
 load.packages = sapply(list.packages, require, character.only = TRUE)
@@ -137,6 +138,16 @@ server <- function(input, output, session) {
   
   session$onSessionEnded(stopApp)
   
+  observeEvent(input$dir.select, {
+    if (input$dir.select > 0)
+    {
+      path = shinyDirectoryInput::choose.dir(default = readDirectoryInput(session, 'dir.select'))
+      updateDirectoryInput(session, 'dir.select', value = path)
+      setwd(path)
+      showNotification(paste0("Working directory has been set to : ", getwd()), type = "warning")
+    }
+  })
+
   observe_helpers(withMathJax = TRUE)
   
   RV = reactiveValues(names.PFG = c()
