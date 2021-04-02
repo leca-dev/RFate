@@ -1050,16 +1050,15 @@ PRE_FATE.params_globalParameters = function(
       names.params.list.FIRE = c(names.params.list.FIRE, "FIRE_IGNIT_NOHIST")
     } else if (FIRE.ignit_mode == 4)
     {
-      params.FIRE = c(params.FIRE
-                      , FIRE.ignit_logis
-                      , FIRE.ignit_flammMax)
+      params.FIRE[[length(params.FIRE) + 1]] = FIRE.ignit_logis
+      params.FIRE[[length(params.FIRE) + 1]] = FIRE.ignit_flammMax
       names.params.list.FIRE = c(names.params.list.FIRE
                                  , "FIRE_IGNIT_LOGIS"
                                  , "FIRE_IGNIT_FLAMMMAX")
     }
     if (FIRE.neigh_mode %in% c(2, 3))
     {
-      params.FIRE = c(params.FIRE, FIRE.neigh_CC)
+      params.FIRE[[length(params.FIRE) + 1]] = FIRE.neigh_CC
       names.params.list.FIRE = c(names.params.list.FIRE, "FIRE_NEIGH_CC")
     }
     if (FIRE.prop_mode == 1)
@@ -1068,7 +1067,7 @@ PRE_FATE.params_globalParameters = function(
       names.params.list.FIRE = c(names.params.list.FIRE, "FIRE_PROP_INTENSITY")
     } else if (FIRE.prop_mode == 5)
     {
-      params.FIRE = c(params.FIRE, FIRE.prop_logis)
+      params.FIRE[[length(params.FIRE) + 1]] = FIRE.prop_logis
       names.params.list.FIRE = c(names.params.list.FIRE, "FIRE_PROP_LOGIS")
     }
     if (FIRE.quota_mode %in% c(1, 2, 3))

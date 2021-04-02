@@ -667,9 +667,9 @@ PRE_FATE.params_multipleSet = function(
         {
           PARAMS.range[1, "soil_retention"] = 0
         }
-        if (PARAMS.range[1, "soil_retention"] > 1)
+        if (PARAMS.range[2, "soil_retention"] > 1)
         {
-          PARAMS.range[1, "soil_retention"] = 1
+          PARAMS.range[2, "soil_retention"] = 1
         }
       }
       ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_init", "soil_retention")))
@@ -749,9 +749,9 @@ PRE_FATE.params_multipleSet = function(
           {
             PARAMS.range[1, "soil_retention"] = 0
           }
-          if (PARAMS.range[1, "soil_retention"] > 1)
+          if (PARAMS.range[2, "soil_retention"] > 1)
           {
-            PARAMS.range[1, "soil_retention"] = 1
+            PARAMS.range[2, "soil_retention"] = 1
           }
         }
         ind_notSoil = which(!(colnames(PARAMS.range) %in% c("soil_init", "soil_retention")))
