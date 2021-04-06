@@ -26,10 +26,10 @@ observeEvent(input$create.save.maps, {
           }
           
           get_res = print_messages(as.expression(
-            PRE_FATE.params_saveYears(name.simulation = input$name.simul
-                                      , years.maps = years.maps
-                                      , years.objects = NULL
-                                      , opt.folder.name = opt.folder.name
+            PRE_FATE.params_savingYears(name.simulation = input$name.simul
+                                        , years.maps = years.maps
+                                        , years.objects = NULL
+                                        , opt.folder.name = opt.folder.name
             )
           ), cut_pattern = paste0(input$name.simul, "/DATA/SAVE/"))
           
@@ -76,10 +76,10 @@ observeEvent(input$create.save.objects, {
       }
       
       get_res = print_messages(as.expression(
-        PRE_FATE.params_saveYears(name.simulation = input$name.simul
-                                  , years.maps = NULL
-                                  , years.objects = years.objects
-                                  , opt.folder.name = opt.folder.name
+        PRE_FATE.params_savingYears(name.simulation = input$name.simul
+                                    , years.maps = NULL
+                                    , years.objects = years.objects
+                                    , opt.folder.name = opt.folder.name
         )
       ), cut_pattern = paste0(input$name.simul, "/DATA/SAVE/"))
       

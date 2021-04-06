@@ -156,7 +156,7 @@ observeEvent(input$add.changing, {
                                       , type.changing = input$type.changing
                                       , year = input$changing.year
                                       , order = input$changing.order
-                                      , file.name = input$changing.file))
+                                      , new.value = input$changing.file))
   
   shinyjs::enable("create.changing")
 })
@@ -176,8 +176,8 @@ observeEvent(input$create.changing, {
     {
       tab = mat.changing.split[[i]]
       tab$opt.folder.name = as.character(tab$opt.folder.name)
-      tab$file.name = as.character(tab$file.name)
-      if (nrow(tab) > 0 && sum(nchar(tab$file.name) == 0) == 0)
+      tab$new.value = as.character(tab$new.value)
+      if (nrow(tab) > 0 && sum(nchar(tab$new.value) == 0) == 0)
       {
         if (nchar(unique(tab$opt.folder.name)) > 0)
         {
@@ -189,7 +189,7 @@ observeEvent(input$create.changing, {
                                         , type.changing = unique(tab$type.changing)
                                         , mat.changing = data.frame(year = tab$year
                                                                     , order = tab$order
-                                                                    , file.name = tab$file.name)
+                                                                    , new.value = tab$new.value)
                                         , opt.folder.name = unique(tab$opt.folder.name)
           )
         ), cut_pattern = paste0(input$name.simul, "/DATA/SCENARIO/"))
