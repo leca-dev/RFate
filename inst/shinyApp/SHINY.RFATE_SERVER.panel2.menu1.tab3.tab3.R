@@ -34,8 +34,8 @@ output$UI.soil.opt.con = renderUI({
              , HTML("<strong>Contribution</strong>")
              , selectInput(inputId = "soil.strategy_con"
                            , label = NULL
-                           , choices = c("ubiquist")
-                           , selected = "ubiquist"
+                           , choices = c("oligotrophic", "mesotrophic", "eutrophic")
+                           , selected = "mesotrophic"
                            , multiple = F
                            , width = "100%"))
     )
@@ -124,7 +124,7 @@ output$UI.soil.opt.tol1 = renderUI({
            , HTML("<strong>Tolerance</strong>")
            , selectInput(inputId = "soil.strategy_tol"
                          , label = NULL
-                         , choices = c("ubiquist")
+                         , choices = c("poor_lover", "ubiquist", "rich_lover")
                          , selected = "ubiquist"
                          , multiple = F
                          , width = "100%"))
@@ -220,13 +220,13 @@ observeEvent(input$add.PFG.soil, {
                                                                  , input$soil.strategy_ag
                                                                  , NA)
                                           , active_germ_low = ifelse(input$soil.opt.ag == "user-defined"
-                                                                     , as.numeric(input$soil.Ge.L.act)
+                                                                     , as.numeric(input$soil.Ge.L.act) / 10
                                                                      , NA)
                                           , active_germ_medium = ifelse(input$soil.opt.ag == "user-defined"
-                                                                        , as.numeric(input$soil.Ge.M.act)
+                                                                        , as.numeric(input$soil.Ge.M.act) / 10
                                                                         , NA)
                                           , active_germ_high = ifelse(input$soil.opt.ag == "user-defined"
-                                                                      , as.numeric(input$soil.Ge.H.act)
+                                                                      , as.numeric(input$soil.Ge.H.act) / 10
                                                                       , NA)
                                           , strategy_tol = ifelse(input$soil.opt.tol == "by strategy"
                                                                   , input$soil.strategy_tol

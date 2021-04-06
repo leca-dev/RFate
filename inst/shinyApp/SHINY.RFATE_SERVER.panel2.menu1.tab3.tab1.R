@@ -23,24 +23,115 @@ output$UI.succ.PFG = renderUI({
   }
 })
 
+####################################################################
+
+output$UI.succ.opt.ma = renderUI({
+  if (input$succ.opt.ma == "user-defined")
+  {
+    fluidRow(
+      column(12
+             , HTML("<strong>Maximum abundance</strong>")
+             , selectInput(inputId = "succ.max_abund"
+                           , label = NULL
+                           , choices = c("Low", "Medium", "High")
+                           , selected = "Low"
+                           , multiple = F
+                           , width = "100%"))
+    )
+  }
+})
 
 ####################################################################
 
-output$mat.PFG.succ = renderTable({ RV$mat.PFG.succ })
+output$UI.succ.opt.is = renderUI({
+  if (input$succ.opt.is == "user-defined")
+  {
+    fluidRow(
+      column(12
+             , HTML("<strong>Immature size</strong>")
+             , selectInput(inputId = "succ.imm_size"
+                           , label = NULL
+                           , choices = seq(0, 100, 10)
+                           , selected = 100
+                           , multiple = F
+                           , width = "100%"))
+    )
+  }
+})
+
+####################################################################
+
+output$UI.succ.opt.pf = renderUI({
+  if (input$succ.opt.pf == "user-defined")
+  {
+    fluidRow(
+      column(12
+             , HTML("<strong>Potential fecundity</strong>")
+             , numericInput(inputId = "succ.pot_fecund"
+                            , label = NULL
+                            , value = 10
+                            , min = 0
+                            , step = 10
+                            , width = "100%"))
+    )
+  }
+})
+
+
+####################################################################
+
+output$mat.PFG.succ = renderTable({
+  RV$mat.PFG.succ[, which(apply(RV$mat.PFG.succ, 2, function(x) length(which(!is.na(x)))) > 0)]
+})
 
 observeEvent(input$add.PFG.succ, {
   req(input$succ.PFG)
-  RV$mat.PFG.succ <- rbind(RV$mat.PFG.succ
-                           , data.frame(PFG = input$succ.PFG
-                                        , type = input$succ.type
-                                        , height = as.numeric(input$succ.height)
-                                        , maturity = as.numeric(input$succ.maturity)
-                                        , longevity = as.numeric(input$succ.longevity)
-                           ))
+  if ((input$succ.opt.ma == "by type & max stratum" && RV$compt.succ.options[2]) ||
+      (input$succ.opt.ma == "user-defined" && RV$compt.succ.options[1]))
+  {
+    shinyalert(type = "warning", text = "You can not mix Maximum abundance 'by type & max stratum' and 'user-defined' !")
+  } else if ((input$succ.opt.is == "by type & max stratum" && RV$compt.succ.options[4]) ||
+             (input$succ.opt.is == "user-defined" && RV$compt.succ.options[3]))
+  {
+    shinyalert(type = "warning", text = "You can not mix Immature size 'by type & max stratum' and 'user-defined' !")
+  } else if ((input$succ.opt.pf == "by global param" && RV$compt.succ.options[6]) ||
+             (input$succ.opt.pf == "user-defined" && RV$compt.succ.options[5]))
+  {
+    shinyalert(type = "warning", text = "You can not mix Potential fecundity 'by global param' and 'user-defined' !")
+  } else
+  {
+    RV$mat.PFG.succ <- rbind(RV$mat.PFG.succ
+                             , data.frame(PFG = input$succ.PFG
+                                          , type = input$succ.type
+                                          , height = as.numeric(input$succ.height)
+                                          , maturity = as.numeric(input$succ.maturity)
+                                          , longevity = as.numeric(input$succ.longevity)
+                                          , max_abundance = ifelse(input$succ.opt.ma == "user-defined"
+                                                                   , switch (input$succ.max_abund
+                                                                             , "Low" = 1
+                                                                             , "Medium" = 2
+                                                                             , "High" = 3)
+                                                                   , NA)
+                                          , immature_size = ifelse(input$succ.opt.is == "user-defined"
+                                                                   , as.numeric(input$succ.imm_size) / 10
+                                                                   , NA)
+                                          , potential_fecundity = ifelse(input$succ.opt.pf == "user-defined"
+                                                                         , as.numeric(input$succ.pot_fecund)
+                                                                         , NA)
+                             ))
+    
+    RV$compt.succ.options = c(input$succ.opt.ma == "by type & max stratum"
+                              , input$succ.opt.ma == "user-defined"
+                              , input$succ.opt.is == "by type & max stratum"
+                              , input$succ.opt.is == "user-defined"
+                              , input$succ.opt.pf == "by global param"
+                              , input$succ.opt.pf == "user-defined")
+  }
 })
 
 observeEvent(input$delete.PFG.succ, {
   RV$mat.PFG.succ <- data.frame()
+  RV$compt.succ.options <- rep(FALSE, 6)
 })
 
 observeEvent(RV$mat.PFG.succ, {
@@ -59,9 +150,25 @@ observeEvent(RV$mat.PFG.succ, {
 observeEvent(input$create.succ, {
   if (input$create.skeleton > 0)
   {
+    col.succ = c("PFG", "type", "height", "maturity", "longevity")
+    if (input$succ.opt.ma == "user-defined")
+    {
+      col.succ = c(col.succ, "max_abundance")
+    }
+    if (input$succ.opt.is == "user-defined")
+    {
+      col.succ = c(col.succ, "immature_size")
+    }
+    if (input$succ.opt.pf == "user-defined")
+    {
+      col.succ = c(col.succ, "potential_fecundity")
+    }
+    
     get_res = print_messages(as.expression(
       PRE_FATE.params_PFGsuccession(name.simulation = input$name.simul
-                                    , mat.PFG.succ = RV$mat.PFG.succ[, c("PFG", "type", "height", "maturity", "longevity")]
+                                    , mat.PFG.succ = RV$mat.PFG.succ[, col.succ]
+                                    , strata.limits = as.numeric(input$succ.strataLimits)
+                                    , strata.limits_reduce = input$succ.doStrata
                                     , opt.folder.name = get_opt.folder.name()
       )
     ), cut_pattern = paste0(input$name.simul, "/DATA/PFGS/SUCC/"))
@@ -180,10 +287,10 @@ observeEvent(input$view.succ.select, {
       } else
       {
         col_toKeep = foreach(i = 1:ncol(tab), .combine = "c") %do%
-        {
-          eval(parse(text = paste0("res = input$check.succ.", colnames(tab)[i])))
-          return(res)
-        }
+          {
+            eval(parse(text = paste0("res = input$check.succ.", colnames(tab)[i])))
+            return(res)
+          }
       }
       return(tab[, which(col_toKeep == TRUE), drop = FALSE])
     }
@@ -197,10 +304,10 @@ observeEvent(input$delete.succ.select, {
   } else
   {
     col_toKeep = foreach(i = 1:RV$compt.succ.no, .combine = "c") %do%
-    {
-      eval(parse(text = paste0("res = input$check.succ.", RV$compt.succ.files[i])))
-      return(res)
-    }
+      {
+        eval(parse(text = paste0("res = input$check.succ.", RV$compt.succ.files[i])))
+        return(res)
+      }
   }
   
   if (sum(col_toKeep) > 0)

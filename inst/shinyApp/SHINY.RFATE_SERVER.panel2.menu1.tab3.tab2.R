@@ -84,7 +84,7 @@ output$UI.light.opt.ag = renderUI({
                , HTML(paste0("<strong>", c("Low", "Medium", "High")[x], "</strong>"))
                , selectInput(inputId = paste0("light.Ge.", c("L", "M", "H")[x], ".act")
                              , label = NULL
-                             , choices = seq(0,100,10)
+                             , choices = seq(0, 100, 10)
                              , selected = 100
                              , multiple = FALSE
                              , width = "100%"))
@@ -144,7 +144,7 @@ output$UI.light.opt.tol2 = renderUI({
                      column(4
                             , selectInput(inputId = paste0("light.", k, ".", l, ".tol")
                                           , label = NULL
-                                          , choices = seq(0,100,10)
+                                          , choices = seq(0, 100, 10)
                                           , multiple = FALSE
                                           , width = "100%"))
                    })
@@ -218,7 +218,7 @@ observeEvent(input$add.PFG.light, {
                               , input$light.opt.ag == "user-defined"
                               , input$light.opt.tol == "by type & light"
                               , input$light.opt.tol == "by strategy"
-                              , input$light.opt.ol == "user-defined")
+                              , input$light.opt.tol == "user-defined")
   }
 })
 

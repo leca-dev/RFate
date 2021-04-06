@@ -58,6 +58,22 @@ tabPanel(title = HTML("<span class='tabPanel_title'>PFG files</span>")
                                                           , " Succession</span>"))
                                       , value = "panel.succ"
                                       , fluidRow(
+                                        column(3
+                                               , br()
+                                               , checkboxInput(inputId = "succ.doStrata"
+                                                               , label = "Reduce strata"
+                                                               , value = FALSE
+                                                               , width = "100%"))
+                                        , column(9
+                                                 , br()
+                                                 , selectInput(inputId = "succ.strataLimits"
+                                                               , label = "Strata limits"
+                                                               , choices = c(0, 20, 50, 150, 400, 1000, 2000, 5000, 10000)
+                                                               , selected = c(0, 20, 50, 150, 400, 1000, 2000, 5000, 10000)
+                                                               , multiple = TRUE
+                                                               , width = "100%"))
+                                      )
+                                      , fluidRow(
                                         column(6
                                                , br()
                                                , shinyjs::disabled(
@@ -129,6 +145,42 @@ tabPanel(title = HTML("<span class='tabPanel_title'>PFG files</span>")
                                                                 , value = 0
                                                                 , min = 0
                                                                 , width = "100%"))
+                                      )
+                                      , fluidRow(
+                                        column(6
+                                               , br()
+                                               , HTML("<strong>Maximum abundance</strong>")
+                                               , radioButtons(inputId = "succ.opt.ma"
+                                                              , label = NULL
+                                                              , choices = c("by type & max stratum", "user-defined")
+                                                              , selected = "by type & max stratum"
+                                                              , inline = TRUE
+                                                              , width = "100%"))
+                                        , column(6, br(), uiOutput(outputId = "UI.succ.opt.ma"))
+                                      )
+                                      , fluidRow(
+                                        column(6
+                                               , br()
+                                               , HTML("<strong>Immature size</strong>")
+                                               , radioButtons(inputId = "succ.opt.is"
+                                                              , label = NULL
+                                                              , choices = c("by type & max stratum", "user-defined")
+                                                              , selected = "by type & max stratum"
+                                                              , inline = TRUE
+                                                              , width = "100%"))
+                                        , column(6, br(), uiOutput(outputId = "UI.succ.opt.is"))
+                                      )
+                                      , fluidRow(
+                                        column(6
+                                               , br()
+                                               , HTML("<strong>Potential fecundity</strong>")
+                                               , radioButtons(inputId = "succ.opt.pf"
+                                                              , label = NULL
+                                                              , choices = c("by global param", "user-defined")
+                                                              , selected = "by global param"
+                                                              , inline = TRUE
+                                                              , width = "100%"))
+                                        , column(6, br(), uiOutput(outputId = "UI.succ.opt.pf"))
                                       )
                                       , fluidRow(
                                         column(11

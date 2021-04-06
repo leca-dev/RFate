@@ -167,6 +167,7 @@ server <- function(input, output, session) {
                       , compt.save.files = c()
                       , compt.succ.no = 0
                       , compt.succ.files = c()
+                      , compt.succ.options = rep(FALSE, 6)
                       , compt.light.no = 0
                       , compt.light.files = c()
                       , compt.light.options = rep(FALSE, 6)
