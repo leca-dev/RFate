@@ -38,7 +38,7 @@ z-index: 10;
 
 ## <i class="fas fa-boxes"></i> Package releases
 
-Original version was `FATE-HD`, developed and used in papers such as [Boulangeat 2014](), [Carboni], [Barros]. It was only `C++` code, and all modules were linked together (`LIGHT`, `DISPERSAL`, `HABSUIT`, `SEEDING`, `DISTURBANCE`).
+Original version was `FATE-HD`, developed and used in papers such as *Boulangeat 2014*, *Barros 2017* or *Carboni 2018* (see [FATE tutorial - Publications](fate_tutorial_0_publications.html)). It was only `C++` code, and all modules were linked together (`LIGHT`, `DISPERSAL`, `HABSUIT`, `SEEDING`, `DISTURBANCE`).
 
 Refinements to the model, and integration of the `C++` code within an `R` package, as well as new modules development, were meant to facilitate the use and spread of the `FATE` model.
 
@@ -47,7 +47,7 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 - all steps included in one tool (`PRE-FATE`, `FATE`, `POST-FATE`), that can be easily installed on all OS (Mac, Unix, Windows)
 - a simplification of some structural equations of the model (see [FATE tutorial - Modelling framework](fate_tutorial_0_modelling_framework.html))
 - 8 modules that can be turned on/off (see [FATE tutorial - Modules](fate_tutorial_3_MODULES.html))
-- a [`shiny` interface](interface_tutorial_0_presentation.html), and a complete documentation and manual (*! coming soon !*), with meaningful examples from real dataset
+- a [`shiny` interface](interface_tutorial_0_presentation.html), and a complete documentation and manual, with meaningful examples from real dataset (see [Manual & Examples](manual.html) page)
 
 
 <br/><br/>
