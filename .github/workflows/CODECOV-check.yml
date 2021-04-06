@@ -3,9 +3,9 @@ name: CODECOV-check
 
 on:
   push:
-    branches: [ RFate ]
+    branches: [ master ]
   pull_request:
-    branches: [ RFate ]
+    branches: [ master ]
 
 
 # Increment this version when we want to clear cache

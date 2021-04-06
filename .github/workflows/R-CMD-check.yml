@@ -3,9 +3,9 @@ name: R-CMD-check
 
 on:
   push:
-    branches: [ RFate ]
+    branches: [ master ]
   pull_request:
-    branches: [ RFate ]
+    branches: [ master ]
 
 
 jobs:
