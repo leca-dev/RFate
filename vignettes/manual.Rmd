@@ -57,7 +57,7 @@ The different parts of the Champsaur example dataset can be downloaded with the 
 ```R
 library(RFate)
 
-Champsaur_PFG = .loadData("Champsaur_PFG")
+Champsaur_PFG = .loadData("Champsaur_PFG", "RData")
 
 
 ###################################################################################################
@@ -291,7 +291,7 @@ A brief description of the Plant Functional Groups obtained for the Champsaur da
 ```R
 library(RFate)
 
-Champsaur_params = .loadData("Champsaur_params")
+Champsaur_params = .loadData("Champsaur_params", "RData")
 
 
 ###################################################################################################
@@ -392,7 +392,7 @@ PRE_FATE.params_PFGsuccession(name.simulation = "FATE_Champsaur"
 
 ## DISPERSAL ----------------------------------------------------------------------------
 # ## Load example data
-# Champsaur_PFG = .loadData("Champsaur_PFG")
+# Champsaur_PFG = .loadData("Champsaur_PFG", "RData")
 #
 # ## Build PFG traits for dispersal
 # tab.traits = Champsaur_PFG$PFG.traits
@@ -516,13 +516,117 @@ PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
 
 ```
 
+<br/><br/>
+
+
 ### 3. Running a `FATE` simulation
 
-pif
+```R
+library(RFate)
+
+## Select a parameter file
+param = "Simul_parameters_V1.1.txt"
+# param = "Simul_parameters_V2.1.txt"
+# param = "Simul_parameters_V3.1.txt"
+# param = "Simul_parameters_V4.1.txt"
+
+## Run the simulation
+## (here parallelized on 4 resources, and showing only warning and error messages)
+FATE(simulParam = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
+     , no_CPU = 4
+     , verboseLevel = 2)
+
+```
+
+<br/><br/>
+
 
 ### 4. Analyzing results
 
-paf
+
+```R
+## .loadData("Champsaur_results", "7z")
+
+
+library(RFate)
+
+## Select a parameter file
+param = "Simul_parameters_V1.1.txt"
+# param = "Simul_parameters_V2.1.txt"
+# param = "Simul_parameters_V3.1.txt"
+# param = "Simul_parameters_V4.1.txt"
+
+simul.name = "FATE_Champsaur"
+simul.param = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
+
+
+###################################################################################################
+## TEMPORAL EVOLUTION
+###################################################################################################
+
+POST_FATE.temporalEvolution(name.simulation = simul.name
+                            , file.simulParam = simul.param
+                            , no_years = 30)
+
+POST_FATE.graphic_evolutionCoverage(name.simulation = simul.name
+                                    , file.simulParam = simul.param)
+
+POST_FATE.graphic_evolutionPixels(name.simulation = simul.name
+                                  , file.simulParam = simul.param)
+
+POST_FATE.graphic_evolutionStability(name.simulation = simul.name
+                                     , file.simulParam = simul.param)
+
+
+###################################################################################################
+## RELATIVE ABUNDANCE / BINARY MAPS & VALIDATION
+###################################################################################################
+
+Champsaur_params = .loadData("Champsaur_params", "RData")
+
+## PFG observations
+tab.occ = Champsaur_params$tab.occ
+tab.xy = Champsaur_params$tab.xy
+
+## Merge observations and sites coordinates
+tab.obs = merge(tab.occ, tab.xy, by = "row.names")
+tab.obs = melt(tab.obs, id.vars = c("Row.names", "X", "Y"))
+colnames(tab.obs) = c("sites", "X", "Y", "PFG", "obs")
+tab.obs = na.exclude(tab.obs)
+head(tab.obs)
+
+
+POST_FATE.relativeAbund(name.simulation = simul.name
+                        , file.simulParam = simul.param
+                        , years = 1000)
+
+POST_FATE.graphic_validationStatistics(name.simulation = simul.name
+                                       , file.simulParam = simul.param
+                                       , years = 1000
+                                       , mat.PFG.obs = tab.obs[, c("PFG", "X", "Y", "obs")])
+
+POST_FATE.binaryMaps(name.simulation = simul.name
+                     , file.simulParam = simul.param
+                     , years = 1000
+                     , method = 1
+                     , method1.threshold = 0.05)
+
+POST_FATE.graphic_mapPFGvsHS(name.simulation = simul.name
+                             , file.simulParam = simul.param
+                             , years = 1000)
+
+
+###################################################################################################
+## VISUALIZATION OF OUTPUTS
+###################################################################################################
+
+POST_FATE.graphic_mapPFG(name.simulation = simul.name
+                         , file.simulParam = simul.param
+                         , years = 1000
+                         , opt.stratum_min = 1
+                         , opt.stratum_max = 2)
+
+```
 
 <br/><br/>
 

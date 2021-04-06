@@ -204,7 +204,7 @@ width:1200px;
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
-<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_PFG"</span><span class="op">)</span>
+<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_PFG"</span>, <span class="st">"RData"</span><span class="op">)</span>
 
 
 <span class="co">###################################################################################################</span>
@@ -433,7 +433,7 @@ width:1200px;
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
-<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span><span class="op">)</span>
+<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span>, <span class="st">"RData"</span><span class="op">)</span>
 
 
 <span class="co">###################################################################################################</span>
@@ -534,7 +534,7 @@ width:1200px;
 
 <span class="co">## DISPERSAL ----------------------------------------------------------------------------</span>
 <span class="co"># ## Load example data</span>
-<span class="co"># Champsaur_PFG = .loadData("Champsaur_PFG")</span>
+<span class="co"># Champsaur_PFG = .loadData("Champsaur_PFG", "RData")</span>
 <span class="co">#</span>
 <span class="co"># ## Build PFG traits for dispersal</span>
 <span class="co"># tab.traits = Champsaur_PFG$PFG.traits</span>
@@ -655,16 +655,111 @@ width:1200px;
 <span class="fu"><a href="../reference/PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                                 , name.MASK <span class="op">=</span> <span class="st">"MASK_Champsaur.img"</span>
                                 , name.DIST <span class="op">=</span> <span class="st">"MASK_noDisturb.img"</span><span class="op">)</span></code></pre></div>
+<p><br><br></p>
 </div>
 <div id="running-a-fate-simulation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running-a-fate-simulation" class="anchor"></a>3. Running a <code>FATE</code> simulation</h3>
-<p>pif</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
+
+<span class="co">## Select a parameter file</span>
+<span class="va">param</span> <span class="op">=</span> <span class="st">"Simul_parameters_V1.1.txt"</span>
+<span class="co"># param = "Simul_parameters_V2.1.txt"</span>
+<span class="co"># param = "Simul_parameters_V3.1.txt"</span>
+<span class="co"># param = "Simul_parameters_V4.1.txt"</span>
+
+<span class="co">## Run the simulation</span>
+<span class="co">## (here parallelized on 4 resources, and showing only warning and error messages)</span>
+<span class="fu"><a href="../reference/FATE.html">FATE</a></span><span class="op">(</span>simulParam <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/PARAM_SIMUL/"</span>, <span class="va">param</span><span class="op">)</span>
+     , no_CPU <span class="op">=</span> <span class="fl">4</span>
+     , verboseLevel <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<p><br><br></p>
 </div>
 <div id="analyzing-results" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyzing-results" class="anchor"></a>4. Analyzing results</h3>
-<p>paf</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## .loadData("Champsaur_results", "7z")</span>
+
+
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
+
+<span class="co">## Select a parameter file</span>
+<span class="va">param</span> <span class="op">=</span> <span class="st">"Simul_parameters_V1.1.txt"</span>
+<span class="co"># param = "Simul_parameters_V2.1.txt"</span>
+<span class="co"># param = "Simul_parameters_V3.1.txt"</span>
+<span class="co"># param = "Simul_parameters_V4.1.txt"</span>
+
+<span class="va">simul.name</span> <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+<span class="va">simul.param</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/PARAM_SIMUL/"</span>, <span class="va">param</span><span class="op">)</span>
+
+
+<span class="co">###################################################################################################</span>
+<span class="co">## TEMPORAL EVOLUTION</span>
+<span class="co">###################################################################################################</span>
+
+<span class="fu"><a href="../reference/POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                            , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
+                            , no_years <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/POST_FATE.graphic_evolutionCoverage.html">POST_FATE.graphic_evolutionCoverage</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                                    , file.simulParam <span class="op">=</span> <span class="va">simul.param</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/POST_FATE.graphic_evolutionPixels.html">POST_FATE.graphic_evolutionPixels</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                                  , file.simulParam <span class="op">=</span> <span class="va">simul.param</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/POST_FATE.graphic_evolutionStability.html">POST_FATE.graphic_evolutionStability</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                                     , file.simulParam <span class="op">=</span> <span class="va">simul.param</span><span class="op">)</span>
+
+
+<span class="co">###################################################################################################</span>
+<span class="co">## RELATIVE ABUNDANCE / BINARY MAPS &amp; VALIDATION</span>
+<span class="co">###################################################################################################</span>
+
+<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span>, <span class="st">"RData"</span><span class="op">)</span>
+
+<span class="co">## PFG observations</span>
+<span class="va">tab.occ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.occ</span>
+<span class="va">tab.xy</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.xy</span>
+
+<span class="co">## Merge observations and sites coordinates</span>
+<span class="va">tab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html">merge</a></span><span class="op">(</span><span class="va">tab.occ</span>, <span class="va">tab.xy</span>, by <span class="op">=</span> <span class="st">"row.names"</span><span class="op">)</span>
+<span class="va">tab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/melt.data.table.html">melt</a></span><span class="op">(</span><span class="va">tab.obs</span>, id.vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Row.names"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">colnames</a></span><span class="op">(</span><span class="va">tab.obs</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sites"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"PFG"</span>, <span class="st">"obs"</span><span class="op">)</span>
+<span class="va">tab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/na.fail.html">na.exclude</a></span><span class="op">(</span><span class="va">tab.obs</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">tab.obs</span><span class="op">)</span>
+
+
+<span class="fu"><a href="../reference/POST_FATE.relativeAbund.html">POST_FATE.relativeAbund</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                        , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
+                        , years <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/POST_FATE.graphic_validationStatistics.html">POST_FATE.graphic_validationStatistics</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                                       , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
+                                       , years <span class="op">=</span> <span class="fl">1000</span>
+                                       , mat.PFG.obs <span class="op">=</span> <span class="va">tab.obs</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"PFG"</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>, <span class="st">"obs"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/POST_FATE.binaryMaps.html">POST_FATE.binaryMaps</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                     , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
+                     , years <span class="op">=</span> <span class="fl">1000</span>
+                     , method <span class="op">=</span> <span class="fl">1</span>
+                     , method1.threshold <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/POST_FATE.graphic_mapPFGvsHS.html">POST_FATE.graphic_mapPFGvsHS</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                             , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
+                             , years <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span>
+
+
+<span class="co">###################################################################################################</span>
+<span class="co">## VISUALIZATION OF OUTPUTS</span>
+<span class="co">###################################################################################################</span>
+
+<span class="fu"><a href="../reference/POST_FATE.graphic_mapPFG.html">POST_FATE.graphic_mapPFG</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="va">simul.name</span>
+                         , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
+                         , years <span class="op">=</span> <span class="fl">1000</span>
+                         , opt.stratum_min <span class="op">=</span> <span class="fl">1</span>
+                         , opt.stratum_max <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
 <p><br><br></p>
 </div>
 </div>

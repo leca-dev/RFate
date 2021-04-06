@@ -1815,7 +1815,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
   
   
   if ((m_glob_params.getDoSoilInteraction() && m_glob_params.getSoilSaving()) ||
-      (m_glob_params.getDoLightInteraction() && m_glob_params.getSoilSaving()) ||
+      (m_glob_params.getDoLightInteraction() && m_glob_params.getLightSaving()) ||
       (m_glob_params.getDoDispersal() && m_glob_params.getDispersalSaving()))
   {
     logg.info(">>> Saving pixel resources outputs");

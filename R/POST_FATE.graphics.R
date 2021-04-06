@@ -279,118 +279,154 @@ POST_FATE.graphics = function(
   #############################################################################
   
   res = foreach (abs.simulParam = abs.simulParams, .errorhandling = "remove") %do%
-  {
-    
-    ## Get temporal evolution -----------------------------------------------
-    if (doFunc.evolCov ||
-        doFunc.evolPix ||
-        doFunc.evolStab)
     {
-      cat("\n ##############################################################")
-      cat("\n # GET EVOLUTION PLOTS through time \n")
-      POST_FATE.temporalEvolution(name.simulation = name.simulation
-                                  , file.simulParam = abs.simulParam
-                                  , no_years = no_years
-                                  , opt.ras_habitat = opt.ras_habitat
-                                  , opt.no_CPU = opt.no_CPU)
       
-      if (doFunc.evolCov)
+      ## Get temporal evolution -----------------------------------------------
+      if (doFunc.evolCov ||
+          doFunc.evolPix ||
+          doFunc.evolStab)
       {
-        res.evolutionCoverage = POST_FATE.graphic_evolutionCoverage(name.simulation = name.simulation
-                                                                    , file.simulParam = abs.simulParam
-                                                                    , opt.fixedScale = evol.fixedScale
-                                                                    , opt.doPlot = opt.doPlot)
-      }
-      if (doFunc.evolPix)
-      {
-        res.evolutionPixels = POST_FATE.graphic_evolutionPixels(name.simulation = name.simulation
-                                                                , file.simulParam = abs.simulParam
-                                                                , opt.cells_ID = evolPix.cells_ID
-                                                                , opt.doPlot = opt.doPlot)
-      }
-      if (doFunc.evolStab)
-      {
-        res.evolutionStability = POST_FATE.graphic_evolutionStability(name.simulation = name.simulation
-                                                                      , file.simulParam = abs.simulParam
-                                                                      , movingWindow_size = evolStab.mw_size
-                                                                      , movingWindow_step = evolStab.mw_step
-                                                                      , opt.doPlot = opt.doPlot)
-      }
-    }
-    
-    ## Get binary maps ------------------------------------------------------
-    if (doFunc.valid ||
-        doFunc.mapPFGvsHS ||
-        doFunc.mapPFG)
-    {
-      cat("\n ##############################################################")
-      cat("\n # GET RELATIVE / BINARY MAPS and VALIDATION PLOTS \n")
-      POST_FATE.relativeAbund(name.simulation = name.simulation
-                              , file.simulParam = abs.simulParam
-                              , years = years
-                              , opt.no_CPU = opt.no_CPU)
-      
-      if (doFunc.valid)
-      {
-        res.validation = POST_FATE.graphic_validationStatistics(name.simulation = name.simulation
-                                                                , file.simulParam = abs.simulParam
-                                                                , years = years
-                                                                , mat.PFG.obs = valid.mat.PFG.obs
-                                                                , opt.ras_habitat = opt.ras_habitat
-                                                                , opt.doPlot = opt.doPlot)
-      }
-      if (doFunc.mapPFGvsHS || doFunc.mapPFG)
-      {
-        POST_FATE.binaryMaps(name.simulation = name.simulation
-                             , file.simulParam = abs.simulParam
-                             , years = years
-                             , method = binMap.method
-                             , method1.threshold = binMap.method1.threshold
-                             , method2.cutoff = binMap.method2.cutoff
-                             , opt.no_CPU = opt.no_CPU)
-      }
-      if (doFunc.mapPFGvsHS)
-      {
-        res.mapPFGvsHS = POST_FATE.graphic_mapPFGvsHS(name.simulation = name.simulation
-                                                      , file.simulParam = abs.simulParam
-                                                      , years = years
-                                                      , opt.stratum = mapPFGvsHS.stratum)
+        cat("\n ##############################################################")
+        cat("\n # GET EVOLUTION PLOTS through time \n")
+        tryCatch(POST_FATE.temporalEvolution(name.simulation = name.simulation
+                                             , file.simulParam = abs.simulParam
+                                             , no_years = no_years
+                                             , opt.ras_habitat = opt.ras_habitat
+                                             , opt.no_CPU = opt.no_CPU)
+                 , error = function(e) 
+                 {
+                   warning("POST_FATE.temporalEvolution did not work !")
+                 })
+        
+        if (doFunc.evolCov)
+        {
+          res.evolutionCoverage = tryCatch(POST_FATE.graphic_evolutionCoverage(name.simulation = name.simulation
+                                                                               , file.simulParam = abs.simulParam
+                                                                               , opt.fixedScale = evol.fixedScale
+                                                                               , opt.doPlot = opt.doPlot)
+                                           , error = function(e) 
+                                           {
+                                             warning("POST_FATE.graphic_evolutionCoverage did not work !")
+                                           })
+        }
+        if (doFunc.evolPix)
+        {
+          res.evolutionPixels = tryCatch(POST_FATE.graphic_evolutionPixels(name.simulation = name.simulation
+                                                                           , file.simulParam = abs.simulParam
+                                                                           , opt.cells_ID = evolPix.cells_ID
+                                                                           , opt.doPlot = opt.doPlot)
+                                         , error = function(e) 
+                                         {
+                                           warning("POST_FATE.graphic_evolutionPixels did not work !")
+                                         })
+        }
+        if (doFunc.evolStab)
+        {
+          res.evolutionStability = tryCatch(POST_FATE.graphic_evolutionStability(name.simulation = name.simulation
+                                                                                 , file.simulParam = abs.simulParam
+                                                                                 , movingWindow_size = evolStab.mw_size
+                                                                                 , movingWindow_step = evolStab.mw_step
+                                                                                 , opt.doPlot = opt.doPlot)
+                                            , error = function(e) 
+                                            {
+                                              warning("POST_FATE.graphic_evolutionStability did not work !")
+                                            })
+        }
       }
       
-      cat("\n ##############################################################")
-      cat("\n # GET SPATIAL PLOTS for a specific year \n")
-      if (doFunc.mapPFG)
+      ## Get binary maps ------------------------------------------------------
+      if (doFunc.valid ||
+          doFunc.mapPFGvsHS ||
+          doFunc.mapPFG)
       {
-        res.mapPFG = POST_FATE.graphic_mapPFG(name.simulation = name.simulation
-                                              , file.simulParam = abs.simulParam
-                                              , years = years
-                                              , opt.stratum_min = mapPFG.stratum_min
-                                              , opt.stratum_max = mapPFG.stratum_max
-                                              , opt.doBinary = mapPFG.doBinary
-                                              , opt.no_CPU = opt.no_CPU
-                                              , opt.doPlot = opt.doPlot)
+        cat("\n ##############################################################")
+        cat("\n # GET RELATIVE / BINARY MAPS and VALIDATION PLOTS \n")
+        tryCatch(POST_FATE.relativeAbund(name.simulation = name.simulation
+                                         , file.simulParam = abs.simulParam
+                                         , years = years
+                                         , opt.no_CPU = opt.no_CPU)
+                 , error = function(e) 
+                 {
+                   warning("POST_FATE.relativeAbund did not work !")
+                 })
+        
+        if (doFunc.valid)
+        {
+          res.validation = tryCatch(POST_FATE.graphic_validationStatistics(name.simulation = name.simulation
+                                                                           , file.simulParam = abs.simulParam
+                                                                           , years = years
+                                                                           , mat.PFG.obs = valid.mat.PFG.obs
+                                                                           , opt.ras_habitat = opt.ras_habitat
+                                                                           , opt.doPlot = opt.doPlot)
+                                    , error = function(e) 
+                                    {
+                                      warning("POST_FATE.graphic_validationStatistics did not work !")
+                                    })
+        }
+        if (doFunc.mapPFGvsHS || doFunc.mapPFG)
+        {
+          tryCatch(POST_FATE.binaryMaps(name.simulation = name.simulation
+                                        , file.simulParam = abs.simulParam
+                                        , years = years
+                                        , method = binMap.method
+                                        , method1.threshold = binMap.method1.threshold
+                                        , method2.cutoff = binMap.method2.cutoff
+                                        , opt.no_CPU = opt.no_CPU)
+                   , error = function(e) 
+                   {
+                     warning("POST_FATE.binaryMaps did not work !")
+                   })
+        }
+        if (doFunc.mapPFGvsHS)
+        {
+          res.mapPFGvsHS = tryCatch(POST_FATE.graphic_mapPFGvsHS(name.simulation = name.simulation
+                                                                 , file.simulParam = abs.simulParam
+                                                                 , years = years
+                                                                 , opt.stratum = mapPFGvsHS.stratum)
+                                    , error = function(e) 
+                                    {
+                                      warning("POST_FATE.graphic_mapPFGvsHS did not work !")
+                                    })
+        }
+        
+        cat("\n ##############################################################")
+        cat("\n # GET SPATIAL PLOTS for a specific year \n")
+        if (doFunc.mapPFG)
+        {
+          res.mapPFG = tryCatch(POST_FATE.graphic_mapPFG(name.simulation = name.simulation
+                                                         , file.simulParam = abs.simulParam
+                                                         , years = years
+                                                         , opt.stratum_min = mapPFG.stratum_min
+                                                         , opt.stratum_max = mapPFG.stratum_max
+                                                         , opt.doBinary = mapPFG.doBinary
+                                                         , opt.no_CPU = opt.no_CPU
+                                                         , opt.doPlot = opt.doPlot)
+                                , error = function(e) 
+                                {
+                                  warning("POST_FATE.graphic_mapPFG did not work !")
+                                })
+        }
       }
-    }
-    
-    #########################################################################
-    ## Get ALL PLOTS --------------------------------------------------------
-    
-    names.res = c("res.evolutionCoverage"
-                  , "res.evolutionPixels"
-                  , "res.evolutionStability"
-                  , "res.validation"
-                  , "res.mapPFGvsHS"
-                  , "res.mapPFG")
-    res = list()
-    for(i in names.res)
-    {
-      if (exists(i))
+      
+      #########################################################################
+      ## Get ALL PLOTS --------------------------------------------------------
+      
+      names.res = c("res.evolutionCoverage"
+                    , "res.evolutionPixels"
+                    , "res.evolutionStability"
+                    , "res.validation"
+                    , "res.mapPFGvsHS"
+                    , "res.mapPFG")
+      res = list()
+      for(i in names.res)
       {
-        res[[i]] = get(i)
+        if (exists(i))
+        {
+          res[[i]] = get(i)
+        }
       }
-    }
-    return(res)
-  } ## END loop on abs.simulParams
+      return(res)
+    } ## END loop on abs.simulParams
   names(res) = abs.simulParams
   
   return(res)
