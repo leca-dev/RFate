@@ -47,7 +47,8 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 - all steps included in one tool (`PRE-FATE`, `FATE`, `POST-FATE`), that can be easily installed on all OS (Mac, Unix, Windows)
 - a simplification of some structural equations of the model (see [FATE tutorial - Modelling framework](fate_tutorial_0_modelling_framework.html))
 - 8 modules that can be turned on/off (see [FATE tutorial - Modules](fate_tutorial_3_MODULES.html))
-- a [`shiny` interface](interface_tutorial_0_presentation.html), and a complete documentation and manual, with meaningful examples from real dataset (see [Manual & Examples](manual.html) page)
+- a `shiny` interface for those who prefer to visually explore the parameters (see [SHINY interface](interface_tutorial_0_presentation.html) page)
+- a complete documentation and manual, with meaningful examples from real dataset (see [Manual & Examples](manual.html) page)
 
 
 <br/><br/>

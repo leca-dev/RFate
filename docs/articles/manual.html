@@ -423,13 +423,16 @@ width:1200px;
 <p>A brief description of the Plant Functional Groups obtained for the Champsaur dataset is presented below. <em>italic</em> represents species that have been pointed out as <code>Not determinant</code> by the <a href="./../reference/PRE_FATE.speciesClustering_step2.html">PRE_FATE.speciesClustering_step2</a> function (<em>difference between dominant and determinant species is explained in the <a href="./../reference/PRE_FATE.speciesClustering_step2.html#details">Details</a> section of this function</em>), but in this example they have all been kept for consistency in concerned PFG.</p>
 <div class="zoom">
 <p>
-<img src="pictures/TABLE_FATE_EXAMPLE_PFG_Champsaur.png" alt="TABLE FATE EXAMPLE PFG Champsaur"></p>
+<img src="pictures/EXAMPLE_Champsaur_PFG_table.png" alt="EXAMPLE Champsaur PFG table"></p>
 </div>
 <p><br><br></p>
 </div>
 <div id="creating-fate-parameter-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#creating-fate-parameter-files" class="anchor"></a>2. Creating <code>FATE</code> parameter files</h3>
+<div id="build-pfg-habitat-suitability-maps-biomod2-package" class="section level4">
+<h4 class="hasAnchor">
+<a href="#build-pfg-habitat-suitability-maps-biomod2-package" class="anchor"></a>Build PFG habitat suitability maps (<code>biomod2</code> package)</h4>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
@@ -512,9 +515,15 @@ width:1200px;
                                       , proj.name <span class="op">=</span> <span class="st">"CURRENT_100m"</span>
                                       , selected.models <span class="op">=</span> <span class="st">"all"</span>
                                       , binary.meth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'TSS'</span><span class="op">)</span><span class="op">)</span>
-<span class="op">}</span>
+<span class="op">}</span></code></pre></div>
+</div>
+<div id="create-fate-simulation-folder-and-parameter-files" class="section level4">
+<h4 class="hasAnchor">
+<a href="#create-fate-simulation-folder-and-parameter-files" class="anchor"></a>Create <code>FATE</code> simulation folder and parameter files</h4>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
-
+<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="../reference/.loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span>, <span class="st">"RData"</span><span class="op">)</span>
 
 <span class="co">###################################################################################################</span>
 <span class="co">## CREATE FATE PARAMETER FOLDER</span>
@@ -657,10 +666,11 @@ width:1200px;
                                 , name.DIST <span class="op">=</span> <span class="st">"MASK_noDisturb.img"</span><span class="op">)</span></code></pre></div>
 <p><br><br></p>
 </div>
+</div>
 <div id="running-a-fate-simulation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#running-a-fate-simulation" class="anchor"></a>3. Running a <code>FATE</code> simulation</h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/leca-dev/RFate.git">RFate</a></span><span class="op">)</span>
 
 <span class="co">## Select a parameter file</span>
@@ -674,12 +684,77 @@ width:1200px;
 <span class="fu"><a href="../reference/FATE.html">FATE</a></span><span class="op">(</span>simulParam <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/PARAM_SIMUL/"</span>, <span class="va">param</span><span class="op">)</span>
      , no_CPU <span class="op">=</span> <span class="fl">4</span>
      , verboseLevel <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<div id="explore-understand-and-tune-the-parameters" class="section level4">
+<h4 class="hasAnchor">
+<a href="#explore-understand-and-tune-the-parameters" class="anchor"></a>Explore, understand and tune the parameters</h4>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## --------------------------------------------------------------------------------------</span>
+<span class="co">## This code gives a quick and rough idea of the</span>
+<span class="co">## PFG communities that should be found within the simulation area</span>
+<span class="co">## For example here :</span>
+<span class="co">##  H3 is mainly found with : H1 and C3 (grasslands, no shade, infertile)</span>
+<span class="co">##  H4 is mainly found with : C1, P2 and P6 (montane, pioneer and semi-shade groups)</span>
+
+<span class="co"># library(phyloclim)</span>
+<span class="co"># HS.files = list.files("FATE_Champsaur/DATA/PFGS/HABSUIT/", full.names = TRUE)</span>
+<span class="co"># HS.stk = stack(HS.files)</span>
+<span class="co"># HS.stk[] = ifelse(HS.stk[] &gt; 0.5, 1, 0)</span>
+<span class="co"># HS.list = lapply(1:nlayers(HS.stk), function(x) as(HS.stk[[x]], 'SpatialGridDataFrame'))</span>
+<span class="co"># nich = as.matrix(niche.overlap(HS.list))</span>
+<span class="co"># colnames(nich) = rownames(nich) = sapply(names(HS.stk), function(x) strsplit(x, "_")[[1]][2])</span>
+<span class="co"># library(corrplot)</span>
+<span class="co"># colo = colorRampPalette(c('#9e0142','#d53e4f','#f46d43','#fdae61','#fee08b','#ffffbf'</span>
+<span class="co">#                           ,'#e6f598','#abdda4','#66c2a5','#3288bd','#5e4fa2'))</span>
+<span class="co"># corrplot(nich, method = "square", type = "lower", diag = FALSE</span>
+<span class="co">#          , col = colo(20), cl.lim = c(0,1), order = "hclust"</span>
+<span class="co">#          , tl.srt = 25, tl.offset = 1)</span></code></pre></div>
+<div style="text-align:center;">
+<p><img src="pictures/EXAMPLE_Champsaur_PFG_communities.png" alt="EXAMPLE Champsaur PFG communities" style="width:600px;"></p>
+</div>
+<p><br></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## --------------------------------------------------------------------------------------</span>
+<span class="co">## This code calculates for each PFG its maximum total abundance :</span>
+<span class="co">##   MaxAbund * (1 + ImmSize)</span>
+
+<span class="co"># ma_low = .getParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>
+<span class="co">#                    , flag = "MAX_ABUND_LOW", flag.split = " ", is.num = TRUE)</span>
+<span class="co"># ma_med = .getParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>
+<span class="co">#                    , flag = "MAX_ABUND_MEDIUM", flag.split = " ", is.num = TRUE)</span>
+<span class="co"># ma_hig = .getParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"</span>
+<span class="co">#                    , flag = "MAX_ABUND_HIGH", flag.split = " ", is.num = TRUE)</span>
+<span class="co"># tab = as.data.frame(fread("FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv"))</span>
+<span class="co"># tab = tab[, c("NAME", "HEIGHT", "LONGEVITY", "MATURITY", "MAX_STRATUM", "MAX_ABUNDANCE", "IMM_SIZE")]</span>
+<span class="co"># tab$maxi_mat = sapply(tab$MAX_ABUNDANCE, function(x) switch(x, "1" = ma_low, "2" = ma_med, "3" = ma_hig))</span>
+<span class="co"># tab$maxi_tot = tab$maxi_mat * (1 + tab$IMM_SIZE / 10)</span>
+<span class="co"># head(tab)</span></code></pre></div>
+<div style="text-align:center;">
+<p><img src="pictures/EXAMPLE_Champsaur_PFG_maxabund.png" alt="EXAMPLE Champsaur PFG maximum abundance" style="width:600px;"></p>
+</div>
+<p><br></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">## --------------------------------------------------------------------------------------</span>
+<span class="co">## This code represents the repartition of interaction strategies for soil and light</span>
+
+<span class="co"># Champsaur_params = .loadData("Champsaur_params", "RData")</span>
+<span class="co"># tab = merge(Champsaur_params$tab.LIGHT, Champsaur_params$tab.SOIL, by = c("PFG", "type"))</span>
+<span class="co"># tab$strategy_tol = factor(tab$strategy_tol, c("undergrowth", "semi_shade", "ubiquist", "pioneer", "full_light"))</span>
+<span class="co"># library(ggplot2)</span>
+<span class="co"># library(ggthemes)</span>
+<span class="co"># ggplot(tab, aes(x = strategy_tol, y = soil_contrib)) +</span>
+<span class="co">#   geom_boxplot(varwidth = TRUE) +</span>
+<span class="co">#   labs(x = "", y = "Soil contribution\n") +</span>
+<span class="co">#   theme_pander()</span></code></pre></div>
+<div style="text-align:center;">
+<p><img src="pictures/EXAMPLE_Champsaur_PFG_strategies.png" alt="EXAMPLE Champsaur PFG strategies" style="width:600px;"></p>
+</div>
 <p><br><br></p>
+</div>
 </div>
 <div id="analyzing-results" class="section level3">
 <h3 class="hasAnchor">
 <a href="#analyzing-results" class="anchor"></a>4. Analyzing results</h3>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">## .loadData("Champsaur_results", "7z")</span>
 
 

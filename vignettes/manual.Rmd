@@ -281,12 +281,14 @@ PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary)
 A brief description of the Plant Functional Groups obtained for the Champsaur dataset is presented below. *italic* represents species that have been pointed out as `Not determinant` by the [PRE_FATE.speciesClustering_step2](./../reference/PRE_FATE.speciesClustering_step2.html) function (*difference between dominant and determinant species is explained in the [Details](./../reference/PRE_FATE.speciesClustering_step2.html#details) section of this function*), but in this example they have all been kept for consistency in concerned PFG.
 
 <div class="zoom">
-<p><img src="pictures/TABLE_FATE_EXAMPLE_PFG_Champsaur.png" alt="TABLE FATE EXAMPLE PFG Champsaur"></img></p>
+<p><img src="pictures/EXAMPLE_Champsaur_PFG_table.png" alt="EXAMPLE Champsaur PFG table"></img></p>
 </div>
 
 <br/><br/>
 
 ### 2. Creating `FATE` parameter files
+
+#### Build PFG habitat suitability maps (`biomod2` package)
 
 ```R
 library(RFate)
@@ -371,8 +373,15 @@ for(pfg in colnames(tab.occ))
                                       , selected.models = "all"
                                       , binary.meth = c('TSS'))
 }
+```
+
+#### Create `FATE` simulation folder and parameter files
 
 
+```R
+library(RFate)
+
+Champsaur_params = .loadData("Champsaur_params", "RData")
 
 ###################################################################################################
 ## CREATE FATE PARAMETER FOLDER
@@ -535,8 +544,83 @@ param = "Simul_parameters_V1.1.txt"
 FATE(simulParam = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
      , no_CPU = 4
      , verboseLevel = 2)
-
 ```
+
+#### Explore, understand and tune the parameters
+
+```R
+## --------------------------------------------------------------------------------------
+## This code gives a quick and rough idea of the
+## PFG communities that should be found within the simulation area
+## For example here :
+##  H3 is mainly found with : H1 and C3 (grasslands, no shade, infertile)
+##  H4 is mainly found with : C1, P2 and P6 (montane, pioneer and semi-shade groups)
+
+# library(phyloclim)
+# HS.files = list.files("FATE_Champsaur/DATA/PFGS/HABSUIT/", full.names = TRUE)
+# HS.stk = stack(HS.files)
+# HS.stk[] = ifelse(HS.stk[] > 0.5, 1, 0)
+# HS.list = lapply(1:nlayers(HS.stk), function(x) as(HS.stk[[x]], 'SpatialGridDataFrame'))
+# nich = as.matrix(niche.overlap(HS.list))
+# colnames(nich) = rownames(nich) = sapply(names(HS.stk), function(x) strsplit(x, "_")[[1]][2])
+# library(corrplot)
+# colo = colorRampPalette(c('#9e0142','#d53e4f','#f46d43','#fdae61','#fee08b','#ffffbf'
+#                           ,'#e6f598','#abdda4','#66c2a5','#3288bd','#5e4fa2'))
+# corrplot(nich, method = "square", type = "lower", diag = FALSE
+#          , col = colo(20), cl.lim = c(0,1), order = "hclust"
+#          , tl.srt = 25, tl.offset = 1)
+```
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_communities.png" alt="EXAMPLE Champsaur PFG communities" style="width:600px;"></img>
+</div>
+
+<br/>
+
+
+```R
+## --------------------------------------------------------------------------------------
+## This code calculates for each PFG its maximum total abundance :
+##   MaxAbund * (1 + ImmSize)
+
+# ma_low = .getParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"
+#                    , flag = "MAX_ABUND_LOW", flag.split = " ", is.num = TRUE)
+# ma_med = .getParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"
+#                    , flag = "MAX_ABUND_MEDIUM", flag.split = " ", is.num = TRUE)
+# ma_hig = .getParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt"
+#                    , flag = "MAX_ABUND_HIGH", flag.split = " ", is.num = TRUE)
+# tab = as.data.frame(fread("FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv"))
+# tab = tab[, c("NAME", "HEIGHT", "LONGEVITY", "MATURITY", "MAX_STRATUM", "MAX_ABUNDANCE", "IMM_SIZE")]
+# tab$maxi_mat = sapply(tab$MAX_ABUNDANCE, function(x) switch(x, "1" = ma_low, "2" = ma_med, "3" = ma_hig))
+# tab$maxi_tot = tab$maxi_mat * (1 + tab$IMM_SIZE / 10)
+# head(tab)
+```
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_maxabund.png" alt="EXAMPLE Champsaur PFG maximum abundance" style="width:600px;"></img>
+</div>
+
+<br/>
+
+
+```R
+## --------------------------------------------------------------------------------------
+## This code represents the repartition of interaction strategies for soil and light
+
+# Champsaur_params = .loadData("Champsaur_params", "RData")
+# tab = merge(Champsaur_params$tab.LIGHT, Champsaur_params$tab.SOIL, by = c("PFG", "type"))
+# tab$strategy_tol = factor(tab$strategy_tol, c("undergrowth", "semi_shade", "ubiquist", "pioneer", "full_light"))
+# library(ggplot2)
+# library(ggthemes)
+# ggplot(tab, aes(x = strategy_tol, y = soil_contrib)) +
+#   geom_boxplot(varwidth = TRUE) +
+#   labs(x = "", y = "Soil contribution\n") +
+#   theme_pander()
+```
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_strategies.png" alt="EXAMPLE Champsaur PFG strategies" style="width:600px;"></img>
+</div>
 
 <br/><br/>
 
