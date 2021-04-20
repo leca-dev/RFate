@@ -29,6 +29,11 @@
 ##' corresponding to the drought intensity experienced by this pixel through 
 ##' the drought (or fire) disturbance module of the \code{FATE} simulation (see 
 ##' \href{PRE_FATE.params_globalParameters.html#details}{\code{PRE_FATE.params_globalParameters}})
+##' @param name.ALIENS (\emph{optional}) \cr a \code{string} corresponding to the 
+##' file name of a raster mask, with either \code{0} or \code{1} within each 
+##' pixel, \code{1} corresponding to the cells of the studied area in which the 
+##' aliens introduction module of the \code{FATE} simulation will take place (see 
+##' \href{PRE_FATE.params_globalParameters.html#details}{\code{PRE_FATE.params_globalParameters}})
 ##' @param name.FIRE (\emph{optional}) \cr a \code{string} corresponding to the 
 ##' file name of a raster mask, with either \code{0} or \code{1} within each 
 ##' pixel, \code{1} corresponding to the cells of the studied area in which the 
@@ -276,6 +281,7 @@ PRE_FATE.params_simulParameters = function(
   , name.SAVED_STATE = NULL
   , name.DIST = NULL
   , name.DROUGHT = NULL
+  , name.ALIENS = NULL
   , name.FIRE = NULL
   , name.ELEVATION = NULL
   , name.SLOPE = NULL
@@ -367,7 +373,7 @@ PRE_FATE.params_simulParameters = function(
     for (di in dirs.SCENARIO)
     {
       files.ty = list.files(path = di
-                            , pattern = paste0("^", ty, "_changingmask_years")
+                            , pattern = paste0("^", ty, c("_changingmask_years", "_changingfreq_years"), collapse = "|")
                             , full.names = TRUE)
       if (length(files.ty) > 0)
       {
@@ -387,7 +393,7 @@ PRE_FATE.params_simulParameters = function(
   {
     warning(paste0("There is no adequate file(s) into some folder(s) : \n"
                    , paste0(" > ", sapply(warn.messages, function(x) x[1])
-                            , "_changingmask_years[...].txt (folder "
+                            , "_changingmask|freq_years[...].txt (folder "
                             , sapply(warn.messages, function(x) x[2]), ") \n"
                             , collapse = "")))
   }
@@ -519,16 +525,18 @@ PRE_FATE.params_simulParameters = function(
         eval(parse(text = paste0("di = dirs.SCENARIO.", ty
                                  , "[PARAMS.combi$SCENARIO.", ty, "[i]]")))
         
+        ## MASKS ------------------------------------------------------------------------
         ## Changing years
         files.SCE.years = list.files(path = di
                                      , pattern = paste0("^", ty, "_changingmask_years")
                                      , full.names = TRUE)
         if (length(files.SCE.years) == 1)
         {
-          params.combi[[paste0("SCENARIO.", ty)]] = files.SCE.years
+          ind.y = sub(".txt$", "", sub(".*_changingmask_years", "", basename(files.SCE.years)))
+          params.combi[[paste0("SCENARIO.", ty)]] = files.SCE.years[order(as.numeric(ind.y))]
           names.params.combi = c(names.params.combi
                                  , paste0("--", ty, "_CHANGEMASK_YEARS--"))
-        } else
+        } else if (length(files.SCE.years) > 1)
         {
           stop(paste0("There is too many adequate files (`.txt` file starting with `"
                       , ty, "_changingmask_years`) "
@@ -547,7 +555,39 @@ PRE_FATE.params_simulParameters = function(
           #                , "into the folder ", di))
         } else if (length(files.SCE.masks) > 0)
         {
-          assign(x = paste0("SCENARIO.", ty), value = files.SCE.masks)
+          ind.y = sub(".txt$", "", sub(".*_changingmask_files", "", basename(files.SCE.masks)))
+          assign(x = paste0("SCENARIO.", ty), value = files.SCE.masks[order(as.numeric(ind.y))])
+        }
+        
+        ## FREQS ------------------------------------------------------------------------
+        ## Changing years
+        files.SCE.years = list.files(path = di
+                                     , pattern = paste0("^", ty, "_changingfreq_years")
+                                     , full.names = TRUE)
+        if (length(files.SCE.years) == 1)
+        {
+          ind.y = sub(".txt$", "", sub(".*_changingfreq_years", "", basename(files.SCE.years)))
+          params.combi[[paste0("SCENARIO.F.", ty)]] = files.SCE.years[order(as.numeric(ind.y))]
+          names.params.combi = c(names.params.combi
+                                 , paste0("--", ty, "_CHANGEFREQ_YEARS--"))
+        } else if (length(files.SCE.years) > 1)
+        {
+          stop(paste0("There is too many adequate files (`.txt` file starting with `"
+                      , ty, "_changingfreq_years`) "
+                      , "into the folder ", di))
+        }
+        
+        ## Changing files
+        files.SCE.masks = list.files(path = di
+                                     , pattern = paste0("^", ty, "_changingfreq_files")
+                                     , full.names = TRUE)
+        if (length(files.SCE.masks) == 0)
+        {
+          warn.messages[[length(warn.messages) +1]] = c(ty, di)
+        } else if (length(files.SCE.masks) > 0)
+        {
+          ind.y = sub(".txt$", "", sub(".*_changingfreq_files", "", basename(files.SCE.masks)))
+          assign(x = paste0("SCENARIO.F.", ty), value = files.SCE.masks[order(as.numeric(ind.y))])
         }
       }
     }
@@ -555,7 +595,7 @@ PRE_FATE.params_simulParameters = function(
     {
       warning(paste0("There is no adequate file(s) into some folder(s) : \n"
                      , paste0(" > ", sapply(warn.messages, function(x) x[1])
-                              , "_changingmask_files[...].txt (folder "
+                              , "_changingmask|freq_files[...].txt (folder "
                               , sapply(warn.messages, function(x) x[2]), ") \n"
                               , collapse = "")))
     }
@@ -680,7 +720,7 @@ PRE_FATE.params_simulParameters = function(
     
     ### -------------------------------------------------------------------- ###
     
-    MODULES = c("DIST", "DROUGHT", "FIRE")
+    MODULES = c("DIST", "DROUGHT", "ALIENS", "FIRE")
     for (mod in MODULES)
     {
       if (get(paste0("do.", mod)))
@@ -702,7 +742,7 @@ PRE_FATE.params_simulParameters = function(
     
     ### -------------------------------------------------------------------- ###
     
-    MODULES = c("HABSUIT", "ALIENS")
+    MODULES = c("HABSUIT") #, "ALIENS")
     for (mod in MODULES)
     {
       if (get(paste0("do.", mod)))
@@ -831,15 +871,31 @@ PRE_FATE.params_simulParameters = function(
           params.list = c(params.list, list(SCENARIO.DROUGHT))
           names.params.list = c(names.params.list, "--DROUGHT_CHANGEMASK_FILES--")
         }
+        if (exists("SCENARIO.F.DROUGHT"))
+        {
+          params.list = c(params.list, list(SCENARIO.F.DROUGHT))
+          names.params.list = c(names.params.list, "--DROUGHT_CHANGEFREQ_FILES--")
+        }
       }
       if (do.ALIENS)
       {
-        params.list = c(params.list, list(files.PFG.ALIENS))
+        params.list = c(params.list
+                        , list(rep(paste0(name.simulation
+                                          , "/DATA/MASK/"
+                                          , name.ALIENS)
+                                   , no.ALIENS)))
         names.params.list = c(names.params.list, "--PFG_MASK_ALIENS--")
+        # params.list = c(params.list, list(files.PFG.ALIENS))
+        # names.params.list = c(names.params.list, "--PFG_MASK_ALIENS--")
         if (exists("SCENARIO.ALIENS"))
         {
           params.list = c(params.list, list(SCENARIO.ALIENS))
           names.params.list = c(names.params.list, "--ALIENS_CHANGEMASK_FILES--")
+        }
+        if (exists("SCENARIO.F.ALIENS"))
+        {
+          params.list = c(params.list, list(SCENARIO.F.ALIENS))
+          names.params.list = c(names.params.list, "--ALIENS_CHANGEFREQ_FILES--")
         }
       }
       if (do.FIRE)
@@ -857,6 +913,11 @@ PRE_FATE.params_simulParameters = function(
         {
           params.list = c(params.list, list(SCENARIO.FIRE))
           names.params.list = c(names.params.list, "--FIRE_CHANGEMASK_FILES--")
+        }
+        if (exists("SCENARIO.F.FIRE"))
+        {
+          params.list = c(params.list, list(SCENARIO.F.FIRE))
+          names.params.list = c(names.params.list, "--FIRE_CHANGEFREQ_FILES--")
         }
       }
       

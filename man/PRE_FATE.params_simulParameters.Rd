@@ -11,6 +11,7 @@ PRE_FATE.params_simulParameters(
   name.SAVED_STATE = NULL,
   name.DIST = NULL,
   name.DROUGHT = NULL,
+  name.ALIENS = NULL,
   name.FIRE = NULL,
   name.ELEVATION = NULL,
   name.SLOPE = NULL,
@@ -42,6 +43,12 @@ disturbance module of the \code{FATE} simulation will take place (see
 the name of a raster file, with a \code{numeric} value within each pixel 
 corresponding to the drought intensity experienced by this pixel through 
 the drought (or fire) disturbance module of the \code{FATE} simulation (see 
+\href{PRE_FATE.params_globalParameters.html#details}{\code{PRE_FATE.params_globalParameters}})}
+
+\item{name.ALIENS}{(\emph{optional}) \cr a \code{string} corresponding to the 
+file name of a raster mask, with either \code{0} or \code{1} within each 
+pixel, \code{1} corresponding to the cells of the studied area in which the 
+aliens introduction module of the \code{FATE} simulation will take place (see 
 \href{PRE_FATE.params_globalParameters.html#details}{\code{PRE_FATE.params_globalParameters}})}
 
 \item{name.FIRE}{(\emph{optional}) \cr a \code{string} corresponding to the 

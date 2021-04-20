@@ -219,12 +219,12 @@ POST_FATE.graphic_evolutionPixels = function(
     
     
     ## Get concerned cells id -------------------------------------------------
-    IDS = sample(unique(tab.abundance$ID.pixel), 5)
+    IDS = sort(sample(unique(tab.abundance$ID.pixel), 5))
     if (!is.null(opt.cells_ID))
     {
       if (sum(opt.cells_ID %in% GLOB_MASK$ind_1_mask) == length(opt.cells_ID))
       {
-        IDS = opt.cells_ID
+        IDS = sort(opt.cells_ID)
       } else
       {
         warning(paste0("The values given in `opt.cells_ID` do not match "

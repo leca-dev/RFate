@@ -250,7 +250,7 @@ PRE_FATE.params_changingYears = function(
                   , params.list = params)
     file.lines = readLines(new.value)
     file.lines = file.lines[-c(1,2)]
-    file.lines = gsub(" ", "", file.lines)
+    file.lines = gsub("^ | $", "", file.lines)
     cat(file.lines, sep = "\n", file = new.value, append = FALSE)
   }
 }
