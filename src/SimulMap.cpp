@@ -720,7 +720,8 @@ void SimulMap::DoAliensIntroduction(int yr)
     {
       if (applyIntro[fg] && m_CondInitMap(cell_ID, fg)>0.0)
       {
-        m_SuccModelMap(cell_ID)->setSeedRain(fg, int(m_SuccModelMap(cell_ID)->getSeedRain(fg)+(int)(100*m_CondInitMap(cell_ID, fg))));
+        m_SuccModelMap(cell_ID)->setSeedRain(fg, int(m_SuccModelMap(cell_ID)->getSeedRain(fg) +
+          (int)(m_glob_params.getSeedingInput() * m_CondInitMap(cell_ID, fg))));
       }
     } //end loop on PFGs
   } // end loop on cells

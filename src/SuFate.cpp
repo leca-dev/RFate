@@ -281,39 +281,39 @@ void SuFate::CalculateEnvironment()
 void SuFate::CheckSurvival()
 {
 	unsigned noFG = m_Comm.getFuncGroupList().size();
-
-	if (m_GSP->getDoSoilInteraction())
-	{
-		for (unsigned fg = 0; fg < noFG; fg++)
-		{
-			int noCohort = m_Comm.getNoCohort(fg);
-			if (noCohort > 0)
-			{
-				/* create a copy of FG parameters to simplify and speed up the code */
-				FuncGroupPtr FuncG = m_Comm.getFuncGroup_(fg);
-				FGPtr FGparams = FuncG->getFGparams_();
-				LegionPtr FGlegion = FuncG->getLList_();
-
-				Resource soilRes = RMedium;
-				if (m_SoilR < FGparams->getSoilLow())
-				{
-					soilRes = RLow;
-				} else if (m_SoilR > FGparams->getSoilHigh())
-				{
-					soilRes = RHigh;
-				}
-
-				/* check germinant plants survival */
-				FGlegion->reduceCohort(0, 0, FractToDouble(FGparams->getSoilTolerance()[Germinant][soilRes]));
-				/* check immature plants survival */
-				FGlegion->reduceCohort(0, FGparams->getMatTime() - 1, FractToDouble(FGparams->getSoilTolerance()[Immature][soilRes]));
-				/* check mature plants survival */
-				FGlegion->reduceCohort(FGparams->getMatTime(), FGparams->getLifeSpan()+1, FractToDouble(FGparams->getSoilTolerance()[Mature][soilRes]));
-
-			}
-		}
-	}
-
+  
+  if (m_GSP->getDoSoilInteraction())
+  {
+    for (unsigned fg = 0; fg < noFG; fg++)
+    {
+      int noCohort = m_Comm.getNoCohort(fg);
+      if (noCohort > 0)
+      {
+        /* create a copy of FG parameters to simplify and speed up the code */
+        FuncGroupPtr FuncG = m_Comm.getFuncGroup_(fg);
+        FGPtr FGparams = FuncG->getFGparams_();
+        LegionPtr FGlegion = FuncG->getLList_();
+        
+        Resource soilRes = RMedium;
+        if (m_SoilR < FGparams->getSoilLow())
+        {
+          soilRes = RLow;
+        } else if (m_SoilR > FGparams->getSoilHigh())
+        {
+          soilRes = RHigh;
+        }
+        
+        /* check germinant plants survival */
+        FGlegion->reduceCohort(0, 0, FractToDouble(FGparams->getSoilTolerance()[Germinant][soilRes]));
+        /* check immature plants survival */
+        FGlegion->reduceCohort(0, FGparams->getMatTime() - 1, FractToDouble(FGparams->getSoilTolerance()[Immature][soilRes]));
+        /* check mature plants survival */
+        FGlegion->reduceCohort(FGparams->getMatTime(), FGparams->getLifeSpan()+1, FractToDouble(FGparams->getSoilTolerance()[Mature][soilRes]));
+        
+      }
+    }
+  }
+  
 	if (m_GSP->getDoLightInteraction())
 	{
 		for (unsigned fg = 0; fg < noFG; fg++)
@@ -572,8 +572,8 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			Fract maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
 			Fract maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
 
-			//GerminRate *= min(FractToDouble( maxRecruitLight0 ), FractToDouble( maxRecruitSoil0 ));
-			GerminRate *= (FractToDouble( maxRecruitLight0 ) * FractToDouble( maxRecruitSoil0 ));
+			GerminRate *= min(FractToDouble( maxRecruitLight0 ), FractToDouble( maxRecruitSoil0 ));
+			//GerminRate *= (FractToDouble( maxRecruitLight0 ) * FractToDouble( maxRecruitSoil0 ));
 
 			/* 5. If all available seeds germinated, zero the active seed pool */
 			if (maxRecruitLight0 == PC100 && maxRecruitSoil0 == PC100)
