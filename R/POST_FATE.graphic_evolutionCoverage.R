@@ -188,7 +188,7 @@ POST_FATE.graphic_evolutionCoverage = function(
     years = years[which(!(years %in% c("PFG", "ID.pixel", "X", "Y", "HAB")))]
     years = as.numeric(years)
     
-    hab_names = unique(tab.totalAbundance$HAB)
+    hab_names = sort(unique(tab.totalAbundance$HAB))
     no_hab = length(hab_names)
     
     cat("\n  Number of years : ", length(years))
@@ -266,13 +266,19 @@ POST_FATE.graphic_evolutionCoverage = function(
     if (opt.doPlot)
     {
       cat("\n ---------- PRODUCING PLOTS \n")
-      col_vec = c('#6da34d', '#297373', '#58a4b0', '#5c4742', '#3f334d')
+      col_vec = c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#666666")
       col_fun = colorRampPalette(col_vec)
+      list.pp1 = list.pp2 = list()
       
-      ## Evolution of space occupation
+      ## ----------------------------------------------------------------------
+      pdf(file = paste0(name.simulation
+                        , "/RESULTS/POST_FATE_GRAPHIC_A_evolution_coverage_"
+                        , basename(GLOB_DIR$dir.save), ".pdf")
+          , width = 10, height = 8)
+      
       pp1 = ggplot(distri.melt, aes_string(x = "YEAR"
                                            , y = "spaceOccupancy * 100"
-                                           , color = "factor(HAB)")) +
+                                           , color = "factor(HAB, hab_names)")) +
         geom_line(lwd = 1) +
         facet_wrap("~ PFG") +
         scale_color_manual("Habitat", values = col_fun(no_hab)) +
@@ -284,11 +290,10 @@ POST_FATE.graphic_evolutionCoverage = function(
                                  , "pixels in which the abundance of the "
                                  , "species is greater than 0.\n")) +
         .getGraphics_theme()
-      
-      ## Evolution of abundance
+
       pp2 = ggplot(distriAbund.melt, aes_string(x = "YEAR"
                                                 , y = "totalAbundance"
-                                                , color = "HAB")) +
+                                                , color = "factor(HAB, hab_names)")) +
         geom_line(lwd = 1) +
         facet_wrap("~ PFG", scales = ifelse(opt.fixedScale, "fixed", "free_y")) +
         scale_color_manual("Habitat", values = col_fun(no_hab)) +
@@ -300,18 +305,61 @@ POST_FATE.graphic_evolutionCoverage = function(
                                  , "sum of its abundances in every pixel.\n")) +
         .getGraphics_theme()
       
-      ## ----------------------------------------------------------------------
-      pdf(file = paste0(name.simulation
-                        , "/RESULTS/POST_FATE_GRAPHIC_A_evolution_coverage_"
-                        , basename(GLOB_DIR$dir.save), ".pdf")
-          , width = 10, height = 8)
+      
       plot(pp1)
       plot(pp2)
-      dev.off()
+      list.pp1[["ALL"]] = pp1
+      list.pp2[["ALL"]] = pp2
       
+      ## ----------------------------------------------------------------------
+      ## Evolution of space occupation
+      for (habi in hab_names)
+      {
+        tabi = distri.melt[which(distri.melt$HAB == habi), ]
+        pp1 = ggplot(tabi, aes_string(x = "YEAR"
+                                      , y = "spaceOccupancy * 100")) +
+          geom_line(lwd = 1) +
+          facet_wrap("~ PFG") +
+          labs(x = "", y = ""
+               , title = paste0("GRAPH A : evolution of species' space occupation : ", habi)
+               , subtitle = paste0("For each PFG, the line represents the "
+                                   , "evolution through time of its space "
+                                   , "occupancy,\n meaning the percentage of "
+                                   , "pixels in which the abundance of the "
+                                   , "species is greater than 0.\n")) +
+          .getGraphics_theme()
+        
+        plot(pp1)
+        list.pp1[[as.character(habi)]] = pp1
+      }
+      
+      ## ----------------------------------------------------------------------
+      ## Evolution of abundance
+      for (habi in hab_names)
+      {
+        tabi = distriAbund.melt[which(distriAbund.melt$HAB == habi), ]
+        pp2 = ggplot(tabi, aes_string(x = "YEAR"
+                                      , y = "totalAbundance")) +
+          geom_line(lwd = 1) +
+          facet_wrap("~ PFG", scales = ifelse(opt.fixedScale, "fixed", "free_y")) +
+          labs(x = "", y = ""
+               , title = paste0("GRAPH A : evolution of species' abundance : ", habi)
+               , subtitle = paste0("For each PFG, the line represents the "
+                                   , "evolution through time of its abundance\n"
+                                   , "over the whole studied area, meaning the "
+                                   , "sum of its abundances in every pixel.\n")) +
+          .getGraphics_theme()
+        
+        plot(pp2)
+        list.pp2[[as.character(habi)]] = pp2
+      }
+      
+      ## ----------------------------------------------------------------------
+      dev.off()
+
     } else
     {
-      pp1 = pp2 = NULL
+      list.pp1 = list.pp2 = NULL
     } ## END opt.doPlot
     
     
@@ -321,8 +369,8 @@ POST_FATE.graphic_evolutionCoverage = function(
     
     return(list(tab.spaceOccupancy = distri.melt
                 , tab.totalAbundance = distriAbund.melt
-                , plot.spaceOccupancy = pp1
-                , plot.totalAbundance = pp2))
+                , plot.spaceOccupancy = list.pp1
+                , plot.totalAbundance = list.pp2))
   } ## END loop on abs.simulParams
   names(res) = abs.simulParams
   

@@ -369,7 +369,7 @@ POST_FATE.graphic_mapPFG = function(
         
         if (length(file_name) == nlayers(ras.PFG))
         {
-          ras.bin = stack(file_name)
+          ras.bin = stack(file_name) * GLOB_MASK$ras.mask
           ras.PFG = ras.PFG * ras.bin
           names(ras.PFG) = gp
         } else
@@ -384,9 +384,13 @@ POST_FATE.graphic_mapPFG = function(
       output.names = vector()
       ras_list = list()
       
+      ## GET abundance relative maps ------------------------------------------
+      ras.REL = ras.PFG / max(ras.TOT[], na.rm = TRUE)
+      ras_list$cover.PFG = ras.REL
+      
       ## GET cover map --------------------------------------------------------
-      ras.COVER = ras.PFG / max(ras.TOT[], na.rm = TRUE)
-      ras_list$cover = ras.COVER
+      ras.COVER = ras.TOT / max(ras.TOT[], na.rm = TRUE)
+      ras_list$cover.all = ras.COVER
       
       output.name = paste0(GLOB_DIR$dir.save
                            , "/PFGcover_YEAR_"
@@ -397,9 +401,6 @@ POST_FATE.graphic_mapPFG = function(
       output.names = c(output.names, output.name)
       writeRaster(ras.COVER, filename = output.name, overwrite = TRUE)
       
-      ## GET abundance relative maps ------------------------------------------
-      ras.REL = ras.PFG / ras.TOT
-      
       ## GET richness map -----------------------------------------------------
       ras.pts = as.data.frame(ras.REL)
       ras.pts = as.matrix(ras.pts)
@@ -408,7 +409,7 @@ POST_FATE.graphic_mapPFG = function(
         div_q = divLeinster(spxp = ras.pts, q = qq)
         ras.div = GLOB_MASK$ras.mask
         ras.div[] = div_q
-        ras.div[which(GLOB_MASK$ras.mask[] == 0)] = NA
+        ras.div = ras.div * GLOB_MASK$ras.mask
         ras_list[[paste0("DIV.", qq)]] = ras.div
         
         output.name = paste0(GLOB_DIR$dir.save
@@ -499,14 +500,14 @@ POST_FATE.graphic_mapPFG = function(
       {
         cat("\n ---------- PRODUCING PLOT(S)")
         
-        pp.i = function(tab, i.col, i.axis, i.title, i.subtitle)
+        pp.i = function(tab, i.col, i.axis, i.lim, i.bre, i.lab, i.title, i.subtitle)
         {
           pp.i = ggplot(tab, aes_string(x = "X", y = "Y", fill = "VALUE")) +
             scale_fill_gradientn(i.axis
                                  , colors = brewer.pal(9, i.col)
-                                 , limits = c(0, 1)
-                                 , breaks = seq(0, 1, 0.2)
-                                 , labels = seq(0, 100, 20)) +
+                                 , limits = i.lim
+                                 , breaks = i.bre
+                                 , labels = i.lab) +
             coord_equal() +
             geom_raster() +
             labs(x = "", y = ""
@@ -526,8 +527,11 @@ POST_FATE.graphic_mapPFG = function(
         ras.pts = as.data.frame(rasterToPoints(ras.COVER))
         colnames(ras.pts) = c("X", "Y", "VALUE")
         pp_list$cover = pp.i(tab = ras.pts
-                             , i.col = "Greens"
+                             , i.col = "YlGn"
                              , i.axis = "Abundance (%)"
+                             , i.lim = c(0, 1)
+                             , i.bre = seq(0, 1, 0.2)
+                             , i.lab = seq(0, 100, 20)
                              , i.title = paste0("GRAPH C : map of PFG cover - Simulation year : ", y)
                              , i.subtitle = paste0("For each pixel, PFG abundances from strata "
                                                    , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
@@ -539,13 +543,14 @@ POST_FATE.graphic_mapPFG = function(
         ras.pts = as.data.frame(rasterToPoints(ras.DIV[[1]]))
         colnames(ras.pts) = c("X", "Y", "VALUE")
         pp_list$richness = pp.i(tab = ras.pts
-                                , i.col = "Greens"
+                                , i.col = "RdPu"
                                 , i.axis = "Number of PFG"
+                                , i.lim = c(0, max(ras.pts$VALUE, na.rm = TRUE))
+                                , i.bre = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 2)
+                                , i.lab = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 2)
                                 , i.title = paste0("GRAPH C : map of PFG richness - Simulation year : ", y)
                                 , i.subtitle = paste0("For each pixel and stratum, first relative abundances are calculated, "
-                                                      , "then transformed into binary values :\n"
-                                                      , "1 if the PFG abundance represents more than 5 % "
-                                                      , "of the pixel abundance, 0 otherwise.\n"
+                                                      , "then transformed into binary values.\n"
                                                       , "If the PFG is present in one stratum, then it is considered present within the pixel.\n"
                                                       , "Finally, simulated PFG occurrences are summed.\n"))
         
@@ -556,8 +561,11 @@ POST_FATE.graphic_mapPFG = function(
           ras.pts = as.data.frame(rasterToPoints(ras.CWM.light))
           colnames(ras.pts) = c("X", "Y", "VALUE")
           pp_list$CWM.light = pp.i(tab = ras.pts
-                                   , i.col = "Oranges"
+                                   , i.col = "YlOrRd"
                                    , i.axis = "PFG light CWM"
+                                   , i.lim = c(0, max(ras.pts$VALUE, na.rm = TRUE))
+                                   , i.bre = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
+                                   , i.lab = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
                                    , i.title = paste0("GRAPH C : map of light CWM - Simulation year : ", y)
                                    , i.subtitle = paste0("For each pixel, PFG abundances from strata "
                                                          , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
@@ -572,13 +580,16 @@ POST_FATE.graphic_mapPFG = function(
           ras.pts = as.data.frame(rasterToPoints(ras.CWM.soil))
           colnames(ras.pts) = c("X", "Y", "VALUE")
           pp_list$CWM.soil = pp.i(tab = ras.pts
-                                   , i.col = "Oranges"
-                                   , i.axis = "PFG soil CWM"
-                                   , i.title = paste0("GRAPH C : map of soil CWM - Simulation year : ", y)
-                                   , i.subtitle = paste0("For each pixel, PFG abundances from strata "
-                                                         , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
-                                                         , "then transformed into relative values by dividing by the maximum abundance obtained.\n"
-                                                         , "Community Weighted Mean is then calculated with observed values of soil for each PFG."))
+                                  , i.col = "YlGnBu"
+                                  , i.axis = "PFG soil CWM"
+                                  , i.lim = c(0, max(ras.pts$VALUE, na.rm = TRUE))
+                                  , i.bre = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
+                                  , i.lab = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
+                                  , i.title = paste0("GRAPH C : map of soil CWM - Simulation year : ", y)
+                                  , i.subtitle = paste0("For each pixel, PFG abundances from strata "
+                                                        , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
+                                                        , "then transformed into relative values by dividing by the maximum abundance obtained.\n"
+                                                        , "Community Weighted Mean is then calculated with observed values of soil for each PFG."))
         }
         
         return(list(ras = ras_list, plot = pp_list))

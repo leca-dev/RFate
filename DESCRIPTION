@@ -57,7 +57,7 @@ Suggests:
     spelling, 
     testthat,
     covr,
-    knitr, rmarkdown
+    knitr, markdown, rmarkdown
 LinkingTo: Rcpp, RcppThread, BH (>= 1.75.0-0)
 VignetteBuilder: knitr, rmarkdown
 Language: en-US

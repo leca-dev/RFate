@@ -275,7 +275,7 @@ POST_FATE.graphic_evolutionPixels = function(
     if (opt.doPlot)
     {
       cat("\n ---------- PRODUCING PLOT \n")
-      vec_col1 = c('#0077BB', '#33BBEE', '#009988', '#EE7733', '#CC3311', '#EE3377')
+      vec_col1 = c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6')
       val_col1 = c(rep(rgb(1,1,1,1), GLOB_SIM$no_STRATA)
                    , colorRampPalette(vec_col1)(GLOB_SIM$no_PFG)
                    , "grey30")

@@ -666,7 +666,6 @@ PRE_FATE.speciesDistance = function(mat.traits
   if (length(toRemove) > 0)
   {
     mat.traits.split = mat.traits.split[-toRemove]
-    names_groups = names_groups[-toRemove]
   }
   names_groups = intersect(names(mat.traits.split), names(mat.overlap.split))
   cat("\n")

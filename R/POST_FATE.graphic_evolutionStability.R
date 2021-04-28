@@ -209,14 +209,13 @@ POST_FATE.graphic_evolutionStability = function(
     .testParam_existFile(file.abundance)
     tab.totalAbundance = fread(file.abundance)
     tab.totalAbundance = as.data.frame(tab.totalAbundance, stringsAsFactors = FALSE)
-    tab.totalAbundance$HAB = as.character(tab.totalAbundance$HAB)
     
     years = colnames(tab.totalAbundance)
     years = years[which(!(years %in% c("PFG", "ID.pixel", "X", "Y", "HAB")))]
     years = as.numeric(years)
     no_years = length(years)
     
-    hab_names = unique(tab.totalAbundance$HAB)
+    hab_names = sort(unique(tab.totalAbundance$HAB))
     no_hab = length(hab_names)
     
     cat("\n  Number of years : ", no_years)
@@ -416,7 +415,7 @@ POST_FATE.graphic_evolutionStability = function(
       if (opt.doPlot && !is.null(tab.HAB))
       {
         cat("\n ---------- PRODUCING PLOT \n")
-        col_vec = c('#6da34d', '#297373', '#58a4b0', '#5c4742', '#3f334d')
+        col_vec = c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#666666")
         col_fun = colorRampPalette(col_vec)
         
         
@@ -426,7 +425,7 @@ POST_FATE.graphic_evolutionStability = function(
         tab.plot1$metric = factor(tab.plot1$metric, c("totalAbundance", "evenness", "no.PFG"))
         
         ## plot
-        pp = ggplot(tab.plot1, aes_string(x = "year", y = "value", color = "HAB"))
+        pp = ggplot(tab.plot1, aes_string(x = "year", y = "value", color = "factor(HAB, hab_names)"))
         
         if (!is.null(tab.STAB))
         {
@@ -442,7 +441,7 @@ POST_FATE.graphic_evolutionStability = function(
                       , aes_string(xmin = "yearStart", xmax = "yearEnd"
                                    , ymin = "mean - sd"
                                    , ymax = "mean + sd"
-                                   , fill = "HAB"))
+                                   , fill = "factor(HAB, hab_names)"))
         }
         
         ## plot

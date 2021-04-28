@@ -249,9 +249,7 @@ POST_FATE.graphic_mapPFGvsHS = function(
                                       , "Simulation year : ", y, " - PFG : ", pfg)
                      , subtitle = paste0("For each pixel and stratum, first "
                                          , "relative abundances are calculated, "
-                                         , "then transformed into binary values :\n"
-                                         , "1 if the PFG abundance represents more than "
-                                         , "5 % of the pixel abundance, 0 otherwise.\n"
+                                         , "then transformed into binary values.\n"
                                          , "If the PFG is present in one stratum, then "
                                          , "it is considered present within the pixel.\n")) +
                 .getGraphics_theme() +
