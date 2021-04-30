@@ -947,8 +947,8 @@ PRE_FATE.params_globalParameters = function(
   if (doSoil)
   {
     params.SOIL = list(as.numeric(doSoil)
-                       , as.integer(SOIL.init)
-                       , as.integer(SOIL.retention)
+                       , SOIL.init
+                       , SOIL.retention
                        , as.numeric(SOIL.saving))
     names.params.list.SOIL = c("DO_SOIL_INTERACTION"
                                , "SOIL_INIT"

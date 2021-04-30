@@ -649,8 +649,9 @@ PRE_FATE.params_multipleSet = function(
       todo = function(x, y) { return(as.vector(PARAMS1[[y]][x]) + PARAMS.ecart[[y]][x]) }
       PARAMS.max = ff()
       
-      PARAMS.range = rbind(as.integer(unlist(PARAMS.min))
-                           , as.integer(unlist(PARAMS.max)))
+      # PARAMS.range = rbind(as.integer(unlist(PARAMS.min))
+      #                      , as.integer(unlist(PARAMS.max)))
+      PARAMS.range = rbind(unlist(PARAMS.min), unlist(PARAMS.max))
       PARAMS.range = as.data.frame(PARAMS.range)
       colnames(PARAMS.range) = names(unlist(PARAMS.min))
       rownames(PARAMS.range) = c("min", "max")
@@ -731,8 +732,9 @@ PRE_FATE.params_multipleSet = function(
                                                   , unlist(PARAMS2)[x])) })
         names(PARAMS.min) = names(PARAMS.max) = names(unlist(PARAMS1))
         
-        PARAMS.range = rbind(as.integer(unlist(PARAMS.min))
-                             , as.integer(unlist(PARAMS.max)))
+        # PARAMS.range = rbind(as.integer(unlist(PARAMS.min))
+        #                      , as.integer(unlist(PARAMS.max)))
+        PARAMS.range = rbind(unlist(PARAMS.min), unlist(PARAMS.max))
         PARAMS.range = as.data.frame(PARAMS.range)
         colnames(PARAMS.range) = names(unlist(PARAMS.min))
         rownames(PARAMS.range) = c("min", "max")
