@@ -665,7 +665,8 @@ In any case, it is good to keep in mind that **it does not exist ONE good parame
 
 
 ```R
-## .loadData("Champsaur_results", "7z")
+## .loadData("Champsaur_results", "7z") :
+##    table outputs and graphic pdf files only
 
 
 library(RFate)
