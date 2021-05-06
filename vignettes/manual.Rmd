@@ -29,7 +29,7 @@ width:1200px;
 
 <br/>
 
-More informations about the Champsaur example dataset can be found [here](./../reference/dot-loadData.html).
+More informations about the `Champsaur` example dataset can be found [here](./../reference/dot-loadData.html).
 
 <br/>
 
@@ -46,10 +46,13 @@ More informations about the Champsaur example dataset can be found [here](./../r
 
 <br/>
 
-The different parts of the Champsaur example dataset can be downloaded with the [.loadData](./../reference/dot-loadData.html) function, or from the links below :
+The different parts of the `Champsaur` example dataset can be downloaded with the [.loadData](./../reference/dot-loadData.html) function, or from the links below :
 
-- Champsaur PFG : &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.RData" class="download" title="Download as RData"><i class="fas fa-download"></i> `RData`</a> &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i> `7z`</a>
-- Champsaur params : &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.RData" class="download" title="Download as RData"><i class="fas fa-download"></i> `RData`</a> &emsp;&emsp; <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i> `7z`</a>
+|  | `RData` | `7z` |
+| :------ | :-----: | :--: |
+| **1. PFG** | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.RData" class="download" title="Download as RData"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |
+| **2. params** | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.RData" class="download" title="Download as RData"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |
+| **3. results** |  | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |
 
 
 ### 1. Building Plant Functional Group
@@ -80,7 +83,9 @@ sp.SELECT = PRE_FATE.selectDominant(mat.observations = tab.occ[, c("sites", "spe
                                     , doRuleC = FALSE
                                     , opt.doRobustness = TRUE
                                     , opt.robustness_percent = seq(0.1, 0.9, 0.1)
-                                    , opt.robustness_rep = 10)
+                                    , opt.robustness_rep = 10
+                                    , opt.doSitesSpecies = TRUE
+                                    , opt.doPlot = TRUE)
 
 ## Explore results
 names(sp.SELECT)
@@ -99,7 +104,7 @@ plot(sp.SELECT$plot.robustness$`All dataset`)
 ## Prepare data to calculate pairwise species distance --------------------------------------------
 
 # ## Calculate mat.overlap matrix
-# ## Add absences for community sites
+# ## Add absences in community sites
 # tab.dom.PA = sp.SELECT$tab.dom.PA
 # for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])
 # {
@@ -116,28 +121,19 @@ plot(sp.SELECT$plot.robustness$`All dataset`)
 # mat.overlap = sp.DIST$mat.OVERLAP
 # (mat.overlap[1:5, 1:5])
 
+
+## Transform dissimilarity matrices into similarity distances
 mat.habitat = Champsaur_PFG$mat.habitat
 mat.overlap = Champsaur_PFG$mat.overlap
 
-## Transform dissimilarity matrices into similarity distances
 mat.habitat = 1 - mat.habitat
 mat.overlap = 1 - mat.overlap
 
-## Combine distances of habitat preferences and niche overlap
-## to have one matrix to reflect the species niches
-ind.sp = intersect(colnames(mat.overlap), colnames(mat.habitat))
-wei.habi = 0.4
-wei.over = 0.6
-mat.env = (wei.habi * mat.habitat[ind.sp, ind.sp] + wei.over * mat.overlap[ind.sp, ind.sp]) / (wei.habi + wei.over)
 
-(mat.habitat[ind.sp, ind.sp][1:5, 1:5])
-(mat.overlap[ind.sp, ind.sp][1:5, 1:5])
-(mat.env[1:5, 1:5])
-
-
-tab.traits.P = sp.traits.P
-tab.traits.C = sp.traits.C
-tab.traits.H = sp.traits.H
+## Load selected traits for each group
+tab.traits.P = Champsaur_PFG$sp.traits.P
+tab.traits.C = Champsaur_PFG$sp.traits.C
+tab.traits.H = Champsaur_PFG$sp.traits.H
 
 str(tab.traits.P)
 str(tab.traits.C)
@@ -150,15 +146,13 @@ str(tab.traits.H)
 ###################################################################################################
 
 ## Calculate pairwise species distance ------------------------------------------------------------
-  
 sp.DIST.P = PRE_FATE.speciesDistance(mat.traits = tab.traits.P
                                      , mat.overlap.option = "dist"
-                                     , mat.overlap.object = mat.env
-                                     , opt.weights = c(0.3, 0.7)
+                                     , mat.overlap.object = mat.habitat
+                                     , opt.weights = c(0.5, 0.5)
                                      , opt.maxPercent.NA = 0.25
                                      , opt.maxPercent.similarSpecies = 0.5
                                      , opt.min.sd = 0.5)
-                                     
 str(sp.DIST.P)
 {
   require(foreach)
@@ -180,12 +174,10 @@ str(sp.DIST.P)
 }
                                      
 ## Build clusters and choose final groups number --------------------------------------------------
-                                
 sp.CLUST1.P = PRE_FATE.speciesClustering_step1(sp.DIST.P$mat.ALL)
 sp.CLUST2.P = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.P$clust.dendrograms
                                                , no.clusters = 5
                                                , mat.species.DIST = sp.DIST.P$mat.ALL)
-
 names(sp.CLUST2.P)
 str(sp.CLUST2.P$determ.sp)
 str(sp.CLUST2.P$determ.all)
@@ -198,21 +190,30 @@ plot(sp.DETERM$plot.PCO$Phanerophyte)
 ## CHAMAEPHYTE
 ###################################################################################################
 
+## Combine distances of habitat preferences and niche overlap
+## to have one matrix to reflect the species niches
+wei.habi = 0.5
+wei.over = 0.5
+ind.sp = intersect(colnames(mat.overlap), colnames(mat.habitat))
+mat.env = (wei.habi * mat.habitat[ind.sp, ind.sp] + wei.over * mat.overlap[ind.sp, ind.sp]) / (wei.habi + wei.over)
+
+(mat.habitat[ind.sp, ind.sp][1:5, 1:5])
+(mat.overlap[ind.sp, ind.sp][1:5, 1:5])
+(mat.env[1:5, 1:5])
+
 ## Calculate pairwise species distance ------------------------------------------------------------
-  
 sp.DIST.C = PRE_FATE.speciesDistance(mat.traits = tab.traits.C
                                      , mat.overlap.option = "dist"
                                      , mat.overlap.object = mat.env
-                                     , opt.weights = c(0.3, 0.7)
+                                     , opt.weights = c(0.4, 0.6)
                                      , opt.maxPercent.NA = 0.25
                                      , opt.maxPercent.similarSpecies = 0.5
                                      , opt.min.sd = 0.5)
 
 ## Build clusters and choose final groups number --------------------------------------------------
-                                
 sp.CLUST1.C = PRE_FATE.speciesClustering_step1(sp.DIST.C$mat.ALL)
 sp.CLUST2.C = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.C$clust.dendrograms
-                                               , no.clusters = 3
+                                               , no.clusters = 4
                                                , mat.species.DIST = sp.DIST.C$mat.ALL)
 
 
@@ -224,17 +225,22 @@ sp.CLUST2.C = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.C$c
 ## Rearrange data (more difficult to distinguish groups among herbaceous species) -----------------
 
 ## Separate some species quite different from the rest
-PFG_wetlands = c("15735", "15211", "10429", "17167", "40501", "16522", "40514", "14782", "40445")
-tab.traits.H = tab.traits.H[-which(tab.traits.H$species %in% PFG_wetlands), ]
+SP_wetlands = c("15735", "15211", "10429", "17167", "40501", "16522", "40514", "14782", "40445", "14316")
+SP_outliers = c("11223", "5445", "14024", "11035", "10477")
+tab.traits.H = tab.traits.H[-which(tab.traits.H$species %in% SP_wetlands), ]
+tab.traits.H = tab.traits.H[-which(tab.traits.H$species %in% SP_outliers), ]
   
-## Put more weights on niche overlap
+## Put more weights on overlap matrix
+wei.habi = 0.4
+wei.over = 0.6
 ind.sp = intersect(colnames(mat.overlap), colnames(mat.habitat))
-wei.habi = 0.2
-wei.over = 0.8
 mat.env = (wei.habi * mat.habitat[ind.sp, ind.sp] + wei.over * mat.overlap[ind.sp, ind.sp]) / (wei.habi + wei.over)
 
+(mat.habitat[ind.sp, ind.sp][1:5, 1:5])
+(mat.overlap[ind.sp, ind.sp][1:5, 1:5])
+(mat.env[1:5, 1:5])
+
 ## Calculate pairwise species distance ------------------------------------------------------------
-  
 sp.DIST.H = PRE_FATE.speciesDistance(mat.traits = tab.traits.H
                                      , mat.overlap.option = "dist"
                                      , mat.overlap.object = mat.env
@@ -245,12 +251,13 @@ sp.DIST.H = PRE_FATE.speciesDistance(mat.traits = tab.traits.H
                                      
                                      
 ## Build clusters and choose final groups number --------------------------------------------------
-                                
 sp.CLUST1.H = PRE_FATE.speciesClustering_step1(sp.DIST.H$mat.ALL)
 sp.CLUST2.H = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.H$clust.dendrograms
                                                , no.clusters = 7
                                                , mat.species.DIST = sp.DIST.H$mat.ALL)
 
+## Groups H6 (adventices) and H7 (outlier species) will be removed
+## SP_wetlands will become PFG H6
 
 
 ###################################################################################################
@@ -258,6 +265,7 @@ sp.CLUST2.H = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.H$c
 ###################################################################################################
 
 tab.PFG = Champsaur_PFG$PFG.species
+tab.PFG = tab.PFG[which(tab.PFG$DETERMINANT == "TRUE"), ]
 
 tab.traits = Champsaur_PFG$sp.traits
 tab.summary = tab.traits[, c("species", "MATURITY", "LONGEVITY", "HEIGHT", "LIGHT"
@@ -267,21 +275,42 @@ colnames(tab.summary) = c("species", "maturity", "longevity", "height", "light"
 tab.summary$soil_contrib = as.numeric(tab.summary$soil_contrib)
 tab.summary$soil_tolerance = ifelse(tab.summary$soil_tolerance == 1, 0.5, 1)
 tab.summary = merge(tab.PFG[, c("PFG", "species")], tab.summary, by = "species", all.x = TRUE)
+tab.summary$soil_tolerance[which(tab.summary$PFG %in% c("H2", "P2") & tab.summary$soil_tolerance == 0.5)] = 1
 head(tab.summary)
+
+load("BUILDPFG_tab.dom.PA.RData")
+tab.dom.PA = as.data.frame(tab.dom.PA)
+tab.dom.PA = tab.dom.PA[, which(colnames(tab.dom.PA) %in% tab.summary$species)]
 
 ## Calculate trait values per PFG -----------------------------------------------------------------
 
-PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary)
+PFG.traits = PRE_FATE.speciesClustering_step3(mat.traits = tab.summary, opt.mat.PA = tab.dom.PA)
 
 ```
 
+<br/><br/>
+
+**Traits** used to build functional groups should *reflect the community strategies* that are taken into account in `FATE`, such as :
+
+- life cycle (through maturity, longevity...)
+- strategy for dispersal
+- strategy for light (through height, light preference...)
+- strategy for soil (through LNC, nitrogen, soil preference...)
+- habitat and overall strategy (through LDMC, SLA, CSR strategy...)
+
+They should be *standardized* (scale, log-transformation...) to be sure that they will all have similar importance. <br/>
+Traits selected were the ones with *enough values*, and *enough variation*.
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_traits.png" alt="EXAMPLE Champsaur PFG traits" style="width:600px;"></img>
+</div>
 
 <br/><br/>
 
-A brief description of the Plant Functional Groups obtained for the Champsaur dataset is presented below. *italic* represents species that have been pointed out as `Not determinant` by the [PRE_FATE.speciesClustering_step2](./../reference/PRE_FATE.speciesClustering_step2.html) function (*difference between dominant and determinant species is explained in the [Details](./../reference/PRE_FATE.speciesClustering_step2.html#details) section of this function*), but in this example they have all been kept for consistency in concerned PFG.
+A **brief description of the Plant Functional Groups obtained** for the `Champsaur` dataset is presented below. Among selected dominant species, <strike>some species</strike> have been pointed out as `Not determinant` by the [PRE_FATE.speciesClustering_step2](./../reference/PRE_FATE.speciesClustering_step2.html) function (*difference between dominant and determinant species is explained in the [Details](./../reference/PRE_FATE.speciesClustering_step2.html#details) section of this function*).
 
 <div class="zoom">
-<p><img src="pictures/EXAMPLE_Champsaur_PFG_table.png" alt="EXAMPLE Champsaur PFG table"></img></p>
+<p><img src="pictures/EXAMPLE_Champsaur_PFG_description.png" alt="EXAMPLE Champsaur PFG description"></img></p>
 </div>
 
 <br/><br/>
@@ -375,6 +404,44 @@ for(pfg in colnames(tab.occ))
 }
 ```
 
+<br/>
+
+```R
+## --------------------------------------------------------------------------------------
+## This code gives a quick and rough idea of the
+## PFG communities that should be found within the simulation area
+## For example here :
+##  H6 is mainly found with : C2 and P2 (edges, very humid and fertile groups)
+##  H5 is mainly found with : P1, P3 and P4 / H2, C1 and P5 (montane and subalpine forests)
+
+# library(phyloclim)
+# type.mod = "wmean" # "ca"
+# list.fi = paste0(sort(colnames(tab.occ)), "/proj_CURRENT_100m/individual_projections/"
+#                  , sort(colnames(tab.occ)), "_EM", type.mod, "ByTSS_mergedAlgo_mergedRun_mergedData.img")
+# stk.wmean = stack(list.fi)
+# stk.wmean = stk.wmean / 1000
+# names(stk.wmean) = sub("_.*", "", names(stk.wmean))
+# stk.wmean[which(stk.wmean[] < 0)] = 0
+# stk.wmean[which(stk.wmean[] > 1)] = 1
+# HS.stk[] = ifelse(stk.wmean[] > 0.5, 1, 0)
+# HS.list = lapply(1:nlayers(HS.stk), function(x) as(HS.stk[[x]], 'SpatialGridDataFrame'))
+# nich = as.matrix(niche.overlap(HS.list))
+# colnames(nich) = rownames(nich) = sapply(names(HS.stk), function(x) strsplit(x, "_")[[1]][2])
+# library(corrplot)
+# colo = colorRampPalette(c('#9e0142','#d53e4f','#f46d43','#fdae61','#fee08b','#ffffbf'
+#                           ,'#e6f598','#abdda4','#66c2a5','#3288bd','#5e4fa2'))
+# corrplot(nich, method = "square", type = "lower", diag = FALSE
+#          , col = colo(20), cl.lim = c(0,1), order = "hclust"
+#          , tl.srt = 25, tl.offset = 1)
+```
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_habsuit.png" alt="EXAMPLE Champsaur PFG habitat suitability" style="width:400px;"></img>
+<img src="pictures/EXAMPLE_Champsaur_PFG_communities.png" alt="EXAMPLE Champsaur PFG communities" style="width:400px;"></img>
+</div>
+
+<br/>
+
 #### Create `FATE` simulation folder and parameter files
 
 
@@ -425,6 +492,10 @@ PRE_FATE.params_PFGdispersal(name.simulation = "FATE_Champsaur"
 PRE_FATE.params_PFGlight(name.simulation = "FATE_Champsaur"
                          , mat.PFG.light = Champsaur_params$tab.LIGHT[, c("PFG", "type")]
                          , mat.PFG.tol = Champsaur_params$tab.LIGHT[, c("PFG", "strategy_tol")])
+.setParam(params.lines = "FATE_Champsaur/DATA/PFGS/LIGHT/LIGHT_P1.txt"
+          , flag = "LIGHT_TOL"
+          , flag.split = " "
+          , value = "1 1 0 1 1 1 1 1 1")
 
 
 ## SOIL ---------------------------------------------------------------------------------
@@ -432,36 +503,12 @@ PRE_FATE.params_PFGsoil(name.simulation = "FATE_Champsaur"
                         , mat.PFG.soil = Champsaur_params$tab.SOIL)
 
 
-## DISTURBANCE --------------------------------------------------------------------------
-require(data.table)
-tmp = fread("FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv")
-tab.succ = Champsaur_params$tab.SUCC
-tab.succ$age_above_150cm = tmp$CHANG_STR_AGES_to_str_4_150
-tab.succ = tab.succ[, c('PFG', 'type', 'maturity', 'longevity', 'age_above_150cm')]
-
-PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_Champsaur"
-                               , mat.PFG.dist = tab.succ
-                               , mat.PFG.tol = Champsaur_params$tab.DIST)
-
 
 ## Create simulation related parameter files ------------------------------------------------------
 
-## CHANGING TIMES -----------------------------------------------------------------------
-tab.changing = data.frame(year = c(600, 601, 800, 801)
-                          , order = rep(1, 4)
-                          , new.value = c("MASK_mowing.img"
-                                          , "MASK_noDisturb.img"
-                                          , "MASK_mowing.img"
-                                          , "MASK_noDisturb.img"))
-
-PRE_FATE.params_changingYears(name.simulation = "FATE_Champsaur"
-                              , type.changing = "DIST"
-                              , mat.changing = tab.changing)
-
-
 ## SAVING YEARS -------------------------------------------------------------------------
 PRE_FATE.params_savingYears(name.simulation = "FATE_Champsaur"
-                            , years.maps = seq(10, 1000, 10))
+                            , years.maps = seq(50, 2000, 50))
 
 
 ## GLOBAL PARAMS ------------------------------------------------------------------------
@@ -474,17 +521,17 @@ for (ii in 1:nrow(combi))
                                    , opt.saving_abund_stratum = FALSE
                                    , required.no_PFG = 15
                                    , required.no_strata = 7
-                                   , required.simul_duration = 1000
-                                   , required.seeding_duration = 300
+                                   , required.simul_duration = 2000
+                                   , required.seeding_duration = 1000
                                    , required.seeding_timestep = 1
                                    , required.seeding_input = 100
-                                   , required.potential_fecundity = 10
-                                   , required.max_abund_low = 100
-                                   , required.max_abund_medium = 200
-                                   , required.max_abund_high = 500
+                                   , required.potential_fecundity = 1
+                                   , required.max_abund_low = 1000
+                                   , required.max_abund_medium = 2000
+                                   , required.max_abund_high = 3000
                                    , doLight = combi$doLight[ii]
-                                   , LIGHT.thresh_medium = 400
-                                   , LIGHT.thresh_low = 600
+                                   , LIGHT.thresh_medium = 8000 #6000
+                                   , LIGHT.thresh_low = 12000 #10000
                                    , LIGHT.saving = TRUE
                                    , doSoil = combi$doSoil[ii]
                                    , SOIL.init = 2.5
@@ -494,36 +541,56 @@ for (ii in 1:nrow(combi))
                                    , DISPERSAL.mode = 1
                                    , DISPERSAL.saving = FALSE
                                    , doHabSuitability = TRUE
-                                   , HABSUIT.mode = 1
-                                   , doDisturbances = TRUE
-                                   , DIST.no = 1
-                                   , DIST.no_sub = 4
-                                   , DIST.freq = 1)
+                                   , HABSUIT.mode = 1)
 }
+.setParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V4.txt"
+          , flag = "LIGHT_THRESH_MEDIUM"
+          , flag.split = " "
+          , value = "6000")
+.setParam(params.lines = "FATE_Champsaur/DATA/GLOBAL_PARAMETERS/Global_parameters_V4.txt"
+          , flag = "LIGHT_THRESH_LOW"
+          , flag.split = " "
+          , value = "10000")
 
 
 ## SIMUL_PARAM --------------------------------------------------------------------------
 writeRaster(Champsaur_params$stk.mask
             , filename = paste0("FATE_Champsaur/DATA/MASK/MASK_"
-                                , names(Champsaur_params$stk.mask), ".img")
+                                , names(Champsaur_params$stk.mask), ".tif")
             , bylayer = TRUE)
 writeRaster(Champsaur_params$stk.wmean
             , filename = paste0("FATE_Champsaur/DATA/PFGS/HABSUIT/HS_"
-                                , names(Champsaur_params$stk.wmean), "_0.img")
+                                , names(Champsaur_params$stk.wmean), "_0.tif")
             , bylayer = TRUE)
             
-.adaptMaps(name.simulation = "FATE_Champsaur", extension.old = "img", extension.new = "img")
-
-file.remove(list.files(path = paste0("FATE_Champsaur/DATA/MASK/")
-                       , pattern = ".img.aux.xml$", full.names = TRUE))
-file.remove(list.files(path = paste0("FATE_Champsaur/DATA/PFGS/HABSUIT/")
-                       , pattern = ".img.aux.xml$", full.names = TRUE))
+.adaptMaps(name.simulation = "FATE_Champsaur", extension.old = "tif", extension.new = "tif")
 
 PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
-                                , name.MASK = "MASK_Champsaur.img"
-                                , name.DIST = "MASK_noDisturb.img")
+                                , name.MASK = "MASK_Champsaur.img")
 
 ```
+
+<br/>
+
+
+```R
+## --------------------------------------------------------------------------------------
+## This code represents the repartition of interaction strategies for soil and light
+
+# Champsaur_params = .loadData("Champsaur_params", "RData")
+# tab = merge(Champsaur_params$tab.LIGHT, Champsaur_params$tab.SOIL, by = c("PFG", "type"))
+# tab$strategy_tol = factor(tab$strategy_tol, c("undergrowth", "semi_shade", "ubiquist", "pioneer", "full_light"))
+# library(ggplot2)
+# library(ggthemes)
+# ggplot(tab, aes(x = strategy_tol, y = soil_contrib)) +
+#   geom_boxplot(varwidth = TRUE) +
+#   labs(x = "", y = "Soil contribution\n") +
+#   theme_pander()
+```
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_strategies.png" alt="EXAMPLE Champsaur PFG strategies" style="width:600px;"></img>
+</div>
 
 <br/><br/>
 
@@ -548,35 +615,11 @@ FATE(simulParam = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
 
 #### Explore, understand and tune the parameters
 
-```R
-## --------------------------------------------------------------------------------------
-## This code gives a quick and rough idea of the
-## PFG communities that should be found within the simulation area
-## For example here :
-##  H3 is mainly found with : H1 and C3 (grasslands, no shade, infertile)
-##  H4 is mainly found with : C1, P2 and P6 (montane, pioneer and semi-shade groups)
-
-# library(phyloclim)
-# HS.files = list.files("FATE_Champsaur/DATA/PFGS/HABSUIT/", full.names = TRUE)
-# HS.stk = stack(HS.files)
-# HS.stk[] = ifelse(HS.stk[] > 0.5, 1, 0)
-# HS.list = lapply(1:nlayers(HS.stk), function(x) as(HS.stk[[x]], 'SpatialGridDataFrame'))
-# nich = as.matrix(niche.overlap(HS.list))
-# colnames(nich) = rownames(nich) = sapply(names(HS.stk), function(x) strsplit(x, "_")[[1]][2])
-# library(corrplot)
-# colo = colorRampPalette(c('#9e0142','#d53e4f','#f46d43','#fdae61','#fee08b','#ffffbf'
-#                           ,'#e6f598','#abdda4','#66c2a5','#3288bd','#5e4fa2'))
-# corrplot(nich, method = "square", type = "lower", diag = FALSE
-#          , col = colo(20), cl.lim = c(0,1), order = "hclust"
-#          , tl.srt = 25, tl.offset = 1)
-```
-
-<div style="text-align:center;">
-<img src="pictures/EXAMPLE_Champsaur_PFG_communities.png" alt="EXAMPLE Champsaur PFG communities" style="width:600px;"></img>
-</div>
-
 <br/>
 
+When using the **Light module**, the `LIGHT_THRESH_MEDIUM` and `LIGHT_THRESH_LOW` parameters will depend on the PFG abundances within a pixel. *For example, a simulation in which a pixel will contain 5 or 6 PFG, each with a maximum total abundance around 5000, will have different parameter values than a simulation in which a pixel will contain 10 PFG with a maximum total abundance set to 1000.*
+
+In the same way, these parameters can change depending on the module activated. Here, the values of `LIGHT_THRESH_MEDIUM` and `LIGHT_THRESH_LOW` change between the simulations 2 (**only Light**) and 4 (**Light + Soil**).
 
 ```R
 ## --------------------------------------------------------------------------------------
@@ -602,25 +645,18 @@ FATE(simulParam = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
 
 <br/>
 
-
-```R
-## --------------------------------------------------------------------------------------
-## This code represents the repartition of interaction strategies for soil and light
-
-# Champsaur_params = .loadData("Champsaur_params", "RData")
-# tab = merge(Champsaur_params$tab.LIGHT, Champsaur_params$tab.SOIL, by = c("PFG", "type"))
-# tab$strategy_tol = factor(tab$strategy_tol, c("undergrowth", "semi_shade", "ubiquist", "pioneer", "full_light"))
-# library(ggplot2)
-# library(ggthemes)
-# ggplot(tab, aes(x = strategy_tol, y = soil_contrib)) +
-#   geom_boxplot(varwidth = TRUE) +
-#   labs(x = "", y = "Soil contribution\n") +
-#   theme_pander()
-```
+When using the **Soil module**, the ranges of soil tolerance (`SOIL_LOW` and `SOIL_HIGH`) of all PFG should overlap in a balanced way : not too much, otherwise no effect of the soil module will be seen, but enough to ensure PFG survival.
 
 <div style="text-align:center;">
-<img src="pictures/EXAMPLE_Champsaur_PFG_strategies.png" alt="EXAMPLE Champsaur PFG strategies" style="width:600px;"></img>
+<img src="pictures/EXAMPLE_Champsaur_PFG_soil.png" alt="EXAMPLE Champsaur PFG soil" style="width:600px;"></img>
 </div>
+
+<br/><br/>
+
+
+In any case, it is good to keep in mind that **it does not exist ONE good parametrization, but rather a gradient of parameter values** along which more or less effect will be seen. <br/>
+*For example, Light module can be activated, but if the thresholds are well above pixel abundances, it will have no impact on the communities. As the thresholds are lowered, the interaction for light will become increasingly important, leading at some point to the crash of some PFG.*
+
 
 <br/><br/>
 
@@ -650,7 +686,7 @@ simul.param = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
 
 POST_FATE.temporalEvolution(name.simulation = simul.name
                             , file.simulParam = simul.param
-                            , no_years = 30)
+                            , no_years = 40)
 
 POST_FATE.graphic_evolutionCoverage(name.simulation = simul.name
                                     , file.simulParam = simul.param)
@@ -682,22 +718,22 @@ head(tab.obs)
 
 POST_FATE.relativeAbund(name.simulation = simul.name
                         , file.simulParam = simul.param
-                        , years = 1000)
+                        , years = 2000)
 
 POST_FATE.graphic_validationStatistics(name.simulation = simul.name
                                        , file.simulParam = simul.param
-                                       , years = 1000
+                                       , years = 2000
                                        , mat.PFG.obs = tab.obs[, c("PFG", "X", "Y", "obs")])
 
 POST_FATE.binaryMaps(name.simulation = simul.name
                      , file.simulParam = simul.param
-                     , years = 1000
+                     , years = 2000
                      , method = 1
                      , method1.threshold = 0.05)
 
 POST_FATE.graphic_mapPFGvsHS(name.simulation = simul.name
                              , file.simulParam = simul.param
-                             , years = 1000)
+                             , years = 2000)
 
 
 ###################################################################################################
@@ -706,13 +742,28 @@ POST_FATE.graphic_mapPFGvsHS(name.simulation = simul.name
 
 POST_FATE.graphic_mapPFG(name.simulation = simul.name
                          , file.simulParam = simul.param
-                         , years = 1000
+                         , years = 2000
                          , opt.stratum_min = 1
-                         , opt.stratum_max = 2)
+                         , opt.stratum_max = 6)
 
 ```
 
-<br/><br/>
+<br/>
+
+The [evolutionCoverage](./../reference/POST_FATE.graphic_evolutionCoverage.html) graphic allows a *rapid evaluation of the presence and the importance of PFG* at the end of the simulation. <br/>
+The [mapPFG](./../reference/POST_FATE.graphic_mapPFG.html) graphics give *spatial representations*. <br/>
+The [evolutionPixels](./../reference/POST_FATE.graphic_evolutionPixels.html) can help understand the *dynamics between different modules when selecting the same pixels*.
+
+
+<div style="text-align:center;">
+<img src="pictures/EXAMPLE_Champsaur_PFG_pixels_1.png" alt="EXAMPLE Champsaur PFG pixels V1" style="width:350px;"></img>
+<img src="pictures/EXAMPLE_Champsaur_PFG_pixels_2.png" alt="EXAMPLE Champsaur PFG pixels V2" style="width:450px;"></img>
+<img src="pictures/EXAMPLE_Champsaur_PFG_pixels_3.png" alt="EXAMPLE Champsaur PFG pixels V3" style="width:350px;"></img>
+<img src="pictures/EXAMPLE_Champsaur_PFG_pixels_4.png" alt="EXAMPLE Champsaur PFG pixels V4" style="width:450px;"></img>
+</div>
+
+
+<br/>
 
 
 
