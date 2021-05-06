@@ -308,14 +308,14 @@ PRE_FATE.params_PFGlight = function(
                                      .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag")))
                           , "3" = .testParam_notColnames(mat.PFG.light, c("PFG", "type", "light_need"))
                           , "4" = (.testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
-                                                                        , "active_germ_medium"
-                                                                        , "active_germ_high")) &&
+                                                                           , "active_germ_medium"
+                                                                           , "active_germ_high")) &&
                                      .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag"
-                                                                          , "type", "light_need")))
+                                                                             , "type", "light_need")))
                           , "6" = .testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
-                                                                       , "active_germ_medium"
-                                                                       , "active_germ_high"
-                                                                       , "type", "light_need"))
+                                                                          , "active_germ_medium"
+                                                                          , "active_germ_high"
+                                                                          , "type", "light_need"))
                           , TRUE)
       if (notCorrect){
         .stopMessage_columnNames("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
@@ -393,8 +393,8 @@ PRE_FATE.params_PFGlight = function(
   ## CHECK parameter opt.folder.name
   opt.folder.name = .getParam_opt.folder.name(opt.folder.name
                                               , paste0(name.simulation, "/DATA/PFGS/LIGHT/"))
-
-    
+  
+  
   #############################################################################
   
   no.PFG = nrow(mat.PFG.light)
@@ -409,7 +409,8 @@ PRE_FATE.params_PFGlight = function(
     LIGHT = as.character(mat.PFG.light$light_need)
   } else if (sum(colnames(mat.PFG.tol) == "strategy_tol") == 1)
   {
-    LIGHT = as.character(mat.PFG.tol$strategy_tol)
+    LIGHT = as.numeric(factor(mat.PFG.tol$strategy_tol
+                              , rev(c("full_light", "pioneer", "ubiquist", "semi_shade", "undergrowth"))))
   } else
   {
     warning("Missing data! The `LIGHT` parameter has not been set. Please check.")

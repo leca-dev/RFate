@@ -219,9 +219,22 @@ POST_FATE.temporalEvolution = function(
     cat("\n")
     
     ## UNZIP the raster saved -----------------------------------------------
-    .unzip_ALL(folder_name = GLOB_DIR$dir.output.perPFG.allStrata, no_cores = opt.no_CPU)
-    if (GLOB_SIM$doLight) .unzip_ALL(folder_name = GLOB_DIR$dir.output.light, no_cores = opt.no_CPU)
-    if (GLOB_SIM$doSoil) .unzip_ALL(folder_name = GLOB_DIR$dir.output.soil, no_cores = opt.no_CPU)
+    raster.perPFG.allStrata = .getRasterNames(years, "allStrata", "ABUND", GLOB_DIR)
+    .unzip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
+           , list_files = raster.perPFG.allStrata
+           , no_cores = opt.no_CPU)
+    if (GLOB_SIM$doLight){
+      .unzip(folder_name = GLOB_DIR$dir.output.light
+             , list_files = list.files(path = GLOB_DIR$dir.output.light
+                                       , pattern = paste0("YEAR_", years, "_", collapse = "|"))
+             , no_cores = opt.no_CPU)
+    }
+    if (GLOB_SIM$doSoil){
+      .unzip(folder_name = GLOB_DIR$dir.output.soil
+             , list_files = list.files(path = GLOB_DIR$dir.output.soil
+                                       , pattern = paste0("YEAR_", years, collapse = "|"))
+             , no_cores = opt.no_CPU)
+    }
     
     doWriting.abund = TRUE
     doWriting.light = ifelse(GLOB_SIM$doLight, TRUE, FALSE)

@@ -178,6 +178,7 @@
 ##' @importFrom grid unit
 ##' @importFrom grDevices pdf
 ##' @importFrom RColorBrewer brewer.pal
+##' @importFrom reshape2 melt
 ##' 
 ##' @importFrom ggplot2 ggplot aes aes_string ggsave
 ##' geom_raster element_blank coord_equal
@@ -250,11 +251,11 @@ POST_FATE.graphic_mapPFG = function(
     
     opt.doStrata = FALSE
     name_strata = "all"
+    range_strata = max(1, opt.stratum_min):min(GLOB_SIM$no_STRATA, opt.stratum_max)
     if (opt.stratum_min > 1 || opt.stratum_max < GLOB_SIM$no_STRATA)
     {
       opt.doStrata = TRUE
-      range_strata = max(1, opt.stratum_min):min(GLOB_SIM$no_STRATA, opt.stratum_max)
-      name_strata = paste0(max(1, opt.stratum_min), "_", min(GLOB_SIM$no_STRATA, opt.stratum_max))
+      name_strata = paste0(range_strata[1], "_", range_strata[length(range_strata)])
       cat("\n  Number of strata : ", GLOB_SIM$no_STRATA)
       cat("\n  Selected strata : ", range_strata)
       cat("\n")
@@ -268,7 +269,7 @@ POST_FATE.graphic_mapPFG = function(
     ## If opt.stratum_... used
     if (opt.doStrata)
     {
-      raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
+      # raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
       combi = expand.grid(year = years
                           , pfg = GLOB_SIM$PFG
                           , stratum = range_strata
@@ -289,6 +290,28 @@ POST_FATE.graphic_mapPFG = function(
       raster.perPFG.allStrata = .getRasterNames(years, "allStrata", "ABUND", GLOB_DIR)
       .unzip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
              , list_files = raster.perPFG.allStrata
+             , no_cores = opt.no_CPU)
+    }
+    ## If light activated
+    if (GLOB_SIM$doLight)
+    {
+      combi = expand.grid(year = years, stratum = range_strata, stringsAsFactors = FALSE)
+      raster.light.perStrata = sapply(1:nrow(combi), function(i)
+        paste0("Light_Resources_YEAR_"
+               , combi$year[i]
+               , "_STRATA_"
+               , combi$stratum[i]
+               , ".tif.gz"))
+      .unzip(folder_name = GLOB_DIR$dir.output.light
+             , list_files = raster.light.perStrata
+             , no_cores = opt.no_CPU)
+    }
+    ## If soil activated
+    if (GLOB_SIM$doSoil)
+    {
+      raster.soil = paste0("Soil_Resources_YEAR_", years, ".tif.gz")
+      .unzip(folder_name = GLOB_DIR$dir.output.soil
+             , list_files = raster.soil
              , no_cores = opt.no_CPU)
     }
     
@@ -345,7 +368,7 @@ POST_FATE.graphic_mapPFG = function(
           }
         }
         names(ras.PFG) = GLOB_SIM$PFG
-        ras.PFG = ras.PFG[[which(!is.null(ras.PFG))]]
+        ras.PFG = lapply(which(sapply(ras.PFG, is.null) == FALSE), function(x) ras.PFG[[x]])
         
         if (length(ras.PFG) == 0)
         {
@@ -448,7 +471,7 @@ POST_FATE.graphic_mapPFG = function(
                          , " do not contain `LIGHT` flag parameter. Please check."))
         } else
         {
-          ras.CWM.light = ras.REL * light_need[names(ras.REL)]
+          ras.CWM.light = sum(ras.REL * light_need[names(ras.REL)])
           ras_list$CWM.light = ras.CWM.light
           
           output.name = paste0(GLOB_DIR$dir.save
@@ -459,6 +482,17 @@ POST_FATE.graphic_mapPFG = function(
                                , ".tif")
           output.names = c(output.names, output.name)
           writeRaster(ras.CWM.light, filename = output.name, overwrite = TRUE)
+        }
+        
+        ## GET light maps (selected strata) -----------------------------------
+        file_name = paste0(GLOB_DIR$dir.output.light, sub(".gz$", "", raster.light.perStrata))
+        st = range_strata[which(file.exists(file_name))]
+        file_name = file_name[which(file.exists(file_name))]
+        if (length(file_name) > 0)
+        {
+          ras.light = stack(file_name) * GLOB_MASK$ras.mask
+          names(ras.light) = paste0("Stratum_", st)
+          ras_list$LIGHT = ras.light
         }
       }
       if (GLOB_SIM$doSoil)
@@ -475,7 +509,7 @@ POST_FATE.graphic_mapPFG = function(
                     , is.num = TRUE)
         }
         names(soil_contrib) = GLOB_SIM$PFG
-        ras.CWM.soil = ras.REL * soil_contrib[names(ras.REL)]
+        ras.CWM.soil = sum(ras.REL * soil_contrib[names(ras.REL)])
         ras_list$CWM.soil = ras.CWM.soil
         
         output.name = paste0(GLOB_DIR$dir.save
@@ -486,6 +520,15 @@ POST_FATE.graphic_mapPFG = function(
                              , ".tif")
         output.names = c(output.names, output.name)
         writeRaster(ras.CWM.soil, filename = output.name, overwrite = TRUE)
+        
+        ## GET soil maps ------------------------------------------------------
+        file_name = paste0(GLOB_DIR$dir.output.soil, sub(".gz$", "", raster.soil))
+        if (length(file_name) > 0)
+        {
+          ras.soil = stack(file_name) * GLOB_MASK$ras.mask
+          names(ras.soil) = years
+          ras_list$SOIL = ras.soil
+        }
       }
       
       message(paste0("\n The output files \n"
@@ -504,7 +547,7 @@ POST_FATE.graphic_mapPFG = function(
         {
           pp.i = ggplot(tab, aes_string(x = "X", y = "Y", fill = "VALUE")) +
             scale_fill_gradientn(i.axis
-                                 , colors = brewer.pal(9, i.col)
+                                 , colors = i.col
                                  , limits = i.lim
                                  , breaks = i.bre
                                  , labels = i.lab) +
@@ -527,7 +570,7 @@ POST_FATE.graphic_mapPFG = function(
         ras.pts = as.data.frame(rasterToPoints(ras.COVER))
         colnames(ras.pts) = c("X", "Y", "VALUE")
         pp_list$cover = pp.i(tab = ras.pts
-                             , i.col = "YlGn"
+                             , i.col = brewer.pal(9, "YlGn")
                              , i.axis = "Abundance (%)"
                              , i.lim = c(0, 1)
                              , i.bre = seq(0, 1, 0.2)
@@ -536,18 +579,20 @@ POST_FATE.graphic_mapPFG = function(
                              , i.subtitle = paste0("For each pixel, PFG abundances from strata "
                                                    , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
                                                    , "then transformed into relative values by dividing "
-                                                   , "by the maximum abundance obtained.\n"))
+                                                   , "by the maximum abundance obtained.\n\n"))
         
         ## PFG RICHNESS ---------------------------------------------------------
         cat("\n> PFG richness...")
         ras.pts = as.data.frame(rasterToPoints(ras.DIV[[1]]))
         colnames(ras.pts) = c("X", "Y", "VALUE")
+        mini = floor(min(ras.pts$VALUE, na.rm = TRUE))
+        maxi = ceiling(max(ras.pts$VALUE, na.rm = TRUE))
         pp_list$richness = pp.i(tab = ras.pts
-                                , i.col = "RdPu"
+                                , i.col = brewer.pal(9, "RdPu")
                                 , i.axis = "Number of PFG"
-                                , i.lim = c(0, max(ras.pts$VALUE, na.rm = TRUE))
-                                , i.bre = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 2)
-                                , i.lab = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 2)
+                                , i.lim = c(mini, maxi)
+                                , i.bre = seq(mini, maxi, 2)
+                                , i.lab = seq(mini, maxi, 2)
                                 , i.title = paste0("GRAPH C : map of PFG richness - Simulation year : ", y)
                                 , i.subtitle = paste0("For each pixel and stratum, first relative abundances are calculated, "
                                                       , "then transformed into binary values.\n"
@@ -561,16 +606,33 @@ POST_FATE.graphic_mapPFG = function(
           ras.pts = as.data.frame(rasterToPoints(ras.CWM.light))
           colnames(ras.pts) = c("X", "Y", "VALUE")
           pp_list$CWM.light = pp.i(tab = ras.pts
-                                   , i.col = "YlOrRd"
+                                   , i.col = rev(brewer.pal(9, "YlOrRd"))
                                    , i.axis = "PFG light CWM"
-                                   , i.lim = c(0, max(ras.pts$VALUE, na.rm = TRUE))
-                                   , i.bre = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
-                                   , i.lab = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
+                                   , i.lim = c(0, 4)
+                                   , i.bre = c(1, 2, 3)
+                                   , i.lab = c("Low", "Medium", "High")
                                    , i.title = paste0("GRAPH C : map of light CWM - Simulation year : ", y)
                                    , i.subtitle = paste0("For each pixel, PFG abundances from strata "
                                                          , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
                                                          , "then transformed into relative values by dividing by the maximum abundance obtained.\n"
-                                                         , "Community Weighted Mean is then calculated with observed values of light for each PFG."))
+                                                         , "Community Weighted Mean is then calculated with observed values of light for each PFG.\n"))
+        }
+        
+        if (GLOB_SIM$doLight && exists("ras.light"))
+        {
+          cat("\n> Pixel light resources...")
+          ras.pts = as.data.frame(rasterToPoints(ras.light))
+          ras.pts = melt(ras.pts, id.vars = c("x", "y"))
+          colnames(ras.pts) = c("X", "Y", "VARIABLE", "VALUE")
+          pp_list$light = pp.i(tab = ras.pts
+                               , i.col = rev(brewer.pal(9, "YlOrRd"))
+                               , i.axis = "Pixel light resources"
+                               , i.lim = c(1, 3)
+                               , i.bre = c(1, 2, 3)
+                               , i.lab = c("Low", "Medium", "High")
+                               , i.title = paste0("GRAPH C : map of pixel light resources - Simulation year : ", y)
+                               , i.subtitle = "\n\n\n")
+          pp_list$light = pp_list$light + facet_wrap(~ VARIABLE)
         }
         
         ## PFG CWM SOIL ---------------------------------------------------------
@@ -579,17 +641,36 @@ POST_FATE.graphic_mapPFG = function(
           cat("\n> PFG CWM soil...")
           ras.pts = as.data.frame(rasterToPoints(ras.CWM.soil))
           colnames(ras.pts) = c("X", "Y", "VALUE")
+          mini = floor(min(ras.pts$VALUE, na.rm = TRUE))
+          maxi = ceiling(max(ras.pts$VALUE, na.rm = TRUE))
           pp_list$CWM.soil = pp.i(tab = ras.pts
-                                  , i.col = "YlGnBu"
+                                  , i.col = brewer.pal(9, "YlGnBu")
                                   , i.axis = "PFG soil CWM"
-                                  , i.lim = c(0, max(ras.pts$VALUE, na.rm = TRUE))
-                                  , i.bre = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
-                                  , i.lab = seq(0, max(ras.pts$VALUE, na.rm = TRUE), 1)
+                                  , i.lim = c(mini, maxi)
+                                  , i.bre = seq(mini, maxi, 1)
+                                  , i.lab = seq(mini, maxi, 1)
                                   , i.title = paste0("GRAPH C : map of soil CWM - Simulation year : ", y)
                                   , i.subtitle = paste0("For each pixel, PFG abundances from strata "
                                                         , opt.stratum_min, " to ", GLOB_SIM$no_STRATA, " are summed,\n"
                                                         , "then transformed into relative values by dividing by the maximum abundance obtained.\n"
-                                                        , "Community Weighted Mean is then calculated with observed values of soil for each PFG."))
+                                                        , "Community Weighted Mean is then calculated with observed values of soil for each PFG.\n"))
+        }
+        
+        if (GLOB_SIM$doSoil && exists("ras.soil"))
+        {
+          cat("\n> Pixel soil resources...")
+          ras.pts = as.data.frame(rasterToPoints(ras.soil))
+          colnames(ras.pts) = c("X", "Y", "VALUE")
+          mini = floor(min(ras.pts$VALUE, na.rm = TRUE))
+          maxi = ceiling(max(ras.pts$VALUE, na.rm = TRUE))
+          pp_list$soil = pp.i(tab = ras.pts
+                              , i.col = brewer.pal(9, "YlGnBu")
+                              , i.axis = "Pixel soil resources"
+                              , i.lim = c(mini, maxi)
+                              , i.bre = seq(mini, maxi, 1)
+                              , i.lab = seq(mini, maxi, 1)
+                              , i.title = paste0("GRAPH C : map of pixel soil resources - Simulation year : ", y)
+                              , i.subtitle = "\n\n\n")
         }
         
         return(list(ras = ras_list, plot = pp_list))
@@ -603,7 +684,8 @@ POST_FATE.graphic_mapPFG = function(
     {
       pdf(file = paste0(name.simulation
                         , "/RESULTS/POST_FATE_GRAPHIC_C_map_PFG_"
-                        , basename(GLOB_DIR$dir.save), ".pdf")
+                        , basename(GLOB_DIR$dir.save)
+                        , "_STRATA_", name_strata, ".pdf")
           , width = 12, height = 10)
       for (y in years)
       {
@@ -625,6 +707,18 @@ POST_FATE.graphic_mapPFG = function(
     {
       .zip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
            , list_files = raster.perPFG.allStrata
+           , no_cores = opt.no_CPU)
+    }
+    if (GLOB_SIM$doLight)
+    {
+      .zip(folder_name = GLOB_DIR$dir.output.light
+           , list_files = raster.light.perStrata
+           , no_cores = opt.no_CPU)
+    }
+    if (GLOB_SIM$doSoil)
+    {
+      .zip(folder_name = GLOB_DIR$dir.output.soil
+           , list_files = raster.soil
            , no_cores = opt.no_CPU)
     }
     

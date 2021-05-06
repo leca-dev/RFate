@@ -365,7 +365,7 @@ POST_FATE.graphic_validationStatistics = function(
                                               , auc, sens, spec, TSS
                                               , stringsAsFactors = FALSE)
                   }
-                } 
+                }
                 return(mat.res.habi)
               }
               if (nrow(na.exclude(mat.res)) == 0)

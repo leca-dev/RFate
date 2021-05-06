@@ -323,14 +323,14 @@ test_that("POST_FATE.graphic_mapPFG gives correct outputs :", {
   expect_message(suppressWarnings(POST_FATE.graphic_mapPFG(name.simulation = "FATE_simulation"
                                                            , years = 1, opt.doBinary = TRUE))
                  , "> FATE_simulation/RESULTS/SIMUL_V1/PFGcover_YEAR_1_STRATA_all.tif")
-  expect_warning(POST_FATE.graphic_mapPFG(name.simulation = "FATE_simulation"
-                                          , years = 1, opt.doBinary = TRUE)
-                 , "do not contain `LIGHT` flag parameter. Please check.")
-  
-  suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                            , mat.PFG.light = data.frame(PFG = paste0("PFG",1:6)
-                                                                         , type = c("C", "C", "H", "H", "P", "P")
-                                                                         , light_need = c(3, 1, 3, 2, 5, 4))))
+  # expect_warning(POST_FATE.graphic_mapPFG(name.simulation = "FATE_simulation"
+  #                                         , years = 1, opt.doBinary = TRUE)
+  #                , "do not contain `LIGHT` flag parameter. Please check.")
+  # 
+  # suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+  #                                           , mat.PFG.light = data.frame(PFG = paste0("PFG",1:6)
+  #                                                                        , type = c("C", "C", "H", "H", "P", "P")
+  #                                                                        , light_need = c(3, 1, 3, 2, 5, 4))))
   
   expect_message(POST_FATE.graphic_mapPFG(name.simulation = "FATE_simulation"
                                           , years = 1, opt.doBinary = TRUE)
