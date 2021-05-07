@@ -618,7 +618,7 @@ FATE(simulParam = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
 
 When using the **Light module**, the `LIGHT_THRESH_MEDIUM` and `LIGHT_THRESH_LOW` parameters will depend on the PFG abundances within a pixel. *For example, a simulation in which a pixel will contain 5 or 6 PFG, each with a maximum total abundance around 5000, will have different parameter values than a simulation in which a pixel will contain 10 PFG with a maximum total abundance set to 1000.*
 
-In the same way, these parameters can change depending on the module activated. Here, the values of `LIGHT_THRESH_MEDIUM` and `LIGHT_THRESH_LOW` change between the simulations 2 (**only Light**) and 4 (**Light + Soil**).
+In the same way, these parameters can change depending on the module activated. *Here, the values of `LIGHT_THRESH_MEDIUM` and `LIGHT_THRESH_LOW` change between the simulations 2 (**only Light**) and 4 (**Light + Soil**).*
 
 ```R
 ## --------------------------------------------------------------------------------------

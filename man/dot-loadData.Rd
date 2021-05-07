@@ -245,11 +245,13 @@ A \code{7z} file containing one \code{FATE} simulation result folder. \cr
 4 simulations are available :
 
 \enumerate{
-  \item a simulation with only basic modules activated : CORE (succession) 
-  module, dispersal module, and habitat suitability module
-  \item the same as V1 + the light module
-  \item the same as V1 + the soil module
-  \item the same as V1 + the light and soil modules
+  \item a simulation with only basic modules activated : \cr \strong{CORE 
+  (succession)} module, \strong{dispersal} module, and \strong{habitat 
+  suitability} module
+  \item the same as \strong{V1} + the \strong{light} module
+  \item the same as \strong{V1} + the \strong{soil} module
+  \item the same as \strong{V1} + the \strong{light} and \strong{soil} 
+  modules
 }
 
   
@@ -257,9 +259,10 @@ A \code{7z} file containing one \code{FATE} simulation result folder. \cr
 \strong{>>> Champsaur_results_[...]}
 \strong{\cr#########################################################\cr\cr}
 
-A \code{7z} file containing \code{.csv} and \code{.pdf} files obtained from 
-the corresponding \code{FATE} simulation result folder (4 simulations 
-available) with the help of \code{POST_FATE} functions. \cr
+A \code{7z} file containing \strong{\code{.csv} and \code{.pdf} files} 
+obtained from the corresponding \code{FATE} simulation result folder 
+(4 simulations available) with the help of 
+\href{index.html#section-analyze-fate-outputs}{\code{POST_FATE} functions}. \cr
 }
 \description{
 This function loads one of the available datasets :
