@@ -14,6 +14,24 @@ that will be loaded}
 (either \code{RData} or \code{7z})}
 }
 \value{
+\strong{Note :} \emph{references to habitat refer to habitat map and classes from 
+\href{http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018}{CESBIO2018}.
+Some class gathering has been made, as follow :}
+
+\itemize{
+  \item \strong{0 - Other :} 0, 21, 22, 23
+  \item \strong{1 - Urban :} 1, 2, 3, 4
+  \item \strong{2 - Crops :} 5, 6, 7, 8, 9, 10, 11, 12
+  \item \strong{3 - Prairies :} 3
+  \item \strong{4 - Orchards, vineyards :} 14, 15
+  \item \strong{5 - Evergreen forests :} 16
+  \item \strong{6 - Coniferous forests :} 17
+  \item \strong{7 - Natural grasslands :} 18
+  \item \strong{8 - Woody heathlands :} 19
+  \item \strong{9 - Mineral surfaces :} 20 \cr \cr
+}
+
+
 \strong{\cr\cr#########################################################\cr}
 \strong{>>> Champsaur_PFG}
 \strong{\cr#########################################################\cr\cr}
@@ -34,9 +52,7 @@ Group :
       \item \strong{abund} : relative abundance obtained from the 
       \code{abund_BB} column with the 
       \code{\link{PRE_FATE.abundBraunBlanquet}} function
-      \item \strong{habitat} : habitat classes from 
-      [CESBIO2018](http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018%20/)
-      (with some classes gathering)
+      \item \strong{habitat} : habitat classes (gathered) from CESBIO2018
       \item \strong{TYPE} : type of records, exhaustive (\code{COMMUNITY}) 
       or single occurrences (\code{OCCURRENCE})
     }
@@ -44,7 +60,8 @@ Group :
     \item{rules.selectDominant}{a \code{vector} containing parameters to be 
     given to the \code{\link{PRE_FATE.selectDominant}} function \cr
     (\code{doRuleA}, \code{rule.A1}, \code{rule.A2_quantile}, \code{doRuleB}, 
-    \code{rule.B1_percentage}, \code{rule.B1_number}, \code{rule.B2}, \code{doRuleC})
+    \code{rule.B1_percentage}, \code{rule.B1_number}, \code{rule.B2}, 
+    \code{doRuleC})
     }
     \item{sp.SELECT}{a \code{list} obtained from the 
     \code{\link{PRE_FATE.selectDominant}} function run with 
@@ -66,51 +83,57 @@ Group :
       values
     }
     }
-    \item{sp.traits.P}{a \code{data.frame} of dimension \code{19 x 9} \cr
+    \item{sp.traits.P}{a \code{data.frame} of dimension \code{20 x 9} \cr
     a subset of \code{sp.traits} (LONGEVITY_log / HEIGHT_log / SEEDM_log 
     / SLA_log / DISPERSAL / LIGHT / NITROGEN) for Phanerophyte dominant 
     species \cr
     to be used with the \code{\link{PRE_FATE.speciesDistance}} function
     }
-    \item{sp.traits.C}{a \code{data.frame} of dimension \code{39 x 10} \cr
-    a subset of \code{sp.traits} (LONGEVITY_log / HEIGHT_log / SEEDM_log 
-    / SLA_log / LNC_log / DISPERSAL / LIGHT / NITROGEN) for Chamaephyte 
-    dominant species \cr
+    \item{sp.traits.C}{a \code{data.frame} of dimension \code{38 x 6} \cr
+    a subset of \code{sp.traits} (HEIGHT_log / SEEDM_log / LIGHT / 
+    NITROGEN) for Chamaephyte dominant species \cr
     to be used with the \code{\link{PRE_FATE.speciesDistance}} function
     }
     \item{sp.traits.H}{a \code{data.frame} of dimension \code{192 x 7} \cr
-    a subset of \code{sp.traits} (HEIGHT_log / SLA_log / LDMC_log / 
-    LNC_log / LIGHT) for Herbaceous dominant species \cr
+    a subset of \code{sp.traits} (HEIGHT_log / LDMC_log / 
+    LNC_log / SLA_log / LIGHT) for Herbaceous dominant species \cr
     to be used with the \code{\link{PRE_FATE.speciesDistance}} function
     }
     \item{mat.habitat}{\code{matrix} of dimension \code{240 x 240} \cr
     containing habitat dissimilarity distance (1 - Schoeners' D, obtained 
     with \code{\link[FD]{gowdis}}) for dominant species \cr
-    to be used with the \code{\link{PRE_FATE.speciesDistance}} function}
+    to be used with the \code{\link{PRE_FATE.speciesDistance}} function
+    }
     \item{tab.dom.PA}{\code{matrix} of dimension \code{13654 x 264} \cr
     containing dominant species occurrences and absences (obtained from 
     \code{sp.SELECT} object and absences corrected with the \code{TYPE} 
-    information of \code{sp.observations}), to build \code{mat.overlap}}
+    information of \code{sp.observations}), to build \code{mat.overlap}
+    }
     \item{tab.env}{\code{matrix} of dimension \code{13590 x 5} \cr
     containing environmental values (bio1, bio12, slope, dem, CESBIO2018) 
-    for sites, to build \code{mat.overlap}}
-    \item{mat.overlap}{\code{matrix} of dimension \code{243 x 243} \cr
+    for sites, to build \code{mat.overlap}
+    }
+    \item{mat.overlap}{\code{matrix} of dimension \code{244 x 244} \cr
     containing niche overlap distance (1 - Schoeners' D, obtained with 
     \code{\link[ecospat]{ecospat.niche.overlap}}) for dominant species \cr
-    to be used with the \code{\link{PRE_FATE.speciesDistance}} function}
+    to be used with the \code{\link{PRE_FATE.speciesDistance}} function
+    }
     \item{sp.DIST.P}{a \code{list} obtained from the 
     \code{\link{PRE_FATE.speciesDistance}} function run for Phanerophyte 
     dominant species with \code{mat.habitat}, \code{mat.overlap} and 
-    \code{sp.traits.P} parameters}
+    \code{sp.traits.P} parameters
+    }
     \item{sp.DIST.C}{a \code{list} obtained from the 
     \code{\link{PRE_FATE.speciesDistance}} function run for Chamaephyte 
     dominant species with \code{mat.habitat}, \code{mat.overlap} and 
-    \code{sp.traits.C} parameters}
+    \code{sp.traits.C} parameters
+    }
     \item{sp.DIST.H}{a \code{list} obtained from the 
     \code{\link{PRE_FATE.speciesDistance}} function run for Herbaceous 
     dominant species with \code{mat.habitat}, \code{mat.overlap} and 
-    \code{sp.traits.H} parameters}
-    \item{PFG.species}{\code{data.frame} of dimension \code{232 x 5} \cr
+    \code{sp.traits.H} parameters
+    }
+    \item{PFG.species}{\code{data.frame} of dimension \code{224 x 5} \cr
     containing dominant species information relative to PFG \cr
     obtained from the \code{\link{PRE_FATE.speciesClustering_step2}} 
     function
@@ -173,8 +196,8 @@ files and folders to run a \code{FATE} simulation :
     containing coordinates for each site}
     \item{stk.var}{a \code{\link[raster]{stack}} object of dimension 
     \code{358 x 427} with a resolution of \code{100m} and ETRS89 
-    projection, containing 3 layers with environmental values and to be 
-    used to produce PFG SDM}
+    projection, containing 3 layers with environmental values (bio1, 
+    slope, CESBIO2018) and to be used to produce PFG SDM}
     \item{tab.SUCC}{a \code{data.frame} of dimension \code{15 x 5} \cr
     containing PFG characteristics (type, height, maturity, longevity) \cr
     to be used with the \code{\link{PRE_FATE.params_PFGsuccession}} 
@@ -184,11 +207,11 @@ files and folders to run a \code{FATE} simulation :
     to be used with the \code{\link{PRE_FATE.params_PFGdispersal}} 
     function}
     \item{tab.DIST}{a \code{data.frame} of dimension \code{15 x 3} \cr
-    containing PFG characteristics (strategy_tol) \cr
+    containing PFG characteristics (nameDist, strategy_tol) \cr
     to be used with the \code{\link{PRE_FATE.params_PFGdisturbance}} 
     function}
     \item{tab.LIGHT}{a \code{data.frame} of dimension \code{15 x 3} \cr
-    containing PFG characteristics (strategy_tol) \cr
+    containing PFG characteristics (type, strategy_tol) \cr
     to be used with the \code{\link{PRE_FATE.params_PFGlight}} 
     function}
     \item{tab.SOIL}{a \code{data.frame} of dimension \code{15 x 5} \cr
@@ -202,20 +225,41 @@ files and folders to run a \code{FATE} simulation :
     (between 0 and 1) for each PFG}
     \item{stk.mask}{a \code{\link[raster]{stack}} object of dimension 
     \code{358 x 427} with a resolution of \code{100m} and ETRS89 
-    projection, containing 3 mask layers with binary values (0 or 1) to be 
-    used in a \code{FATE} simulation :
+    projection, containing 4 mask layers with binary values (0 or 1) or 
+    categorical values (habitat) to be used in a \code{FATE} simulation :
     \itemize{
       \item \strong{Champsaur} : simulation map, where occurs succession
       \item \strong{noDisturb} : perturbation map, when there is none
       \item \strong{mowing} : perturbation map, where occurs mowing
+      \item \strong{habitat} : habitat map, from CESBIO2018 (gathered)
     }
     }
   }
 
   
 \strong{\cr\cr#########################################################\cr}
-\strong{>>> Champsaur_results}
+\strong{>>> Champsaur_simul_[...]}
 \strong{\cr#########################################################\cr\cr}
+
+A \code{7z} file containing one \code{FATE} simulation result folder. \cr
+4 simulations are available :
+
+\enumerate{
+  \item a simulation with only basic modules activated : CORE (succession) 
+  module, dispersal module, and habitat suitability module
+  \item the same as V1 + the light module
+  \item the same as V1 + the soil module
+  \item the same as V1 + the light and soil modules
+}
+
+  
+\strong{\cr\cr#########################################################\cr}
+\strong{>>> Champsaur_results_[...]}
+\strong{\cr#########################################################\cr\cr}
+
+A \code{7z} file containing \code{.csv} and \code{.pdf} files obtained from 
+the corresponding \code{FATE} simulation result folder (4 simulations 
+available) with the help of \code{POST_FATE} functions. \cr
 }
 \description{
 This function loads one of the available datasets :
@@ -225,8 +269,10 @@ This function loads one of the available datasets :
   over Champsaur valley, in Ecrins National Park (PNE) \cr}
   \item{Champsaur_params}{all necessary files to build the \code{FATE} 
   simulation folder as well as the parameter files \cr}
-  \item{Champsaur_results}{results obtained from outputs of \code{FATE} 
-  simulation \cr}
+  \item{Champsaur_simul_[...]}{simulation folder and outputs obtained 
+  from \code{FATE} simulation}
+  \item{Champsaur_results_[...]}{results obtained from outputs and 
+  \code{POST_FATE} functions \cr}
 }
 }
 \author{
