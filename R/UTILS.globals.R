@@ -36,10 +36,11 @@ utils::globalVariables(names = c("dirs.SCENARIO.MASK", "dirs.SCENARIO.HABSUIT"
                                  , "dirs.HABSUIT", "dirs.ALIENS", "di.mod"
                                  , "SCENARIO.MASK", "SCENARIO.HABSUIT", "SCENARIO.DIST"
                                  , "SCENARIO.DROUGHT", "SCENARIO.ALIENS", "SCENARIO.FIRE"
+                                 , "SCENARIO.F.DROUGHT", "SCENARIO.F.ALIENS", "SCENARIO.F.FIRE"
                                  , "files.PFG.SUCC", "files.PFG.LIGHT", "files.PFG.SOIL"
                                  , "files.PFG.DISP", "files.PFG.HABSUIT", "files.PFG.DIST"
                                  , "files.PFG.DROUGHT", "files.PFG.ALIENS", "files.PFG.FIRE"
-                                 , "no.DIST", "no.FIRE"))
+                                 , "no.DIST", "no.FIRE", "no.ALIENS"))
 
 ## POST_FATE...
 utils::globalVariables(names = c("abs.simulParam", "i", "fi", "mw", "metric"
