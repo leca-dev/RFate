@@ -91,12 +91,6 @@
 ##' \code{\link{POST_FATE.graphic_validationStatistics}}
 ##' \code{\link{.getCutoff}},
 ##' \code{\link{POST_FATE.graphic_mapPFGvsHS}}
-##' 
-##' @examples
-##' 
-##'                                                         
-##' ## ----------------------------------------------------------------------------------------- ##
-##' ## Load example data
 ##'                                                                          
 ##' 
 ##' @export

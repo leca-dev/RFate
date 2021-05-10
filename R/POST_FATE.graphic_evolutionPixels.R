@@ -95,18 +95,6 @@
 ##' 
 ##' @seealso \code{\link{POST_FATE.temporalEvolution}}
 ##' 
-##' @examples
-##' 
-##' \dontrun{                      
-##' POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
-##'                                   , file.simulParam = "Simul_parameters_V1.txt")
-##' }
-##'                                     
-##' 
-##' 
-##' ## ----------------------------------------------------------------------------------------- ##
-##' ## Load example data
-##' 
 ##' @export
 ##' 
 ##' @importFrom utils write.csv

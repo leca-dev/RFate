@@ -123,14 +123,6 @@ exists. \cr \cr
   abundances \cr (see \code{\link{POST_FATE.binaryMaps}})
 }
 }
-\examples{
-
-                                                        
-                                                        
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
-
-}
 \seealso{
 \code{\link{POST_FATE.relativeAbund}},
 \code{\link[PresenceAbsence]{cmx}},

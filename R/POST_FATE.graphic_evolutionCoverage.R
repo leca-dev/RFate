@@ -103,23 +103,6 @@
 ##' 
 ##' @seealso \code{\link{POST_FATE.temporalEvolution}}
 ##' 
-##' @examples
-##' 
-##' \dontrun{                      
-##' POST_FATE.graphic_evolutionCoverage(name.simulation = "FATE_simulation"
-##'                                     , file.simulParam = "Simul_parameters_V1.txt")
-##'                                     
-##' POST_FATE.graphic_evolutionCoverage(name.simulation = "FATE_simulation"
-##'                                     , file.simulParam = "Simul_parameters_V1.txt"
-##'                                     , opt.fixedScale = FALSE)
-##' }
-##' 
-##' 
-##' 
-##' ## ----------------------------------------------------------------------------------------- ##
-##' ## Load example data
-##' 
-##' 
 ##' @export
 ##' 
 ##' @importFrom utils write.csv

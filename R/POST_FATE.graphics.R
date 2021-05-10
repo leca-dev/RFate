@@ -224,10 +224,6 @@
 ##' \code{\link{POST_FATE.graphic_mapPFG}}
 ##' 
 ##' 
-##' @examples
-##' 
-##' ## Load exemple data                                 
-##' 
 ##' @export
 ##'
 ## END OF HEADER ###############################################################

@@ -98,14 +98,6 @@ functions} :
   \code{\link{POST_FATE.graphic_mapPFGvsHS}})
 }
 }
-\examples{
-
-                                                        
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
-                                                                         
-
-}
 \seealso{
 \code{\link{POST_FATE.relativeAbund}},
 \code{\link{POST_FATE.graphic_validationStatistics}}

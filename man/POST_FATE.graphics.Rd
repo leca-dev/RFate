@@ -258,11 +258,6 @@ the following graphics before the maps are compressed again :
   }
 }
 }
-\examples{
-
-## Load exemple data                                 
-
-}
 \seealso{
 \code{\link{POST_FATE.temporalEvolution}}, 
 \code{\link{POST_FATE.graphic_evolutionCoverage}}, 

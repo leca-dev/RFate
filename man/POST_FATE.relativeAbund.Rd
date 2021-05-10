@@ -80,10 +80,6 @@ POST_FATE.relativeAbund(name.simulation = "FATE_simulation"
                         , opt.no_CPU = 1)
 }
                                                         
-                                                        
-                                                        
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
                                     
 
 }

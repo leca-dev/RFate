@@ -119,22 +119,6 @@ also contain information about the pixel habitat. \cr \cr
   \code{\link{POST_FATE.graphic_evolutionStability}})
 }
 }
-\examples{
-
-\dontrun{                      
-POST_FATE.temporalEvolution(name.simulation = "FATE_simulation"
-                            , file.simulParam = "Simul_parameters_V1.txt"
-                            , no_years = 50
-                            , opt.no_CPU = 1)
-}
-                                                        
-                                                        
-                                                        
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
-                                                                         
-
-}
 \seealso{
 \code{\link{PRE_FATE.params_globalParameters}},
 \code{\link{POST_FATE.graphic_evolutionCoverage}},

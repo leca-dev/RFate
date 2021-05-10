@@ -117,20 +117,6 @@
 ##' \code{\link{POST_FATE.graphic_evolutionCoverage}},
 ##' \code{\link{POST_FATE.graphic_evolutionPixels}},
 ##' \code{\link{POST_FATE.graphic_evolutionStability}}
-##' 
-##' @examples
-##' 
-##' \dontrun{                      
-##' POST_FATE.temporalEvolution(name.simulation = "FATE_simulation"
-##'                             , file.simulParam = "Simul_parameters_V1.txt"
-##'                             , no_years = 50
-##'                             , opt.no_CPU = 1)
-##' }
-##'                                                         
-##'                                                         
-##'                                                         
-##' ## ----------------------------------------------------------------------------------------- ##
-##' ## Load example data
 ##'                                                                          
 ##' 
 ##' @export

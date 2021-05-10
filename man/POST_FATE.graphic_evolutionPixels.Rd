@@ -98,19 +98,6 @@ function has been run and that the file
 \code{POST_FATE_TABLE_PIXEL_evolution_soil.csv} files if those modules were 
 activated).
 }
-\examples{
-
-\dontrun{                      
-POST_FATE.graphic_evolutionPixels(name.simulation = "FATE_simulation"
-                                  , file.simulParam = "Simul_parameters_V1.txt")
-}
-                                    
-
-
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
-
-}
 \seealso{
 \code{\link{POST_FATE.temporalEvolution}}
 }

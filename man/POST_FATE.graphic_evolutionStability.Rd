@@ -122,24 +122,6 @@ per habitat. \cr \cr
 function has been run and that the file 
 \code{POST_FATE_TABLE_PIXEL_evolution_abundance.csv} exists.
 }
-\examples{
-
-\dontrun{                      
-POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"
-                                    , file.simulParam = "Simul_parameters_V1.txt")
-                                    
-POST_FATE.graphic_evolutionStability(name.simulation = "FATE_simulation"
-                                    , file.simulParam = "Simul_parameters_V1.txt"
-                                    , opt.fixedScale = FALSE)
-}
-
-
-
-## ----------------------------------------------------------------------------------------- ##
-## Load example data
-
-
-}
 \seealso{
 \code{\link{POST_FATE.temporalEvolution}}
 }

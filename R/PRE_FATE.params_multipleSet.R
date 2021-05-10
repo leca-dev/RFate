@@ -887,8 +887,8 @@ PRE_FATE.params_multipleSet = function(
                                                             , "potential_fecundity" = "integer"
                                                             , "light_thresh_medium" = "integer"
                                                             , "light_thresh_low" = "integer"
-                                                            , "soil_init" = "double"
-                                                            , "soil_retention" = "double"
+                                                            , "soil_init" = "numeric"
+                                                            , "soil_retention" = "numeric"
                                                             , "no_strata" = "integer")
                                                 , inequalityConstraint = lhs_constraint
                                )
