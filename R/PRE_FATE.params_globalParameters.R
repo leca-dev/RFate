@@ -1122,7 +1122,7 @@ PRE_FATE.params_globalParameters = function(
     }
   }
   
-  names.params.list = paste0("V", no.start:length(params.list))
+  names.params.list = paste0("V", no.start:(no.start + length(params.list) - 1))
   names.params.list.sub = c("NO_CPU"
                             , "SAVING_ABUND_PFG_STRATUM"
                             , "SAVING_ABUND_PFG"

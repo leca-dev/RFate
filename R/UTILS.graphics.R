@@ -89,6 +89,11 @@
                          , flag = "NO_STRATA"
                          , flag.split = " "
                          , is.num = TRUE)
+  doDisp <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
+                                            , file.globalParam)
+                      , flag = "DO_DISPERSAL"
+                      , flag.split = " "
+                      , is.num = TRUE)
   doLight <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
                                              , file.globalParam)
                        , flag = "DO_LIGHT_INTERACTION"
@@ -108,6 +113,7 @@
   return(list(no_PFG = no_PFG
               , PFG = PFG
               , no_STRATA = no_STRATA
+              , doDisp = doDisp
               , doLight = doLight
               , doSoil = doSoil
               , doHabsuit = doHabsuit))
