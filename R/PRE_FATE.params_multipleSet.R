@@ -873,29 +873,35 @@ PRE_FATE.params_multipleSet = function(
       if (is.null(opt.seed)) {
         opt.seed = sample(1:1000000, 1)
       }
+      lhs_types = c("max_abund_low" = "integer"
+                    , "max_abund_medium" = "integer"
+                    , "max_abund_high" = "integer"
+                    , "seeding_duration" = "integer"
+                    , "seeding_timestep" = "integer"
+                    , "seeding_input" = "integer"
+                    , "potential_fecundity" = "integer"
+                    , "light_thresh_medium" = "integer"
+                    , "light_thresh_low" = "integer"
+                    , "soil_init" = "numeric"
+                    , "soil_retention" = "numeric"
+                    , "no_strata" = "integer")
+      
       set.seed(opt.seed) ## needed everytime as lhs is also a random value generator.
       params.space = designLHD(x = NULL
                                , lower = unlist(params.ranges[1, , drop = FALSE])
                                , upper = unlist(params.ranges[2, , drop = FALSE])
                                , control = list(size = NO_SIMUL_LHS
-                                                , types = c("max_abund_low" = "integer"
-                                                            , "max_abund_medium" = "integer"
-                                                            , "max_abund_high" = "integer"
-                                                            , "seeding_duration" = "integer"
-                                                            , "seeding_timestep" = "integer"
-                                                            , "seeding_input" = "integer"
-                                                            , "potential_fecundity" = "integer"
-                                                            , "light_thresh_medium" = "integer"
-                                                            , "light_thresh_low" = "integer"
-                                                            , "soil_init" = "numeric"
-                                                            , "soil_retention" = "numeric"
-                                                            , "no_strata" = "integer")
+                                                , types = lhs_types[colnames(params.ranges)]
                                                 , inequalityConstraint = lhs_constraint
                                )
       )
       colnames(params.space) = colnames(params.ranges)
       params.space = as.data.frame(params.space, stringsAsFactors = FALSE)
     }
+    
+    ## Round parameters to have correct ranges
+    ind = which(colnames(params.space) %in% c("soil_init", "soil_retention"))
+    if (length(ind) > 0) params.space[, ind] = round(params.space[, ind], 2)
     
     ## Upscale rounded parameters to have correct ranges
     # ind = which(colnames(params.space) %in% c("max_abund_low"
@@ -963,25 +969,25 @@ PRE_FATE.params_multipleSet = function(
     
     cat("\n ---------- Get PFG attribute values...")
     SUCC_table = foreach(fi = SUCC_LIGHT.simul$SUCC, .combine = "rbind") %do%
-    {
-      cat("\n ", fi)
-      combi = data.frame(param = c("NAME", "TYPE", "HEIGHT", "MATURITY", "LONGEVITY")
-                         , is.num = c(FALSE, FALSE, TRUE, TRUE, TRUE)
-                         , stringsAsFactors = FALSE)
-      res = foreach(i = 1:nrow(combi)) %do%
       {
-        return(.getParam(params.lines = paste0(dirname(name.simulation.1), "/", fi)
-                         , flag = combi$param[i]
-                         , flag.split = " "
-                         , is.num = combi$is.num[i]))
+        cat("\n ", fi)
+        combi = data.frame(param = c("NAME", "TYPE", "HEIGHT", "MATURITY", "LONGEVITY")
+                           , is.num = c(FALSE, FALSE, TRUE, TRUE, TRUE)
+                           , stringsAsFactors = FALSE)
+        res = foreach(i = 1:nrow(combi)) %do%
+          {
+            return(.getParam(params.lines = paste0(dirname(name.simulation.1), "/", fi)
+                             , flag = combi$param[i]
+                             , flag.split = " "
+                             , is.num = combi$is.num[i]))
+          }
+        return(data.frame(PFG = res[[1]]
+                          , type = res[[2]]
+                          , height = res[[3]]
+                          , maturity = res[[4]]
+                          , longevity = res[[5]]
+                          , stringsAsFactors = FALSE))
       }
-      return(data.frame(PFG = res[[1]]
-                        , type = res[[2]]
-                        , height = res[[3]]
-                        , maturity = res[[4]]
-                        , longevity = res[[5]]
-                        , stringsAsFactors = FALSE))
-    }
     cat("\n")
     if ("DO_LIGHT_INTERACTION 1" %in% TOKEEP.global)
     {
@@ -993,19 +999,19 @@ PRE_FATE.params_multipleSet = function(
       }
       
       LIGHT_table = foreach(fi = SUCC_LIGHT.simul$LIGHT, .combine = "rbind") %do%
-      {
-        cat("\n ", fi)
-        fi = paste0(dirname(name.simulation.1), "/", fi)
-        PFG = .getParam(params.lines = fi
-                        , flag = "NAME"
-                        , flag.split = " "
-                        , is.num = FALSE)
-        light_need = .getParam(params.lines = fi
-                               , flag = "LIGHT"
-                               , flag.split = " "
-                               , is.num = TRUE)
-        return(data.frame(PFG, light_need, stringsAsFactors = FALSE))
-      }
+        {
+          cat("\n ", fi)
+          fi = paste0(dirname(name.simulation.1), "/", fi)
+          PFG = .getParam(params.lines = fi
+                          , flag = "NAME"
+                          , flag.split = " "
+                          , is.num = FALSE)
+          light_need = .getParam(params.lines = fi
+                                 , flag = "LIGHT"
+                                 , flag.split = " "
+                                 , is.num = TRUE)
+          return(data.frame(PFG, light_need, stringsAsFactors = FALSE))
+        }
       cat("\n")
       LIGHT_table = merge(SUCC_table[, c("PFG", "type")]
                           , LIGHT_table, by = "PFG")
@@ -1115,11 +1121,11 @@ PRE_FATE.params_multipleSet = function(
                                                       , flag.split = " "
                                                       , is.num = TRUE))
         , required.potential_fecundity = ifelse("potential_fecundity" %in% colnames(params.space)
-                                          , params.space$potential_fecundity[i]
-                                          , .getParam(params.lines = tmp_global_param
-                                                      , flag = "POTENTIAL_FECUNDITY"
-                                                      , flag.split = " "
-                                                      , is.num = TRUE))
+                                                , params.space$potential_fecundity[i]
+                                                , .getParam(params.lines = tmp_global_param
+                                                            , flag = "POTENTIAL_FECUNDITY"
+                                                            , flag.split = " "
+                                                            , is.num = TRUE))
         , required.max_abund_low = ifelse("max_abund_low" %in% colnames(params.space)
                                           , params.space$max_abund_low[i]
                                           , .getParam(params.lines = tmp_global_param
@@ -1203,11 +1209,11 @@ PRE_FATE.params_multipleSet = function(
                                                      , is.num = TRUE))
                                     , NULL))
       )) }
-    , error = function(e) 
-    {
-      tmp_notWorking <<- c(tmp_notWorking, i)
-      tmp_errors <<- c(tmp_errors, e$message)
-    })
+      , error = function(e) 
+      {
+        tmp_notWorking <<- c(tmp_notWorking, i)
+        tmp_errors <<- c(tmp_errors, e$message)
+      })
   }
   tmp_working = 1:nrow(params.space)
   if (length(tmp_notWorking) > 0)
@@ -1235,18 +1241,18 @@ PRE_FATE.params_multipleSet = function(
   }
   for (i in tmp_working)
   {
-      suppressWarnings(
-        PRE_FATE.params_simulParameters(
-          name.simulation = opt.folder.name
-          , name.MASK = basename(TOKEEP.simul[which(TOKEEP.simul == "--MASK--") + 1])
-          , name.DIST = ifelse(length(grep("DIST_MASK", TOKEEP.simul)) > 0
-                               , basename(TOKEEP.simul[which(TOKEEP.simul == "--DIST_MASK--") + 1])
-                               , "")
-          , opt.global.name = paste0("Global_parameters_V", i, ".txt")
-          , opt.folder.name = ifelse("no_strata" %in% colnames(params.space)
-                                     , paste0(rownames(params.space)[i])
-                                     , "")
-        ))
+    suppressWarnings(
+      PRE_FATE.params_simulParameters(
+        name.simulation = opt.folder.name
+        , name.MASK = basename(TOKEEP.simul[which(TOKEEP.simul == "--MASK--") + 1])
+        , name.DIST = ifelse(length(grep("DIST_MASK", TOKEEP.simul)) > 0
+                             , basename(TOKEEP.simul[which(TOKEEP.simul == "--DIST_MASK--") + 1])
+                             , "")
+        , opt.global.name = paste0("Global_parameters_V", i, ".txt")
+        , opt.folder.name = ifelse("no_strata" %in% colnames(params.space)
+                                   , paste0(rownames(params.space)[i])
+                                   , "")
+      ))
   }
   
   cat("\n\n> Done!\n")
