@@ -277,8 +277,7 @@ tab.summary = merge(tab.PFG[, c("PFG", "species")], tab.summary, by = "species",
 tab.summary$soil_tolerance[which(tab.summary$PFG %in% c("H2", "P2") & tab.summary$soil_tolerance == 0.5)] = 1
 head(tab.summary)
 
-load("BUILDPFG_tab.dom.PA.RData")
-tab.dom.PA = as.data.frame(tab.dom.PA)
+tab.dom.PA = as.data.frame(Champsaur_PFG$tab.dom.PA)
 tab.dom.PA = tab.dom.PA[, which(colnames(tab.dom.PA) %in% tab.summary$species)]
 
 ## Calculate trait values per PFG -----------------------------------------------------------------

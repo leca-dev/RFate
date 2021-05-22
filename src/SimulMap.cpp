@@ -1663,6 +1663,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       logg.info("> Saving abund per PFG & per strata");
       /* 2. ABUND PER PFG for ALL STRATA */
       logg.info("> Saving abund per PFG for all strata");
+      bool positiveVal12 = false;
+
       omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1699,6 +1701,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
             }
           } // end loop on pixels
           
+          if (positiveVal1) { positiveVal12 = true; }
+          
           if (m_glob_params.getDoSavingPFGStratum() && positiveVal1)
           {
             // Create the output file only if the PFG is present somewhere.
@@ -1728,6 +1732,9 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           }
           delete [] abunValues1;
         } // end loop on Stratum
+        
+        if (positiveVal2) { positiveVal12 = true; }
+        
         if (m_glob_params.getDoSavingPFG() && positiveVal2)
         {
           // Create the output file only if the PFG is present somewhere.
@@ -1753,12 +1760,19 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         delete [] abunValues2;
       } // end loop on PFG
+      
+      if (!positiveVal12)
+      {
+        logg.error("!!! ALL PFG DIED! Stopping simulation.");
+      }
     }
     
     if (m_glob_params.getDoSavingStratum())
     {
       /* 3. ABUND PER STRATA for ALL PFG */
       logg.info("> Saving abund per strata for all PFG");
+      bool positiveVal33 = false;
+      
       for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
       { // loop on Stratum
         // Calculate abundance values.
@@ -1787,6 +1801,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         
         if (positiveVal3)
         {
+          positiveVal33 = true;
+          
           // Create the output file only if the PFG is present somewhere.
           string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_allPFG_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
           GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
@@ -1810,6 +1826,11 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         delete [] abunValues3;
       } // end loop on Stratum*/
+      
+      if (!positiveVal33)
+      {
+        logg.error("!!! ALL PFG DIED! Stopping simulation.");
+      }
     }
   }
   

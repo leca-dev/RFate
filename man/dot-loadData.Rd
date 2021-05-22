@@ -22,9 +22,9 @@ Some class gathering has been made, as follow :}
   \item \strong{0 - Other :} 0, 21, 22, 23
   \item \strong{1 - Urban :} 1, 2, 3, 4
   \item \strong{2 - Crops :} 5, 6, 7, 8, 9, 10, 11, 12
-  \item \strong{3 - Prairies :} 3
+  \item \strong{3 - Prairies :} 13
   \item \strong{4 - Orchards, vineyards :} 14, 15
-  \item \strong{5 - Evergreen forests :} 16
+  \item \strong{5 - Deciduous forests :} 16
   \item \strong{6 - Coniferous forests :} 17
   \item \strong{7 - Natural grasslands :} 18
   \item \strong{8 - Woody heathlands :} 19
