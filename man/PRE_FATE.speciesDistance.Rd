@@ -115,7 +115,7 @@ based on two types of distance information :
   \item{\strong{Niche overlap : }}{
   \itemize{
     \item If \code{PCA} option is selected, the degree of niche overlap will 
-    be computed using the \code{\link[ecospat.niche.overlap]{ecospat}}. 
+    be computed using the \code{\link[ecospat]{ecospat.niche.overlap}}. 
     \item If \code{raster} option is selected, the degree of niche overlap will 
     be computed using the \code{\link[phyloclim]{niche.overlap}}. \cr \cr \cr
   }

@@ -1773,7 +1773,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       logg.info("> Saving abund per strata for all PFG");
       bool positiveVal33 = false;
       
-      for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
+      for (int strat=1; strat<m_glob_params.getNoStrata()+1; strat++)
       { // loop on Stratum
         // Calculate abundance values.
         GUInt16 *abunValues3 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];

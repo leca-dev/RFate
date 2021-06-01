@@ -702,19 +702,32 @@ PRE_FATE.params_PFGdisturbance = function(
     }
   } else if (sum(colnames(mat.PFG.tol) == "strategy_tol") == 1)
   {
-    for (i in 1:no.PFG){
-      FATES[, i] = switch(mat.PFG.tol$strategy_tol[i]
-                          , indifferent = c(0,0,0,0,0,0,0,0)
-                          , mowing_herbs = c(0,0,0,0,5,5,10,0)
-                          , mowing_trees = c(0,0,10,0,10,0,10,0)
-                          , grazing_herbs_1 = c(0,0,1,0,0,5,0,1)
-                          , grazing_herbs_2 = c(0,0,5,0,0,8,1,5)
-                          , grazing_herbs_3 = c(0,0,9,0,1,9,5,5)
-                          , grazing_trees_1 = c(4,0,0,0,0,0,0,0)
-                          , grazing_trees_2 = c(8,0,0,0,0,0,0,0)
-                          , grazing_trees_3 = c(10,0,4,0,0,0,0,0)
-                          
-      )
+    tmp = unique(mat.PFG.tol[, c("nameDist", "PFG", "strategy_tol")])
+    
+    for (no.di in 1:no.DIST)
+    {
+      di = DIST_NAME[no.di]
+      ind_dist = which(tmp$nameDist == di)
+      
+      for (no.pfg in 1:no.PFG)
+      {
+        pfg = NAME[no.pfg]
+        ind_pfg = which(tmp$PFG == pfg)
+        ind_lines = intersect(ind_dist, ind_pfg)
+        ind_fates = (1+(no.di-1)*8) : (8*no.di)
+        
+        FATES[ind_fates, no.pfg] = switch(tmp$strategy_tol[ind_lines]
+                                          , indifferent = c(0,0,0,0,0,0,0,0)
+                                          , mowing_herbs = c(0,0,0,0,5,5,10,0)
+                                          , mowing_trees = c(0,0,10,0,10,0,10,0)
+                                          , grazing_herbs_1 = c(0,0,1,0,0,5,0,1)
+                                          , grazing_herbs_2 = c(0,0,5,0,0,8,1,5)
+                                          , grazing_herbs_3 = c(0,0,9,0,1,9,5,5)
+                                          , grazing_trees_1 = c(4,0,0,0,0,0,0,0)
+                                          , grazing_trees_2 = c(8,0,0,0,0,0,0,0)
+                                          , grazing_trees_3 = c(10,0,4,0,0,0,0,0)
+        )
+      }
     }
   }
   

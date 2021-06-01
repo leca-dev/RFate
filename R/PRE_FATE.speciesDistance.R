@@ -89,7 +89,7 @@
 ##'   \item{\strong{Niche overlap : }}{
 ##'   \itemize{
 ##'     \item If \code{PCA} option is selected, the degree of niche overlap will 
-##'     be computed using the \code{\link[ecospat.niche.overlap]{ecospat}}. 
+##'     be computed using the \code{\link[ecospat]{ecospat.niche.overlap}}. 
 ##'     \item If \code{raster} option is selected, the degree of niche overlap will 
 ##'     be computed using the \code{\link[phyloclim]{niche.overlap}}. \cr \cr \cr
 ##'   }
@@ -307,7 +307,7 @@ PRE_FATE.speciesDistance = function(mat.traits
             {
               if (!is.null(grid.list[[jj]]))
               {
-                res = ecospat::ecospat.niche.overlap(grid.list[[ii]], grid.list[[jj]], cor = TRUE)$D
+                res = ecospat.niche.overlap(grid.list[[ii]], grid.list[[jj]], cor = TRUE)$D
                 mat.overlap[ii, jj] = res
               }
             }
