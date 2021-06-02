@@ -54,8 +54,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          key: ${{ runner.os }}-${{ matrix.config.r }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.config.r }}-1-
 
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
@@ -64,7 +64,7 @@ jobs:
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "16.04"))')
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
 
       - name: Install system dependencies on macOS
         if: runner.os == 'macOS'
