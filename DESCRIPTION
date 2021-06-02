@@ -48,8 +48,8 @@ Imports:
     graphics, grDevices, methods, stats, utils, R.utils,
     ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
     reshape2, foreach, data.table,
-    raster, rgdal,
-    phyloclim, FD, ade4, PresenceAbsence,
+    raster, rgdal, sp,
+    phyloclim, FD, ade4, PresenceAbsence, adehabitatMA, adehabitatHR, cluster,
     RColorBrewer, colorspace,
     ape, shiny,
     parallel, doParallel

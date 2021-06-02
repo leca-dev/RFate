@@ -2,14 +2,13 @@
 % Please edit documentation in R/UTILS.package_ecospat.R
 \name{ecospat.niche.overlap}
 \alias{ecospat.niche.overlap}
-\alias{ascgen}
-\alias{ecospat.grid.clim.dyn}
 \alias{ecospat.kd}
+\alias{ecospat.grid.clim.dyn}
 \title{From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
 ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
 adehabitatHR 0.4.19 packages}
 \usage{
-ascgen(xy, cellsize = NULL, nrcol = NULL, count = TRUE)
+ecospat.kd(x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat")
 }
 \description{
 From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 

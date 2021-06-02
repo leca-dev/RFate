@@ -14,84 +14,13 @@
 ##' 
 ##' @importFrom stats density
 ##' @importFrom raster coordinates extract mask cellStats
+##' @importFrom adehabitatMA ascgen
 ##' @importFrom adehabitatHR kernelUD
+##' @importFrom sp SpatialPoints
 ##' 
 ##' @export
 ##' 
 ## END OF HEADER ###############################################################
-
-ascgen = function (xy, cellsize = NULL, nrcol = NULL, count = TRUE) 
-{
-  if (!inherits(xy, "SpatialPoints")) 
-    stop("xy should inherit the class SpatialPoints")
-  if (is.null(cellsize) & is.null(nrcol)) 
-    stop("One of the parameters cellsize or nrcol should be specified")
-  if (!is.null(cellsize) & !is.null(nrcol)) 
-    warning("cellsize and nrcol specified.\nOnly cellsize is taken into account")
-  if (ncol(coordinates(xy)) > 2) 
-    stop("xy should be defined in two dimensions")
-  pxy <- proj4string(xy)
-  xy <- coordinates(xy)
-  xl <- c(min(xy[, 1]), max(xy[, 1]))
-  yl <- c(min(xy[, 2]), max(xy[, 2]))
-  rx <- xl[2] - xl[1]
-  ry <- yl[2] - yl[1]
-  u <- rx
-  ref <- "x"
-  if (ry > rx) {
-    u <- ry
-    ref <- "y"
-  }
-  xll <- xl[1]
-  yll <- yl[1]
-  if (is.null(cellsize)) {
-    cellsize <- u/nrcol
-  }
-  cx <- ceiling(rx/cellsize) + 1
-  cy <- ceiling(ry/cellsize) + 1
-  xx <- seq(xl[1], xl[2] + cellsize, by = cellsize)
-  yy <- seq(yl[1], yl[2] + cellsize, by = cellsize)
-  grid <- expand.grid(yy, xx)[, 2:1]
-  asc <- data.frame(x = rep(0, nrow(grid)))
-  coordinates(asc) <- grid
-  gridded(asc) <- TRUE
-  if (count) {
-    uu <- over(SpatialPoints(xy), geometry(asc))
-    uu <- table(uu)
-    asc <- asc[[1]]
-    asc[as.numeric(names(uu))] <- uu
-    asc <- data.frame(x = asc)
-    coordinates(asc) <- grid
-    gridded(asc) <- TRUE
-  }
-  if (!is.na(pxy)) 
-    proj4string(asc) <- CRS(pxy)
-  return(asc)
-}
-
-
-.bboxCoords = function (coords) 
-{
-  stopifnot(nrow(coords) > 0)
-  bbox = t(apply(coords, 2, range))
-  dimnames(bbox)[[2]] = c("min", "max")
-  as.matrix(bbox)
-}
-
-SpatialPoints = function (coords, proj4string = CRS(as.character(NA)), bbox = NULL) 
-{
-  coords = coordinates(coords)
-  colNames = dimnames(coords)[[2]]
-  if (is.null(colNames)) 
-    colNames = paste("coords.x", 1:(dim(coords)[2]), sep = "")
-  rowNames = dimnames(coords)[[1]]
-  dimnames(coords) = list(rowNames, colNames)
-  if (is.null(bbox)) 
-    bbox <- .bboxCoords(coords)
-  new("SpatialPoints", coords = coords, bbox = bbox, proj4string = proj4string)
-}
-
-
 
 ecospat.kd = function (x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat") 
 {
