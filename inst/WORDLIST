@@ -156,6 +156,7 @@ abundBB
 al
 analyse
 asymptote
+betapart
 binaryMaps
 biotic
 bocage
@@ -165,6 +166,7 @@ centroid
 chamaephyte
 chamaephytes
 changingYears
+clValid
 clim
 commun
 contrib
@@ -180,6 +182,7 @@ designLHDNorm
 devtools
 dominancy
 du
+dunn
 dyn
 ecospat
 ecotones

@@ -554,7 +554,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , fixed = TRUE)
   cat(paste0("NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
@@ -567,7 +567,7 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : within file
                , fixed = TRUE)
   cat(paste0("NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 2\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 0\nDO_HAB_SUITABILITY 0\n"
              , "DO_LIGHT_INTERACTION 0\nDO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0")
       , file = "FATE_simulation/glob.txt")
@@ -694,7 +694,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
     cat(paste0("## Test file\n"
                , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
                , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-               , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+               , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
                , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
                , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
                , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
@@ -724,7 +724,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
   
   ## TEST do.max_abund_low
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                              , file.simulParam.1 = "toto.txt"
                                              , no_simulations = 10
                                              , do.max_abund_low = TRUE
@@ -740,7 +740,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                              , do.SOIL.init = FALSE
                                              , do.SOIL.retention = FALSE
                                              , do.DISPERSAL.mode = FALSE
-                                             , do.HABSUIT.mode = FALSE)
+                                             , do.HABSUIT.mode = FALSE))
                  , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !"
                  , fixed = TRUE)
   
@@ -788,7 +788,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
     cat(paste0("## Test file\n"
                , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
                , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-               , "MAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+               , "MAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
                , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
                , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
                , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
@@ -820,9 +820,9 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                , fixed = TRUE)
   
   cat(paste0("## Test file\n"
-             , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
+             , "NO_PFG 4\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 10\nMAX_ABUND_MEDIUM 60000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 10\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
@@ -854,7 +854,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 1\nDISPERSAL_MODE 1\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
@@ -1102,7 +1102,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
@@ -1130,7 +1130,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
              , "DO_SOIL_INTERACTION 0\nDO_DISTURBANCES 0\n")
@@ -1211,7 +1211,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
              , "LIGHT_THRESH_MEDIUM 5\n"
@@ -1240,7 +1240,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   cat(paste0("## Test file\n"
              , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
              , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-             , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+             , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
              , "DO_DISPERSAL 0\n"
              , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 1\n"
              , "LIGHT_THRESH_MEDIUM 5\nLIGHT_THRESH_LOW 10\n"
@@ -1299,7 +1299,7 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario SOIL", {
     cat(paste0("## Test file\n"
                , "NO_PFG 3\nNO_STRATA 4\nSIMULATION_DURATION 50\n"
                , "SEEDING_DURATION 10\nSEEDING_TIMESTEP 1\nSEEDING_INPUT 100\nPOTENTIAL_FECUNDITY 10\n"
-               , "MAX_ABUND_LOW 500000\nMAX_ABUND_MEDIUM 600000\nMAX_ABUND_HIGH 700000\n"
+               , "MAX_ABUND_LOW 5000\nMAX_ABUND_MEDIUM 6000\nMAX_ABUND_HIGH 7000\n"
                , "DO_DISPERSAL 0\n"
                , "DO_HAB_SUITABILITY 0\nDO_LIGHT_INTERACTION 0\n"
                , "DO_SOIL_INTERACTION 1\nSOIL_INIT 0.1\nSOIL_RETENTION 0.1\n"

@@ -182,7 +182,6 @@
 ##' 
 ##' @importFrom foreach foreach %do%
 ##' @importFrom reshape2 melt
-##' @importFrom clValid dunn
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string
 ##' geom_line geom_point geom_vline geom_label
@@ -384,7 +383,6 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
   
   clust.evaluation = foreach(group = combi$GROUP, no.clusters = combi$no.clusters) %do%
     {
-      
       k1 = no.clusters
       k2 = no.clusters + 1
       c1 = cutree(clust.dendrograms[[group]], k = k1)
@@ -394,27 +392,7 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
       ## Dunn index : ratio of the smallest distance between observations
       ## not in the same cluster to the largest intra-cluster distance.
       ## Value between zero and infinity, and should be maximized.
-      # mdunn = dunn(mat.species.DIST[[group]], c1) ## PB WITH R 4.0 and matrix class
-      dunn.fun = function(distance, clusters) ## EXTRACTED from dunn function from clValid package
-      {
-        nc <- max(clusters)
-        interClust <- matrix(NA, nc, nc)
-        intraClust <- rep(NA, nc)
-        for (i in 1:nc) {
-          c1 <- which(clusters == i)
-          for (j in i:nc) {
-            if (j == i) 
-              intraClust[i] <- max(distance[c1, c1])
-            if (j > i) {
-              c2 <- which(clusters == j)
-              interClust[i, j] <- min(distance[c1, c2])
-            }
-          }
-        }
-        dunn <- min(interClust, na.rm = TRUE)/max(intraClust)
-        return(dunn)
-      }
-      mdunn = dunn.fun(mat.species.DIST[[group]], c1)
+      mdunn = dunn(mat.species.DIST[[group]], c1)
       
       ## Meila's VI index (Variation of Information) : measures the amount of 
       ## information lost and gained in changing between 2 clusterings.

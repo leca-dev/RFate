@@ -282,7 +282,6 @@
 ##' @importFrom FD gowdis
 ##' @importFrom ade4 is.euclid quasieuclid dudi.pco inertia.dudi
 ##' @importFrom ape as.phylo plot.phylo
-##' @importFrom betapart beta.pair
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
 ##' geom_point geom_hline geom_vline geom_histogram geom_segment geom_path 
