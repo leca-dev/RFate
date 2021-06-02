@@ -8,6 +8,8 @@
 ##' 
 ##' @seealso \code{\link[SPOT]{designLHD}}
 ##' 
+##' @importFrom stats runif dist
+##' 
 ##' @export
 ##' 
 ## END OF HEADER ###############################################################

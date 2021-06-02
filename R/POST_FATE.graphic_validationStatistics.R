@@ -524,7 +524,7 @@ POST_FATE.graphic_validationStatistics = function(
                                       , layout_matrix = matrix(c(1,1,2,3,2,3,4,5,4,5,6,6)
                                                                , ncol = 2, byrow = TRUE)
                                       , newpage = ifelse(y == years[1], FALSE, TRUE))                    
-              pp_final = cowplot::ggdraw(pp_final) + 
+              pp_final = ggdraw(pp_final) + 
                 theme(plot.background = element_rect(fill = "transparent", color = NA))
               # require(patchwork)
               # pp_final <- pp_list[[1]] / (pp_list[[2]] | pp_list[[3]]) / (pp_list[[4]] | pp_list[[5]]) / pp_list[[6]]

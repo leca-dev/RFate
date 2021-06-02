@@ -7,14 +7,17 @@
 ##' 
 ##' @seealso \code{\link[fpc]{cluster.stats}}
 ##' 
+##' @importFrom stats as.dist weighted.mean
+##' @importFrom cluster silhouette
+##' 
 ##' @export
 ##' 
 ## END OF HEADER ###############################################################
 
 cluster.stats = function (d = NULL, clustering, alt.clustering = NULL, noisecluster = FALSE, 
-                               silhouette = TRUE, G2 = FALSE, G3 = FALSE, wgap = TRUE, 
-                               sepindex = TRUE, sepprob = 0.1, sepwithnoise = TRUE, compareonly = FALSE, 
-                               aggregateonly = FALSE) 
+                          silhouette = TRUE, G2 = FALSE, G3 = FALSE, wgap = TRUE, 
+                          sepindex = TRUE, sepprob = 0.1, sepwithnoise = TRUE, compareonly = FALSE, 
+                          aggregateonly = FALSE) 
 {
   if (!is.null(d)) d <- as.dist(d)
   cn <- max(clustering)
@@ -115,7 +118,7 @@ cluster.stats = function (d = NULL, clustering, alt.clustering = NULL, noiseclus
     ch <- between.cluster.ss * (n - noisen - cwn)/(within.cluster.ss * (cwn - 1))
     clus.avg.widths <- avg.width <- NULL
     if (silhouette) {
-      sii <- cluster::silhouette(clustering, dmatrix = dmat)
+      sii <- silhouette(clustering, dmatrix = dmat)
       sc <- summary(sii)
       clus.avg.widths <- sc$clus.avg.widths
       if (noisecluster) 

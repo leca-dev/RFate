@@ -1,6 +1,7 @@
 ### HEADER #####################################################################
 ##' @title From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
-##' ecospat.niche.overlap functions
+##' ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
+##' adehabitatHR 0.4.19 packages
 ##' 
 ##' @name ecospat.niche.overlap
 ##' @aliases ecospat.grid.clim.dyn
@@ -11,20 +12,97 @@
 ##' @seealso \code{\link[ecospat]{ecospat.grid.clim.dyn}},
 ##' \code{\link[ecospat]{ecospat.niche.overlap}}
 ##' 
+##' @importFrom stats density
+##' @importFrom raster coordinates extract mask cellStats
+##' @importFrom adehabitatHR kernelUD
+##' 
 ##' @export
 ##' 
 ## END OF HEADER ###############################################################
+
+ascgen = function (xy, cellsize = NULL, nrcol = NULL, count = TRUE) 
+{
+  if (!inherits(xy, "SpatialPoints")) 
+    stop("xy should inherit the class SpatialPoints")
+  if (is.null(cellsize) & is.null(nrcol)) 
+    stop("One of the parameters cellsize or nrcol should be specified")
+  if (!is.null(cellsize) & !is.null(nrcol)) 
+    warning("cellsize and nrcol specified.\nOnly cellsize is taken into account")
+  if (ncol(coordinates(xy)) > 2) 
+    stop("xy should be defined in two dimensions")
+  pxy <- proj4string(xy)
+  xy <- coordinates(xy)
+  xl <- c(min(xy[, 1]), max(xy[, 1]))
+  yl <- c(min(xy[, 2]), max(xy[, 2]))
+  rx <- xl[2] - xl[1]
+  ry <- yl[2] - yl[1]
+  u <- rx
+  ref <- "x"
+  if (ry > rx) {
+    u <- ry
+    ref <- "y"
+  }
+  xll <- xl[1]
+  yll <- yl[1]
+  if (is.null(cellsize)) {
+    cellsize <- u/nrcol
+  }
+  cx <- ceiling(rx/cellsize) + 1
+  cy <- ceiling(ry/cellsize) + 1
+  xx <- seq(xl[1], xl[2] + cellsize, by = cellsize)
+  yy <- seq(yl[1], yl[2] + cellsize, by = cellsize)
+  grid <- expand.grid(yy, xx)[, 2:1]
+  asc <- data.frame(x = rep(0, nrow(grid)))
+  coordinates(asc) <- grid
+  gridded(asc) <- TRUE
+  if (count) {
+    uu <- over(SpatialPoints(xy), geometry(asc))
+    uu <- table(uu)
+    asc <- asc[[1]]
+    asc[as.numeric(names(uu))] <- uu
+    asc <- data.frame(x = asc)
+    coordinates(asc) <- grid
+    gridded(asc) <- TRUE
+  }
+  if (!is.na(pxy)) 
+    proj4string(asc) <- CRS(pxy)
+  return(asc)
+}
+
+
+.bboxCoords = function (coords) 
+{
+  stopifnot(nrow(coords) > 0)
+  bbox = t(apply(coords, 2, range))
+  dimnames(bbox)[[2]] = c("min", "max")
+  as.matrix(bbox)
+}
+
+SpatialPoints = function (coords, proj4string = CRS(as.character(NA)), bbox = NULL) 
+{
+  coords = coordinates(coords)
+  colNames = dimnames(coords)[[2]]
+  if (is.null(colNames)) 
+    colNames = paste("coords.x", 1:(dim(coords)[2]), sep = "")
+  rowNames = dimnames(coords)[[1]]
+  dimnames(coords) = list(rowNames, colNames)
+  if (is.null(bbox)) 
+    bbox <- .bboxCoords(coords)
+  new("SpatialPoints", coords = coords, bbox = bbox, proj4string = proj4string)
+}
+
+
 
 ecospat.kd = function (x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat") 
 {
   if (method == "adehabitat") {
     if (ncol(x) == 2) {
       xr <- data.frame(cbind((x[, 1] - ext[1])/abs(ext[2] - ext[1]), (x[, 2] - ext[3])/abs(ext[4] - ext[3])))
-      mask <- adehabitatMA::ascgen(sp::SpatialPoints(cbind((0:(R))/R, (0:(R)/R))), nrcol = R - 2, count = FALSE)
-      x.dens <- adehabitatHR::kernelUD(sp::SpatialPoints(xr[, 1:2]), h = "href", grid = mask, kern = "bivnorm")
-      x.dens <- raster::raster(xmn = ext[1], xmx = ext[2], ymn = ext[3], ymx = ext[4], matrix(x.dens$ud, nrow = R))
+      mask <- ascgen(SpatialPoints(cbind((0:(R))/R, (0:(R)/R))), nrcol = R - 2, count = FALSE)
+      x.dens <- kernelUD(SpatialPoints(xr[, 1:2]), h = "href", grid = mask, kern = "bivnorm")
+      x.dens <- raster(xmn = ext[1], xmx = ext[2], ymn = ext[3], ymx = ext[4], matrix(x.dens$ud, nrow = R))
       if (!is.null(th)) {
-        th.value <- quantile(raster::extract(x.dens, x), th)
+        th.value <- quantile(extract(x.dens, x), th)
         x.dens[x.dens < th.value] <- 0
       }
       if (!is.null(env.mask)) {
@@ -110,18 +188,18 @@ ecospat.grid.clim.dyn = function (glob, glob1, sp, R = 100, th.sp = 0, th.env = 
     glob1.dens <- ecospat.kd(x = glob1, ext = ext, method = kernel.method, th = 0)
     if (!is.null(geomask)) {
       sp::proj4string(geomask) <- NA
-      glob1.dens <- raster::mask(glob1.dens, geomask, updatevalue = 0)
+      glob1.dens <- mask(glob1.dens, geomask, updatevalue = 0)
     }
     sp.dens <- ecospat.kd(x = sp, ext = ext, method = kernel.method, th = 0, env.mask = glob1.dens > 0)
     x <- seq(from = ext[1], to = ext[2], length.out = 100)
     y <- seq(from = ext[3], to = ext[4], length.out = 100)
     l$y <- y
-    Z <- glob1.dens * nrow(glob1)/raster::cellStats(glob1.dens, "sum")
-    z <- sp.dens * nrow(sp)/raster::cellStats(sp.dens, "sum")
-    z.uncor <- z/raster::cellStats(z, "max")
+    Z <- glob1.dens * nrow(glob1)/cellStats(glob1.dens, "sum")
+    z <- sp.dens * nrow(sp)/cellStats(sp.dens, "sum")
+    z.uncor <- z/cellStats(z, "max")
     z.cor <- z/Z
     z.cor[is.na(z.cor)] <- 0
-    z.cor <- z.cor/raster::cellStats(z.cor, "max")
+    z.cor <- z.cor/cellStats(z.cor, "max")
   }
   w <- z.uncor
   w[w > 0] <- 1

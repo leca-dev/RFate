@@ -15,7 +15,7 @@ env:
 
 jobs:
   CODECOV-check:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
       - name: Install dependencies
         run: |

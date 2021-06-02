@@ -553,7 +553,7 @@ PRE_FATE.speciesDistance = function(mat.traits
   tab_eval.2 = foreach(tr = names_traits, .combine = "rbind") %do%
     {
       mat.traits.split = split(mat.traits[, tr, drop = FALSE], f = mat.traits$GROUP)
-      mat.species.gower.split = lapply(mat.traits.split, FD::gowdis)
+      mat.species.gower.split = lapply(mat.traits.split, gowdis)
       res = foreach(x = names(mat.species.gower.split), .combine = "rbind") %do%
         {
           mat = as.matrix(mat.species.gower.split[[x]])
@@ -670,7 +670,7 @@ PRE_FATE.speciesDistance = function(mat.traits
   cat("\n")
   
   ## GOWER DISSIMILARITY FOR MIXED VARIABLES
-  mat.species.gower.split = lapply(mat.traits.split, FD::gowdis)
+  mat.species.gower.split = lapply(mat.traits.split, gowdis)
   
   for (gp in 1:length(mat.species.gower.split))
   {
