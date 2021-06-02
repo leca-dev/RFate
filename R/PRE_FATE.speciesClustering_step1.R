@@ -182,7 +182,6 @@
 ##' 
 ##' @importFrom foreach foreach %do%
 ##' @importFrom reshape2 melt
-##' @importFrom fpc cluster.stats
 ##' @importFrom clValid dunn
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string

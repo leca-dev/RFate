@@ -231,11 +231,8 @@
 ##' \code{\link{PRE_FATE.params_PFGlight}},
 ##' 
 ##' 
-##' 
 ##' @export
 ##' 
-##' @importFrom SPOT designLHD
-##'
 ## END OF HEADER ###############################################################
 
 

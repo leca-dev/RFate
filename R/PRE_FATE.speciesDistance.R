@@ -188,7 +188,6 @@
 ##' @importFrom methods as
 ##' 
 ##' @importFrom ade4 dudi.pca suprow
-##' @importFrom ecospat ecospat.grid.clim.dyn ecospat.niche.overlap
 ##' @importFrom raster raster extension
 ##' @importFrom phyloclim niche.overlap
 ##' @importFrom FD gowdis

@@ -138,7 +138,7 @@
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##' @importFrom ggExtra ggMarginal
 ##' @importFrom gridExtra grid.arrange
-##' @importFrom cowplot get_legend
+##' @importFrom cowplot get_legend ggdraw
 ##' @importFrom RColorBrewer brewer.pal
 ##' @importFrom grDevices pdf
 ##' @importFrom graphics plot

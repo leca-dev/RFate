@@ -1,0 +1,160 @@
+### HEADER #####################################################################
+##' @title From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
+##' ecospat.niche.overlap functions
+##' 
+##' @name ecospat.niche.overlap
+##' @aliases ecospat.grid.clim.dyn
+##' @aliases ecospat.kd
+##' 
+##' @keywords ecospat, niche overlap
+##' 
+##' @seealso \code{\link[ecospat]{ecospat.grid.clim.dyn}},
+##' \code{\link[ecospat]{ecospat.niche.overlap}}
+##' 
+##' @export
+##' 
+## END OF HEADER ###############################################################
+
+ecospat.kd = function (x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat") 
+{
+  if (method == "adehabitat") {
+    if (ncol(x) == 2) {
+      xr <- data.frame(cbind((x[, 1] - ext[1])/abs(ext[2] - ext[1]), (x[, 2] - ext[3])/abs(ext[4] - ext[3])))
+      mask <- adehabitatMA::ascgen(sp::SpatialPoints(cbind((0:(R))/R, (0:(R)/R))), nrcol = R - 2, count = FALSE)
+      x.dens <- adehabitatHR::kernelUD(sp::SpatialPoints(xr[, 1:2]), h = "href", grid = mask, kern = "bivnorm")
+      x.dens <- raster::raster(xmn = ext[1], xmx = ext[2], ymn = ext[3], ymx = ext[4], matrix(x.dens$ud, nrow = R))
+      if (!is.null(th)) {
+        th.value <- quantile(raster::extract(x.dens, x), th)
+        x.dens[x.dens < th.value] <- 0
+      }
+      if (!is.null(env.mask)) {
+        x.dens <- x.dens * env.mask
+      }
+    } else if (ncol(x) == 1) {
+      xr <- seq(from = min(ext), to = max(ext), length.out = R)
+      x.dens <- density(x[, 1], kernel = "gaussian", from = min(xr), to = max(xr), n = R, cut = 0)
+      if (!is.null(env.mask)) {
+        x.dens$y <- x.dens$y * env.mask
+      }
+      if (!is.null(th)) {
+        xr <- sapply(x, findInterval, x.dens$x)
+        th.value <- quantile(x.dens$y[xr], th)
+        sprm <- which(x.dens$y < th.value)
+        x.dens$y[sprm] <- 0
+      }
+    }
+  }
+  # if (method == "ks") {
+  #   if (ncol(x) == 2) {
+  #     x.dens <- ks::kde(x, xmin = ext[c(1, 3)], xmax = ext[c(2, 4)], gridsize = c(R, R))
+  #     x.dens <- raster::flip(raster::t(raster::raster(x.dens$estimate)), direction = "y")
+  #     raster::extent(x.dens) <- c(xmn = ext[1], xmx = ext[2], ymn = ext[3], ymx = ext[4])
+  #     if (!is.null(th)) {
+  #       th.value <- quantile(raster::extract(x.dens, x), th)
+  #       x.dens[x.dens < th.value] <- 0
+  #     }
+  #     if (!is.null(env.mask)) {
+  #       x.dens <- x.dens * env.mask
+  #     }
+  #   } else if (ncol(x) == 1) {
+  #     x.dens <- ks::kde(x, xmin = min(ext), xmax = max(ext), gridsize = c(R, R))
+  #     x.dens$y <- x.dens$estimate
+  #     x.dens$x <- x.dens$eval.points
+  #     if (!is.null(env.mask)) {
+  #       x.dens$y <- x.dens$y * env.mask
+  #     }
+  #     if (!is.null(th)) {
+  #       xr <- sapply(x, findInterval, x.dens$x)
+  #       th.value <- quantile(x.dens$y[xr], th)
+  #       sprm <- which(x.dens$y < th.value)
+  #       x.dens$y[sprm] <- 0
+  #     }
+  #   }
+  # }
+  return(x.dens)
+}
+
+
+ecospat.grid.clim.dyn = function (glob, glob1, sp, R = 100, th.sp = 0, th.env = 0, geomask = NULL
+                                  , kernel.method = "adehabitat", extend.extent = c(0, 0, 0, 0)) 
+{
+  if (is.null(kernel.method) | (kernel.method != "ks" & kernel.method != "adehabitat")) {
+    stop("supply a kernel method ('adehabitat' or 'ks')")
+  }
+  glob <- as.matrix(glob)
+  glob1 <- as.matrix(glob1)
+  sp <- as.matrix(sp)
+  l <- list()
+  if (ncol(glob) > 2) {
+    stop("cannot calculate overlap with more than two axes")
+  }
+  if (ncol(glob) == 1) {
+    xmin <- min(glob[, 1]) + extend.extent[1]
+    xmax <- max(glob[, 1]) + extend.extent[2]
+    glob1.dens <- ecospat.kd(x = glob1, ext = c(xmin, xmax), method = kernel.method, th = 0)
+    sp.dens <- ecospat.kd(x = sp, ext = c(xmin, xmax), method = kernel.method, th = 0, env.mask = glob1.dens$y > 0)
+    x <- sp.dens$x
+    y <- sp.dens$y
+    z <- sp.dens$y * nrow(sp)/sum(sp.dens$y)
+    Z <- glob1.dens$y * nrow(glob)/sum(glob1.dens$y)
+    z.uncor <- z/max(z)
+    z.cor <- z/Z
+    z.cor[is.na(z.cor)] <- 0
+    z.cor[z.cor == "Inf"] <- 0
+    z.cor <- z.cor/max(z.cor)
+  }
+  if (ncol(glob) == 2) {
+    xmin <- apply(glob, 2, min, na.rm = T)
+    xmax <- apply(glob, 2, max, na.rm = T)
+    ext <- c(xmin[1], xmax[1], xmin[2], xmax[2]) + extend.extent
+    glob1.dens <- ecospat.kd(x = glob1, ext = ext, method = kernel.method, th = 0)
+    if (!is.null(geomask)) {
+      sp::proj4string(geomask) <- NA
+      glob1.dens <- raster::mask(glob1.dens, geomask, updatevalue = 0)
+    }
+    sp.dens <- ecospat.kd(x = sp, ext = ext, method = kernel.method, th = 0, env.mask = glob1.dens > 0)
+    x <- seq(from = ext[1], to = ext[2], length.out = 100)
+    y <- seq(from = ext[3], to = ext[4], length.out = 100)
+    l$y <- y
+    Z <- glob1.dens * nrow(glob1)/raster::cellStats(glob1.dens, "sum")
+    z <- sp.dens * nrow(sp)/raster::cellStats(sp.dens, "sum")
+    z.uncor <- z/raster::cellStats(z, "max")
+    z.cor <- z/Z
+    z.cor[is.na(z.cor)] <- 0
+    z.cor <- z.cor/raster::cellStats(z.cor, "max")
+  }
+  w <- z.uncor
+  w[w > 0] <- 1
+  l$x <- x
+  l$z <- z
+  l$z.uncor <- z.uncor
+  l$z.cor <- z.cor
+  l$Z <- Z
+  l$glob <- glob
+  l$glob1 <- glob1
+  l$sp <- sp
+  l$w <- w
+  return(l)
+}
+
+
+ecospat.niche.overlap = function (z1, z2, cor) 
+{
+  l <- list()
+  if (cor == FALSE) {
+    p1 <- as.matrix(z1$z.uncor)/sum(as.matrix(z1$z.uncor))
+    p2 <- as.matrix(z2$z.uncor)/sum(as.matrix(z2$z.uncor))
+  }
+  if (cor == TRUE) {
+    p1 <- as.matrix(z1$z.cor)/sum(as.matrix(z1$z.cor))
+    p2 <- as.matrix(z2$z.cor)/sum(as.matrix(z2$z.cor))
+  }
+  D <- 1 - (0.5 * (sum(abs(p1 - p2))))
+  H <- sqrt(sum((sqrt(p1) - sqrt(p2))^2))
+  I <- 1 - (H^2)/2
+  l$D <- D
+  l$I <- I
+  return(l)
+}
+
+
