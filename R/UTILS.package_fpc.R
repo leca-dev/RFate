@@ -115,7 +115,7 @@ cluster.stats = function (d = NULL, clustering, alt.clustering = NULL, noiseclus
     ch <- between.cluster.ss * (n - noisen - cwn)/(within.cluster.ss * (cwn - 1))
     clus.avg.widths <- avg.width <- NULL
     if (silhouette) {
-      sii <- silhouette(clustering, dmatrix = dmat)
+      sii <- cluster::silhouette(clustering, dmatrix = dmat)
       sc <- summary(sii)
       clus.avg.widths <- sc$clus.avg.widths
       if (noisecluster) 
