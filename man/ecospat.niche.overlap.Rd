@@ -9,9 +9,22 @@ ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14,
 adehabitatHR 0.4.19 packages}
 \usage{
 ecospat.kd(x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat")
+ecospat.grid.clim.dyn(glob, glob1, sp, R = 100, th.sp = 0, th.env = 0, 
+geomask = NULL, kernel.method = "adehabitat", extend.extent = c(0, 0, 0, 0))
+ecospat.niche.overlap(z1, z2, cor)
 }
 \arguments{
+\item{x}{two-column dataframe (or a vector)}
+
+\item{ext}{c(xmin, xmax)}
+
 \item{R}{The resolution of the grid.}
+
+\item{th}{quantile}
+
+\item{env.mask}{mask}
+
+\item{method}{kernel.method}
 
 \item{glob}{A two-column dataframe (or a vector) of the environmental 
 values (in column) for background pixels of the whole study area (in row).}

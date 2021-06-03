@@ -4,6 +4,10 @@
 ##' @name beta.pair
 ##' @aliases betapart.core
 ##' 
+##' @usage 
+##' betapart.core(x)
+##' beta.pair(x, index.family = "sorensen") 
+##' 
 ##' @param x data frame, where rows are sites and columns are species. 
 ##' Alternatively x can be a betapart object derived from the betapart.core 
 ##' function 

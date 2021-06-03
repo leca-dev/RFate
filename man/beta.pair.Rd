@@ -6,6 +6,7 @@
 \title{From betapart package 1.5.4 : beta.pair and betapart.core functions}
 \usage{
 betapart.core(x)
+beta.pair(x, index.family = "sorensen")
 }
 \arguments{
 \item{x}{data frame, where rows are sites and columns are species. 

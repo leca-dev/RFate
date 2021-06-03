@@ -5,13 +5,8 @@
 \alias{designLHDNorm}
 \title{From SPOT package 2.5.0 : designLHD and designLHDNorm functions}
 \usage{
-designLHDNorm(
-  dim,
-  size,
-  calcMinDistance = FALSE,
-  nested = NULL,
-  inequalityConstraint = NULL
-)
+designLHDNorm(dim, size, calcMinDistance = FALSE, nested = NULL, inequalityConstraint = NULL)
+designLHD(x = NULL, lower, upper, control = list())
 }
 \arguments{
 \item{dim}{number, dimension of the problem (will be no. of columns of 

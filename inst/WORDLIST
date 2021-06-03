@@ -18,6 +18,7 @@ CESBIO
 CHANGEFREQ
 CHANGEMASK
 CNRS
+CRS
 CSR
 CWM
 Calinski
@@ -56,6 +57,7 @@ HABSUIT
 HD
 Haeuser
 Harabasz
+Hennig
 IGNIT
 IMM
 INIT
@@ -66,8 +68,10 @@ Jouglet
 JustBorn
 Kleunen
 Klonner
+Kruskal's
 LAMOS
 LDMC
+LHD
 LNC
 LOGIS
 Landolt
@@ -135,6 +139,7 @@ Senescents
 Seo
 Simul
 SimulParameters
+SpatialPolygon
 TOL
 TSS
 Talluto
@@ -153,6 +158,9 @@ Zimmermann
 abiotic
 abund
 abundBB
+adehabitat
+adehabitatHR
+adehabitatMA
 al
 analyse
 asymptote
@@ -168,7 +176,9 @@ chamaephytes
 changingYears
 clValid
 clim
+clusterwise
 commun
+compareonly
 contrib
 d'interprétation
 de
@@ -191,7 +201,9 @@ et
 evolutionCoverage
 evolutionPixels
 evolutionStability
+extention
 flammmability
+formalise
 fpc
 frequençy
 fullfilled
@@ -217,6 +229,7 @@ immatures
 interannual
 intra
 ish
+jaccard
 kd
 labelled
 ldd
@@ -226,6 +239,7 @@ mapPFG
 mapPFGvsHS
 maturityTime
 mcquitty
+methode
 modelisation
 modelled
 modelling
@@ -235,6 +249,7 @@ nameDist
 nd
 neighbours
 noDisturb
+noisecluster
 occuring
 optimising
 ouputs
@@ -262,9 +277,14 @@ rupicapra
 saveYears
 selectDominant
 senescents
+sepindex
+sepprob
 simul
 simulParameters
+sindex
 skeletonDirectory
+sorensen
+sp
 spatio
 spatiotemporal
 speciesClustering

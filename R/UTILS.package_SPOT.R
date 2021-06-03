@@ -4,6 +4,10 @@
 ##' @name designLHD
 ##' @aliases designLHDNorm
 ##' 
+##' @usage
+##' designLHDNorm(dim, size, calcMinDistance = FALSE, nested = NULL, inequalityConstraint = NULL)
+##' designLHD(x = NULL, lower, upper, control = list()) 
+##' 
 ##' @param x optional matrix x, rows for points, columns for dimensions. This 
 ##' can contain one or more points which are part of the design, but specified 
 ##' by the user. These points are added to the design, and are taken into 

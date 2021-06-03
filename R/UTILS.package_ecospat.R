@@ -7,6 +7,20 @@
 ##' @aliases ecospat.grid.clim.dyn
 ##' @aliases ecospat.kd
 ##' 
+##' @usage
+##' ecospat.kd(x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat")
+##' ecospat.grid.clim.dyn(glob, glob1, sp, R = 100, th.sp = 0, th.env = 0, 
+##' geomask = NULL, kernel.method = "adehabitat", extend.extent = c(0, 0, 0, 0))
+##' ecospat.niche.overlap(z1, z2, cor)
+##' 
+##' 
+##' @param x two-column dataframe (or a vector)
+##' @param ext c(xmin, xmax)
+##' @param th quantile
+##' @param env.mask mask
+##' @param method kernel.method
+##' 
+##' 
 ##' @param glob A two-column dataframe (or a vector) of the environmental 
 ##' values (in column) for background pixels of the whole study area (in row).
 ##' @param glob1 A two-column dataframe (or a vector) of the environmental 
