@@ -19,7 +19,7 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: '3.6',   vdiffr: true,  xref: true}
-          - {os: macOS-latest,   r: '3.6',   vdiffr: true,  xref: true}
+          - {os: macOS-latest,   r: '4.1',   vdiffr: true,  xref: true}
           - {os: ubuntu-16.04,   r: '3.6',   vdiffr: true,  xref: true,   rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
@@ -35,11 +35,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+          
+      - uses: r-lib/actions/setup-r@master
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
-          
-      - uses: r-lib/actions/setup-r@master
 
       - uses: r-lib/actions/setup-pandoc@master
 
@@ -54,8 +54,8 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          key: ${{ runner.os }}-${{ matrix.config.r }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ matrix.config.r }}-1-
 
       - name: Install system dependencies on Linux
         if: runner.os == 'Linux'

@@ -5,6 +5,14 @@
 ##' 
 ##' @keywords clValid
 ##' 
+##' @param distance The distance matrix (as a matrix object) of the clustered 
+##' observations. Required if Data is NULL.
+##' @param clusters An integer vector indicating the cluster partitioning
+## @param Data The data matrix of the clustered observations. Required if 
+## distance is NULL.
+## @param method The metric used to determine the distance matrix. Not used 
+## if distance is provided.
+##' 
 ##' @seealso \code{\link[clValid]{dunn}}
 ##' 
 ##' @export

@@ -6,6 +6,12 @@
 \usage{
 dunn(distance = NULL, clusters)
 }
+\arguments{
+\item{distance}{The distance matrix (as a matrix object) of the clustered 
+observations. Required if Data is NULL.}
+
+\item{clusters}{An integer vector indicating the cluster partitioning}
+}
 \description{
 From clValid package O.7 : dunn function
 }

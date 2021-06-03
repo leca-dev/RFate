@@ -10,6 +10,43 @@ adehabitatHR 0.4.19 packages}
 \usage{
 ecospat.kd(x, ext, R = 100, th = 0, env.mask = c(), method = "adehabitat")
 }
+\arguments{
+\item{R}{The resolution of the grid.}
+
+\item{glob}{A two-column dataframe (or a vector) of the environmental 
+values (in column) for background pixels of the whole study area (in row).}
+
+\item{glob1}{A two-column dataframe (or a vector) of the environmental 
+values (in column) for the background pixels of the species (in row).}
+
+\item{sp}{A two-column dataframe (or a vector) of the environmental 
+values (in column) for the occurrences of the species (in row).}
+
+\item{th.sp}{The quantile used to delimit a threshold to exclude low 
+species density values.}
+
+\item{th.env}{The quantile used to delimit a threshold to exclude low 
+environmental density values of the study area.}
+
+\item{geomask}{A geographical mask to delimit the background extent if the 
+analysis takes place in the geographical space.It can be a SpatialPolygon 
+or a raster object. Note that the CRS should be the same as the one used 
+for the points.}
+
+\item{kernel.method}{Method used to estimate the the kernel density. 
+Currently, there are two methods: by default, it is the methode from 
+'adehabitat'. Method from the library 'ks' is also available.}
+
+\item{extend.extent}{Vector with extention values of the window size 
+(see details).}
+
+\item{z1}{Species 1 occurrence density grid created by ecospat.grid.clim.}
+
+\item{z2}{Species 2 occurrence density grid created by ecospat.grid.clim.}
+
+\item{cor}{Correct the occurrence densities of each species by the 
+prevalence of the environments in their range (TRUE = yes, FALSE = no).}
+}
 \description{
 From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
 ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 

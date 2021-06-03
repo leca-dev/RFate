@@ -7,6 +7,33 @@
 ##' @aliases ecospat.grid.clim.dyn
 ##' @aliases ecospat.kd
 ##' 
+##' @param glob A two-column dataframe (or a vector) of the environmental 
+##' values (in column) for background pixels of the whole study area (in row).
+##' @param glob1 A two-column dataframe (or a vector) of the environmental 
+##' values (in column) for the background pixels of the species (in row).
+##' @param sp A two-column dataframe (or a vector) of the environmental 
+##' values (in column) for the occurrences of the species (in row).
+##' @param R The resolution of the grid.
+##' @param th.sp The quantile used to delimit a threshold to exclude low 
+##' species density values.
+##' @param th.env The quantile used to delimit a threshold to exclude low 
+##' environmental density values of the study area.
+##' @param geomask A geographical mask to delimit the background extent if the 
+##' analysis takes place in the geographical space.It can be a SpatialPolygon 
+##' or a raster object. Note that the CRS should be the same as the one used 
+##' for the points.
+##' @param kernel.method Method used to estimate the the kernel density. 
+##' Currently, there are two methods: by default, it is the methode from 
+##' 'adehabitat'. Method from the library 'ks' is also available.
+##' @param extend.extent Vector with extention values of the window size 
+##' (see details).
+##' 
+##' @param z1 Species 1 occurrence density grid created by ecospat.grid.clim.
+##' @param z2 Species 2 occurrence density grid created by ecospat.grid.clim.
+##' @param cor Correct the occurrence densities of each species by the 
+##' prevalence of the environments in their range (TRUE = yes, FALSE = no).
+##' 
+##' 
 ##' @keywords ecospat, niche overlap
 ##' 
 ##' @seealso \code{\link[ecospat]{ecospat.grid.clim.dyn}},

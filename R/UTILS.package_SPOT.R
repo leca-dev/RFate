@@ -4,6 +4,33 @@
 ##' @name designLHD
 ##' @aliases designLHDNorm
 ##' 
+##' @param x optional matrix x, rows for points, columns for dimensions. This 
+##' can contain one or more points which are part of the design, but specified 
+##' by the user. These points are added to the design, and are taken into 
+##' account when calculating the pair-wise distances. They do not count for 
+##' the design size. E.g., if x has two rows, control$replicates is one and 
+##' control$size is ten, the returned design will have 12 points (12 rows). 
+##' The first two rows will be identical to x. Only the remaining ten rows are 
+##' guaranteed to be a valid LHD.
+##' @param lower vector with lower boundary of the design variables (in case 
+##' of categorical parameters, please map the respective factor to a set of 
+##' contiguous integers, e.g., with lower = 1 and upper = number of levels)
+##' @param upper vector with upper boundary of the design variables (in case 
+##' of categorical parameters, please map the respective factor to a set of 
+##' contiguous integers, e.g., with lower = 1 and upper = number of levels)
+##' @param control list of controls: see \code{\link[SPOT]{designLHD}}
+##' 
+##' @param dim number, dimension of the problem (will be no. of columns of 
+##' the result matrix)
+##' @param size number of points with that dimension needed. (will be no. 
+##' of rows of the result matrix).
+##' @param calcMinDistance Boolean to indicate whether a minimal distance 
+##' should be calculated.
+##' @param nested nested design to be considered during distance calculation.
+##' @param inequalityConstraint inequality constraint function, smaller zero 
+##' for infeasible points. Used to replace infeasible points with random 
+##' points. Has to evaluate points in interval [0;1].
+##' 
 ##' @keywords SPOT, Latin Hypercube Sampling
 ##' 
 ##' @seealso \code{\link[SPOT]{designLHD}}

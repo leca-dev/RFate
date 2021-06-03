@@ -216,6 +216,70 @@ adehabitatHR 0.4.19 packages</p>
 
     <pre class="usage"><span class='fu'>ecospat.kd</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>ext</span>, R <span class='op'>=</span> <span class='fl'>100</span>, th <span class='op'>=</span> <span class='fl'>0</span>, env.mask <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>, method <span class='op'>=</span> <span class='st'>"adehabitat"</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>R</th>
+      <td><p>The resolution of the grid.</p></td>
+    </tr>
+    <tr>
+      <th>glob</th>
+      <td><p>A two-column dataframe (or a vector) of the environmental 
+values (in column) for background pixels of the whole study area (in row).</p></td>
+    </tr>
+    <tr>
+      <th>glob1</th>
+      <td><p>A two-column dataframe (or a vector) of the environmental 
+values (in column) for the background pixels of the species (in row).</p></td>
+    </tr>
+    <tr>
+      <th>sp</th>
+      <td><p>A two-column dataframe (or a vector) of the environmental 
+values (in column) for the occurrences of the species (in row).</p></td>
+    </tr>
+    <tr>
+      <th>th.sp</th>
+      <td><p>The quantile used to delimit a threshold to exclude low 
+species density values.</p></td>
+    </tr>
+    <tr>
+      <th>th.env</th>
+      <td><p>The quantile used to delimit a threshold to exclude low 
+environmental density values of the study area.</p></td>
+    </tr>
+    <tr>
+      <th>geomask</th>
+      <td><p>A geographical mask to delimit the background extent if the 
+analysis takes place in the geographical space.It can be a SpatialPolygon 
+or a raster object. Note that the CRS should be the same as the one used 
+for the points.</p></td>
+    </tr>
+    <tr>
+      <th>kernel.method</th>
+      <td><p>Method used to estimate the the kernel density. 
+Currently, there are two methods: by default, it is the methode from 
+'adehabitat'. Method from the library 'ks' is also available.</p></td>
+    </tr>
+    <tr>
+      <th>extend.extent</th>
+      <td><p>Vector with extention values of the window size 
+(see details).</p></td>
+    </tr>
+    <tr>
+      <th>z1</th>
+      <td><p>Species 1 occurrence density grid created by ecospat.grid.clim.</p></td>
+    </tr>
+    <tr>
+      <th>z2</th>
+      <td><p>Species 2 occurrence density grid created by ecospat.grid.clim.</p></td>
+    </tr>
+    <tr>
+      <th>cor</th>
+      <td><p>Correct the occurrence densities of each species by the 
+prevalence of the environments in their range (TRUE = yes, FALSE = no).</p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

@@ -4,6 +4,12 @@
 ##' @name beta.pair
 ##' @aliases betapart.core
 ##' 
+##' @param x data frame, where rows are sites and columns are species. 
+##' Alternatively x can be a betapart object derived from the betapart.core 
+##' function 
+##' @param index.family family of dissimilarity indices, partial match of 
+##' "sorensen" or "jaccard".
+##' 
 ##' @keywords betapart
 ##' 
 ##' @seealso \code{\link[betapart]{beta.pair}}

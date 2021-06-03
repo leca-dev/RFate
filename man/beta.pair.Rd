@@ -7,6 +7,14 @@
 \usage{
 betapart.core(x)
 }
+\arguments{
+\item{x}{data frame, where rows are sites and columns are species. 
+Alternatively x can be a betapart object derived from the betapart.core 
+function}
+
+\item{index.family}{family of dissimilarity indices, partial match of 
+"sorensen" or "jaccard".}
+}
 \description{
 From betapart package 1.5.4 : beta.pair and betapart.core functions
 }
