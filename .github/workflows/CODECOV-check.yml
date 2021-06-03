@@ -11,11 +11,11 @@ on:
 # Increment this version when we want to clear cache
 env:
   cache-version: v1
-  r-version: 4.0
+  r-version: 3.6
 
 jobs:
   CODECOV-check:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-16.04
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -48,7 +48,7 @@ jobs:
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "16.04"))')
 
       - name: Install dependencies
         run: |
