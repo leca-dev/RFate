@@ -42,7 +42,7 @@ License:
     file LICENSE
 URL: https://github.com/leca-dev/RFate.git
 SystemRequirements: GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>= 4.8.0)
-Depends: R (>= 4.0)
+Depends: R (>= 3.6)
 Imports:
     Rcpp,
     graphics, grDevices, methods, stats, utils, R.utils,
