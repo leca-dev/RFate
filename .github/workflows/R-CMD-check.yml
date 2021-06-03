@@ -74,8 +74,6 @@ jobs:
           brew install pkg-config gdal proj geos
           # XQuartz is needed by vdiffr
           brew install --cask xquartz
-          # Use only binary packages
-          echo 'options(pkgType = "binary")' >> ~/.Rprofile
 
       - name: Install dependencies
         run: |
