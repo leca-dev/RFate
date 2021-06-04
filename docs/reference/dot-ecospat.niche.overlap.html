@@ -6,7 +6,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Obtain ellipse coordinates from (PCO) X,Y and a factor value — .getELLIPSE • RFate</title>
+<title>From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
+ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
+adehabitatHR 0.4.19 packages — .ecospat.niche.overlap • RFate</title>
 
 
 <!-- jquery -->
@@ -39,8 +41,12 @@
 
 
 
-<meta property="og:title" content="Obtain ellipse coordinates from (PCO) X,Y and a factor value — .getELLIPSE" />
-<meta property="og:description" content="Obtain ellipse coordinates from (PCO) X,Y and a factor value" />
+<meta property="og:title" content="From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
+ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
+adehabitatHR 0.4.19 packages — .ecospat.niche.overlap" />
+<meta property="og:description" content="From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
+ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
+adehabitatHR 0.4.19 packages" />
 
 
 
@@ -195,76 +201,113 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Obtain ellipse coordinates from (PCO) X,Y and a factor value</h1>
-    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/UTILS.getELLIPSE.R'><code>R/UTILS.getELLIPSE.R</code></a></small>
-    <div class="hidden name"><code>dot-getELLIPSE.Rd</code></div>
+    <h1>From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
+ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
+adehabitatHR 0.4.19 packages</h1>
+    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/UTILS.package_ecospat.R'><code>R/UTILS.package_ecospat.R</code></a></small>
+    <div class="hidden name"><code>dot-ecospat.niche.overlap.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Obtain ellipse coordinates from (PCO) X,Y and a factor value</p>
+    <p>From ecospat package 3.2 : ecospat.kd, ecospat.grid.clim.dyn and 
+ecospat.niche.overlap functions (and sp 1.4-5, adehabitatMA 0.3.14, 
+adehabitatHR 0.4.19 packages</p>
     </div>
 
-    <pre class="usage"><span class='fu'>util.ELLIPSE2</span><span class='op'>(</span><span class='va'>mx</span>, <span class='va'>my</span>, <span class='va'>vx</span>, <span class='va'>cxy</span>, <span class='va'>vy</span>, <span class='va'>coeff</span><span class='op'>)</span>
-<span class='fu'>util.ELLIPSE1</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>y</span>, <span class='va'>z</span><span class='op'>)</span>
-<span class='fu'>.getELLIPSE</span><span class='op'>(</span><span class='va'>xy</span>, <span class='va'>fac</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>util.ecospat.kd</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>ext</span>, R <span class='op'>=</span> <span class='fl'>100</span>, th <span class='op'>=</span> <span class='fl'>0</span>, env.mask <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>)</span>, method <span class='op'>=</span> <span class='st'>"adehabitat"</span><span class='op'>)</span>
+<span class='fu'>.ecospat.grid.clim.dyn</span><span class='op'>(</span><span class='va'>glob</span>, <span class='va'>glob1</span>, <span class='va'>sp</span>, R <span class='op'>=</span> <span class='fl'>100</span>, th.sp <span class='op'>=</span> <span class='fl'>0</span>, th.env <span class='op'>=</span> <span class='fl'>0</span>, 
+geomask <span class='op'>=</span> <span class='cn'>NULL</span>, kernel.method <span class='op'>=</span> <span class='st'>"adehabitat"</span>, extend.extent <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'>.ecospat.niche.overlap</span><span class='op'>(</span><span class='va'>z1</span>, <span class='va'>z2</span>, <span class='va'>cor</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>mx</th>
-      <td><p>\(\Sigma x * \frac{z}{\Sigma z}\)</p></td>
-    </tr>
-    <tr>
-      <th>my</th>
-      <td><p>\(\Sigma y * \frac{z}{\Sigma z}\)</p></td>
-    </tr>
-    <tr>
-      <th>vx</th>
-      <td><p>\(\Sigma (x - mx) * (x - mx) * \frac{z}{\Sigma z}\)</p></td>
-    </tr>
-    <tr>
-      <th>cxy</th>
-      <td><p>\(\Sigma (x - mx) * (y - my) * \frac{z}{\Sigma z}\)</p></td>
-    </tr>
-    <tr>
-      <th>vy</th>
-      <td><p>\(\Sigma (y - my) * (y - my) * \frac{z}{\Sigma z}\)</p></td>
-    </tr>
-    <tr>
-      <th>coeff</th>
-      <td><p>default <code>1</code></p></td>
-    </tr>
-    <tr>
-      <th>xy</th>
-      <td><p>a <code>data.frame</code> or <code>matrix</code> with 2 columns corresponding 
-to individuals coordinates, extracted from example from 
-<code><a href='https://rdrr.io/pkg/ade4/man/dudi.pco.html'>dudi.pco</a></code> analysis</p></td>
-    </tr>
-    <tr>
-      <th>fac</th>
-      <td><p>a <code>vector</code> containing group labels for individuals (with 
-<code>length(fac) = nrow(xy)</code>)</p></td>
-    </tr>
-    <tr>
       <th>x</th>
-      <td><p>a <code>vector</code> corresponding to abscissa coordinates of 
-individuals (column <code>1</code> of <code>xy</code>)</p></td>
+      <td><p>two-column dataframe (or a vector)</p></td>
     </tr>
     <tr>
-      <th>y</th>
-      <td><p>a <code>vector</code> corresponding to ordinate coordinates of 
-individuals (column <code>2</code> of <code>xy</code>)</p></td>
+      <th>ext</th>
+      <td><p>c(xmin, xmax)</p></td>
     </tr>
     <tr>
-      <th>z</th>
-      <td><p>a <code>data.frame</code> with one column for each level represented in 
-<code>fac</code> and <code>nrow(z) = length(fac) = nrow(xy)</code>. Values are 
-corresponding to the relative representation of each level (for level 
-<code>i</code> : \(\frac{1}{N_i}\))</p></td>
+      <th>R</th>
+      <td><p>The resolution of the grid.</p></td>
+    </tr>
+    <tr>
+      <th>th</th>
+      <td><p>quantile</p></td>
+    </tr>
+    <tr>
+      <th>env.mask</th>
+      <td><p>mask</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>kernel.method</p></td>
+    </tr>
+    <tr>
+      <th>glob</th>
+      <td><p>A two-column dataframe (or a vector) of the environmental 
+values (in column) for background pixels of the whole study area (in row).</p></td>
+    </tr>
+    <tr>
+      <th>glob1</th>
+      <td><p>A two-column dataframe (or a vector) of the environmental 
+values (in column) for the background pixels of the species (in row).</p></td>
+    </tr>
+    <tr>
+      <th>sp</th>
+      <td><p>A two-column dataframe (or a vector) of the environmental 
+values (in column) for the occurrences of the species (in row).</p></td>
+    </tr>
+    <tr>
+      <th>th.sp</th>
+      <td><p>The quantile used to delimit a threshold to exclude low 
+species density values.</p></td>
+    </tr>
+    <tr>
+      <th>th.env</th>
+      <td><p>The quantile used to delimit a threshold to exclude low 
+environmental density values of the study area.</p></td>
+    </tr>
+    <tr>
+      <th>geomask</th>
+      <td><p>A geographical mask to delimit the background extent if the 
+analysis takes place in the geographical space.It can be a SpatialPolygon 
+or a raster object. Note that the CRS should be the same as the one used 
+for the points.</p></td>
+    </tr>
+    <tr>
+      <th>kernel.method</th>
+      <td><p>Method used to estimate the the kernel density. 
+Currently, there are two methods: by default, it is the methode from 
+'adehabitat'. Method from the library 'ks' is also available.</p></td>
+    </tr>
+    <tr>
+      <th>extend.extent</th>
+      <td><p>Vector with extention values of the window size 
+(see details).</p></td>
+    </tr>
+    <tr>
+      <th>z1</th>
+      <td><p>Species 1 occurrence density grid created by ecospat.grid.clim.</p></td>
+    </tr>
+    <tr>
+      <th>z2</th>
+      <td><p>Species 2 occurrence density grid created by ecospat.grid.clim.</p></td>
+    </tr>
+    <tr>
+      <th>cor</th>
+      <td><p>Correct the occurrence densities of each species by the 
+prevalence of the environments in their range (TRUE = yes, FALSE = no).</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/ecospat/man/ecospat.grid.clim.dyn.html'>ecospat.grid.clim.dyn</a></code>,
+<code><a href='https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html'>ecospat.niche.overlap</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

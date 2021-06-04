@@ -2,12 +2,12 @@
 % Please edit documentation in R/UTILS.getELLIPSE.R
 \name{.getELLIPSE}
 \alias{.getELLIPSE}
-\alias{util.ellipse}
-\alias{util.ELLIPSE}
+\alias{util.ELLIPSE2}
+\alias{util.ELLIPSE1}
 \title{Obtain ellipse coordinates from (PCO) X,Y and a factor value}
 \usage{
-util.ellipse(mx, my, vx, cxy, vy, coeff)
-util.ELLIPSE(x, y, z)
+util.ELLIPSE2(mx, my, vx, cxy, vy, coeff)
+util.ELLIPSE1(x, y, z)
 .getELLIPSE(xy, fac)
 }
 \arguments{

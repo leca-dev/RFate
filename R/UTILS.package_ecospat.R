@@ -54,7 +54,7 @@
 ##' \code{\link[ecospat]{ecospat.niche.overlap}}
 ##' 
 ##' @importFrom stats density
-##' @importFrom raster coordinates extract mask cellStats
+##' @importFrom raster coordinates extract mask cellStats as.matrix
 ##' @importFrom adehabitatMA ascgen
 ##' @importFrom adehabitatHR kernelUD
 ##' @importFrom sp SpatialPoints

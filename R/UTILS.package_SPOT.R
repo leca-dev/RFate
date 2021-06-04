@@ -5,7 +5,8 @@
 ##' @aliases designLHDNorm
 ##' 
 ##' @usage
-##' designLHDNorm(dim, size, calcMinDistance = FALSE, nested = NULL, inequalityConstraint = NULL)
+##' designLHDNorm(dim, size, calcMinDistance = FALSE, nested = NULL, 
+##' inequalityConstraint = NULL)
 ##' designLHD(x = NULL, lower, upper, control = list()) 
 ##' 
 ##' @param x optional matrix x, rows for points, columns for dimensions. This 

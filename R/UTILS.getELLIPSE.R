@@ -2,12 +2,12 @@
 ##' @title Obtain ellipse coordinates from (PCO) X,Y and a factor value
 ##' 
 ##' @name .getELLIPSE
-##' @aliases util.ellipse
-##' @aliases util.ELLIPSE
+##' @aliases util.ELLIPSE1
+##' @aliases util.ELLIPSE2
 ##' 
 ##' @usage 
-##' util.ellipse(mx, my, vx, cxy, vy, coeff)
-##' util.ELLIPSE(x, y, z)
+##' util.ELLIPSE2(mx, my, vx, cxy, vy, coeff)
+##' util.ELLIPSE1(x, y, z)
 ##' .getELLIPSE(xy, fac)
 ##' 
 ##' 
@@ -35,7 +35,7 @@
 ##' 
 ## END OF HEADER ###############################################################
 
-util.ellipse <- function(mx, my, vx, cxy, vy, coeff) {
+util.ELLIPSE2 <- function(mx, my, vx, cxy, vy, coeff) {
   lig <- 100
   epsi <- 1e-10
   x <- 0
@@ -100,14 +100,14 @@ util.ellipse <- function(mx, my, vx, cxy, vy, coeff) {
 }
 
 
-util.ELLIPSE = function(x, y, z){
+util.ELLIPSE1 = function(x, y, z){
   z <- z/sum(z)
   m1 <- sum(x * z)
   m2 <- sum(y * z)
   v1 <- sum((x - m1) * (x - m1) * z)
   v2 <- sum((y - m2) * (y - m2) * z)
   cxy <- sum((x - m1) * (y - m2) * z)
-  ell <- util.ellipse(m1, m2, v1, cxy, v2, 1)
+  ell <- util.ELLIPSE2(m1, m2, v1, cxy, v2, 1)
   return(ell)
 }
 
@@ -122,7 +122,7 @@ util.ELLIPSE = function(x, y, z){
   pfg = NULL
   DAT = foreach(fac.i = colnames(dfdistri), .combine = "rbind") %do%
   {
-    ell = util.ELLIPSE(xy[, 1], xy[, 2], dfdistri[, fac.i])
+    ell = util.ELLIPSE1(xy[, 1], xy[, 2], dfdistri[, fac.i])
     if(length(ell$x) > 0){
       dat = data.frame(x = ell$x
                        , y = ell$y

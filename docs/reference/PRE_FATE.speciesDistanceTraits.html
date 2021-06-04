@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Computation of distances between species based on traits and niche 
-overlap — PRE_FATE.speciesDistance • RFate</title>
+<title>Computation of traits distances between species — PRE_FATE.speciesDistanceTraits • RFate</title>
 
 
 <!-- jquery -->
@@ -40,11 +39,9 @@ overlap — PRE_FATE.speciesDistance • RFate</title>
 
 
 
-<meta property="og:title" content="Computation of distances between species based on traits and niche 
-overlap — PRE_FATE.speciesDistance" />
+<meta property="og:title" content="Computation of traits distances between species — PRE_FATE.speciesDistanceTraits" />
 <meta property="og:description" content="This script is designed to create a distance matrix between 
-species, combining functional distances (based on functional trait values) 
-and niche overlap (based on co-occurrence of species)." />
+species, based on functional trait values." />
 
 
 
@@ -199,23 +196,18 @@ and niche overlap (based on co-occurrence of species)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Computation of distances between species based on traits and niche 
-overlap</h1>
-    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/PRE_FATE.speciesDistance.R'><code>R/PRE_FATE.speciesDistance.R</code></a></small>
-    <div class="hidden name"><code>PRE_FATE.speciesDistance.Rd</code></div>
+    <h1>Computation of traits distances between species</h1>
+    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/PRE_FATE.speciesDistanceTraits.R'><code>R/PRE_FATE.speciesDistanceTraits.R</code></a></small>
+    <div class="hidden name"><code>PRE_FATE.speciesDistanceTraits.Rd</code></div>
     </div>
 
     <div class="ref-description">
     <p>This script is designed to create a distance matrix between 
-species, combining functional distances (based on functional trait values) 
-and niche overlap (based on co-occurrence of species).</p>
+species, based on functional trait values.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>PRE_FATE.speciesDistance</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>PRE_FATE.speciesDistanceTraits</span><span class='op'>(</span>
   <span class='va'>mat.traits</span>,
-  <span class='va'>mat.overlap.option</span>,
-  <span class='va'>mat.overlap.object</span>,
-  opt.weights <span class='op'>=</span> <span class='cn'>NULL</span>,
   opt.maxPercent.NA <span class='op'>=</span> <span class='fl'>0</span>,
   opt.maxPercent.similarSpecies <span class='op'>=</span> <span class='fl'>0.25</span>,
   opt.min.sd <span class='op'>=</span> <span class='fl'>0.3</span>
@@ -234,42 +226,6 @@ divide the species into data subsets (see
 <dt><code>...</code></dt><dd><p>one column for each functional trait</p></dd>
 
 </dl></td>
-    </tr>
-    <tr>
-      <th>mat.overlap.option</th>
-      <td><p>a <code>string</code> corresponding to the way to 
-calculate the distance between species based on niche overlap (either 
-<code>PCA</code>, <code>raster</code> or <code>dist</code>, see 
-<a href='PRE_FATE.speciesDistance#details'><code>Details</code></a>)</p></td>
-    </tr>
-    <tr>
-      <th>mat.overlap.object</th>
-      <td><p>three options, depending on the value of 
-<code>mat.overlap.option</code> :</p><ul>
-<li><p>(<code>PCA</code> option) a <code>list</code> with 2 elements :</p><dl>
-    <dt><code>tab.dom.PA</code></dt><dd><p>a <code>matrix</code> or <code>data.frame</code> with 
-    sites in rows and species in columns, containing either <code>NA</code>, 
-    <code>0</code> or <code>1</code> (see <code><a href='PRE_FATE.selectDominant.html'>PRE_FATE.selectDominant</a></code>)</p></dd>
-    <dt><code>tab.env</code></dt><dd><p>a <code>matrix</code> or <code>data.frame</code> with 
-    sites in rows and environmental variables in columns</p></dd>
-  
-</dl></li>
-<li><p>(<code>raster</code> option) a <code>data.frame</code> with 2 columns :</p><dl>
-    <dt><code>species</code></dt><dd><p>the ID of each studied species</p></dd>
-    <dt><code>raster</code></dt><dd><p>path to raster file with species distribution</p></dd>
-  
-</dl></li>
-<li><p>(<code>dist</code> option) a similarity structure representing the 
-  niche overlap between each pair of species. It can be a <code>dist</code> 
-  object, a <code>niolap</code> object, or simply a <code>matrix</code>.</p></li>
-</ul></td>
-    </tr>
-    <tr>
-      <th>opt.weights</th>
-      <td><p>(<em>optional</em>) default <code>NULL</code>. <br /> 
-A <code>vector</code> of two <code>double</code> (between <code>0</code> and <code>1</code>) 
-corresponding to the weights for traits and overlap distances 
-respectively. They must sum up to <code>1</code>.</p></td>
     </tr>
     <tr>
       <th>opt.maxPercent.NA</th>
@@ -292,67 +248,38 @@ standard deviation allowed for each trait (trait unit)</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>list</code> of 3 <code>dist</code> objects (functional distances, 
-overlap distances, and combination of both according to the weights given 
-(or not) by the <code>opt.weights</code> parameter), each of them corresponding 
-to : the distance between each pair of species, or a <code>list</code> of 
-<code>dist</code> objects, one for each <code>GROUP</code> value. <br /> <br /></p>
-<p>The information for the combination of both distances is written in 
-<code class="file">PRE_FATE_DOMINANT_speciesDistance.csv</code> file (or if necessary, one 
-file is created for each group).</p>
+    <p>A <code>matrix</code> containing functional distances between each pair 
+of species, calculated as <code>1 - Schoeners D</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function allows to obtain a <strong>distance matrix between species</strong>, 
-based on two types of distance information :</p>
-<ol>
-<li><p><strong>Functional traits : </strong>
-  <ul>
+    <p>This function allows to obtain a <strong>distance matrix between species</strong> 
+(1 - Schoeners D), based on functional traits information :</p>
+<ul>
 <li><p>The <code>GROUP</code> column is required if species must be separated 
-    to have one final distance matrix per <code>GROUP</code> value. <br /> If the 
-    column is missing, all species will be considered as part of a unique 
-    dataset.</p></li>
+  to have one final distance matrix per <code>GROUP</code> value. <br /> If the 
+  column is missing, all species will be considered as part of a unique 
+  dataset.</p></li>
 <li><p>The traits can be qualitative or quantitative, but previously 
-    identified as such <br /> (i.e. with the use of functions such as 
-    <code>as.numeric</code>, <code>as.factor</code> and <code>ordered</code>).</p></li>
+  identified as such <br /> (i.e. with the use of functions such as 
+  <code>as.numeric</code>, <code>as.factor</code> and <code>ordered</code>).</p></li>
 <li><p>Functional distance matrix is calculated with Gower dissimilarity, 
-    using the <code><a href='https://rdrr.io/pkg/FD/man/gowdis.html'>gowdis</a></code> function.</p></li>
+  using the <code><a href='https://rdrr.io/pkg/FD/man/gowdis.html'>gowdis</a></code> function.</p></li>
 <li><p>This function allows <code>NA</code> values. <br /> However, too many 
-    missing values lead to misleading results. Hence, 3 parameters allow the 
-    user to play with the place given to missing values, and therefore the 
-    selection of traits that will be used for the distance computation :</p><dl>
-      <dt>opt.maxPercent.NA</dt><dd><p>traits with too many missing values are 
-      removed</p></dd>
-      <dt>opt.maxPercent <br /> .similarSpecies</dt><dd><p>traits with too many 
-      similar values are removed</p></dd>
-      <dt>opt.min.sd</dt><dd><p>traits with too little variability are removed</p></dd></dl></li>
-</ul></p></li>
-<li><p><strong>Niche overlap : </strong>
-  <ul>
-<li><p>If <code>PCA</code> option is selected, the degree of niche overlap will 
-    be computed using the <code><a href='https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html'>ecospat.niche.overlap</a></code>.</p></li>
-<li><p>If <code>raster</code> option is selected, the degree of niche overlap will 
-    be computed using the <code><a href='https://rdrr.io/pkg/phyloclim/man/niche.overlap.html'>niche.overlap</a></code>. <br /> <br /> <br /></p></li>
-</ul></p></li>
-</ol>
+  missing values lead to misleading results. Hence, 3 parameters allow the 
+  user to play with the place given to missing values, and therefore the 
+  selection of traits that will be used for the distance computation :</p><dl>
+    <dt>opt.maxPercent.NA</dt><dd><p>traits with too many missing values are 
+    removed</p></dd>
+    <dt>opt.maxPercent <br /> .similarSpecies</dt><dd><p>traits with too many 
+    similar values are removed</p></dd>
+    <dt>opt.min.sd</dt><dd><p>traits with too little variability are removed</p></dd>
+  
+</dl></li>
+</ul>
 
-<p>Functional distances and niche overlap informations are then 
-<strong>combined</strong> according to the following formula :</p>
-<p>$$\text{mat.DIST}_{sub-group} = \frac{[\text{wei.FUNC} * 
-\text{mat.FUNCTIONAL}_{sub-group} + \text{wei.OVER} * 
-\text{mat.OVERLAP}_{sub-group}]}{[ \text{wei.FUNC} + \text{wei.OVER} ]}$$</p>
-<p>with :</p>
-<p>$$\text{wei.FUNC} = \text{opt.weights}[1]$$
-$$\text{wei.OVER} = \text{opt.weights}[2]$$</p>
-<p>if <code>opt.weights</code> is given, otherwise :</p>
-<p>$$\text{wei.FUNC} = n_{traits}$$
-$$\text{wei.OVER} = 1$$</p>
-<p>meaning that <strong>distance matrix obtained from functional information 
-is weighted by the number of traits used</strong>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/FD/man/gowdis.html'>gowdis</a></code>,
-<code><a href='https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html'>ecospat.niche.overlap</a></code>
-<code><a href='https://rdrr.io/pkg/phyloclim/man/niche.overlap.html'>niche.overlap</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/FD/man/gowdis.html'>gowdis</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Maya Guéguen</p>
@@ -368,33 +295,25 @@ is weighted by the number of traits used</strong>.</p>
                             , <span class='st'>'HEIGHT'</span>, <span class='st'>'DISPERSAL'</span>, <span class='st'>'LIGHT'</span>, <span class='st'>'NITROGEN'</span><span class='op'>)</span><span class='op'>]</span>
 <span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>tab.traits</span><span class='op'>)</span>
 
-<span class='co'>## Species niche overlap (dissimilarity distances)</span>
-<span class='va'>tab.overlap</span> <span class='op'>=</span> <span class='fl'>1</span> <span class='op'>-</span> <span class='va'>Champsaur_PFG</span><span class='op'>$</span><span class='va'>mat.overlap</span> <span class='co'>## transform into similarity</span>
-<span class='va'>tab.overlap</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>
-
 <span class='co'>## Give warnings -------------------------------------------------------------</span>
-<span class='va'>sp.DIST</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span><span class='op'>(</span>mat.traits <span class='op'>=</span> <span class='va'>tab.traits</span>
-                                   , mat.overlap.option <span class='op'>=</span> <span class='st'>'dist'</span>
-                                   , mat.overlap.object <span class='op'>=</span> <span class='va'>tab.overlap</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.DIST</span><span class='op'>)</span>
+<span class='va'>DIST.traits</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistanceTraits</span><span class='op'>(</span>mat.traits <span class='op'>=</span> <span class='va'>tab.traits</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>DIST.traits</span><span class='op'>)</span>
 
 <span class='co'>## Change parameters to allow more NAs (and change traits used) --------------</span>
-<span class='va'>sp.DIST</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistance</span><span class='op'>(</span>mat.traits <span class='op'>=</span> <span class='va'>tab.traits</span>
-                                   , mat.overlap.option <span class='op'>=</span> <span class='st'>'dist'</span>
-                                   , mat.overlap.object <span class='op'>=</span> <span class='va'>tab.overlap</span>
-                                   , opt.maxPercent.NA <span class='op'>=</span> <span class='fl'>0.05</span>
-                                   , opt.maxPercent.similarSpecies <span class='op'>=</span> <span class='fl'>0.3</span>
-                                   , opt.min.sd <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>sp.DIST</span><span class='op'>)</span>
+<span class='va'>DIST.traits</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistanceTraits</span><span class='op'>(</span>mat.traits <span class='op'>=</span> <span class='va'>tab.traits</span>
+                                             , opt.maxPercent.NA <span class='op'>=</span> <span class='fl'>0.05</span>
+                                             , opt.maxPercent.similarSpecies <span class='op'>=</span> <span class='fl'>0.3</span>
+                                             , opt.min.sd <span class='op'>=</span> <span class='fl'>0.3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>DIST.traits</span><span class='op'>)</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RevolutionAnalytics/foreach'>foreach</a></span><span class='op'>)</span>; <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>; <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/andrie/ggdendro'>ggdendro</a></span><span class='op'>)</span>
-<span class='va'>pp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/foreach/man/foreach.html'>foreach</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>sp.DIST</span><span class='op'>$</span><span class='va'>mat.ALL</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%do%</span>
+<span class='va'>pp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/foreach/man/foreach.html'>foreach</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>DIST.traits</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%do%</span>
   <span class='op'>{</span>
-    <span class='va'>hc</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></span><span class='op'>(</span><span class='va'>sp.DIST</span><span class='op'>$</span><span class='va'>mat.ALL</span><span class='op'>[[</span><span class='va'>x</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span>
+    <span class='va'>hc</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></span><span class='op'>(</span><span class='va'>DIST.traits</span><span class='op'>[[</span><span class='va'>x</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span><span class='op'>)</span>
     <span class='va'>pp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html'>ggdendrogram</a></span><span class='op'>(</span><span class='va'>hc</span>, rotate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>+</span>
       <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'Hierarchical clustering based on species distance '</span>
-                          , <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>sp.DIST</span><span class='op'>$</span><span class='va'>mat.ALL</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>1</span>
+                          , <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/fifelse.html'>ifelse</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>DIST.traits</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>&gt;</span> <span class='fl'>1</span>
                                    , <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'(group '</span>, <span class='va'>x</span>, <span class='st'>')'</span><span class='op'>)</span>
                                    , <span class='st'>''</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
     <span class='kw'><a href='https://rdrr.io/r/base/function.html'>return</a></span><span class='op'>(</span><span class='va'>pp</span><span class='op'>)</span>

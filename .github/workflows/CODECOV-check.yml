@@ -11,11 +11,11 @@ on:
 # Increment this version when we want to clear cache
 env:
   cache-version: v1
-  r-version: 3.6
+  r-version: 4.1
 
 jobs:
   CODECOV-check:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -44,11 +44,11 @@ jobs:
           
       - name: Install system dependencies on Linux
         run: |
-          sudo apt install libgdal-dev libproj-dev libgeos-dev libudunits2-dev libgfortran3
+          sudo apt install libgdal-dev libproj-dev libgeos-dev libudunits2-dev libgfortran5
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "16.04"))')
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
 
       - name: Install dependencies
         run: |

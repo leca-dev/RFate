@@ -16,7 +16,7 @@ addons:
 
 jobs:
   include:
-  - r: "3.6"
+  - r: "4.1"
     env:
       GDALVERSION="2.3.3"
       PROJVERSION="4.9.3"
