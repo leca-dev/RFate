@@ -42,7 +42,9 @@ Original version was `FATE-HD`, developed and used in papers such as *Boulangeat
 
 Refinements to the model, and integration of the `C++` code within an `R` package, as well as new modules development, were meant to facilitate the use and spread of the `FATE` model.
 
-#### Version 1.0.0 (may 2021)
+
+
+#### Version 1.0.0 (june 2021) <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/RFate_1.0.0.tar.gz" class="download" title="Download as tar.gz"><i class="fas fa-download"></i></a>
 
 - all steps included in one tool (`PRE-FATE`, `FATE`, `POST-FATE`), that can be easily installed on all OS (Mac, Unix, Windows)
 - a simplification of some structural equations of the model (see [FATE tutorial - Modelling framework](fate_tutorial_0_modelling_framework.html))

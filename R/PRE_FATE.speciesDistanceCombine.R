@@ -72,7 +72,7 @@
 ##' 
 ##' @export
 ##' 
-##' @importFrom utils cmbn
+##' @importFrom utils combn
 ##' 
 ## END OF HEADER ###############################################################
 

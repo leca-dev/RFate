@@ -2,7 +2,7 @@ Package: RFate
 Type: Package
 Title: FATE with R
 Version: 1.0.0
-Date: 2021-05-27
+Date: 2021-06-04
 Authors@R: c(person("Wilfried", "Thuiller", role = "aut"
                     , email = "wilfried.thuiller@univ-grenoble-alpes.fr"),
              person("Damien", "Georges", role = "aut"),
