@@ -4,11 +4,19 @@
 \alias{PRE_FATE.speciesDistanceCombine}
 \title{Combine several dissimilarity distance matrices}
 \usage{
-PRE_FATE.speciesDistanceCombine(list.mat.dist, opt.weights = NULL)
+PRE_FATE.speciesDistanceCombine(
+  list.mat.dist,
+  opt.normal = TRUE,
+  opt.weights = NULL
+)
 }
 \arguments{
 \item{list.mat.dist}{a \code{list} of matrices containing dissimilarity 
 distance values between each pair of species.}
+
+\item{opt.normal}{(\emph{optional}) default \code{TRUE}. \cr 
+If \code{TRUE}, all given distance matrices will be normalized 
+(see \href{PRE_FATE.speciesDistanceCombine#details}{\code{Details}})}
 
 \item{opt.weights}{(\emph{optional}) default \code{NULL}. \cr 
 A \code{vector} of \code{double} (between \code{0} and \code{1}) 
@@ -16,16 +24,15 @@ corresponding to the weights for each distance matrix provided in
 \code{list.mat.dist}. They must sum up to \code{1}.}
 }
 \value{
-A \code{matrix} containing the weighted (or not) combination of the 
-different distance matrices given. \cr \cr
+A \code{matrix} containing the weighted (or not) combination of 
+the different transformed (or not) distance matrices given. \cr \cr
 
 The information for the combination of all distances is written in 
 \file{PRE_FATE_DOMINANT_speciesDistance.csv} file.
 }
 \description{
 This script is designed to create a distance matrix between 
-species, combining functional distances (based on functional trait values) 
-and niche overlap (based on co-occurrence of species).
+species, combining several dissimilarity distance matrices.
 }
 \details{
 This function allows to obtain a \strong{distance matrix between species}, 
@@ -33,6 +40,21 @@ based on several dissimilarity distance matrices \strong{combined}
 according to the following formula :
 
 \deqn{\text{mat.DIST} = \Sigma (\text{wei.i} * \text{mat.DIST}_{i})}
+
+If \code{opt.normal = TRUE}, two \emph{normalization} steps are applied 
+to each distance matrix before combining them :
+
+\enumerate{
+  \item a \strong{non-paranormal (npn)} transformation 
+  (\code{\link[huge]{huge.npn}} function) to obtain Gaussian distributions 
+  for all dissimilarity matrices used
+  \item  a \strong{range} normalization to bring the values back between 
+  \code{0} and \code{1} :
+  
+  \deqn{\text{mat.DIST}_{i} = \frac{\text{mat.DIST}_{i} - 
+  min(\text{mat.DIST}_{i})}{max(\text{mat.DIST}_{i}) - 
+  min(\text{mat.DIST}_{i})}}
+}
 }
 \examples{
 
@@ -58,19 +80,42 @@ DIST.traits$Chamaephyte[1:5, 1:5]
 
 ## Combine distances ---------------------------------------------------------
 list.DIST = list(DIST.overlap, DIST.traits$Chamaephyte)
-sp.DIST = PRE_FATE.speciesDistanceCombine(list.mat.dist = list.DIST
-                                          , opt.weights = c(0.2, 0.8))
-str(sp.DIST)
+sp.DIST.n = PRE_FATE.speciesDistanceCombine(list.mat.dist = list.DIST
+                                            , opt.weights = c(0.2, 0.8))
+sp.DIST.un = PRE_FATE.speciesDistanceCombine(list.mat.dist = list.DIST
+                                             , opt.norm = FALSE
+                                             , opt.weights = c(0.2, 0.8))
+str(sp.DIST.n)
+
+
 
 \dontrun{
+require(corrplot)
+list.DIST = list(DIST.overlap, DIST.traits$Chamaephyte
+                 , sp.DIST.un, sp.DIST.n)
+names(list.DIST) = c('overlap', 'traits', 'un-normed', 'normed')
+
+par(mfrow = c(2, 2))
+for (li in 1:length(list.DIST))
+{
+  tmp = list.DIST[[li]]
+  tmp = tmp[colnames(sp.DIST.n), colnames(sp.DIST.n)]
+  corrplot(tmp, method = 'shade'
+           , type = 'lower', cl.lim = c(0, 1)
+           , is.corr = FALSE, title = names(list.DIST)[li])
+}
+
 require(foreach); require(ggplot2); require(ggdendro)
-hc = hclust(as.dist(sp.DIST))
+hc = hclust(as.dist(sp.DIST.n))
 pp = ggdendrogram(hc, rotate = TRUE) +
   labs(title = 'Hierarchical clustering based on species distances')
 plot(pp)
 }
 
 
+}
+\seealso{
+\code{\link[huge]{huge.npn}}
 }
 \author{
 Maya Guéguen

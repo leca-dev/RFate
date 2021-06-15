@@ -1,8 +1,8 @@
 Package: RFate
 Type: Package
 Title: FATE with R
-Version: 1.0.0
-Date: 2021-06-04
+Version: 1.0.1
+Date: 2021-06-14
 Authors@R: c(person("Wilfried", "Thuiller", role = "aut"
                     , email = "wilfried.thuiller@univ-grenoble-alpes.fr"),
              person("Damien", "Georges", role = "aut"),
@@ -49,7 +49,8 @@ Imports:
     ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
     reshape2, foreach, data.table,
     raster, rgdal, sp,
-    phyloclim, FD, ade4, PresenceAbsence, adehabitatMA, adehabitatHR, cluster,
+    phyloclim, FD, PresenceAbsence, ade4, adehabitatMA, adehabitatHR, 
+    cluster, huge, 
     RColorBrewer, colorspace,
     ape, shiny,
     parallel, doParallel
