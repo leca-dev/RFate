@@ -73,7 +73,7 @@ species, based on co-occurrence of species." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
       </span>
     </div>
 
@@ -281,8 +281,9 @@ of species, calculated as <code>1 - Schoeners D</code>.</p>
 <span class='va'>tab.env</span> <span class='op'>=</span> <span class='va'>Champsaur_PFG</span><span class='op'>$</span><span class='va'>tab.env</span>
 
 <span class='co'>## Calculate niche overlap distances -----------------------------------------</span>
+<span class='va'>list.over</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>tab.dom.PA</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>, <span class='va'>tab.env</span><span class='op'>)</span>
 <span class='va'>DIST.overlap</span> <span class='op'>=</span> <span class='fu'>PRE_FATE.speciesDistanceOverlap</span><span class='op'>(</span>mat.overlap.option <span class='op'>=</span> <span class='st'>"PCA"</span>
-                                               , mat.overlap.object <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>tab.dom.PA</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>]</span>, <span class='va'>tab.env</span><span class='op'>)</span><span class='op'>)</span>
+                                               , mat.overlap.object <span class='op'>=</span> <span class='va'>list.over</span><span class='op'>)</span>
 <span class='op'>(</span><span class='va'>DIST.overlap</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span><span class='op'>)</span>
 
 </pre>

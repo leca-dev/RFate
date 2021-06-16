@@ -70,8 +70,9 @@
 ##' tab.env = Champsaur_PFG$tab.env
 ##' 
 ##' ## Calculate niche overlap distances -----------------------------------------
+##' list.over = list(tab.dom.PA[, 1:10], tab.env)
 ##' DIST.overlap = PRE_FATE.speciesDistanceOverlap(mat.overlap.option = "PCA"
-##'                                                , mat.overlap.object = list(tab.dom.PA[, 1:10], tab.env))
+##'                                                , mat.overlap.object = list.over)
 ##' (DIST.overlap[1:5, 1:5])
 ##' 
 ##' @export

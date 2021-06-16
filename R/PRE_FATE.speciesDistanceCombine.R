@@ -6,11 +6,13 @@
 ##' @author Maya Guéguen
 ##' 
 ##' @description This script is designed to create a distance matrix between 
-##' species, combining functional distances (based on functional trait values) 
-##' and niche overlap (based on co-occurrence of species). 
+##' species, combining several dissimilarity distance matrices. 
 ##'              
 ##' @param list.mat.dist a \code{list} of matrices containing dissimilarity 
 ##' distance values between each pair of species.
+##' @param opt.normal (\emph{optional}) default \code{TRUE}. \cr 
+##' If \code{TRUE}, all given distance matrices will be normalized 
+##' (see \href{PRE_FATE.speciesDistanceCombine#details}{\code{Details}})
 ##' @param opt.weights (\emph{optional}) default \code{NULL}. \cr 
 ##' A \code{vector} of \code{double} (between \code{0} and \code{1}) 
 ##' corresponding to the weights for each distance matrix provided in 
@@ -24,14 +26,31 @@
 ##' 
 ##' \deqn{\text{mat.DIST} = \Sigma (\text{wei.i} * \text{mat.DIST}_{i})}
 ##' 
+##' If \code{opt.normal = TRUE}, two \emph{normalization} steps are applied 
+##' to each distance matrix before combining them :
 ##' 
-##' @return A \code{matrix} containing the weighted (or not) combination of the 
-##' different distance matrices given. \cr \cr
+##' \enumerate{
+##'   \item a \strong{non-paranormal (npn)} transformation 
+##'   (\code{\link[huge]{huge.npn}} function) to obtain Gaussian distributions 
+##'   for all dissimilarity matrices used
+##'   \item  a \strong{range} normalization to bring the values back between 
+##'   \code{0} and \code{1} :
+##'   
+##'   \deqn{\text{mat.DIST}_{i} = \frac{\text{mat.DIST}_{i} - 
+##'   min(\text{mat.DIST}_{i})}{max(\text{mat.DIST}_{i}) - 
+##'   min(\text{mat.DIST}_{i})}}
+##' }
+##' 
+##' 
+##' @return A \code{matrix} containing the weighted (or not) combination of 
+##' the different transformed (or not) distance matrices given. \cr \cr
 ##' 
 ##' The information for the combination of all distances is written in 
 ##' \file{PRE_FATE_DOMINANT_speciesDistance.csv} file.
 ##'
 ##' @keywords functional distance
+##' 
+##' @seealso \code{\link[huge]{huge.npn}}
 ##' 
 ##' @examples
 ##' 
@@ -57,13 +76,33 @@
 ##' 
 ##' ## Combine distances ---------------------------------------------------------
 ##' list.DIST = list(DIST.overlap, DIST.traits$Chamaephyte)
-##' sp.DIST = PRE_FATE.speciesDistanceCombine(list.mat.dist = list.DIST
-##'                                           , opt.weights = c(0.2, 0.8))
-##' str(sp.DIST)
+##' sp.DIST.n = PRE_FATE.speciesDistanceCombine(list.mat.dist = list.DIST
+##'                                             , opt.weights = c(0.2, 0.8))
+##' sp.DIST.un = PRE_FATE.speciesDistanceCombine(list.mat.dist = list.DIST
+##'                                              , opt.norm = FALSE
+##'                                              , opt.weights = c(0.2, 0.8))
+##' str(sp.DIST.n)
+##' 
+##' 
 ##' 
 ##' \dontrun{
+##' require(corrplot)
+##' list.DIST = list(DIST.overlap, DIST.traits$Chamaephyte
+##'                  , sp.DIST.un, sp.DIST.n)
+##' names(list.DIST) = c('overlap', 'traits', 'un-normed', 'normed')
+##' 
+##' par(mfrow = c(2, 2))
+##' for (li in 1:length(list.DIST))
+##' {
+##'   tmp = list.DIST[[li]]
+##'   tmp = tmp[colnames(sp.DIST.n), colnames(sp.DIST.n)]
+##'   corrplot(tmp, method = 'shade'
+##'            , type = 'lower', cl.lim = c(0, 1)
+##'            , is.corr = FALSE, title = names(list.DIST)[li])
+##' }
+##' 
 ##' require(foreach); require(ggplot2); require(ggdendro)
-##' hc = hclust(as.dist(sp.DIST))
+##' hc = hclust(as.dist(sp.DIST.n))
 ##' pp = ggdendrogram(hc, rotate = TRUE) +
 ##'   labs(title = 'Hierarchical clustering based on species distances')
 ##' plot(pp)
@@ -73,11 +112,14 @@
 ##' @export
 ##' 
 ##' @importFrom utils combn
+##' @importFrom huge huge.npn
 ##' 
 ## END OF HEADER ###############################################################
 
 
-PRE_FATE.speciesDistanceCombine = function(list.mat.dist, opt.weights = NULL
+PRE_FATE.speciesDistanceCombine = function(list.mat.dist
+                                           , opt.normal = TRUE
+                                           , opt.weights = NULL
 ){
   
   #############################################################################
@@ -142,7 +184,11 @@ PRE_FATE.speciesDistanceCombine = function(list.mat.dist, opt.weights = NULL
     if (sum(opt.weights) != 1)
     {
       stop(paste0("Wrong type of data!\n `opt.weights` must contain "
-                  , length(list.mat.dist), " values summing up to 1"))    }
+                  , length(list.mat.dist), " values summing up to 1"))
+    }
+  } else
+  {
+    opt.weights = rep(1, length(list.mat.dist))
   }
   
   cat("\n\n #------------------------------------------------------------#")
@@ -189,16 +235,24 @@ PRE_FATE.speciesDistanceCombine = function(list.mat.dist, opt.weights = NULL
   ### COMBINE ALL DISTANCE MATRICES
   #############################################################################
   
+  if (opt.normal)
+  {
+    mat.dist = lapply(mat.dist, function(x) {
+      ## Non-paranormal transformation
+      y = huge.npn(x)
+      ## Normalization by maximum
+      z = (y - min(y)) / (max(y) - min(y))
+      return(z)
+    })
+  }
+  
   mat.species.DIST = lapply(1:no_mat, function(x) {
     tmp = as.matrix(mat.dist[[x]])
-    wei = 1
-    if (!.testParam_notDef(opt.weights))
-    {
-      wei = opt.weights[x]
-    }
+    wei = opt.weights[x]
     return(wei * tmp) 
   })
   mat.species.DIST = Reduce('+', mat.species.DIST)
+  mat.species.DIST = mat.species.DIST / sum(opt.weights)
   
   #############################################################################
   cat("\n> Done!\n")
