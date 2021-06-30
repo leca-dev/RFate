@@ -246,13 +246,24 @@ PRE_FATE.speciesDistanceCombine = function(list.mat.dist
     })
   }
   
+  ## Multiply each distance matrix by its weight
   mat.species.DIST = lapply(1:no_mat, function(x) {
     tmp = as.matrix(mat.dist[[x]])
     wei = opt.weights[x]
     return(wei * tmp) 
   })
-  mat.species.DIST = Reduce('+', mat.species.DIST)
-  mat.species.DIST = mat.species.DIST / sum(opt.weights)
+  
+  ## Calculate each pairwise weight (not taking into account dist with NA)
+  mat.wei = lapply(mat.species.DIST, function(x) ifelse(is.na(x[]), 0, 1))
+  mat.wei = lapply(1:length(opt.weights), function(x) opt.weights[x] * mat.wei[[x]])
+  mat.wei = Reduce('+', mat.wei)
+  
+  ## Summing weighted distance matrices
+  ## and divide by weights pairwise corrected
+  res = Reduce('+', lapply(mat.species.DIST, function(x) replace(x, is.na(x), 0)))
+  res = res*NA^!Reduce(`+`, lapply(mat.species.DIST, function(x) !is.na(x)))
+  mat.species.DIST = res / mat.wei
+  
   
   #############################################################################
   cat("\n> Done!\n")
