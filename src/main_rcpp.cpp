@@ -478,7 +478,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		GSP glob_params = GSP(file_of_params.getGlobSimulParams());
 		int noFG = glob_params.getNoFG();
 		logg.info("*** REBUILDING Functional groups...");
-		if (noFG!=(int)file_of_params.getFGLifeHistory().size())
+		if (noFG != static_cast<int>(file_of_params.getFGLifeHistory().size()))
 		{
 			logg.error("!!! Parameters NO_PFG (", noFG,
 								 ") and --PFG_PARAMS_LIFE_HISTORY-- (",
@@ -486,7 +486,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 								 ") do not match in term of number!");
 		}
 		if (glob_params.getDoDispersal() &&
-				noFG!=(int)file_of_params.getFGDispersal().size())
+				noFG != static_cast<int>(file_of_params.getFGDispersal().size()))
 		{
 			logg.error("!!! Parameters NO_PFG (", noFG,
 								 ") and --PFG_PARAMS_DISPERSAL-- (",
@@ -494,7 +494,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 								 ") do not match in term of number!");
 		}
 		if (glob_params.getDoDisturbances() &&
-				noFG!=(int)file_of_params.getFGDisturbance().size())
+				noFG != static_cast<int>(file_of_params.getFGDisturbance().size()))
 		{
 			logg.error("!!! Parameters NO_PFG (", noFG,
 								 ") and --PFG_PARAMS_DISTURBANCES-- (",
@@ -502,7 +502,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 								 ") do not match in term of number!");
 		}
 		if (glob_params.getDoFireDisturbances() &&
-				noFG!=(int)file_of_params.getFGFire().size())
+				noFG != static_cast<int>(file_of_params.getFGFire().size()))
 		{
 			logg.error("!!! Parameters NO_PFG (", noFG,
 								 ") and --PFG_PARAMS_FIRE-- (",
@@ -510,7 +510,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 								 ") do not match in term of number!");
 		}
 		if (glob_params.getDoDroughtDisturbances() &&
-				noFG!=(int)file_of_params.getFGDrought().size())
+				noFG != static_cast<int>(file_of_params.getFGDrought().size()))
 		{
 			logg.error("!!! Parameters NO_PFG (", noFG,
 								 ") and --PFG_PARAMS_DROUGHT-- (",

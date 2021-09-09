@@ -141,7 +141,7 @@ void SuFate::CalculateEnvironment()
 	if (m_GSP->getDoLightInteraction() || m_GSP->getDoSoilInteraction())
 	{
 		vector< int > stProfile(m_GSP->getNoStrata(), 0);
-		int noFG = int(m_Comm.getFuncGroupList().size());
+		int noFG = static_cast<int>(m_Comm.getFuncGroupList().size());
 		int noFG_pres = 0;
 
 		vector < int > AbundPFG(noFG,0); // vector to store abundances of PFGs
@@ -242,7 +242,7 @@ void SuFate::CalculateEnvironment()
 					{
 						if (AbundPFG[fg] > 0)
 						{
-							soilResource += ( AbundPFG[fg] / double(TotAbund)) * m_Comm.getFuncGroup_(fg)->getFGparams_()->getSoilContrib();
+							soilResource += ( AbundPFG[fg] / static_cast<double>(TotAbund)) * m_Comm.getFuncGroup_(fg)->getFGparams_()->getSoilContrib();
 						}
 					}
 					/* update soil resources */
@@ -550,7 +550,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		int SeedInput, AvailSeeds;
 		if (FGparams->getDispersed() == 1)
 		{
-			SeedInput = max(getSeedInput(fg), (int)getSeedRain(fg));
+			SeedInput = max(getSeedInput(fg), static_cast<int>(getSeedRain(fg)));
 		  //SeedInput = getSeedInput(fg);
 		} else
 		{
@@ -562,7 +562,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			AvailSeeds = App_ptr->getSize();
 		} else
 		{
-			AvailSeeds = max( int( App_ptr->getSize() ), int( SeedInput ) ) ;
+			AvailSeeds = max( static_cast<int>(App_ptr->getSize()), static_cast<int>(SeedInput) ) ;
 		}
 
 		/* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
@@ -646,7 +646,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 				int recrrate = ceil(GerminRate * envRecruit);   /* Recruitment is ponderated by environmental suitabilities */
 				if (recrrate > 0)
 				{
-					FuncG->getLList_()->addCohort( (int) recrrate, 0, 0);
+					FuncG->getLList_()->addCohort( static_cast<int>(recrrate), 0, 0);
 				}
 			}
 		}
@@ -657,7 +657,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			setSeedProd(fg, 0.0);
 		} else
 		{
-			setSeedProd(fg, (int)(max(0.0, this->calcFecund(fg))));
+			setSeedProd(fg, static_cast<int>(max(0.0, this->calcFecund(fg))));
 		}
 	}
 }// end of SuFate::DoSuccessionPart2(...)

@@ -40,7 +40,7 @@ Fract getLeavingFract(Fract f1, Fract f2)
 double FractToDouble(Fract fract)
 {
 	double Fract_Real [ Fcount ] = {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0};
-	return Fract_Real[int(fract)];
+	return Fract_Real[static_cast<int>(fract)];
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -48,7 +48,7 @@ double FractToDouble(Fract fract)
 double FractToDouble(Fract2 fract)
 {
 	double Fract_Real [ Fcount ] = {0.0,0.1,0.5,0.9,1.0};
-	return Fract_Real[int(fract)];
+	return Fract_Real[static_cast<int>(fract)];
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -71,7 +71,7 @@ Fract DoubleToFract(double d)
 double ResourceToDouble(Resource light)
 {
 	double Resource_Real [ Rcount ] = {1.0, 2.0, 3.0};
-	return Resource_Real[int(light)];
+	return Resource_Real[static_cast<int>(light)];
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/

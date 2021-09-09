@@ -106,49 +106,49 @@ SimulMap::SimulMap(FOPL file_of_params)
   
   /* build functional groups entities */
   logg.info("*** building Functional groups...");
-  if (noFG!=(int)file_of_params.getFGLifeHistory().size())
+  if (noFG != static_cast<int>(file_of_params.getFGLifeHistory().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIFE_HISTORY-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoLightInteraction() &&
-      noFG!=(int)file_of_params.getFGLight().size())
+      noFG != static_cast<int>(file_of_params.getFGLight().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIGHT-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoHabSuitability() &&
-      noFG!=(int)file_of_params.getFGMapsHabSuit().size())
+      noFG != static_cast<int>(file_of_params.getFGMapsHabSuit().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_MASK_HABSUIT-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDispersal() &&
-      noFG!=(int)file_of_params.getFGDispersal().size())
+      noFG != static_cast<int>(file_of_params.getFGDispersal().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISPERSAL-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDisturbances() &&
-      noFG!=(int)file_of_params.getFGDisturbance().size())
+      noFG != static_cast<int>(file_of_params.getFGDisturbance().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISTURBANCES-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoSoilInteraction() &&
-      noFG!=(int)file_of_params.getFGSoil().size())
+      noFG != static_cast<int>(file_of_params.getFGSoil().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_SOIL-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoFireDisturbances() &&
-      noFG!=(int)file_of_params.getFGFire().size())
+      noFG != static_cast<int>(file_of_params.getFGFire().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_FIRE-- ",
                "do not match in term of number!");
   }
-  if (m_glob_params.getDoDroughtDisturbances()
-        && noFG!=(int)file_of_params.getFGDrought().size())
+  if (m_glob_params.getDoDroughtDisturbances() &&
+      noFG != static_cast<int>(file_of_params.getFGDrought().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DROUGHT-- ",
                "do not match in term of number!");
@@ -257,7 +257,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   if (m_glob_params.getDoDisturbances())
   {
     logg.info("> build simulation disturbances masks...");
-    if (m_glob_params.getNoDist()==(int)file_of_params.getMaskDist().size())
+    if (m_glob_params.getNoDist() == static_cast<int>(file_of_params.getMaskDist().size()))
     {
       vector< vector< int > > distMap; // disturbances masks
       distMap.reserve(noFG);
@@ -282,7 +282,7 @@ SimulMap::SimulMap(FOPL file_of_params)
     if (m_glob_params.getFireIgnitMode()==5)
     {
       logg.info("> build simulation fire disturbances masks...");
-      if (m_glob_params.getNoFireDist()==(int)file_of_params.getMaskFire().size())
+      if (m_glob_params.getNoFireDist() == static_cast<int>(file_of_params.getMaskFire().size()))
       {
         vector< vector< int > > fireMap; // fire disturbances masks
         fireMap.reserve(m_glob_params.getNoFireDist());
@@ -366,7 +366,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   if (m_glob_params.getDoAliensIntroduction())
   {
     logg.info("> build aliens introduction masks...");
-    if (noFG==(int)file_of_params.getFGMapsAliens().size())
+    if (noFG == static_cast<int>(file_of_params.getFGMapsAliens().size()))
     {
       vector< vector< double > > condInitMap; // aliens introduction masks
       condInitMap.reserve(noFG);
@@ -720,8 +720,8 @@ void SimulMap::DoAliensIntroduction(int yr)
     {
       if (applyIntro[fg] && m_CondInitMap(cell_ID, fg)>0.0)
       {
-        m_SuccModelMap(cell_ID)->setSeedRain(fg, int(m_SuccModelMap(cell_ID)->getSeedRain(fg) +
-          (int)(m_glob_params.getSeedingInput() * m_CondInitMap(cell_ID, fg))));
+        m_SuccModelMap(cell_ID)->setSeedRain(fg, static_cast<int>(m_SuccModelMap(cell_ID)->getSeedRain(fg) +
+          static_cast<int>(m_glob_params.getSeedingInput() * m_CondInitMap(cell_ID, fg))));
       }
     } //end loop on PFGs
   } // end loop on cells
@@ -1217,7 +1217,7 @@ void SimulMap::DoDroughtDisturbance_part1()
       // #pragma omp parallel for ordered
       for (unsigned strat=1; strat<noStrata; strat++)
       { // loop on Stratum
-        tmpAbund[strat-1] += (int)(m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+        tmpAbund[strat-1] += static_cast<int>(m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
       } // end loop on Stratum
     } // end loop on PFG
     
@@ -1691,7 +1691,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
           { // loop on pixels
             unsigned cell_ID = m_MaskCells[pixId];
-            int abundTmp = (int)(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
             abunValues1[cell_ID] = abundTmp;
             abunValues2[cell_ID] += abundTmp;
             if (abundTmp>0)
@@ -1790,7 +1790,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           for (unsigned fg=0; fg<m_FGparams.size(); fg++)
           { // loop on PFG
             vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
-            abundTmp += (int)(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            abundTmp += static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
           }
           abunValues3[cell_ID] = abundTmp;
           if (abundTmp>0)
