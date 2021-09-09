@@ -64,7 +64,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 		par::Params PertParms(PFG_PerturbationsFile.c_str(), " = \"", "#"); /* opening PFG perturbations parameters file */
 
 		vector<int> v_int = PertParms.get_val<int>("PROP_KILLED");
-		if (static_cast<int>(v_int.size()) != noPert)
+		if (v_int.size() != noPert)
 		{
 			logg.error("!!! Wrong number of parameters provided for PROP_KILLED (",
 			 					 v_int.size(), " instead of ", noPert, "). Please check!");
@@ -72,7 +72,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 		m_PropKilled = convert_int_to_enum<Fract>("PROP_KILLED", v_int, "Fract", Fcount);
 
 		v_int = PertParms.get_val<int>("BREAK_AGE");
-		if (static_cast<int>(v_int.size()) < noPert * (noPertSub-1))
+		if (v_int.size() < noPert * (noPertSub-1))
 		{
 			logg.error("!!! Wrong number of parameters provided for BREAK_AGE (",
 								 v_int.size(), " instead of ", noPert * (noPertSub-1),
@@ -112,7 +112,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 		}
 
 		v_int = PertParms.get_val<int>("RESPR_AGE");
-		if (static_cast<int>(v_int.size()) != noPert * noPertSub)
+		if (v_int.size() != noPert * noPertSub)
 		{
 			logg.error("!!! Wrong number of parameters provided for RESPR_AGE (",
 								 v_int.size(), " instead of ", noPert * noPertSub,
@@ -131,7 +131,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 		}
 
 		v_int = PertParms.get_val<int>("FATES");
-		if (static_cast<int>(v_int.size()) != noPert * noPertSub * (DFcount-1))
+		if (v_int.size() != noPert * noPertSub * (DFcount-1))
 		{
 			logg.error("!!! Wrong number of parameters provided for FATES (",
 								 v_int.size(), " instead of ", noPert * noPertSub * (DFcount-1),
@@ -144,7 +144,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 			m_Fates[i].resize(noPertSub);
 			for (unsigned j=0; j<m_Fates[i].size(); j++)
 			{
-				m_Fates[i][j].resize(static_cast<int>(DFcount), Fract(4));
+				m_Fates[i][j].resize(DFcount, Fract(4));
 				m_Fates[i][j][0] = Fract(v_int[counter]); /* killed */
 				counter++;
 				m_Fates[i][j][2] = Fract(v_int[counter]); /* resprout */
@@ -163,7 +163,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 		}
 
 		v_int = PertParms.get_val<int>("ACTIVATED_SEED");
-		if (static_cast<int>(v_int.size()) != noPert)
+		if (v_int.size() != noPert)
 		{
 			logg.error("!!! Wrong number of parameters provided for ACTIVATED_SEED (",
 								 v_int.size(), " instead of ", noPert, "). Please check!");
@@ -188,7 +188,7 @@ unsigned FGresponse::getNoPert() const {return m_NoPert;}
 unsigned FGresponse::getNoPertSub() const {return m_NoPertSub;}
 const vector<Fract>& FGresponse::getPropKilled() const {return m_PropKilled;}
 const Fract& FGresponse::getPropKilled(const int& dist) const {
-	if (dist<0 || dist > static_cast<int>(m_NoPert))
+	if (dist<0 || dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_PropKilled for a non-existing perturbation. Please check!");
 	}
@@ -196,7 +196,7 @@ const Fract& FGresponse::getPropKilled(const int& dist) const {
 }
 const vector< vector<int> >& FGresponse::getBreakAge() const {return m_BreakAge;}
 int FGresponse::getBreakAge(const int& dist, const int& range) const {
-	if (dist<0 || dist > static_cast<int>(m_NoPert) || range<0 || range > static_cast<int>(m_NoPertSub))
+	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation or sub-perturbation. Please check!");
 	}
@@ -204,7 +204,7 @@ int FGresponse::getBreakAge(const int& dist, const int& range) const {
 }
 const vector< vector<int> >& FGresponse::getResprAge() const {return m_ResprAge;}
 int FGresponse::getResprAge(const int& dist, const int& range) const {
-	if (dist<0 || dist > static_cast<int>(m_NoPert) || range<0 || range > static_cast<int>(m_NoPertSub))
+	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_ResprAge for a non-existing perturbation or sub-perturbation. Please check!");
 	}
@@ -212,7 +212,7 @@ int FGresponse::getResprAge(const int& dist, const int& range) const {
 }
 const vector<vector< vector<Fract> > >& FGresponse::getFates() const {return m_Fates;}
 const Fract& FGresponse::getFates(const int& dist, const int& range, const DistFate& df) const {
-	if (dist<0 || dist > static_cast<int>(m_NoPert) || range<0 || range > static_cast<int>(m_NoPertSub))
+	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_Fates for a non-existing perturbation or sub-perturbation. Please check!");
 	}
@@ -220,7 +220,7 @@ const Fract& FGresponse::getFates(const int& dist, const int& range, const DistF
 }
 const vector<Fract>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
 const Fract& FGresponse::getDormBreaks(const int& dist) const {
-	if (dist<0 || dist > static_cast<int>(m_NoPert))
+	if (dist<0 || dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!");
 	}

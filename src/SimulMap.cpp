@@ -106,49 +106,49 @@ SimulMap::SimulMap(FOPL file_of_params)
   
   /* build functional groups entities */
   logg.info("*** building Functional groups...");
-  if (noFG != static_cast<int>(file_of_params.getFGLifeHistory().size()))
+  if (noFG != file_of_params.getFGLifeHistory().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIFE_HISTORY-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoLightInteraction() &&
-      noFG != static_cast<int>(file_of_params.getFGLight().size()))
+      noFG != file_of_params.getFGLight().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIGHT-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoHabSuitability() &&
-      noFG != static_cast<int>(file_of_params.getFGMapsHabSuit().size()))
+      noFG != file_of_params.getFGMapsHabSuit().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_MASK_HABSUIT-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDispersal() &&
-      noFG != static_cast<int>(file_of_params.getFGDispersal().size()))
+      noFG != file_of_params.getFGDispersal().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISPERSAL-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDisturbances() &&
-      noFG != static_cast<int>(file_of_params.getFGDisturbance().size()))
+      noFG != file_of_params.getFGDisturbance().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISTURBANCES-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoSoilInteraction() &&
-      noFG != static_cast<int>(file_of_params.getFGSoil().size()))
+      noFG != file_of_params.getFGSoil().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_SOIL-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoFireDisturbances() &&
-      noFG != static_cast<int>(file_of_params.getFGFire().size()))
+      noFG != file_of_params.getFGFire().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_FIRE-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDroughtDisturbances() &&
-      noFG != static_cast<int>(file_of_params.getFGDrought().size()))
+      noFG != file_of_params.getFGDrought().size())
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DROUGHT-- ",
                "do not match in term of number!");
@@ -257,7 +257,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   if (m_glob_params.getDoDisturbances())
   {
     logg.info("> build simulation disturbances masks...");
-    if (m_glob_params.getNoDist() == static_cast<int>(file_of_params.getMaskDist().size()))
+    if (m_glob_params.getNoDist() == file_of_params.getMaskDist().size())
     {
       vector< vector< int > > distMap; // disturbances masks
       distMap.reserve(noFG);
@@ -282,7 +282,7 @@ SimulMap::SimulMap(FOPL file_of_params)
     if (m_glob_params.getFireIgnitMode()==5)
     {
       logg.info("> build simulation fire disturbances masks...");
-      if (m_glob_params.getNoFireDist() == static_cast<int>(file_of_params.getMaskFire().size()))
+      if (m_glob_params.getNoFireDist() == file_of_params.getMaskFire().size())
       {
         vector< vector< int > > fireMap; // fire disturbances masks
         fireMap.reserve(m_glob_params.getNoFireDist());
@@ -366,7 +366,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   if (m_glob_params.getDoAliensIntroduction())
   {
     logg.info("> build aliens introduction masks...");
-    if (noFG == static_cast<int>(file_of_params.getFGMapsAliens().size()))
+    if (noFG == file_of_params.getFGMapsAliens().size())
     {
       vector< vector< double > > condInitMap; // aliens introduction masks
       condInitMap.reserve(noFG);

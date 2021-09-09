@@ -47,7 +47,7 @@ double FractToDouble(Fract fract)
 
 double FractToDouble(Fract2 fract)
 {
-	double Fract_Real [ Fcount ] = {0.0,0.1,0.5,0.9,1.0};
+	double Fract_Real [ F2count ] = {0.0,0.1,0.5,0.9,1.0};
 	return Fract_Real[static_cast<int>(fract)];
 }
 

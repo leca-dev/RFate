@@ -289,10 +289,10 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 				Uni01 random_01(rng);
 
 				/* select cell receiving seeds according to a probability decreasing with distance */
-				for (int id = 0; id < static_cast<int>(m_FGdistCircle[fg][0].size()); id++)
+				for (int id = 0; id < m_FGdistCircle[fg][0].size(); id++)
 				{
 					int dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id]));
-					if (dist_pt < static_cast<int>(m_prob_d1[fg].size()))
+					if (dist_pt < m_prob_d1[fg].size())
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
@@ -304,10 +304,10 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						}
 					}
 				}
-				for (int id = 0; id < static_cast<int>(m_FGdistCircle[fg][1].size()); id++)
+				for (int id = 0; id < m_FGdistCircle[fg][1].size(); id++)
 				{
 					int dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1;
-					if (dist_pt < static_cast<int>(m_prob_d2[fg].size()))
+					if (dist_pt < m_prob_d2[fg].size())
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
@@ -377,7 +377,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 							v2x_select.reserve(noDrawMax);
 							v2y_select.reserve(noDrawMax);
 
-							UniInt distrib(0,m_FGdistCircle[fg][1].size());
+							UniInt distrib(0, m_FGdistCircle[fg][1].size());
 							GeneratorUniInt draw_from_distrib(rng,distrib);
 							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
 							{ /* Draw of cells into crown that will received seeds */
@@ -388,7 +388,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 								v2y_select.push_back(m_FGdistCircle[fg][4][d2_draw]);
 							}
 						}
-						for (int id = 0; id < static_cast<int>(v2x_select.size()); id++)
+						for (int id = 0; id < v2x_select.size(); id++)
 						{
 							xt = x + v2x_select[id];
 							yt = y + v2y_select[id];
@@ -431,9 +431,9 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
 					} else if (dld>0)
 					{
-						if(static_cast<int>(m_FGdistCircle[fg][2].size()>0))
+						if(m_FGdistCircle[fg][2].size()>0)
 						{
-							UniInt distrib(0, static_cast<int>(m_FGdistCircle[fg][2].size()) - 1);
+							UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
 							GeneratorUniInt draw_from_distrib(rng,distrib);
 
 							/*!*/

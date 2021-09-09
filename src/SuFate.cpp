@@ -141,7 +141,7 @@ void SuFate::CalculateEnvironment()
 	if (m_GSP->getDoLightInteraction() || m_GSP->getDoSoilInteraction())
 	{
 		vector< int > stProfile(m_GSP->getNoStrata(), 0);
-		int noFG = static_cast<int>(m_Comm.getFuncGroupList().size());
+		int noFG = m_Comm.getFuncGroupList().size();
 		int noFG_pres = 0;
 
 		vector < int > AbundPFG(noFG,0); // vector to store abundances of PFGs

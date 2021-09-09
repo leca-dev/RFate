@@ -91,7 +91,7 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 	if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
 	m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
 	m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
-	if (static_cast<int>(m_Strata.size()) != glob_params.getNoStrata() + 1)
+	if (m_Strata.size() != glob_params.getNoStrata() + 1)
 	{
 		logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
                m_Strata.size() - 1," instead of ", glob_params.getNoStrata(),
@@ -158,19 +158,19 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
                "). Please check!");
 	}
 	int counter = 0;
-	m_LightTolerance.resize(static_cast<int>(LScount));
-	for (int ls=1; ls<static_cast<int>(LScount); ls++)
+	m_LightTolerance.resize(LScount);
+	for (int ls=1; ls<LScount; ls++)
 	{
-		m_LightTolerance[ls].resize(static_cast<int>(Rcount));
-		for (int r=0; r<static_cast<int>(Rcount); r++)
+		m_LightTolerance[ls].resize(Rcount);
+		for (int r=0; r<Rcount; r++)
 		{
 			m_LightTolerance[ls][r] = v_int[counter];
 			counter ++;
 		}
 	}
 	/* Propagule Light tolerance is assumed to be the same as germinants */
-	m_LightTolerance[0].resize(static_cast<int>(Rcount));
-	for (int r=0; r<static_cast<int>(Rcount); r++)
+	m_LightTolerance[0].resize(Rcount);
+	for (int r=0; r<Rcount; r++)
 	{
 		m_LightTolerance[0][r] = m_LightTolerance[1][r];
 	}
@@ -251,7 +251,7 @@ void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
                "). Please check!");
 	}
 	int counter = 0;
-	m_SoilTolerance.resize(static_cast<int>(LScount));
+	m_SoilTolerance.resize(LScount);
 	for (unsigned i=1; i<m_SoilTolerance.size(); i++)
 	{ // fill automatically germinant LS case ==> not use at time
 		m_SoilTolerance[i].resize(Rcount);
@@ -330,8 +330,8 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 			}
 		} else
 		{
-			m_LightActiveGerm.resize(static_cast<int>(Rcount), PC100);
-			m_LightTolerance.resize(static_cast<int>(LScount), vector<bool>(Rcount, true));
+			m_LightActiveGerm.resize(Rcount, PC100);
+			m_LightTolerance.resize(LScount, vector<bool>(Rcount, true));
 		}
 		if (doDisp)
 		{
@@ -363,9 +363,9 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 			m_SoilContrib = 0.0;
 			m_SoilLow = 0.0;
 			m_SoilHigh = 0.0;
-			m_SoilActiveGerm.resize(static_cast<int>(Rcount), PC100);
-			m_SoilTolerance.resize(static_cast<int>(LScount), vector<Fract>(Rcount, PC100));
-			//m_SoilTolerance.resize(static_cast<int>(LScount), vector<bool>(1, true));
+			m_SoilActiveGerm.resize(Rcount, PC100);
+			m_SoilTolerance.resize(LScount, vector<Fract>(Rcount, PC100));
+			//m_SoilTolerance.resize(LScount, vector<bool>(1, true));
 		}
 		if (doDist)
 		{
