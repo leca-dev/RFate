@@ -51,9 +51,9 @@ Cohort::~Cohort()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-const int& Cohort::getCSize() const{ return m_CSize; }
-const int& Cohort::getAy() const{ return m_Ay; }
-const int& Cohort::getAo() const{ return m_Ao; }
+int Cohort::getCSize() const{ return m_CSize; }
+int Cohort::getAy() const{ return m_Ay; }
+int Cohort::getAo() const{ return m_Ao; }
 
 void Cohort::setCSize(const int& cSize){ m_CSize = cSize; }
 void Cohort::setAy(const int& ay){ m_Ay = ay; }

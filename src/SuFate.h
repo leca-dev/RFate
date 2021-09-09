@@ -169,7 +169,7 @@ class SuFate
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	const unsigned getCellID() const;
+	unsigned getCellID() const;
 	const Community getCommunity() const;
 	LightResources getLightResources();
 	double getSoilResources();

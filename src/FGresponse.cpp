@@ -184,8 +184,8 @@ FGresponse::~FGresponse()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-const unsigned& FGresponse::getNoPert() const {return m_NoPert;}
-const unsigned& FGresponse::getNoPertSub() const {return m_NoPertSub;}
+unsigned FGresponse::getNoPert() const {return m_NoPert;}
+unsigned FGresponse::getNoPertSub() const {return m_NoPertSub;}
 const vector<Fract>& FGresponse::getPropKilled() const {return m_PropKilled;}
 const Fract& FGresponse::getPropKilled(const int& dist) const {
 	if (dist<0 || dist>(int)m_NoPert)
@@ -195,7 +195,7 @@ const Fract& FGresponse::getPropKilled(const int& dist) const {
 	return m_PropKilled[dist];
 }
 const vector< vector<int> >& FGresponse::getBreakAge() const {return m_BreakAge;}
-const int& FGresponse::getBreakAge(const int& dist, const int& range) const {
+int FGresponse::getBreakAge(const int& dist, const int& range) const {
 	if (dist<0 || dist>(int)m_NoPert || range<0 || range>(int)m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation or sub-perturbation. Please check!");
@@ -203,7 +203,7 @@ const int& FGresponse::getBreakAge(const int& dist, const int& range) const {
 	return m_BreakAge[dist][range];
 }
 const vector< vector<int> >& FGresponse::getResprAge() const {return m_ResprAge;}
-const int& FGresponse::getResprAge(const int& dist, const int& range) const {
+int FGresponse::getResprAge(const int& dist, const int& range) const {
 	if (dist<0 || dist>(int)m_NoPert || range<0 || range>(int)m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_ResprAge for a non-existing perturbation or sub-perturbation. Please check!");

@@ -66,7 +66,7 @@ SuFate::~SuFate()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-const unsigned SuFate::getCellID() const { return m_CellID; }
+unsigned SuFate::getCellID() const { return m_CellID; }
 const Community SuFate::getCommunity() const { return m_Comm; }
 LightResources SuFate::getLightResources() { return m_LightR; }
 double SuFate::getSoilResources() { return m_SoilR; }

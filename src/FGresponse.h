@@ -148,14 +148,14 @@ class FGresponse
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	const unsigned& getNoPert() const;
-	const unsigned& getNoPertSub() const;
+	unsigned getNoPert() const;
+	unsigned getNoPertSub() const;
 	const vector<Fract>& getPropKilled() const;
 	const Fract& getPropKilled(const int& dist) const;
 	const vector< vector<int> >& getBreakAge() const;
-	const int& getBreakAge(const int& dist, const int& range) const;
+	int getBreakAge(const int& dist, const int& range) const;
 	const vector< vector<int> >& getResprAge() const;
-	const int& getResprAge(const int& dist, const int& range) const;
+	int getResprAge(const int& dist, const int& range) const;
 	const vector<vector< vector<Fract> > >& getFates() const;
 	const Fract& getFates(const int& dist, const int& range, const DistFate& df) const;
 	const vector<Fract>& getDormBreaks() const;

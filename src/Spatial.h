@@ -180,8 +180,8 @@ class Coordinates
 	T getXres() { return Xres; }
 	T getYres() { return Yres; }
 
-	const unsigned& getXncell() const{ return Xncell; }
-	const unsigned& getYncell() const{ return Yncell; }
+	unsigned getXncell() const{ return Xncell; }
+	unsigned getYncell() const{ return Yncell; }
 
 	T getXmin(){ return Xmin; }
 	T getYmin(){ return Ymin; }

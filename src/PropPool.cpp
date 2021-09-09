@@ -56,9 +56,9 @@ PropPool::~PropPool()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-const int& PropPool::getSize() const { return m_Size; }
-const bool& PropPool::getDeclining() const { return m_Declining; }
-const int& PropPool::getDTime() const { return m_DTime; }
+int PropPool::getSize() const { return m_Size; }
+bool PropPool::getDeclining() const { return m_Declining; }
+int PropPool::getDTime() const { return m_DTime; }
 
 void PropPool::setSize( const int& size ) { m_Size = size; }
 void PropPool::setDeclining( const bool& declining) { m_Declining = declining; }
