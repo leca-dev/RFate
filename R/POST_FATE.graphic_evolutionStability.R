@@ -437,7 +437,7 @@ POST_FATE.graphic_evolutionStability = function(
                                                 , "evenness" = "Evenness"
                                                 , "no.PFG" = "Number of PFG"))) +
           scale_color_manual("Habitat", values  = col_fun(no_hab)) +
-          scale_fill_manual(guide = FALSE, values  = col_fun(no_hab)) +
+          scale_fill_manual(guide = "none", values  = col_fun(no_hab)) +
           labs(x = "", y = ""
                , title = paste0("GRAPH A : evolution of habitat composition")) +
           .getGraphics_theme()

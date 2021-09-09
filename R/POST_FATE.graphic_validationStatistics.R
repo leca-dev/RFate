@@ -483,7 +483,7 @@ POST_FATE.graphic_validationStatistics = function(
                   if (vari == "AUC") subti = "Area Under Curve (AUC)"
                   pp = ggplot(mat.plot[which(mat.plot$variable == vari), ]
                               , aes_string(x = "PFG", y = "value", fill = "value")) +
-                    scale_fill_gradientn(guide = F
+                    scale_fill_gradientn(guide = "none"
                                          , colors = brewer.pal(9, "RdYlGn")
                                          , breaks = seq(0, 1, 0.2)
                                          , limits = c(0, 1)) +

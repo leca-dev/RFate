@@ -473,8 +473,8 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
     geom_vline(aes_string(xintercept = "no.clusters"
                           , color = "ORDER", alpha = "ORDER")
                , lwd = 4) +
-    scale_color_viridis_c(guide = FALSE) +
-    scale_alpha(guide = FALSE, range = c(0.1, 0.8)) +
+    scale_color_viridis_c(guide = "none") +
+    scale_alpha(guide = "none", range = c(0.1, 0.8)) +
     geom_line() +
     geom_point() +
     labs(x = "", y = ""

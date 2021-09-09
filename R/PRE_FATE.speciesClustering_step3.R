@@ -433,7 +433,7 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits, opt.mat.PA = NULL
                  , size = 2
                  , inherit.aes = FALSE) +
       scale_color_manual("", values = i.color) +
-      scale_fill_manual(guide = FALSE, values = rep("#FFFFFF", length(i.trait))) +
+      scale_fill_manual(guide = "none", values = rep("#FFFFFF", length(i.trait))) +
       labs(x = "", y = ""
            , title = paste0("STEP D : Computation of PFG traits values : ", i.title)
            , subtitle = paste0("PFG traits values are calculated as the average of "

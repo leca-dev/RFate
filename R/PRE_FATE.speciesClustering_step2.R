@@ -315,8 +315,8 @@ PRE_FATE.speciesClustering_step2 = function(clust.dendrograms
   pp3 = ggplot(determ, aes_string(x = "PFG", y = "sp.mean.dist"
                                   , color = interaction(determ$DETERMINANT, determ$GROUP)
                                   , shape = "DETERMINANT")) +
-    scale_color_manual(guide = F, values = colRamp(length(colLev))) +
-    scale_shape_manual(guide = F, values = c("FALSE" = 20, "TRUE" = 8)) +
+    scale_color_manual(guide = "none", values = colRamp(length(colLev))) +
+    scale_shape_manual(guide = "none", values = c("FALSE" = 20, "TRUE" = 8)) +
     geom_errorbar(aes_string(ymin = "allSp.min", ymax = "allSp.max")
                   , color = "darkblue") +
     geom_point(position = "jitter") +
@@ -380,9 +380,9 @@ PRE_FATE.speciesClustering_step2 = function(clust.dendrograms
       geom_path(data = PCO.li.ELL.det, aes_string(x = "x", y = "y")) +
       geom_label_repel(data = unique(PCO.li.ELL[, c("xlabel", "ylabel", "PFG")])
                        , aes_string(x = "xlabel", y = "ylabel", label = "PFG")) +
-      scale_shape_manual(guide = F, values = c("0" = 8, "1" = 20)) +
-      scale_size_manual(guide = F, values = c("0" = 3, "1" = 1)) +
-      scale_color_discrete(guide = F) +
+      scale_shape_manual(guide = "none", values = c("0" = 8, "1" = 20)) +
+      scale_size_manual(guide = "none", values = c("0" = 3, "1" = 1)) +
+      scale_color_discrete(guide = "none") +
       labs(x = paste0("\n1st axis = ", round(inert[1], 1), "% of inertia")
            , y = paste0("2nd axis = ", round(inert[2], 1), "% of inertia\n")
            , title = paste0("STEP C : Removal of distant species : group ", group)
