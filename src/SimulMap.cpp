@@ -72,7 +72,7 @@ m_SeedMapIn(SpatialStack<double, int>()),
 m_SeedMapOut(SpatialStack<double, int>()),
 m_EnvSuitMap(SpatialStack<double, double>()),
 m_EnvSuitRefMap(SpatialStack<double, double>()),
-m_DistMap(SpatialStack<double, int>()),
+m_DistMap(SpatialStack<double, double>()),
 m_FireMap(SpatialStack<double, int>()),
 m_TslfMap(SpatialMap<double, int>()),
 m_DroughtMap(SpatialMap<double, double>()),
@@ -259,13 +259,13 @@ SimulMap::SimulMap(FOPL file_of_params)
     logg.info("> build simulation disturbances masks...");
     if (m_glob_params.getNoDist() == file_of_params.getMaskDist().size())
     {
-      vector< vector< int > > distMap; // disturbances masks
+      vector< vector< double > > distMap; // disturbances masks
       distMap.reserve(noFG);
       for (int dist_id=0; dist_id<m_glob_params.getNoDist(); dist_id++)
       {
-        distMap.emplace_back( ReadMask<int>( file_of_params.getMaskDist()[dist_id], 0.0, 1.0 ) );
+        distMap.emplace_back( ReadMask<double>( file_of_params.getMaskDist()[dist_id], 0.0, 1.0 ) );
       }
-      m_DistMap = SpatialStack<double, int>(m_Coord_ptr, distMap);
+      m_DistMap = SpatialStack<double, double>(m_Coord_ptr, distMap);
     } else
     {
       logg.error("!!! Parameters DIST_NO and --DIST_MASK-- ",
@@ -273,7 +273,7 @@ SimulMap::SimulMap(FOPL file_of_params)
     }
   } else
   {
-    m_DistMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
+    m_DistMap = SpatialStack<double, double>(m_Coord_ptr, emptyMapDouble);
   }
   
   /* build simulation fire disturbances masks */
@@ -451,7 +451,7 @@ SpatialStack<double, int>& SimulMap::getSeedMapIn() { return m_SeedMapIn; }
 SpatialStack<double, int>& SimulMap::getSeedMapOut() { return m_SeedMapOut; }
 SpatialStack<double, double>&  SimulMap::getEnvSuitMap() { return m_EnvSuitMap ; }
 SpatialStack<double, double>&  SimulMap::getEnvSuitRefMap() { return m_EnvSuitRefMap; }
-SpatialStack<double, int>&  SimulMap::getDistMap() { return m_DistMap; }
+SpatialStack<double, double>&  SimulMap::getDistMap() { return m_DistMap; }
 SpatialStack<double, int>&  SimulMap::getFireMap() { return m_FireMap; }
 SpatialMap<double, int>& SimulMap::getTslfMap() { return m_TslfMap; }
 SpatialMap<double, double>& SimulMap::getElevationMap() { return m_ElevationMap; }
@@ -475,7 +475,7 @@ void SimulMap::setSeedMapIn(SpatialStack<double, int> seedMapIn) { m_SeedMapIn =
 void SimulMap::setSeedMapOut(SpatialStack<double, int> seedMapOut) { m_SeedMapOut = seedMapOut; }
 void SimulMap::setEnvSuitMap(SpatialStack<double, double> envSuitMap) { m_EnvSuitMap = envSuitMap; }
 void SimulMap::setEnvSuitRefMap(SpatialStack<double, double> envSuitRefMap) { m_EnvSuitRefMap = envSuitRefMap; }
-void SimulMap::setDistMap(SpatialStack<double, int> distMap) { m_DistMap = distMap; }
+void SimulMap::setDistMap(SpatialStack<double, double> distMap) { m_DistMap = distMap; }
 void SimulMap::setFireMap(SpatialStack<double, int> fireMap) { m_FireMap = fireMap; }
 void SimulMap::setTslfMap(SpatialMap<double, int> tslfMap) { m_TslfMap = tslfMap; }
 void SimulMap::setElevationMap(SpatialMap<double, double> elevationMap) { m_ElevationMap = elevationMap; }
@@ -557,23 +557,25 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
     }
     
     /* Updating Maps */
-    if ((strcmp(typeFile.c_str(),"habSuit")==0) | (strcmp(typeFile.c_str(),"drought")==0) | (strcmp(typeFile.c_str(),"aliens")==0))
+    if ((strcmp(typeFile.c_str(),"habSuit")==0) | (strcmp(typeFile.c_str(),"dist")==0) | 
+        (strcmp(typeFile.c_str(),"drought")==0) | (strcmp(typeFile.c_str(),"aliens")==0))
     {
       vector< vector<double> > newMaps; // DOUBLE VALUES
       newMaps.reserve(noFiles);
       for (unsigned file_id=0; file_id<noFiles; file_id++)
       {
-        if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"aliens")==0){
+        if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"dist")==0 | strcmp(typeFile.c_str(),"aliens")==0){
           newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], 0.0, 1.0 ) );
         } else if (strcmp(typeFile.c_str(),"drought")==0){
           newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], -5000.0, 1000.0 ) );
         }
       }
       if (strcmp(typeFile.c_str(),"habSuit")==0){ setEnvSuitMap(SpatialStack<double, double>( &m_Coord, newMaps));
+      } else if (strcmp(typeFile.c_str(),"dist")==0){ setDistMap(SpatialStack<double, double>( &m_Coord, newMaps));
       } else if (strcmp(typeFile.c_str(),"drought")==0){ setDroughtMap(SpatialMap<double, double>( &m_Coord, newMaps[0]));
       } else if (strcmp(typeFile.c_str(),"aliens")==0){ setCondInitMap(SpatialStack<double, double>( &m_Coord, newMaps));
       }
-    } else if ((strcmp(typeFile.c_str(),"mask")==0) | (strcmp(typeFile.c_str(),"dist")==0) | (strcmp(typeFile.c_str(),"fire")==0))
+    } else if ((strcmp(typeFile.c_str(),"mask")==0) | (strcmp(typeFile.c_str(),"fire")==0))
     {
       vector< vector<int> > newMaps; // INTEGER VALUES
       newMaps.reserve(noFiles);
@@ -597,7 +599,6 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
         }
         newMaskCells.shrink_to_fit();
         setMaskCells(newMaskCells);
-      } else if(strcmp(typeFile.c_str(),"dist")==0){ setDistMap(SpatialStack<double, int>( &m_Coord, newMaps));
       } else if(strcmp(typeFile.c_str(),"fire")==0){ setFireMap(SpatialStack<double, int>( &m_Coord, newMaps));
       }
     }
@@ -1190,7 +1191,7 @@ void SimulMap::DoFireDisturbance(int yr)
       {
         for (unsigned fg=0; fg<m_FGparams.size(); fg++)
         { // loop on PFG
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg,dist,m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFireResponse());
+          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, dist, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFireResponse());
         }
       } // end loop over cells
     }
@@ -1311,7 +1312,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
         if (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0)
         {
           //logg.info(">> Post drought effect this year !");
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg,1,m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
+          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 1, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
           //m_SuccModelMap(*cell_ID)->DoDisturbance(1,"drought");
         }
       } else if ((m_ApplyCurrDroughtMap(*cell_ID, fg)==1) && (m_ApplyPostDroughtMap(*cell_ID, fg)==0))
@@ -1319,7 +1320,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
         if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
         {
           //logg.info(">> Current drought effect this year !");
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg,0,m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
+          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 0, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
           //m_SuccModelMap(*cell_ID)->DoDisturbance(0,"drought");
         }
       } else if ((m_ApplyCurrDroughtMap(*cell_ID, fg)==1) && (m_ApplyPostDroughtMap(*cell_ID, fg)==1))
@@ -1378,7 +1379,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           CurrPostResp.setDormBreaks(tmpDormBreaks);
           CurrPostResp.setPropKilled(tmpPropKilled);
           CurrPostResp.setFates(tmpFates);
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg,0,m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
+          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 0, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
         }
       }
     }
@@ -1409,11 +1410,12 @@ void SimulMap::DoDisturbance(int yr)
     unsigned cell_ID = m_MaskCells[ID];
     for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
     { // loop on disturbances
-      if (applyDist[dist] && m_DistMap(cell_ID, dist) == 1)
+      if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0)
       { // within mask & disturbance occurs in this cell
         for (unsigned fg=0; fg<m_FGparams.size(); fg++)
         { // loop on PFG
-          m_SuccModelMap(cell_ID)->DoDisturbance(fg,dist,m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDistResponse());
+          FGresponse fgresp = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDistResponse();
+          m_SuccModelMap(cell_ID)->DoDisturbance(fg, dist, m_DistMap(cell_ID, dist), fgresp);
         }
       }
     } // end loop over disturbances
@@ -1538,13 +1540,13 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
   if (file_of_params.getMaskDist()[0] != "0")
   {
     logg.info("***** Update disturbances maps...");
-    vector< vector< int > > distMap; // disturbances map
+    vector< vector< double > > distMap; // disturbances map
     distMap.reserve(m_glob_params.getNoDist());
     for (int dist_id=0; dist_id<m_glob_params.getNoDist(); dist_id++)
     {
-      distMap.emplace_back( ReadMask<int>( file_of_params.getMaskDist()[dist_id], 0.0, 1.0 ) );
+      distMap.emplace_back( ReadMask<double>( file_of_params.getMaskDist()[dist_id], 0.0, 1.0 ) );
     }
-    m_DistMap = SpatialStack<double, int>(&m_Coord, distMap);
+    m_DistMap = SpatialStack<double, double>(&m_Coord, distMap);
   }
   
   /* update drought disturbances mask if needed */

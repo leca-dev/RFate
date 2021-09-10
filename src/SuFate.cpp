@@ -682,13 +682,9 @@ void SuFate::DoUnaffected(int fg, int Dstb, FGresponse FGresp)
 			if (pcUnaff <= 0.0)
 			{
 				FGlegion->removeCohort(ageStart, ageStop);
-			} else
-			{
-				/* reduce cohorts abundances if some plants are not unaffected */
-				if (pcUnaff < 1.0)
-				{
+			} else if (pcUnaff < 1.0)
+			{ /* reduce cohorts abundances if some plants are not unaffected */
 					FGlegion->reduceCohort(ageStart, ageStop, pcUnaff);
-				}
 			}
 		}
 	} // end loop over ranges
@@ -696,7 +692,7 @@ void SuFate::DoUnaffected(int fg, int Dstb, FGresponse FGresp)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
+void SuFate::DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp)
 {
 	if (m_Comm.getNoCohort(fg) > 0)
 	{
@@ -706,14 +702,27 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 		/* Get number of resprouting plants */
 		/* Resprouting plants counter reinitialisation */
 		int noRange = FGresp.getFates()[Dstb].size();
-		vector< int > ResprC(noRange,0);
+		vector< int > ResprC(noRange, 0);
 		//fill(ResprC.begin(), ResprC.end(), 0);
+		
+		/* Get disturbance value : if < 1, reduce Kill and Respr fates accordingly */
+		if (Dstb_val < 1.0)
+		{
+		  for (int range=0; range<noRange; range++)
+		  {
+		    double newKill = FractToDouble(FGresp.getFates(Dstb, range, Kill)) * Dstb_val;
+		    double newRespr = FractToDouble(FGresp.getFates(Dstb, range, Respr)) * Dstb_val;
+		    FGresp.setFates(DoubleToFract(newKill), Dstb, range, Kill);
+		    FGresp.setFates(DoubleToFract(newRespr), Dstb, range, Respr);
+		    FGresp.setFates(getLeavingFract(DoubleToFract(newKill), DoubleToFract(newRespr)), Dstb, range, Unaff);
+		  }
+		}
 
 		for (int co=0; co<m_Comm.getNoCohort(fg); co++)
 		{
 			for (int range=0; range<noRange; range++)
 			{
-				ResprC[range] += ceil( FractToDouble( FGresp.getFates(Dstb, range, Respr ) ) * m_Comm.getCSize(fg,co) *
+				ResprC[range] += ceil( FractToDouble( FGresp.getFates(Dstb, range, Respr) ) * m_Comm.getCSize(fg, co) *
 				fmax( fmin( m_Comm.getAo(fg,co), FGresp.getBreakAge(Dstb, range+1) - 1 ) -
 				fmax( m_Comm.getAy(fg,co), FGresp.getBreakAge(Dstb, range) ) + 1, 0 ) ); //rescale to apply on range-1
 			}
@@ -730,25 +739,28 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 				FGlegion->addCohort(ResprC[range], FGresp.getResprAge(Dstb, range), FGresp.getResprAge(Dstb, range));
 			}
 		}
+		
+		/* Pick up legions having same size and following ages */
+		FGlegion->pickupCohorts();
 
 		/* Seeds pool perturbation part */
 		PropPool* App_ptr = FuncG->getPools_(ActiveP);
 		PropPool* Dpp_ptr = FuncG->getPools_(DormantP);
 
 		/* Kill active seeds */
-		App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * FractToDouble( FGresp.getPropKilled(Dstb) ) ) );
+		App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * FractToDouble(FGresp.getPropKilled(Dstb)) * Dstb_val) );
 
 		/* Transfer Dormant seeds to active seed pool */
 		if (FuncG->getFGparams_()->getInnateDormancy())
 		{
 			Fract dormbreaks = FGresp.getDormBreaks(Dstb);
-			App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * FractToDouble(dormbreaks), 100) ) ;
+			App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * FractToDouble(dormbreaks) * Dstb_val, 100) ) ;
 			if (dormbreaks == PC100)
 			{
 				Dpp_ptr->EmptyPool();
 			} else
 			{
-				Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - FractToDouble(dormbreaks) ) ) );
+				Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - FractToDouble(dormbreaks) * Dstb_val) ) );
 			}
 		}
 	}

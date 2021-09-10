@@ -467,7 +467,7 @@ const vector<Fract> FG::getMaxRecruitSoil() const {return m_SoilActiveGerm;}
 const Fract& FG::getMaxRecruitSoil(const Resource& r) const {return m_SoilActiveGerm[r];}
 const vector< vector<Fract> >& FG::getSoilTolerance() const {return m_SoilTolerance;}
 const Fract FG::getSoilTolerance(LifeStage ls, Resource r) const { return m_SoilTolerance[ls][r];}
-const FGresponse& FG::getDistResponse() const {return m_DistResponse;}
+FGresponse FG::getDistResponse() {return m_DistResponse;}
 const FGresponse& FG::getFireResponse() const {return m_FireResponse;}
 double FG::getFlamm() const {return m_Flamm;}
 const FGresponse& FG::getDroughtResponse() const {return m_DroughtResponse;}

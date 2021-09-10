@@ -406,7 +406,7 @@ class FG
 	const Fract& getMaxRecruitSoil(const Resource& r) const;
 	const vector< vector<Fract> >& getSoilTolerance() const;
 	const Fract getSoilTolerance(LifeStage ls,  Resource r) const;
-	const FGresponse& getDistResponse() const;
+	FGresponse getDistResponse();
 	const FGresponse& getFireResponse() const;
 	double getFlamm() const;
 	const FGresponse& getDroughtResponse() const;
