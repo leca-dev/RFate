@@ -42,6 +42,7 @@
 #include <string>
 #include <vector>
 
+using namespace std;
 
 /**
   Append a message string with any single element.
@@ -52,9 +53,9 @@
   appendMessage("nono ", 1) -> "nono 1"
 */
 template <typename T>
-std::string& appendMessage(std::string& message, const T& t)
+string& appendMessage(string& message, const T& t)
 {
-  std::ostringstream oss;
+  ostringstream oss;
   oss << t;
   message += oss.str();
   return message;
@@ -69,12 +70,12 @@ std::string& appendMessage(std::string& message, const T& t)
   appendMessage("nono ", [1, 2]) -> "nono 1 2"
 */
 template <typename T>
-std::string& appendMessage(std::string& message, const std::vector<T>& v)
+string& appendMessage(string& message, const vector<T>& v)
 {
   if(!v.empty())
   {
-    std::ostringstream oss;
-    std::copy(v.begin(), v.end(), std::ostream_iterator<T>(oss, " "));
+    ostringstream oss;
+    copy(v.begin(), v.end(), ostream_iterator<T>(oss, " "));
     message += oss.str();
   }
   return message;
@@ -91,10 +92,9 @@ std::string& appendMessage(std::string& message, const std::vector<T>& v)
                                        3 4"
 */
 template <typename T>
-std::string& appendMessage(std::string& message,
-                           const std::vector<std::vector<T>>& m)
+string& appendMessage(string& message, const vector<vector<T>>& m)
 {
-  typename std::vector<std::vector<T>>::const_iterator v;
+  typename vector<vector<T>>::const_iterator v;
   for (v = m.begin(); v != m.end(); ++v)
   {
     message += "\n";
@@ -118,10 +118,9 @@ std::string& appendMessage(std::string& message,
                                          "
 */
 template <typename T>
-std::string& appendMessage(std::string& message,
-                           const std::vector<std::vector<std::vector<T>>>& m)
+string& appendMessage(string& message, const vector<vector<vector<T>>>& m)
 {
-  typename std::vector<std::vector<std::vector<T>>>::const_iterator v;
+  typename vector<vector<vector<T>>>::const_iterator v;
   for (v = m.begin(); v != m.end(); ++v)
   {
     appendMessage(message, *v);
@@ -142,8 +141,7 @@ std::string& appendMessage(std::string& message,
                                                   4 5"
 */
 template <class T, class ...Types>
-std::string& appendMessage(std::string& message, const T& t,
-                           const Types&... t2)
+string& appendMessage(string& message, const T& t, const Types&... t2)
 {
   appendMessage(message, t);
   appendMessage(message, t2...);
@@ -158,7 +156,7 @@ std::string& appendMessage(std::string& message, const T& t,
 class LogMessage
 {
 protected:
-  std::string m_message;  // Log message.
+  string m_message;  // Log message.
   int m_importance, m_verbosity;  // message importance and verbosity level.
 
 public:

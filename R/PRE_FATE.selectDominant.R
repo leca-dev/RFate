@@ -963,7 +963,7 @@ PRE_FATE.selectDominant = function(mat.observations
       , direction = "x"
       , label.size = 0
       , label.padding = unit(0.3, "lines")) +
-      scale_color_manual(guide = FALSE
+      scale_color_manual(guide = "none"
       , values = c("1" = "brown"
       , "2" = "chocolate"
       , "3" = "darkgoldenrod")) +
@@ -1130,8 +1130,8 @@ PRE_FATE.selectDominant = function(mat.observations
         scale_x_continuous(name = "\nWithin-site relative abundance (%)"
                            , breaks = seq(1, length(class_breaks) - 1)
                            , labels = 100 * class_breaks[-1]) +
-        scale_fill_identity(guide = FALSE) +
-        scale_color_continuous(guide = FALSE) +
+        scale_fill_identity(guide = "none") +
+        scale_color_continuous(guide = "none") +
         labs(y = "Releves frequency\n"
              , title = "STEP 1 : Selection of dominant species - rule B"
              , subtitle = paste0("Criteria concerning abundances within all concerned sites :\n"
@@ -1175,8 +1175,8 @@ PRE_FATE.selectDominant = function(mat.observations
         scale_y_continuous(name = "Relative releves frequency (representativity) (%)\n"
                            , breaks = seq(0, 1, 0.2)
                            , labels = seq(0, 1, 0.2) * 100) +
-        scale_fill_identity(guide = FALSE) +
-        scale_color_continuous(guide = FALSE) +
+        scale_fill_identity(guide = "none") +
+        scale_color_continuous(guide = "none") +
         labs(title = "STEP 1 : Selection of dominant species - rule B"
              , subtitle = paste0("Criteria concerning abundances within all concerned sites :\n"
                                  , "  > B1.no = minimum number of sites required : "
@@ -1386,10 +1386,10 @@ PRE_FATE.selectDominant = function(mat.observations
                                                                  , label = "PFG")) +
                   scale_y_continuous(position = "right", labels = NULL
                                      , sec.axis = sec_axis(~ . + 0)) +
-                  scale_color_manual(guide = FALSE, values = pal_col) +
-                  scale_alpha(guide = FALSE, range = c(0.2, 1)) +
-                  scale_linetype_manual(guide = FALSE, values = c("TRUE" = 1, "FALSE" = 2)) +
-                  scale_size_manual(guide = FALSE, values = c("TRUE" = 0.8, "FALSE" = 0.5)) +
+                  scale_color_manual(guide = "none", values = pal_col) +
+                  scale_alpha(guide = "none", range = c(0.2, 1)) +
+                  scale_linetype_manual(guide = "none", values = c("TRUE" = 1, "FALSE" = 2)) +
+                  scale_size_manual(guide = "none", values = c("TRUE" = 0.8, "FALSE" = 0.5)) +
                   labs(x = paste0("\nAXIS 1 = ", round(inert[1], 1), "% of inertia")
                        , y = paste0("AXIS ", i.axis, " = ", round(inert[i.axis], 1), "% of inertia\n")
                        , title = "STEP 2 : Selected dominant species"
@@ -1507,7 +1507,7 @@ PRE_FATE.selectDominant = function(mat.observations
                 scale_y_continuous(name = "Percentage of dissimilarity (%)              Percentage of similarity (%)\n"
                                    , breaks = seq(0, 1, 0.1)
                                    , labels = seq(0, 1, 0.1) * 100) +
-                scale_color_manual(guide = FALSE
+                scale_color_manual(guide = "none"
                                    , values = c("releves" = "midnightblue"
                                                 , "sites" = "brown")) +
                 labs(title = paste0("STEP 2 : Selected dominant species - robustness(", i.subset, ")")

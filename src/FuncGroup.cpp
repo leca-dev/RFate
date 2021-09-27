@@ -57,16 +57,16 @@ FuncGroup::~FuncGroup()
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 const vector<PropPool>&  FuncGroup::getPools() const { return m_Pools; }
-const PropPool& FuncGroup::getPools( const PoolType& pt) const { return m_Pools[int(pt)]; }
+const PropPool& FuncGroup::getPools( const PoolType& pt) const { return m_Pools[static_cast<int>(pt)]; }
 const Legion& FuncGroup::getLList() const { return m_LList; }
 const FG& FuncGroup::getFGparams() const { return *m_FGparams; }
 
 Legion* FuncGroup::getLList_() { return &m_LList; }
-PropPool* FuncGroup::getPools_( const PoolType& pt) { return &m_Pools[int(pt)];}
+PropPool* FuncGroup::getPools_( const PoolType& pt) { return &m_Pools[static_cast<int>(pt)];}
 FGPtr FuncGroup::getFGparams_() { return m_FGparams; }
 
 void FuncGroup::setPools( const vector<PropPool>& pools) { m_Pools = pools; }
-void FuncGroup::setPools( const PropPool& pool, const PoolType& pt ) { m_Pools[int(pt)] = pool; }
+void FuncGroup::setPools( const PropPool& pool, const PoolType& pt ) { m_Pools[static_cast<int>(pt)] = pool; }
 void FuncGroup::setLList( const Legion llist ) { m_LList = llist; }
 void FuncGroup::setFGparams( FGPtr fgparams ) { m_FGparams = fgparams; }
 

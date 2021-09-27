@@ -169,7 +169,7 @@ class SuFate
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	const unsigned getCellID() const;
+	unsigned getCellID() const;
 	const Community getCommunity() const;
 	LightResources getLightResources();
 	double getSoilResources();
@@ -447,10 +447,11 @@ class SuFate
 	 *
 	 *	\param fg : id of considered PFG
 	 *	\param Dstb : id of considered disturbance
+	 *	\param Dstb_val : pixel value of considered disturbance
 	 *	\param FGresp : FG response depending on the type of perturbation
 	 * ("dist", "fire", "drought")
 	 */
-	void DoDisturbance(int fg, int Dstb, FGresponse FGresp);
+	void DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp);
 
 };
 

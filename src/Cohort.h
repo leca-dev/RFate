@@ -127,9 +127,9 @@ class Cohort
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	const int& getCSize() const;
-	const int& getAy() const;
-	const int& getAo() const;
+	int getCSize() const;
+	int getAy() const;
+	int getAo() const;
 
 	void setCSize(const int& cSize);
 	void setAy(const int& ay);

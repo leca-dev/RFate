@@ -275,7 +275,7 @@ GSP::GSP(const string globalParamsFile)
 		}
 
 		m_FreqDist = GlobParms.get_val<int>("DIST_FREQ");
-		if (m_NoDist != (int)m_FreqDist.size())
+		if (m_NoDist != m_FreqDist.size())
 		{
 			logg.error("!!! Parameter DIST_FREQ : number of frequencies must be equal to the number of disturbances (DIST_NO)!");
 		}
@@ -321,7 +321,7 @@ GSP::GSP(const string globalParamsFile)
 		if (v_int.size()) m_NoFireDistSub = v_int[0]; else m_NoFireDistSub = 0;
 		v_int = GlobParms.get_val<int>("FIRE_FREQ",true);
 		if (v_int.size()) m_FreqFireDist = v_int; else m_FreqFireDist = vector<int>(1,0);
-		if (m_NoFireDist != (int)m_FreqFireDist.size())
+		if (m_NoFireDist != m_FreqFireDist.size())
 		{
 			logg.error("!!! Parameter FIRE_FREQ : number of frequencies must be equal to the number of fire disturbances (FIRE_NO)!");
 		}
@@ -419,7 +419,7 @@ GSP::GSP(const string globalParamsFile)
 	if (m_DoAliensIntroduction)
 	{
 		m_FreqAliens = GlobParms.get_val<int>("ALIENS_FREQ");
-		if (m_NoFG != (int)m_FreqAliens.size())
+		if (m_NoFG != m_FreqAliens.size())
 		{
 			logg.error("!!! Parameter ALIENS_FREQ : number of frequencies must be equal to the number of PFG (NO_PFG)!");
 		}
@@ -442,58 +442,58 @@ GSP::~GSP()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-const int& GSP::getNoCPU() const{ return m_NoCPU; }
-const int& GSP::getNoFG() const{ return m_NoFG; }
-const int& GSP::getNoStrata() const{ return m_NoStrata; }
-const int& GSP::getSimulDuration() const{ return m_SimulDuration; }
-const int& GSP::getSeedingDuration() const{ return m_SeedingDuration; }
-const int& GSP::getSeedingTimeStep() const{ return m_SeedingTimeStep; }
-const int& GSP::getSeedingInput() const{ return m_SeedingInput; }
-const int& GSP::getPotentialFecundity() const{ return m_PotentialFecundity; }
-const int& GSP::getMaxAbundLow() const{ return m_MaxAbundLow; }
-const int& GSP::getMaxAbundMedium() const{ return m_MaxAbundMedium; }
-const int& GSP::getMaxAbundHigh() const{ return m_MaxAbundHigh; }
-const bool& GSP::getDoSavingPFGStratum() const{ return m_DoSavingPFGStratum; }
-const bool& GSP::getDoSavingPFG() const{ return m_DoSavingPFG; }
-const bool& GSP::getDoSavingStratum() const{ return m_DoSavingStratum; }
-const bool& GSP::getDoLightInteraction() const{ return m_DoLightInteraction; }
-const int& GSP::getLightThreshLow() const{ return m_LightThreshLow; }
-const int& GSP::getLightThreshMedium() const{ return m_LightThreshMedium; }
-const bool& GSP::getLightSaving() const{ return m_LightSaving; }
-const bool& GSP::getDoHabSuitability() const{ return m_DoHabSuitability; }
-const int& GSP::getHabSuitMode() const{ return m_HabSuitMode; }
-const bool& GSP::getDoDispersal() const{ return m_DoDispersal; }
-const int& GSP::getDispersalMode() const{ return m_DispersalMode; }
-const bool& GSP::getDispersalSaving() const{ return m_DispersalSaving; }
-const bool& GSP::getDoDisturbances() const{ return m_DoDisturbances; }
-const int& GSP::getNoDist() const{ return m_NoDist; }
-const int& GSP::getNoDistSub() const{ return m_NoDistSub; }
+int GSP::getNoCPU() const{ return m_NoCPU; }
+int GSP::getNoFG() const{ return m_NoFG; }
+int GSP::getNoStrata() const{ return m_NoStrata; }
+int GSP::getSimulDuration() const{ return m_SimulDuration; }
+int GSP::getSeedingDuration() const{ return m_SeedingDuration; }
+int GSP::getSeedingTimeStep() const{ return m_SeedingTimeStep; }
+int GSP::getSeedingInput() const{ return m_SeedingInput; }
+int GSP::getPotentialFecundity() const{ return m_PotentialFecundity; }
+int GSP::getMaxAbundLow() const{ return m_MaxAbundLow; }
+int GSP::getMaxAbundMedium() const{ return m_MaxAbundMedium; }
+int GSP::getMaxAbundHigh() const{ return m_MaxAbundHigh; }
+bool GSP::getDoSavingPFGStratum() const{ return m_DoSavingPFGStratum; }
+bool GSP::getDoSavingPFG() const{ return m_DoSavingPFG; }
+bool GSP::getDoSavingStratum() const{ return m_DoSavingStratum; }
+bool GSP::getDoLightInteraction() const{ return m_DoLightInteraction; }
+int GSP::getLightThreshLow() const{ return m_LightThreshLow; }
+int GSP::getLightThreshMedium() const{ return m_LightThreshMedium; }
+bool GSP::getLightSaving() const{ return m_LightSaving; }
+bool GSP::getDoHabSuitability() const{ return m_DoHabSuitability; }
+int GSP::getHabSuitMode() const{ return m_HabSuitMode; }
+bool GSP::getDoDispersal() const{ return m_DoDispersal; }
+int GSP::getDispersalMode() const{ return m_DispersalMode; }
+bool GSP::getDispersalSaving() const{ return m_DispersalSaving; }
+bool GSP::getDoDisturbances() const{ return m_DoDisturbances; }
+int GSP::getNoDist() const{ return m_NoDist; }
+int GSP::getNoDistSub() const{ return m_NoDistSub; }
 const vector<int>& GSP::getFreqDist() const{ return m_FreqDist; }
-const bool& GSP::getDoSoilInteraction() const{ return m_DoSoilInteraction; }
-const double& GSP::getSoilInit() const{ return m_SoilInit; }
-const double& GSP::getSoilRetention() const{ return m_SoilRetention; }
-const bool& GSP::getSoilSaving() const{ return m_SoilSaving; }
-const bool& GSP::getDoFireDisturbances() const{ return m_DoFireDisturbances; }
-const int& GSP::getNoFireDist() const{ return m_NoFireDist; }
-const int& GSP::getNoFireDistSub() const{ return m_NoFireDistSub; }
+bool GSP::getDoSoilInteraction() const{ return m_DoSoilInteraction; }
+double GSP::getSoilInit() const{ return m_SoilInit; }
+double GSP::getSoilRetention() const{ return m_SoilRetention; }
+bool GSP::getSoilSaving() const{ return m_SoilSaving; }
+bool GSP::getDoFireDisturbances() const{ return m_DoFireDisturbances; }
+int GSP::getNoFireDist() const{ return m_NoFireDist; }
+int GSP::getNoFireDistSub() const{ return m_NoFireDistSub; }
 const vector<int>& GSP::getFreqFireDist() const{ return m_FreqFireDist; }
-const int& GSP::getFireIgnitMode() const{ return m_FireIgnitMode; }
-const int& GSP::getFireNeighMode() const{ return m_FireNeighMode; }
-const int& GSP::getFirePropMode() const{ return m_FirePropMode; }
-const int& GSP::getFireQuotaMode() const{ return m_FireQuotaMode; }
+int GSP::getFireIgnitMode() const{ return m_FireIgnitMode; }
+int GSP::getFireNeighMode() const{ return m_FireNeighMode; }
+int GSP::getFirePropMode() const{ return m_FirePropMode; }
+int GSP::getFireQuotaMode() const{ return m_FireQuotaMode; }
 const vector<int>& GSP::getFireIgnitNo() const{ return m_FireIgnitNo; }
 const vector<int>& GSP::getFireIgnitNoHist() const{ return m_FireIgnitNoHist; }
-const int& GSP::getFireIgnitFlammMax() const{ return m_FireIgnitFlammMax; }
+int GSP::getFireIgnitFlammMax() const{ return m_FireIgnitFlammMax; }
 const vector<double>& GSP::getFireIgnitLogis() const{ return m_FireIgnitLogis; }
 const vector<int>& GSP::getFireNeighCC() const{ return m_FireNeighCC; }
 const vector<double>& GSP::getFirePropIntensity() const{ return m_FirePropIntensity; }
 const vector<double>& GSP::getFirePropLogis() const{ return m_FirePropLogis; }
-const int& GSP::getFireQuotaMax() const{ return m_FireQuotaMax; }
-const bool& GSP::getDoDroughtDisturbances() const{ return m_DoDroughtDisturbances; }
-const int& GSP::getNoDroughtSub() const{ return m_NoDroughtSub; }
+int GSP::getFireQuotaMax() const{ return m_FireQuotaMax; }
+bool GSP::getDoDroughtDisturbances() const{ return m_DoDroughtDisturbances; }
+int GSP::getNoDroughtSub() const{ return m_NoDroughtSub; }
 const string& GSP::getChronoPost() const{ return m_ChronoPost; }
 const string& GSP::getChronoCurr() const{ return m_ChronoCurr; }
-const bool& GSP::getDoAliensIntroduction() const{ return m_DoAliensIntroduction; }
+bool GSP::getDoAliensIntroduction() const{ return m_DoAliensIntroduction; }
 const vector<int>& GSP::getFreqAliens() const{ return m_FreqAliens; }
 
 void GSP::setNoCPU(const int& noCPU){ m_NoCPU = noCPU; }

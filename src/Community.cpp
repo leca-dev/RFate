@@ -58,9 +58,9 @@ FuncGroup* Community::getFuncGroup_(const int& id) { return &m_FuncGroupList[id]
 
 int Community::getNoCohort(const int& id) { return m_FuncGroupList[id].getLList().getNoCohort(); }
 
-const int& Community::getAy(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAy(); }
-const int& Community::getAo(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAo(); }
-const int& Community::getCSize(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getCSize(); }
+int Community::getAy(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAy(); }
+int Community::getAo(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getAo(); }
+int Community::getCSize(const int& id, const int& co) const { return m_FuncGroupList[id].getLList().getCohort(co).getCSize(); }
 
 void Community::setFuncGroupList(const vector<FuncGroup>& funcGroupList){ m_FuncGroupList = funcGroupList;}
 void Community::setFuncGroup(const int& id, const FuncGroup& funcGroup){ m_FuncGroupList[id] = funcGroup;}

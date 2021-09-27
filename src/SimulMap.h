@@ -87,7 +87,7 @@ class SimulMap
 	SpatialStack<double, double> m_EnvSuitMap; /*!< Stack of FG environmental suitability maps */
 	SpatialStack<double, double> m_EnvSuitRefMap; /*!< Environmental suitability reference maps for current year */
 
-	SpatialStack<double, int> m_DistMap; /*!< Stack of disturbances mask */
+	SpatialStack<double, double> m_DistMap; /*!< Stack of disturbances mask */
 	SpatialStack<double, int> m_FireMap; /*!< Stack of disturbances mask */
 	SpatialMap<double, int> m_TslfMap; /*!< Map referencing the Time Since Last Fire (TSLF) in each cell  */
 	SpatialMap<double, double> m_DroughtMap; /*!< Moisture index mask  */
@@ -246,7 +246,7 @@ class SimulMap
 	SpatialStack<double, int>& getSeedMapOut();
 	SpatialStack<double, double>& getEnvSuitMap();
 	SpatialStack<double, double>& getEnvSuitRefMap();
-	SpatialStack<double, int>& getDistMap();
+	SpatialStack<double, double>& getDistMap();
 	SpatialStack<double, int>& getFireMap();
 	SpatialMap<double, int>& getTslfMap();
 	SpatialMap<double, double>& getElevationMap();
@@ -270,7 +270,7 @@ class SimulMap
 	void setSeedMapOut(SpatialStack<double, int> seedMapOut);
 	void setEnvSuitMap(SpatialStack<double, double> envSuitMap);
 	void setEnvSuitRefMap(SpatialStack<double, double> envSuitRefMap);
-	void setDistMap(SpatialStack<double, int> distMap);
+	void setDistMap(SpatialStack<double, double> distMap);
 	void setFireMap(SpatialStack<double, int> fireMap);
 	void setTslfMap(SpatialMap<double, int> tslfMap);
 	void setElevationMap(SpatialMap<double, double> elevationMap);

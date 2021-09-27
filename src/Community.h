@@ -120,9 +120,9 @@ class Community
 
 	FuncGroup* getFuncGroup_(const int& id);
 	int getNoCohort(const int& id);
-	const int& getAy(const int& id, const int& co) const;
-	const int& getAo(const int& id, const int& co) const;
-	const int& getCSize(const int& id, const int& co) const;
+	int getAy(const int& id, const int& co) const;
+	int getAo(const int& id, const int& co) const;
+	int getCSize(const int& id, const int& co) const;
 
 	void setFuncGroupList(const vector<FuncGroup>& funcGroupList);
 	void setFuncGroup(const int& id, const FuncGroup& funcGroup);

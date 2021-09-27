@@ -91,7 +91,7 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 	if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
 	m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
 	m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
-	if ((int)m_Strata.size() != glob_params.getNoStrata() + 1)
+	if (m_Strata.size() != glob_params.getNoStrata() + 1)
 	{
 		logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
                m_Strata.size() - 1," instead of ", glob_params.getNoStrata(),
@@ -158,19 +158,19 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
                "). Please check!");
 	}
 	int counter = 0;
-	m_LightTolerance.resize(int(LScount));
-	for (int ls=1; ls<int(LScount); ls++)
+	m_LightTolerance.resize(LScount);
+	for (int ls=1; ls<LScount; ls++)
 	{
-		m_LightTolerance[ls].resize(int(Rcount));
-		for (int r=0; r<int(Rcount); r++)
+		m_LightTolerance[ls].resize(Rcount);
+		for (int r=0; r<Rcount; r++)
 		{
 			m_LightTolerance[ls][r] = v_int[counter];
 			counter ++;
 		}
 	}
 	/* Propagule Light tolerance is assumed to be the same as germinants */
-	m_LightTolerance[0].resize(int(Rcount));
-	for (int r=0; r<int(Rcount); r++)
+	m_LightTolerance[0].resize(Rcount);
+	for (int r=0; r<Rcount; r++)
 	{
 		m_LightTolerance[0][r] = m_LightTolerance[1][r];
 	}
@@ -251,7 +251,7 @@ void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
                "). Please check!");
 	}
 	int counter = 0;
-	m_SoilTolerance.resize(int(LScount));
+	m_SoilTolerance.resize(LScount);
 	for (unsigned i=1; i<m_SoilTolerance.size(); i++)
 	{ // fill automatically germinant LS case ==> not use at time
 		m_SoilTolerance[i].resize(Rcount);
@@ -330,8 +330,8 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 			}
 		} else
 		{
-			m_LightActiveGerm.resize(int(Rcount), PC100);
-			m_LightTolerance.resize(int(LScount), vector<bool>(Rcount, true));
+			m_LightActiveGerm.resize(Rcount, PC100);
+			m_LightTolerance.resize(LScount, vector<bool>(Rcount, true));
 		}
 		if (doDisp)
 		{
@@ -363,9 +363,9 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 			m_SoilContrib = 0.0;
 			m_SoilLow = 0.0;
 			m_SoilHigh = 0.0;
-			m_SoilActiveGerm.resize(int(Rcount), PC100);
-			m_SoilTolerance.resize(int(LScount), vector<Fract>(Rcount, PC100));
-			//m_SoilTolerance.resize(int(LScount), vector<bool>(1, true));
+			m_SoilActiveGerm.resize(Rcount, PC100);
+			m_SoilTolerance.resize(LScount, vector<Fract>(Rcount, PC100));
+			//m_SoilTolerance.resize(LScount, vector<bool>(1, true));
 		}
 		if (doDist)
 		{
@@ -440,42 +440,42 @@ FG::~FG()
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 const string& FG::getName() const {return m_Name;}
-const int& FG::getMatTime() const {return m_M;}
-const int& FG::getLifeSpan() const {return m_L;}
+int FG::getMatTime() const {return m_M;}
+int FG::getLifeSpan() const {return m_L;}
 const Abund& FG::getMaxAbund() const {return m_MaxA;}
 //int FG::getMaxAbund() {return(AbundToInt(m_MaxA));}
-const double& FG::getImmSize() const {return m_ImmSize;}
-const int& FG::getMaxStratum() const {return m_MaxStratum;}
+double FG::getImmSize() const {return m_ImmSize;}
+int FG::getMaxStratum() const {return m_MaxStratum;}
 const vector<int> FG::getStrata() const {return m_Strata;}
-const int& FG::getStrata(const int& i) const {return m_Strata[i];}
+int FG::getStrata(const int& i) const {return m_Strata[i];}
 const vector<int> FG::getPoolLife() const {return m_PoolL;}
-const int& FG::getPoolLife(const PoolType& pt ) const {return m_PoolL[pt];}
-const bool& FG::getInnateDormancy() const {return m_InnateDorm;}
-const int& FG::getPotentialFecund() const {return m_PotentialFecundity;}
+int FG::getPoolLife(const PoolType& pt ) const {return m_PoolL[pt];}
+bool FG::getInnateDormancy() const {return m_InnateDorm;}
+int FG::getPotentialFecund() const {return m_PotentialFecundity;}
 const vector<Fract> FG::getMaxRecruitLight() const {return m_LightActiveGerm;}
 const Fract& FG::getMaxRecruitLight(const Resource& r) const {return m_LightActiveGerm[r];}
 const vector< vector<bool> >& FG::getLightTolerance() const {return m_LightTolerance;}
-const bool FG::getLightTolerance(LifeStage ls, Resource r) const {return m_LightTolerance[ls][r];}
-const bool& FG::getDispersed() const {return m_Dispersed;}
-const double& FG::getDisp50() const {return m_disp50;}
-const double& FG::getDisp99() const {return m_disp99;}
-const double& FG::getDispLD() const {return m_dispLD;}
-const double& FG::getSoilContrib() const {return m_SoilContrib;}
-const double& FG::getSoilLow() const {return m_SoilLow;}
-const double& FG::getSoilHigh() const {return m_SoilHigh;}
+bool FG::getLightTolerance(LifeStage ls, Resource r) const {return m_LightTolerance[ls][r];}
+bool FG::getDispersed() const {return m_Dispersed;}
+double FG::getDisp50() const {return m_disp50;}
+double FG::getDisp99() const {return m_disp99;}
+double FG::getDispLD() const {return m_dispLD;}
+double FG::getSoilContrib() const {return m_SoilContrib;}
+double FG::getSoilLow() const {return m_SoilLow;}
+double FG::getSoilHigh() const {return m_SoilHigh;}
 const vector<Fract> FG::getMaxRecruitSoil() const {return m_SoilActiveGerm;}
 const Fract& FG::getMaxRecruitSoil(const Resource& r) const {return m_SoilActiveGerm[r];}
 const vector< vector<Fract> >& FG::getSoilTolerance() const {return m_SoilTolerance;}
 const Fract FG::getSoilTolerance(LifeStage ls, Resource r) const { return m_SoilTolerance[ls][r];}
-const FGresponse& FG::getDistResponse() const {return m_DistResponse;}
+FGresponse FG::getDistResponse() {return m_DistResponse;}
 const FGresponse& FG::getFireResponse() const {return m_FireResponse;}
-const double& FG::getFlamm() const {return m_Flamm;}
+double FG::getFlamm() const {return m_Flamm;}
 const FGresponse& FG::getDroughtResponse() const {return m_DroughtResponse;}
 const vector<double>& FG::getDroughtSD() const {return m_DroughtSD;}
-const unsigned& FG::getCountModToSev() const {return m_CountModToSev;}
-const unsigned& FG::getCountSevMort() const {return m_CountSevMort;}
-const unsigned& FG::getDroughtRecovery() const {return m_DroughtRecovery;}
-const bool& FG::getIsAlien() const {return m_IsAlien;}
+unsigned FG::getCountModToSev() const {return m_CountModToSev;}
+unsigned FG::getCountSevMort() const {return m_CountSevMort;}
+unsigned FG::getDroughtRecovery() const {return m_DroughtRecovery;}
+bool FG::getIsAlien() const {return m_IsAlien;}
 
 
 void FG::setName(const string& name){m_Name = name;}

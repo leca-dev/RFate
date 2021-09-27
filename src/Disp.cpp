@@ -154,10 +154,10 @@ int gaussCircleProblem(int radius)
 {
     int allPoints=0; //holds the sum of points
     double y=0; //will hold the precise y coordinate of a point on the circle edge for a given x coordinate.
-    long inscribedSquare=(long) sqrt(radius*radius/2); //the length of the side of an inscribed square in the upper right quarter of the circle
-    int x=(int)inscribedSquare; //will hold x coordinate - starts on the edge of the inscribed square
+    long inscribedSquare = static_cast<long>(sqrt(radius * radius / 2)); //the length of the side of an inscribed square in the upper right quarter of the circle
+    int x = static_cast<int>(inscribedSquare); //will hold x coordinate - starts on the edge of the inscribed square
     while(x<=radius){
-        allPoints+=(long) y; //returns floor of y, which is initially 0
+        allPoints += static_cast<long>(y); //returns floor of y, which is initially 0
         x++; //because we need to start behind the inscribed square and move outwards from there
         y=sqrt(radius*radius-x*x); // Pythagorean equation - returns how many points there are vertically between the X axis and the edge of the circle for given x
     }
@@ -274,7 +274,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 			int xt,yt;
 			vector<int> v1x_select, v2x_select, v1y_select, v2y_select;
 			vector<float> prop_d1_select, prop_d2_select;
-			unsigned noDrawMax = int (max(1,(int)ceil(m_FGdistCircle[fg][0].size()/2.0)));
+			unsigned noDrawMax = max(1, static_cast<int>(ceil(m_FGdistCircle[fg][0].size()/2.0)));
 
 			unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 			RandomGenerator rng(seed);
@@ -289,10 +289,10 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 				Uni01 random_01(rng);
 
 				/* select cell receiving seeds according to a probability decreasing with distance */
-				for (int id=0; id<(int)m_FGdistCircle[fg][0].size(); id++)
+				for (int id = 0; id < m_FGdistCircle[fg][0].size(); id++)
 				{
 					int dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id]));
-					if (dist_pt < (int)m_prob_d1[fg].size())
+					if (dist_pt < m_prob_d1[fg].size())
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
@@ -304,10 +304,10 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						}
 					}
 				}
-				for (int id=0; id<(int)m_FGdistCircle[fg][1].size(); id++)
+				for (int id = 0; id < m_FGdistCircle[fg][1].size(); id++)
 				{
 					int dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1;
-					if (dist_pt < (int)m_prob_d2[fg].size())
+					if (dist_pt < m_prob_d2[fg].size())
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
@@ -336,7 +336,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 					/* chose p= 100% of seeds into d1 disk and put 50% / area of disk seeds into */
 					if (d1==0) /* all seeds fall in the same pixel */
 					{
-						new_SeedMapOut(x,y) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.5 );
+						new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.5 );
 					} else  if (d1>0)
 					{
 						if (dispOption==1)
@@ -350,14 +350,14 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						{
 							xt = x + v1x_select[id];
 							yt = y + v1y_select[id];
-							if (xt>=0 && yt>=0 && xt<(int)m_SeedMapIn->getXncell() && yt<(int)m_SeedMapIn->getYncell())
+							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
 							{
 								if (dispOption==1)
 								{
-									new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.5 / (double) v1x_select.size() );
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.5 / static_cast<double>(v1x_select.size()) );
 								} else if (dispOption==2 || dispOption==3)
 								{
-									new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * prop_d1_select[id] );
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d1_select[id] );
 								}
 							}
 						} // end of loop on d1 disk
@@ -366,7 +366,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 					/* chose as many as in first disk and into d1 d2 crow and put 49% / area of crown / p seeds into */
 					if (d2 == 0)
 					{
-						new_SeedMapOut(x,y)+= (int)( (*m_SeedMapIn)(x,y,fg) * 0.49 );
+						new_SeedMapOut(x,y)+= static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 );
 					} else if (d2>0)
 					{
 						/* seeds will be dispersed in 2 neighbouring cells min disperse in 1 cell and one of its neighbour */
@@ -377,7 +377,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 							v2x_select.reserve(noDrawMax);
 							v2y_select.reserve(noDrawMax);
 
-							UniInt distrib(0,m_FGdistCircle[fg][1].size());
+							UniInt distrib(0, m_FGdistCircle[fg][1].size());
 							GeneratorUniInt draw_from_distrib(rng,distrib);
 							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
 							{ /* Draw of cells into crown that will received seeds */
@@ -388,16 +388,16 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 								v2y_select.push_back(m_FGdistCircle[fg][4][d2_draw]);
 							}
 						}
-						for (int id=0; id<(int)v2x_select.size(); id++)
+						for (int id = 0; id < v2x_select.size(); id++)
 						{
 							xt = x + v2x_select[id];
 							yt = y + v2y_select[id];
-							if (xt>=0 && yt>=0 && xt<(int)m_SeedMapIn->getXncell() && yt<(int)m_SeedMapIn->getYncell())
+							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
 							{
 								/* First cell selected */
 								if (dispOption==1)
 								{
-									new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
 
 									/* x of its neighbour */
 									UniInt distrib(0,3);
@@ -413,13 +413,13 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 										case 3 : yt--;
 													break;
 									}
-									if (xt>=0 && yt>=0 && xt<(int)m_SeedMapIn->getXncell() && yt<(int)m_SeedMapIn->getYncell())
+									if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
 									{
-										new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
+										new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
 									}
 								} else if (dispOption==2 || dispOption==3)
 								{
-									new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
 								}
 							}
 						}
@@ -428,12 +428,12 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 					/* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
 					if (dld == 0)
 					{
-						new_SeedMapOut(x,y) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.01 );
+						new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
 					} else if (dld>0)
 					{
-						if((int)m_FGdistCircle[fg][2].size()>0)
+						if(m_FGdistCircle[fg][2].size()>0)
 						{
-							UniInt distrib(0,(int)m_FGdistCircle[fg][2].size() - 1);
+							UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
 							GeneratorUniInt draw_from_distrib(rng,distrib);
 
 							/*!*/
@@ -441,9 +441,9 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 							/*!*/
 							xt = x + m_FGdistCircle[fg][2][LD_draw];
 							yt = y + m_FGdistCircle[fg][5][LD_draw];
-							if (xt>=0 && yt>=0 && xt<(int)m_SeedMapIn->getXncell() && yt<(int)m_SeedMapIn->getYncell())
+							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
 							{
-								new_SeedMapOut(xt,yt) += (int)( (*m_SeedMapIn)(x,y,fg) * 0.01 );
+								new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
 							}
 						}
 					} // end of d99 -> ldd crown dispersal

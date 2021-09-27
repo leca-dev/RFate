@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // FATE
 int FATE(std::string simulParam, int no_CPU, int verboseLevel);
 RcppExport SEXP _RFate_FATE(SEXP simulParamSEXP, SEXP no_CPUSEXP, SEXP verboseLevelSEXP) {

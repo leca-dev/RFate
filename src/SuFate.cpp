@@ -66,7 +66,7 @@ SuFate::~SuFate()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-const unsigned SuFate::getCellID() const { return m_CellID; }
+unsigned SuFate::getCellID() const { return m_CellID; }
 const Community SuFate::getCommunity() const { return m_Comm; }
 LightResources SuFate::getLightResources() { return m_LightR; }
 double SuFate::getSoilResources() { return m_SoilR; }
@@ -141,7 +141,7 @@ void SuFate::CalculateEnvironment()
 	if (m_GSP->getDoLightInteraction() || m_GSP->getDoSoilInteraction())
 	{
 		vector< int > stProfile(m_GSP->getNoStrata(), 0);
-		int noFG = int(m_Comm.getFuncGroupList().size());
+		int noFG = m_Comm.getFuncGroupList().size();
 		int noFG_pres = 0;
 
 		vector < int > AbundPFG(noFG,0); // vector to store abundances of PFGs
@@ -242,7 +242,7 @@ void SuFate::CalculateEnvironment()
 					{
 						if (AbundPFG[fg] > 0)
 						{
-							soilResource += ( AbundPFG[fg] / double(TotAbund)) * m_Comm.getFuncGroup_(fg)->getFGparams_()->getSoilContrib();
+							soilResource += ( AbundPFG[fg] / static_cast<double>(TotAbund)) * m_Comm.getFuncGroup_(fg)->getFGparams_()->getSoilContrib();
 						}
 					}
 					/* update soil resources */
@@ -550,7 +550,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 		int SeedInput, AvailSeeds;
 		if (FGparams->getDispersed() == 1)
 		{
-			SeedInput = max(getSeedInput(fg), (int)getSeedRain(fg));
+			SeedInput = max(getSeedInput(fg), static_cast<int>(getSeedRain(fg)));
 		  //SeedInput = getSeedInput(fg);
 		} else
 		{
@@ -562,7 +562,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			AvailSeeds = App_ptr->getSize();
 		} else
 		{
-			AvailSeeds = max( int( App_ptr->getSize() ), int( SeedInput ) ) ;
+			AvailSeeds = max( static_cast<int>(App_ptr->getSize()), static_cast<int>(SeedInput) ) ;
 		}
 
 		/* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
@@ -646,7 +646,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 				int recrrate = ceil(GerminRate * envRecruit);   /* Recruitment is ponderated by environmental suitabilities */
 				if (recrrate > 0)
 				{
-					FuncG->getLList_()->addCohort( (int) recrrate, 0, 0);
+					FuncG->getLList_()->addCohort( static_cast<int>(recrrate), 0, 0);
 				}
 			}
 		}
@@ -657,7 +657,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
 			setSeedProd(fg, 0.0);
 		} else
 		{
-			setSeedProd(fg, (int)(max(0.0, this->calcFecund(fg))));
+			setSeedProd(fg, static_cast<int>(max(0.0, this->calcFecund(fg))));
 		}
 	}
 }// end of SuFate::DoSuccessionPart2(...)
@@ -682,13 +682,9 @@ void SuFate::DoUnaffected(int fg, int Dstb, FGresponse FGresp)
 			if (pcUnaff <= 0.0)
 			{
 				FGlegion->removeCohort(ageStart, ageStop);
-			} else
-			{
-				/* reduce cohorts abundances if some plants are not unaffected */
-				if (pcUnaff < 1.0)
-				{
+			} else if (pcUnaff < 1.0)
+			{ /* reduce cohorts abundances if some plants are not unaffected */
 					FGlegion->reduceCohort(ageStart, ageStop, pcUnaff);
-				}
 			}
 		}
 	} // end loop over ranges
@@ -696,7 +692,7 @@ void SuFate::DoUnaffected(int fg, int Dstb, FGresponse FGresp)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
+void SuFate::DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp)
 {
 	if (m_Comm.getNoCohort(fg) > 0)
 	{
@@ -706,14 +702,27 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 		/* Get number of resprouting plants */
 		/* Resprouting plants counter reinitialisation */
 		int noRange = FGresp.getFates()[Dstb].size();
-		vector< int > ResprC(noRange,0);
+		vector< int > ResprC(noRange, 0);
 		//fill(ResprC.begin(), ResprC.end(), 0);
+		
+		/* Get disturbance value : if < 1, reduce Kill and Respr fates accordingly */
+		if (Dstb_val < 1.0)
+		{
+		  for (int range=0; range<noRange; range++)
+		  {
+		    double newKill = FractToDouble(FGresp.getFates(Dstb, range, Kill)) * Dstb_val;
+		    double newRespr = FractToDouble(FGresp.getFates(Dstb, range, Respr)) * Dstb_val;
+		    FGresp.setFates(DoubleToFract(newKill), Dstb, range, Kill);
+		    FGresp.setFates(DoubleToFract(newRespr), Dstb, range, Respr);
+		    FGresp.setFates(getLeavingFract(DoubleToFract(newKill), DoubleToFract(newRespr)), Dstb, range, Unaff);
+		  }
+		}
 
 		for (int co=0; co<m_Comm.getNoCohort(fg); co++)
 		{
 			for (int range=0; range<noRange; range++)
 			{
-				ResprC[range] += ceil( FractToDouble( FGresp.getFates(Dstb, range, Respr ) ) * m_Comm.getCSize(fg,co) *
+				ResprC[range] += ceil( FractToDouble( FGresp.getFates(Dstb, range, Respr) ) * m_Comm.getCSize(fg, co) *
 				fmax( fmin( m_Comm.getAo(fg,co), FGresp.getBreakAge(Dstb, range+1) - 1 ) -
 				fmax( m_Comm.getAy(fg,co), FGresp.getBreakAge(Dstb, range) ) + 1, 0 ) ); //rescale to apply on range-1
 			}
@@ -730,25 +739,28 @@ void SuFate::DoDisturbance(int fg, int Dstb, FGresponse FGresp )
 				FGlegion->addCohort(ResprC[range], FGresp.getResprAge(Dstb, range), FGresp.getResprAge(Dstb, range));
 			}
 		}
+		
+		/* Pick up legions having same size and following ages */
+		FGlegion->pickupCohorts();
 
 		/* Seeds pool perturbation part */
 		PropPool* App_ptr = FuncG->getPools_(ActiveP);
 		PropPool* Dpp_ptr = FuncG->getPools_(DormantP);
 
 		/* Kill active seeds */
-		App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * FractToDouble( FGresp.getPropKilled(Dstb) ) ) );
+		App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * FractToDouble(FGresp.getPropKilled(Dstb)) * Dstb_val) );
 
 		/* Transfer Dormant seeds to active seed pool */
 		if (FuncG->getFGparams_()->getInnateDormancy())
 		{
 			Fract dormbreaks = FGresp.getDormBreaks(Dstb);
-			App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * FractToDouble(dormbreaks), 100) ) ;
+			App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * FractToDouble(dormbreaks) * Dstb_val, 100) ) ;
 			if (dormbreaks == PC100)
 			{
 				Dpp_ptr->EmptyPool();
 			} else
 			{
-				Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - FractToDouble(dormbreaks) ) ) );
+				Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - FractToDouble(dormbreaks) * Dstb_val) ) );
 			}
 		}
 	}

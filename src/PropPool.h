@@ -126,9 +126,9 @@ class PropPool
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	const int& getSize() const;
-	const bool& getDeclining() const;
-	const int& getDTime() const;
+	int getSize() const;
+	bool getDeclining() const;
+	int getDTime() const;
 
 	void setSize(const int& size);
 	void setDeclining(const bool& declining);
