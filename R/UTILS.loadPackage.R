@@ -80,5 +80,6 @@
 
 .onUnload = function (libpath)
 {
+  library.dynam.unload("RangeShiftR", libpath)
   library.dynam.unload("RFate", libpath)
 }
