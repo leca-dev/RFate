@@ -4,8 +4,8 @@ citEntry(
   entry = "Manual",
   title = "RFate package : vegetation modelling with FATE",
   author = "Isabelle Boulangeat, Damien Georges, Maya Guéguen and Wilfried Thuiller",
-  year = "2020",
-  version = "1.0",
+  year = "2021",
+  version = "1.0.3",
   url = "https://leca-dev.github.io/RFate/",
   textVersion = paste("Laboratoire d'Ecologie Alpine (LECA), Grenoble (38), France.",
                       "URL: https://github.com/leca-dev/RFate.git")

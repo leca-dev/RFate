@@ -75,7 +75,7 @@ containing GLOBAL PARAMETERS used in FATE model." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -743,7 +743,7 @@ define general characteristics of the simulation :</p>
     <dt>seeding_timestep</dt><dd><p>the time interval at which occurs the seeding, 
     and until the seeding duration is not over (<em>in years</em>)</p></dd>
     <dt>seeding_input</dt><dd><p>the number of seeds dispersed for each PFG at each 
-    time step, and until the seeding duration is not over <br /> <br /></p></dd></dl></p></dd>
+    time step, and until the seeding duration is not over <br /> <br /> <br /> <br /></p></dd></dl></p></dd>
 
 </dl>
 
@@ -754,18 +754,19 @@ file, and if so, some additional parameters will be required :</p>
   <dt>LIGHT</dt><dd><p>= to influence seed recruitment and plant mortality according 
   to PFG preferences for light conditions <br /> (see 
   <code><a href='PRE_FATE.params_PFGlight.html'>PRE_FATE.params_PFGlight</a></code>)<br />
-  = light resources are calculated as a proxy of PFG abundances within each 
-  height stratum <br /> <br />
-  To transform PFG abundances into light resources :
-  $$abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &lt; 
-  \text{LIGHT.thresh_medium} \;\; \Leftrightarrow \;\; 
-  light_{\text{ Stratum}_k} = \text{High}$$  $$\text{LIGHT.thresh_medium } &lt; 
-  abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &lt; 
-  \text{LIGHT.thresh_low} \\ \Leftrightarrow \;\; 
-  light_{\text{ Stratum}_k} = \text{Medium}$$  $$abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &gt; 
-  \text{LIGHT.thresh_low} \;\; \Leftrightarrow \;\; 
-  light_{\text{ Stratum}_k} = \text{Low}$$
-  <em>As light resources are directly obtained from PFG abundances, 
+  = light resources are calculated as a proxy of PFG abundances weighted by 
+  their shade factor within each height stratum <br /> <br />
+  To transform PFG abundances :
+  $$abund_{\text{ Stratum}_k} = \sum abund_{\text{ PFG}_{i}\text{, }\text{Stratum}_k} * 
+  \text{shade.FACT}_{\text{ PFG}_{i}}$$  into light resources :
+  <ul>
+<li><p>\(light_{\text{ Stratum}_k} = \text{High} \;\; \;\;\) if 
+    \(\;\;\;\; abund_{\text{ Stratum}_k} &lt; \text{LIGHT.thresh_medium}\)</p></li>
+<li><p>\(light_{\text{ Stratum}_k} = \text{Medium} \;\; \;\;\) if 
+    \(\;\;\;\; \text{LIGHT.thresh_medium } &lt; abund_{\text{ Stratum}_k} &lt; \text{LIGHT.thresh_low}\)</p></li>
+<li><p>\(light_{\text{ Stratum}_k} = \text{Low} \;\; \;\;\) if 
+    \(\;\;\;\; abund_{\text{ Stratum}_k} &gt; \text{LIGHT.thresh_low}\)</p></li>
+</ul>  <em>As light resources are directly obtained from PFG abundances, 
   <code>LIGHT.thresh_medium</code> and <code>LIGHT.thresh_low</code> parameters should 
   be on the same scale than <code>required.max_abund_low</code>, 
   <code>required.max_abund_medium</code> and <code>required.max_abund_high</code> 
