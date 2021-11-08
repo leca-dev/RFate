@@ -45,32 +45,30 @@
   actual = packageDescription(pkgname)[["Version"]]
   previouswarn = getOption("warn")
   options(warn = 2)
-  webpage = "https://leca-dev.github.io/RFate/authors.html"
+  webpage = "https://raw.githubusercontent.com/leca-dev/RFate/master/DESCRIPTION"
   description = try(read.delim(webpage, header = F, stringsAsFactors = F), silent = TRUE)
   
   m = paste("Welcome in package", pkgname, "!")
-  m = paste0(m, "\n Your version is ", actual, ".")
-  
-  # if (!inherits(description, "try-error"))
-  # {
-  #   recent = description[grep("version =", description[, 1]), 1]
-  #   recent = sub("},$", "", recent)
-  #   recent = sub(".* = ", "", recent)
-  #   recent = sub("[{]", "", recent)
-  #   
-  #   m = paste0(m, "\n Your version is ", actual, ".")
-  #   if (recent != "" && actual != recent)
-  #   {
-  #     m = paste0(m, " Most recent is ", recent, ".")
-  #   } else
-  #   {
-  #     # m = paste0(m, "\n No internet connection is available to check for update.")
-  #   }
-  # } else
-  # {
-  #   # m = paste0(m, "\n No internet connection is available to check for update.")
-  # }
   m = paste0(m, "\n Support functions for the software FATE.")
+  # m = paste0(m, "\n Your version is ", actual, ".")
+  
+  if (!inherits(description, "try-error"))
+  {
+    recent = description[grep("Version:", description[, 1]), 1]
+    recent = strsplit(recent, " ")[[1]][2]
+
+    m = paste0(m, "\n Your version is ", actual, ".")
+    if (recent != "" && actual != recent)
+    {
+      m = paste0(m, " Most recent is ", recent, ".")
+    } else
+    {
+      # m = paste0(m, "\n No internet connection is available to check for update.")
+    }
+  } else
+  {
+    # m = paste0(m, "\n No internet connection is available to check for update.")
+  }
   m = paste0(m, "\n More informations can be find here :")
   m = paste0(m, "\n - https://leca-dev.github.io/RFate/")
   
