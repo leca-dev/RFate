@@ -219,7 +219,7 @@ GSP::GSP(const string globalParamsFile)
 			logg.error("!!! Parameter LIGHT_THRESH_LOW : must be superior or equal to LIGHT_THRESH_MEDIUM!");
 		}
 		v_int = GlobParms.get_val<int>("LIGHT_SAVING", true);
-		if (v_int.size()) m_LightSaving = bool(v_int[0]); else m_LightSaving = false;
+		if (v_int.size()) m_LightSaving = bool(v_int[0]); else m_LightSaving = true;
 	} else
 	{
 		m_LightThreshLow = 0;
@@ -302,7 +302,7 @@ GSP::GSP(const string globalParamsFile)
 			logg.error("!!! Parameter SOIL_RETENTION : must be inferior or equal to 1!");
 		}
 		v_int = GlobParms.get_val<int>("SOIL_SAVING", true);
-		if (v_int.size()) m_SoilSaving = bool(v_int[0]); else m_SoilSaving = false;
+		if (v_int.size()) m_SoilSaving = bool(v_int[0]); else m_SoilSaving = true;
 	} else
 	{
 		m_SoilInit = 0.0;
