@@ -14,6 +14,7 @@
 ##' @param mat.PFG.light a \code{data.frame} with 2 to 6 columns : \cr 
 ##' \itemize{
 ##'   \item \code{PFG},
+##'   \item \code{type} (\emph{or \code{shade_factor}})
 ##'   \item \code{type}, (\emph{or \code{active_germ_low}, 
 ##'   \code{active_germ_medium}, \code{active_germ_high}}) (\emph{or
 ##'   \code{strategy_ag}})
@@ -47,7 +48,15 @@
 ##'   
 ##'   \item{type}{or life-form, based on Raunkier. \cr It should be either 
 ##'   \code{H} (herbaceous), \code{C} (chamaephyte) or \code{P} (phanerophyte) 
-##'   for now}
+##'   for now \cr \cr}
+##'   
+##'   \item{(\emph{shade_factor})}{an \code{integer} between \code{1} and 
+##'   \code{Inf} corresponding to an index of shade quantity to weight PFG 
+##'   abundance and transform it into light resources (\emph{e.g. if two PFG 
+##'   have shade factors of \code{1} and \code{5} respectively, for the same 
+##'   abundances, the second PFG will produce 5 times more shade than the first 
+##'   one}) \cr \cr}
+##'   
 ##'   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
 ##'   \code{10} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{Low} light condition}
@@ -81,6 +90,22 @@
 ##' each PFG :
 ##' 
 ##' \describe{
+##'   \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
+##'   transform it into light resources \cr \cr
+##'   Two methods to define these proportions are available :
+##'   \itemize{
+##'     \item from \strong{predefined rules} (using \code{type}) :
+##'     \itemize{
+##'       \item for \code{H} (herbaceous) : \code{1}
+##'       \item for \code{C} (chamaephyte) : \code{5}
+##'       \item for \code{P} (phanerophyte) : \code{20}
+##'     }
+##'     \item from \strong{user data} : \cr
+##'     \emph{with the values contained within the \code{shade_factor} column, 
+##'     if provided \cr \cr}
+##'   }
+##'   }
+##' 
 ##'   \item{ACTIVE_GERM}{proportion of seeds that will germinate for each light 
 ##'   condition (\code{Low}, \code{Medium}, \code{High}) \cr \cr
 ##'   Three methods to define these proportions are available :
@@ -179,9 +204,11 @@
 ##' 
 ##' \describe{
 ##'   \item{NAME}{name of the PFG}
+##'   \item{LIGHT}{light value or strategy of the PFG}
+##'   \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
+##'   transform it into light resources}
 ##'   \item{ACTIVE_GERM}{germination rates depending on light conditions 
 ##'   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
-##'   \item{LIGHT}{light value or strategy of the PFG}
 ##'   \item{LIGHT_TOL}{light tolerance table (in a single row). \cr 
 ##'   This is a vector of 9 numbers corresponding to the ability of the PFG to 
 ##'   survive or not :
@@ -219,6 +246,7 @@
 ##' 
 ##' ## Create PFG light parameter files (with strategies) ----------------------------------------
 ##' mat.ag = data.frame(PFG = paste0('PFG', 1:6)
+##'                     , type = c('C', 'C', 'H', 'H', 'P', 'P')
 ##'                     , strategy_ag = c('shade_lover', 'indifferent'
 ##'                                       , 'indifferent', 'shade_lover'
 ##'                                       , 'light_lover', 'light_lover'))
@@ -235,6 +263,7 @@
 ##' 
 ##' ## Create PFG light parameter files (with all values) ----------------------------------------
 ##' mat.ag = data.frame(PFG = paste0('PFG', 1:6)
+##'                     , shade_factor = c(5, 3, 1, 1, 12, 18)
 ##'                     , active_germ_low = c(9, 8, 8, 8, 5, 5)
 ##'                     , active_germ_medium = rep(8, 6)
 ##'                     , active_germ_high = c(4, 8, 8, 5, 9, 9))
@@ -297,29 +326,51 @@ PRE_FATE.params_PFGlight = function(
     .stopMessage_beDataframe("mat.PFG.light")
   } else
   {
-    if (nrow(mat.PFG.light) == 0 || !(ncol(mat.PFG.light) %in% c(2, 3, 4, 6)))
+    if (nrow(mat.PFG.light) == 0 || !(ncol(mat.PFG.light) %in% c(2, 3, 4, 5, 6, 7)))
     {
-      .stopMessage_numRowCol("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
-                                                , "(active_germ_high)", "(strategy_ag)", "(light_need)"))
+      .stopMessage_numRowCol("mat.PFG.light", c("PFG", "type", "(shade_factor)", "(active_germ_low)"
+                                                , "(active_germ_medium)", "(active_germ_high)"
+                                                , "(strategy_ag)", "(light_need)"))
     } else
     {
       notCorrect = switch(as.character(ncol(mat.PFG.light))
-                          , "2" = (.testParam_notColnames(mat.PFG.light, c("PFG", "type")) &&
-                                     .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag")))
-                          , "3" = .testParam_notColnames(mat.PFG.light, c("PFG", "type", "light_need"))
+                          , "2" = .testParam_notColnames(mat.PFG.light, c("PFG", "type"))
+                          , "3" = (.testParam_notColnames(mat.PFG.light, c("PFG", "type", "light_need")) &&
+                                     .testParam_notColnames(mat.PFG.light, c("PFG", "type", "strategy_ag")) &&
+                                     .testParam_notColnames(mat.PFG.light, c("PFG", "shade_factor", "type")) &&
+                                     .testParam_notColnames(mat.PFG.light, c("PFG", "shade_factor", "strategy_ag")))
                           , "4" = (.testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
                                                                            , "active_germ_medium"
                                                                            , "active_germ_high")) &&
                                      .testParam_notColnames(mat.PFG.light, c("PFG", "strategy_ag"
+                                                                             , "type", "light_need")) &&
+                                     .testParam_notColnames(mat.PFG.light, c("PFG", "shade_factor"
                                                                              , "type", "light_need")))
+                          , "5" = (.testParam_notColnames(mat.PFG.light, c("PFG", "shade_factor"
+                                                                           , "strategy_ag"
+                                                                           , "type", "light_need")) &&
+                                     .testParam_notColnames(mat.PFG.light, c("PFG", "type"
+                                                                          , "active_germ_low"
+                                                                          , "active_germ_medium"
+                                                                          , "active_germ_high")) &&
+                                     .testParam_notColnames(mat.PFG.light, c("PFG", "shade_factor"
+                                                                             , "active_germ_low"
+                                                                             , "active_germ_medium"
+                                                                             , "active_germ_high")))
                           , "6" = .testParam_notColnames(mat.PFG.light, c("PFG", "active_germ_low"
+                                                                          , "active_germ_medium"
+                                                                          , "active_germ_high"
+                                                                          , "type", "light_need"))
+                          , "7" = .testParam_notColnames(mat.PFG.light, c("PFG", "shade_factor"
+                                                                          , "active_germ_low"
                                                                           , "active_germ_medium"
                                                                           , "active_germ_high"
                                                                           , "type", "light_need"))
                           , TRUE)
       if (notCorrect){
-        .stopMessage_columnNames("mat.PFG.light", c("PFG", "type", "(active_germ_low)", "(active_germ_medium)"
-                                                    , "(active_germ_high)", "(strategy_ag)", "(light_need)"))
+        .stopMessage_numRowCol("mat.PFG.light", c("PFG", "type", "(shade_factor)", "(active_germ_low)"
+                                                  , "(active_germ_medium)", "(active_germ_high)"
+                                                  , "(strategy_ag)", "(light_need)"))
       }
     }
     mat.PFG.light$PFG = as.character(mat.PFG.light$PFG)
@@ -329,6 +380,11 @@ PRE_FATE.params_PFGlight = function(
     {
       mat.PFG.light$type = as.character(mat.PFG.light$type)
       .testParam_notInValues.m("mat.PFG.light$type", mat.PFG.light$type, c("H", "C", "P"))
+    }
+    if (sum(colnames(mat.PFG.light) == "shade_factor") == 1)
+    {
+      .testParam_notInteger.m("mat.PFG.light$shade_factor", mat.PFG.light$shade_factor)
+      .testParam_notBetween.m("mat.PFG.light$shade_factor", mat.PFG.light$shade_factor, 0, Inf)
     }
     if (sum(colnames(mat.PFG.light) == "light_need") == 1)
     {
@@ -414,6 +470,23 @@ PRE_FATE.params_PFGlight = function(
   } else
   {
     warning("Missing data! The `LIGHT` parameter has not been set. Please check.")
+  }
+  
+  #############################################################################
+  
+  ## GET SHADE FACTOR
+  SHADE_FACTOR = rep(1, no.PFG)
+  if (sum(colnames(mat.PFG.light) == "shade_factor") == 1)
+  {
+    SHADE_FACTOR = as.numeric(mat.PFG.light$shade_factor)
+  } else if (sum(colnames(mat.PFG.light) == "type") == 1)
+  {
+    SHADE_FACTOR[which(mat.PFG.light$type == "H")] = 1
+    SHADE_FACTOR[which(mat.PFG.light$type == "C")] = 5
+    SHADE_FACTOR[which(mat.PFG.light$type == "P")] = 20
+  } else
+  {
+    warning("Missing data! The `SHADE_FACTOR` parameter has not been set. Please check.")
   }
   
   #############################################################################
@@ -573,6 +646,7 @@ PRE_FATE.params_PFGlight = function(
   names.params.list = get("NAME")
   names.params.list.sub = c("NAME"
                             , "LIGHT"
+                            , "SHADE_FACTOR"
                             , "ACTIVE_GERM"
                             , "LIGHT_TOL")
   
@@ -581,6 +655,7 @@ PRE_FATE.params_PFGlight = function(
   params.csv = t(do.call(rbind, params.list))
   colnames(params.csv) = c("NAME"
                            , "LIGHT"
+                           , "SHADE_FACTOR"
                            , paste0("ACTIVE_GERM_for_", c("L", "M", "H"))
                            , paste0("LIGHT_TOL_for_",
                                     c("GeL", "GeM", "GeH"
