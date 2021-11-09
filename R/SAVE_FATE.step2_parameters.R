@@ -937,7 +937,6 @@ SAVE_FATE.step2_parameters = function(name.dataset
     }
     ## CHECK parameter no_simulations
     .testParam_notInteger.m("multipleSet['no_simulations']", multipleSet['no_simulations'])
-    .testParam_notRound.m("multipleSet['no_simulations']", multipleSet['no_simulations'])
     ## CHECK parameters scenario1
     if (scenario1)
     {

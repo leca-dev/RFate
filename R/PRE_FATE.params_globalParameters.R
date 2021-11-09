@@ -808,11 +808,8 @@ PRE_FATE.params_globalParameters = function(
   .testParam_notInteger.m("required.seeding_input", required.seeding_input)
   .testParam_notInteger.m("required.potential_fecundity", required.potential_fecundity)
   .testParam_notInteger.m("required.max_abund_low", required.max_abund_low)
-  .testParam_notRound.m("required.max_abund_low", required.max_abund_low)
   .testParam_notInteger.m("required.max_abund_medium", required.max_abund_medium)
-  .testParam_notRound.m("required.max_abund_medium", required.max_abund_medium)
   .testParam_notInteger.m("required.max_abund_high", required.max_abund_high)
-  .testParam_notRound.m("required.max_abund_high", required.max_abund_high)
   if (sum(required.max_abund_low > required.max_abund_medium) > 0)
   {
     stop(paste0("Wrong type of data!\n `required.max_abund_low` must contain "
@@ -826,9 +823,7 @@ PRE_FATE.params_globalParameters = function(
   if (doLight)
   {
     .testParam_notInteger.m("LIGHT.thresh_medium", LIGHT.thresh_medium)
-    .testParam_notRound.m("LIGHT.thresh_medium", LIGHT.thresh_medium)
     .testParam_notInteger.m("LIGHT.thresh_low", LIGHT.thresh_low)
-    .testParam_notRound.m("LIGHT.thresh_low", LIGHT.thresh_low)
     if (sum(LIGHT.thresh_medium > LIGHT.thresh_low) > 0){
       stop(paste0("Wrong type of data!\n `LIGHT.thresh_medium` must contain "
                   , "values equal or inferior to `LIGHT.thresh_low`"))

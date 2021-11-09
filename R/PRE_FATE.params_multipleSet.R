@@ -330,7 +330,6 @@ PRE_FATE.params_multipleSet = function(
   }
   ## CHECK parameter no_simulations
   .testParam_notInteger.m("no_simulations", no_simulations)
-  .testParam_notRound.m("no_simulations", no_simulations)
   ## CHECK parameters scenario1
   if (scenario1)
   {

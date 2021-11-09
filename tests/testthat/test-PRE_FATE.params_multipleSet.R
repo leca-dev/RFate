@@ -182,6 +182,10 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : no_simulati
                                            , file.simulParam.1 = "toto.txt"
                                            , no_simulations = factor("a"))
                , "Wrong type of data!\n `no_simulations` must be an integer > 0")
+  expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
+                                           , file.simulParam.1 = "toto.txt"
+                                           , no_simulations = 10.5)
+               , "Wrong type of data!\n `no_simulations` must be an integer > 0")
 })
 
 ## INPUTS
@@ -638,15 +642,7 @@ test_that("PRE_FATE.params_multipleSet gives correct output", {
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
   expect_warning(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                              , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10.5
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.no_strata = FALSE)
-                 , "`no_simulations` is a double. It will be converted (rounded) to an integer"
-                 , fixed = TRUE)
-  if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_warning(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10.5
+                                             , no_simulations = 10
                                              , do.DISPERSAL.mode = FALSE
                                              , do.no_strata = FALSE)
                  , "The parameter 'light_thresh_medium' is not defined in the global file"
