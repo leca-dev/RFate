@@ -48,21 +48,21 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   
   ## TEST mat.PFG.light : correct number of rows and columns
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation", mat.PFG.light = data.frame())
-               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
+               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (shade_factor), (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation", mat.PFG.light = data.frame(1))
-               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
+               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (shade_factor), (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation", mat.PFG.light = data.frame(1,2,3,4,5,6,7))
-               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
+               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (shade_factor), (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
                , fixed = TRUE)
   
   ## TEST mat.PFG.light : correct names of columns
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation", mat.PFG.light = data.frame(1,2))
-               , "Column names of `mat.PFG.light` must be `PFG`, `type`, `(active_germ_low)`, `(active_germ_medium)`, `(active_germ_high)`, `(strategy_ag)` and `(light_need)`"
+               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (shade_factor), (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation", mat.PFG.light = data.frame(1,2,3,4))
-               , "Column names of `mat.PFG.light` must be `PFG`, `type`, `(active_germ_low)`, `(active_germ_medium)`, `(active_germ_high)`, `(strategy_ag)` and `(light_need)`"
+               , "`mat.PFG.light` does not have the appropriate number of rows (>0) or columns (PFG, type, (shade_factor), (active_germ_low), (active_germ_medium), (active_germ_high), (strategy_ag), (light_need))"
                , fixed = TRUE)
   
   ## TEST mat.PFG.light$PFG : different values
@@ -94,6 +94,21 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = c(1,2), type = c("H",NA)))
                , "`mat.PFG.light$type` must be either `H`, `C` or `P`", fixed = TRUE)
+  
+  
+  ## TEST mat.PFG.light$shade_factor : correct values
+  expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                        , mat.PFG.light = data.frame(PFG = 1, type = "H", shade_factor = ""))
+               , "`mat.PFG.light$shade_factor` must be an integer > 0", fixed = TRUE)
+  expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                        , mat.PFG.light = data.frame(PFG = 1, type = "H", shade_factor = 2.1))
+               , "`mat.PFG.light$shade_factor` must be an integer > 0", fixed = TRUE)
+  expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                        , mat.PFG.light = data.frame(PFG = 1, type = "H", shade_factor = NA))
+               , "`mat.PFG.light$shade_factor` must not contain NA values", fixed = TRUE)
+  expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
+                                        , mat.PFG.light = data.frame(PFG = c(1,2), type = "H", shade_factor = c(1,NA)))
+               , "`mat.PFG.light$shade_factor` must not contain NA values", fixed = TRUE)
   
   ## TEST mat.PFG.light$light_need : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
@@ -163,16 +178,16 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   
   ## TEST mat.PFG.light$strategy_ag : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = NA))
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = NA))
                , "`mat.PFG.light$strategy_ag` must be either `light_lover`, `indifferent` or `shade_lover`", fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = 2))
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = 2))
                , "`mat.PFG.light$strategy_ag` must be either `light_lover`, `indifferent` or `shade_lover`", fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = ""))
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = ""))
                , "`mat.PFG.light$strategy_ag` must be either `light_lover`, `indifferent` or `shade_lover`", fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = c(1,2), strategy_ag = c("indifferent",NA)))
+                                        , mat.PFG.light = data.frame(PFG = c(1,2), shade_factor = 1, strategy_ag = c("indifferent",NA)))
                , "`mat.PFG.light$strategy_ag` must be either `light_lover`, `indifferent` or `shade_lover`", fixed = TRUE)
   
 })
@@ -183,43 +198,43 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.tol", 
   
   ## TEST mat.PFG.tol : data.frame
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = NA)
                , "`mat.PFG.tol` must be a data.frame")
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = "")
                , "`mat.PFG.tol` must be a data.frame")
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = 1)
                , "`mat.PFG.tol` must be a data.frame")
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = matrix(1))
                , "`mat.PFG.tol` must be a data.frame")
   
   
   ## TEST mat.PFG.tol : correct number of rows and columns
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame())
                , "`mat.PFG.tol` does not have the appropriate number of rows (>0) or columns (PFG, lifeStage, resources, tolerance, (strategy_tol)"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(1))
                , "`mat.PFG.tol` does not have the appropriate number of rows (>0) or columns (PFG, lifeStage, resources, tolerance, (strategy_tol)"
                , fixed = TRUE)
   
   ## TEST mat.PFG.tol : correct names of columns
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(1,2))
                , "Column names of `mat.PFG.tol` must be `PFG`, `lifeStage`, `resources`, `tolerance` and `(strategy_tol)`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(1,2,3,4))
                , "Column names of `mat.PFG.tol` must be `PFG`, `lifeStage`, `resources`, `tolerance` and `(strategy_tol)`"
                , fixed = TRUE)
@@ -227,41 +242,41 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.tol", 
   
   ## TEST mat.PFG.tol$PFG : length > 0
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = NA, lifeStage = 1, resources = 1, tolerance = 1))
                , "`mat.PFG.tol$PFG` must contain a character value of length > 0"
                , fixed = TRUE)
   
   ## TEST mat.PFG.tol$lifeStage : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = 1, resources = 1, tolerance = 1))
                , "`mat.PFG.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = NA, resources = 1, tolerance = 1))
                , "`mat.PFG.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "", resources = 1, tolerance = 1))
                , "`mat.PFG.tol$lifeStage` must be either `Germinant`, `Immature` or `Mature`"
                , fixed = TRUE)
   
   ## TEST mat.PFG.tol$resources : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = 1, tolerance = 1))
                , "`mat.PFG.tol$resources` must be either `Low`, `Medium` or `High`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = NA, tolerance = 1))
                , "`mat.PFG.tol$resources` must be either `Low`, `Medium` or `High`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "", tolerance = 1))
                , "`mat.PFG.tol$resources` must be either `Low`, `Medium` or `High`"
                , fixed = TRUE)
@@ -269,20 +284,20 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.tol", 
   
   ## TEST mat.PFG.tol$tolerance : no NA values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "Low", tolerance = c(NA, 1)))
                , "`mat.PFG.tol$tolerance` must not contain NA values", fixed = TRUE)
   
   
   ## TEST mat.PFG.tol$tolerance : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "Low", tolerance = -1))
                # , "`mat.PFG.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
                , "`mat.PFG.tol$tolerance` must be either `0` or `1`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "Low", tolerance = 1.5))
                # , "`mat.PFG.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
                , "`mat.PFG.tol$tolerance` must be either `0` or `1`"
@@ -290,17 +305,17 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.tol", 
   
   ## TEST mat.PFG.tol$strategy_tol : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = 1))
                , "`mat.PFG.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = NA))
                , "`mat.PFG.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "indifferent")
+                                        , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = factor("a")))
                , "`mat.PFG.tol$strategy_tol` must be either `full_light`, `pioneer`, `ubiquist`, `semi_shade` or `undergrowth`"
                , fixed = TRUE)
@@ -359,7 +374,7 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
   expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                                           , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
+                                                           , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "light_lover")
                                                            , mat.PFG.tol = NULL))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
@@ -382,11 +397,10 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
   expect_message(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                          , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
+                                          , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "light_lover")
                                           , mat.PFG.tol = data.frame(PFG = 1, strategy_tol = "pioneer"))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
-
 
 
 ## OUTPUTS
@@ -394,7 +408,7 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
   expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                                           , mat.PFG.light = data.frame(PFG = 1, strategy_ag = "light_lover")
+                                                           , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "light_lover")
                                                            , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
                                                                                       , resources = "Low", tolerance = 1)))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")

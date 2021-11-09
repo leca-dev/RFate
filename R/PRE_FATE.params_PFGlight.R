@@ -383,6 +383,7 @@ PRE_FATE.params_PFGlight = function(
     }
     if (sum(colnames(mat.PFG.light) == "shade_factor") == 1)
     {
+      .testParam_NAvalues.m("mat.PFG.light$shade_factor", mat.PFG.light$shade_factor)
       .testParam_notInteger.m("mat.PFG.light$shade_factor", mat.PFG.light$shade_factor)
       .testParam_notBetween.m("mat.PFG.light$shade_factor", mat.PFG.light$shade_factor, 0, Inf)
     }

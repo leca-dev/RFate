@@ -152,7 +152,7 @@
 ## ----------------------------------------------------------------------------
 .testParam_notInteger = function(param)
 {
-  if (.testParam_notBetween(param, 0, 1e15))
+  if (.testParam_notBetween(param, 0, 1e15) || param %% 1 != 0)
   {
     return(TRUE)
   } else
