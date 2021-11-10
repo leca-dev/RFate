@@ -257,7 +257,7 @@
 ##'     \item{seeding_timestep}{the time interval at which occurs the seeding, 
 ##'     and until the seeding duration is not over (\emph{in years})}
 ##'     \item{seeding_input}{the number of seeds dispersed for each PFG at each 
-##'     time step, and until the seeding duration is not over \cr \cr}
+##'     time step, and until the seeding duration is not over \cr \cr \cr \cr}
 ##'   }
 ##'   }
 ##' }
@@ -270,21 +270,22 @@
 ##'   \item{LIGHT}{= to influence seed recruitment and plant mortality according 
 ##'   to PFG preferences for light conditions \cr (see 
 ##'   \code{\link{PRE_FATE.params_PFGlight}})\cr
-##'   = light resources are calculated as a proxy of PFG abundances within each 
-##'   height stratum \cr \cr
-##'   To transform PFG abundances into light resources :
-##'   \deqn{abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} < 
-##'   \text{LIGHT.thresh_medium} \;\; \Leftrightarrow \;\; 
-##'   light_{\text{ Stratum}_k} = \text{High}}
+##'   = light resources are calculated as a proxy of PFG abundances weighted by 
+##'   their shade factor within each height stratum \cr \cr
+##'   To transform PFG abundances :
+##'   \deqn{abund_{\text{ Stratum}_k} = \sum abund_{\text{ PFG}_{i}\text{, }\text{Stratum}_k} * 
+##'   \text{shade.FACT}_{\text{ PFG}_{i}}}
 ##'   
-##'   \deqn{\text{LIGHT.thresh_medium } < 
-##'   abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} < 
-##'   \text{LIGHT.thresh_low} \\ \Leftrightarrow \;\; 
-##'   light_{\text{ Stratum}_k} = \text{Medium}}
+##'   into light resources :
+##'   \itemize{
+##'     \item \eqn{light_{\text{ Stratum}_k} = \text{High} \;\; \;\;} if 
+##'     \eqn{\;\;\;\; abund_{\text{ Stratum}_k} < \text{LIGHT.thresh_medium}}
+##'     \item \eqn{light_{\text{ Stratum}_k} = \text{Medium} \;\; \;\;} if 
+##'     \eqn{\;\;\;\; \text{LIGHT.thresh_medium } < abund_{\text{ Stratum}_k} < \text{LIGHT.thresh_low}}
+##'     \item \eqn{light_{\text{ Stratum}_k} = \text{Low} \;\; \;\;} if 
+##'     \eqn{\;\;\;\; abund_{\text{ Stratum}_k} > \text{LIGHT.thresh_low}}
+##'   }
 ##'   
-##'   \deqn{abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} > 
-##'   \text{LIGHT.thresh_low} \;\; \Leftrightarrow \;\; 
-##'   light_{\text{ Stratum}_k} = \text{Low}}
 ##'   \emph{As light resources are directly obtained from PFG abundances, 
 ##'   \code{LIGHT.thresh_medium} and \code{LIGHT.thresh_low} parameters should 
 ##'   be on the same scale than \code{required.max_abund_low}, 
@@ -807,11 +808,8 @@ PRE_FATE.params_globalParameters = function(
   .testParam_notInteger.m("required.seeding_input", required.seeding_input)
   .testParam_notInteger.m("required.potential_fecundity", required.potential_fecundity)
   .testParam_notInteger.m("required.max_abund_low", required.max_abund_low)
-  .testParam_notRound.m("required.max_abund_low", required.max_abund_low)
   .testParam_notInteger.m("required.max_abund_medium", required.max_abund_medium)
-  .testParam_notRound.m("required.max_abund_medium", required.max_abund_medium)
   .testParam_notInteger.m("required.max_abund_high", required.max_abund_high)
-  .testParam_notRound.m("required.max_abund_high", required.max_abund_high)
   if (sum(required.max_abund_low > required.max_abund_medium) > 0)
   {
     stop(paste0("Wrong type of data!\n `required.max_abund_low` must contain "
@@ -825,9 +823,7 @@ PRE_FATE.params_globalParameters = function(
   if (doLight)
   {
     .testParam_notInteger.m("LIGHT.thresh_medium", LIGHT.thresh_medium)
-    .testParam_notRound.m("LIGHT.thresh_medium", LIGHT.thresh_medium)
     .testParam_notInteger.m("LIGHT.thresh_low", LIGHT.thresh_low)
-    .testParam_notRound.m("LIGHT.thresh_low", LIGHT.thresh_low)
     if (sum(LIGHT.thresh_medium > LIGHT.thresh_low) > 0){
       stop(paste0("Wrong type of data!\n `LIGHT.thresh_medium` must contain "
                   , "values equal or inferior to `LIGHT.thresh_low`"))

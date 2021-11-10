@@ -18,6 +18,7 @@ or simulation name of the \code{FATE} simulation}
 \item{mat.PFG.light}{a \code{data.frame} with 2 to 6 columns : \cr 
 \itemize{
   \item \code{PFG},
+  \item \code{type} (\emph{or \code{shade_factor}})
   \item \code{type}, (\emph{or \code{active_germ_low}, 
   \code{active_germ_medium}, \code{active_germ_high}}) (\emph{or
   \code{strategy_ag}})
@@ -45,9 +46,11 @@ parameters :
 
 \describe{
   \item{NAME}{name of the PFG}
+  \item{LIGHT}{light value or strategy of the PFG}
+  \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
+  transform it into light resources}
   \item{ACTIVE_GERM}{germination rates depending on light conditions 
   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
-  \item{LIGHT}{light value or strategy of the PFG}
   \item{LIGHT_TOL}{light tolerance table (in a single row). \cr 
   This is a vector of 9 numbers corresponding to the ability of the PFG to 
   survive or not :
@@ -86,7 +89,15 @@ are required for each PFG in order to set up this light interaction :
   
   \item{type}{or life-form, based on Raunkier. \cr It should be either 
   \code{H} (herbaceous), \code{C} (chamaephyte) or \code{P} (phanerophyte) 
-  for now}
+  for now \cr \cr}
+  
+  \item{(\emph{shade_factor})}{an \code{integer} between \code{1} and 
+  \code{Inf} corresponding to an index of shade quantity to weight PFG 
+  abundance and transform it into light resources (\emph{e.g. if two PFG 
+  have shade factors of \code{1} and \code{5} respectively, for the same 
+  abundances, the second PFG will produce 5 times more shade than the first 
+  one}) \cr \cr}
+  
   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
   \code{10} corresponding to the proportion of seeds that will germinate for 
   \code{Low} light condition}
@@ -120,6 +131,22 @@ These values will allow to calculate or define a set of characteristics for
 each PFG :
 
 \describe{
+  \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
+  transform it into light resources \cr \cr
+  Two methods to define these proportions are available :
+  \itemize{
+    \item from \strong{predefined rules} (using \code{type}) :
+    \itemize{
+      \item for \code{H} (herbaceous) : \code{1}
+      \item for \code{C} (chamaephyte) : \code{5}
+      \item for \code{P} (phanerophyte) : \code{20}
+    }
+    \item from \strong{user data} : \cr
+    \emph{with the values contained within the \code{shade_factor} column, 
+    if provided \cr \cr}
+  }
+  }
+
   \item{ACTIVE_GERM}{proportion of seeds that will germinate for each light 
   condition (\code{Low}, \code{Medium}, \code{High}) \cr \cr
   Three methods to define these proportions are available :
@@ -218,6 +245,7 @@ PRE_FATE.skeletonDirectory()
 
 ## Create PFG light parameter files (with strategies) ----------------------------------------
 mat.ag = data.frame(PFG = paste0('PFG', 1:6)
+                    , type = c('C', 'C', 'H', 'H', 'P', 'P')
                     , strategy_ag = c('shade_lover', 'indifferent'
                                       , 'indifferent', 'shade_lover'
                                       , 'light_lover', 'light_lover'))
@@ -234,6 +262,7 @@ PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
 
 ## Create PFG light parameter files (with all values) ----------------------------------------
 mat.ag = data.frame(PFG = paste0('PFG', 1:6)
+                    , shade_factor = c(5, 3, 1, 1, 12, 18)
                     , active_germ_low = c(9, 8, 8, 8, 5, 5)
                     , active_germ_medium = rep(8, 6)
                     , active_germ_high = c(4, 8, 8, 5, 9, 9))

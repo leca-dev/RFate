@@ -74,7 +74,7 @@ the light module of FATE." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
       </span>
     </div>
 
@@ -227,6 +227,7 @@ or simulation name of the <code>FATE</code> simulation</p></td>
       <th>mat.PFG.light</th>
       <td><p>a <code>data.frame</code> with 2 to 6 columns : <br /></p><ul>
 <li><p><code>PFG</code>,</p></li>
+<li><p><code>type</code> (<em>or <code>shade_factor</code></em>)</p></li>
 <li><p><code>type</code>, (<em>or <code>active_germ_low</code>, 
   <code>active_germ_medium</code>, <code>active_germ_high</code></em>) (<em>or
   <code>strategy_ag</code></em>)</p></li>
@@ -257,9 +258,11 @@ to the name of the folder that will be created into the
 parameters :</p>
 <dl>
   <dt>NAME</dt><dd><p>name of the PFG</p></dd>
+  <dt>LIGHT</dt><dd><p>light value or strategy of the PFG</p></dd>
+  <dt>SHADE_FACTOR</dt><dd><p>index of shade quantity to weight PFG abundance and 
+  transform it into light resources</p></dd>
   <dt>ACTIVE_GERM</dt><dd><p>germination rates depending on light conditions 
   <br /> <em>(from <code>0</code> to <code>10</code>, corresponding to 0 to 100%)</em></p></dd>
-  <dt>LIGHT</dt><dd><p>light value or strategy of the PFG</p></dd>
   <dt>LIGHT_TOL</dt><dd><p>light tolerance table (in a single row). <br /> 
   This is a vector of 9 numbers corresponding to the ability of the PFG to 
   survive or not :
@@ -291,7 +294,15 @@ are required for each PFG in order to set up this light interaction :</p>
   
   <dt>type</dt><dd><p>or life-form, based on Raunkier. <br /> It should be either 
   <code>H</code> (herbaceous), <code>C</code> (chamaephyte) or <code>P</code> (phanerophyte) 
-  for now</p></dd>
+  for now <br /> <br /></p></dd>
+  
+  <dt>(<em>shade_factor</em>)</dt><dd><p>an <code>integer</code> between <code>1</code> and 
+  <code>Inf</code> corresponding to an index of shade quantity to weight PFG 
+  abundance and transform it into light resources (<em>e.g. if two PFG 
+  have shade factors of <code>1</code> and <code>5</code> respectively, for the same 
+  abundances, the second PFG will produce 5 times more shade than the first 
+  one</em>) <br /> <br /></p></dd>
+  
   <dt>(<em>active_germ_low</em>)</dt><dd><p>an <code>integer</code> between <code>0</code> and 
   <code>10</code> corresponding to the proportion of seeds that will germinate for 
   <code>Low</code> light condition</p></dd>
@@ -325,6 +336,20 @@ are required for each PFG in order to set up this light interaction :</p>
 <p>These values will allow to calculate or define a set of characteristics for 
 each PFG :</p>
 <dl>
+  <dt>SHADE_FACTOR</dt><dd><p>index of shade quantity to weight PFG abundance and 
+  transform it into light resources <br /> <br />
+  Two methods to define these proportions are available :
+  <ul>
+<li><p>from <strong>predefined rules</strong> (using <code>type</code>) :</p><ul>
+<li><p>for <code>H</code> (herbaceous) : <code>1</code></p></li>
+<li><p>for <code>C</code> (chamaephyte) : <code>5</code></p></li>
+<li><p>for <code>P</code> (phanerophyte) : <code>20</code></p></li>
+</ul></li>
+<li><p>from <strong>user data</strong> : <br />
+    <em>with the values contained within the <code>shade_factor</code> column, 
+    if provided <br /> <br /></em></p></li>
+</ul></p></dd>
+
   <dt>ACTIVE_GERM</dt><dd><p>proportion of seeds that will germinate for each light 
   condition (<code>Low</code>, <code>Medium</code>, <code>High</code>) <br /> <br />
   Three methods to define these proportions are available :
@@ -420,6 +445,7 @@ each PFG :</p>
 
 <span class='co'>## Create PFG light parameter files (with strategies) ----------------------------------------</span>
 <span class='va'>mat.ag</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                    , type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'C'</span>, <span class='st'>'C'</span>, <span class='st'>'H'</span>, <span class='st'>'H'</span>, <span class='st'>'P'</span>, <span class='st'>'P'</span><span class='op'>)</span>
                     , strategy_ag <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'shade_lover'</span>, <span class='st'>'indifferent'</span>
                                       , <span class='st'>'indifferent'</span>, <span class='st'>'shade_lover'</span>
                                       , <span class='st'>'light_lover'</span>, <span class='st'>'light_lover'</span><span class='op'>)</span><span class='op'>)</span>
@@ -436,6 +462,7 @@ each PFG :</p>
 
 <span class='co'>## Create PFG light parameter files (with all values) ----------------------------------------</span>
 <span class='va'>mat.ag</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>PFG <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>'PFG'</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>6</span><span class='op'>)</span>
+                    , shade_factor <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>5</span>, <span class='fl'>3</span>, <span class='fl'>1</span>, <span class='fl'>1</span>, <span class='fl'>12</span>, <span class='fl'>18</span><span class='op'>)</span>
                     , active_germ_low <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>9</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>5</span><span class='op'>)</span>
                     , active_germ_medium <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span><span class='op'>(</span><span class='fl'>8</span>, <span class='fl'>6</span><span class='op'>)</span>
                     , active_germ_high <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>8</span>, <span class='fl'>8</span>, <span class='fl'>5</span>, <span class='fl'>9</span>, <span class='fl'>9</span><span class='op'>)</span><span class='op'>)</span>

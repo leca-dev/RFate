@@ -221,7 +221,7 @@ void SuFate::CalculateEnvironment()
 				/* add PFG strata abundances */
 				for (unsigned st=0; st<stProfile.size(); st++)
 				{
-					stProfile[st] += StratX[st]; /* Abundances per stratum, to be converted into light resources */
+					stProfile[st] += StratX[st] * FGparams->getLightShadeFactor(); /* Abundances per stratum, to be converted into light resources */
 					AbundPFG[fg] += StratX[st]; /* Abundances per PFG, to be converted into soil resources */
 				}
 			}
