@@ -75,7 +75,7 @@ containing GLOBAL PARAMETERS used in FATE model." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -83,7 +83,7 @@ containing GLOBAL PARAMETERS used in FATE model." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -127,21 +127,21 @@ containing GLOBAL PARAMETERS used in FATE model." />
     <li class="divider"></li>
     <li>
       <a href="../articles/rfate_tutorial_1_PFG.html">
-        <span class="fas fa-battery-quarter"></span>
+        <span class="fa fa-battery-quarter"></span>
          
         Build PFG
       </a>
     </li>
     <li>
       <a href="../articles/rfate_tutorial_2_params.html">
-        <span class="fas fa-battery-half"></span>
+        <span class="fa fa-battery-half"></span>
          
         Build parameter files
       </a>
     </li>
     <li>
       <a href="../articles/rfate_tutorial_3_graphics.html">
-        <span class="fas fa-battery-three-quarters"></span>
+        <span class="fa fa-battery-three-quarters"></span>
          
         Build graphics
       </a>
@@ -158,7 +158,7 @@ containing GLOBAL PARAMETERS used in FATE model." />
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-book fa-lg"></span>
+    <span class="fa fa-book fa-lg"></span>
      
     Reference
   </a>
@@ -246,7 +246,6 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
   doDrought <span class='op'>=</span> <span class='cn'>FALSE</span>,
   DROUGHT.no_sub <span class='op'>=</span> <span class='fl'>4</span>,
   doAliens <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  <span class='va'>ALIEN.no</span>,
   ALIEN.freq <span class='op'>=</span> <span class='fl'>1</span>,
   doFire <span class='op'>=</span> <span class='cn'>FALSE</span>,
   <span class='va'>FIRE.no</span>,
@@ -489,11 +488,6 @@ introduction is activated in the <code>FATE</code> simulation, and associated
 parameters are required</p></td>
     </tr>
     <tr>
-      <th>ALIEN.no</th>
-      <td><p>(<em>optional</em>) <br /> an <code>integer</code> corresponding to the 
-number of introductions</p></td>
-    </tr>
-    <tr>
       <th>ALIEN.freq</th>
       <td><p>(<em>optional</em>) <br /> a <code>vector</code> of <code>integer</code> 
 corresponding to the frequency of each introduction (<em>in years</em>)</p></td>
@@ -679,7 +673,6 @@ parameters :</p>
 <p>If the simulation includes <em>aliens introduction</em> :</p>
 <ul>
 <li><p>DO_ALIENS_INTRODUCTION</p></li>
-<li><p>ALIENS_NO</p></li>
 <li><p>ALIENS_FREQ</p></li>
 </ul>
 
@@ -901,7 +894,6 @@ file, and if so, some additional parameters will be required :</p>
   introduction areas. <br /> If the habitat suitability filter is on, 
   suitability maps will also be needed for these new groups.
   <dl>
-    <dt>ALIEN.no</dt><dd><p>the number of different introductions</p></dd>
     <dt>ALIEN.freq</dt><dd><p>the frequency of each introduction (<em>in years</em>)</p></dd></dl></p></dd>
   <dt>FIRE</dt><dd><p>= to influence plant mortality and / or resprouting according 
   to PFG tolerances to these events (see 

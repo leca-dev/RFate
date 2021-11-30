@@ -124,8 +124,6 @@
 ##' @param doAliens default \code{FALSE}. \cr If \code{TRUE}, invasive plant 
 ##' introduction is activated in the \code{FATE} simulation, and associated 
 ##' parameters are required
-##' @param ALIEN.no (\emph{optional}) \cr an \code{integer} corresponding to the 
-##' number of introductions
 ##' @param ALIEN.freq (\emph{optional}) \cr a \code{vector} of \code{integer} 
 ##' corresponding to the frequency of each introduction (\emph{in years})
 ##' @param doFire default \code{FALSE}. \cr If \code{TRUE}, fire 
@@ -435,7 +433,6 @@
 ##'   introduction areas. \cr If the habitat suitability filter is on, 
 ##'   suitability maps will also be needed for these new groups.
 ##'   \describe{
-##'     \item{ALIEN.no}{the number of different introductions}
 ##'     \item{ALIEN.freq}{the frequency of each introduction (\emph{in years})}
 ##'   }
 ##'   }
@@ -642,7 +639,6 @@
 ##' 
 ##' \itemize{
 ##'   \item DO_ALIENS_INTRODUCTION
-##'   \item ALIENS_NO
 ##'   \item ALIENS_FREQ
 ##' }
 ##' 
@@ -768,7 +764,6 @@ PRE_FATE.params_globalParameters = function(
   , doDrought = FALSE
   , DROUGHT.no_sub = 4
   , doAliens = FALSE
-  , ALIEN.no
   , ALIEN.freq = 1
   , doFire = FALSE
   , FIRE.no
@@ -862,11 +857,10 @@ PRE_FATE.params_globalParameters = function(
   }
   if (doAliens)
   {
-    .testParam_notInteger.m("ALIEN.no", ALIEN.no)
     .testParam_notInteger.m("ALIEN.freq", ALIEN.freq)
-    if (length(ALIEN.freq) != ALIEN.no){
+    if (length(ALIEN.freq) != required.no_PFG){
       stop(paste0("Wrong type of data!\n `ALIEN.freq` must contain as many "
-                  , "values as the number of introductions (`ALIEN.no`)"))
+                  , "values as the number of PFG (`required.no_PFG`)"))
     }
   }
   if (doFire)
@@ -1012,10 +1006,8 @@ PRE_FATE.params_globalParameters = function(
   if (doAliens)
   {
     params.ALIEN = list(as.numeric(doAliens)
-                        , ALIEN.no
                         , ALIEN.freq)
     names.params.list.ALIEN = c("DO_ALIENS_INTRODUCTION"
-                                , "ALIENS_NO"
                                 , "ALIENS_FREQ")
   } else
   {

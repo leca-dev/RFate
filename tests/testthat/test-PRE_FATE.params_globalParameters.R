@@ -723,38 +723,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DROUGH
                , "`DROUGHT.no_sub` must be an integer > 0")
 })
 
-## INPUTS
-test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.no", {
-  
-  ## TEST ALIEN.no : integer
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
-                                                , doAliens = T
-                                                , ALIEN.no = NA)
-               , "`ALIEN.no` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
-                                                , doAliens = T
-                                                , ALIEN.no = NULL)
-               , "`ALIEN.no` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
-                                                , doAliens = T
-                                                , ALIEN.no = "")
-               , "`ALIEN.no` must be an integer > 0")
-})
 
 ## INPUTS
 test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.freq", {
@@ -766,9 +734,8 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
                                                 , required.max_abund_low = 3000
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
-                                                , doAliens = T
-                                                , ALIEN.no = 2)
-               , "`ALIEN.freq` must contain as many values as the number of introductions (`ALIEN.no`)"
+                                                , doAliens = T)
+               , "`ALIEN.freq` must contain as many values as the number of PFG (`required.no_PFG`)"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
@@ -777,7 +744,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
                                                 , doAliens = T
-                                                , ALIEN.no = 2
                                                 , ALIEN.freq = NA)
                , "`ALIEN.freq` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
@@ -787,7 +753,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
                                                 , doAliens = T
-                                                , ALIEN.no = 2
                                                 , ALIEN.freq = NULL)
                , "`ALIEN.freq` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
@@ -797,7 +762,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
                                                 , doAliens = T
-                                                , ALIEN.no = 2
                                                 , ALIEN.freq = "")
                , "`ALIEN.freq` must be an integer > 0")
   
@@ -809,9 +773,8 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
                                                 , required.max_abund_medium = 5000
                                                 , required.max_abund_high = 9000
                                                 , doAliens = T
-                                                , ALIEN.no = 2
                                                 , ALIEN.freq = 2)
-               , "`ALIEN.freq` must contain as many values as the number of introductions (`ALIEN.no`)"
+               , "`ALIEN.freq` must contain as many values as the number of PFG (`required.no_PFG`)"
                , fixed = TRUE)
 })
 
@@ -1706,7 +1669,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
                                                   , doAliens = TRUE
-                                                  , ALIEN.no = 10
                                                   , ALIEN.freq = rep(1, 10))
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   

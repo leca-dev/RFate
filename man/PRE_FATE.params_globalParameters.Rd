@@ -42,7 +42,6 @@ PRE_FATE.params_globalParameters(
   doDrought = FALSE,
   DROUGHT.no_sub = 4,
   doAliens = FALSE,
-  ALIEN.no,
   ALIEN.freq = 1,
   doFire = FALSE,
   FIRE.no,
@@ -210,9 +209,6 @@ to the number of way a PFG could react to a drought disturbance}
 introduction is activated in the \code{FATE} simulation, and associated 
 parameters are required}
 
-\item{ALIEN.no}{(\emph{optional}) \cr an \code{integer} corresponding to the 
-number of introductions}
-
 \item{ALIEN.freq}{(\emph{optional}) \cr a \code{vector} of \code{integer} 
 corresponding to the frequency of each introduction (\emph{in years})}
 
@@ -373,7 +369,6 @@ If the simulation includes \emph{aliens introduction} :
 
 \itemize{
   \item DO_ALIENS_INTRODUCTION
-  \item ALIENS_NO
   \item ALIENS_FREQ
 }
 
@@ -624,7 +619,6 @@ file, and if so, some additional parameters will be required :
   introduction areas. \cr If the habitat suitability filter is on, 
   suitability maps will also be needed for these new groups.
   \describe{
-    \item{ALIEN.no}{the number of different introductions}
     \item{ALIEN.freq}{the frequency of each introduction (\emph{in years})}
   }
   }
