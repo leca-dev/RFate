@@ -41,6 +41,8 @@ library(devtools)
 devtools::install_github(repo="leca-dev/RFate")
 </pre>
 
+**Note :** `RFate` is currently only working with the [BH_1.75.0-0](https://cran.r-project.org/src/contrib/Archive/BH/BH_1.75.0-0.tar.gz) package !
+
 <br/><br/>
 
 

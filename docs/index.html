@@ -25,6 +25,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -37,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
       </span>
     </div>
 
@@ -59,14 +61,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="articles/fate_tutorial_0_publications.html">Publications</a>
     </li>
     <li>
       <a href="articles/fate_tutorial_0_modelling_framework.html">Modelling framework</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="articles/fate_tutorial_1_PFG.html">a. Principle of PFG</a>
     </li>
     <li>
@@ -87,7 +91,8 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="articles/rfate_tutorial_1_PFG.html">
         <span class="fa fa-battery-quarter"></span>
          
@@ -109,7 +114,8 @@
       </a>
     </li>
     <li class="divider">
-  </ul>
+  </li>
+</ul>
 </li>
 <li>
   <a href="articles/interface_tutorial_0_presentation.html">
@@ -142,7 +148,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/leca-dev/RFate.git">
+  <a href="https://github.com/leca-dev/RFate.git" class="external-link">
     <span class="fab fa-github"></span>
      
   </a>
@@ -186,19 +192,22 @@ z-index: 10;
 }
 </style>
 <p><br></p>
-<div id="-installing-rfate-package" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-installing-rfate-package" class="anchor"></a><i class="fa fa-tools"></i> Installing <code>RFate</code> package</h2>
-<p>From <a href="https://github.com/leca-dev/RFate">GitHub</a> using <a href="https://cran.r-project.org/package=devtools">devtools</a> :</p>
+<div class="section level2">
+<h2 id="-installing-rfate-package">
+<i class="fa fa-tools"></i> Installing <code>RFate</code> package<a class="anchor" aria-label="anchor" href="#-installing-rfate-package"></a>
+</h2>
+<p>From <a href="https://github.com/leca-dev/RFate" class="external-link">GitHub</a> using <a href="https://cran.r-project.org/package=devtools" class="external-link">devtools</a> :</p>
 <pre class="bash">
 library(devtools)
 devtools::install_github(repo="leca-dev/RFate")
 </pre>
+<p><strong>Note :</strong> <code>RFate</code> is currently only working with the <a href="https://cran.r-project.org/src/contrib/Archive/BH/BH_1.75.0-0.tar.gz" class="external-link">BH_1.75.0-0</a> package !</p>
 <p><br><br></p>
 </div>
-<div id="-rfate-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#-rfate-workflow" class="anchor"></a><i class="fas fa-shoe-prints"></i> <code>RFate</code> workflow</h2>
+<div class="section level2">
+<h2 id="-rfate-workflow">
+<i class="fas fa-shoe-prints"></i> <code>RFate</code> workflow<a class="anchor" aria-label="anchor" href="#-rfate-workflow"></a>
+</h2>
 <p><br></p>
 <p><code>FATE</code> is a <strong>spatially and temporally explicit vegetation model</strong>. It uses <strong>plant functional groups (PFG)</strong> and integrates important mechanisms driving vegetation dynamics, structure and diversity, such as <strong>demographic cycle</strong>, obviously, but also <strong>seeds dispersal</strong>, <strong>abiotic filtering</strong> or <strong>biotic interactions</strong> (through the competition for resources like light availability or soil nutrient availability).</p>
 <p>If <strong>primary succession</strong> is the most obvious ecological process that can be modelled with <code>FATE</code>, events related to <strong>secondary succession</strong> can be represented as well using the various <strong><code>FATE</code> add-on modules</strong> : disturbances (mowing, grazing, fire..), drought event, invasive species.</p>
@@ -238,59 +247,65 @@ devtools::install_github(repo="leca-dev/RFate")
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/leca-dev/RFate.git/">https://​github.com/​leca-dev/​RFate.git/​</a>
-</li>
+<li><a href="https://github.com/leca-dev/RFate.git/" class="external-link">Browse source code</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li>
     file <a href="LICENSE-text.html">LICENSE</a>
 </li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing RFate</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>
-<a href="http://www.will.chez-alice.fr/">Wilfried Thuiller</a> <br><small class="roles"> Author </small>  </li>
-<li>Damien Georges <br><small class="roles"> Author </small>  </li>
-<li>
-<a href="https://iboulangeat.github.io/">Isabelle Boulangeat</a> <br><small class="roles"> Author </small>  </li>
-<li>
-<a href="https://mayagueguen.github.io">Maya Guéguen</a> <br><small class="roles"> Author, maintainer </small>  </li>
-<li>Guillaume Dupouy <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html#citation">Citing RFate</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/leca-dev/RFate/actions"><img src="https://github.com/leca-dev/RFate/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://github.com/leca-dev/RFate/actions"><img src="https://github.com/leca-dev/RFate/workflows/CODECOV-check/badge.svg" alt="Coverage status"></a></li>
-<li><a href="https://codecov.io/gh/leca-dev/RFate/branch/master"><img src="https://codecov.io/gh/leca-dev/RFate/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+<li>
+<a href="http://www.will.chez-alice.fr/" class="external-link">Wilfried Thuiller</a> <br><small class="roles"> Author </small>  </li>
+<li>Damien Georges <br><small class="roles"> Author </small>  </li>
+<li>
+<a href="https://iboulangeat.github.io/" class="external-link">Isabelle Boulangeat</a> <br><small class="roles"> Author </small>  </li>
+<li>
+<a href="https://mayagueguen.github.io" class="external-link">Maya Guéguen</a> <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Guillaume Dupouy <br><small class="roles"> Author </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/leca-dev/RFate/actions" class="external-link"><img src="https://github.com/leca-dev/RFate/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://github.com/leca-dev/RFate/actions" class="external-link"><img src="https://github.com/leca-dev/RFate/workflows/CODECOV-check/badge.svg" alt="Coverage status"></a></li>
+<li><a href="https://codecov.io/gh/leca-dev/RFate/branch/master" class="external-link"><img src="https://codecov.io/gh/leca-dev/RFate/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="http://www.will.chez-alice.fr/">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io">Maya Guéguen</a>, Guillaume Dupouy.</p>
+  <p></p>
+<p>Developed by <a href="http://www.will.chez-alice.fr/" class="external-link">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/" class="external-link">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io" class="external-link">Maya Guéguen</a>, Guillaume Dupouy.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
@@ -298,6 +313,8 @@ devtools::install_github(repo="leca-dev/RFate")
 
   
 
+
+  
 
   </body>
 </html>
