@@ -1483,45 +1483,114 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
   GSP old_glob_params(m_glob_params);
   
   /* read new global parameters file */
+  logg.info("*** REBUILDING Global simulation parameters...");
   m_glob_params  = GSP(file_of_params.getGlobSimulParams());
   
-  /* check some parameters compatibility */
+  /* check some parameters compatibility (between SAVED_STATE and "new" global parameter file) */
   if (old_glob_params.getNoFG() != m_glob_params.getNoFG())
   {
-    logg.error("!!! Number of functional groups involved in saved object (",
-               old_glob_params.getNoFG(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoFG(), ")!");
-  }
-  if (old_glob_params.getDoHabSuitability() != m_glob_params.getDoHabSuitability())
-  {
-    logg.error("!!! Succession model involved in saved object (",
-               old_glob_params.getDoHabSuitability(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getDoHabSuitability(), ")!");
+    logg.error("!!! Number of functional groups involved in saved object (", old_glob_params.getNoFG(),
+               ") is incompatible with new parameters (", m_glob_params.getNoFG(), ")!");
   }
   if (old_glob_params.getNoStrata() != m_glob_params.getNoStrata())
   {
-    logg.error("!!! Number of strata involved in saved object (",
-               old_glob_params.getNoStrata(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoStrata(), ")!");
+    logg.error("!!! Number of strata involved in saved object (", old_glob_params.getNoStrata(),
+               ") is incompatible with new parameters (", m_glob_params.getNoStrata(), ")!");
   }
-  if (old_glob_params.getNoDist() != m_glob_params.getNoDist())
+  if (m_glob_params.getDoDisturbances())
   {
-    logg.error("!!! Number of disturbances involved in saved object (",
-               old_glob_params.getNoDist(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoDist(), ")!");
+    if (old_glob_params.getNoDist() != m_glob_params.getNoDist())
+    {
+      logg.error("!!! Number of disturbances involved in saved object (", old_glob_params.getNoDist(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoDist(), ")!");
+    }
+    if (old_glob_params.getNoDistSub() != m_glob_params.getNoDistSub())
+    {
+      logg.error("!!! Number of way to be influenced by disturbances involved in saved object (", old_glob_params.getNoDistSub(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoDistSub(), ")!");
+    }
   }
-  if (old_glob_params.getNoDistSub() != m_glob_params.getNoDistSub())
+  if (m_glob_params.getDoDroughtDisturbances())
   {
-    logg.error("!!! Number of way to be influence by disturbances involved in saved object (",
-               old_glob_params.getNoDistSub(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoDistSub(), ")");
+    if (old_glob_params.getNoDroughtSub() != m_glob_params.getNoDroughtSub())
+    {
+      logg.error("!!! Number of way to be influenced by drought disturbances involved in saved object (", old_glob_params.getNoDroughtSub(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoDroughtSub(), ")!");
+    }
+  }
+  if (m_glob_params.getDoFireDisturbances())
+  {
+    if (old_glob_params.getNoFireDist() != m_glob_params.getNoFireDist())
+    {
+      logg.error("!!! Number of fire disturbances involved in saved object (", old_glob_params.getNoFireDist(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoFireDist(), ")!");
+    }
+    if (old_glob_params.getNoFireDistSub() != m_glob_params.getNoFireDistSub())
+    {
+      logg.error("!!! Number of way to be influenced by fire disturbances involved in saved object (", old_glob_params.getNoFireDistSub(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoFireDistSub(), ")!");
+    }
   }
   /* end of check parameters compatibility */
+  
+  /* check some parameters compatibility (between "new" global and simul parameter files) */
+  int noFG = m_glob_params.getNoFG();
+  if (noFG != file_of_params.getFGLifeHistory().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_LIFE_HISTORY-- (",
+               file_of_params.getFGLifeHistory().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoLightInteraction() && noFG != file_of_params.getFGLight().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_LIGHT-- (",
+               file_of_params.getFGLight().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoSoilInteraction() && noFG != file_of_params.getFGSoil().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_SOIL-- (",
+               file_of_params.getFGSoil().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoDispersal() && noFG != file_of_params.getFGDispersal().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DISPERSAL-- (",
+               file_of_params.getFGDispersal().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoDisturbances() && noFG != file_of_params.getFGDisturbance().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DISTURBANCES-- (",
+               file_of_params.getFGDisturbance().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoDroughtDisturbances() && noFG != file_of_params.getFGDrought().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DROUGHT-- (",
+               file_of_params.getFGDrought().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoFireDisturbances() && noFG != file_of_params.getFGFire().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_FIRE-- (",
+               file_of_params.getFGFire().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoHabSuitability() && noFG != file_of_params.getFGMapsHabSuit().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_MASK_HABSUIT-- (",
+               file_of_params.getFGMapsHabSuit().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoAliensIntroduction() && noFG != file_of_params.getFGMapsAliens().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_MASK_ALIENS-- (",
+               file_of_params.getFGMapsAliens().size(), ") do not match in term of number!");
+  }
+  /* end of check parameters compatibility */
+  
+  /* check for parameters file */
+  file_of_params.checkCorrectParams(m_glob_params.getDoLightInteraction(),
+                                    m_glob_params.getDoHabSuitability(),
+                                    m_glob_params.getDoDispersal(),
+                                    m_glob_params.getDoDisturbances(),
+                                    m_glob_params.getDoSoilInteraction(),
+                                    m_glob_params.getDoFireDisturbances(),
+                                    m_glob_params.getDoDroughtDisturbances(),
+                                    m_glob_params.getDoAliensIntroduction());
   
   /* update fg environmental suitability conditions if needed */
   if (file_of_params.getFGMapsHabSuit()[0] != "0")
@@ -1575,6 +1644,45 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
       }
     }
   }
+  
+  /* build simulation fire disturbances masks */
+  // if (m_glob_params.getDoFireDisturbances())
+  // {
+  //   if (m_glob_params.getFireIgnitMode()==5)
+  //   {
+  //     logg.info("> build simulation fire disturbances masks...");
+  //     if (m_glob_params.getNoFireDist() == file_of_params.getMaskFire().size())
+  //     {
+  //       vector< vector< int > > fireMap; // fire disturbances masks
+  //       fireMap.reserve(m_glob_params.getNoFireDist());
+  //       for (int dist_id=0; dist_id<m_glob_params.getNoFireDist(); dist_id++)
+  //       {
+  //         fireMap.emplace_back( ReadMask<int>( file_of_params.getMaskFire()[dist_id], 0.0, 1.0 ) );
+  //       }
+  //       m_FireMap = SpatialStack<double, int>(m_Coord_ptr, fireMap);
+  //     } else
+  //     {
+  //       logg.error("!!! Parameters FIRE_NO and --FIRE_MASK-- ",
+  //                  "do not match in term of number!");
+  //     }
+  //   } else
+  //   {
+  //     m_FireMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
+  //   }
+  // 
+  //   /* build fire masks */
+  //   logg.info("> build fire masks...");
+  //   if (m_glob_params.getFirePropMode()==4)
+  //   {
+  //     m_DroughtMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskDrought(), 0.0, 1.0 ) );
+  //     m_ElevationMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskElevation()) );
+  //     m_SlopeMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskSlope()) );
+  //   }
+  // 
+  //   /* build TSLF mask (study area) */
+  //   logg.info("> build TSLF mask (study area)...");
+  //   m_TslfMap = SpatialMap<double, int>(m_Coord_ptr, ReadMask<int>( file_of_params.getMask(), 0.0, 1.0 ) );
+  // }
   
   /* build aliens introduction masks */
   if (file_of_params.getFGMapsAliens()[0] != "0")
@@ -1763,10 +1871,10 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         delete [] abunValues2;
       } // end loop on PFG
       
-      if (!positiveVal12)
-      {
-        logg.error("!!! ALL PFG DIED! Stopping simulation.");
-      }
+      // if (!positiveVal12 && year > m_glob_params.getSeedingDuration())
+      // {
+      //   logg.error("!!! ALL PFG DIED! Stopping simulation.");
+      // }
     }
     
     if (m_glob_params.getDoSavingStratum())
@@ -1829,10 +1937,10 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         delete [] abunValues3;
       } // end loop on Stratum*/
       
-      if (!positiveVal33)
-      {
-        logg.error("!!! ALL PFG DIED! Stopping simulation.");
-      }
+      // if (!positiveVal33 && year > m_glob_params.getSeedingDuration())
+      // {
+      //   logg.error("!!! ALL PFG DIED! Stopping simulation.");
+      // }
     }
   }
   

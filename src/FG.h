@@ -97,7 +97,7 @@ class FG
 	double m_SoilContrib; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
 	double m_SoilLow; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
 	double m_SoilHigh; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
-	vector<Fract> m_SoilActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
+	vector<Fract> m_SoilActiveGerm; /*!< Proportion of Active seeds able to germinate considering soil nutriment resources [Rcount] */
 	vector< vector<Fract> > m_SoilTolerance; /*!< Is FG survived considering available soil nutriment resources [LScount][Rcount] */
 
 	/* Disturbance response */
