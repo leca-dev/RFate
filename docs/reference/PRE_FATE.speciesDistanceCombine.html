@@ -73,7 +73,7 @@ species, combining several dissimilarity distance matrices." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.2</span>
       </span>
     </div>
 
@@ -81,7 +81,7 @@ species, combining several dissimilarity distance matrices." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -125,21 +125,21 @@ species, combining several dissimilarity distance matrices." />
     <li class="divider"></li>
     <li>
       <a href="../articles/rfate_tutorial_1_PFG.html">
-        <span class="fas fa-battery-quarter"></span>
+        <span class="fa fa-battery-quarter"></span>
          
         Build PFG
       </a>
     </li>
     <li>
       <a href="../articles/rfate_tutorial_2_params.html">
-        <span class="fas fa-battery-half"></span>
+        <span class="fa fa-battery-half"></span>
          
         Build parameter files
       </a>
     </li>
     <li>
       <a href="../articles/rfate_tutorial_3_graphics.html">
-        <span class="fas fa-battery-three-quarters"></span>
+        <span class="fa fa-battery-three-quarters"></span>
          
         Build graphics
       </a>
@@ -156,7 +156,7 @@ species, combining several dissimilarity distance matrices." />
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fas fa-book fa-lg"></span>
+    <span class="fa fa-book fa-lg"></span>
      
     Reference
   </a>
@@ -316,9 +316,9 @@ to each distance matrix before combining them :</p>
            , is.corr <span class='op'>=</span> <span class='cn'>FALSE</span>, title <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span><span class='op'>(</span><span class='va'>list.DIST</span><span class='op'>)</span><span class='op'>[</span><span class='va'>li</span><span class='op'>]</span><span class='op'>)</span>
 <span class='op'>}</span>
 
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RevolutionAnalytics/foreach'>foreach</a></span><span class='op'>)</span>; <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>; <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/andrie/ggdendro'>ggdendro</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/RevolutionAnalytics/foreach'>foreach</a></span><span class='op'>)</span>; <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'><a href='https://ggplot2.tidyverse.org'>ggplot2</a></span><span class='op'>)</span>; <span class='kw'><a href='https://rdrr.io/r/base/library.html'>require</a></span><span class='op'>(</span><span class='va'>ggdendro</span><span class='op'>)</span>
 <span class='va'>hc</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/hclust.html'>hclust</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/stats/dist.html'>as.dist</a></span><span class='op'>(</span><span class='va'>sp.DIST.n</span><span class='op'>)</span><span class='op'>)</span>
-<span class='va'>pp</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html'>ggdendrogram</a></span><span class='op'>(</span><span class='va'>hc</span>, rotate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>+</span>
+<span class='va'>pp</span> <span class='op'>=</span> <span class='fu'>ggdendrogram</span><span class='op'>(</span><span class='va'>hc</span>, rotate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span>title <span class='op'>=</span> <span class='st'>'Hierarchical clustering based on species distances'</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>pp</span><span class='op'>)</span>
 <span class='op'>}</span>

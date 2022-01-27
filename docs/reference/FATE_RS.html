@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Create a graphical representation of the evolution of PFG abundance 
-through time for 5 (or more) pixels of a FATE simulation — POST_FATE.graphic_evolutionPixels • RFate</title>
+<title>S — FATE_RS • RFate</title>
 
 
 <!-- jquery -->
@@ -40,12 +39,8 @@ through time for 5 (or more) pixels of a FATE simulation — POST_FATE.graphic_e
 
 
 
-<meta property="og:title" content="Create a graphical representation of the evolution of PFG abundance 
-through time for 5 (or more) pixels of a FATE simulation — POST_FATE.graphic_evolutionPixels" />
-<meta property="og:description" content="This script is designed to produce one graphical representation 
-for a FATE simulation : the evolution through time of the 
-abundance of each PFG for 5 (or more) randomly selected cells of the studied 
-area." />
+<meta property="og:title" content="S — FATE_RS" />
+<meta property="og:description" content="..." />
 
 
 
@@ -200,115 +195,28 @@ area." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Create a graphical representation of the evolution of PFG abundance 
-through time for 5 (or more) pixels of a <code>FATE</code> simulation</h1>
-    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/POST_FATE.graphic_evolutionPixels.R'><code>R/POST_FATE.graphic_evolutionPixels.R</code></a></small>
-    <div class="hidden name"><code>POST_FATE.graphic_evolutionPixels.Rd</code></div>
+    <h1>S</h1>
+    <small class="dont-index">Source: <a href='https://github.com/leca-dev/RFate.git/blob/master/R/FATE_RS.R'><code>R/FATE_RS.R</code></a></small>
+    <div class="hidden name"><code>FATE_RS.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This script is designed to produce one graphical representation 
-for a <code>FATE</code> simulation : the evolution through time of the 
-abundance of each PFG for 5 (or more) randomly selected cells of the studied 
-area.</p>
+    <p>...</p>
     </div>
 
-    <pre class="usage"><span class='fu'>POST_FATE.graphic_evolutionPixels</span><span class='op'>(</span>
+    <pre class="usage"><span class='fu'>FATE_RS</span><span class='op'>(</span>
   <span class='va'>name.simulation</span>,
-  file.simulParam <span class='op'>=</span> <span class='cn'>NULL</span>,
-  opt.cells_ID <span class='op'>=</span> <span class='cn'>NULL</span>,
-  opt.doPlot <span class='op'>=</span> <span class='cn'>TRUE</span>
+  <span class='va'>file.simulParam</span>,
+  opt.no_CPU <span class='op'>=</span> <span class='fl'>1</span>,
+  verbose.level <span class='op'>=</span> <span class='fl'>2</span>,
+  <span class='va'>name.simulation.RS</span>,
+  <span class='va'>params.RS</span>,
+  <span class='va'>year.start</span>,
+  <span class='va'>year.end</span>,
+  <span class='va'>year.step</span>
 <span class='op'>)</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>name.simulation</th>
-      <td><p>a <code>string</code> corresponding to the main directory 
-or simulation name of the <code>FATE</code> simulation</p></td>
-    </tr>
-    <tr>
-      <th>file.simulParam</th>
-      <td><p>default <code>NULL</code>. <br /> A <code>string</code> 
-corresponding to the name of a parameter file that will be contained into 
-the <code>PARAM_SIMUL</code> folder of the <code>FATE</code> simulation</p></td>
-    </tr>
-    <tr>
-      <th>opt.cells_ID</th>
-      <td><p>(<em>optional</em>) default <code>NULL</code>. <br /> The cells ID 
-of the studied area for which PFG abundances will be extracted</p></td>
-    </tr>
-    <tr>
-      <th>opt.doPlot</th>
-      <td><p>(<em>optional</em>) default <code>TRUE</code>. <br /> If <code>TRUE</code>, 
-plot(s) will be processed, otherwise only the calculation and reorganization 
-of outputs will occur, be saved and returned</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>A <code>list</code> containing one <code>data.frame</code> object with the 
-following columns, and one <code>ggplot2</code> object :</p>
-<dl>
-  <dt>tab</dt><dd><p><dl>
-      <dt><code>TYPE</code></dt><dd><p>concerned information (either '<code>light</code>', 
-      '<code>abundance</code>' or '<code>soil</code>')</p></dd>
-      <dt><code>GROUP</code></dt><dd><p>concerned entity (either 
-      '<code>STRATUM_[...]</code>', PFG name or '<code>soil</code>')</p></dd>
-      <dt><code>ID.pixel</code></dt><dd><p>number of the concerned pixel</p></dd>
-      <dt><code>HAB</code></dt><dd><p>habitat of the concerned pixel</p></dd>
-      <dt><code>YEAR</code></dt><dd><p>concerned simulation year</p></dd>
-      <dt><code>value</code></dt><dd><p>concerned value extracted from <code>.csv</code> files 
-      produced by <code><a href='POST_FATE.temporalEvolution.html'>POST_FATE.temporalEvolution</a></code></p></dd></dl></p></dd>
-  <dt>plot</dt><dd><p><code>ggplot2</code> object, representing the evolution of each PFG 
-  abundance, <em>and light and soil resources if those modules were 
-  activated</em> <br /> <br /></p></dd>
-
-</dl>
-
-
-<p>One <code>POST_FATE_TABLE_PIXEL_evolution_pixels_[...].csv</code> file is created :</p><dl>
-  <dt><em>pixels ids</em></dt><dd><p>always, containing the <code>data.frame</code> detailed 
-  above</p></dd>
-
-</dl>
-
-
-<p>One <code>POST_FATE_[...].pdf</code> file is created :</p><dl>
-  <dt><code class="file">GRAPHIC_A <br /> pixels</code></dt><dd><p>to visualize for each PFG the evolution 
-  of its abundance within each selected pixel through simulation time</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>This function allows to obtain, for a specific <code>FATE</code> simulation and 
-a specific parameter file within this simulation, one preanalytical graphic :</p>
-<ul>
-<li><p>the evolution of <strong>abundance</strong> of each Plant Functional Group 
-  through simulation time, within 5 (or more) randomly selected pixels of 
-  the studied area (<code>FATE</code> <em>arbitrary unit</em>)</p></li>
-<li><p><strong>if light was activated</strong> (see 
-  <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>), <br /> evolution of 
-  <strong>light resources</strong> within the selected pixels is also represented 
-  (<em><code>1</code>: Low, <code>2</code>: Medium, <code>3</code>: High</em>)</p></li>
-<li><p><strong>if soil was activated</strong> (see 
-  <code><a href='PRE_FATE.params_globalParameters.html'>PRE_FATE.params_globalParameters</a></code>), <br /> evolution of 
-  <strong>soil resources</strong> within the selected pixels is also represented 
-  (user-defined scale) <br /> <br /></p></li>
-</ul>
-
-<p><strong>It requires</strong> that the <code><a href='POST_FATE.temporalEvolution.html'>POST_FATE.temporalEvolution</a></code> 
-function has been run and that the file 
-<code>POST_FATE_TABLE_PIXEL_evolution_abundance.csv</code> exists (as well as the 
-<code>POST_FATE_TABLE_PIXEL_evolution_light.csv</code> and 
-<code>POST_FATE_TABLE_PIXEL_evolution_soil.csv</code> files if those modules were 
-activated).</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='POST_FATE.temporalEvolution.html'>POST_FATE.temporalEvolution</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Maya Guéguen</p>
