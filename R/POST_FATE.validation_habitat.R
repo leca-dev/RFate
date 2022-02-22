@@ -152,7 +152,8 @@ POST_FATE.validation_habitat = function(name.simulation
                                             , predict.all.map = predict.all.map
                                             , sim.version = sim.version
                                             , name.simulation = name.simulation
-                                            , perStrata = F)
+                                            , perStrata = F
+                                            , hab.obs = hab.obs)
   
   ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
   
