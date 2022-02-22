@@ -5,7 +5,7 @@
 ##' 
 ##' @name POST_FATE.validation.habitat
 ##' 
-##' @author Matthieu .. & Maxime Delprat
+##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description This script compare habitat simulations and observations and
 ##' create a map to visualize this comparison with all the the \code{FATE} and
@@ -163,6 +163,15 @@ POST_FATE.validation_habitat = function(name.simulation
                                            , simulation.map = simulation.map
                                            , output.path = output.path
                                            , sim.version = sim.version)
+  
+  ## COMPARISON FAILURE/SUCCESS
+  
+  hab.pred = read.csv(paste0(output.path, "/HABITAT/", sim.version, "/hab.pred.csv"))
+  failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
+  success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
+  cat("\n ---------- END OF THE SIMULATION \n")
+  cat(paste0("\n ---------- ", round(failure, digits = 2), "% of habitats are not correctly predicted by ", sim.version, " \n"))
+  cat(paste0("\n ---------- ", round(success, digits = 2), "% of habitats are correctly predicted by ", sim.version, " \n"))
   return(prediction.map)
   
 }
