@@ -5,7 +5,7 @@
 ##' 
 ##' @name train.RF.habitat
 ##' 
-##' @author Matthieu .. & Maxime Delprat
+##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description This script is designed to produce a random forest model
 ##' trained on observed PFG abundance, sites releves and a map of observed
