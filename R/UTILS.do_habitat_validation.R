@@ -45,7 +45,7 @@
 ### END OF HEADER ##############################################################
 
 
-do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask, simulation.map, predict.all.map, sim.version, name.simulation, perStrata) {
+do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask, simulation.map, predict.all.map, sim.version, name.simulation, perStrata, hab.obs) {
   
   #notes
   # we prepare the relevé data in this function, but in fact we could provide them directly if we adjust the code
