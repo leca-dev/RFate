@@ -26,6 +26,8 @@
 ##' @param name.simulation simulation folder name.
 ##' @param perStrata a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
 ##' by strata in each pixel. If FALSE, PFG abundance is defined for all strata.
+##' @param hab.obs a raster map of the observed habitat in the
+##' extended studied area.
 ##' 
 ##' @details
 ##' 
