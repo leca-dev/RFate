@@ -11,7 +11,7 @@
 ##' based on a habitat prediction file. For each pixel, the habitat failure or success value
 ##' is associated to a color and then, the map is built.
 ##' 
-##' @param predicted habitat a csv file created by the do.habitat.validation function
+##' @param predicted.habitat a csv file created by the do.habitat.validation function
 ##' which contain, for each pixel of the studied map, the simulated and observed habitat.
 ##' @param col.df a data frame with all the colors associated with the failure or 
 ##' success of each studied habitat prediction.
