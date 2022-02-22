@@ -80,7 +80,8 @@ plot.predicted.habitat<-function(predicted.habitat
   
   #merge the prediction df with the df containing color and habitat code
   predicted.habitat<-merge(predicted.habitat,habitat.code.df,by.x=c("modal.predicted.habitat","prediction.code"),by.y=c("habitat","prediction.code"))
-  
+  write.csv(x = predicted.habitat, file = paste0(output.path, "/HABITAT/", sim.version, "/hab.pred.csv"))
+                                      
   
   #plot
   
