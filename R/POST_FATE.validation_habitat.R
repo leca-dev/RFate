@@ -55,7 +55,6 @@ POST_FATE.validation_habitat = function(name.simulation
                                         , releves.PFG
                                         , releves.sites
                                         , hab.obs
-                                        , habitat.FATE.map
                                         , validation.mask)
 {
   
@@ -114,9 +113,8 @@ POST_FATE.validation_habitat = function(name.simulation
   releves.sites<-st_read(paste0(obs.path, releves.sites))
   hab.obs<-raster(paste0(obs.path, hab.obs))
   # Habitat mask at FATE simu resolution
-  # hab.obs.modif<-projectRaster(from = hab.obs, to = simulation.map, res = res(hab.obs)[1], crs = crs(projection(simulation.mask)))
-  # habitat.FATE.map<-crop(hab.obs.modif, simulation.map)
-  habitat.FATE.map<-raster(paste0(obs.path, habitat.FATE.map))
+  hab.obs.modif<-projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
+  habitat.FATE.map<-crop(hab.obs.modif, simulation.map)
   validation.mask<-raster(paste0(obs.path, validation.mask))
   
   # Provide a color df
