@@ -1,7 +1,6 @@
 ### HEADER #####################################################################
 ##'
-##' @title Create a random forest algorithm trained on CBNA data, in order to
-##' obtain the simulated habitat, derived from a \code{FATE} simulation.
+##' @title Create a random forest algorithm trained on CBNA data.
 ##' 
 ##' @name train.RF.habitat
 ##' 
