@@ -123,7 +123,8 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   #habitat df for the whole simulation area
   habitat.whole.area.df<-data.frame(pixel=seq(from=1,to=ncell(habitat.FATE.map),by=1),code.habitat=getValues(habitat.FATE.map),for.validation=getValues(validation.mask))
   habitat.whole.area.df<-habitat.whole.area.df[in.region.pixels,]
-  habitat.whole.area.df<-merge(habitat.whole.area.df,dplyr::select(levels(habitat.FATE.map)[[1]],c(ID,habitat)),by.x="code.habitat",by.y="ID")
+  habitat.whole.area.df<-subset(habitat.whole.area.df, for.validation!="NA")
+  habitat.whole.area.df<-merge(habitat.whole.area.df,dplyr::select(levels(hab.obs)[[1]],c(ID,habitat)),by.x="code.habitat",by.y="ID")
   habitat.whole.area.df<-filter(habitat.whole.area.df,is.element(habitat,RF.model$classes))
   
   print(cat("Habitat considered in the prediction exercise: ",c(unique(habitat.whole.area.df$habitat)),"\n",sep="\t"))
