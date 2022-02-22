@@ -5,7 +5,7 @@
 ##' 
 ##' @name plot.predicted.habitat
 ##' 
-##' @author Matthieu .. & Maxime Delprat
+##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description This script is designed to create a raster map of habitat prediction
 ##' based on a habitat prediction file. For each pixel, the habitat failure or success value
