@@ -5,7 +5,7 @@
 ##' 
 ##' @name do.habitat.validation
 ##' 
-##' @author Matthieu .. & Maxime Delprat
+##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description To compare observations and simulations, this function compute 
 ##' confusion matrix between observation and prediction and then compute the TSS 
