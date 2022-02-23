@@ -23,19 +23,17 @@ POST_FATE.validation_habitat(
 only one sim.version).}
 
 \item{obs.path}{the function needs observed data, please create a folder for them in your 
-simulation folder and then indicate in this parmeter the access path to this folder.}
+simulation folder and then indicate in this parameter the access path to this new folder.}
 
 \item{releves.PFG}{name of file which contain the observed Braund-Blanquet abundance at each site
 and each PFG and strata (with extension).}
 
 \item{hab.obs}{name of the file which contain the extended studied map in the simulation (with extension).}
 
-\item{validation.mask}{name of the file which contain a raster mask that specified which pixels need validation.}
+\item{validation.mask}{name of the file which contain a raster mask that specified which pixels need validation (with extension).}
 
 \item{releves.site}{name of the file which contain coordinates and a description of
 the habitat associated with the dominant species of each site in the studied map (with extension).}
-
-\item{habitat.FATE.map}{name of the file which contain the restricted studied map in the simulation (with extension).}
 }
 \value{
 Two folders are created in name.simulation folder :
