@@ -42,7 +42,6 @@
 ##'   RF model, the performance analyzes (confusion matrix and TSS) for the training and 
 ##' testing parts of the RF model, the habitat performance file, the habitat prediction file with 
 ##' observed and simulated habitat for each pixel of the whole map and the final prediction plot.}
-##'   \item{\file{DATA_OBS}}{maps of observed habitat and csv files of PFG and sites releves.}
 ##' }
 ##' 
 ### END OF HEADER ##############################################################
