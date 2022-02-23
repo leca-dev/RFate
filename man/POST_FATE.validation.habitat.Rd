@@ -32,7 +32,7 @@ and each PFG and strata (with extension).}
 
 \item{validation.mask}{name of the file which contain a raster mask that specified which pixels need validation (with extension).}
 
-\item{releves.site}{name of the file which contain coordinates and a description of
+\item{releves.sites}{name of the file which contain coordinates and a description of
 the habitat associated with the dominant species of each site in the studied map (with extension).}
 }
 \value{
