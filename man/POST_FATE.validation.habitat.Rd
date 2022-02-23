@@ -32,7 +32,7 @@ and each PFG and strata (with extension).}
 
 \item{validation.mask}{name of the file which contain a raster mask that specified which pixels need validation (with extension).}
 
-\item{releves.sites}{name of the file which contain coordinates and a description of
+\item{releves.site}{name of the file which contain coordinates and a description of
 the habitat associated with the dominant species of each site in the studied map (with extension).}
 }
 \value{
@@ -42,7 +42,6 @@ Two folders are created in name.simulation folder :
   RF model, the performance analyzes (confusion matrix and TSS) for the training and 
 testing parts of the RF model, the habitat performance file, the habitat prediction file with 
 observed and simulated habitat for each pixel of the whole map and the final prediction plot.}
-  \item{\file{DATA_OBS}}{maps of observed habitat and csv files of PFG and sites releves.}
 }
 }
 \description{
