@@ -15,14 +15,13 @@
 ##' @param sim.version name of the simulation we want to validate (it works with
 ##' only one sim.version).
 ##' @param obs.path the function needs observed data, please create a folder for them in your 
-##' simulation folder and then indicate in this parmeter the access path to this folder.
+##' simulation folder and then indicate in this parameter the access path to this new folder.
 ##' @param releves.PFG name of file which contain the observed Braund-Blanquet abundance at each site
 ##' and each PFG and strata (with extension).
 ##' @param releves.site name of the file which contain coordinates and a description of
 ##' the habitat associated with the dominant species of each site in the studied map (with extension).
 ##' @param hab.obs name of the file which contain the extended studied map in the simulation (with extension).
-##' @param habitat.FATE.map name of the file which contain the restricted studied map in the simulation (with extension).
-##' @param validation.mask name of the file which contain a raster mask that specified which pixels need validation.
+##' @param validation.mask name of the file which contain a raster mask that specified which pixels need validation (with extension).
 ##' 
 ##' @details 
 ##' 
@@ -113,18 +112,18 @@ POST_FATE.validation_habitat = function(name.simulation
   releves.sites<-st_read(paste0(obs.path, releves.sites))
   hab.obs<-raster(paste0(obs.path, hab.obs))
   # Habitat mask at FATE simu resolution
-  hab.obs.modif<-projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
-  habitat.FATE.map<-crop(hab.obs.modif, simulation.map)
+  hab.obs.modif <- projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
+  habitat.FATE.map <- crop(hab.obs.modif, simulation.map)
   validation.mask<-raster(paste0(obs.path, validation.mask))
   
   # Provide a color df
   col.df<-data.frame(
-    habitat=c("agricultural.grassland","coniferous.forest","deciduous.forest","natural.grassland","woody.heatland"),
-    failure=c("yellow","blueviolet","aquamarine","chartreuse1","lightsalmon"),
-    success=c("darkorange1","blue4","aquamarine3","chartreuse3","firebrick4"))
+    habitat=c("agricultural.grassland","coniferous.forest","deciduous.forest","natural.grassland","woody.heatland","crops"),
+    failure=c("yellow","blueviolet","aquamarine","chartreuse1","lightsalmon","slategray3"),
+    success=c("darkorange1","blue4","aquamarine3","chartreuse3","firebrick4","slategrey"))
   
   # Other
-  studied.habitat=c("coniferous.forest","deciduous.forest","natural.grassland","woody.heatland","agricultural.grassland")
+  studied.habitat=c("coniferous.forest","deciduous.forest","natural.grassland","woody.heatland","agricultural.grassland","crops")
   RF.param = list(
     share.training=0.7,
     ntree=500)
