@@ -60,8 +60,8 @@ habitat.
 }
 \details{
 This function transform PFG Braund-Blanquet abundance in relative abundance,
-get habitat information from the releves map, keep only relees on interesting
-habitat and then builds de random forest model. Finally, the function analyzes
+get habitat information from the relevés map, keep only relevés on interesting
+habitat and then builds the random forest model. Finally, the function analyzes
 the model performance with computation of confusion matrix and TSS for
 the traning and testing sample.
 }
