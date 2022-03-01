@@ -4,7 +4,7 @@
 \alias{train.RF.habitat}
 \title{Create a random forest algorithm trained on CBNA data.}
 \usage{
-train.RF.habitat(
+\method{train}{RF.habitat}(
   releves.PFG,
   releves.sites,
   hab.obs,
@@ -30,8 +30,9 @@ extended studied area.}
 \item{external.training.mask}{default \code{NULL}. (optional) Keep only
 releves data in a specific area.}
 
-\item{studied.habitat}{a vector that specifies habitats that we take
-into account for the validation.}
+\item{studied.habitat}{If \code{NULL}, the function will
+take into account of all habitats in the hab.obs map. Otherwise, please specify 
+in a vector the habitats that we take into account for the validation.}
 
 \item{RF.param}{a list of 2 parameters for random forest model :
 share.training defines the size of the trainig part of the data base.
@@ -60,8 +61,8 @@ habitat.
 }
 \details{
 This function transform PFG Braund-Blanquet abundance in relative abundance,
-get habitat information from the relevés map, keep only relevés on interesting
-habitat and then builds the random forest model. Finally, the function analyzes
+get habitat information from the releves map, keep only relees on interesting
+habitat and then builds de random forest model. Finally, the function analyzes
 the model performance with computation of confusion matrix and TSS for
 the traning and testing sample.
 }

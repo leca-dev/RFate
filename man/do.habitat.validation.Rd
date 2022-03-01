@@ -5,7 +5,7 @@
 \title{Compare observed and simulated habitat of a \code{FATE} simulation
 at the last simulation year.}
 \usage{
-do.habitat.validation(
+\method{do}{habitat.validation}(
   output.path,
   RF.model,
   habitat.FATE.map,
@@ -15,7 +15,8 @@ do.habitat.validation(
   sim.version,
   name.simulation,
   perStrata,
-  hab.obs
+  hab.obs,
+  year
 )
 }
 \arguments{
@@ -36,7 +37,7 @@ the consistency between simulation map and the observed habitat map.}
 \item{predict.all.map}{a TRUE/FALSE vector. If TRUE, the script will predict 
 habitat for the whole map.}
 
-\item{sim.version}{name of the simulation we want to validate.}
+\item{sim.version}{name of the simulation to validate.}
 
 \item{name.simulation}{simulation folder name.}
 
@@ -45,6 +46,8 @@ by strata in each pixel. If FALSE, PFG abundance is defined for all strata.}
 
 \item{hab.obs}{a raster map of the observed habitat in the
 extended studied area.}
+
+\item{year}{year of simulation for validation.}
 }
 \value{
 Habitat performance file

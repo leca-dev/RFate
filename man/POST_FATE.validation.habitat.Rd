@@ -13,7 +13,9 @@ POST_FATE.validation_habitat(
   releves.PFG,
   releves.sites,
   hab.obs,
-  validation.mask
+  validation.mask,
+  studied.habitat = NULL,
+  year
 )
 }
 \arguments{
@@ -32,6 +34,12 @@ and each PFG and strata (with extension).}
 
 \item{validation.mask}{name of the file which contain a raster mask that specified which pixels need validation (with extension).}
 
+\item{studied.habitat}{default \code{NULL}. If \code{NULL}, the function will
+take into account of all habitats in the hab.obs map. Otherwise, please specify 
+in a vector the habitats that we take into account for the validation.}
+
+\item{year}{year of simulation for validation.}
+
 \item{releves.site}{name of the file which contain coordinates and a description of
 the habitat associated with the dominant species of each site in the studied map (with extension).}
 }
@@ -46,7 +54,7 @@ observed and simulated habitat for each pixel of the whole map and the final pre
 }
 \description{
 This script compare habitat simulations and observations and
-create a map to visualize this comparison with all the the \code{FATE} and
+create a map to visualize this comparison with all the \code{FATE} and
 observed data.
 }
 \details{
