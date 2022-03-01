@@ -20,8 +20,10 @@
 
 
 FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.level = 2
-                   # , TRANS.PFG_var, TRANS.ras.var, mod.obj
+                   , PPM.names_PFG, PPM.ras_env, PPM.quad, PPM.mod
+                   , PATCH.threshold = 80, PATCH.buffer = 500, PATCH.min_m2 = 300000
                    , name.simulation.RS, params.RS
+                   , POP.carrying_capacity
                    , year.start, year.end, year.step)
 {
   ## + argument pour savoir si on commence par FATE ou RS
@@ -36,7 +38,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     ## Run FATE ###################################################################################
     FATE(simulParam = abs.simulParam, no_CPU = opt.no_CPU, verboseLevel = verbose.level)
-      
+    
     ## Get resulting FATE vegetation maps #########################################################
     ## Get results directories ------------------------------------------------
     GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
@@ -57,9 +59,9 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
                        , "Abund_YEAR_"
                        , year.step
                        , "_"
-                       , TRANS.PFG_var
+                       , PPM.names_PFG
                        , "_STRATA_all.tif")
-    gp = TRANS.PFG_var[which(file.exists(file_name))]
+    gp = PPM.names_PFG[which(file.exists(file_name))]
     file_name = file_name[which(file.exists(file_name))]
     
     if (length(file_name) > 0)
@@ -74,17 +76,17 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     }
     
     ## Combine with other variables ###############################################################
-    ras.all = stack(ras.PFG, TRANS.ras.var)
+    ras.all = stack(ras.PFG, PPM.ras_env)
     
     env.data = as.data.frame(ras.all)
     env.data = na.exclude(env.data)
-    for(pfg in TRANS.PFG_var) {
+    for(pfg in PPM.names_PFG) {
       env.data[which(env.data[, pfg] < 0), pfg] = 0
     }
     
     ### Create all explanatory variables (with interactions between vegetation and environment)
-    mess = paste0(c(paste0("env.data$", names(TRANS.ras.var))
-                    , paste0("sqrt(env.data$", TRANS.PFG_var, ")")), collapse = ", ")
+    mess = paste0(c(paste0("env.data$", names(PPM.ras_env))
+                    , paste0("sqrt(env.data$", PPM.names_PFG, ")")), collapse = ", ")
     eval(parse(text = paste0("X.des = poly(", mess, ", degree = 2, raw = TRUE)")))
     col_power_1 = which(str_count(colnames(X.des), "1") == 1)
     col_power_2 = which(str_count(colnames(X.des), "1") == 0)
@@ -96,12 +98,12 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     X.des = X.des[, col_toKeep]
     
     ### Change explanatory variables into images
-    ux = sort(unique(TRANS.quad[, 1])) #x ordinates
-    uy = sort(unique(TRANS.quad[, 2])) #y ordinates
+    ux = sort(unique(PPM.quad[, 1])) #x ordinates
+    uy = sort(unique(PPM.quad[, 2])) #y ordinates
     nx = length(ux)
     ny = length(uy)
-    col.ref = match(TRANS.quad[, 1], ux) # indice de l'abscisse de quad dans ux
-    row.ref = match(TRANS.quad[, 2], uy)
+    col.ref = match(PPM.quad[, 1], ux) # indice de l'abscisse de quad dans ux
+    row.ref = match(PPM.quad[, 2], uy)
     
     int.list = list()
     for (n in 1:dim(X.des)[2]) {
@@ -115,13 +117,13 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     names(int.list) = paste0("V", 1:dim(X.des)[2])
     
     ## Transform them into RS species distribution map ############################################
-    mod.pred = predict(TRANS.ppm, covariates = int.list, ngrid = c(ny, nx))
+    mod.pred = predict(PPM.mod, covariates = int.list, ngrid = c(ny, nx))
     ras.pred = raster(mod.pred)
     ras.quality = ras.pred / max(na.exclude(values(ras.pred))) * 100
     tmp = log(ras.quality) + abs(min(log(ras.quality)[], na.rm = TRUE))
     ras.log = tmp / max(tmp[], na.rm = TRUE) * 100
     
-    # name.distrib = paste0(name.simulation.RS, "BLABLABLA.asc")
+    # name.distrib = paste0(name.simulation.RS, "BLABLABLA_YEAR_", ye, ".asc")
     # writeRaster(ras.log, filename = name.distrib)
     ## SAVE  as ASCII, voir script Emmanuel ?
     
@@ -129,7 +131,23 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     
     ## Update RS patch maps #######################################################################
-    ## ADD script
+    ras.patch = ras.log > PATCH.threshold # defining patches
+    ras.patch[ras.patch[] < 1] = NA # keep only patches
+    
+    pol.patch = rasterToPolygons(ras.patch, dissolve = TRUE) # converting into polygons
+    pol.patch = disaggregate(pol.patch) # separating into multiple polygons
+    
+    pol.patch = st_as_sf(pol.patch)
+    pol.patch_buffer = st_buffer(pol.patch, dist = PATCH.buffer)
+    pol.patch_buffer = st_union(pol.patch_buffer) # merging overlapping polygons
+    pol.patch_buffer = ms_explode(pol.patch_buffer) # separating into multiple polygons
+    
+    pol.patch_buffer$area_m2 = as.numeric(st_area(pol.patch_buffer)) # ne marche pas chez Emmanuel -> on passe ? 'area()'
+    pol.patch_buffer = pol.patch_buffer[which(pol.patch_buffer$area_m2 > PATCH.min_m2)] # excluding too small patches
+    
+    # st_write(pol.patch_buffer
+    #          , paste0("tampons", PATCH.buffer, "m_suit_HS", threshold_habquality, "percent_filtre", PATCH.min_m2 / 10000, "ha_Lambert93")
+    #          , dsn = "Output_Patches_3methodes", driver = "ESRI Shapefile")
     
     
     ## Run RangeShifter ###########################################################################
@@ -140,22 +158,21 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     ## Get resulting RS species density ###########################################################
     ## Code from RangeShiftR help
     # read population output file into a dataframe
-    pop_df <- readPop(s = params.RS, dirpath = name.simulation.RS)
+    pop_df = readPop(s = params.RS, dirpath = name.simulation.RS)
     
     # Make stack of different raster layers for each year and for only one repetition (Rep==0):
-    pop_wide_rep0 <- reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'NInd')]
-                             , timevar = 'Year'
-                             , v.names = c('NInd')
-                             , idvar = c('x', 'y')
-                             , direction = 'wide')
+    pop_wide_rep0 = reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'NInd')]
+                            , timevar = 'Year'
+                            , v.names = c('NInd')
+                            , idvar = c('x', 'y')
+                            , direction = 'wide')
     
     # use raster package to make a raster from the data frame
-    stack_years_rep0 <- rasterFromXYZ(pop_wide_rep0)
-    ## MISSING conversion into 0-1 scale (what is the max Nind for which the dist is max ?)
-    ## parameter user-defined ?
+    stack_years_rep0 = rasterFromXYZ(pop_wide_rep0)
+    stack_years_rep0 = stack_years_rep0 / POP.carrying_capacity
     name.dist = paste0(name.simulation, "/DATA/MASK/MASK_DIST_YEAR_", ye + 1, ".tif")
     writeRaster(stack_years_rep0, filename = name.dist)
-
+    
     ## Update FATE disturbance maps ###############################################################
     .setParam(params.lines = abs.simulParam
               , flag = "DIST_MASK"
