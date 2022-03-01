@@ -143,7 +143,8 @@ habitat.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">train.RF.habitat</span><span class="op">(</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for RF.habitat</span>
+<span class="fu">train</span><span class="op">(</span>
   <span class="va">releves.PFG</span>,
   <span class="va">releves.sites</span>,
   <span class="va">hab.obs</span>,
@@ -172,8 +173,9 @@ extended studied area.</p></dd>
 <dd><p>default <code>NULL</code>. (optional) Keep only
 releves data in a specific area.</p></dd>
 <dt>studied.habitat</dt>
-<dd><p>a vector that specifies habitats that we take
-into account for the validation.</p></dd>
+<dd><p>If <code>NULL</code>, the function will
+take into account of all habitats in the hab.obs map. Otherwise, please specify 
+in a vector the habitats that we take into account for the validation.</p></dd>
 <dt>RF.param</dt>
 <dd><p>a list of 2 parameters for random forest model :
 share.training defines the size of the trainig part of the data base.
@@ -199,8 +201,8 @@ testing parts.</p>
     <div id="details">
     <h2>Details</h2>
     <p>This function transform PFG Braund-Blanquet abundance in relative abundance,
-get habitat information from the relevés map, keep only relevés on interesting
-habitat and then builds the random forest model. Finally, the function analyzes
+get habitat information from the releves map, keep only relees on interesting
+habitat and then builds de random forest model. Finally, the function analyzes
 the model performance with computation of confusion matrix and TSS for
 the traning and testing sample.</p>
     </div>
