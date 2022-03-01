@@ -19,8 +19,9 @@
 ##' extended studied area.
 ##' @param external.training.mask default \code{NULL}. (optional) Keep only
 ##' releves data in a specific area.
-##' @param studied.habitat a vector that specifies habitats that we take
-##' into account for the validation.
+##' @param studied.habitat If \code{NULL}, the function will
+##' take into account of all habitats in the hab.obs map. Otherwise, please specify 
+##' in a vector the habitats that we take into account for the validation.
 ##' @param RF.param a list of 2 parameters for random forest model :
 ##' share.training defines the size of the trainig part of the data base.
 ##' ntree is the number of trees build by the algorithm, it allows to reduce
@@ -34,8 +35,8 @@
 ##' @details 
 ##' 
 ##' This function transform PFG Braund-Blanquet abundance in relative abundance,
-##' get habitat information from the relevés map, keep only relevés on interesting
-##' habitat and then builds the random forest model. Finally, the function analyzes
+##' get habitat information from the releves map, keep only relees on interesting
+##' habitat and then builds de random forest model. Finally, the function analyzes
 ##' the model performance with computation of confusion matrix and TSS for
 ##' the traning and testing sample.
 ##' 
@@ -47,13 +48,24 @@
 ##' the performance analyzes (confusion matrix and TSS) for the training and 
 ##' testing parts.
 ##' 
+##' @export
+##' 
+##' @importFrom dplyr filter %>% group_by select
+##' @importFrom data.table dcast setDT
+##' @importFrom raster extract aggregate compareCRS
+##' @importFrom sf st_transform st_crop st_write
+##' @importFrom randomForest randomForest tuneRF
+##' @importFrom caret confusionMatrix
+##' @importFrom tidyverse write_rds
+##' @importFrom utils read.csv
+##' 
 ### END OF HEADER ##############################################################
 
 
 train.RF.habitat<-function(releves.PFG
                            , releves.sites
                            , hab.obs
-                           , external.training.mask=NULL
+                           , external.training.mask = NULL
                            , studied.habitat
                            , RF.param
                            , output.path
@@ -127,9 +139,12 @@ train.RF.habitat<-function(releves.PFG
   # 4. Keep only releve on interesting habitat
   ###################################################"
   
-  aggregated.releves.PFG<-filter(aggregated.releves.PFG,is.element(habitat,studied.habitat)) #filter non interesting habitat + NA
-  
-  print(cat("habitat classes used in the RF algo: ",unique(aggregated.releves.PFG$habitat),"\n",sep="\t"))
+  if (!is.null(studied.habitat)){
+    aggregated.releves.PFG<-filter(aggregated.releves.PFG,is.element(habitat,studied.habitat)) #filter non interesting habitat + NA
+    print(cat("habitat classes used in the RF algo: ",unique(aggregated.releves.PFG$habitat),"\n",sep="\t"))
+  } else{
+    print(cat("habitat classes used in the RF algo: ",unique(aggregated.releves.PFG$habitat),"\n",sep="\t"))
+  }
   
   # 5. Save data
   #####################
@@ -161,7 +176,7 @@ train.RF.habitat<-function(releves.PFG
       x=select(releves.training,-c(code.habitat,site,habitat,geometry)),
       y=releves.training$habitat,
       strata=releves.training$habitat,
-      sampsize=min(table(releves.training$habitat)),
+      sampsize=nrow(releves.training),
       ntreeTry=RF.param$ntree,
       stepFactor=2, improve=0.05,doBest=FALSE,plot=F,trace=F
     )
@@ -177,7 +192,7 @@ train.RF.habitat<-function(releves.PFG
     xtest=select(releves.testing,-c(code.habitat,site,habitat,geometry)),
     ytest=releves.testing$habitat,
     strata=releves.training$habitat,
-    min(table(releves.training$habitat)),
+    sampsize=nrow(releves.training),
     ntree=RF.param$ntree,
     mtry=mtry,
     norm.votes=TRUE,

@@ -70,6 +70,13 @@
 ##'   \code{\link{PRE_FATE.params_simulParameters}})}
 ##'   \item{\code{RESULTS}}{this folder will collect all the results produced by the
 ##'   software with a folder for each simulation}
+##'   \item{\code{VALIDATION}}{this folder will collect all the validation files produced
+##'   by POST_FATE validation functions
+##'   \describe{
+##'       \item{\code{HABITAT}}{this folder will collect all the validation files produces
+##'       by the function POST_FATE.validation.habitat}
+##'     }
+##'     }
 ##' }
 ##' 
 ##' \strong{NB :} \cr
@@ -136,6 +143,9 @@ PRE_FATE.skeletonDirectory = function(name.simulation = "FATE_simulation")
     dir.create(file.path(name.simulation, "PARAM_SIMUL"), showWarnings = FALSE)
     ## the RESULTS dir
     dir.create(file.path(name.simulation, "RESULTS"), showWarnings = FALSE)
+    ## the VALIDATION dir
+    dir.create(file.path(name.simulation, "VALIDATION"), showWarnings = FALSE)
+    dir.create(file.path(name.simulation, "VALIDATION", "HABITAT"), showWarnings = FALSE)
     
     message("\n Your directory tree for your FATE simulation ("
             , name.simulation, ") is ready!\n")

@@ -8,7 +8,7 @@
 ##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description This script compare habitat simulations and observations and
-##' create a map to visualize this comparison with all the the \code{FATE} and
+##' create a map to visualize this comparison with all the \code{FATE} and
 ##' observed data.
 ##' 
 ##' @param name.simulation simulation folder name.
@@ -22,6 +22,10 @@
 ##' the habitat associated with the dominant species of each site in the studied map (with extension).
 ##' @param hab.obs name of the file which contain the extended studied map in the simulation (with extension).
 ##' @param validation.mask name of the file which contain a raster mask that specified which pixels need validation (with extension).
+##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
+##' take into account of all habitats in the hab.obs map. Otherwise, please specify 
+##' in a vector the habitats that we take into account for the validation.
+##' @param year year of simulation for validation.
 ##' 
 ##' @details 
 ##' 
@@ -44,6 +48,12 @@
 ##' observed and simulated habitat for each pixel of the whole map and the final prediction plot.}
 ##' }
 ##' 
+##' @export
+##' 
+##' @importFrom raster raster projectRaster res crs
+##' @importFrom sf st_read
+##' @importFrom utils read.csv
+##' 
 ### END OF HEADER ##############################################################
 
 
@@ -53,57 +63,25 @@ POST_FATE.validation_habitat = function(name.simulation
                                         , releves.PFG
                                         , releves.sites
                                         , hab.obs
-                                        , validation.mask)
+                                        , validation.mask
+                                        , studied.habitat = NULL
+                                        , year)
 {
-  
-  ## LIBRARIES
-  require(data.table)
-  require(raster)
-  require(RFate)
-  require(reshape2)
-  require(stringr)
-  require(foreign)
-  require(stringr)
-  require(dplyr)
-  require(sp)
-  options("rgdal_show_exportToProj4_warnings"="none")
-  require(rgdal)
-  require(randomForest)
-  require(ggplot2)
-  require(ggradar)
-  require(tidyverse)
-  require(ggpubr)
-  require(gridExtra)
-  require(vegan)
-  require(parallel)
-  require(scales)
-  require(class)
-  require(caret)
-  require(sampling)
-  require(tidyselect)
-  require(grid)
-  require(gtable)
-  require(scales)
-  require(cowplot)
-  require(sf)
-  require(visNetwork)
-  require(foreach)
-  require(doParallel)
-  require(prettyR)
-  require(vcd)
   
   ## GLOBAL PARAMETERS
   
-  # Create directories
-  dir.create(paste0(name.simulation, "/VALIDATION"), recursive = TRUE)
-  dir.create(paste0(name.simulation, "/VALIDATION/HABITAT"), recursive = TRUE)
-  dir.create(paste0(name.simulation, "/VALIDATION/HABITAT/", sim.version), recursive = TRUE)
+  dir.create(file.path(name.simulation, "VALIDATION", "HABITAT", sim.version), showWarnings = FALSE)
   
   # General
   output.path = paste0(name.simulation, "/VALIDATION")
+  year = year
   
   # Useful elements to extract from the simulation
-  simulation.map=raster(paste0(name.simulation,"/DATA/MASK/MASK_Champsaur.tif"))
+  name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
+                   flag = "MASK",
+                   flag.split = "^--.*--$",
+                   is.num = FALSE)
+  simulation.map = raster(paste0(name))
   
   # For habitat validation
   # CBNA releves data habitat map
@@ -115,14 +93,14 @@ POST_FATE.validation_habitat = function(name.simulation
   habitat.FATE.map <- crop(hab.obs.modif, simulation.map)
   validation.mask<-raster(paste0(obs.path, validation.mask))
   
-  # Provide a color df
-  col.df<-data.frame(
-    habitat=c("agricultural.grassland","coniferous.forest","deciduous.forest","natural.grassland","woody.heatland","crops"),
-    failure=c("yellow","blueviolet","aquamarine","chartreuse1","lightsalmon","slategray3"),
-    success=c("darkorange1","blue4","aquamarine3","chartreuse3","firebrick4","slategrey"))
-  
   # Other
-  studied.habitat=c("coniferous.forest","deciduous.forest","natural.grassland","woody.heatland","agricultural.grassland","crops")
+  if(is.null(studied.habitat)){
+    studied.habitat = studied.habitat
+  } else if(is.character(studied.habitat)){
+    studied.habitat = studied.habitat
+  } else{
+    stop("studied.habitat is not a vector of character")
+  }
   RF.param = list(
     share.training=0.7,
     ntree=500)
@@ -151,9 +129,16 @@ POST_FATE.validation_habitat = function(name.simulation
                                             , sim.version = sim.version
                                             , name.simulation = name.simulation
                                             , perStrata = F
-                                            , hab.obs = hab.obs)
+                                            , hab.obs = hab.obs
+                                            , year = year)
   
   ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
+  
+  # Provide a color df
+  col.df<-data.frame(
+    habitat = RF.model$classes,
+    failure = terrain.colors(length(RF.model$classes), alpha = 0.5),
+    success = terrain.colors(length(RF.model$classes), alpha = 1))
   
   prediction.map <- plot.predicted.habitat(predicted.habitat = habitats.results
                                            , col.df = col.df

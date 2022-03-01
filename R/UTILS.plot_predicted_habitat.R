@@ -31,6 +31,17 @@
 ##' @return
 ##' 
 ##' a synthetic.prediction.png file which contain the final prediction plot.
+##' 
+##' @export
+##' 
+##' @importFrom dplyr select all_of
+##' @importFrom data.table melt rename
+##' @importFrom utils write.csv
+##' @importFrom raster raster crs extent res ratify writeRaster
+##' @importFrom stats complete.cases
+##' @importFrom ggplot2 ggplot geom_raster coord_equal scale_fill_manual
+##' ggtitle guides theme ggsave
+##' 
 ### END OF HEADER ##############################################################
 
 
@@ -81,7 +92,7 @@ plot.predicted.habitat<-function(predicted.habitat
   #merge the prediction df with the df containing color and habitat code
   predicted.habitat<-merge(predicted.habitat,habitat.code.df,by.x=c("modal.predicted.habitat","prediction.code"),by.y=c("habitat","prediction.code"))
   write.csv(x = predicted.habitat, file = paste0(output.path, "/HABITAT/", sim.version, "/hab.pred.csv"))
-                                      
+  
   
   #plot
   

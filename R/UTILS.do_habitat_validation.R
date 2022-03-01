@@ -5,7 +5,7 @@
 ##' 
 ##' @name do.habitat.validation
 ##' 
-##' @author Matthieu Combaud, Maxime Delprat
+##' @author Matthieu Combaud & Maxime Delprat
 ##' 
 ##' @description To compare observations and simulations, this function compute 
 ##' confusion matrix between observation and prediction and then compute the TSS 
@@ -22,12 +22,13 @@
 ##' the consistency between simulation map and the observed habitat map.
 ##' @param predict.all.map a TRUE/FALSE vector. If TRUE, the script will predict 
 ##' habitat for the whole map.
-##' @param sim.version name of the simulation we want to validate.
+##' @param sim.version name of the simulation to validate.
 ##' @param name.simulation simulation folder name.
 ##' @param perStrata a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
 ##' by strata in each pixel. If FALSE, PFG abundance is defined for all strata.
 ##' @param hab.obs a raster map of the observed habitat in the
 ##' extended studied area.
+##' @param year year of simulation for validation.
 ##' 
 ##' @details
 ##' 
@@ -44,10 +45,24 @@
 ##' If option selected, the function returns an habitat prediction file with 
 ##' observed and simulated habitat for each pixel of the whole map.
 ##' 
+##' @export
+##' 
+##' @importFrom raster compareCRS res projectRaster extent crop origin compareRaster
+##' getValues aggregate predict
+##' @importFrom stringr str_sub
+##' @importFrom dplyr select filter rename group_by %>% mutate rename
+##' @importFrom foreach foreach %dopar%
+##' @importFrom forcats fct_expand
+##' @importFrom reshape2 dcast
+##' @importFrom randomForest
+##' @importFrom vcd
+##' @importFrom caret confusionMatrix
+##' @importFrom utils write.csv
+##' 
 ### END OF HEADER ##############################################################
 
 
-do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask, simulation.map, predict.all.map, sim.version, name.simulation, perStrata, hab.obs) {
+do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask, simulation.map, predict.all.map, sim.version, name.simulation, perStrata, hab.obs, year) {
   
   #notes
   # we prepare the relevé data in this function, but in fact we could provide them directly if we adjust the code
@@ -152,7 +167,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     
     #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
     simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
-    simu_PFG = simu_PFG[,-c(3:44)]
+    simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
     colnames(simu_PFG) = c("PFG", "pixel", "abs")
     
     #aggregate per strata group with the correspondance provided in input
@@ -185,7 +200,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     simu_PFG$strata<-fct_expand(simu_PFG$strata,list.strata)
     
     #cast
-    simu_PFG<-dcast(simu_PFG,pixel~PFG*strata,value.var=c("relative.abundance"),fill=0,drop=F)
+    simu_PFG<-reshape2::dcast(simu_PFG,pixel~PFG*strata,value.var=c("relative.abundance"),fill=0,drop=F)
     
     #merge PFG info and habitat + transform habitat into factor
     
