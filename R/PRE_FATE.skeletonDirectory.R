@@ -75,6 +75,10 @@
 ##'   \describe{
 ##'       \item{\code{HABITAT}}{this folder will collect all the validation files produces
 ##'       by the function POST_FATE.validation.habitat}
+##'       \item{\code{PFG_RICHNESS}}{this folder will collect all the validation files produces
+##'       by the function POST_FATE.validation_PFG_richness}
+##'       \item{\code{PFG_COMPOSITION}}{this folder will collect all the validation files produces
+##'       by the function POST_FATE.validation_PFG_composition}
 ##'     }
 ##'     }
 ##' }
@@ -146,6 +150,8 @@ PRE_FATE.skeletonDirectory = function(name.simulation = "FATE_simulation")
     ## the VALIDATION dir
     dir.create(file.path(name.simulation, "VALIDATION"), showWarnings = FALSE)
     dir.create(file.path(name.simulation, "VALIDATION", "HABITAT"), showWarnings = FALSE)
+    dir.create(file.path(name.simulation, "VALIDATION", "PFG_RICHNESS"), showWarnings = FALSE)
+    dir.create(file.path(name.simulation, "VALIDATION", "PFG_COMPOSITION"), showWarnings = FALSE)
     
     message("\n Your directory tree for your FATE simulation ("
             , name.simulation, ") is ready!\n")

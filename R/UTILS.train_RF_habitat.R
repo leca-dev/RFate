@@ -56,7 +56,7 @@
 ##' @importFrom sf st_transform st_crop st_write
 ##' @importFrom randomForest randomForest tuneRF
 ##' @importFrom caret confusionMatrix
-##' @importFrom tidyverse write_rds
+##' @importFrom readr write_rds
 ##' @importFrom utils read.csv
 ##' 
 ### END OF HEADER ##############################################################

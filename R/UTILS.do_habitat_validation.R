@@ -36,7 +36,7 @@
 ##' database by extracting the observed habitat from a raster map. Then, for each
 ##' simulations (sim.version), the script take the evolution abundance for each PFG
 ##' and all strata file and predict the habitat for the whole map (if option selected) 
-##' thanks to the RF model.Finally, the function compute habitat performance based on
+##' thanks to the RF model. Finally, the function computes habitat performance based on
 ##' TSS for each habitat.
 ##' 
 ##' @return
@@ -56,6 +56,8 @@
 ##' @importFrom reshape2 dcast
 ##' @importFrom caret confusionMatrix
 ##' @importFrom utils write.csv
+##' @importFrom doParallel registerDoParallel
+##' @importFrom parallel detectCores
 ##' 
 ### END OF HEADER ##############################################################
 

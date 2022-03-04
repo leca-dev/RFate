@@ -147,6 +147,8 @@
 ##' @foreach foreach foreach %dopar%
 ##' @importFrom forcats fct_expand
 ##' @importFrom readr write_rds
+##' @importFrom doParallel registerDoParallel
+##' @importFrom parallel detectCores
 ##' 
 ### END OF HEADER ###################################################################
 
@@ -302,6 +304,7 @@ POST_FATE.validation = function(name.simulation
     #list of PFG of interest
     list.PFG<-setdiff(list.PFG,exclude.PFG)
     
+    registerDoParallel(detectCores()-2)
     dying.PFG.list<-foreach(i=1:length(sim.version)) %dopar% {
       
       simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))

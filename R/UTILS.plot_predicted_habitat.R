@@ -34,8 +34,7 @@
 ##' 
 ##' @export
 ##' 
-##' @importFrom dplyr select all_of
-##' @importFrom data.table rename
+##' @importFrom dplyr select all_of rename
 ##' @importFrom utils write.csv
 ##' @importFrom raster raster crs extent res ratify writeRaster
 ##' @importFrom stats complete.cases
