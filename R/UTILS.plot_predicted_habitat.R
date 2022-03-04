@@ -35,12 +35,13 @@
 ##' @export
 ##' 
 ##' @importFrom dplyr select all_of
-##' @importFrom data.table melt rename
+##' @importFrom data.table rename
 ##' @importFrom utils write.csv
 ##' @importFrom raster raster crs extent res ratify writeRaster
 ##' @importFrom stats complete.cases
 ##' @importFrom ggplot2 ggplot geom_raster coord_equal scale_fill_manual
 ##' ggtitle guides theme ggsave
+##' @importFrom reshape2 melt
 ##' 
 ### END OF HEADER ##############################################################
 

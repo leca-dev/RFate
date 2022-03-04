@@ -54,8 +54,6 @@
 ##' @importFrom foreach foreach %dopar%
 ##' @importFrom forcats fct_expand
 ##' @importFrom reshape2 dcast
-##' @importFrom randomForest
-##' @importFrom vcd
 ##' @importFrom caret confusionMatrix
 ##' @importFrom utils write.csv
 ##' 
@@ -167,7 +165,8 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     
     #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
     simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
-    simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
+    simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))] #keep only the PFG, ID.pixel and abundance at any year columns
+    #careful : the number of abundance data files to save is to defined in POST_FATE.temporal.evolution function
     colnames(simu_PFG) = c("PFG", "pixel", "abs")
     
     #aggregate per strata group with the correspondance provided in input
@@ -213,7 +212,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     #################################
     
     data.validation<-filter(data.FATE.PFG.habitat,for.validation==1)
-    x.validation<-select(data.validation,all_of(RF.predictors))
+    x.validation<-dplyr::select(data.validation,all_of(RF.predictors))
     y.validation<-data.validation$habitat
     
     y.validation.predicted<-predict(object=RF.model,newdata=x.validation,type="response",norm.votes=T)
@@ -235,7 +234,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     
     if(predict.all.map==T){
       
-      y.all.map.predicted = predict(object=RF.model,newdata=select(data.FATE.PFG.habitat,all_of(RF.predictors)),type="response",norm.votes=T)
+      y.all.map.predicted = predict(object=RF.model,newdata=dplyr::select(data.FATE.PFG.habitat,all_of(RF.predictors)),type="response",norm.votes=T)
       y.all.map.predicted = as.data.frame(y.all.map.predicted)
       y.all.map.predicted$pixel = data.FATE.PFG.habitat$pixel
       colnames(y.all.map.predicted) = c(sim.version, "pixel")
@@ -268,7 +267,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   
   #deal with the results regarding habitat prediction over the whole map
   all.map.prediction = results.simul[[1]]$y.all.map.predicted
-  all.map.prediction = merge(all.map.prediction, select(habitat.whole.area.df, c(pixel,habitat)), by = "pixel")
+  all.map.prediction = merge(all.map.prediction, dplyr::select(habitat.whole.area.df, c(pixel,habitat)), by = "pixel")
   all.map.prediction = rename(all.map.prediction,"true.habitat"="habitat")
   
   #save

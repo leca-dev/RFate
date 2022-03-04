@@ -173,7 +173,7 @@ train.RF.habitat<-function(releves.PFG
   #run optimization algo (careful : optimization over OOB...)
   mtry.perf<-as.data.frame(
     tuneRF(
-      x=select(releves.training,-c(code.habitat,site,habitat,geometry)),
+      x=dplyr::select(releves.training,-c(code.habitat,site,habitat,geometry)),
       y=releves.training$habitat,
       strata=releves.training$habitat,
       sampsize=nrow(releves.training),
@@ -187,9 +187,9 @@ train.RF.habitat<-function(releves.PFG
   
   #run real model
   model<- randomForest(
-    x=select(releves.training,-c(code.habitat,site,habitat,geometry)),
+    x=dplyr::select(releves.training,-c(code.habitat,site,habitat,geometry)),
     y=releves.training$habitat,
-    xtest=select(releves.testing,-c(code.habitat,site,habitat,geometry)),
+    xtest=dplyr::select(releves.testing,-c(code.habitat,site,habitat,geometry)),
     ytest=releves.testing$habitat,
     strata=releves.training$habitat,
     sampsize=nrow(releves.training),
