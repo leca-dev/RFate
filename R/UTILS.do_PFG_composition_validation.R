@@ -48,10 +48,11 @@
 ##'   
 ##' @export
 ##' 
-##' @importFrom raster raster projectRaster res crs crop extent origin compareRaster
-##' getValues ncell aggregate compareCRS
-##' @importFrom utils read.csv write.csv
 ##' @importFrom dplyr rename filter group_by mutate %>% select
+##' @importFrom raster raster projectRaster res crs crop extent origin compareRaster 
+##' getValues ncell compareCRS levels
+##' @importFrom stats aggregate
+##' @importFrom utils read.csv write.csv
 ##' @importFrom data.table setDT
 ##'
 ### END OF HEADER ##############################################################
@@ -99,7 +100,7 @@ do.PFG.composition.validation<-function(name.simulation, obs.path, sim.version, 
   }
   if(!all(origin(simulation.map)==origin(habitat.FATE.map))){
     print("setting origin habitat.FATE.map to match simulation.map")
-    origin(habitat.FATE.map)<-origin(simulation.map)
+    raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
   }
   if(!compareRaster(simulation.map,habitat.FATE.map)){ #this is crucial to be able to identify pixel by their index and not their coordinates
     stop("habitat.FATE.map could not be coerced to match simulation.map")

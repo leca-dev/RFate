@@ -47,10 +47,11 @@
 ##' 
 ##' @export
 ##' 
-##' @importFrom raster compareCRS res projectRaster extent crop origin compareRaster
-##' getValues aggregate predict
+##' @importFrom dplyr filter rename group_by %>% mutate rename select
+##' @importFrom raster compareCRS res projectRaster extent crop origin compareRaster 
+##' getValues predict levels
+##' @importFrom stats aggregate
 ##' @importFrom stringr str_sub
-##' @importFrom dplyr select filter rename group_by %>% mutate rename
 ##' @importFrom foreach foreach %dopar%
 ##' @importFrom forcats fct_expand
 ##' @importFrom reshape2 dcast
@@ -97,7 +98,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   }
   if(!all(origin(simulation.map)==origin(habitat.FATE.map))){
     print("setting origin habitat.FATE.map to match simulation.map")
-    origin(habitat.FATE.map)<-origin(simulation.map)
+    raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
   }
   if(!compareRaster(simulation.map,habitat.FATE.map)){ #this is crucial to be able to identify pixel by their index and not their coordinates
     stop("habitat.FATE.map could not be coerced to match simulation.map")
@@ -141,8 +142,8 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   habitat.whole.area.df<-data.frame(pixel=seq(from=1,to=ncell(habitat.FATE.map),by=1),code.habitat=getValues(habitat.FATE.map),for.validation=getValues(validation.mask))
   habitat.whole.area.df<-habitat.whole.area.df[in.region.pixels,]
   habitat.whole.area.df<-subset(habitat.whole.area.df, for.validation!="NA")
-  habitat.whole.area.df<-merge(habitat.whole.area.df,dplyr::select(levels(hab.obs)[[1]],c(ID,habitat)),by.x="code.habitat",by.y="ID")
-  habitat.whole.area.df<-filter(habitat.whole.area.df,is.element(habitat,RF.model$classes))
+  habitat.whole.area.df<-merge(habitat.whole.area.df, dplyr::select(levels(hab.obs)[[1]],c(ID,habitat)), by.x="code.habitat", by.y="ID")
+  habitat.whole.area.df<-filter(habitat.whole.area.df, is.element(habitat,RF.model$classes))
   
   print(cat("Habitat considered in the prediction exercise: ",c(unique(habitat.whole.area.df$habitat)),"\n",sep="\t"))
   
@@ -159,7 +160,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   print("processing simulations")
   
   registerDoParallel(detectCores()-2)
-  results.simul <- foreach(i=1:length(sim.version),.packages = c("dplyr","forcats","reshape2","randomForest","vcd","caret")) %dopar%{
+  results.simul <- foreach(i=1:length(sim.version)) %dopar%{
     
     ########################"
     # III.1. Data preparation

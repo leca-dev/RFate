@@ -34,13 +34,14 @@
 ##' 
 ##' @export
 ##' 
-##' @importFrom dplyr select all_of rename
+##' @importFrom dplyr all_of rename select
 ##' @importFrom utils write.csv
-##' @importFrom raster raster crs extent res ratify writeRaster
+##' @importFrom raster raster crs extent res ratify writeRaster levels
 ##' @importFrom stats complete.cases
-##' @importFrom ggplot2 ggplot geom_raster coord_equal scale_fill_manual
-##' ggtitle guides theme ggsave
+##' @importFrom ggplot2 ggplot geom_raster coord_equal scale_fill_manual 
+##' ggtitle guides theme ggsave guide_legend
 ##' @importFrom reshape2 melt
+##' @importFrom prettyR Mode
 ##' 
 ### END OF HEADER ##############################################################
 
@@ -60,7 +61,7 @@ plot.predicted.habitat<-function(predicted.habitat
   }
   
   #compute modal predicted habitat and the proportion of simulations predicting this habitat (for each pixel)
-  predicted.habitat$modal.predicted.habitat<-apply(dplyr::select(predicted.habitat,c(all_of(sim.version))),1,Mode)
+  predicted.habitat$modal.predicted.habitat<-apply(dplyr::select(predicted.habitat,sim.version),1,Mode)
   predicted.habitat$modal.predicted.habitat[predicted.habitat$modal.predicted.habitat==">1 mode"]<-"ambiguous"
   predicted.habitat$confidence<-apply(dplyr::select(predicted.habitat,c(all_of(sim.version),modal.predicted.habitat)),1,FUN=function(x) count.habitat(x))
   

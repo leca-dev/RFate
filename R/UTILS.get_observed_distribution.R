@@ -45,8 +45,9 @@
 ##'   
 ##' @export
 ##' 
-##' @importFrom dplyr filter select filter group_by mutate %>% rename
-##' @importFrom raster aggregate compareCRS res crs
+##' @importFrom dplyr select filter group_by mutate %>% rename
+##' @importFrom raster compareCRS res crs levels
+##' @importFrom stats aggregate
 ##' @importFrom sf st_transform st_crop
 ##' @importFrom utils write.csv
 ##' @importFrom data.table setDT

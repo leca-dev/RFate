@@ -51,13 +51,15 @@
 ##' @export
 ##' 
 ##' @importFrom dplyr filter %>% group_by select
-##' @importFrom data.table dcast setDT
-##' @importFrom raster extract aggregate compareCRS
+##' @importFrom stats aggregate
+##' @importFrom reshape2 dcast
+##' @importFrom data.table setDT
+##' @importFrom raster extract compareCRS levels
 ##' @importFrom sf st_transform st_crop st_write
 ##' @importFrom randomForest randomForest tuneRF
 ##' @importFrom caret confusionMatrix
 ##' @importFrom readr write_rds
-##' @importFrom utils read.csv
+##' @importFrom utils read.csv write.csv
 ##' 
 ### END OF HEADER ##############################################################
 
@@ -109,8 +111,8 @@ train.RF.habitat<-function(releves.PFG
   ###################################
   
   #get sites coordinates
-  aggregated.releves.PFG<-merge(dplyr::select(releves.sites,c(site)),aggregated.releves.PFG,by="site")
-  
+  aggregated.releves.PFG<-merge(dplyr::select(releves.sites,c(site)), aggregated.releves.PFG,by="site")
+
   #get habitat code and name
   if(compareCRS(aggregated.releves.PFG,hab.obs)){
     aggregated.releves.PFG$code.habitat<-raster::extract(x=hab.obs,y=aggregated.releves.PFG)

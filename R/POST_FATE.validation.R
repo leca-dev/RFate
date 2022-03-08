@@ -144,7 +144,7 @@
 ##' @importFrom raster raster projectRaster res crs crop
 ##' @importFrom utils read.csv write.csv
 ##' @importFrom sf st_read
-##' @foreach foreach foreach %dopar%
+##' @importFrom foreach foreach %dopar%
 ##' @importFrom forcats fct_expand
 ##' @importFrom readr write_rds
 ##' @importFrom doParallel registerDoParallel
@@ -191,7 +191,7 @@ POST_FATE.validation = function(name.simulation
     # CBNA releves data habitat map
     releves.PFG<-read.csv(paste0(obs.path, releves.PFG),header=T,stringsAsFactors = T)
     releves.sites<-st_read(paste0(obs.path, releves.sites))
-    hab.obs<-raster(paste0(obs.path, hab.obs))
+    hab.obs = raster(paste0(obs.path, hab.obs))
     # Habitat mask at FATE simu resolution
     hab.obs.modif <- projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
     habitat.FATE.map <- crop(hab.obs.modif, simulation.map) #reprojection and croping of the extended habitat map in order to have a reduced observed habitat map
