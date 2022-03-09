@@ -49,10 +49,10 @@
 ##' @details 
 ##' 
 ##' \describe{
-##'   \item{Habitat validation}{The observed habitat is derived from the cesbio map, the simulated habitat 
+##'   \item{Habitat validation}{The observed habitat is derived from a map of the area, the simulated habitat 
 ##' is derived from FATE simulated relative abundance, based on a random forest 
-##' algorithm trained on CBNA data. To compare observations and simulations, the function
-##' compute confusion matrix between observation and prediction and then compute the TSS 
+##' algorithm trained on observed data. To compare observations and simulations, the function
+##' computes confusion matrix between observation and prediction and then computes the TSS 
 ##' for each habitat h (number of prediction of habitat h/number of observation 
 ##' of habitat h + number of non-prediction of habitat h/number of non-observation 
 ##' of habitat h). The final metrics this script use is the mean of TSS per habitat over all 
