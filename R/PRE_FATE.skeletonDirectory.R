@@ -71,14 +71,14 @@
 ##'   \item{\code{RESULTS}}{this folder will collect all the results produced by the
 ##'   software with a folder for each simulation}
 ##'   \item{\code{VALIDATION}}{this folder will collect all the validation files produced
-##'   by POST_FATE validation functions
+##'   by POST_FATE.validation function
 ##'   \describe{
 ##'       \item{\code{HABITAT}}{this folder will collect all the validation files produces
-##'       by the function POST_FATE.validation.habitat}
+##'       by the function POST_FATE.validation with habitat validation activated}
 ##'       \item{\code{PFG_RICHNESS}}{this folder will collect all the validation files produces
-##'       by the function POST_FATE.validation_PFG_richness}
+##'       by the function POST_FATE.validation with PFG richness validation activated}
 ##'       \item{\code{PFG_COMPOSITION}}{this folder will collect all the validation files produces
-##'       by the function POST_FATE.validation_PFG_composition}
+##'       by the function POST_FATE.validation with PFG composition validation activated}
 ##'     }
 ##'     }
 ##' }
