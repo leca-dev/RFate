@@ -184,6 +184,9 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     # read population output file into a dataframe
     pop_df = readPop(s = params.RS, dirpath = name.simulation.RS)
     
+    file.rename(from = paste0(name.simulation.RS, "Outputs/Batch1_Sim1_Land1_Pop.txt")
+                , to = paste0(name.simulation.RS, "Outputs/Batch1_Sim1_Land1_Pop_YEAR_", ye, ".txt"))
+    
     # Make stack of different raster layers for each year and for only one repetition (Rep==0):
     pop_wide_rep0 = reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'NInd')]
                             , timevar = 'Year'
@@ -215,7 +218,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     .setParam(params.lines = abs.simulParam
               , flag = "SAVED_STATE"
               , flag.split = "^--.*--$"
-              , value = "XXX")
+              , value = paste0("SIMUL_YEAR_", ye))
     
   }
 }
