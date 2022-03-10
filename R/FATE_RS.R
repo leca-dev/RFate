@@ -20,10 +20,10 @@
 
 
 FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.level = 2
-                   , PPM.names_PFG, PPM.ras_env, PPM.quad, PPM.mod
+                   , PPM.names_PFG, PPM.ras_env, PPM.xy, PPM.mod
                    , PATCH.threshold = 80, PATCH.buffer = 500, PATCH.min_m2 = 300000
                    , name.simulation.RS, params.RS
-                   , POP.carrying_capacity
+                   , POP.carrying_capacity = 0.115
                    , year.start, year.end, year.step)
 {
   ## + argument pour savoir si on commence par FATE ou RS
@@ -98,12 +98,12 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     X.des = X.des[, col_toKeep]
     
     ### Change explanatory variables into images
-    ux = sort(unique(PPM.quad[, 1])) #x ordinates
-    uy = sort(unique(PPM.quad[, 2])) #y ordinates
+    ux = sort(unique(PPM.xy[, 1])) #x ordinates
+    uy = sort(unique(PPM.xy[, 2])) #y ordinates
     nx = length(ux)
     ny = length(uy)
-    col.ref = match(PPM.quad[, 1], ux) # indice de l'abscisse de quad dans ux
-    row.ref = match(PPM.quad[, 2], uy)
+    col.ref = match(PPM.xy[, 1], ux) # indice de l'abscisse de quad dans ux
+    row.ref = match(PPM.xy[, 2], uy)
     
     int.list = list()
     for (n in 1:dim(X.des)[2]) {
@@ -123,9 +123,6 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     tmp = log(ras.quality) + abs(min(log(ras.quality)[], na.rm = TRUE))
     ras.log = tmp / max(tmp[], na.rm = TRUE) * 100
     
-    # name.distrib = paste0(name.simulation.RS, "BLABLABLA_YEAR_", ye, ".asc")
-    # writeRaster(ras.log, filename = name.distrib)
-    ## SAVE  as ASCII, voir script Emmanuel ?
     
     ## Update RS disp-cost maps ###################################################################
     
@@ -142,12 +139,39 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     pol.patch_buffer = st_union(pol.patch_buffer) # merging overlapping polygons
     pol.patch_buffer = ms_explode(pol.patch_buffer) # separating into multiple polygons
     
-    pol.patch_buffer$area_m2 = as.numeric(st_area(pol.patch_buffer)) # ne marche pas chez Emmanuel -> on passe ? 'area()'
+    pol.patch_buffer$area_m2 = as.numeric(st_area(pol.patch_buffer))
     pol.patch_buffer = pol.patch_buffer[which(pol.patch_buffer$area_m2 > PATCH.min_m2)] # excluding too small patches
     
-    # st_write(pol.patch_buffer
-    #          , paste0("tampons", PATCH.buffer, "m_suit_HS", threshold_habquality, "percent_filtre", PATCH.min_m2 / 10000, "ha_Lambert93")
-    #          , dsn = "Output_Patches_3methodes", driver = "ESRI Shapefile")
+    st_write(pol.patch_buffer
+             , paste0("tampons", PATCH.buffer, "m_suit_HS", PATCH.threshold, "percent_filtre", PATCH.min_m2 / 10000, "ha_Lambert93")
+             , dsn = paste0(name.simulation.RS, "Inputs"), driver = "ESRI Shapefile")
+    
+    
+    ## SAVE HS RASTER MAP AS ASCII ################################################################
+    ras.patch_buffer = rasterize(pol.patch_buffer, ras.log)
+    ras.log[which(is.na(ras.patch_buffer[]))] = NA
+    
+    val.log = ras.log[]
+    val.log[is.na(val.log)] = -9
+    val.log = as.character(val.log)
+    seq_linestarts <- seq(from = nrow(ras.log), to = ncell(ras.log) - nrow(ras.log) + 1, by = nrow(ras.log))
+    val.log[seq_linestarts] = paste0(val.log[seq_linestarts], "\n") # delineating rows for future character string
+    cha.log = paste(val.log, collapse = ' ') # concatenating in 1 character
+    cha.log = gsub("\n ", "\n", cha.log) # removing blank from line starts
+    
+    file.rename(from = paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt")
+                , to = paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges_YEAR_", ye - 1, ".txt"))
+    
+    fileConn <- file(paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt")
+    writeLines(c(paste("ncols", ncol(ras.log), sep = " "),
+                 paste("nrows", nrow(ras.log), sep = " "),
+                 paste("xllcorner", extent(ras.log)[1], sep = " "),
+                 paste("yllcorner", extent(ras.log)[3], sep = " "),
+                 paste("cellsize", resolution(ras.log)[1], sep = " "),
+                 "NODATA_value -9",
+                 cha.log), 
+               fileConn)
+    close(fileConn)
     
     
     ## Run RangeShifter ###########################################################################
@@ -166,10 +190,18 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
                             , v.names = c('NInd')
                             , idvar = c('x', 'y')
                             , direction = 'wide')
+    tmp_ncells = reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'Ncells')]
+                  , timevar = 'Year'
+                  , v.names = c('Ncells')
+                  , idvar = c('x', 'y')
+                  , direction = 'wide')
     
     # use raster package to make a raster from the data frame
     stack_years_rep0 = rasterFromXYZ(pop_wide_rep0)
+    stack_ncells = rasterFromXYZ(tmp_ncells)
+    stack_years_rep0 = stack_years_rep0 / stack_ncells
     stack_years_rep0 = stack_years_rep0 / POP.carrying_capacity
+    stack_years_rep0[which(stack_years_rep0[] > 1)] = 1
     name.dist = paste0(name.simulation, "/DATA/MASK/MASK_DIST_YEAR_", ye + 1, ".tif")
     writeRaster(stack_years_rep0, filename = name.dist)
     
