@@ -14,7 +14,12 @@
 ##' @export
 ##' 
 ##' @importFrom RangeShiftR RunRS readPop
-##' @importFrom raster stack rasterFromXYZ writeRaster
+##' @importFrom raster stack rasterFromXYZ writeRaster rasterToPolygons disaggregate rasterize
+##' @importFrom sf st_as_sf st_buffer st_union st_area st_write
+##' @importFrom rmapshaper ms_explode
+##' @importFrom spatstat im predict
+##' @importFrom stringr str_count
+##' @importFrom scales rescale
 ##' 
 ## END OF HEADER ###############################################################
 
@@ -22,6 +27,7 @@
 FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.level = 2
                    , PPM.names_PFG, PPM.ras_env, PPM.xy, PPM.mod
                    , PATCH.threshold = 80, PATCH.buffer = 500, PATCH.min_m2 = 300000
+                   , COST.ras_elev, COST.ras_barr, COST.wei = c(0.43, 0.53, 0.04), COST.range = c(1, 10)
                    , name.simulation.RS, params.RS
                    , POP.carrying_capacity = 0.115
                    , year.start, year.end, year.step)
@@ -54,7 +60,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
            , list_files = raster.perPFG.allStrata
            , no_cores = opt.no_CPU)
     
-    ## GET PFG abundance maps (all strata) ------------------------------
+    ## GET PFG abundance maps (all strata) ------------------------------------
     file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata
                        , "Abund_YEAR_"
                        , year.step
@@ -97,7 +103,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     )))
     X.des = X.des[, col_toKeep]
     
-    ### Change explanatory variables into images
+    ### Change explanatory variables into images ------------------------------
     ux = sort(unique(PPM.xy[, 1])) #x ordinates
     uy = sort(unique(PPM.xy[, 2])) #y ordinates
     nx = length(ux)
@@ -122,10 +128,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     ras.quality = ras.pred / max(na.exclude(values(ras.pred))) * 100
     tmp = log(ras.quality) + abs(min(log(ras.quality)[], na.rm = TRUE))
     ras.log = tmp / max(tmp[], na.rm = TRUE) * 100
-    
-    
-    ## Update RS disp-cost maps ###################################################################
-    
+
     
     ## Update RS patch maps #######################################################################
     ras.patch = ras.log > PATCH.threshold # defining patches
@@ -162,7 +165,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     file.rename(from = paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt")
                 , to = paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges_YEAR_", ye - 1, ".txt"))
     
-    fileConn <- file(paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt")
+    fileConn <- file(paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt"))
     writeLines(c(paste("ncols", ncol(ras.log), sep = " "),
                  paste("nrows", nrow(ras.log), sep = " "),
                  paste("xllcorner", extent(ras.log)[1], sep = " "),
@@ -174,10 +177,51 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     close(fileConn)
     
     
+    ## Update RS disp-cost maps ###################################################################
+    ## Function to rescale habitat suitability maps
+    fun_rescale = function(a = 1, b = 100, ras, ext) {
+      mini = min(values(ras), na.rm = TRUE)
+      maxi = max(values(ras), na.rm = TRUE)
+      res = (((b - a) * (ras - mini)) / (maxi - mini)) + a
+      res = mask(res, ext)
+      return(res)
+    }
+    
+    ras.log_ = fun_rescale(a = a, b = b, ras = ras.log, ext = ras.log)
+    ras.HS = fun_rescale(a = a, b = b, ras = 100 + (-1 * ras.log_) ^ 1, ext = ras.log_)
+    
+    # Compute cost map --------------------------------------------------------
+    ras.cost <- COST.wei[1] * ras.HS + COST.wei[2] * COST.ras_elev + COST.wei[3] * COST.ras_barr
+    ras.cost[] <- rescale(ras.cost[], c(COST.range[1], COST.range[2]))
+    ras.cost[] <- round(ras.cost[]) # round for SMS module
+    
+    ## SAVE COST RASTER MAP AS ASCII ##############################################################
+    val.cost = ras.cost[]
+    val.cost[is.na(val.cost)] = -9
+    val.cost = as.character(val.cost)
+    seq_linestarts <- seq(from = nrow(ras.cost), to = ncell(ras.cost) - nrow(ras.cost) + 1, by = nrow(ras.cost))
+    val.cost[seq_linestarts] = paste0(val.cost[seq_linestarts], "\n") # delineating rows for future character string
+    cha.cost = paste(val.cost, collapse = ' ') # concatenating in 1 character
+    cha.cost = gsub("\n ", "\n", cha.cost) # removing blank from line starts
+    
+    file.rename(from = paste0(name.simulation.RS, "Inputs/LandscapeFile_CostMap_ChamoisBauges.txt")
+                , to = paste0(name.simulation.RS, "Inputs/LandscapeFile_CostMap_ChamoisBauges_YEAR_", ye - 1, ".txt"))
+    
+    fileConn <- file(paste0(name.simulation.RS, "Inputs/LandscapeFile_CostMap_ChamoisBauges.txt"))
+    writeLines(c(paste("ncols", ncol(ras.cost), sep = " "),
+                 paste("nrows", nrow(ras.cost), sep = " "),
+                 paste("xllcorner", extent(ras.cost)[1], sep = " "),
+                 paste("yllcorner", extent(ras.cost)[3], sep = " "),
+                 paste("cellsize", resolution(ras.cost)[1], sep = " "),
+                 "NODATA_value -9",
+                 cha.cost), 
+               fileConn)
+    close(fileConn)
+    
+    
     ## Run RangeShifter ###########################################################################
     RunRS(RSparams = params.RS, dirpath = name.simulation.RS)
     
-    ## RENAME output with year
     
     ## Get resulting RS species density ###########################################################
     ## Code from RangeShiftR help
