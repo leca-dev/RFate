@@ -37,22 +37,22 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
   ## LOOP over simulation years
   for (ye in seq(year.start, year.end, 1))
   {
-    .setParam(params.lines = abs.simulParam
+    .setParam(params.lines = file.simulParam
               , flag = "SAVING_DIR"
               , flag.split = "^--.*--$"
               , value = paste0(name.simulation, "/RESULTS/SIMUL_YEAR_", ye, ""))
     
     ## Run FATE ###################################################################################
-    FATE(simulParam = abs.simulParam, no_CPU = opt.no_CPU, verboseLevel = verbose.level)
+    FATE(simulParam = file.simulParam, no_CPU = opt.no_CPU, verboseLevel = verbose.level)
     
     ## Get resulting FATE vegetation maps #########################################################
     ## Get results directories ------------------------------------------------
     GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
-                                    , abs.simulParam = abs.simulParam)
+                                    , abs.simulParam = file.simulParam)
     
     ## Get raster mask --------------------------------------------------------
     GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
-                                  , abs.simulParam = abs.simulParam)
+                                  , abs.simulParam = file.simulParam)
     
     ## UNZIP the raster saved -------------------------------------------------
     raster.perPFG.allStrata = .getRasterNames(year.step, "allStrata", "ABUND", GLOB_DIR)
@@ -253,13 +253,13 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     writeRaster(stack_years_rep0, filename = name.dist)
     
     ## Update FATE disturbance maps ###############################################################
-    .setParam(params.lines = abs.simulParam
+    .setParam(params.lines = file.simulParam
               , flag = "DIST_MASK"
               , flag.split = "^--.*--$"
               , value = paste0(name.simulation, "/DATA/MASK/MASK_DIST_YEAR_", ye + 1, ".tif"))
     
     ## Update FATE simulation to load #############################################################
-    .setParam(params.lines = abs.simulParam
+    .setParam(params.lines = file.simulParam
               , flag = "SAVED_STATE"
               , flag.split = "^--.*--$"
               , value = paste0("SIMUL_YEAR_", ye))
