@@ -23,7 +23,7 @@
 ##' strata considered in the validation.
 ##' @param habitat.considered_PFG.compo a character vector of the list of habitat(s)
 ##' considered in the validation.
-##' @param perStrata.compo Logical. All strata together (FALSE) or per strata (TRUE).
+##' @param perStrata \code{Logical}. All strata together (FALSE) or per strata (TRUE).
 ##' @param sim.version name of the simulation we want to validate (it works with
 ##' only one \code{sim.version}).
 ##' 
@@ -63,8 +63,10 @@ get.observed.distribution<-function(name.simulation
                                     , PFG.considered_PFG.compo
                                     , strata.considered_PFG.compo
                                     , habitat.considered_PFG.compo
-                                    , perStrata.compo
+                                    , perStrata
                                     , sim.version){
+  
+  cat("\n ---------- GET OBSERVED DISTRIBUTION \n")
   
   composition.mask = NULL
   output.path = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION/", sim.version)
@@ -79,9 +81,9 @@ get.observed.distribution<-function(name.simulation
   #transformation into coverage percentage
   releves.PFG$coverage<-PRE_FATE.abundBraunBlanquet(releves.PFG$BB)/100 #as a proportion, not a percentage
   
-  if(perStrata.compo==T){
+  if(perStrata==T){
     aggregated.releves.PFG<-aggregate(coverage~site+PFG+strata,data=releves.PFG,FUN="sum")
-  }else if(perStrata.compo==F){
+  }else if(perStrata==F){
     aggregated.releves.PFG<-aggregate(coverage~site+PFG,data=releves.PFG,FUN="sum")
     aggregated.releves.PFG$strata<-"A" #"A" is for "all". Important to have a single-letter code here (useful to check consistency between relevés strata and model strata)
   }
@@ -154,7 +156,7 @@ get.observed.distribution<-function(name.simulation
   
   distribution<-setDT(aggregated.releves.PFG)[, quantile(relative.metric), by=c("PFG","habitat","strata")]
   distribution<-rename(distribution,"quantile"="V1")
-  distribution<-data.frame(distribution,rank=seq(0,5,1)) #to be able to sort on quantile
+  distribution<-data.frame(distribution,rank=seq(0,4,1)) #to be able to sort on quantile
   
   # 7. Add the missing PFG*habitat*strata
   #final distribution is the distribution once the missing combination have been added. For these combination, all quantiles are set to 0

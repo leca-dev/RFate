@@ -22,7 +22,7 @@
 ##' 
 ##' @details 
 ##' 
-##' The function determine true/false prediction ('failure' if false, 'success' if true)
+##' The function determines true/false prediction ('failure' if false, 'success' if true)
 ##' and prepare a dataframe containing color and habitat code. Then, the script merge
 ##' the prediction dataframe with the color and code habitat dataframe. Finally,
 ##' the function draw a raster map and a plot of prediction habitat over it thanks
@@ -52,6 +52,8 @@ plot.predicted.habitat<-function(predicted.habitat
                                  , output.path
                                  , sim.version)
 {
+  
+  cat("\n ---------- AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT \n")
   
   #auxiliary function to compute the proportion of simulations lead to the modal prediction
   count.habitat<-function(df){

@@ -28,7 +28,7 @@
 ##' the prediction error.
 ##' @param output.path access path to the for the folder where output files
 ##' will be created.
-##' @param perStrata a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
+##' @param perStrata \code{Logical}. If TRUE, the PFG abundance is defined
 ##' by strata in each site. If FALSE, PFG abundance is defined for all strata.
 ##' @param sim.version name of the simulation we want to validate.
 ##' 
@@ -74,6 +74,8 @@ train.RF.habitat<-function(releves.PFG
                            , perStrata
                            , sim.version)
 {
+  
+  cat("\n ---------- TRAIN A RANDOM FOREST MODEL ON OBSERVED DATA \n")
   
   #1. Compute relative abundance metric
   #########################################

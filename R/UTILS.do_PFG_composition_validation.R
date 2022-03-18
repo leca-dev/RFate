@@ -28,13 +28,18 @@
 ##' @param validation.mask file which contain a raster mask that specified 
 ##' which pixels need validation.
 ##' @param year year of simulation to validate.
+##' @param list.strata.simulations a character vector which contain \code{FATE} 
+##' strata definition and correspondence with observed strata definition.
+##' @param list.strata.releves a character vector which contain the observed strata 
+##' definition, extracted from observed PFG releves.
 ##' 
 ##' @details 
 ##' 
 ##' After preliminary checks, this code extract observed habitat from the \code{hab.obs}
-##' map and, then, merge it with the simulated PFG abundance file from results of a \code{FATE}
-##' simulation. After filtration of the required PFG, strata and habitats, the function
-##' transform the data into relative metrics and, then, compute distribution per PFG, strata
+##' map and, then, merge it with the simulated PFG abundance file (with or without strata definition) 
+##' from results of the \code{FATE} simulation selected with \code{sim.version}. 
+##' After filtration of the required PFG, strata and habitats, the function transforms 
+##' the data into relative metrics and, then, compute distribution per PFG, strata
 ##' and habitat (if necessary). Finally, the code computes proximity between observed 
 ##' and simulated data, per PFG, strata and habitat.
 ##' 
@@ -54,11 +59,14 @@
 ##' @importFrom stats aggregate
 ##' @importFrom utils read.csv write.csv
 ##' @importFrom data.table setDT
+##' @importFrom tidyselect all_of
 ##'
 ### END OF HEADER ##############################################################
 
 
-do.PFG.composition.validation<-function(name.simulation, obs.path, sim.version, hab.obs, PFG.considered_PFG.compo, strata.considered_PFG.compo, habitat.considered_PFG.compo, observed.distribution, perStrata.compo, validation.mask, year){
+do.PFG.composition.validation<-function(name.simulation, obs.path, sim.version, hab.obs, PFG.considered_PFG.compo, strata.considered_PFG.compo, habitat.considered_PFG.compo, observed.distribution, perStrata, validation.mask, year, list.strata.simulations, list.strata.releves){
+  
+  cat("\n ---------- PFG COMPOSITION VALIDATION \n")
   
   output.path = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION/", sim.version)
   name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
@@ -80,12 +88,19 @@ do.PFG.composition.validation<-function(name.simulation, obs.path, sim.version, 
   ############################
   
   #check if strata definition used in the RF model is the same as the one used to analyze FATE output
-  if(perStrata.compo==F){
-    list.strata<-"all"
-  }else{
-    stop("check 'perStrata' parameter and/or the names of strata in param$list.strata.releves & param$list.strata.simul")
+  if(perStrata==T){
+    if(all(base::intersect(names(list.strata.simulations), list.strata.releves)==names(list.strata.simulations))){
+      list.strata = names(list.strata.simulations)
+      print("strata definition OK")
+    }else {
+      stop("wrong strata definition")
+    }
+  }else if(perStrata==F){
+    list.strata = "all"
+  }else {
+    stop("check 'perStrata' parameter and/or the names of strata in list.strata.releves & list.strata.simulations")
   }
-  
+
   #consistency between habitat.FATE.map and simulation.map
   if(!compareCRS(simulation.map,habitat.FATE.map)){
     print("reprojecting habitat.FATE.map to match simulation.map crs")
@@ -145,22 +160,36 @@ do.PFG.composition.validation<-function(name.simulation, obs.path, sim.version, 
   print("processing simulations")
   
   results.simul<-list()
-  for(i in 1:length(sim.version)) {
+  for(i in 1:length(all_of(sim.version))) {
     
     # 3.1. Data preparation
     #########################
     
     #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
-    simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
-    simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
-    colnames(simu_PFG) = c("PFG", "pixel", "abs")
+    if(perStrata==F){
+      
+      simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
+      simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
+      colnames(simu_PFG) = c("PFG", "pixel", "abs")
+      
+    }else if(perStrata==T){
+      
+      simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
+      simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
+      colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+    }
     
     #aggregate per strata group with the correspondence provided in input
     simu_PFG$new.strata<-NA
     
     #attribute the "new.strata" value to group FATE strata used in the simulations into strata comparable with CBNA ones (all strata together or per strata)
-    if(perStrata.compo==F){
+    if(perStrata==F){
       simu_PFG$new.strata<-"A"
+    }else if(perStrata==T){
+      for(p in 1:length(list.strata.simulations)){
+        simu_PFG$new.strata[is.element(simu_PFG$strata,list.strata.simulations[[p]])] = names(list.strata.simulations)[p]
+      }
+      simu_PFG$strata = NULL
     }
     
     simu_PFG<-dplyr::rename(simu_PFG,"strata"="new.strata")

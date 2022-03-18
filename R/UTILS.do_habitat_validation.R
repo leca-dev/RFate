@@ -20,29 +20,33 @@
 ##' @param validation.mask a raster mask that specified which pixels need validation.
 ##' @param simulation.map a raster map of the whole studied area use to check
 ##' the consistency between simulation map and the observed habitat map.
-##' @param predict.all.map a TRUE/FALSE vector. If TRUE, the script will predict 
+##' @param predict.all.map \code{Logical}. If TRUE, the script will predict 
 ##' habitat for the whole map.
 ##' @param sim.version name of the simulation to validate.
 ##' @param name.simulation simulation folder name.
-##' @param perStrata a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
+##' @param perStrata \code{Logical}. If TRUE, the PFG abundance is defined
 ##' by strata in each pixel. If FALSE, PFG abundance is defined for all strata.
 ##' @param hab.obs a raster map of the observed habitat in the
 ##' extended studied area.
-##' @param year year of simulation for validation.
+##' @param year simulation year selected for validation.
+##' @param list.strata.releves a character vector which contain the observed strata 
+##' definition, extracted from observed PFG releves.
+##' @param list.strata.simulations a character vector which contain \code{FATE} 
+##' strata definition and correspondence with observed strata definition.
 ##' 
 ##' @details
 ##' 
 ##' After several preliminary checks, the function is going to prepare the observations
-##' database by extracting the observed habitat from a raster map. Then, for each
-##' simulations (sim.version), the script take the evolution abundance for each PFG
-##' and all strata file and predict the habitat for the whole map (if option selected) 
-##' thanks to the RF model. Finally, the function computes habitat performance based on
-##' TSS for each habitat.
+##' database by extracting the observed habitat from a raster map. Then, for the
+##' simulation \code{sim.version}, the script take the evolution abundance for each PFG
+##' and all strata (or for each PFG & each strata if option selected) file and predict 
+##' the habitat for the whole map (if option selected) thanks to the RF model. 
+##' Finally, the function computes habitat performance based on TSS for each habitat.
 ##' 
 ##' @return
 ##' 
-##' Habitat performance file
-##' If option selected, the function returns an habitat prediction file with 
+##' Habitat performance file. \cr
+##' If option selected, the function also returns an habitat prediction file with 
 ##' observed and simulated habitat for each pixel of the whole map.
 ##' 
 ##' @export
@@ -59,11 +63,14 @@
 ##' @importFrom utils write.csv
 ##' @importFrom doParallel registerDoParallel
 ##' @importFrom parallel detectCores
+##' @importFrom tidyselect all_of
 ##' 
 ### END OF HEADER ##############################################################
 
 
-do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask, simulation.map, predict.all.map, sim.version, name.simulation, perStrata, hab.obs, year) {
+do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask, simulation.map, predict.all.map, sim.version, name.simulation, perStrata, hab.obs, year, list.strata.releves, list.strata.simulations) {
+  
+  cat("\n ---------- FATE OUTPUT ANALYSIS \n")
   
   #notes
   # we prepare the relevé data in this function, but in fact we could provide them directly if we adjust the code
@@ -73,10 +80,17 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   ###########################
   
   #check if strata definition used in the RF model is the same as the one used to analyze FATE output
-  if(perStrata==F){
+  if(perStrata==T){
+    if(all(base::intersect(names(list.strata.simulations), list.strata.releves)==names(list.strata.simulations))){
+      list.strata = names(list.strata.simulations)
+      print("strata definition OK")
+    }else {
+      stop("wrong strata definition")
+    }
+  }else if(perStrata==F){
     list.strata<-"all"
   }else{
-    stop("check 'perStrata' parameter and/or the names of strata in param$list.strata.releves & param$list.strata.simul")
+    stop("check 'perStrata' parameter and/or the names of strata in list.strata.releves & list.strata.simulation")
   }
   
   #initial consistency between habitat.FATE.map and validation.mask (do it before the adjustement of habitat.FATE.map)
@@ -160,17 +174,27 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   print("processing simulations")
   
   registerDoParallel(detectCores()-2)
-  results.simul <- foreach(i=1:length(sim.version)) %dopar%{
+  results.simul <- foreach(i=1:length(all_of(sim.version))) %dopar%{
     
     ########################"
     # III.1. Data preparation
     #########################
     
     #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
-    simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
-    simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))] #keep only the PFG, ID.pixel and abundance at any year columns
-    #careful : the number of abundance data files to save is to defined in POST_FATE.temporal.evolution function
-    colnames(simu_PFG) = c("PFG", "pixel", "abs")
+    if(perStrata==F){
+      
+      simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
+      simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))] #keep only the PFG, ID.pixel and abundance at any year columns
+      #careful : the number of abundance data files to save is to defined in POST_FATE.temporal.evolution function
+      colnames(simu_PFG) = c("PFG", "pixel", "abs")
+      
+    } else if(perStrata==T){
+      
+      simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
+      simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
+      colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+      
+    }
     
     #aggregate per strata group with the correspondance provided in input
     simu_PFG$new.strata<-NA
@@ -178,6 +202,11 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     #attribute the "new.strata" value to group FATE strata used in the simulations into strata comparable with CBNA ones (all strata together or per strata)
     if(perStrata==F){
       simu_PFG$new.strata<-"A"
+    }else if(perStrata==T){
+      for(i in 1:length(list.strata.simulations)){
+        simu_PFG$new.strata[is.element(simu_PFG$strata, list.strata.simulations[[i]])] = names(list.strata.simulations)[i]
+      }
+      simu_PFG$strata = NULL
     }
     
     simu_PFG<-dplyr::rename(simu_PFG,"strata"="new.strata")
