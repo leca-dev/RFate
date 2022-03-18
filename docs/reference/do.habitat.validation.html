@@ -146,8 +146,7 @@ for each habitat.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for habitat.validation</span>
-<span class="fu">do</span><span class="op">(</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">do.habitat.validation</span><span class="op">(</span>
   <span class="va">output.path</span>,
   <span class="va">RF.model</span>,
   <span class="va">habitat.FATE.map</span>,
@@ -158,7 +157,9 @@ for each habitat.</p>
   <span class="va">name.simulation</span>,
   <span class="va">perStrata</span>,
   <span class="va">hab.obs</span>,
-  <span class="va">year</span>
+  <span class="va">year</span>,
+  <span class="va">list.strata.releves</span>,
+  <span class="va">list.strata.simulations</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -179,35 +180,40 @@ studied area.</p></dd>
 <dd><p>a raster map of the whole studied area use to check
 the consistency between simulation map and the observed habitat map.</p></dd>
 <dt>predict.all.map</dt>
-<dd><p>a TRUE/FALSE vector. If TRUE, the script will predict 
+<dd><p><code>Logical</code>. If TRUE, the script will predict 
 habitat for the whole map.</p></dd>
 <dt>sim.version</dt>
 <dd><p>name of the simulation to validate.</p></dd>
 <dt>name.simulation</dt>
 <dd><p>simulation folder name.</p></dd>
 <dt>perStrata</dt>
-<dd><p>a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
+<dd><p><code>Logical</code>. If TRUE, the PFG abundance is defined
 by strata in each pixel. If FALSE, PFG abundance is defined for all strata.</p></dd>
 <dt>hab.obs</dt>
 <dd><p>a raster map of the observed habitat in the
 extended studied area.</p></dd>
 <dt>year</dt>
-<dd><p>year of simulation for validation.</p></dd>
+<dd><p>simulation year selected for validation.</p></dd>
+<dt>list.strata.releves</dt>
+<dd><p>a character vector which contain the observed strata 
+definition, extracted from observed PFG releves.</p></dd>
+<dt>list.strata.simulations</dt>
+<dd><p>a character vector which contain <code>FATE</code> 
+strata definition and correspondence with observed strata definition.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Habitat performance file
-If option selected, the function returns an habitat prediction file with 
+    <p>Habitat performance file. <br>If option selected, the function also returns an habitat prediction file with 
 observed and simulated habitat for each pixel of the whole map.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
     <p>After several preliminary checks, the function is going to prepare the observations
-database by extracting the observed habitat from a raster map. Then, for each
-simulations (sim.version), the script take the evolution abundance for each PFG
-and all strata file and predict the habitat for the whole map (if option selected) 
-thanks to the RF model.Finally, the function compute habitat performance based on
-TSS for each habitat.</p>
+database by extracting the observed habitat from a raster map. Then, for the
+simulation <code>sim.version</code>, the script take the evolution abundance for each PFG
+and all strata (or for each PFG &amp; each strata if option selected) file and predict 
+the habitat for the whole map (if option selected) thanks to the RF model. 
+Finally, the function computes habitat performance based on TSS for each habitat.</p>
     </div>
     <div id="author">
     <h2>Author</h2>

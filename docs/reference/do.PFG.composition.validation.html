@@ -145,8 +145,7 @@ distribution for a precise <code>FATE</code> simulation.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for PFG.composition.validation</span>
-<span class="fu">do</span><span class="op">(</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">do.PFG.composition.validation</span><span class="op">(</span>
   <span class="va">name.simulation</span>,
   <span class="va">obs.path</span>,
   <span class="va">sim.version</span>,
@@ -155,9 +154,11 @@ distribution for a precise <code>FATE</code> simulation.</p>
   <span class="va">strata.considered_PFG.compo</span>,
   <span class="va">habitat.considered_PFG.compo</span>,
   <span class="va">observed.distribution</span>,
-  <span class="va">perStrata.compo</span>,
+  <span class="va">perStrata</span>,
   <span class="va">validation.mask</span>,
-  <span class="va">year</span>
+  <span class="va">year</span>,
+  <span class="va">list.strata.simulations</span>,
+  <span class="va">list.strata.releves</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -184,13 +185,19 @@ strata considered in the validation.</p></dd>
 considered in the validation.</p></dd>
 <dt>observed.distribution</dt>
 <dd><p>PFG observed distribution table.</p></dd>
-<dt>perStrata.compo</dt>
-<dd><p>Logical. All strata together (FALSE) or per strata (TRUE).</p></dd>
 <dt>validation.mask</dt>
 <dd><p>file which contain a raster mask that specified 
 which pixels need validation.</p></dd>
 <dt>year</dt>
 <dd><p>year of simulation to validate.</p></dd>
+<dt>list.strata.simulations</dt>
+<dd><p>a character vector which contain <code>FATE</code> 
+strata definition and correspondence with observed strata definition.</p></dd>
+<dt>list.strata.releves</dt>
+<dd><p>a character vector which contain the observed strata 
+definition, extracted from observed PFG releves.</p></dd>
+<dt>perStrata.compo</dt>
+<dd><p>Logical. All strata together (FALSE) or per strata (TRUE).</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -199,9 +206,10 @@ which pixels need validation.</p></dd>
     <div id="details">
     <h2>Details</h2>
     <p>After preliminary checks, this code extract observed habitat from the <code>hab.obs</code>
-map and, then, merge it with the simulated PFG abundance file from results of a <code>FATE</code>
-simulation. After filtration of the required PFG, strata and habitats, the function
-transform the data into relative metrics and, then, compute distribution per PFG, strata
+map and, then, merge it with the simulated PFG abundance file (with or without strata definition) 
+from results of the <code>FATE</code> simulation selected with <code>sim.version</code>. 
+After filtration of the required PFG, strata and habitats, the function transforms 
+the data into relative metrics and, then, compute distribution per PFG, strata
 and habitat (if necessary). Finally, the code computes proximity between observed 
 and simulated data, per PFG, strata and habitat.</p>
     </div>

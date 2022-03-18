@@ -159,6 +159,7 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   <span class="va">name.simulation</span>,
   <span class="va">sim.version</span>,
   <span class="va">year</span>,
+  perStrata <span class="op">=</span> <span class="cn">TRUE</span>,
   doHabitat <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">obs.path</span>,
   <span class="va">releves.PFG</span>,
@@ -166,9 +167,11 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   <span class="va">hab.obs</span>,
   <span class="va">validation.mask</span>,
   studied.habitat <span class="op">=</span> <span class="cn">NULL</span>,
+  list.strata.simulations <span class="op">=</span> <span class="cn">NULL</span>,
   doComposition <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">PFG.considered_PFG.compo</span>,
   <span class="va">habitat.considered_PFG.compo</span>,
+  <span class="va">strata.considered_PFG.compo</span>,
   doRichness <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">list.PFG</span>,
   exclude.PFG <span class="op">=</span> <span class="cn">NULL</span>
@@ -183,8 +186,11 @@ for a <code>FATE</code> simulation and computes the difference between observed 
 <dd><p>name of the simulation to validate (it works with only one <code>sim.version</code>).</p></dd>
 <dt>year</dt>
 <dd><p>year of simulation for validation.</p></dd>
+<dt>perStrata</dt>
+<dd><p><code>Logical</code>. Default <code>TRUE</code>. If <code>TRUE</code>, PFG abundance is defined by strata. 
+If <code>FALSE</code>, PFG abundance defined for all strata (habitat &amp; PFG composition &amp; PFG richness validation).</p></dd>
 <dt>doHabitat</dt>
-<dd><p>logical. Default <code>TRUE</code>. If <code>TRUE</code>, habitat validation module is activated,
+<dd><p><code>Logical</code>. Default <code>TRUE</code>. If <code>TRUE</code>, habitat validation module is activated,
 if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dt>obs.path</dt>
 <dd><p>the function needs observed data, please create a folder for them in your 
@@ -201,8 +207,11 @@ and each PFG and strata (habitat &amp; PFG composition validation).</p></dd>
 <dd><p>default <code>NULL</code>. If <code>NULL</code>, the function will
 take into account of all habitats in the <code>hab.obs</code> map. Otherwise, please specify 
 in a vector habitats that will be take into account for the validation (habitat validation).</p></dd>
+<dt>list.strata.simulations</dt>
+<dd><p>default <code>NULL</code>. A character vector which contain <code>FATE</code> 
+strata definition and correspondence with observed strata definition.</p></dd>
 <dt>doComposition</dt>
-<dd><p>logical. Default <code>TRUE</code>. If <code>TRUE</code>, PFG composition validation module is activated,
+<dd><p><code>Logical</code>. Default <code>TRUE</code>. If <code>TRUE</code>, PFG composition validation module is activated,
 if <code>FALSE</code>, PFG composition validation module is disabled.</p></dd>
 <dt>PFG.considered_PFG.compo</dt>
 <dd><p>a character vector of the list of PFG considered
@@ -210,8 +219,12 @@ in the validation (PFG composition validation).</p></dd>
 <dt>habitat.considered_PFG.compo</dt>
 <dd><p>a character vector of the list of habitat(s)
 considered in the validation (PFG composition validation).</p></dd>
+<dt>strata.considered_PFG.compo</dt>
+<dd><p>If <code>perStrata</code> = <code>FALSE</code>, a character vector with value "A" 
+(selection of one or several specific strata disabled). If <code>perStrata</code> = <code>TRUE</code>, a character 
+vector with at least one of the observed strata (PFG composition validation).</p></dd>
 <dt>doRichness</dt>
-<dd><p>logical. Default <code>TRUE</code>. If <code>TRUE</code>, PFG richness validation module is activated,
+<dd><p><code>Logical</code>. Default <code>TRUE</code>. If <code>TRUE</code>, PFG richness validation module is activated,
 if <code>FALSE</code>, PFG richness validation module is disabled.</p></dd>
 <dt>list.PFG</dt>
 <dd><p>a character vector which contain all the PFGs taken account in
@@ -232,30 +245,31 @@ the habitat associated with the dominant species of each site in the studied map
     
 <dl><dt>Habitat validation</dt>
 <dd><p>The observed habitat is derived from a map of the area, the simulated habitat 
-is derived from FATE simulated relative abundance, based on a random forest 
-algorithm trained on observed data. To compare observations and simulations, the function
-computes confusion matrix between observation and prediction and then computes the TSS 
-for each habitat h (number of prediction of habitat h/number of observation 
-of habitat h + number of non-prediction of habitat h/number of non-observation 
-of habitat h). The final metrics this script use is the mean of TSS per habitat over all 
-habitats, weighted by the share of each habitat in the observed habitat distribution.</p></dd>
-
+is derived from <code>FATE</code> simulated relative abundance, based on a random forest 
+algorithm trained on observed releves data (see <code><a href="train.RF.habitat.html">train.RF.habitat</a></code>) <br>
+To compare observations and simulations, the function computes confusion matrix between 
+observations and predictions and then compute the TSS for each habitat h 
+(number of prediction of habitat h/number of observation of habitat h + number of non-prediction 
+of habitat h/number of non-observation of habitat h). The final metrics this script use is the 
+mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
+habitat distribution. The habitat validation also provides a visual comparison of observed and 
+simulated habitat on the whole studied area (see <code><a href="do.habitat.validation.html">do.habitat.validation</a></code> &amp;
+ <code><a href="plot.predicted.habitat.html">plot.predicted.habitat</a></code>).</p></dd>
+ 
   <dt>PFG composition validation</dt>
-<dd><p>This code firstly run the <code>get.observed.distribution</code> function in order to have
-a <code>obs.distri</code> file which contain the observed distribution per PFG, strata and habitat.
-This file is also an argument for the <code>do.PFG.composition.validation</code> function run next.
-This second sub function provide the computation of distance between observed and simulated distribution. <br> 
-NB : The argument <code>strata.considered_PFG.compo</code> is by default "A" in the 2 sub functions because 
-it's easier for a <code>FATE</code> simulation to provide PFG abundances for all strata. <br> The argument 
-<code>perStrata.compo</code> is by default <code>NULL</code> for the same reasons.</p></dd>
+<dd><p>This code firstly run the <code>get.observed.distribution</code> 
+function in order to have a <code>obs.distri</code> file which contain the observed distribution 
+per PFG, strata and habitat. This file is also an argument for the <code>do.PFG.composition.validation</code> 
+function run next. This second sub function provides the computation of distance between observed 
+and simulated distribution.</p></dd>
 
   <dt>PFG richness validation</dt>
 <dd><p>Firstly, the function updates the <code>list.PFG</code> with <code>exclude.PFG</code> vector.
-Then, the script takes the abundance per PFG file from the results of the <code>FATE</code> 
-simulation and computes the difference between the <code>list.PFG</code> and all the PFG 
-which are presents in the abundance file, in order to obtain the PFG richness for a simulation.
-The function also determine if an observed PFG is missing in the results of the simulation at 
-a specific year.</p></dd>
+Then, the script takes the abundance per PFG (and per strata if option selected) file from the 
+results of the <code>FATE</code> simulation and computes the difference between the <code>list.PFG</code> 
+and all the PFG which are presents in the abundance file, in order to obtain the PFG richness 
+for a simulation. The function also determine if an observed PFG is missing in the results of the 
+simulation at a specific year.</p></dd>
 
 
 </dl></div>
@@ -268,9 +282,11 @@ a specific year.</p></dd>
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code>
 <span class="co">## Habitat validation ---------------------------------------------------------------------------------</span>
+<span class="va">list.strata.simulations</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, M <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span>
 <span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                       , sim.version <span class="op">=</span> <span class="st">"SIMUL_V4.1"</span>
                       , year <span class="op">=</span> <span class="fl">2000</span>
+                      , perStrata <span class="op">=</span> <span class="cn">TRUE</span>
                       , doHabitat <span class="op">=</span> <span class="cn">TRUE</span>
                       , obs.path <span class="op">=</span> <span class="st">"FATE_Champsaur/DATA_OBS/"</span>
                       , releves.PFG <span class="op">=</span> <span class="st">"releves.PFG.abundance.csv"</span>
@@ -278,15 +294,19 @@ a specific year.</p></dd>
                       , hab.obs <span class="op">=</span> <span class="st">"simplified.cesbio.map.grd"</span>
                       , validation.mask <span class="op">=</span> <span class="st">"certain.habitat.100m.restricted.grd"</span>
                       , studied.habitat <span class="op">=</span> <span class="cn">NULL</span>
+                      , list.strata.simulations <span class="op">=</span> <span class="va">list.strata.simulations</span>
                       , doComposition <span class="op">=</span> <span class="cn">FALSE</span>
                       , doRichness <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
                       
 <span class="co">## PFG composition validation --------------------------------------------------------------------------</span>
-<span class="va">list.PFG</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"C2"</span>,<span class="st">"C3"</span>,<span class="st">"C4"</span>,<span class="st">"H1"</span>,<span class="st">"H2"</span>,<span class="st">"H3"</span>,<span class="st">"H4"</span>,<span class="st">"H5"</span>,<span class="st">"H6"</span>,<span class="st">"P1"</span>,<span class="st">"P2"</span>,<span class="st">"P3"</span>,<span class="st">"P4"</span>,<span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">list.strata.simulations</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, M <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span>
+<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"C2"</span>,<span class="st">"C3"</span>,<span class="st">"C4"</span>,<span class="st">"H1"</span>,<span class="st">"H2"</span>,<span class="st">"H3"</span>,<span class="st">"H4"</span>,<span class="st">"H5"</span>,<span class="st">"H6"</span>,<span class="st">"P1"</span>,<span class="st">"P2"</span>,<span class="st">"P3"</span>,<span class="st">"P4"</span>,<span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
 <span class="va">habitat.considered</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span>
+<span class="va">strata.considered_PFG.compo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="st">"M"</span>, <span class="st">"B"</span><span class="op">)</span>
 <span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                       , sim.version <span class="op">=</span> <span class="st">"SIMUL_V4.1"</span>
                       , year <span class="op">=</span> <span class="fl">2000</span>
+                      , perStrata <span class="op">=</span> <span class="cn">TRUE</span>
                       , doHabitat <span class="op">=</span> <span class="cn">FALSE</span>
                       , obs.path <span class="op">=</span> <span class="st">"FATE_Champsaur/DATA_OBS/"</span>
                       , releves.PFG <span class="op">=</span> <span class="st">"releves.PFG.abundance.csv"</span>
@@ -294,16 +314,19 @@ a specific year.</p></dd>
                       , hab.obs <span class="op">=</span> <span class="st">"simplified.cesbio.map.grd"</span>
                       , validation.mask <span class="op">=</span> <span class="st">"certain.habitat.100m.restricted.grd"</span>
                       , studied.habitat <span class="op">=</span> <span class="cn">NULL</span>
+                      , list.strata.simulations <span class="op">=</span> <span class="va">list.strata.simulations</span>
                       , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
                       , PFG.considered_PFG.compo <span class="op">=</span> <span class="va">list.PFG</span>
                       , habitat.considered_PFG.compo <span class="op">=</span> <span class="va">habitat.considered</span>
+                      , strata.considered_PFG.compo <span class="op">=</span> <span class="va">strata.considered_PFG.compo</span>
                       , doRichness <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
                       
 <span class="co">## PFG richness validation -----------------------------------------------------------------------------</span>
-<span class="va">list.PFG</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"C2"</span>,<span class="st">"C3"</span>,<span class="st">"C4"</span>,<span class="st">"H1"</span>,<span class="st">"H2"</span>,<span class="st">"H3"</span>,<span class="st">"H4"</span>,<span class="st">"H5"</span>,<span class="st">"H6"</span>,<span class="st">"P1"</span>,<span class="st">"P2"</span>,<span class="st">"P3"</span>,<span class="st">"P4"</span>,<span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_CHampsaur"</span>
+<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>,<span class="st">"C2"</span>,<span class="st">"C3"</span>,<span class="st">"C4"</span>,<span class="st">"H1"</span>,<span class="st">"H2"</span>,<span class="st">"H3"</span>,<span class="st">"H4"</span>,<span class="st">"H5"</span>,<span class="st">"H6"</span>,<span class="st">"P1"</span>,<span class="st">"P2"</span>,<span class="st">"P3"</span>,<span class="st">"P4"</span>,<span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                       , sim.version <span class="op">=</span> <span class="st">"SIMUL_V4.1"</span>
                       , year <span class="op">=</span> <span class="fl">2000</span>
+                      , perStrata <span class="op">=</span> <span class="cn">TRUE</span>
                       , doHabitat <span class="op">=</span> <span class="cn">FALSE</span>
                       , doComposition <span class="op">=</span> <span class="cn">FALSE</span>
                       , doRichness <span class="op">=</span> <span class="cn">TRUE</span>
