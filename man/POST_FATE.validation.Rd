@@ -8,6 +8,7 @@ POST_FATE.validation(
   name.simulation,
   sim.version,
   year,
+  perStrata = TRUE,
   doHabitat = TRUE,
   obs.path,
   releves.PFG,
@@ -15,9 +16,11 @@ POST_FATE.validation(
   hab.obs,
   validation.mask,
   studied.habitat = NULL,
+  list.strata.simulations = NULL,
   doComposition = TRUE,
   PFG.considered_PFG.compo,
   habitat.considered_PFG.compo,
+  strata.considered_PFG.compo,
   doRichness = TRUE,
   list.PFG,
   exclude.PFG = NULL
@@ -30,7 +33,10 @@ POST_FATE.validation(
 
 \item{year}{year of simulation for validation.}
 
-\item{doHabitat}{logical. Default \code{TRUE}. If \code{TRUE}, habitat validation module is activated,
+\item{perStrata}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG abundance is defined by strata. 
+If \code{FALSE}, PFG abundance defined for all strata (habitat & PFG composition & PFG richness validation).}
+
+\item{doHabitat}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, habitat validation module is activated,
 if \code{FALSE}, habitat validation module is disabled.}
 
 \item{obs.path}{the function needs observed data, please create a folder for them in your 
@@ -48,7 +54,10 @@ and each PFG and strata (habitat & PFG composition validation).}
 take into account of all habitats in the \code{hab.obs} map. Otherwise, please specify 
 in a vector habitats that will be take into account for the validation (habitat validation).}
 
-\item{doComposition}{logical. Default \code{TRUE}. If \code{TRUE}, PFG composition validation module is activated,
+\item{list.strata.simulations}{default \code{NULL}. A character vector which contain \code{FATE} 
+strata definition and correspondence with observed strata definition.}
+
+\item{doComposition}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG composition validation module is activated,
 if \code{FALSE}, PFG composition validation module is disabled.}
 
 \item{PFG.considered_PFG.compo}{a character vector of the list of PFG considered
@@ -57,7 +66,11 @@ in the validation (PFG composition validation).}
 \item{habitat.considered_PFG.compo}{a character vector of the list of habitat(s)
 considered in the validation (PFG composition validation).}
 
-\item{doRichness}{logical. Default \code{TRUE}. If \code{TRUE}, PFG richness validation module is activated,
+\item{strata.considered_PFG.compo}{If \code{perStrata} = \code{FALSE}, a character vector with value "A" 
+(selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a character 
+vector with at least one of the observed strata (PFG composition validation).}
+
+\item{doRichness}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG richness validation module is activated,
 if \code{FALSE}, PFG richness validation module is disabled.}
 
 \item{list.PFG}{a character vector which contain all the PFGs taken account in
@@ -86,34 +99,37 @@ for a \code{FATE} simulation and computes the difference between observed and si
 \details{
 \describe{
   \item{Habitat validation}{The observed habitat is derived from a map of the area, the simulated habitat 
-is derived from FATE simulated relative abundance, based on a random forest 
-algorithm trained on observed data. To compare observations and simulations, the function
-computes confusion matrix between observation and prediction and then computes the TSS 
-for each habitat h (number of prediction of habitat h/number of observation 
-of habitat h + number of non-prediction of habitat h/number of non-observation 
-of habitat h). The final metrics this script use is the mean of TSS per habitat over all 
-habitats, weighted by the share of each habitat in the observed habitat distribution.}
-  \item{PFG composition validation}{This code firstly run the \code{get.observed.distribution} function in order to have
-a \code{obs.distri} file which contain the observed distribution per PFG, strata and habitat.
-This file is also an argument for the \code{do.PFG.composition.validation} function run next.
-This second sub function provide the computation of distance between observed and simulated distribution. \cr 
-NB : The argument \code{strata.considered_PFG.compo} is by default "A" in the 2 sub functions because 
-it's easier for a \code{FATE} simulation to provide PFG abundances for all strata. \cr The argument 
-\code{perStrata.compo} is by default \code{NULL} for the same reasons.}
+is derived from \code{FATE} simulated relative abundance, based on a random forest 
+algorithm trained on observed releves data (see \code{\link{train.RF.habitat}}) \cr
+To compare observations and simulations, the function computes confusion matrix between 
+observations and predictions and then compute the TSS for each habitat h 
+(number of prediction of habitat h/number of observation of habitat h + number of non-prediction 
+of habitat h/number of non-observation of habitat h). The final metrics this script use is the 
+mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
+habitat distribution. The habitat validation also provides a visual comparison of observed and 
+simulated habitat on the whole studied area (see \code{\link{do.habitat.validation}} &
+ \code{\link{plot.predicted.habitat}}).} \cr
+  \item{PFG composition validation}{This code firstly run the \code{get.observed.distribution} 
+function in order to have a \code{obs.distri} file which contain the observed distribution 
+per PFG, strata and habitat. This file is also an argument for the \code{do.PFG.composition.validation} 
+function run next. This second sub function provides the computation of distance between observed 
+and simulated distribution.}
   \item{PFG richness validation}{Firstly, the function updates the \code{list.PFG} with \code{exclude.PFG} vector.
-Then, the script takes the abundance per PFG file from the results of the \code{FATE} 
-simulation and computes the difference between the \code{list.PFG} and all the PFG 
-which are presents in the abundance file, in order to obtain the PFG richness for a simulation.
-The function also determine if an observed PFG is missing in the results of the simulation at 
-a specific year.}
+Then, the script takes the abundance per PFG (and per strata if option selected) file from the 
+results of the \code{FATE} simulation and computes the difference between the \code{list.PFG} 
+and all the PFG which are presents in the abundance file, in order to obtain the PFG richness 
+for a simulation. The function also determine if an observed PFG is missing in the results of the 
+simulation at a specific year.}
 }
 }
 \examples{
 
 ## Habitat validation ---------------------------------------------------------------------------------
+list.strata.simulations = list(S = c(1,2,3), M = c(4), B = c(5,6,7))
 POST_FATE.validation(name.simulation = "FATE_Champsaur"
                       , sim.version = "SIMUL_V4.1"
                       , year = 2000
+                      , perStrata = TRUE
                       , doHabitat = TRUE
                       , obs.path = "FATE_Champsaur/DATA_OBS/"
                       , releves.PFG = "releves.PFG.abundance.csv"
@@ -121,15 +137,19 @@ POST_FATE.validation(name.simulation = "FATE_Champsaur"
                       , hab.obs = "simplified.cesbio.map.grd"
                       , validation.mask = "certain.habitat.100m.restricted.grd"
                       , studied.habitat = NULL
+                      , list.strata.simulations = list.strata.simulations
                       , doComposition = FALSE
                       , doRichness = FALSE)
                       
 ## PFG composition validation --------------------------------------------------------------------------
-list.PFG<-as.factor(c("C1","C2","C3","C4","H1","H2","H3","H4","H5","H6","P1","P2","P3","P4","P5"))
+list.strata.simulations = list(S = c(1,2,3), M = c(4), B = c(5,6,7))
+list.PFG = as.factor(c("C1","C2","C3","C4","H1","H2","H3","H4","H5","H6","P1","P2","P3","P4","P5"))
 habitat.considered = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland")
+strata.considered_PFG.compo = c("S", "M", "B")
 POST_FATE.validation(name.simulation = "FATE_Champsaur"
                       , sim.version = "SIMUL_V4.1"
                       , year = 2000
+                      , perStrata = TRUE
                       , doHabitat = FALSE
                       , obs.path = "FATE_Champsaur/DATA_OBS/"
                       , releves.PFG = "releves.PFG.abundance.csv"
@@ -137,16 +157,19 @@ POST_FATE.validation(name.simulation = "FATE_Champsaur"
                       , hab.obs = "simplified.cesbio.map.grd"
                       , validation.mask = "certain.habitat.100m.restricted.grd"
                       , studied.habitat = NULL
+                      , list.strata.simulations = list.strata.simulations
                       , doComposition = TRUE
                       , PFG.considered_PFG.compo = list.PFG
                       , habitat.considered_PFG.compo = habitat.considered
+                      , strata.considered_PFG.compo = strata.considered_PFG.compo
                       , doRichness = FALSE)
                       
 ## PFG richness validation -----------------------------------------------------------------------------
-list.PFG<-as.factor(c("C1","C2","C3","C4","H1","H2","H3","H4","H5","H6","P1","P2","P3","P4","P5"))
-POST_FATE.validation(name.simulation = "FATE_CHampsaur"
+list.PFG = as.factor(c("C1","C2","C3","C4","H1","H2","H3","H4","H5","H6","P1","P2","P3","P4","P5"))
+POST_FATE.validation(name.simulation = "FATE_Champsaur"
                       , sim.version = "SIMUL_V4.1"
                       , year = 2000
+                      , perStrata = TRUE
                       , doHabitat = FALSE
                       , doComposition = FALSE
                       , doRichness = TRUE

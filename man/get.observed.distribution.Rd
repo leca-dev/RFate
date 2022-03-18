@@ -13,7 +13,7 @@ get.observed.distribution(
   PFG.considered_PFG.compo,
   strata.considered_PFG.compo,
   habitat.considered_PFG.compo,
-  perStrata.compo,
+  perStrata,
   sim.version
 )
 }
@@ -40,7 +40,7 @@ strata considered in the validation.}
 \item{habitat.considered_PFG.compo}{a character vector of the list of habitat(s)
 considered in the validation.}
 
-\item{perStrata.compo}{Logical. All strata together (FALSE) or per strata (TRUE).}
+\item{perStrata}{\code{Logical}. All strata together (FALSE) or per strata (TRUE).}
 
 \item{sim.version}{name of the simulation we want to validate (it works with
 only one \code{sim.version}).}

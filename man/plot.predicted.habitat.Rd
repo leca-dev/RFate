@@ -30,7 +30,7 @@ based on a habitat prediction file. For each pixel, the habitat failure or succe
 is associated to a color and then, the map is built.
 }
 \details{
-The function determine true/false prediction ('failure' if false, 'success' if true)
+The function determines true/false prediction ('failure' if false, 'success' if true)
 and prepare a dataframe containing color and habitat code. Then, the script merge
 the prediction dataframe with the color and code habitat dataframe. Finally,
 the function draw a raster map and a plot of prediction habitat over it thanks

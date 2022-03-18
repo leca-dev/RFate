@@ -4,7 +4,7 @@
 \alias{do.PFG.composition.validation}
 \title{Compute distance between observed and simulated distribution}
 \usage{
-\method{do}{PFG.composition.validation}(
+do.PFG.composition.validation(
   name.simulation,
   obs.path,
   sim.version,
@@ -13,9 +13,11 @@
   strata.considered_PFG.compo,
   habitat.considered_PFG.compo,
   observed.distribution,
-  perStrata.compo,
+  perStrata,
   validation.mask,
-  year
+  year,
+  list.strata.simulations,
+  list.strata.releves
 )
 }
 \arguments{
@@ -40,12 +42,18 @@ considered in the validation.}
 
 \item{observed.distribution}{PFG observed distribution table.}
 
-\item{perStrata.compo}{Logical. All strata together (FALSE) or per strata (TRUE).}
-
 \item{validation.mask}{file which contain a raster mask that specified 
 which pixels need validation.}
 
 \item{year}{year of simulation to validate.}
+
+\item{list.strata.simulations}{a character vector which contain \code{FATE} 
+strata definition and correspondence with observed strata definition.}
+
+\item{list.strata.releves}{a character vector which contain the observed strata 
+definition, extracted from observed PFG releves.}
+
+\item{perStrata.compo}{Logical. All strata together (FALSE) or per strata (TRUE).}
 }
 \value{
 
@@ -58,9 +66,10 @@ distribution for a precise \code{FATE} simulation.
 }
 \details{
 After preliminary checks, this code extract observed habitat from the \code{hab.obs}
-map and, then, merge it with the simulated PFG abundance file from results of a \code{FATE}
-simulation. After filtration of the required PFG, strata and habitats, the function
-transform the data into relative metrics and, then, compute distribution per PFG, strata
+map and, then, merge it with the simulated PFG abundance file (with or without strata definition) 
+from results of the \code{FATE} simulation selected with \code{sim.version}. 
+After filtration of the required PFG, strata and habitats, the function transforms 
+the data into relative metrics and, then, compute distribution per PFG, strata
 and habitat (if necessary). Finally, the code computes proximity between observed 
 and simulated data, per PFG, strata and habitat.
 }

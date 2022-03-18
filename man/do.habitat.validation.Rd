@@ -16,7 +16,9 @@ do.habitat.validation(
   name.simulation,
   perStrata,
   hab.obs,
-  year
+  year,
+  list.strata.releves,
+  list.strata.simulations
 )
 }
 \arguments{
@@ -34,24 +36,30 @@ studied area.}
 \item{simulation.map}{a raster map of the whole studied area use to check
 the consistency between simulation map and the observed habitat map.}
 
-\item{predict.all.map}{a TRUE/FALSE vector. If TRUE, the script will predict 
+\item{predict.all.map}{\code{Logical}. If TRUE, the script will predict 
 habitat for the whole map.}
 
 \item{sim.version}{name of the simulation to validate.}
 
 \item{name.simulation}{simulation folder name.}
 
-\item{perStrata}{a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
+\item{perStrata}{\code{Logical}. If TRUE, the PFG abundance is defined
 by strata in each pixel. If FALSE, PFG abundance is defined for all strata.}
 
 \item{hab.obs}{a raster map of the observed habitat in the
 extended studied area.}
 
-\item{year}{year of simulation for validation.}
+\item{year}{simulation year selected for validation.}
+
+\item{list.strata.releves}{a character vector which contain the observed strata 
+definition, extracted from observed PFG releves.}
+
+\item{list.strata.simulations}{a character vector which contain \code{FATE} 
+strata definition and correspondence with observed strata definition.}
 }
 \value{
-Habitat performance file
-If option selected, the function returns an habitat prediction file with 
+Habitat performance file. \cr
+If option selected, the function also returns an habitat prediction file with 
 observed and simulated habitat for each pixel of the whole map.
 }
 \description{
@@ -61,11 +69,11 @@ for each habitat.
 }
 \details{
 After several preliminary checks, the function is going to prepare the observations
-database by extracting the observed habitat from a raster map. Then, for each
-simulations (sim.version), the script take the evolution abundance for each PFG
-and all strata file and predict the habitat for the whole map (if option selected) 
-thanks to the RF model. Finally, the function computes habitat performance based on
-TSS for each habitat.
+database by extracting the observed habitat from a raster map. Then, for the
+simulation \code{sim.version}, the script take the evolution abundance for each PFG
+and all strata (or for each PFG & each strata if option selected) file and predict 
+the habitat for the whole map (if option selected) thanks to the RF model. 
+Finally, the function computes habitat performance based on TSS for each habitat.
 }
 \author{
 Matthieu Combaud & Maxime Delprat

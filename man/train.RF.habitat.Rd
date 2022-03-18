@@ -4,7 +4,7 @@
 \alias{train.RF.habitat}
 \title{Create a random forest algorithm trained on CBNA data.}
 \usage{
-\method{train}{RF.habitat}(
+train.RF.habitat(
   releves.PFG,
   releves.sites,
   hab.obs,
@@ -42,7 +42,7 @@ the prediction error.}
 \item{output.path}{access path to the for the folder where output files
 will be created.}
 
-\item{perStrata}{a TRUE/FALSE vector. If TRUE, the PFG abundance is defined
+\item{perStrata}{\code{Logical}. If TRUE, the PFG abundance is defined
 by strata in each site. If FALSE, PFG abundance is defined for all strata.}
 
 \item{sim.version}{name of the simulation we want to validate.}
