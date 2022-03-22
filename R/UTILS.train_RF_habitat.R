@@ -89,7 +89,7 @@ train.RF.habitat<-function(releves.PFG
     releves.PFG = as.data.frame(releves.PFG)
     if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 4)
     {
-      .stopMessage_numRowCol("releves.PFG", c("sites", "PFG", "strata", "BB")) ## TODO : change colnames ?
+      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "BB")) ## TODO : change colnames ?
     }
     ## TODO : condition on sites
     if (!is.numeric(releves.PFG$site))
@@ -119,7 +119,7 @@ train.RF.habitat<-function(releves.PFG
     releves.sites = as.data.frame(releves.sites)
     if (nrow(releves.sites) == 0 || ncol(releves.sites) != 3)
     {
-      .stopMessage_numRowCol("releves.sites", c("sites", "x", "y")) ## TODO : change colnames ?
+      .stopMessage_numRowCol("releves.sites", c("site", "x", "y")) ## TODO : change colnames ?
     }
     ## TODO : condition on site
     if (!is.numeric(releves.sites$site))
@@ -134,7 +134,17 @@ train.RF.habitat<-function(releves.PFG
   
   #transformation into coverage percentage
   ## TODO : Transform in real proportion (per site)
-  releves.PFG$coverage<-PRE_FATE.abundBraunBlanquet(releves.PFG$BB)/100 #as a proportion, not a percentage
+  # releves.PFG$coverage<-PRE_FATE.abundBraunBlanquet(releves.PFG$BB)/100 #as a proportion, not a percentage
+  if(!is.numeric(releves.PFG$abund))
+  {
+    releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
+  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1)
+  {
+    releves.PFG$coverage = releves.PFG$abund
+  } else if (is.numeric(releves.PFG$abund))
+  {
+    releves.PFG$coverage = releves.PFG$abund
+  }
   
   if (perStrata == TRUE) {
     mat.PFG.agg <- aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
@@ -178,15 +188,19 @@ train.RF.habitat<-function(releves.PFG
   #correspondance habitat code/habitat name
   ## ATTENTION ! il faut que la couche de noms du raster existe, et qu'elle s'appelle habitat...
   ## TODO : soit donner en paramètre un vecteur avec les noms d'habitat, soit les données dans releves.PFG...
-  if (names(raster::levels(hab.obs)[[1]]) != c("ID", "habitat", "colour") | nrow(raster::levels(hab.obs)[[1]]) == 0 & is.data.frame(obs.habitat))
+  if (names(raster::levels(hab.obs)[[1]]) != c("ID", "habitat", "colour") | nrow(raster::levels(hab.obs)[[1]]) == 0 & !is.null(studied.habitat))
   {
     colnames(obs.habitat) = c("ID", "habitat")
-    table.habitat.releve = obs.habitat
+    table.habitat.releve = studied.habitat
+    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] #filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-  } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0)
+    print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
+  } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
     {
       table.habitat.releve = levels(hab.obs)[[1]]
       mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
+      mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
+      print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
     } else
     {
       stop("Habitat definition in hab.obs map is not correct")
@@ -206,17 +220,17 @@ train.RF.habitat<-function(releves.PFG
   }
   
   
-  # 4. Keep only releve on interesting habitat
-  ###################################################"
-  
-  if (!is.null(studied.habitat)) {
-    mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
-    if (nrow(mat.PFG.agg) == 0) {
-      ## TODO : add stop message
-      stop("Habitats in studied.habitat parameter are not presents in hab.obs map. Please select others habitats")
-    }
-  }
-  print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
+  # # 4. Keep only releve on interesting habitat
+  # ###################################################"
+  # 
+  # if (!is.null(studied.habitat)) {
+  #   mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
+  #   if (nrow(mat.PFG.agg) == 0) {
+  #     ## TODO : add stop message
+  #     stop("Habitats in studied.habitat parameter are not presents in hab.obs map. Please select others habitats")
+  #   }
+  # }
+  # print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
   
   # 5. Save data
   #####################
