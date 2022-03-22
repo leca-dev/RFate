@@ -227,9 +227,9 @@ POST_FATE.validation = function(name.simulation
     releves.sites = st_read(paste0(obs.path, releves.sites))
     hab.obs = raster(paste0(obs.path, hab.obs))
     # Habitat mask at FATE simu resolution
-    hab.obs.modif <- projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
-    habitat.FATE.map <- crop(hab.obs.modif, simulation.map) #reprojection and croping of the extended habitat map in order to have a reduced observed habitat map
-    validation.mask<-raster(paste0(obs.path, validation.mask))
+    hab.obs.modif = projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
+    habitat.FATE.map = crop(hab.obs.modif, simulation.map) #reprojection and croping of the extended habitat map in order to have a reduced observed habitat map
+    validation.mask = raster(paste0(obs.path, validation.mask))
     
     # Other
     if(is.null(studied.habitat)){
@@ -240,13 +240,13 @@ POST_FATE.validation = function(name.simulation
       stop("studied.habitat is not a vector of character")
     }
     RF.param = list(
-      share.training=0.7,
-      ntree=500)
-    predict.all.map<-T
+      share.training = 0.7,
+      ntree = 500)
+    predict.all.map = T
     
     ## TRAIN A RF ON OBSERVED DATA
     
-    RF.model <- train.RF.habitat(releves.PFG = releves.PFG
+    RF.model = train.RF.habitat(releves.PFG = releves.PFG
                                  , releves.sites = releves.sites
                                  , hab.obs = hab.obs
                                  , external.training.mask = NULL
@@ -258,7 +258,7 @@ POST_FATE.validation = function(name.simulation
     
     ## USE THE RF MODEL TO VALIDATE FATE OUTPUT
     
-    habitats.results <- do.habitat.validation(output.path = output.path
+    habitats.results = do.habitat.validation(output.path = output.path
                                               , RF.model = RF.model
                                               , habitat.FATE.map = habitat.FATE.map
                                               , validation.mask = validation.mask
@@ -275,12 +275,12 @@ POST_FATE.validation = function(name.simulation
     ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
     
     # Provide a color df
-    col.df<-data.frame(
+    col.df = data.frame(
       habitat = RF.model$classes,
       failure = terrain.colors(length(RF.model$classes), alpha = 0.5),
       success = terrain.colors(length(RF.model$classes), alpha = 1))
     
-    prediction.map <- plot.predicted.habitat(predicted.habitat = habitats.results
+    prediction.map = plot.predicted.habitat(predicted.habitat = habitats.results
                                              , col.df = col.df
                                              , simulation.map = simulation.map
                                              , output.path = output.path
@@ -356,18 +356,18 @@ POST_FATE.validation = function(name.simulation
     perStrata = perStrata
     
     #list of PFG of interest
-    list.PFG<-setdiff(list.PFG,exclude.PFG)
+    list.PFG = setdiff(list.PFG,exclude.PFG)
     
     registerDoParallel(detectCores()-2)
-    dying.PFG.list<-foreach(i=1:length(sim.version)) %dopar% {
+    dying.PFG.list = foreach(i=1:length(sim.version)) %dopar% {
       
-      if(perStrata==F){
+      if(perStrata == F){
         
         simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
         simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
         colnames(simu_PFG) = c("PFG", "pixel", "abs")
         
-      } else if(perStrata==T){
+      } else if(perStrata == T){
         
         simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
         simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
@@ -382,22 +382,22 @@ POST_FATE.validation = function(name.simulation
     names(dying.PFG.list) = sim.version
     
     #get table with PFG richness
-    PFG.richness.df<-data.frame(simulation=names(dying.PFG.list),richness=length(list.PFG)-unlist(lapply(dying.PFG.list,FUN="length")))
+    PFG.richness.df = data.frame(simulation = names(dying.PFG.list), richness = length(list.PFG) - unlist(lapply(dying.PFG.list, FUN = "length")))
     
     #get vector with one occurence per PFG*simulation with dying of the PFG, as factor with completed levels in order to have table with all PFG, including those which never die
-    dyingPFG.vector<-as.factor(unlist(dying.PFG.list))
-    dyingPFG.vector<-fct_expand(dyingPFG.vector,list.PFG)
-    dying.distribution<-round(table(dyingPFG.vector)/length(sim.version),digits=2)
+    dyingPFG.vector = as.factor(unlist(dying.PFG.list))
+    dyingPFG.vector = fct_expand(dyingPFG.vector, list.PFG)
+    dying.distribution = round(table(dyingPFG.vector)/length(sim.version), digits = 2)
     
     #output
-    output = list(PFG.richness.df, dying.distribution ,dying.PFG.list)
-    names(output)<-c("PFG.richness.df","dying.distribution","dying.PFG.list")
+    output = list(PFG.richness.df, dying.distribution , dying.PFG.list)
+    names(output) = c("PFG.richness.df", "dying.distribution", "dying.PFG.list")
     
     dir.create(output.path,recursive = TRUE, showWarnings = FALSE)
     
-    write.csv(PFG.richness.df,paste0(output.path,"/performance.richness.csv"),row.names=F)
-    write.csv(dying.distribution,paste0(output.path,"/PFG.extinction.frequency.csv"),row.names=F)
-    write_rds(dying.PFG.list,file=paste0(output.path,"/dying.PFG.list.rds"),compress="none")
+    write.csv(PFG.richness.df, paste0(output.path, "/performance.richness.csv"), row.names = F)
+    write.csv(dying.distribution, paste0(output.path, "/PFG.extinction.frequency.csv"), row.names = F)
+    write_rds(dying.PFG.list, file = paste0(output.path, "/dying.PFG.list.rds"), compress = "none")
     
   }
   
@@ -406,24 +406,43 @@ POST_FATE.validation = function(name.simulation
   cat("\n #------------------------------------------------------------# \n")
   
   if(doRichness == TRUE){
+    
     cat("\n ---------- PFG RICHNESS : \n")
     cat(paste0("\n Richness at year ", year, " : ", output[[1]][2], "\n"))
     cat(paste0("\n Number of PFG extinction at year ", year, " : ", sum(output[[2]]), "\n"))
-  } else{cat("\n ---------- PFG RICHNESS VALIDATION DISABLED \n")
+    
+  } else{ 
+    
+    cat("\n ---------- PFG RICHNESS VALIDATION DISABLED \n")
+    
   }
+  
   if(doHabitat == TRUE){
+    
     hab.pred = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/", sim.version, "/hab.pred.csv"))
     failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
     success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
+    
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by ", sim.version, " \n"))
     cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by ", sim.version, " \n"))
     plot(prediction.map)
-  } else{cat("\n ---------- HABITAT VALIDATION DISABLED \n")
+    
+  } else{
+    
+    cat("\n ---------- HABITAT VALIDATION DISABLED \n")
+    
   }
+  
   if(doComposition == TRUE){
+    
     cat("\n ---------- PFG COMPOSITION : \n")
     return(performance.composition)
-  } else{cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
+    
+  } else{
+    
+    cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
+    
   }
+  
 }

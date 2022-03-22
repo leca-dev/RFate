@@ -66,11 +66,11 @@
 ### END OF HEADER ##############################################################
 
 
-train.RF.habitat<-function(releves.PFG
+train.RF.habitat = function(releves.PFG
                            , releves.sites
                            , hab.obs
                            , external.training.mask = NULL
-                           , studied.habitat
+                           , studied.habitat = NULL
                            , RF.param
                            , output.path
                            , perStrata
@@ -90,21 +90,18 @@ train.RF.habitat<-function(releves.PFG
     releves.PFG = as.data.frame(releves.PFG)
     if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 4)
     {
-      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "BB")) ## TODO : change colnames ?
+      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "BB"))
     }
-    ## TODO : condition on sites
     if (!is.numeric(releves.PFG$site))
     {
       stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
     }
-    ## TODO : condition on strata
     if (!is.character(releves.PFG$strata) | !is.numeric(releves.PFG$strata))
     {
       stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
     }
-    ## TODO : condition on PFG
-    fate_PFG = .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1] ## prend le premier terme de output.path qui est le nom de simul (cf POST_FATE.validation)
-                                   , abs.simulParam = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt")) ## fichier de paramètre associé au nom de simulation
+    fate_PFG = .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
+                                   , abs.simulParam = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"))
     if (sort(as.factor(unique(releves.PFG$PFG))) != as.factor(fate_PFG$PFG))
     {
       stop("PFG list in releves.PFG does not correspond to PFG list in FATE")
@@ -120,9 +117,8 @@ train.RF.habitat<-function(releves.PFG
     releves.sites = as.data.frame(releves.sites)
     if (nrow(releves.sites) == 0 || ncol(releves.sites) != 3)
     {
-      .stopMessage_numRowCol("releves.sites", c("site", "x", "y")) ## TODO : change colnames ?
+      .stopMessage_numRowCol("releves.sites", c("site", "x", "y"))
     }
-    ## TODO : condition on site
     if (!is.numeric(releves.sites$site))
     {
       stop("Sites in releves.sites are not in the right format. Please make sure you have numeric values")
@@ -134,32 +130,31 @@ train.RF.habitat<-function(releves.PFG
   #########################################
   
   #transformation into coverage percentage
-  ## TODO : Transform in real proportion (per site)
-  if(!is.numeric(releves.PFG$abund))
+  if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance
   {
     releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
-  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1)
+  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) # presence-absence data
   {
     releves.PFG$coverage = releves.PFG$abund
-  } else if (is.numeric(releves.PFG$abund))
+  } else if (is.numeric(releves.PFG$abund)) # absolute abundance
   {
     releves.PFG$coverage = releves.PFG$abund
   }
   
   if (perStrata == TRUE) {
-    mat.PFG.agg <- aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
+    mat.PFG.agg = aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
   } else if (perStrata == FALSE) {
-    mat.PFG.agg <- aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
-    mat.PFG.agg$strata <- "A" #"A" is for "all". Important to have a single-letter code here (useful to check consistency between relevés strata and model strata)
+    mat.PFG.agg = aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
+    mat.PFG.agg$strata = "A" #"A" is for "all". Important to have a single-letter code here (useful to check consistency between relevés strata and model strata)
   }
   
   #transformation into a relative metric (here relative.metric is relative coverage)
-  mat.PFG.agg <-
+  mat.PFG.agg =
     as.data.frame(
       mat.PFG.agg %>% group_by(site, strata) %>% mutate(relative.metric = round(prop.table(coverage), digits = 2))
     ) #rel is proportion of total pct_cov, not percentage
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
-  mat.PFG.agg$coverage<-NULL
+  mat.PFG.agg$coverage = NULL
   
   print("releve data have been transformed into a relative metric")
   
@@ -167,40 +162,37 @@ train.RF.habitat<-function(releves.PFG
   #######################
   
   #transfo into factor to be sure to create all the combination when doing "dcast"
-  mat.PFG.agg$PFG <- as.factor(mat.PFG.agg$PFG)
-  mat.PFG.agg$strata <- as.factor(mat.PFG.agg$strata)
-  mat.PFG.agg <- dcast(mat.PFG.agg, site ~ PFG + strata, value.var = "relative.metric", fill = 0, drop = FALSE)
+  mat.PFG.agg$PFG = as.factor(mat.PFG.agg$PFG)
+  mat.PFG.agg$strata = as.factor(mat.PFG.agg$strata)
+  mat.PFG.agg = dcast(mat.PFG.agg, site ~ PFG + strata, value.var = "relative.metric", fill = 0, drop = FALSE)
   
   #3. Get habitat information
   ###################################
   
   #get sites coordinates
-  mat.PFG.agg <- merge(releves.sites, mat.PFG.agg, by = "site") ## TODO : mettre tout directement dans releves.PFG ?
+  mat.PFG.agg = merge(releves.sites, mat.PFG.agg, by = "site")
   
   #get habitat code and name
-  mat.PFG.agg$code.habitat <- raster::extract(x = hab.obs, y = mat.PFG.agg[, c("x", "y")])
+  mat.PFG.agg$code.habitat = raster::extract(x = hab.obs, y = mat.PFG.agg[, c("x", "y")])
   mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
   if (nrow(mat.PFG.agg) == 0) {
-    ## TODO : add stop message
     stop("Code habitat vector is empty. Please verify values of your hab.obs map")
   }
   
-  #correspondance habitat code/habitat name
-  ## ATTENTION ! il faut que la couche de noms du raster existe, et qu'elle s'appelle habitat...
-  ## TODO : soit donner en paramètre un vecteur avec les noms d'habitat, soit les données dans releves.PFG...
+  #correspondence habitat code/habitat name
   if (names(raster::levels(hab.obs)[[1]]) != c("ID", "habitat", "colour") | nrow(raster::levels(hab.obs)[[1]]) == 0 & !is.null(studied.habitat))
-  { ## cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
+  { # cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
     colnames(obs.habitat) = c("ID", "habitat")
     table.habitat.releve = studied.habitat
-    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] #filter non interesting habitat + NA
+    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
     print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
   } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
-    { ## cas où on utilise les levels définis dans la carte
+    { # cas où on utilise les levels définis dans la carte
       table.habitat.releve = levels(hab.obs)[[1]]
       mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-      mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
-      print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
+      mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ]
+      print(cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t"))
     } else
     {
       stop("Habitat definition in hab.obs map is not correct")
@@ -208,42 +200,21 @@ train.RF.habitat<-function(releves.PFG
   
   #(optional) keep only releves data in a specific area
   if (!is.null(external.training.mask)) {
-    # if (compareCRS(mat.PFG.agg, external.training.mask) == FALSE) {
-    #   #as this stage it is not a problem to transform crs(mat.PFG.agg) since we have no more merge to do (we have already extracted habitat info from the map)
-    #   mat.PFG.agg <- st_transform(x = mat.PFG.agg, crs = crs(external.training.mask))
-    # }
-    # mat.PFG.agg <- st_crop(x = mat.PFG.agg, y = external.training.mask)
-    
     val.inMask = raster::extract(x = external.training.mask, y = mat.PFG.agg[, c("x", "y")])
     mat.PFG.agg = mat.PFG.agg[which(!is.na(val.inMask)), ]
     print("'releve' map has been cropped to match 'external.training.mask'.")
   }
   
-  
-  # # 4. Keep only releve on interesting habitat
-  # ###################################################"
-  # 
-  # if (!is.null(studied.habitat)) {
-  #   mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
-  #   if (nrow(mat.PFG.agg) == 0) {
-  #     ## TODO : add stop message
-  #     stop("Habitats in studied.habitat parameter are not presents in hab.obs map. Please select others habitats")
-  #   }
-  # }
-  # print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
-  
   # 5. Save data
   #####################
   
-  # st_write(mat.PFG.agg,paste0(output.path,"/HABITAT/", sim.version, "/releve.PFG.habitat.shp"),overwrite=T,append=F)
   write.csv(mat.PFG.agg,paste0(output.path,"/HABITAT/", sim.version, "/obs.releves.prepared.csv"),row.names = FALSE)
-  ## TODO : remove CBNA from file name
   
   # 6. Small adjustment in data structure
   ##########################################
   
-  mat.PFG.agg<-as.data.frame(mat.PFG.agg) #get rid of the spatial structure before entering the RF process
-  mat.PFG.agg$habitat<-as.factor(mat.PFG.agg$habitat)
+  mat.PFG.agg = as.data.frame(mat.PFG.agg) #get rid of the spatial structure before entering the RF process
+  mat.PFG.agg$habitat = as.factor(mat.PFG.agg$habitat)
   
   # 7.Random forest
   ######################################
@@ -251,14 +222,14 @@ train.RF.habitat<-function(releves.PFG
   #separate the database into a training and a test part
   set.seed(123)
   
-  training.site <- sample(mat.PFG.agg$site, size = RF.param$share.training * length(mat.PFG.agg$site), replace = FALSE)
-  releves.training <- mat.PFG.agg[which(mat.PFG.agg$site %in% training.site), ]
-  releves.testing <- mat.PFG.agg[-which(mat.PFG.agg$site %in% training.site), ]
+  training.site = sample(mat.PFG.agg$site, size = RF.param$share.training * length(mat.PFG.agg$site), replace = FALSE)
+  releves.training = mat.PFG.agg[which(mat.PFG.agg$site %in% training.site), ]
+  releves.testing = mat.PFG.agg[-which(mat.PFG.agg$site %in% training.site), ]
   
   #train the model (with correction for imbalances in sampling)
   
   #run optimization algo (careful : optimization over OOB...)
-  mtry.perf <- tuneRF(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, geometry)),
+  mtry.perf = tuneRF(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, geometry)),
                       y = releves.training$habitat,
                       strata = releves.training$habitat,
                       sampsize = nrow(releves.training),
@@ -271,10 +242,10 @@ train.RF.habitat<-function(releves.PFG
   mtry.perf = as.data.frame(mtry.perf)
   
   #select mtry
-  mtry <- mtry.perf$mtry[mtry.perf$OOBError == min(mtry.perf$OOBError)][1] #the lowest n achieving minimum OOB
+  mtry = mtry.perf$mtry[mtry.perf$OOBError == min(mtry.perf$OOBError)][1] #the lowest n achieving minimum OOB
   
   #run real model
-  model <- randomForest(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, geometry)),
+  model = randomForest(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, geometry)),
                         y = releves.training$habitat,
                         xtest = dplyr::select(releves.testing, -c(code.habitat, site, habitat, geometry)),
                         ytest = releves.testing$habitat,
@@ -288,24 +259,24 @@ train.RF.habitat<-function(releves.PFG
   #analyse model performance
   
   # Analysis on the training sample
-  confusion.training <- confusionMatrix(data = model$predicted, reference = releves.training$habitat)
-  synthesis.training <- data.frame(habitat = colnames(confusion.training$table)
+  confusion.training = confusionMatrix(data = model$predicted, reference = releves.training$habitat)
+  synthesis.training = data.frame(habitat = colnames(confusion.training$table)
                                    , sensitivity = confusion.training$byClass[, 1]
                                    , specificity = confusion.training$byClass[, 2]
                                    , weight = colSums(confusion.training$table) / sum(colSums(confusion.training$table)))
   #warning: prevalence is the weight of predicted habitat, not of observed habitat
-  synthesis.training <- synthesis.training %>% mutate(TSS = round(sensitivity + specificity - 1, digits = 2))
-  aggregate.TSS.training <- round(sum(synthesis.training$weight * synthesis.training$TSS), digits = 2)
+  synthesis.training = synthesis.training %>% mutate(TSS = round(sensitivity + specificity - 1, digits = 2))
+  aggregate.TSS.training = round(sum(synthesis.training$weight * synthesis.training$TSS), digits = 2)
   
   # Analysis on the testing sample
-  confusion.testing <- confusionMatrix(data = model$test$predicted, reference = releves.testing$habitat)
-  synthesis.testing<-data.frame(habitat = colnames(confusion.testing$table)
+  confusion.testing = confusionMatrix(data = model$test$predicted, reference = releves.testing$habitat)
+  synthesis.testing = data.frame(habitat = colnames(confusion.testing$table)
                                 , sensitivity = confusion.testing$byClass[, 1]
                                 , specificity = confusion.testing$byClass[, 2]
                                 , weight = colSums(confusion.testing$table) / sum(colSums(confusion.testing$table)))
   #warning: prevalence is the weight of predicted habitat, not of observed habitat
-  synthesis.testing <- synthesis.testing %>% mutate(TSS = round(sensitivity + specificity - 1, digits = 2))
-  aggregate.TSS.testing <- round(sum(synthesis.testing$weight * synthesis.testing$TSS), digits = 2)
+  synthesis.testing = synthesis.testing %>% mutate(TSS = round(sensitivity + specificity - 1, digits = 2))
+  aggregate.TSS.testing = round(sum(synthesis.testing$weight * synthesis.testing$TSS), digits = 2)
   
   
   # 8. Save and return output
