@@ -14,7 +14,7 @@
 ##' and each PFG and strata.
 ##' @param releves.sites a data frame with coordinates and a description of
 ##' the habitat associated with the dominant species of each site in the 
-##' studied map.
+##' studied map. Shapefile format.
 ##' @param hab.obs a raster map of the observed habitat in the
 ##' extended studied area.
 ##' @param external.training.mask default \code{NULL}. (optional) Keep only
@@ -60,6 +60,7 @@
 ##' @importFrom caret confusionMatrix
 ##' @importFrom readr write_rds
 ##' @importFrom utils read.csv write.csv
+##' @importFrom stringr str_split
 ##' 
 ### END OF HEADER ##############################################################
 
@@ -91,8 +92,22 @@ train.RF.habitat<-function(releves.PFG
       .stopMessage_numRowCol("releves.PFG", c("sites", "PFG", "strata", "BB")) ## TODO : change colnames ?
     }
     ## TODO : condition on sites
+    if (!is.numeric(releves.PFG$site))
+    {
+      stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
+    }
     ## TODO : condition on strata
+    if (!is.character(releves.PFG$strata) | !is.numeric(releves.PFG$strata))
+    {
+      stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
+    }
     ## TODO : condition on PFG
+    fate_PFG = .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1] ## prend le premier terme de output.path qui est le nom de simul (cf POST_FATE.validation)
+                                   , abs.simulParam = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt")) ## fichier de paramètre associé au nom de simulation
+    if (sort(as.factor(unique(releves.PFG$PFG))) != as.factor(fate_PFG$PFG))
+    {
+      stop("PFG list in releves.PFG does not correspond to PFG list in FATE")
+    }
     .testParam_notInValues.m("releves.PFG$BB", releves.PFG$BB, c(NA, "NA", 0, "+", "r", 1:5))
   }
   ## CHECK parameter releves.sites
@@ -107,6 +122,10 @@ train.RF.habitat<-function(releves.PFG
       .stopMessage_numRowCol("releves.sites", c("sites", "x", "y")) ## TODO : change colnames ?
     }
     ## TODO : condition on site
+    if (!is.numeric(releves.sites$site))
+    {
+      stop("Sites in releves.sites are not in the right format. Please make sure you have numeric values")
+    }
   }
   
   
@@ -153,13 +172,25 @@ train.RF.habitat<-function(releves.PFG
   mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
   if (nrow(mat.PFG.agg) == 0) {
     ## TODO : add stop message
+    stop("Code habitat vector is empty. Please verify values of your hab.obs map")
   }
   
   #correspondance habitat code/habitat name
   ## ATTENTION ! il faut que la couche de noms du raster existe, et qu'elle s'appelle habitat...
   ## TODO : soit donner en paramètre un vecteur avec les noms d'habitat, soit les données dans releves.PFG...
-  table.habitat.releve <- levels(hab.obs)[[1]]
-  mat.PFG.agg<-merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID") 
+  if (names(raster::levels(hab.obs)[[1]]) != c("ID", "habitat", "colour") | nrow(raster::levels(hab.obs)[[1]]) == 0 & is.data.frame(obs.habitat))
+  {
+    colnames(obs.habitat) = c("ID", "habitat")
+    table.habitat.releve = obs.habitat
+    mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
+  } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0)
+    {
+      table.habitat.releve = levels(hab.obs)[[1]]
+      mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
+    } else
+    {
+      stop("Habitat definition in hab.obs map is not correct")
+    }
   
   #(optional) keep only releves data in a specific area
   if (!is.null(external.training.mask)) {
@@ -182,6 +213,7 @@ train.RF.habitat<-function(releves.PFG
     mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
     if (nrow(mat.PFG.agg) == 0) {
       ## TODO : add stop message
+      stop("Habitats in studied.habitat parameter are not presents in hab.obs map. Please select others habitats")
     }
   }
   print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
@@ -190,7 +222,7 @@ train.RF.habitat<-function(releves.PFG
   #####################
   
   # st_write(mat.PFG.agg,paste0(output.path,"/HABITAT/", sim.version, "/releve.PFG.habitat.shp"),overwrite=T,append=F)
-  write.csv(mat.PFG.agg,paste0(output.path,"/HABITAT/", sim.version, "/CBNA.releves.prepared.csv"),row.names = FALSE)
+  write.csv(mat.PFG.agg,paste0(output.path,"/HABITAT/", sim.version, "/obs.releves.prepared.csv"),row.names = FALSE)
   ## TODO : remove CBNA from file name
   
   # 6. Small adjustment in data structure
