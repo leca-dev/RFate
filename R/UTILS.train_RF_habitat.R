@@ -10,8 +10,8 @@
 ##' trained on observed PFG abundance, sites releves and a map of observed
 ##' habitat.
 ##' 
-##' @param releves.PFG a data frame with Braund-Blanquet abundance at each site
-##' and each PFG and strata.
+##' @param releves.PFG a data frame with abundance (column named abund) at each site
+##' and for each PFG and strata. 
 ##' @param releves.sites a data frame with coordinates and a description of
 ##' the habitat associated with the dominant species of each site in the 
 ##' studied map. Shapefile format.
@@ -20,8 +20,9 @@
 ##' @param external.training.mask default \code{NULL}. (optional) Keep only
 ##' releves data in a specific area.
 ##' @param studied.habitat If \code{NULL}, the function will
-##' take into account of all habitats in the hab.obs map. Otherwise, please specify 
-##' in a vector the habitats that we take into account for the validation.
+##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+##' in a 2 columns data frame the habitats and the ID for each of them which will be taken 
+##' into account for the validation.
 ##' @param RF.param a list of 2 parameters for random forest model :
 ##' share.training defines the size of the trainig part of the data base.
 ##' ntree is the number of trees build by the algorithm, it allows to reduce
@@ -34,15 +35,15 @@
 ##' 
 ##' @details 
 ##' 
-##' This function transform PFG Braund-Blanquet abundance in relative abundance,
-##' get habitat information from the releves map, keep only relees on interesting
-##' habitat and then builds de random forest model. Finally, the function analyzes
-##' the model performance with computation of confusion matrix and TSS for
-##' the traning and testing sample.
+##' This function transform PFG abundance in relative abundance,
+##' get habitat information from the releves map of from a vector previously defined, 
+##' keep releves on interesting habitat and then builds a random forest model. Finally, 
+##' the function analyzes the model performance with computation of confusion matrix and TSS between
+##' the training and testing sample.
 ##' 
 ##' @return 
 ##' 
-##' 2 prepared CBNA releves files are created before the building of the random
+##' 2 prepared observed releves files are created before the building of the random
 ##' forest model in a habitat validation folder.
 ##' 5 more files are created at the end of the script to save the RF model and
 ##' the performance analyzes (confusion matrix and TSS) for the training and 
@@ -134,7 +135,6 @@ train.RF.habitat<-function(releves.PFG
   
   #transformation into coverage percentage
   ## TODO : Transform in real proportion (per site)
-  # releves.PFG$coverage<-PRE_FATE.abundBraunBlanquet(releves.PFG$BB)/100 #as a proportion, not a percentage
   if(!is.numeric(releves.PFG$abund))
   {
     releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
@@ -189,14 +189,14 @@ train.RF.habitat<-function(releves.PFG
   ## ATTENTION ! il faut que la couche de noms du raster existe, et qu'elle s'appelle habitat...
   ## TODO : soit donner en paramètre un vecteur avec les noms d'habitat, soit les données dans releves.PFG...
   if (names(raster::levels(hab.obs)[[1]]) != c("ID", "habitat", "colour") | nrow(raster::levels(hab.obs)[[1]]) == 0 & !is.null(studied.habitat))
-  {
+  { ## cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
     colnames(obs.habitat) = c("ID", "habitat")
     table.habitat.releve = studied.habitat
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] #filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
     print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
   } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
-    {
+    { ## cas où on utilise les levels définis dans la carte
       table.habitat.releve = levels(hab.obs)[[1]]
       mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
       mat.PFG.agg <- mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ] #filter non interesting habitat + NA
