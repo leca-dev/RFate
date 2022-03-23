@@ -9,8 +9,8 @@ POST_FATE.validation(
   sim.version,
   year,
   perStrata = TRUE,
+  opt.no_CPU = 1,
   doHabitat = TRUE,
-  obs.path,
   releves.PFG,
   releves.sites,
   hab.obs,
@@ -36,23 +36,28 @@ POST_FATE.validation(
 \item{perStrata}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG abundance is defined by strata. 
 If \code{FALSE}, PFG abundance defined for all strata (habitat & PFG composition & PFG richness validation).}
 
+\item{opt.no_CPU}{default \code{1}. \cr The number of resources that can be used to 
+parallelize the computation of prediction performance for habitat & richness validation.}
+
 \item{doHabitat}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, habitat validation module is activated,
 if \code{FALSE}, habitat validation module is disabled.}
 
-\item{obs.path}{the function needs observed data, please create a folder for them in your 
-simulation folder and then indicate in this parameter the access path to this new folder (habitat & PFG composition validation).}
+\item{releves.PFG}{a data frame with abundance (column named abund) at each site
+and for each PFG and strata (habitat & PFG composition validation).}
 
-\item{releves.PFG}{name of file which contain the observed Braund-Blanquet abundance at each site
-and each PFG and strata (habitat & PFG composition validation).}
+\item{releves.sites}{a data frame with coordinates and a description of the habitat associated with 
+the dominant species of each site in the studied map (habitat & PFG composition validation).}
 
-\item{hab.obs}{name of the file which contain the extended studied map in the simulation (habitat & PFG composition validation).}
+\item{hab.obs}{a raster map of the extended studied map in the simulation, with same projection 
+& resolution than simulation mask (habitat & PFG composition validation).}
 
-\item{validation.mask}{name of the file which contain a raster mask that specified which pixels need validation 
-(habitat & PFG composition validation).}
+\item{validation.mask}{a raster mask that specified which pixels need validation, with same projection 
+& resolution than simulation mask (habitat & PFG composition validation).}
 
 \item{studied.habitat}{default \code{NULL}. If \code{NULL}, the function will
-take into account of all habitats in the \code{hab.obs} map. Otherwise, please specify 
-in a vector habitats that will be take into account for the validation (habitat validation).}
+take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation (habitat validation).}
 
 \item{list.strata.simulations}{default \code{NULL}. A character vector which contain \code{FATE} 
 strata definition and correspondence with observed strata definition.}
@@ -78,9 +83,6 @@ the simulation and observed in the simulation area (PFG richness validation).}
 
 \item{exclude.PFG}{default \code{NULL}. A character vector containing the names 
 of the PFG you want to exclude from the analysis (PFG richness validation).}
-
-\item{releves.site}{name of the file which contain coordinates and a description of
-the habitat associated with the dominant species of each site in the studied map (habitat & PFG composition validation).}
 }
 \value{
 

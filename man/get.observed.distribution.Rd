@@ -6,10 +6,10 @@
 \usage{
 get.observed.distribution(
   name.simulation,
-  obs.path,
   releves.PFG,
   releves.sites,
   hab.obs,
+  studied.habitat = NULL,
   PFG.considered_PFG.compo,
   strata.considered_PFG.compo,
   habitat.considered_PFG.compo,
@@ -20,16 +20,19 @@ get.observed.distribution(
 \arguments{
 \item{name.simulation}{simulation folder name.}
 
-\item{obs.path}{the function needs observed data, please create a folder for them in your 
-simulation folder and then indicate in this parameter the access path to this new folder.}
+\item{releves.PFG}{a data frame with abundance (column named abund) at each site
+and for each PFG and strata.}
 
-\item{releves.PFG}{file which contain the observed Braund-Blanquet abundance at each site
-and each PFG and strata.}
+\item{releves.sites}{a data frame with coordinates and a description of the habitat associated with 
+the dominant species of each site in the studied map.}
 
-\item{releves.sites}{file which contain coordinates and a description of
-the habitat associated with the dominant species of each site in the studied map.}
+\item{hab.obs}{a raster map of the extended studied map in the simulation, with same projection 
+& resolution than simulation mask.}
 
-\item{hab.obs}{raster map of the extended studied area in the simulation.}
+\item{studied.habitat}{default \code{NULL}. If \code{NULL}, the function will
+take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation.}
 
 \item{PFG.considered_PFG.compo}{a character vector of the list of PFG considered
 in the validation.}

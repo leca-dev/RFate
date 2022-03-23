@@ -18,7 +18,9 @@ do.habitat.validation(
   hab.obs,
   year,
   list.strata.releves,
-  list.strata.simulations
+  list.strata.simulations,
+  opt.no_CPU = 1,
+  studied.habitat = NULL
 )
 }
 \arguments{
@@ -29,12 +31,12 @@ will be created.}
 function)}
 
 \item{habitat.FATE.map}{a raster map of the observed habitat in the
-studied area.}
+studied area with same projection & resolution than validation mask and simulation mask.}
 
-\item{validation.mask}{a raster mask that specified which pixels need validation.}
+\item{validation.mask}{a raster mask that specified 
+which pixels need validation, with same projection & resolution than simulation mask.}
 
-\item{simulation.map}{a raster map of the whole studied area use to check
-the consistency between simulation map and the observed habitat map.}
+\item{simulation.map}{a raster map of the whole studied area (provides by FATE parameters functions).}
 
 \item{predict.all.map}{\code{Logical}. If TRUE, the script will predict 
 habitat for the whole map.}
@@ -46,8 +48,8 @@ habitat for the whole map.}
 \item{perStrata}{\code{Logical}. If TRUE, the PFG abundance is defined
 by strata in each pixel. If FALSE, PFG abundance is defined for all strata.}
 
-\item{hab.obs}{a raster map of the observed habitat in the
-extended studied area.}
+\item{hab.obs}{a raster map of the extended studied map in the simulation, with same projection 
+& resolution than simulation mask.}
 
 \item{year}{simulation year selected for validation.}
 
@@ -56,6 +58,15 @@ definition, extracted from observed PFG releves.}
 
 \item{list.strata.simulations}{a character vector which contain \code{FATE} 
 strata definition and correspondence with observed strata definition.}
+
+\item{opt.no_CPU}{default \code{1}. \cr The number of 
+resources that can be used to parallelize the computation of performance of
+habitat prediction.}
+
+\item{studied.habitat}{default \code{NULL}. If \code{NULL}, the function will
+take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation.}
 }
 \value{
 Habitat performance file. \cr

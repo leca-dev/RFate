@@ -9,7 +9,7 @@ train.RF.habitat(
   releves.sites,
   hab.obs,
   external.training.mask = NULL,
-  studied.habitat,
+  studied.habitat = NULL,
   RF.param,
   output.path,
   perStrata,
@@ -17,8 +17,8 @@ train.RF.habitat(
 )
 }
 \arguments{
-\item{releves.PFG}{a data frame with Braund-Blanquet abundance at each site
-and each PFG and strata.}
+\item{releves.PFG}{a data frame with abundance (column named abund) at each site
+and for each PFG and strata.}
 
 \item{releves.sites}{a data frame with coordinates and a description of
 the habitat associated with the dominant species of each site in the 
@@ -30,9 +30,10 @@ extended studied area.}
 \item{external.training.mask}{default \code{NULL}. (optional) Keep only
 releves data in a specific area.}
 
-\item{studied.habitat}{If \code{NULL}, the function will
-take into account of all habitats in the hab.obs map. Otherwise, please specify 
-in a vector the habitats that we take into account for the validation.}
+\item{studied.habitat}{default \code{NULL}. If \code{NULL}, the function will
+take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation.}
 
 \item{RF.param}{a list of 2 parameters for random forest model :
 share.training defines the size of the trainig part of the data base.
@@ -48,7 +49,7 @@ by strata in each site. If FALSE, PFG abundance is defined for all strata.}
 \item{sim.version}{name of the simulation we want to validate.}
 }
 \value{
-2 prepared CBNA releves files are created before the building of the random
+2 prepared observed releves files are created before the building of the random
 forest model in a habitat validation folder.
 5 more files are created at the end of the script to save the RF model and
 the performance analyzes (confusion matrix and TSS) for the training and 
@@ -60,11 +61,11 @@ trained on observed PFG abundance, sites releves and a map of observed
 habitat.
 }
 \details{
-This function transform PFG Braund-Blanquet abundance in relative abundance,
-get habitat information from the releves map, keep only relees on interesting
-habitat and then builds de random forest model. Finally, the function analyzes
-the model performance with computation of confusion matrix and TSS for
-the traning and testing sample.
+This function transform PFG abundance in relative abundance,
+get habitat information from the releves map of from a vector previously defined, 
+keep releves on interesting habitat and then builds a random forest model. Finally, 
+the function analyzes the model performance with computation of confusion matrix and TSS between
+the training and testing sample.
 }
 \author{
 Matthieu Combaud, Maxime Delprat

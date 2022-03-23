@@ -159,7 +159,9 @@ for each habitat.</p>
   <span class="va">hab.obs</span>,
   <span class="va">year</span>,
   <span class="va">list.strata.releves</span>,
-  <span class="va">list.strata.simulations</span>
+  <span class="va">list.strata.simulations</span>,
+  opt.no_CPU <span class="op">=</span> <span class="fl">1</span>,
+  studied.habitat <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -173,12 +175,12 @@ will be created.</p></dd>
 function)</p></dd>
 <dt>habitat.FATE.map</dt>
 <dd><p>a raster map of the observed habitat in the
-studied area.</p></dd>
+studied area with same projection &amp; resolution than validation mask and simulation mask.</p></dd>
 <dt>validation.mask</dt>
-<dd><p>a raster mask that specified which pixels need validation.</p></dd>
+<dd><p>a raster mask that specified 
+which pixels need validation, with same projection &amp; resolution than simulation mask.</p></dd>
 <dt>simulation.map</dt>
-<dd><p>a raster map of the whole studied area use to check
-the consistency between simulation map and the observed habitat map.</p></dd>
+<dd><p>a raster map of the whole studied area (provides by FATE parameters functions).</p></dd>
 <dt>predict.all.map</dt>
 <dd><p><code>Logical</code>. If TRUE, the script will predict 
 habitat for the whole map.</p></dd>
@@ -190,8 +192,8 @@ habitat for the whole map.</p></dd>
 <dd><p><code>Logical</code>. If TRUE, the PFG abundance is defined
 by strata in each pixel. If FALSE, PFG abundance is defined for all strata.</p></dd>
 <dt>hab.obs</dt>
-<dd><p>a raster map of the observed habitat in the
-extended studied area.</p></dd>
+<dd><p>a raster map of the extended studied map in the simulation, with same projection 
+&amp; resolution than simulation mask.</p></dd>
 <dt>year</dt>
 <dd><p>simulation year selected for validation.</p></dd>
 <dt>list.strata.releves</dt>
@@ -200,6 +202,15 @@ definition, extracted from observed PFG releves.</p></dd>
 <dt>list.strata.simulations</dt>
 <dd><p>a character vector which contain <code>FATE</code> 
 strata definition and correspondence with observed strata definition.</p></dd>
+<dt>opt.no_CPU</dt>
+<dd><p>default <code>1</code>. <br> The number of 
+resources that can be used to parallelize the computation of performance of
+habitat prediction.</p></dd>
+<dt>studied.habitat</dt>
+<dd><p>default <code>NULL</code>. If <code>NULL</code>, the function will
+take into account of habitats define in the <code>hab.obs</code> map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

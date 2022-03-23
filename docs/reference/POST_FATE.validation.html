@@ -160,8 +160,8 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   <span class="va">sim.version</span>,
   <span class="va">year</span>,
   perStrata <span class="op">=</span> <span class="cn">TRUE</span>,
+  opt.no_CPU <span class="op">=</span> <span class="fl">1</span>,
   doHabitat <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">obs.path</span>,
   <span class="va">releves.PFG</span>,
   <span class="va">releves.sites</span>,
   <span class="va">hab.obs</span>,
@@ -189,24 +189,29 @@ for a <code>FATE</code> simulation and computes the difference between observed 
 <dt>perStrata</dt>
 <dd><p><code>Logical</code>. Default <code>TRUE</code>. If <code>TRUE</code>, PFG abundance is defined by strata. 
 If <code>FALSE</code>, PFG abundance defined for all strata (habitat &amp; PFG composition &amp; PFG richness validation).</p></dd>
+<dt>opt.no_CPU</dt>
+<dd><p>default <code>1</code>. <br> The number of resources that can be used to 
+parallelize the computation of prediction performance for habitat &amp; richness validation.</p></dd>
 <dt>doHabitat</dt>
 <dd><p><code>Logical</code>. Default <code>TRUE</code>. If <code>TRUE</code>, habitat validation module is activated,
 if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
-<dt>obs.path</dt>
-<dd><p>the function needs observed data, please create a folder for them in your 
-simulation folder and then indicate in this parameter the access path to this new folder (habitat &amp; PFG composition validation).</p></dd>
 <dt>releves.PFG</dt>
-<dd><p>name of file which contain the observed Braund-Blanquet abundance at each site
-and each PFG and strata (habitat &amp; PFG composition validation).</p></dd>
+<dd><p>a data frame with abundance (column named abund) at each site
+and for each PFG and strata (habitat &amp; PFG composition validation).</p></dd>
+<dt>releves.sites</dt>
+<dd><p>a data frame with coordinates and a description of the habitat associated with 
+the dominant species of each site in the studied map (habitat &amp; PFG composition validation).</p></dd>
 <dt>hab.obs</dt>
-<dd><p>name of the file which contain the extended studied map in the simulation (habitat &amp; PFG composition validation).</p></dd>
+<dd><p>a raster map of the extended studied map in the simulation, with same projection 
+&amp; resolution than simulation mask (habitat &amp; PFG composition validation).</p></dd>
 <dt>validation.mask</dt>
-<dd><p>name of the file which contain a raster mask that specified which pixels need validation 
-(habitat &amp; PFG composition validation).</p></dd>
+<dd><p>a raster mask that specified which pixels need validation, with same projection 
+&amp; resolution than simulation mask (habitat &amp; PFG composition validation).</p></dd>
 <dt>studied.habitat</dt>
 <dd><p>default <code>NULL</code>. If <code>NULL</code>, the function will
-take into account of all habitats in the <code>hab.obs</code> map. Otherwise, please specify 
-in a vector habitats that will be take into account for the validation (habitat validation).</p></dd>
+take into account of habitats define in the <code>hab.obs</code> map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation (habitat validation).</p></dd>
 <dt>list.strata.simulations</dt>
 <dd><p>default <code>NULL</code>. A character vector which contain <code>FATE</code> 
 strata definition and correspondence with observed strata definition.</p></dd>
@@ -232,9 +237,6 @@ the simulation and observed in the simulation area (PFG richness validation).</p
 <dt>exclude.PFG</dt>
 <dd><p>default <code>NULL</code>. A character vector containing the names 
 of the PFG you want to exclude from the analysis (PFG richness validation).</p></dd>
-<dt>releves.site</dt>
-<dd><p>name of the file which contain coordinates and a description of
-the habitat associated with the dominant species of each site in the studied map (habitat &amp; PFG composition validation).</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

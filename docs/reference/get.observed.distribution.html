@@ -143,10 +143,10 @@ of relative abundance, from observed data.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get.observed.distribution</span><span class="op">(</span>
   <span class="va">name.simulation</span>,
-  <span class="va">obs.path</span>,
   <span class="va">releves.PFG</span>,
   <span class="va">releves.sites</span>,
   <span class="va">hab.obs</span>,
+  studied.habitat <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">PFG.considered_PFG.compo</span>,
   <span class="va">strata.considered_PFG.compo</span>,
   <span class="va">habitat.considered_PFG.compo</span>,
@@ -159,17 +159,20 @@ of relative abundance, from observed data.</p>
     <h2>Arguments</h2>
     <dl><dt>name.simulation</dt>
 <dd><p>simulation folder name.</p></dd>
-<dt>obs.path</dt>
-<dd><p>the function needs observed data, please create a folder for them in your 
-simulation folder and then indicate in this parameter the access path to this new folder.</p></dd>
 <dt>releves.PFG</dt>
-<dd><p>file which contain the observed Braund-Blanquet abundance at each site
-and each PFG and strata.</p></dd>
+<dd><p>a data frame with abundance (column named abund) at each site
+and for each PFG and strata.</p></dd>
 <dt>releves.sites</dt>
-<dd><p>file which contain coordinates and a description of
-the habitat associated with the dominant species of each site in the studied map.</p></dd>
+<dd><p>a data frame with coordinates and a description of the habitat associated with 
+the dominant species of each site in the studied map.</p></dd>
 <dt>hab.obs</dt>
-<dd><p>raster map of the extended studied area in the simulation.</p></dd>
+<dd><p>a raster map of the extended studied map in the simulation, with same projection 
+&amp; resolution than simulation mask.</p></dd>
+<dt>studied.habitat</dt>
+<dd><p>default <code>NULL</code>. If <code>NULL</code>, the function will
+take into account of habitats define in the <code>hab.obs</code> map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation.</p></dd>
 <dt>PFG.considered_PFG.compo</dt>
 <dd><p>a character vector of the list of PFG considered
 in the validation.</p></dd>

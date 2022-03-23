@@ -6,7 +6,6 @@
 \usage{
 do.PFG.composition.validation(
   name.simulation,
-  obs.path,
   sim.version,
   hab.obs,
   PFG.considered_PFG.compo,
@@ -17,19 +16,19 @@ do.PFG.composition.validation(
   validation.mask,
   year,
   list.strata.simulations,
-  list.strata.releves
+  list.strata.releves,
+  habitat.FATE.map,
+  studied.habitat
 )
 }
 \arguments{
 \item{name.simulation}{simulation folder name.}
 
-\item{obs.path}{the function needs observed data, please create a folder for them in your 
-simulation folder and then indicate in this parameter the access path to this new folder.}
-
 \item{sim.version}{name of the simulation we want to validate (it works with
 only one \code{sim.version}).}
 
-\item{hab.obs}{file which contain the extended studied map in the simulation.}
+\item{hab.obs}{a raster map of the extended studied map in the simulation, with same projection 
+& resolution than simulation mask.}
 
 \item{PFG.considered_PFG.compo}{a character vector of the list of PFG considered
 in the validation.}
@@ -40,10 +39,10 @@ strata considered in the validation.}
 \item{habitat.considered_PFG.compo}{a character vector of the list of habitat(s)
 considered in the validation.}
 
-\item{observed.distribution}{PFG observed distribution table.}
+\item{observed.distribution}{PFG observed distribution table provides by \code{get.observed.distribution} function.}
 
-\item{validation.mask}{file which contain a raster mask that specified 
-which pixels need validation.}
+\item{validation.mask}{a raster mask that specified 
+which pixels need validation, with same projection & resolution than simulation mask.}
 
 \item{year}{year of simulation to validate.}
 
@@ -53,7 +52,15 @@ strata definition and correspondence with observed strata definition.}
 \item{list.strata.releves}{a character vector which contain the observed strata 
 definition, extracted from observed PFG releves.}
 
-\item{perStrata.compo}{Logical. All strata together (FALSE) or per strata (TRUE).}
+\item{habitat.FATE.map}{a raster map of the observed habitat in the
+studied area with same projection & resolution than validation mask and simulation mask.}
+
+\item{studied.habitat}{default \code{NULL}. If \code{NULL}, the function will
+take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+into account for the validation.}
+
+\item{perStrata.compo}{\code{Logical}. All strata together (FALSE) or per strata (TRUE).}
 }
 \value{
 
