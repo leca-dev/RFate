@@ -191,7 +191,7 @@ train.RF.habitat = function(releves.PFG
     { # cas où on utilise les levels définis dans la carte
       table.habitat.releve = levels(hab.obs)[[1]]
       mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-      mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat), ]
+      mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat$habitat), ]
       print(cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t"))
     } else
     {

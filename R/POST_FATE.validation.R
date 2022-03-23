@@ -262,10 +262,10 @@ POST_FATE.validation = function(name.simulation
     # Other
     if(is.null(studied.habitat)){
       studied.habitat = studied.habitat #if null, the function will study all the habitats in the map
-    } else if(is.character(studied.habitat)){
+    } else if(is.data.frame(studied.habitat)){
       studied.habitat = studied.habitat #if a character vector with habitat names, the function will study only the habitats in the vector
     } else{
-      stop("studied.habitat is not a vector of character")
+      stop("studied.habitat is not a data frame")
     }
     RF.param = list(
       share.training = 0.7,
@@ -384,7 +384,7 @@ POST_FATE.validation = function(name.simulation
       # Studied.habitat
       if(is.null(studied.habitat)){
         studied.habitat = studied.habitat #if null, the function will study all the habitats in the map
-      } else if(is.character(studied.habitat)){
+      } else if(is.data.frame(studied.habitat)){
         studied.habitat = studied.habitat #if a character vector with habitat names, the function will study only the habitats in the vector
       } else{
         stop("studied.habitat is not a vector of character")
