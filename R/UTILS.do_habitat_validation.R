@@ -16,23 +16,30 @@
 ##' @param RF.model random forest model trained on CBNA data (train.RF.habitat
 ##' function)
 ##' @param habitat.FATE.map a raster map of the observed habitat in the
-##' studied area.
-##' @param validation.mask a raster mask that specified which pixels need validation.
-##' @param simulation.map a raster map of the whole studied area use to check
-##' the consistency between simulation map and the observed habitat map.
+##' studied area with same projection & resolution than validation mask and simulation mask.
+##' @param validation.mask a raster mask that specified 
+##' which pixels need validation, with same projection & resolution than simulation mask.
+##' @param simulation.map a raster map of the whole studied area (provides by FATE parameters functions).
 ##' @param predict.all.map \code{Logical}. If TRUE, the script will predict 
 ##' habitat for the whole map.
 ##' @param sim.version name of the simulation to validate.
 ##' @param name.simulation simulation folder name.
 ##' @param perStrata \code{Logical}. If TRUE, the PFG abundance is defined
 ##' by strata in each pixel. If FALSE, PFG abundance is defined for all strata.
-##' @param hab.obs a raster map of the observed habitat in the
-##' extended studied area.
+##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
+##' & resolution than simulation mask.
 ##' @param year simulation year selected for validation.
 ##' @param list.strata.releves a character vector which contain the observed strata 
 ##' definition, extracted from observed PFG releves.
 ##' @param list.strata.simulations a character vector which contain \code{FATE} 
 ##' strata definition and correspondence with observed strata definition.
+##' @param opt.no_CPU default \code{1}. \cr The number of 
+##' resources that can be used to parallelize the computation of performance of
+##' habitat prediction.
+##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
+##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+##' into account for the validation.
 ##' 
 ##' @details
 ##' 
@@ -55,7 +62,7 @@
 ##' @importFrom raster compareCRS res projectRaster extent crop origin compareRaster 
 ##' getValues predict levels
 ##' @importFrom stats aggregate
-##' @importFrom stringr str_sub
+##' @importFrom stringr str_sub str_split
 ##' @importFrom foreach foreach %dopar%
 ##' @importFrom reshape2 dcast
 ##' @importFrom caret confusionMatrix
@@ -69,7 +76,8 @@
 
 do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validation.mask
                                 , simulation.map, predict.all.map, sim.version, name.simulation
-                                , perStrata, hab.obs, year, list.strata.releves, list.strata.simulations)
+                                , perStrata, hab.obs, year, list.strata.releves, list.strata.simulations
+                                , opt.no_CPU = 1, studied.habitat = NULL)
 {
   
   cat("\n ---------- FATE OUTPUT ANALYSIS \n")
@@ -100,50 +108,12 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
     stop("please provide rasters with same crs and resolution for habitat.FATE.map and validation.mask")
   }
   
-  #consistency between habitat.FATE.map and simulation.map
-  ## MUST BE DONE before
-  # if(!compareCRS(simulation.map,habitat.FATE.map)){
-  #   print("reprojecting habitat.FATE.map to match simulation.map crs")
-  #   habitat.FATE.map<-projectRaster(habitat.FATE.map,crs=crs(simulation.map))
-  # }
-  if(!all(res(habitat.FATE.map)==res(simulation.map))){
-    stop("provide habitat.FATE.map with same resolution as simulation.map")
-  }
-  if(extent(simulation.map) != extent(habitat.FATE.map)){
-    print("cropping habitat.FATE.map to match simulation.map")
-    habitat.FATE.map = crop(x = habitat.FATE.map, y = simulation.map)
-  }
-  ## MUST BE DONE before
-  # if(!all(origin(simulation.map)==origin(habitat.FATE.map))){
-  #   print("setting origin habitat.FATE.map to match simulation.map")
-  #   raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
-  # }
-  if(!compareRaster(simulation.map,habitat.FATE.map)){ #this is crucial to be able to identify pixel by their index and not their coordinates
-    stop("habitat.FATE.map could not be coerced to match simulation.map")
-  }else{
-    print("simulation.map & habitat.FATE.map are (now) consistent")
-  }
-  
-  #adjust validation.mask accordingly
-  ## MUST BE DONE before ?
-  # if(!all(res(habitat.FATE.map)==res(validation.mask))){
-  #   validation.mask<-projectRaster(from=validation.mask,to=habitat.FATE.map,method = "ngb")
-  # }
-  if(extent(validation.mask)!=extent(habitat.FATE.map)){
-    validation.mask<-crop(x=validation.mask,y=habitat.FATE.map)
-  }
-  if(!compareRaster(validation.mask, habitat.FATE.map)){
-    stop("error in correcting validation.mask to match habitat.FATE.map")
-  }else{
-    print("validation.mask is (now) consistent with (modified) habitat.FATE.map") ## TODO : change message
-  }
-  
   #check consistency for PFG & strata classes between FATE output vs the RF model
-
   RF.predictors <- rownames(RF.model$importance)
   RF.PFG <- unique(str_sub(RF.predictors, 1, 2))
   
-  FATE.PFG<-str_sub(list.files(paste0(name.simulation,"/DATA/PFGS/SUCC")),6,7) ## TODO : careful, will not match necessarily all PFG names
+  FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
+                               , abs.simulParam = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"))
   
   if(length(setdiff(FATE.PFG,RF.PFG)) > 0 | length(setdiff(RF.PFG,FATE.PFG)) > 0){
     stop("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE.")
@@ -159,9 +129,14 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
                                       , code.habitat = getValues(habitat.FATE.map)
                                       , for.validation = getValues(validation.mask))
   habitat.whole.area.df <- habitat.whole.area.df[which(getValues(simulation.map) == 1), ] #index of the pixels in the simulation area
-  habitat.whole.area.df <- habitat.whole.area.df[which(!is.na(habitat.whole.area.df$for.validation)), ] 
-  habitat.whole.area.df <- merge(habitat.whole.area.df, dplyr::select(levels(hab.obs)[[1]],c(ID,habitat)), by.x = "code.habitat", by.y = "ID")
-  habitat.whole.area.df <- habitat.whole.area.df[which(habitat.whole.area.df$habitat %in% RF.model$classes), ]
+  habitat.whole.area.df <- habitat.whole.area.df[which(!is.na(habitat.whole.area.df$for.validation)), ]
+  if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2){
+    habitat.whole.area.df <- merge(habitat.whole.area.df, dplyr::select(studied.habitat,c(ID,habitat)), by.x = "code.habitat", by.y = "ID")
+    habitat.whole.area.df <- habitat.whole.area.df[which(habitat.whole.area.df$habitat %in% RF.model$classes), ]
+  } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat)){
+    habitat.whole.area.df <- merge(habitat.whole.area.df, dplyr::select(levels(hab.obs)[[1]],c(ID,habitat)), by.x = "code.habitat", by.y = "ID")
+    habitat.whole.area.df <- habitat.whole.area.df[which(habitat.whole.area.df$habitat %in% RF.model$classes), ]
+  }
   
   print(cat("Habitat considered in the prediction exercise: ", c(unique(habitat.whole.area.df$habitat)), "\n", sep = "\t"))
   
@@ -177,8 +152,6 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   
   print("processing simulations")
   
-  
-  # registerDoParallel(detectCores()-2) ## TODO : put as optional (like in zip/unzip function)
   if (opt.no_CPU > 1)
   {
     if (.getOS() != "windows")
@@ -198,7 +171,6 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
       
       #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
       if (perStrata == FALSE) {
-        ## TODO : add test if file exists
         if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv")))
         {
           simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
@@ -212,7 +184,6 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
         }
         
       } else if (perStrata == TRUE) {
-        ## TODO : add test if file exists
         if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv")))
         {
           simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
@@ -262,7 +233,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
       #################################
       
       data.validation <- data.FATE.PFG.habitat[which(data.FATE.PFG.habitat$for.validation == 1), ]
-      x.validation <- dplyr::select(data.validation,all_of(RF.predictors)) ## TODO : change for classic colnames selection but with error message if not fullfilling all names ?
+      x.validation <- dplyr::select(data.validation,all_of(RF.predictors))
       y.validation <- data.validation$habitat
       
       y.validation.predicted <- predict(object = RF.model, newdata = x.validation, type = "response", norm.votes = TRUE)

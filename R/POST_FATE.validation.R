@@ -21,22 +21,26 @@
 ##' @param year year of simulation for validation.
 ##' @param perStrata \code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG abundance is defined by strata. 
 ##' If \code{FALSE}, PFG abundance defined for all strata (habitat & PFG composition & PFG richness validation).
+##' @param opt.no_CPU default \code{1}. \cr The number of resources that can be used to 
+##' parallelize the computation of prediction performance for habitat & richness validation.
+##' 
 ##' @param doHabitat \code{Logical}. Default \code{TRUE}. If \code{TRUE}, habitat validation module is activated,
 ##' if \code{FALSE}, habitat validation module is disabled.
-##' @param obs.path the function needs observed data, please create a folder for them in your 
-##' simulation folder and then indicate in this parameter the access path to this new folder (habitat & PFG composition validation).
-##' @param releves.PFG name of file which contain the observed Braund-Blanquet abundance at each site
-##' and each PFG and strata (habitat & PFG composition validation).
-##' @param releves.site name of the file which contain coordinates and a description of
-##' the habitat associated with the dominant species of each site in the studied map (habitat & PFG composition validation).
-##' @param hab.obs name of the file which contain the extended studied map in the simulation (habitat & PFG composition validation).
-##' @param validation.mask name of the file which contain a raster mask that specified which pixels need validation 
-##' (habitat & PFG composition validation).
+##' @param releves.PFG a data frame with abundance (column named abund) at each site
+##' and for each PFG and strata (habitat & PFG composition validation).
+##' @param releves.sites a data frame with coordinates and a description of the habitat associated with 
+##' the dominant species of each site in the studied map (habitat & PFG composition validation).
+##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
+##' & resolution than simulation mask (habitat & PFG composition validation).
+##' @param validation.mask a raster mask that specified which pixels need validation, with same projection 
+##' & resolution than simulation mask (habitat & PFG composition validation).
 ##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
-##' take into account of all habitats in the \code{hab.obs} map. Otherwise, please specify 
-##' in a vector habitats that will be take into account for the validation (habitat validation).
+##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
+##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
+##' into account for the validation (habitat validation).
 ##' @param list.strata.simulations default \code{NULL}. A character vector which contain \code{FATE} 
 ##' strata definition and correspondence with observed strata definition.
+##' 
 ##' @param doComposition \code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG composition validation module is activated,
 ##' if \code{FALSE}, PFG composition validation module is disabled.
 ##' @param PFG.considered_PFG.compo a character vector of the list of PFG considered
@@ -46,6 +50,7 @@
 ##' @param strata.considered_PFG.compo If \code{perStrata} = \code{FALSE}, a character vector with value "A" 
 ##' (selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a character 
 ##' vector with at least one of the observed strata (PFG composition validation).
+##' 
 ##' @param doRichness \code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG richness validation module is activated,
 ##' if \code{FALSE}, PFG richness validation module is disabled.
 ##' @param list.PFG a character vector which contain all the PFGs taken account in
@@ -158,9 +163,8 @@
 ##' @export
 ##' 
 ##' @importFrom stringr str_split
-##' @importFrom raster raster projectRaster res crs crop
+##' @importFrom raster raster projectRaster res crs crop origin
 ##' @importFrom utils read.csv write.csv
-##' @importFrom sf st_read
 ##' @importFrom foreach foreach %dopar%
 ##' @importFrom forcats fct_expand
 ##' @importFrom readr write_rds
@@ -174,8 +178,8 @@ POST_FATE.validation = function(name.simulation
                                 , sim.version
                                 , year
                                 , perStrata = TRUE
+                                , opt.no_CPU = 1
                                 , doHabitat = TRUE
-                                , obs.path
                                 , releves.PFG
                                 , releves.sites
                                 , hab.obs
@@ -204,18 +208,11 @@ POST_FATE.validation = function(name.simulation
     output.path = paste0(name.simulation, "/VALIDATION")
     year = year # choice in the year for validation
     perStrata = perStrata
-    
-    # Useful elements to extract from the simulation
-    name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
-                     flag = "MASK",
-                     flag.split = "^--.*--$",
-                     is.num = FALSE) #isolate the access path to the simulation mask for any FATE simulation
-    simulation.map = raster(paste0(name))
+    opt.no_CPU = opt.no_CPU
     
     # For habitat validation
-    # CBNA releves data habitat map
-    releves.PFG = read.csv(paste0(obs.path,releves.PFG),header=T,stringsAsFactors = T)
-    
+    # Observed releves data
+    releves.PFG = releves.PFG
     if(perStrata==TRUE){
     list.strata.releves = as.character(unique(releves.PFG$strata))
     list.strata.simulations = list.strata.simulations
@@ -223,14 +220,45 @@ POST_FATE.validation = function(name.simulation
       list.strata.releves = NULL
       list.strata.simulations = NULL
     }
+    releves.sites = releves.sites
     
-    releves.sites = st_read(paste0(obs.path, releves.sites))
-    hab.obs = raster(paste0(obs.path, hab.obs))
-    # Habitat mask at FATE simu resolution
-    hab.obs.modif = projectRaster(from = hab.obs, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
-    habitat.FATE.map = crop(hab.obs.modif, simulation.map) #reprojection and croping of the extended habitat map in order to have a reduced observed habitat map
-    validation.mask = raster(paste0(obs.path, validation.mask))
+    # Habitat map
+    hab.obs = hab.obs
+    validation.mask = validation.mask
     
+    # Simulation mask
+    name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
+                     flag = "MASK",
+                     flag.split = "^--.*--$",
+                     is.num = FALSE) #isolate the access path to the simulation mask for any FATE simulation
+    simulation.map = raster(paste0(name))
+    
+    # Check hab.obs map
+    if(!compareCRS(simulation.map, hab.obs) | !all(res(habitat.FATE.map)==res(simulation.map))){
+      stop(paste0("Projection & resolution of hab.obs map does not match with simulation mask. Please reproject hab.obs map with projection & resolution of ", names(simulation.map)))
+    }else if(extent(simulation.map) != extent(hab.obs)){
+      habitat.FATE.map = crop(hab.obs, simulation.map)
+    }else {
+      habitat.FATE.map = hab.obs
+    }
+    if(!all(origin(simulation.map) == origin(habitat.FATE.map))){
+      print("setting origin habitat.FATE.map to match simulation.map")
+      raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
+    }
+    
+    # Check validation mask
+    if(!compareCRS(simulation.map, validation.mask) | !all(res(validation.mask)==res(simulation.map))){
+      stop(paste0("Projection & resolution of validation mask does not match with simulation mask. Please reproject validation mask with projection & resolution of ", names(simulation.map)))
+    }else if(extent(validation.mask) != extent(simulation.map)){
+      validation.mask = crop(validation.mask, simulation.map)
+    }else {
+      validation.mask = validation.mask
+    }
+    if(!all(origin(simulation.map) == origin(validation.mask))){
+      print("setting origin validation mask to match simulation.map")
+      raster::origin(validation.mask) <- raster::origin(simulation.map)
+    }
+
     # Other
     if(is.null(studied.habitat)){
       studied.habitat = studied.habitat #if null, the function will study all the habitats in the map
@@ -270,7 +298,9 @@ POST_FATE.validation = function(name.simulation
                                               , hab.obs = hab.obs
                                               , year = year
                                               , list.strata.releves = list.strata.releves
-                                              , list.strata.simulations = list.strata.simulations)
+                                              , list.strata.simulations = list.strata.simulations
+                                              , opt.no_CPU = opt.no_CPU
+                                              , studied.habitat = studied.habitat)
     
     ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
     
@@ -299,13 +329,50 @@ POST_FATE.validation = function(name.simulation
     if(doHabitat == FALSE){
       
       perStrata = perStrata
-
+      opt.no_CPU = opt.no_CPU
+      
+      # Habitat map
+      hab.obs = hab.obs
+      validation.mask = validation.mask
+      
+      # Simulation mask
+      name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
+                       flag = "MASK",
+                       flag.split = "^--.*--$",
+                       is.num = FALSE) #isolate the access path to the simulation mask for any FATE simulation
+      simulation.map = raster(paste0(name))
+      
+      # Check hab.obs map
+      if(!compareCRS(simulation.map, hab.obs) | !all(res(habitat.FATE.map)==res(simulation.map))){
+        stop(paste0("Projection & resolution of hab.obs map does not match with simulation mask. Please reproject hab.obs map with projection & resolution of ", names(simulation.map)))
+      }else if(extent(simulation.map) != extent(hab.obs)){
+        habitat.FATE.map = crop(hab.obs, simulation.map)
+      }else {
+        habitat.FATE.map = hab.obs
+      }
+      if(!all(origin(simulation.map) == origin(habitat.FATE.map))){
+        print("setting origin habitat.FATE.map to match simulation.map")
+        raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
+      }
+      
+      # Check validation mask
+      if(!compareCRS(simulation.map, validation.mask) | !all(res(validation.mask)==res(simulation.map))){
+        stop(paste0("Projection & resolution of validation mask does not match with simulation mask. Please reproject validation mask with projection & resolution of ", names(simulation.map)))
+      }else if(extent(validation.mask) != extent(simulation.map)){
+        validation.mask = crop(validation.mask, simulation.map)
+      }else {
+        validation.mask = validation.mask
+      }
+      if(!all(origin(simulation.map) == origin(validation.mask))){
+        print("setting origin validation mask to match simulation.map")
+        raster::origin(validation.mask) <- raster::origin(simulation.map)
+      }
+      
       # Get observed distribution
-      releves.PFG = read.csv(paste0(obs.path, releves.PFG),header=T,stringsAsFactors = T)
-      releves.sites = st_read(paste0(obs.path, releves.sites))
-      hab.obs = raster(paste0(obs.path, hab.obs))
+      releves.PFG = releves.PFG
+      releves.sites = releves.sites
+      
       # Do PFG composition validation
-      validation.mask = raster(paste0(obs.path, validation.mask))
       if(perStrata==TRUE){
         list.strata.releves = as.character(unique(releves.PFG$strata))
         list.strata.simulations = list.strata.simulations
@@ -313,15 +380,25 @@ POST_FATE.validation = function(name.simulation
         list.strata.releves = NULL
         list.strata.simulations = NULL
       }
+      
+      # Studied.habitat
+      if(is.null(studied.habitat)){
+        studied.habitat = studied.habitat #if null, the function will study all the habitats in the map
+      } else if(is.character(studied.habitat)){
+        studied.habitat = studied.habitat #if a character vector with habitat names, the function will study only the habitats in the vector
+      } else{
+        stop("studied.habitat is not a vector of character")
+      }
+      
     }
     
     ## GET OBSERVED DISTRIBUTION
     
     obs.distri = get.observed.distribution(name.simulation = name.simulation
-                                           , obs.path = obs.path
                                            , releves.PFG = releves.PFG
                                            , releves.sites = releves.sites
                                            , hab.obs = hab.obs
+                                           , studied.habitat = studied.habitat
                                            , PFG.considered_PFG.compo = PFG.considered_PFG.compo
                                            , strata.considered_PFG.compo = strata.considered_PFG.compo
                                            , habitat.considered_PFG.compo = habitat.considered_PFG.compo
@@ -331,7 +408,6 @@ POST_FATE.validation = function(name.simulation
     ## DO PFG COMPOSITION VALIDATION
     
     performance.composition = do.PFG.composition.validation(name.simulation = name.simulation
-                                                            , obs.path = obs.path
                                                             , sim.version = sim.version
                                                             , hab.obs = hab.obs
                                                             , PFG.considered_PFG.compo = PFG.considered_PFG.compo
@@ -342,7 +418,8 @@ POST_FATE.validation = function(name.simulation
                                                             , validation.mask = validation.mask
                                                             , year = year
                                                             , list.strata.simulations = list.strata.simulations
-                                                            , list.strata.releves = list.strata.releves)
+                                                            , list.strata.releves = list.strata.releves
+                                                            , habitat.FATE.map = habitat.FATE.map)
     
   }
   
@@ -358,20 +435,35 @@ POST_FATE.validation = function(name.simulation
     #list of PFG of interest
     list.PFG = setdiff(list.PFG,exclude.PFG)
     
-    registerDoParallel(detectCores()-2)
+    print("processing simulations")
+    
+    if (opt.no_CPU > 1)
+    {
+      if (.getOS() != "windows")
+      {
+        registerDoParallel(cores = opt.no_CPU)
+      } else
+      {
+        warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
+      }
+    }
     dying.PFG.list = foreach(i=1:length(sim.version)) %dopar% {
       
-      if(perStrata == F){
+      if(perStrata == FALSE){
         
-        simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
-        simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
-        colnames(simu_PFG) = c("PFG", "pixel", "abs")
+        if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))){
+          simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
+          simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
+          colnames(simu_PFG) = c("PFG", "pixel", "abs")
+        }
         
       } else if(perStrata == T){
         
-        simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
-        simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
-        colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+          if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))){
+            simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
+            simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
+            colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+          }
         
       }
       

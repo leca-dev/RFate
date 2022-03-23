@@ -14,14 +14,14 @@
 ##' and for each PFG and strata. 
 ##' @param releves.sites a data frame with coordinates and a description of
 ##' the habitat associated with the dominant species of each site in the 
-##' studied map. Shapefile format.
+##' studied map.
 ##' @param hab.obs a raster map of the observed habitat in the
 ##' extended studied area.
 ##' @param external.training.mask default \code{NULL}. (optional) Keep only
 ##' releves data in a specific area.
-##' @param studied.habitat If \code{NULL}, the function will
+##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
 ##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
-##' in a 2 columns data frame the habitats and the ID for each of them which will be taken 
+##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
 ##' into account for the validation.
 ##' @param RF.param a list of 2 parameters for random forest model :
 ##' share.training defines the size of the trainig part of the data base.
@@ -56,7 +56,7 @@
 ##' @importFrom reshape2 dcast
 ##' @importFrom data.table setDT
 ##' @importFrom raster extract compareCRS levels
-##' @importFrom sf st_transform st_crop st_write
+##' @importFrom sf st_transform st_crop
 ##' @importFrom randomForest randomForest tuneRF
 ##' @importFrom caret confusionMatrix
 ##' @importFrom readr write_rds
@@ -90,7 +90,7 @@ train.RF.habitat = function(releves.PFG
     releves.PFG = as.data.frame(releves.PFG)
     if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 4)
     {
-      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "BB"))
+      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "abund"))
     }
     if (!is.numeric(releves.PFG$site))
     {
@@ -106,7 +106,6 @@ train.RF.habitat = function(releves.PFG
     {
       stop("PFG list in releves.PFG does not correspond to PFG list in FATE")
     }
-    .testParam_notInValues.m("releves.PFG$BB", releves.PFG$BB, c(NA, "NA", 0, "+", "r", 1:5))
   }
   ## CHECK parameter releves.sites
   if (.testParam_notDf(releves.sites))
@@ -132,6 +131,7 @@ train.RF.habitat = function(releves.PFG
   #transformation into coverage percentage
   if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance
   {
+    releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
     releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
   } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) # presence-absence data
   {
@@ -180,7 +180,7 @@ train.RF.habitat = function(releves.PFG
   }
   
   #correspondence habitat code/habitat name
-  if (names(raster::levels(hab.obs)[[1]]) != c("ID", "habitat", "colour") | nrow(raster::levels(hab.obs)[[1]]) == 0 & !is.null(studied.habitat))
+  if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2)
   { # cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
     colnames(obs.habitat) = c("ID", "habitat")
     table.habitat.releve = studied.habitat
