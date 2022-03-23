@@ -234,7 +234,7 @@ POST_FATE.validation = function(name.simulation
     simulation.map = raster(paste0(name))
     
     # Check hab.obs map
-    if(!compareCRS(simulation.map, hab.obs) | !all(res(habitat.FATE.map)==res(simulation.map))){
+    if(!compareCRS(simulation.map, hab.obs) | !all(res(hab.obs)==res(simulation.map))){
       stop(paste0("Projection & resolution of hab.obs map does not match with simulation mask. Please reproject hab.obs map with projection & resolution of ", names(simulation.map)))
     }else if(extent(simulation.map) != extent(hab.obs)){
       habitat.FATE.map = crop(hab.obs, simulation.map)
