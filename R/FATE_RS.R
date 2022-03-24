@@ -28,7 +28,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
                    , PPM.names_PFG, PPM.ras_env, PPM.xy, PPM.mod
                    , PATCH.threshold = 80, PATCH.buffer = 500, PATCH.min_m2 = 300000
                    , COST.ras_elev, COST.ras_barr, COST.wei = c(0.43, 0.53, 0.04), COST.range = c(1, 10)
-                   , name.simulation.RS, params.RS
+                   , RS.name_simul, RS.dens_dep, RS.sim, RS.demo, RS.disp, RS.init
                    , POP.carrying_capacity = 0.115
                    , year.start, year.end, year.step)
 {
@@ -147,7 +147,7 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     st_write(pol.patch_buffer
              , paste0("tampons", PATCH.buffer, "m_suit_HS", PATCH.threshold, "percent_filtre", PATCH.min_m2 / 10000, "ha_Lambert93")
-             , dsn = paste0(name.simulation.RS, "Inputs"), driver = "ESRI Shapefile")
+             , dsn = paste0(RS.name_simul, "Inputs"), driver = "ESRI Shapefile")
     
     
     ## SAVE HS RASTER MAP AS ASCII ################################################################
@@ -162,10 +162,10 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     cha.log = paste(val.log, collapse = ' ') # concatenating in 1 character
     cha.log = gsub("\n ", "\n", cha.log) # removing blank from line starts
     
-    file.rename(from = paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt")
-                , to = paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges_YEAR_", ye - 1, ".txt"))
+    file.rename(from = paste0(RS.name_simul, "Inputs/LandscapeFile_HabSuit.txt")
+                , to = paste0(RS.name_simul, "Inputs/LandscapeFile_HabSuit_YEAR_", ye - 1, ".txt"))
     
-    fileConn <- file(paste0(name.simulation.RS, "Inputs/LandscapeFile_HabSuit_ChamoisBauges.txt"))
+    fileConn <- file(paste0(RS.name_simul, "Inputs/LandscapeFile_HabSuit.txt"))
     writeLines(c(paste("ncols", ncol(ras.log), sep = " "),
                  paste("nrows", nrow(ras.log), sep = " "),
                  paste("xllcorner", extent(ras.log)[1], sep = " "),
@@ -204,10 +204,10 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     cha.cost = paste(val.cost, collapse = ' ') # concatenating in 1 character
     cha.cost = gsub("\n ", "\n", cha.cost) # removing blank from line starts
     
-    file.rename(from = paste0(name.simulation.RS, "Inputs/LandscapeFile_CostMap_ChamoisBauges.txt")
-                , to = paste0(name.simulation.RS, "Inputs/LandscapeFile_CostMap_ChamoisBauges_YEAR_", ye - 1, ".txt"))
+    file.rename(from = paste0(RS.name_simul, "Inputs/LandscapeFile_CostMap.txt")
+                , to = paste0(RS.name_simul, "Inputs/LandscapeFile_CostMap_YEAR_", ye - 1, ".txt"))
     
-    fileConn <- file(paste0(name.simulation.RS, "Inputs/LandscapeFile_CostMap_ChamoisBauges.txt"))
+    fileConn <- file(paste0(RS.name_simul, "Inputs/LandscapeFile_CostMap.txt"))
     writeLines(c(paste("ncols", ncol(ras.cost), sep = " "),
                  paste("nrows", nrow(ras.cost), sep = " "),
                  paste("xllcorner", extent(ras.cost)[1], sep = " "),
@@ -220,16 +220,25 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     
     ## Run RangeShifter ###########################################################################
-    RunRS(RSparams = params.RS, dirpath = name.simulation.RS)
+    RS.land = ImportedLandscape(LandscapeFile = "LandscapeFile_HabSuit.txt",
+                                  Resolution = resolution(ras.log), 
+                                  HabPercent = TRUE, # continuous values for habitat quality (and not discrete)
+                                  K_or_DensDep = RS.dens_dep,
+                                  PatchFile = "PatchFile.txt",
+                                  CostsFile = "LandscapeFile_CostMap.txt")
+    
+    RS.params = RSsim(simul = RS.sim, land = RS.land, demog = RS.demo, dispersal = RS.disp, init = RS.init)
+    
+    RunRS(RSparams = RS.params, dirpath = RS.name_simul)
     
     
     ## Get resulting RS species density ###########################################################
     ## Code from RangeShiftR help
     # read population output file into a dataframe
-    pop_df = readPop(s = params.RS, dirpath = name.simulation.RS)
+    pop_df = readPop(s = RS.params, dirpath = RS.name_simul)
     
-    file.rename(from = paste0(name.simulation.RS, "Outputs/Batch1_Sim1_Land1_Pop.txt")
-                , to = paste0(name.simulation.RS, "Outputs/Batch1_Sim1_Land1_Pop_YEAR_", ye, ".txt"))
+    file.rename(from = paste0(RS.name_simul, "Outputs/Batch1_Sim1_Land1_Pop.txt")
+                , to = paste0(RS.name_simul, "Outputs/Batch1_Sim1_Land1_Pop_YEAR_", ye, ".txt"))
     
     # Make stack of different raster layers for each year and for only one repetition (Rep==0):
     pop_wide_rep0 = reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'NInd')]
