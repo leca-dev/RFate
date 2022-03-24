@@ -129,7 +129,7 @@ train.RF.habitat = function(releves.PFG
   #########################################
   
   #transformation into coverage percentage
-  if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance
+  if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance ## Not sure that this should be kept
   {
     releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
     releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
@@ -173,7 +173,7 @@ train.RF.habitat = function(releves.PFG
   mat.PFG.agg = merge(releves.sites, mat.PFG.agg, by = "site")
   
   #get habitat code and name
-  mat.PFG.agg$code.habitat = raster::extract(x = hab.obs, y = mat.PFG.agg[, c("x", "y")])
+  mat.PFG.agg$code.habitat = extract(x = hab.obs, y = mat.PFG.agg[, c("x", "y")])
   mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
   if (nrow(mat.PFG.agg) == 0) {
     stop("Code habitat vector is empty. Please verify values of your hab.obs map")
@@ -187,7 +187,7 @@ train.RF.habitat = function(releves.PFG
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
     print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
-  } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
+  } else if (names(levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
     { # cas où on utilise les levels définis dans la carte
       table.habitat.releve = levels(hab.obs)[[1]]
       mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
@@ -200,7 +200,7 @@ train.RF.habitat = function(releves.PFG
   
   #(optional) keep only releves data in a specific area
   if (!is.null(external.training.mask)) {
-    val.inMask = raster::extract(x = external.training.mask, y = mat.PFG.agg[, c("x", "y")])
+    val.inMask = extract(x = external.training.mask, y = mat.PFG.agg[, c("x", "y")])
     mat.PFG.agg = mat.PFG.agg[which(!is.na(val.inMask)), ]
     print("'releve' map has been cropped to match 'external.training.mask'.")
   }

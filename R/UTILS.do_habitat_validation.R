@@ -110,7 +110,7 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
   
   #check consistency for PFG & strata classes between FATE output vs the RF model
   RF.predictors <- rownames(RF.model$importance)
-  RF.PFG <- unique(str_sub(RF.predictors, 1, 2))
+  RF.PFG <- unique(str_sub(RF.predictors, 1, 2)) ## same problem here : PFG names are not necessary 2 letters long ==> strsplit(x, "_") instead ?
   
   FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
                                , abs.simulParam = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"))
@@ -202,6 +202,10 @@ do.habitat.validation<-function(output.path, RF.model, habitat.FATE.map, validat
       }
       
       ## SIMILAR to what was done in train_RF_habitat for the releves
+      ## If similar for training and validation, what about having one small function gathering those steps, that would be called for training and then for validation, but changing data
+      ## and then maybe, the rest of this function could be integrated within the main function (POST_FATE.validation) ?
+      ## OR to merge the similar steps between this part and the do_PFG_composition_validation ?
+      
       #aggregate all the rows with same pixel, (new) strata and PFG (necessary since possibly several line with the same pixel+strata+PFG after strata grouping)
       simu_PFG <- aggregate(abs ~ pixel + strata + PFG, data = simu_PFG, FUN = "sum")
       

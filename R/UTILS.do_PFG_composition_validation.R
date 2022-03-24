@@ -289,10 +289,7 @@ do.PFG.composition.validation<-function(name.simulation, sim.version, hab.obs, P
     simulated.distribution <- filter(simulated.distribution, rank != 0)
     
     proximity <- simulated.distribution[,compute.proximity(simulated.quantile = simulated.quantile, observed.quantile = observed.quantile), by = c("PFG", "habitat", "strata")]
-    
-    
     proximity <- rename(proximity, "proximity" = "V1")
-    
     proximity <- proximity[order(habitat, strata, PFG)] #to have output in the same order for all simulations
     
     
