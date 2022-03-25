@@ -58,25 +58,16 @@
 ##' 
 ##' @export
 ##' 
-##' @importFrom dplyr filter rename group_by %>% mutate rename select
-##' @importFrom raster compareCRS res projectRaster extent crop origin compareRaster 
-##' getValues predict levels
-##' @importFrom stats aggregate
-##' @importFrom stringr str_sub str_split
-##' @importFrom foreach foreach %dopar%
+##' @importFrom dplyr group_by %>% mutate rename select
+##' @importFrom raster predict
 ##' @importFrom reshape2 dcast
 ##' @importFrom caret confusionMatrix
 ##' @importFrom utils write.csv
-##' @importFrom doParallel registerDoParallel
-##' @importFrom parallel detectCores
 ##' @importFrom tidyselect all_of
 ##' 
 ### END OF HEADER ##############################################################
 
-# params en trop : habitat.FATE.map, validation.mask, simulation.map, name.simulation, perStrata, hab.obs, year, list.strata.releves, opt.no_CPU, studied.habitat
-# manquant : simu_PFG, habitat.whole.area
-
-do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim.version)
+do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim, simu_PFG, habitat.whole.area.df)
 {
   
   cat("\n ---------- FATE OUTPUT ANALYSIS \n")
@@ -141,7 +132,7 @@ do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim.ve
     y.all.map.predicted = predict(object = RF.model, newdata =  dplyr::select(data.FATE.PFG.habitat, all_of(RF.predictors)), type = "response", norm.votes = TRUE)
     y.all.map.predicted = as.data.frame(y.all.map.predicted)
     y.all.map.predicted$pixel = data.FATE.PFG.habitat$pixel
-    colnames(y.all.map.predicted) = c(sim.version, "pixel")
+    colnames(y.all.map.predicted) = c(sim, "pixel")
   } else {
     y.all.map.predicted <- NULL
   }
@@ -151,27 +142,7 @@ do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim.ve
   names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
   
   results.habitat <- list(output.validation = output.validation, y.all.map.predicted = y.all.map.predicted)
-  
-  #deal with the results regarding model performance
-  habitat.performance <- as.data.frame(matrix(unlist(lapply(results.habitat, "[[", 1)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
-  names(habitat.performance) <- c(RF.model$classes, "weighted")
-  habitat.performance$simulation <- sim.version
-  
-  #save
-  write.csv(habitat.performance, paste0(output.path, "/HABITAT/", sim.version, "/performance.habitat.csv"), row.names = FALSE)
-  
-  print("habitat performance saved")
-  
-  #deal with the results regarding habitat prediction over the whole map
-  all.map.prediction = results.habitat[[1]]$y.all.map.predicted
-  all.map.prediction = merge(all.map.prediction, dplyr::select(habitat.whole.area.df, c(pixel,habitat)), by = "pixel")
-  all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
-  
-  #save
-  write.csv(all.map.prediction,paste0(output.path,"/HABITAT/", sim.version, "/habitat.prediction.csv"), row.names = FALSE)
-  
-  #return results
-  return(all.map.prediction)
+  return(results.habitat)
   
 }
 

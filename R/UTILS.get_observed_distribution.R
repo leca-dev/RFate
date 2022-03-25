@@ -57,16 +57,14 @@
 ##' 
 ### END OF HEADER ##############################################################
 
-get.observed.distribution<-function(name.simulation
-                                    , releves.PFG
+get.observed.distribution<-function(releves.PFG
                                     , releves.sites
                                     , hab.obs
                                     , studied.habitat = NULL
                                     , PFG.considered_PFG.compo
                                     , strata.considered_PFG.compo
                                     , habitat.considered_PFG.compo
-                                    , perStrata
-                                    , sim.version){
+                                    , perStrata){
   
   cat("\n ---------- GET OBSERVED DISTRIBUTION \n")
   

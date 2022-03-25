@@ -68,12 +68,9 @@
 ##'
 ### END OF HEADER ##############################################################
 
-# params en trop : name.simulation, hab.obs, perStrata, validation.mask, year, list.strata.simulations, list.strata.releves, habitat.FATE.map
-# manquant : simu_PFG, habitat.whole.area
-
-do.PFG.composition.validation <- function(sim.version, PFG.considered_PFG.compo
+do.PFG.composition.validation <- function(sim, PFG.considered_PFG.compo
                                           , strata.considered_PFG.compo, habitat.considered_PFG.compo
-                                          , observed.distribution){
+                                          , observed.distribution, simu_PFG, habitat.whole.area.df){
   
   cat("\n ---------- PFG COMPOSITION VALIDATION \n")
   
@@ -141,19 +138,16 @@ do.PFG.composition.validation <- function(sim.version, PFG.considered_PFG.compo
   simulated.distribution$PFG <- as.character(simulated.distribution$PFG) #else may generate problem in ordering the database
   simulated.distribution$rank <- as.numeric(simulated.distribution$rank) #else may generate problem in ordering the database
   
-  
   # 5. Order the table to be able to have output in the right format
   ###################################################################
   
   simulated.distribution <- setDT(simulated.distribution)
   simulated.distribution <- simulated.distribution[order(habitat, strata, PFG, rank)]
   
-  
   # 6. Rename
   ############
   
   simulated.distribution <- rename(simulated.distribution, "simulated.quantile" = "quantile")
-  
   
   # 7. Rename and reorder the observed database
   #############################################
@@ -201,25 +195,10 @@ do.PFG.composition.validation <- function(sim.version, PFG.considered_PFG.compo
   aggregated.proximity <- proximity[,mean(proximity), by = c("habitat", "strata")]
   aggregated.proximity <- rename(aggregated.proximity, "aggregated.proximity" = "V1")
   aggregated.proximity$aggregated.proximity <- round(aggregated.proximity$aggregated.proximity, digits = 2)
-  aggregated.proximity$simul <- sim.version
+  aggregated.proximity$simul <- sim
   
-  results.PFG.compo <- list()
-  results.PFG.compo[[1]] <- aggregated.proximity
-  
-  # 11. Put in the output format
-  ###############################
-  
-  results <- sapply(results.PFG.compo, function(X){X$aggregated.proximity})
-  rownames(results) <- paste0(results.PFG.compo[[1]]$habitat, "_", results.PFG.compo[[1]]$strata)
-  colnames(results) <- sim.version
-  results <- t(results)
-  results <- as.data.frame(results)
-  results$simulation <- rownames(results)
-  
-  #save and return
-  write.csv(results, paste0(output.path, "/performance.composition.csv"), row.names = FALSE)
-  
-  return(results)
+  results.PFG.compo <- list(aggregated.proximity = aggregated.proximity)
+  return(results.PFG.compo)
   
 }
 

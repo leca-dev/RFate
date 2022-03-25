@@ -63,7 +63,7 @@ plot.predicted.habitat = function(predicted.habitat
   }
   
   #compute modal predicted habitat and the proportion of simulations predicting this habitat (for each pixel)
-  predicted.habitat$modal.predicted.habitat = apply(dplyr::select(predicted.habitat, sim.version), 1, Mode)
+  predicted.habitat$modal.predicted.habitat = apply(dplyr::select(predicted.habitat, c(all_of(sim.version))), 1, Mode)
   predicted.habitat$modal.predicted.habitat[predicted.habitat$modal.predicted.habitat == ">1 mode"] = "ambiguous"
   predicted.habitat$confidence <- apply(dplyr::select(predicted.habitat, c(all_of(sim.version), modal.predicted.habitat)), 1 , FUN = function(x) count.habitat(x))
   
@@ -94,7 +94,7 @@ plot.predicted.habitat = function(predicted.habitat
   
   #merge the prediction df with the df containing color and habitat code
   predicted.habitat = merge(predicted.habitat, habitat.code.df, by.x = c("modal.predicted.habitat", "prediction.code"), by.y = c("habitat", "prediction.code"))
-  write.csv(x = predicted.habitat, file = paste0(output.path, "/HABITAT/", sim.version, "/hab.pred.csv"))
+  write.csv(x = predicted.habitat, file = paste0(output.path, "/HABITAT/hab.pred.csv"))
   
   
   #plot
@@ -112,7 +112,7 @@ plot.predicted.habitat = function(predicted.habitat
   levels(prediction.map) = prediction.map.rat
   
   #save the raster
-  writeRaster(prediction.map, filename = paste0(output.path, "/HABITAT/", sim.version, "/synthetic.prediction.grd"), overwrite = T)
+  writeRaster(prediction.map, filename = paste0(output.path, "/HABITAT/synthetic.prediction.grd"), overwrite = T)
   
   
   #plot on R
@@ -143,7 +143,7 @@ plot.predicted.habitat = function(predicted.habitat
     )
   
   #save the map
-  ggsave(filename = "synthetic.prediction.png", plot = prediction.plot, path = paste0(output.path, "/HABITAT/", sim.version), scale = 1, dpi = 300, limitsize = F, width = 15, height = 15, units ="cm")
+  ggsave(filename = "synthetic.prediction.png", plot = prediction.plot, path = paste0(output.path, "/HABITAT"), scale = 1, dpi = 300, limitsize = F, width = 15, height = 15, units ="cm")
   
   #return the map
   return(prediction.plot)

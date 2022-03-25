@@ -200,9 +200,6 @@ POST_FATE.validation = function(name.simulation
     cat("\n # CHECKS & DATA PREPARATION")
     cat("\n #------------------------------------------------------------# \n")
     
-    dir.create(file.path(name.simulation, "VALIDATION", "HABITAT", sim.version), showWarnings = FALSE)
-    dir.create(file.path(name.simulation, "VALIDATION", "PFG_COMPOSITION", sim.version), showWarnings = FALSE)
-    
     #######################
     # 0. Global parameters
     #######################
@@ -319,83 +316,174 @@ POST_FATE.validation = function(name.simulation
     table(habitat.whole.area.df$habitat[habitat.whole.area.df$for.validation == 1], useNA = "always")
     
     
-    #######################
-    # III. Data preparation
-    #######################
+    print("processing simulations")
     
-    #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
-    if (perStrata == FALSE) {
-      if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv")))
+    if (opt.no_CPU > 1)
+    {
+      if (.getOS() != "windows")
       {
-        simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim.version, ".csv"))
-        simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))] #keep only the PFG, ID.pixel and abundance at any year columns
-        #careful : the number of abundance data files to save is to defined in POST_FATE.temporal.evolution function
-        colnames(simu_PFG) = c("PFG", "pixel", "abs")
-        simu_PFG$strata <- "A"
-      }else
+        registerDoParallel(cores = opt.no_CPU)
+      } else
       {
-        stop("Simulated abundance file does not exist")
-      }
-      
-    } else if (perStrata == TRUE) {
-      if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv")))
-      {
-        simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
-        simu_PFG = simu_PFG[, c("PFG", "ID.pixel", "strata", paste0("X", year))]
-        colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
-        new.strata <- rep(NA, nrow(simu_PFG))
-        for (i in 1:length(list.strata.simulations)) {
-          ind = which(simu_PFG$strata %in% list.strata.simulations[[i]])
-          new.strata[ind] = names(list.strata.simulations)[i]
-        }
-        simu_PFG$strata = new.strata
-      }else
-      {
-        stop("Simulated abundance file does not exist")
+        warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
       }
     }
-    
-    simu_PFG <- aggregate(abs ~ pixel + strata + PFG, data = simu_PFG, FUN = "sum")
-    
-    if (doHabitat == TRUE){
+    results.simul = foreach(i = 1:length(all_of(sim.version))) %dopar%
+      {
       
-      cat("\n\n #------------------------------------------------------------#")
-      cat("\n # HABITAT VALIDATION")
-      cat("\n #------------------------------------------------------------# \n")
+        sim <- sim.version[i]
+        
+        #get simulated abundance per pixel*strata*PFG for pixels in the simulation area
+        if (perStrata == FALSE) {
+          if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv")))
+          {
+            simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
+            simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))] #keep only the PFG, ID.pixel and abundance at any year columns
+            #careful : the number of abundance data files to save is to defined in POST_FATE.temporal.evolution function
+            colnames(simu_PFG) = c("PFG", "pixel", "abs")
+            simu_PFG$strata <- "A"
+          }else
+          {
+            stop("Simulated abundance file does not exist")
+          }
+          
+        } else if (perStrata == TRUE) {
+          if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv")))
+          {
+            simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
+            simu_PFG = simu_PFG[, c("PFG", "ID.pixel", "strata", paste0("X", year))]
+            colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+            new.strata <- rep(NA, nrow(simu_PFG))
+            for (i in 1:length(list.strata.simulations)) {
+              ind = which(simu_PFG$strata %in% list.strata.simulations[[i]])
+              new.strata[ind] = names(list.strata.simulations)[i]
+            }
+            simu_PFG$strata = new.strata
+          }else
+          {
+            stop("Simulated abundance file does not exist")
+          }
+        }
+        
+        simu_PFG <- aggregate(abs ~ pixel + strata + PFG, data = simu_PFG, FUN = "sum")
+        
+        if (doHabitat == TRUE){
+          
+          cat("\n\n #------------------------------------------------------------#")
+          cat("\n # HABITAT VALIDATION")
+          cat("\n #------------------------------------------------------------# \n")
+          
+          output.path = paste0(name.simulation, "/VALIDATION")
+          
+          ## TRAIN A RF ON OBSERVED DATA
+          
+          RF.param = list(share.training = 0.7, ntree = 500)
+          
+          RF.model = train.RF.habitat(releves.PFG = releves.PFG
+                                      , releves.sites = releves.sites
+                                      , hab.obs = hab.obs
+                                      , external.training.mask = NULL
+                                      , studied.habitat = studied.habitat
+                                      , RF.param = RF.param
+                                      , output.path = output.path
+                                      , perStrata = perStrata
+                                      , sim.version = sim.version)
+          
+          ## USE THE RF MODEL TO VALIDATE FATE OUTPUT
+          
+          # check consistency for PFG & strata classes between FATE output vs the RF model
+          RF.predictors <- rownames(RF.model$importance)
+          # RF.PFG <- unique(str_sub(RF.predictors, 1, 2))
+          RF.PFG <- str_split(RF.predictors, "_")[[1]][1] # à vérifier
+          FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
+                                       , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"))
+          if(length(setdiff(FATE.PFG,RF.PFG)) > 0 | length(setdiff(RF.PFG,FATE.PFG)) > 0) {
+            stop("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE.")
+          }
+          
+          predict.all.map = TRUE
+          
+          results.habitat = do.habitat.validation(output.path = output.path
+                                                   , RF.model = RF.model
+                                                   , predict.all.map = predict.all.map
+                                                   , sim.version = sim.version
+                                                   , simu_PFG = simu_PFG
+                                                   , habitat.whole.area.df = habitat.whole.area.df)
+          
+          #deal with the results regarding model performance
+          habitat.performance <- as.data.frame(matrix(unlist(lapply(results.habitat, "[[", 1)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
+          names(habitat.performance) <- c(RF.model$classes, "weighted")
+          habitat.performance$simulation <- sim.version
+          
+          #save
+          write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
+          
+          print("habitat performance saved")
+          
+          #deal with the results regarding habitat prediction over the whole map
+          all.map.prediction = results.habitat$y.all.map.predicted
+          all.map.prediction = merge(all.map.prediction, dplyr::select(habitat.whole.area.df, c(pixel,habitat)), by = "pixel")
+          all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
+          
+          #save
+          write.csv(all.map.prediction,paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
+          
+        }
+        
+        if (doComposition == TRUE){
+          
+          cat("\n\n #------------------------------------------------------------#")
+          cat("\n # PFG COMPOSITION VALIDATION")
+          cat("\n #------------------------------------------------------------# \n")
+          
+          output.path = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION")
+          
+          ## GET OBSERVED DISTRIBUTION
+          
+          obs.distri = get.observed.distribution(name.simulation = name.simulation
+                                                 , releves.PFG = releves.PFG
+                                                 , releves.sites = releves.sites
+                                                 , hab.obs = hab.obs
+                                                 , studied.habitat = studied.habitat
+                                                 , PFG.considered_PFG.compo = PFG.considered_PFG.compo
+                                                 , strata.considered_PFG.compo = strata.considered_PFG.compo
+                                                 , habitat.considered_PFG.compo = habitat.considered_PFG.compo
+                                                 , perStrata = perStrata)
+          
+          ## DO PFG COMPOSITION VALIDATION
+          
+          performance.composition = do.PFG.composition.validation(sim = sim
+                                                                  , PFG.considered_PFG.compo = PFG.considered_PFG.compo
+                                                                  , strata.considered_PFG.compo = strata.considered_PFG.compo
+                                                                  , habitat.considered_PFG.compo = habitat.considered_PFG.compo
+                                                                  , observed.distribution = obs.distri
+                                                                  , simu_PFG = simu_PFG
+                                                                  , habitat.whole.area.df = habitat.whole.area.df)
+          
+        }
+        
+        if(doHabitat == TRUE & doComposition == TRUE){
+          results = list(habitat.prediction = all.map.prediction, RF.model = RF.model, performance.compo = performance.composition)
+          return(results)
+        }
+        if(doHabitat == TRUE & doComposition == FALSE){
+          results = list(habitat.prediction = all.map.prediction, RF.model = RF.model)
+          return(results)
+        }
+        if(doHabitat == FALSE & doComposition == TRUE){
+          results = list(performance.compo = performance.composition)
+          return(results)
+        }
+          
+      } # end of loop
+    
+    if(doHabitat == TRUE){
       
       output.path = paste0(name.simulation, "/VALIDATION")
       
-      ## TRAIN A RF ON OBSERVED DATA
-      
-      RF.param = list(share.training = 0.7, ntree = 500)
-      
-      RF.model = train.RF.habitat(releves.PFG = releves.PFG
-                                  , releves.sites = releves.sites
-                                  , hab.obs = hab.obs
-                                  , external.training.mask = NULL
-                                  , studied.habitat = studied.habitat
-                                  , RF.param = RF.param
-                                  , output.path = output.path
-                                  , perStrata = perStrata
-                                  , sim.version = sim.version)
-      
-      ## USE THE RF MODEL TO VALIDATE FATE OUTPUT
-      
-      # check consistency for PFG & strata classes between FATE output vs the RF model
-      RF.predictors <- rownames(RF.model$importance)
-      # RF.PFG <- unique(str_sub(RF.predictors, 1, 2))
-      RF.PFG <- str_split(RF.predictors, "_")[[1]][1] # à vérifier
-      FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
-                                   , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"))
-      if(length(setdiff(FATE.PFG,RF.PFG)) > 0 | length(setdiff(RF.PFG,FATE.PFG)) > 0) {
-        stop("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE.")
-      }
-      
-      predict.all.map = TRUE
-      
-      habitats.results = do.habitat.validation()
-      
       ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
+      
+      RF.model = results.simul$RF.model
       
       # Provide a color df
       col.df = data.frame(
@@ -403,41 +491,29 @@ POST_FATE.validation = function(name.simulation
         failure = terrain.colors(length(RF.model$classes), alpha = 0.5),
         success = terrain.colors(length(RF.model$classes), alpha = 1))
       
-      prediction.map = plot.predicted.habitat(predicted.habitat = habitats.results
+      prediction.map = plot.predicted.habitat(predicted.habitat = results.simul$habitat.prediction
                                               , col.df = col.df
                                               , simulation.map = simulation.map
                                               , output.path = output.path
                                               , sim.version = sim.version)
-      
     }
     
-    if (doComposition == TRUE){
+    if(doComposition == TRUE){
       
-      cat("\n\n #------------------------------------------------------------#")
-      cat("\n # PFG COMPOSITION VALIDATION")
-      cat("\n #------------------------------------------------------------# \n")
+      output.path = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION")
       
-      output.path = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION/", sim.version)
+      results.composition = results.simul$performance.compo
+      results.compo <- sapply(results.composition, function(X){X$aggregated.proximity})
+      rownames(results.compo) <- paste0(results.composition[[1]]$habitat, "_", results.composition[[1]]$strata)
+      colnames(results.compo) <- sim.version
+      results.compo <- t(results.compo)
+      results.compo <- as.data.frame(results.compo)
+      results.compo$simulation <- rownames(results.compo)
       
-      ## GET OBSERVED DISTRIBUTION
-      
-      obs.distri = get.observed.distribution(name.simulation = name.simulation
-                                             , releves.PFG = releves.PFG
-                                             , releves.sites = releves.sites
-                                             , hab.obs = hab.obs
-                                             , studied.habitat = studied.habitat
-                                             , PFG.considered_PFG.compo = PFG.considered_PFG.compo
-                                             , strata.considered_PFG.compo = strata.considered_PFG.compo
-                                             , habitat.considered_PFG.compo = habitat.considered_PFG.compo
-                                             , perStrata = perStrata
-                                             , sim.version = sim.version)
-      
-      ## DO PFG COMPOSITION VALIDATION
-      
-      performance.composition = do.PFG.composition.validation()
+      #save and return
+      write.csv(results.compo, paste0(output.path, "/performance.composition.csv"), row.names = FALSE)
       
     }
-    
   }
   
   if(doRichness == TRUE){
@@ -446,7 +522,7 @@ POST_FATE.validation = function(name.simulation
     cat("\n # PFG RICHNESS VALIDATION")
     cat("\n #------------------------------------------------------------# \n")
     
-    output.path = paste0(name.simulation, "/VALIDATION/PFG_RICHNESS/", sim.version)
+    output.path = paste0(name.simulation, "/VALIDATION/PFG_RICHNESS")
     perStrata = perStrata
     
     #list of PFG of interest
@@ -464,7 +540,9 @@ POST_FATE.validation = function(name.simulation
         warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
       }
     }
-    dying.PFG.list = foreach(i=1:length(sim.version)) %dopar% {
+    dying.PFG.list <- foreach(i = 1:length(all_of(sim.version))) %dopar% {
+      
+      sim <- sim.version[i]
       
       if(perStrata == FALSE){
         
@@ -474,17 +552,19 @@ POST_FATE.validation = function(name.simulation
           colnames(simu_PFG) = c("PFG", "pixel", "abs")
         }
         
-      } else if(perStrata == T){
+      } else if(perStrata == TRUE){
         
-          if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))){
-            simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
-            simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
-            colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
-          }
-        
+        if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))){
+          
+          simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim.version, ".csv"))
+          simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
+          colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+          
+        }
       }
       
       return(setdiff(list.PFG,unique(simu_PFG$PFG)))
+      
     }
     
     #names the results
@@ -502,7 +582,7 @@ POST_FATE.validation = function(name.simulation
     output = list(PFG.richness.df, dying.distribution , dying.PFG.list)
     names(output) = c("PFG.richness.df", "dying.distribution", "dying.PFG.list")
     
-    dir.create(output.path,recursive = TRUE, showWarnings = FALSE)
+    dir.create(output.path, recursive = TRUE, showWarnings = FALSE)
     
     write.csv(PFG.richness.df, paste0(output.path, "/performance.richness.csv"), row.names = F)
     write.csv(dying.distribution, paste0(output.path, "/PFG.extinction.frequency.csv"), row.names = F)
@@ -528,13 +608,13 @@ POST_FATE.validation = function(name.simulation
   
   if(doHabitat == TRUE){
     
-    hab.pred = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/", sim.version, "/hab.pred.csv"))
+    hab.pred = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv"))
     failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
     success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
     
     cat("\n ---------- HABITAT : \n")
-    cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by ", sim.version, " \n"))
-    cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by ", sim.version, " \n"))
+    cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
+    cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by the simulations \n"))
     plot(prediction.map)
     
   } else{
@@ -546,7 +626,7 @@ POST_FATE.validation = function(name.simulation
   if(doComposition == TRUE){
     
     cat("\n ---------- PFG COMPOSITION : \n")
-    return(performance.composition)
+    return(results.simul$performance.compo)
     
   } else{
     

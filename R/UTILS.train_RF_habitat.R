@@ -100,9 +100,13 @@ train.RF.habitat = function(releves.PFG
     {
       stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
     }
-    fate_PFG = .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
-                                , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"))
-    if (sort(as.factor(unique(releves.PFG$PFG))) != as.factor(fate_PFG$PFG))
+    FATE_PFG = NULL
+    for(i in 1:length(all_of(sim.version))){
+      fate_PFG = .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
+                                  , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version[i], "_")[[1]][2], ".txt"))
+      FATE_PFG = c(FATE_PFG, fate_PFG$PFG)
+    }
+    if (sort(as.factor(unique(releves.PFG$PFG))) != sort(as.factor(unique(FATE_PFG))))
     {
       stop("PFG list in releves.PFG does not correspond to PFG list in FATE")
     }
@@ -208,7 +212,7 @@ train.RF.habitat = function(releves.PFG
   # 5. Save data
   #####################
   
-  write.csv(mat.PFG.agg,paste0(output.path,"/HABITAT/", sim.version, "/obs.releves.prepared.csv"),row.names = FALSE)
+  write.csv(mat.PFG.agg,paste0(output.path,"/HABITAT/obs.releves.prepared.csv"),row.names = FALSE)
   
   # 6. Small adjustment in data structure
   ##########################################
@@ -282,7 +286,7 @@ train.RF.habitat = function(releves.PFG
   # 8. Save and return output
   #######################################"
   
-  path.save = paste0(output.path, "/HABITAT/", sim.version)
+  path.save = paste0(output.path, "/HABITAT")
   
   write_rds(model, paste0(path.save, "/RF.model.rds"), compress = "none")
   write.csv(synthesis.training, paste0(path.save, "/RF_perf.per.hab_training.csv"), row.names = FALSE)
