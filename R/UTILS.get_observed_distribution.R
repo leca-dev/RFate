@@ -70,9 +70,7 @@ get.observed.distribution<-function(name.simulation
   
   cat("\n ---------- GET OBSERVED DISTRIBUTION \n")
   
-  composition.mask = NULL
-  output.path = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION/", sim.version)
-  dir.create(file.path(output.path), recursive = TRUE, showWarnings = FALSE)
+  # composition.mask = NULL
   
   #1. Aggregate coverage per PFG
   #########################################
