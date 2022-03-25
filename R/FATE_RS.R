@@ -145,15 +145,38 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     pol.patch_buffer$area_m2 = as.numeric(st_area(pol.patch_buffer))
     pol.patch_buffer = pol.patch_buffer[which(pol.patch_buffer$area_m2 > PATCH.min_m2)] # excluding too small patches
     
-    st_write(pol.patch_buffer
-             , paste0("tampons", PATCH.buffer, "m_suit_HS", PATCH.threshold, "percent_filtre", PATCH.min_m2 / 10000, "ha_Lambert93")
-             , dsn = paste0(RS.name_simul, "Inputs"), driver = "ESRI Shapefile")
+    ## Change into raster
+    ras.patch_buffer = rasterize(pol.patch_buffer, ras.log)
+    ## Set Habitat Suitability out of patches to NA
+    ras.log[which(is.na(ras.patch_buffer[]))] = NA
+    
+    ## SAVE PATCH into ASCII
+    val.buf = ras.patch_buffer[]
+    val.buf[is.na(val.buf)] = -9
+    val.buf = as.character(val.buf)
+    seq_linestarts <- seq(from = nrow(ras.patch_buffer)
+                          , to = ncell(ras.patch_buffer) - nrow(ras.patch_buffer) + 1
+                          , by = nrow(ras.patch_buffer))
+    val.buf[seq_linestarts] = paste0(val.buf[seq_linestarts], "\n") # delineating rows for future character string
+    cha.buf = paste(val.buf, collapse = ' ') # concatenating in 1 character
+    cha.buf = gsub("\n ", "\n", cha.buf) # removing blank from line starts
+    
+    file.rename(from = paste0(RS.name_simul, "Inputs/PatchFile.txt")
+                , to = paste0(RS.name_simul, "Inputs/PatchFile_YEAR_", ye - 1, ".txt"))
+    
+    fileConn <- file(paste0(RS.name_simul, "Inputs/PatchFile.txt"))
+    writeLines(c(paste("ncols", ncol(ras.patch_buffer), sep = " "),
+                 paste("nrows", nrow(ras.patch_buffer), sep = " "),
+                 paste("xllcorner", extent(ras.patch_buffer)[1], sep = " "),
+                 paste("yllcorner", extent(ras.patch_buffer)[3], sep = " "),
+                 paste("cellsize", resolution(ras.patch_buffer)[1], sep = " "),
+                 "NODATA_value -9",
+                 cha.buf), 
+               fileConn)
+    close(fileConn)
     
     
     ## SAVE HS RASTER MAP AS ASCII ################################################################
-    ras.patch_buffer = rasterize(pol.patch_buffer, ras.log)
-    ras.log[which(is.na(ras.patch_buffer[]))] = NA
-    
     val.log = ras.log[]
     val.log[is.na(val.log)] = -9
     val.log = as.character(val.log)
@@ -220,12 +243,12 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     
     ## Run RangeShifter ###########################################################################
-    RS.land = ImportedLandscape(LandscapeFile = "LandscapeFile_HabSuit.txt",
+    RS.land = ImportedLandscape(LandscapeFile = paste0(RS.name_simul, "Inputs/LandscapeFile_HabSuit.txt"),
                                   Resolution = resolution(ras.log), 
                                   HabPercent = TRUE, # continuous values for habitat quality (and not discrete)
                                   K_or_DensDep = RS.dens_dep,
-                                  PatchFile = "PatchFile.txt",
-                                  CostsFile = "LandscapeFile_CostMap.txt")
+                                  PatchFile = paste0(RS.name_simul, "Inputs/PatchFile.txt"),
+                                  CostsFile = paste0(RS.name_simul, "Inputs/LandscapeFile_CostMap.txt"))
     
     RS.params = RSsim(simul = RS.sim, land = RS.land, demog = RS.demo, dispersal = RS.disp, init = RS.init)
     
