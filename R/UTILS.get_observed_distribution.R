@@ -57,7 +57,6 @@
 ##' 
 ### END OF HEADER ##############################################################
 
-
 get.observed.distribution<-function(name.simulation
                                     , releves.PFG
                                     , releves.sites
