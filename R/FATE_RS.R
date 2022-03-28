@@ -275,10 +275,17 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     writeRaster(stack_years_rep0, filename = name.dist)
     
     ## Update FATE disturbance maps ###############################################################
+    dist.files = .getParam(params.lines = file.simulParam
+                           , flag = "DIST_MASK"
+                           , flag.split = "^--.*--$"
+                           , is.num = FALSE)
+    dist.files[1] = paste0(name.simulation, "/DATA/MASK/MASK_DIST_YEAR_", ye + 1, ".tif")
+    
     .setParam(params.lines = file.simulParam
               , flag = "DIST_MASK"
               , flag.split = "^--.*--$"
-              , value = paste0(name.simulation, "/DATA/MASK/MASK_DIST_YEAR_", ye + 1, ".tif"))
+              , value = dist.files)
+    
     
     ## Update FATE simulation to load #############################################################
     .setParam(params.lines = file.simulParam
