@@ -256,29 +256,19 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     
     ## Get resulting RS species density ###########################################################
-    ## Code from RangeShiftR help
     # read population output file into a dataframe
     pop_df = readPop(s = RS.params, dirpath = RS.name_simul)
+    pop_df = pop_df[which(pop_df$Rep == 0 & pop_df$Year == 1), ]
     
     file.rename(from = paste0(RS.name_simul, "Outputs/Batch1_Sim1_Land1_Pop.txt")
                 , to = paste0(RS.name_simul, "Outputs/Batch1_Sim1_Land1_Pop_YEAR_", ye, ".txt"))
     
     # Make stack of different raster layers for each year and for only one repetition (Rep==0):
-    pop_wide_rep0 = reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'NInd')]
-                            , timevar = 'Year'
-                            , v.names = c('NInd')
-                            , idvar = c('x', 'y')
-                            , direction = 'wide')
-    tmp_ncells = reshape(subset(pop_df, Rep == 0)[, c('Year', 'x', 'y', 'Ncells')]
-                  , timevar = 'Year'
-                  , v.names = c('Ncells')
-                  , idvar = c('x', 'y')
-                  , direction = 'wide')
-    
-    # use raster package to make a raster from the data frame
-    stack_years_rep0 = rasterFromXYZ(pop_wide_rep0)
-    stack_ncells = rasterFromXYZ(tmp_ncells)
-    stack_years_rep0 = stack_years_rep0 / stack_ncells
+    stack_years_rep0 = ras.patch_buffer
+    stack_years_rep0[which(!is.na(stack_years_rep0[]))] = 0
+    for (pp in 1:nrow(pop_df)) {
+      stack_years_rep0[which(ras.patch_buffer[] == pop_df$PatchID[pp])] = pop_df$NInd[pp] / pop_df$Ncells[pp]
+    }
     stack_years_rep0 = stack_years_rep0 / POP.carrying_capacity
     stack_years_rep0[which(stack_years_rep0[] > 1)] = 1
     name.dist = paste0(name.simulation, "/DATA/MASK/MASK_DIST_YEAR_", ye + 1, ".tif")
