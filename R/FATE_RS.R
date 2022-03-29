@@ -288,10 +288,17 @@ FATE_RS = function(name.simulation, file.simulParam, opt.no_CPU = 1, verbose.lev
     
     
     ## Update FATE simulation to load #############################################################
+    year.save = readLines(.getParam(params.lines = file.simulParam
+                                    , flag = "SAVING_YEARS_OBJECTS"
+                                    , flag.split = "^--.*--$"
+                                    , is.num = FALSE))
+    file.rename(from = paste0(GLOB_DIR$dir.save, "SimulMap_", year.save[1], ".sav")
+                , to = paste0(GLOB_DIR$dir.save, "SimulMap_STEP_YEAR_", ye, ".sav"))
+    
     .setParam(params.lines = file.simulParam
               , flag = "SAVED_STATE"
               , flag.split = "^--.*--$"
-              , value = paste0("SIMUL_YEAR_", ye))
+              , value = paste0(GLOB_DIR$dir.save, "SimulMap_STEP_YEAR_", ye, ".sav"))
     
   }
 }
