@@ -3,7 +3,7 @@
 ##' @title Create a raster map of habitat prediction for a specific \code{FATE} 
 ##' simulation at the last simulation year.
 ##' 
-##' @name plot.predicted.habitat
+##' @name plot_predicted_habitat
 ##' 
 ##' @author Matthieu Combaud, Maxime Delprat
 ##' 
@@ -46,14 +46,12 @@
 ### END OF HEADER ##############################################################
 
 
-plot.predicted.habitat = function(predicted.habitat
+plot_predicted_habitat = function(predicted.habitat
                                  , col.df
                                  , simulation.map
                                  , output.path
                                  , sim.version)
 {
-  
-  cat("\n ---------- AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT \n")
   
   #auxiliary function to compute the proportion of simulations lead to the modal prediction
   count.habitat = function(df){

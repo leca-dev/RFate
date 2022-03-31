@@ -2,7 +2,7 @@
 ##'
 ##' @title Create a random forest algorithm trained on CBNA data.
 ##' 
-##' @name train.RF.habitat
+##' @name train_RF_habitat
 ##' 
 ##' @author Matthieu Combaud, Maxime Delprat
 ##' 
@@ -11,10 +11,7 @@
 ##' habitat.
 ##' 
 ##' @param releves.PFG a data frame with abundance (column named abund) at each site
-##' and for each PFG and strata. 
-##' @param releves.sites a data frame with coordinates and a description of
-##' the habitat associated with the dominant species of each site in the 
-##' studied map.
+##' and for each PFG and strata.
 ##' @param hab.obs a raster map of the observed habitat in the
 ##' extended studied area.
 ##' @param external.training.mask default \code{NULL}. (optional) Keep only
@@ -49,13 +46,13 @@
 ##' the performance analyzes (confusion matrix and TSS) for the training and 
 ##' testing parts.
 ##' 
-##' @export
+##' @export 
 ##' 
 ##' @importFrom dplyr filter %>% group_by select
 ##' @importFrom stats aggregate
 ##' @importFrom reshape2 dcast
 ##' @importFrom data.table setDT
-##' @importFrom raster extract compareCRS levels
+##' @importFrom raster extract compareCRS levels crs
 ##' @importFrom sf st_transform st_crop
 ##' @importFrom randomForest randomForest tuneRF
 ##' @importFrom caret confusionMatrix
@@ -66,8 +63,7 @@
 ### END OF HEADER ##############################################################
 
 
-train.RF.habitat = function(releves.PFG
-                            , releves.sites
+train_RF_habitat = function(releves.PFG
                             , hab.obs
                             , external.training.mask = NULL
                             , studied.habitat = NULL
@@ -76,8 +72,6 @@ train.RF.habitat = function(releves.PFG
                             , perStrata
                             , sim.version)
 {
-  
-  cat("\n ---------- TRAIN A RANDOM FOREST MODEL ON OBSERVED DATA \n")
   
   #############################################################################
   
@@ -88,43 +82,17 @@ train.RF.habitat = function(releves.PFG
   } else
   {
     releves.PFG = as.data.frame(releves.PFG)
-    if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 4)
+    if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 6)
     {
-      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "abund"))
+      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "abund", "x", "y"))
     }
     if (!is.numeric(releves.PFG$site))
     {
       stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
     }
-    if (!is.character(releves.PFG$strata) | !is.numeric(releves.PFG$strata))
+    if (!is.character(releves.PFG$strata) & !is.numeric(releves.PFG$strata))
     {
       stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
-    }
-    FATE_PFG = NULL
-    for(i in 1:length(all_of(sim.version))){
-      fate_PFG = .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
-                                  , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version[i], "_")[[1]][2], ".txt"))
-      FATE_PFG = c(FATE_PFG, fate_PFG$PFG)
-    }
-    if (sort(as.factor(unique(releves.PFG$PFG))) != sort(as.factor(unique(FATE_PFG))))
-    {
-      stop("PFG list in releves.PFG does not correspond to PFG list in FATE")
-    }
-  }
-  ## CHECK parameter releves.sites
-  if (.testParam_notDf(releves.sites))
-  {
-    .stopMessage_beDataframe("releves.sites")
-  } else
-  {
-    releves.sites = as.data.frame(releves.sites)
-    if (nrow(releves.sites) == 0 || ncol(releves.sites) != 3)
-    {
-      .stopMessage_numRowCol("releves.sites", c("site", "x", "y"))
-    }
-    if (!is.numeric(releves.sites$site))
-    {
-      stop("Sites in releves.sites are not in the right format. Please make sure you have numeric values")
     }
   }
   
@@ -160,7 +128,7 @@ train.RF.habitat = function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage = NULL
   
-  print("releve data have been transformed into a relative metric")
+  cat("\n releve data have been transformed into a relative metric \n")
   
   #2. Cast the df
   #######################
@@ -168,16 +136,15 @@ train.RF.habitat = function(releves.PFG
   #transfo into factor to be sure to create all the combination when doing "dcast"
   mat.PFG.agg$PFG = as.factor(mat.PFG.agg$PFG)
   mat.PFG.agg$strata = as.factor(mat.PFG.agg$strata)
-  mat.PFG.agg = dcast(mat.PFG.agg, site ~ PFG + strata, value.var = "relative.metric", fill = 0, drop = FALSE)
+  mat.PFG.agg = reshape2::dcast(mat.PFG.agg, site ~ PFG + strata, value.var = "relative.metric", fill = 0, drop = FALSE)
   
   #3. Get habitat information
   ###################################
   
-  #get sites coordinates
-  mat.PFG.agg = merge(releves.sites, mat.PFG.agg, by = "site")
-  
   #get habitat code and name
-  mat.PFG.agg$code.habitat = extract(x = hab.obs, y = mat.PFG.agg[, c("x", "y")])
+  coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
+  mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
+  mat.PFG.agg$code.habitat = extract(x = hab.obs, y = mat.PFG.agg[,c("x", "y")])
   mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
   if (nrow(mat.PFG.agg) == 0) {
     stop("Code habitat vector is empty. Please verify values of your hab.obs map")
@@ -186,27 +153,20 @@ train.RF.habitat = function(releves.PFG
   #correspondence habitat code/habitat name
   if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2)
   { # cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
-    colnames(obs.habitat) = c("ID", "habitat")
     table.habitat.releve = studied.habitat
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-    print(cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t"))
-  } else if (names(levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
-  { # cas où on utilise les levels définis dans la carte
-    table.habitat.releve = levels(hab.obs)[[1]]
-    mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat$habitat), ]
-    print(cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t"))
+    cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t")
   } else
   {
-    stop("Habitat definition in hab.obs map is not correct")
+    stop("Habitat definition in studied.habitat is not correct")
   }
   
   #(optional) keep only releves data in a specific area
   if (!is.null(external.training.mask)) {
     val.inMask = extract(x = external.training.mask, y = mat.PFG.agg[, c("x", "y")])
     mat.PFG.agg = mat.PFG.agg[which(!is.na(val.inMask)), ]
-    print("'releve' map has been cropped to match 'external.training.mask'.")
+    cat("\n 'releve' map has been cropped to match 'external.training.mask'. \n")
   }
   
   # 5. Save data
@@ -233,7 +193,7 @@ train.RF.habitat = function(releves.PFG
   #train the model (with correction for imbalances in sampling)
   
   #run optimization algo (careful : optimization over OOB...)
-  mtry.perf = tuneRF(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, geometry)),
+  mtry.perf = tuneRF(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, x, y)),
                      y = releves.training$habitat,
                      strata = releves.training$habitat,
                      sampsize = nrow(releves.training),
@@ -249,9 +209,9 @@ train.RF.habitat = function(releves.PFG
   mtry = mtry.perf$mtry[mtry.perf$OOBError == min(mtry.perf$OOBError)][1] #the lowest n achieving minimum OOB
   
   #run real model
-  model = randomForest(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, geometry)),
+  model = randomForest(x = dplyr::select(releves.training, -c(code.habitat, site, habitat, x, y)),
                        y = releves.training$habitat,
-                       xtest = dplyr::select(releves.testing, -c(code.habitat, site, habitat, geometry)),
+                       xtest = dplyr::select(releves.testing, -c(code.habitat, site, habitat, x, y)),
                        ytest = releves.testing$habitat,
                        strata = releves.training$habitat,
                        sampsize = nrow(releves.training),

@@ -2,20 +2,16 @@
 ##'
 ##' @title Compute distance between observed and simulated distribution
 ##'
-##' @name do.PFG.composition.validation
+##' @name do_PFG_composition_validation
 ##'
 ##' @author Matthieu Combaud, Maxime Delprat
 ##'
 ##' @description This script is designed to compare the difference between the
 ##' PFG distribution in observed and simulated data. For a set of PFG, strata and
-##' habitats chosen, the function compute distance between observed and simulated
+##' habitats chosen, the function computes distance between observed and simulated
 ##' distribution for a precise \code{FATE} simulation.
 ##' 
-##' @param name.simulation simulation folder name.
-##' @param sim.version name of the simulation we want to validate (it works with
-##' only one \code{sim.version}).
-##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
-##' & resolution than simulation mask.
+##' @param sim name of the single simulation to validate.
 ##' @param PFG.considered_PFG.compo a character vector of the list of PFG considered
 ##' in the validation.
 ##' @param strata.considered_PFG.compo a character vector of the list of precise 
@@ -23,26 +19,14 @@
 ##' @param habitat.considered_PFG.compo a character vector of the list of habitat(s)
 ##' considered in the validation.
 ##' @param observed.distribution PFG observed distribution table provides by \code{get.observed.distribution} function.
-##' @param perStrata.compo \code{Logical}. All strata together (FALSE) or per strata (TRUE).
-##' @param validation.mask a raster mask that specified 
-##' which pixels need validation, with same projection & resolution than simulation mask.
-##' @param year year of simulation to validate.
-##' @param list.strata.simulations a character vector which contain \code{FATE} 
-##' strata definition and correspondence with observed strata definition.
-##' @param list.strata.releves a character vector which contain the observed strata 
-##' definition, extracted from observed PFG releves.
-##' @param habitat.FATE.map a raster map of the observed habitat in the
-##' studied area with same projection & resolution than validation mask and simulation mask.
-##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
-##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
-##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
-##' into account for the validation.
+##' @param simu_PFG a \code{data frame} with simulated abundance for each PFG and strata 
+##' (if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).
+##' @param habitat.whole.area.df a \code{data frame} which contain habitat names and code for each pixel that needs validation.
 ##' 
 ##' @details 
 ##' 
-##' After preliminary checks, this code extract observed habitat from the \code{hab.obs}
-##' map and, then, merge it with the simulated PFG abundance file (with or without strata definition) 
-##' from results of the \code{FATE} simulation selected with \code{sim.version}. 
+##' Firstly, this code merges \code{habitat.whole.area.df} data frame with the simulated PFG abundance 
+##' \code{simu_PFG} data frame (with or without strata definition). 
 ##' After filtration of the required PFG, strata and habitats, the function transforms 
 ##' the data into relative metrics and, then, compute distribution per PFG, strata
 ##' and habitat (if necessary). Finally, the code computes proximity between observed 
@@ -52,7 +36,7 @@
 ##' 
 ##' 1 file is created in
 ##' \describe{
-##'   \item{\file{VALIDATION/PFG_COMPOSITION/sim.version} :
+##'   \item{\file{VALIDATION/PFG_COMPOSITION} :
 ##'   A .csv file which contain the proximity between observed and simulated data computed
 ##'   for each PFG/strata/habitat.
 ##'   
@@ -62,17 +46,15 @@
 ##' @importFrom raster raster projectRaster res crs crop extent origin compareRaster 
 ##' getValues ncell compareCRS levels
 ##' @importFrom stats aggregate
-##' @importFrom utils read.csv write.csv
 ##' @importFrom data.table setDT
 ##' @importFrom tidyselect all_of
 ##'
 ### END OF HEADER ##############################################################
 
-do.PFG.composition.validation <- function(sim, PFG.considered_PFG.compo
+do_PFG_composition_validation <- function(sim, PFG.considered_PFG.compo
                                           , strata.considered_PFG.compo, habitat.considered_PFG.compo
                                           , observed.distribution, simu_PFG, habitat.whole.area.df){
   
-  cat("\n ---------- PFG COMPOSITION VALIDATION \n")
   
   #Auxiliary function to compute proximity (on a 0 to 1 scale, 1 means quantile equality)
   compute.proximity <- function(simulated.quantile,observed.quantile){
@@ -198,6 +180,8 @@ do.PFG.composition.validation <- function(sim, PFG.considered_PFG.compo
   aggregated.proximity$simul <- sim
   
   results.PFG.compo <- list(aggregated.proximity = aggregated.proximity)
+  names(results.PFG.compo) <- "aggregated.proximity"
+
   return(results.PFG.compo)
   
 }

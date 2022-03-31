@@ -1,9 +1,9 @@
 ### HEADER #####################################################################
 ##'
 ##' @title Compare observed and simulated habitat of a \code{FATE} simulation
-##' at the last simulation year.
+##' to a chosen year.
 ##' 
-##' @name do.habitat.validation
+##' @name do_habitat_validation
 ##' 
 ##' @author Matthieu Combaud & Maxime Delprat
 ##' 
@@ -15,38 +15,22 @@
 ##' will be created.
 ##' @param RF.model random forest model trained on CBNA data (train.RF.habitat
 ##' function)
-##' @param habitat.FATE.map a raster map of the observed habitat in the
-##' studied area with same projection & resolution than validation mask and simulation mask.
-##' @param validation.mask a raster mask that specified 
-##' which pixels need validation, with same projection & resolution than simulation mask.
-##' @param simulation.map a raster map of the whole studied area (provides by FATE parameters functions).
 ##' @param predict.all.map \code{Logical}. If TRUE, the script will predict 
 ##' habitat for the whole map.
-##' @param sim.version name of the simulation to validate.
-##' @param name.simulation simulation folder name.
-##' @param perStrata \code{Logical}. If TRUE, the PFG abundance is defined
-##' by strata in each pixel. If FALSE, PFG abundance is defined for all strata.
-##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
-##' & resolution than simulation mask.
-##' @param year simulation year selected for validation.
-##' @param list.strata.releves a character vector which contain the observed strata 
-##' definition, extracted from observed PFG releves.
-##' @param list.strata.simulations a character vector which contain \code{FATE} 
-##' strata definition and correspondence with observed strata definition.
-##' @param opt.no_CPU default \code{1}. \cr The number of 
-##' resources that can be used to parallelize the computation of performance of
-##' habitat prediction.
-##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
-##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
-##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
-##' into account for the validation.
+##' @param sim name of the single simulation to validate.
+##' @param simu_PFG a \code{data frame} with simulated abundance for each PFG and strata 
+##' (if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).
+##' @param habitat.whole.area.df a \code{data frame} which contain habitat names and code for each pixel that needs validation.
+##' @param list.strata If abundance file is defined by strata : a character vector which contain \code{FATE} 
+##' strata definition and correspondence with observed strata definition. 
+##' If abundance file is defined for all strata : a chracter vector with value "all".
+##' @param perStrata \code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG abundance is defined by strata. 
+##' If \code{FALSE}, PFG abundance defined for all strata.
 ##' 
 ##' @details
 ##' 
-##' After several preliminary checks, the function is going to prepare the observations
-##' database by extracting the observed habitat from a raster map. Then, for the
-##' simulation \code{sim.version}, the script take the evolution abundance for each PFG
-##' and all strata (or for each PFG & each strata if option selected) file and predict 
+##' For a given simulation \code{sim}, this script takes the evolution abundance for each PFG
+##' and all strata (or for each PFG & each strata if option selected) data frame and predicts 
 ##' the habitat for the whole map (if option selected) thanks to the RF model. 
 ##' Finally, the function computes habitat performance based on TSS for each habitat.
 ##' 
@@ -64,13 +48,28 @@
 ##' @importFrom caret confusionMatrix
 ##' @importFrom utils write.csv
 ##' @importFrom tidyselect all_of
+##' @importFrom stringr str_split
 ##' 
 ### END OF HEADER ##############################################################
 
-do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim, simu_PFG, habitat.whole.area.df)
+do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, simu_PFG, habitat.whole.area.df, list.strata, perStrata)
 {
   
-  cat("\n ---------- FATE OUTPUT ANALYSIS \n")
+  # check consistency for PFG & strata classes between FATE output vs the RF model
+  RF.predictors <- rownames(RF.model$importance)
+  PFG <- str_split(RF.predictors, "_")
+  RF.PFG = NULL
+  for(n in 1:length(PFG)){
+    pfg = PFG[[n]][1]
+    RF.PFG = c(RF.PFG,pfg)
+    RF.PFG = unique(RF.PFG)
+  }
+  FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
+                               , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim, "_")[[1]][2], ".txt"))
+  FATE.PFG = FATE.PFG$PFG
+  if(length(setdiff(FATE.PFG,RF.PFG)) > 0 | length(setdiff(RF.PFG,FATE.PFG)) > 0) {
+    stop("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE.")
+  }
   
   #######################
   # I. Data preparation
@@ -82,17 +81,16 @@ do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim, s
   simu_PFG <- as.data.frame(simu_PFG)
   
   #drop the absolute abundance
-  simu_PFG$abs<-NULL
+  simu_PFG$abs <- NULL
   
   #correct the levels (to have all PFG and all strata) to make the dcast transfo easier (all PFG*strata combination will be automatically created thanks to the factor structure, even if no line corresponds to it)
   simu_PFG$PFG <- as.factor(simu_PFG$PFG)
   simu_PFG$PFG <- factor(simu_PFG$PFG, sort(unique(c(levels(simu_PFG$PFG), RF.PFG))))
   simu_PFG$strata <- as.factor(simu_PFG$strata)
-  simu_PFG$PFG <- factor(simu_PFG$PFG, sort(unique(c(levels(simu_PFG$strata), list.strata))))
+  simu_PFG$strata <- factor(simu_PFG$strata, sort(unique(c(levels(simu_PFG$strata), list.strata))))
   
   #cast
   simu_PFG <- reshape2::dcast(simu_PFG, pixel ~ PFG * strata, value.var = c("relative.abundance"), fill = 0, drop = FALSE)
-  
   #merge PFG info and habitat + transform habitat into factor
   
   #here it is crucial to have exactly the same raster structure for "simulation.map" and "habitat.FATE.map", so as to be able to do the merge on the "pixel" variable
@@ -132,7 +130,8 @@ do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim, s
     y.all.map.predicted = predict(object = RF.model, newdata =  dplyr::select(data.FATE.PFG.habitat, all_of(RF.predictors)), type = "response", norm.votes = TRUE)
     y.all.map.predicted = as.data.frame(y.all.map.predicted)
     y.all.map.predicted$pixel = data.FATE.PFG.habitat$pixel
-    colnames(y.all.map.predicted) = c(sim, "pixel")
+    y.all.map.predicted$habitat = data.FATE.PFG.habitat$habitat
+    colnames(y.all.map.predicted) = c(sim, "pixel", "habitat")
   } else {
     y.all.map.predicted <- NULL
   }
@@ -142,6 +141,8 @@ do.habitat.validation <- function(output.path, RF.model, predict.all.map, sim, s
   names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
   
   results.habitat <- list(output.validation = output.validation, y.all.map.predicted = y.all.map.predicted)
+  names(results.habitat) <- c("output.validation", "y.all.map.predicted")
+  
   return(results.habitat)
   
 }

@@ -2,7 +2,7 @@
 ##'
 ##' @title Compute distribution of relative abundance over observed relevés
 ##'
-##' @name get.observed.distribution
+##' @name get_observed_distribution
 ##'
 ##' @author Matthieu Combaud, Maxime Delprat
 ##' 
@@ -12,8 +12,6 @@
 ##' @param name.simulation simulation folder name.
 ##' @param releves.PFG a data frame with abundance (column named abund) at each site
 ##' and for each PFG and strata.
-##' @param releves.sites a data frame with coordinates and a description of the habitat associated with 
-##' the dominant species of each site in the studied map.
 ##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
 ##' & resolution than simulation mask.
 ##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
@@ -27,8 +25,6 @@
 ##' @param habitat.considered_PFG.compo a character vector of the list of habitat(s)
 ##' considered in the validation.
 ##' @param perStrata \code{Logical}. All strata together (FALSE) or per strata (TRUE).
-##' @param sim.version name of the simulation we want to validate (it works with
-##' only one \code{sim.version}).
 ##' 
 ##' @details
 ##' 
@@ -42,7 +38,7 @@
 ##' 
 ##' 2 files are created in
 ##' \describe{
-##'   \item{\file{VALIDATION/PFG_COMPOSITION/sim.version} :
+##'   \item{\file{VALIDATION/PFG_COMPOSITION} :
 ##'   1 .csv file which contain the observed relevés transformed into relative metrics.
 ##'   1 .csv file which contain the final output with the distribution per PFG, strata and habitat.
 ##'   
@@ -57,16 +53,15 @@
 ##' 
 ### END OF HEADER ##############################################################
 
-get.observed.distribution<-function(releves.PFG
-                                    , releves.sites
+get_observed_distribution <- function(releves.PFG
                                     , hab.obs
                                     , studied.habitat = NULL
                                     , PFG.considered_PFG.compo
                                     , strata.considered_PFG.compo
                                     , habitat.considered_PFG.compo
-                                    , perStrata){
-  
-  cat("\n ---------- GET OBSERVED DISTRIBUTION \n")
+                                    , perStrata
+                                    , output.path){
+
   
   # composition.mask = NULL
   
@@ -96,33 +91,32 @@ get.observed.distribution<-function(releves.PFG
   #2. Get habitat information
   ###################################
   
-  #get sites coordinates
-  mat.PFG.agg = merge(releves.sites, mat.PFG.agg, by = "site")
-  
   #get habitat code and name
-  mat.PFG.agg$code.habitat = raster::extract(x = hab.obs, y = mat.PFG.agg[, c("x", "y")])
+  coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
+  mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
+  mat.PFG.agg$code.habitat = extract(x = hab.obs, y = mat.PFG.agg[,c("x", "y")])
   mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
   if (nrow(mat.PFG.agg) == 0) {
     stop("Code habitat vector is empty. Please verify values of your hab.obs map")
   }
   
-  #correspondance habitat code/habitat name
+  #correspondence habitat code/habitat name
   if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2)
   { # cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
-    colnames(obs.habitat) = c("ID", "habitat")
     table.habitat.releve = studied.habitat
+    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-    print(cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t"))
-  } else if (names(raster::levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(raster::levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
+    cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t")
+  } else if (names(levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
   { # cas où on utilise les levels définis dans la carte
     table.habitat.releve = levels(hab.obs)[[1]]
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat$habitat), ]
-    print(cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t"))
+    cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t")
   } else
   {
     stop("Habitat definition in hab.obs map is not correct")
-  } 
+  }
   
   # #(optional) keep only releves data in a specific area
   # if(!is.null(composition.mask)){
@@ -159,7 +153,7 @@ get.observed.distribution<-function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage <- NULL
   
-  print("releve data have been transformed into a relative metric")
+  cat("\n releve data have been transformed into a relative metric \n")
   
   
   # 5. Save data
