@@ -150,6 +150,3 @@ reference:
       - "do_PFG_composition_validation"
       - "get_observed_distribution"
       - "plot_predicted_habitat"
-      - "plot.predicted.habitat"
-      - "get.observed.distribution"
-      - "do.PFG.composition.validation"
