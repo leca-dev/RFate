@@ -84,24 +84,24 @@ of the PFG you want to exclude from the analysis (PFG richness validation).}
 }
 \description{
 This script is designed to compute validation data for : 
-\code{Habitat} : compares habitat simulations and observations and
+\cr \code{Habitat} : compares habitat simulations and observations and
 create a map to visualize this comparison with all the \code{FATE} and
 observed data.
-\code{PFG Composition} : produced a computation of observed distribution 
+\cr \code{PFG Composition} : produced a computation of observed distribution 
 of relative abundance in the simulation area and a computation of distance between
 observed and simulated distribution.
-\code{PFG Richness} : computes the PFG richness over the whole simulation area 
+\cr \code{PFG Richness} : computes the PFG richness over the whole simulation area 
 for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.
 }
 \details{
 \describe{
   \item{Habitat validation}{The observed habitat is derived from a map of the area or, if defined, 
 from \code{studied.habitat}, the simulated habitat is derived from \code{FATE} simulated relative 
-abundance, based on a random forest algorithm trained on observed releves data (see \code{\link{train_RF_habitat}}) \cr
+abundance, based on a random forest algorithm trained on observed releves data (see \code{\link{train_RF_habitat}}). \cr
 To compare observations and simulations, the function computes confusion matrix between 
 observations and predictions and then compute the TSS for each habitat h 
 (number of prediction of habitat h/number of observation of habitat h + number of non-prediction 
-of habitat h/number of non-observation of habitat h). The final metrics this script use is the 
+of habitat h/number of non-observation of habitat h). \cr The final metrics this script use is the 
 mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
 habitat distribution. The habitat validation also provides a visual comparison of observed and 
 simulated habitat on the whole studied area (see \code{\link{do_habitat_validation}} &
