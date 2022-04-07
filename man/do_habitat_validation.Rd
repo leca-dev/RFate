@@ -20,7 +20,7 @@ do_habitat_validation(
 \item{output.path}{access path to the for the folder where output files
 will be created.}
 
-\item{RF.model}{random forest model trained on CBNA data (train.RF.habitat
+\item{RF.model}{random forest model trained on observed abundance data (\code{\link{train.RF.habitat}}
 function)}
 
 \item{predict.all.map}{\code{Logical}. If TRUE, the script will predict 
@@ -31,11 +31,11 @@ habitat for the whole map.}
 \item{simu_PFG}{a \code{data frame} with simulated abundance for each PFG and strata 
 (if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).}
 
-\item{habitat.whole.area.df}{a \code{data frame} which contain habitat names and code for each pixel that needs validation.}
+\item{habitat.whole.area.df}{a \code{data frame} which contain habitat names and code for each pixel that need validation.}
 
-\item{list.strata}{If abundance file is defined by strata : a character vector which contain \code{FATE} 
-strata definition and correspondence with observed strata definition. 
-If abundance file is defined for all strata : a chracter vector with value "all".}
+\item{list.strata}{if abundance file is defined by strata : a character vector which contains \code{FATE} 
+strata definition and correspondence with observed strata definition. \cr
+If abundance file is defined for all strata : a character vector with value "all".}
 
 \item{perStrata}{\code{Logical}. Default \code{TRUE}. If \code{TRUE}, PFG abundance is defined by strata. 
 If \code{FALSE}, PFG abundance defined for all strata.}
@@ -48,7 +48,7 @@ observed and simulated habitat for each pixel of the whole map.
 \description{
 To compare observations and simulations, this function compute 
 confusion matrix between observation and prediction and then compute the TSS 
-for each habitat.
+for each habitats.
 }
 \details{
 For a given simulation \code{sim}, this script takes the evolution abundance for each PFG

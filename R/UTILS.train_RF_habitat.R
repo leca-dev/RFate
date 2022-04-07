@@ -1,47 +1,42 @@
 ### HEADER #####################################################################
 ##'
-##' @title Create a random forest algorithm trained on CBNA data.
+##' @title Create a random forest algorithm trained on observed vegetation data
 ##' 
 ##' @name train_RF_habitat
 ##' 
 ##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description This script is designed to produce a random forest model
-##' trained on observed PFG abundance, sites releves and a map of observed
-##' habitat.
+##' trained on observed PFG abundance and a map of observed habitat.
 ##' 
-##' @param releves.PFG a data frame with abundance (column named abund) at each site
-##' and for each PFG and strata.
-##' @param hab.obs a raster map of the observed habitat in the
-##' extended studied area.
-##' @param external.training.mask default \code{NULL}. (optional) Keep only
-##' releves data in a specific area.
-##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
-##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
-##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
-##' into account for the validation.
-##' @param RF.param a list of 2 parameters for random forest model :
-##' share.training defines the size of the trainig part of the data base.
-##' ntree is the number of trees build by the algorithm, it allows to reduce
-##' the prediction error.
-##' @param output.path access path to the for the folder where output files
-##' will be created.
-##' @param perStrata \code{Logical}. If TRUE, the PFG abundance is defined
-##' by strata in each site. If FALSE, PFG abundance is defined for all strata.
-##' @param sim.version name of the simulation we want to validate.
+##' @param releves.PFG a data frame with PFG abundances (column named abund) at each site, 
+##' for each PFG and strata & coordinates of each site.
+##' @param hab.obs a raster map of the observed habitat in the extended studied area.
+##' @param external.training.mask default \code{NULL}. (optional) a raster map for keeping 
+##' releves data only in a specific area.
+##' @param studied.habitat default \code{NULL}. a 2 columns data frame which contains 
+##' the habitats (2nd column) and the ID (1st column) for each of them which 
+##' will be taken into account for the validation.
+##' @param RF.param a list of 2 parameters for random forest model : \cr
+##' share.training defines the size of the training part of the data base. \cr
+##' ntree is the number of trees build by the algorithm, it allows to reduce the prediction error.
+##' @param output.path access path to the folder where output files will be created.
+##' @param perStrata \code{Logical}. If \code{TRUE}, the PFG abundance is defined
+##' by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.
+##' @param sim.version a character vector with the name(s) of the simulation(s) to validate.
 ##' 
 ##' @details 
 ##' 
-##' This function transform PFG abundance in relative abundance,
-##' get habitat information from the releves map of from a vector previously defined, 
-##' keep releves on interesting habitat and then builds a random forest model. Finally, 
+##' This function transforms PFG abundance in relative abundance,
+##' gets habitat information from an habitat data frame previously defined and a habitat map, 
+##' keep releves on interesting habitat(s) and then builds a random forest model. Finally, 
 ##' the function analyzes the model performance with computation of confusion matrix and TSS between
 ##' the training and testing sample.
 ##' 
 ##' @return 
 ##' 
 ##' 2 prepared observed releves files are created before the building of the random
-##' forest model in a habitat validation folder.
+##' forest model in a folder previously defined. \cr
 ##' 5 more files are created at the end of the script to save the RF model and
 ##' the performance analyzes (confusion matrix and TSS) for the training and 
 ##' testing parts.
@@ -117,18 +112,18 @@ train_RF_habitat = function(releves.PFG
   }
   
   
-  #1. Compute relative abundance metric
-  #########################################
+  # 1. Compute relative abundance metric
+  ######################################
   
   #transformation into coverage percentage
   if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance ## Not sure that this should be kept
   {
     releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
     releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
-  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) # presence-absence data
+  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) #presence-absence data
   {
     releves.PFG$coverage = releves.PFG$abund
-  } else if (is.numeric(releves.PFG$abund)) # absolute abundance
+  } else if (is.numeric(releves.PFG$abund)) #absolute abundance
   {
     releves.PFG$coverage = releves.PFG$abund
   }
@@ -150,16 +145,16 @@ train_RF_habitat = function(releves.PFG
   
   cat("\n releve data have been transformed into a relative metric \n")
   
-  #2. Cast the df
-  #######################
+  # 2. Cast the df
+  ################
   
   #transfo into factor to be sure to create all the combination when doing "dcast"
   mat.PFG.agg$PFG = as.factor(mat.PFG.agg$PFG)
   mat.PFG.agg$strata = as.factor(mat.PFG.agg$strata)
   mat.PFG.agg = reshape2::dcast(mat.PFG.agg, site ~ PFG + strata, value.var = "relative.metric", fill = 0, drop = FALSE)
   
-  #3. Get habitat information
-  ###################################
+  # 3. Get habitat information
+  ############################
   
   #get habitat code and name
   coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
@@ -172,7 +167,7 @@ train_RF_habitat = function(releves.PFG
   
   #correspondence habitat code/habitat name
   if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2)
-  { # cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
+  {
     table.habitat.releve = studied.habitat
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
@@ -189,19 +184,19 @@ train_RF_habitat = function(releves.PFG
     cat("\n 'releve' map has been cropped to match 'external.training.mask'. \n")
   }
   
-  # 5. Save data
-  #####################
+  # 4. Save data
+  ##############
   
   write.csv(mat.PFG.agg,paste0(output.path,"/HABITAT/obs.releves.prepared.csv"),row.names = FALSE)
   
-  # 6. Small adjustment in data structure
-  ##########################################
+  # 5. Small adjustment in data structure
+  #######################################
   
   mat.PFG.agg = as.data.frame(mat.PFG.agg) #get rid of the spatial structure before entering the RF process
   mat.PFG.agg$habitat = as.factor(mat.PFG.agg$habitat)
   
-  # 7.Random forest
-  ######################################
+  # 6.Random forest
+  #################
   
   #separate the database into a training and a test part
   set.seed(123)
@@ -263,8 +258,8 @@ train_RF_habitat = function(releves.PFG
   aggregate.TSS.testing = round(sum(synthesis.testing$weight * synthesis.testing$TSS), digits = 2)
   
   
-  # 8. Save and return output
-  #######################################"
+  # 7. Save and return output
+  ###########################
   
   path.save = paste0(output.path, "/HABITAT")
   

@@ -1,6 +1,6 @@
 ### HEADER #####################################################################
 ##'
-##' @title Compute distribution of relative abundance over observed relevés
+##' @title Compute distribution of relative abundance over observed releves.
 ##'
 ##' @name get_observed_distribution
 ##'
@@ -10,36 +10,35 @@
 ##' of relative abundance, from observed data.
 ##' 
 ##' @param name.simulation simulation folder name.
-##' @param releves.PFG a data frame with abundance (column named abund) at each site
-##' and for each PFG and strata.
+##' @param releves.PFG a data frame with PFG abundances (column named abund) at each site, 
+##' for each PFG and strata & coordinates of each site.
 ##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
 ##' & resolution than simulation mask.
-##' @param studied.habitat default \code{NULL}. If \code{NULL}, the function will
-##' take into account of habitats define in the \code{hab.obs} map. Otherwise, please specify 
-##' in a 2 columns data frame the habitats (2nd column) and the ID (1st column) for each of them which will be taken 
-##' into account for the validation.
-##' @param PFG.considered_PFG.compo a character vector of the list of PFG considered
+##' @param studied.habitat default \code{NULL}. a 2 columns data frame which contains 
+##' the habitats (2nd column) and the ID (1st column) for each of them which 
+##' will be taken into account for the validation.
+##' @param PFG.considered_PFG.compo a character vector which contains the list of PFG considered
 ##' in the validation.
-##' @param strata.considered_PFG.compo a character vector of the list of precise 
+##' @param strata.considered_PFG.compo a character vector which contains the list of precise 
 ##' strata considered in the validation.
-##' @param habitat.considered_PFG.compo a character vector of the list of habitat(s)
+##' @param habitat.considered_PFG.compo a character vector which contains the list of habitat(s)
 ##' considered in the validation.
 ##' @param perStrata \code{Logical}. All strata together (FALSE) or per strata (TRUE).
 ##' 
 ##' @details
 ##' 
-##' The function takes the \code{releves.PFG} and \code{releves.sites} files and 
-##' aggregate coverage per PFG. Then, the code get habitat information from also
-##' the \code{hab.obs} map, keep only interesting habitat, strata and PFG, and
-##' transform the data into relative metrics. Finally, the script computes distribution
-##' per PFG, and if require per strata/habitat (else all strata/habitat will be considered together).
+##' The function takes the \code{releves.PFG} file and aggregate coverage per PFG. 
+##' Then, the code gets habitat information from the \code{hab.obs} map & the \code{studied.habitat}
+##' data frame, keep only interesting habitat(s), strata and PFG, and transforms 
+##' the data into relative metrics. Finally, the script computes distribution per PFG 
+##' and if required per strata/habitat (else all strata/habitat will be considered together).
 ##' 
 ##' @return 
 ##' 
 ##' 2 files are created in
 ##' \describe{
-##'   \item{\file{VALIDATION/PFG_COMPOSITION} :
-##'   1 .csv file which contain the observed relevés transformed into relative metrics.
+##'   \item{\file{VALIDATION/PFG_COMPOSITION} : \cr
+##'   1 .csv file which contain the observed relevés transformed into relative metrics. \cr
 ##'   1 .csv file which contain the final output with the distribution per PFG, strata and habitat.
 ##'   
 ##' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/UTILS.do_PFG_composition_validation.R
 \name{do_PFG_composition_validation}
 \alias{do_PFG_composition_validation}
-\title{Compute distance between observed and simulated distribution}
+\title{Compute distance between observed and simulated distribution.}
 \usage{
 do_PFG_composition_validation(
   sim,
@@ -26,7 +26,7 @@ strata considered in the validation.}
 \item{habitat.considered_PFG.compo}{a character vector of the list of habitat(s)
 considered in the validation.}
 
-\item{observed.distribution}{PFG observed distribution table provides by \code{get.observed.distribution} function.}
+\item{observed.distribution}{PFG observed distribution table provides by \code{\link{get.observed.distribution}} function.}
 
 \item{simu_PFG}{a \code{data frame} with simulated abundance for each PFG and strata 
 (if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).}
@@ -45,7 +45,7 @@ distribution for a precise \code{FATE} simulation.
 \details{
 Firstly, this code merges \code{habitat.whole.area.df} data frame with the simulated PFG abundance 
 \code{simu_PFG} data frame (with or without strata definition). 
-After filtration of the required PFG, strata and habitats, the function transforms 
+After filtration of the required PFG, strata and habitat(s), the function transforms 
 the data into relative metrics and, then, compute distribution per PFG, strata
 and habitat (if necessary). Finally, the code computes proximity between observed 
 and simulated data, per PFG, strata and habitat.

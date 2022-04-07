@@ -1,36 +1,36 @@
 ### HEADER #####################################################################
 ##'
-##' @title Create a raster map of habitat prediction for a specific \code{FATE} 
-##' simulation at the last simulation year.
+##' @title Create a raster map of habitat prediction for a set of \code{FATE} 
+##' simulations at a specific simulation year.
 ##' 
 ##' @name plot_predicted_habitat
 ##' 
 ##' @author Matthieu Combaud, Maxime Delprat
 ##' 
 ##' @description This script is designed to create a raster map of habitat prediction
-##' based on a habitat prediction file. For each pixel, the habitat failure or success value
+##' based on an habitat prediction file. For each pixel, the habitat failure or success value
 ##' is associated to a color and then, the map is built.
 ##' 
-##' @param predicted.habitat a csv file created by the do.habitat.validation function
-##' which contain, for each pixel of the studied map, the simulated and observed habitat.
+##' @param predicted.habitat a csv file created by the \code{\link{do.habitat.validation}} function
+##' which contains, for each pixel of the studied map, the simulated and observed habitat.
 ##' @param col.df a data frame with all the colors associated with the failure or 
 ##' success of each studied habitat prediction.
 ##' @param simulation.map a raster map of the whole studied area.
 ##' @param output.path access path to the for the folder where output files
 ##' will be created.
-##' @param sim.version name of the simulation we want to validate.
+##' @param sim.version a character vector with the name(s) of the simulation(s) to validate.
 ##' 
 ##' @details 
 ##' 
 ##' The function determines true/false prediction ('failure' if false, 'success' if true)
-##' and prepare a dataframe containing color and habitat code. Then, the script merge
-##' the prediction dataframe with the color and code habitat dataframe. Finally,
-##' the function draw a raster map and a plot of prediction habitat over it thanks
+##' and prepare a data frame containing colors and habitats codes. Then, the script merge
+##' the prediction data frame with the color and code habitat data frame. Finally,
+##' the function draw a raster map and a plot of prediction habitat over it, thanks
 ##' to the data prepared before.
 ##' 
 ##' @return
 ##' 
-##' a synthetic.prediction.png file which contain the final prediction plot.
+##' a synthetic.prediction.png file which contain the final prediction map.
 ##' 
 ##' @export
 ##' 

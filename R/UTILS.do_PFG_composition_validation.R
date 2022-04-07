@@ -1,6 +1,6 @@
 ### HEADER #####################################################################
 ##'
-##' @title Compute distance between observed and simulated distribution
+##' @title Compute distance between observed and simulated distribution.
 ##'
 ##' @name do_PFG_composition_validation
 ##'
@@ -18,7 +18,7 @@
 ##' strata considered in the validation.
 ##' @param habitat.considered_PFG.compo a character vector of the list of habitat(s)
 ##' considered in the validation.
-##' @param observed.distribution PFG observed distribution table provides by \code{get.observed.distribution} function.
+##' @param observed.distribution PFG observed distribution table provides by \code{\link{get.observed.distribution}} function.
 ##' @param simu_PFG a \code{data frame} with simulated abundance for each PFG and strata 
 ##' (if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).
 ##' @param habitat.whole.area.df a \code{data frame} which contain habitat names and code for each pixel that needs validation.
@@ -27,16 +27,16 @@
 ##' 
 ##' Firstly, this code merges \code{habitat.whole.area.df} data frame with the simulated PFG abundance 
 ##' \code{simu_PFG} data frame (with or without strata definition). 
-##' After filtration of the required PFG, strata and habitats, the function transforms 
+##' After filtration of the required PFG, strata and habitat(s), the function transforms 
 ##' the data into relative metrics and, then, compute distribution per PFG, strata
 ##' and habitat (if necessary). Finally, the code computes proximity between observed 
 ##' and simulated data, per PFG, strata and habitat.
 ##' 
 ##' @return 
 ##' 
-##' 1 file is created in
+##' 1 file is created in \cr
 ##' \describe{
-##'   \item{\file{VALIDATION/PFG_COMPOSITION} :
+##'   \item{\file{VALIDATION/PFG_COMPOSITION} : \cr
 ##'   A .csv file which contain the proximity between observed and simulated data computed
 ##'   for each PFG/strata/habitat.
 ##'   
