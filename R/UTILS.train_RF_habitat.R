@@ -76,23 +76,43 @@ train_RF_habitat = function(releves.PFG
   #############################################################################
   
   ## CHECK parameter releves.PFG
-  if (.testParam_notDf(releves.PFG))
+  if(perStrata == TRUE)
   {
-    .stopMessage_beDataframe("releves.PFG")
-  } else
+    if (.testParam_notDf(releves.PFG))
+    {
+      .stopMessage_beDataframe("releves.PFG")
+    } else
+    {
+      releves.PFG = as.data.frame(releves.PFG)
+      if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 6)
+      {
+        .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "abund", "x", "y"))
+      }
+      if (!is.numeric(releves.PFG$site))
+      {
+        stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
+      }
+      if (!is.character(releves.PFG$strata) & !is.numeric(releves.PFG$strata))
+      {
+        stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
+      }
+    }
+  }else if(perStrata == FALSE)
   {
-    releves.PFG = as.data.frame(releves.PFG)
-    if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 6)
+    if (.testParam_notDf(releves.PFG))
     {
-      .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "abund", "x", "y"))
-    }
-    if (!is.numeric(releves.PFG$site))
+      .stopMessage_beDataframe("releves.PFG")
+    } else
     {
-      stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
-    }
-    if (!is.character(releves.PFG$strata) & !is.numeric(releves.PFG$strata))
-    {
-      stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
+      releves.PFG = as.data.frame(releves.PFG)
+      if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 5)
+      {
+        .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "abund", "x", "y"))
+      }
+      if (!is.numeric(releves.PFG$site))
+      {
+        stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
+      }
     }
   }
   
