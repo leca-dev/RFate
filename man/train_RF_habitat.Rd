@@ -17,7 +17,7 @@ train_RF_habitat(
 }
 \arguments{
 \item{releves.PFG}{a data frame with PFG abundances (column named abund) at each site, 
-for each PFG and strata & coordinates of each site.}
+for each PFG and strata, if necessary, & coordinates of each site.}
 
 \item{hab.obs}{a raster map of the observed habitat in the extended studied area.}
 

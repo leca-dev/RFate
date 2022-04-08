@@ -42,7 +42,7 @@ parallelize the computation of prediction performance for habitat & richness val
 if \code{FALSE}, habitat validation module is disabled.}
 
 \item{releves.PFG}{a data frame with abundance (column named abund) at each site
-and for each PFG and strata (habitat & PFG composition validation).}
+and for each PFG and strata, if necessary, & sites coordinates (habitat & PFG composition validation).}
 
 \item{hab.obs}{a raster map of the extended studied map in the simulation, with same projection 
 & resolution than simulation mask (habitat & PFG composition validation).}

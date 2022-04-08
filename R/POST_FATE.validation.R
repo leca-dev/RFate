@@ -27,7 +27,7 @@
 ##' @param doHabitat \code{Logical}. Default \code{TRUE}. If \code{TRUE}, habitat validation module is activated,
 ##' if \code{FALSE}, habitat validation module is disabled.
 ##' @param releves.PFG a data frame with abundance (column named abund) at each site
-##' and for each PFG and strata (habitat & PFG composition validation).
+##' and for each PFG and strata, if necessary, & sites coordinates (habitat & PFG composition validation).
 ##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
 ##' & resolution than simulation mask (habitat & PFG composition validation).
 ##' @param validation.mask a raster mask that specified which pixels need validation, with same projection 

@@ -10,7 +10,7 @@
 ##' trained on observed PFG abundance and a map of observed habitat.
 ##' 
 ##' @param releves.PFG a data frame with PFG abundances (column named abund) at each site, 
-##' for each PFG and strata & coordinates of each site.
+##' for each PFG and strata, if necessary, & coordinates of each site.
 ##' @param hab.obs a raster map of the observed habitat in the extended studied area.
 ##' @param external.training.mask default \code{NULL}. (optional) a raster map for keeping 
 ##' releves data only in a specific area.
