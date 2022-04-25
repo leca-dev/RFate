@@ -4,7 +4,7 @@
 \alias{PRE_FATE.speciesClustering_step1}
 \title{Create clusters based on dissimilarity matrix}
 \usage{
-PRE_FATE.speciesClustering_step1(mat.species.DIST)
+PRE_FATE.speciesClustering_step1(mat.species.DIST, opt.no_clust_max = 15)
 }
 \arguments{
 \item{mat.species.DIST}{a \code{dist} object, or a \code{list} of 
