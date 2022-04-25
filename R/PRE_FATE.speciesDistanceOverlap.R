@@ -79,7 +79,7 @@
 ##' 
 ##' @importFrom stats as.dist
 ##' @importFrom methods as
-##' @importFrom ade4 dudi.pca suprow
+##' @importFrom ade4 dudi.hillsmith suprow
 ##' @importFrom raster raster extension
 ##' @importFrom phyloclim niche.overlap
 ##' 
@@ -118,7 +118,7 @@ PRE_FATE.speciesDistanceOverlap = function(mat.overlap.option, mat.overlap.objec
         }
         
         ## Calculate PCA for all environment
-        pca.env = dudi.pca(tab.env, scannf = F, nf = 2)
+        pca.env = dudi.hillsmith(tab.env, scannf = F, nf = 2)
         scores.env = pca.env$li
         
         ## Calculate overlap matrix

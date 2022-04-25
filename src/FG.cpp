@@ -46,7 +46,7 @@ using namespace std;
 
 FG::FG() : m_Name(""), m_M(0), m_L(1), m_MaxA(ANone), m_ImmSize(0.0), m_MaxStratum(0), m_Strata(0,1000), /* Life history*/
 m_PoolL(PTcount,0), m_InnateDorm(false), m_PotentialFecundity(100), /* Propagule biology */
-m_LightShadeFactor(1), m_LightActiveGerm(Rcount, PC100), m_LightTolerance(LScount, vector<bool>(Rcount, true)), /* Light response */
+m_LightActiveGerm(Rcount, PC100), m_LightTolerance(LScount, vector<bool>(Rcount, true)), /* Light response */
 m_Dispersed(false), m_disp50(0.0), m_disp99(0.0), m_dispLD(0.0), /* Dispersal module */
 m_SoilContrib(0.0), m_SoilLow(0.0), m_SoilHigh(0.0), /* Soil response */
  m_SoilActiveGerm(Rcount, PC100), m_SoilTolerance(LScount, vector<Fract>(Rcount, PC100)), /* Soil response */
@@ -140,12 +140,6 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
 
 	/* 2. read light parameters */
 	par::Params LightParams(PFG_LightFile.c_str(), " = \"", "#");
-	
-	m_LightShadeFactor = LightParams.get_val<int>("SHADE_FACTOR")[0];
-	if (m_LightShadeFactor < 0)
-	{
-	  logg.error("!!! SHADE_FACTOR must be superior or equal to 0. Please check!");
-	}
 
 	vector<int> v_int = LightParams.get_val<int>("ACTIVE_GERM");
 	m_LightActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
@@ -336,7 +330,6 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 			}
 		} else
 		{
-		  m_LightShadeFactor = 1;
 			m_LightActiveGerm.resize(Rcount, PC100);
 			m_LightTolerance.resize(LScount, vector<bool>(Rcount, true));
 		}
@@ -459,7 +452,6 @@ const vector<int> FG::getPoolLife() const {return m_PoolL;}
 int FG::getPoolLife(const PoolType& pt ) const {return m_PoolL[pt];}
 bool FG::getInnateDormancy() const {return m_InnateDorm;}
 int FG::getPotentialFecund() const {return m_PotentialFecundity;}
-int FG::getLightShadeFactor() const {return m_LightShadeFactor;}
 const vector<Fract> FG::getMaxRecruitLight() const {return m_LightActiveGerm;}
 const Fract& FG::getMaxRecruitLight(const Resource& r) const {return m_LightActiveGerm[r];}
 const vector< vector<bool> >& FG::getLightTolerance() const {return m_LightTolerance;}
@@ -498,7 +490,6 @@ void FG::setPoolLife(const int (&poolLife)[ PTcount ]){for(int i=0; i<PTcount; i
 void FG::setPoolLife(const int& poolLife, const PoolType& pt ){m_PoolL[pt] = poolLife;}
 void FG::setInnateDormancy(const bool& innateDormancy){m_InnateDorm = innateDormancy;}
 void FG::setPotentialFecund(const int& potentialFecund){m_PotentialFecundity = potentialFecund;}
-void FG::setLightShadeFactor(const int& lightShadeFactor){m_LightShadeFactor = lightShadeFactor;}
 void FG::setMaxRecruitLight(const Fract (&maxRecruit) [ Rcount ] ){ for(int i=0; i<Rcount; i++){m_LightActiveGerm[i] = maxRecruit[i];}}
 void FG::setMaxRecruitLight(const Fract& maxRecruit, const Resource& r ){ m_LightActiveGerm[r] = maxRecruit;}
 void FG::setTolerance(const bool (&tolerance)[ LScount ][ Rcount ]){
@@ -548,7 +539,6 @@ void FG::show()
              "\nm_PoolL = ", m_PoolL,
              "\nm_InnateDorm = ", m_InnateDorm,
              "\nm_PotentialFecundity = ", m_PotentialFecundity,
-             "\nm_LightShadeFactor = ", m_LightShadeFactor,
              "\nm_LightActiveGerm = (column: resource) ", m_LightActiveGerm,
              "\nm_LightTolerance = (line: life stage, column: resource)", m_LightTolerance,
              "\nm_Dispersed = ", m_Dispersed,

@@ -10,6 +10,9 @@
 ##'              
 ##' @param list.mat.dist a \code{list} of matrices containing dissimilarity 
 ##' distance values between each pair of species.
+##' @param opt.min.noMat (\emph{optional}) default \code{length(list.mat.dist)}. \cr 
+##' An \code{integer} corresponding to the minimal number of distance matrices for 
+##' which each species should have values
 ##' @param opt.normal (\emph{optional}) default \code{TRUE}. \cr 
 ##' If \code{TRUE}, all given distance matrices will be normalized 
 ##' (see \href{PRE_FATE.speciesDistanceCombine#details}{\code{Details}})
@@ -118,6 +121,7 @@
 
 
 PRE_FATE.speciesDistanceCombine = function(list.mat.dist
+                                           , opt.min.noMat = length(list.mat.dist)
                                            , opt.normal = TRUE
                                            , opt.weights = NULL
 ){
@@ -212,15 +216,20 @@ PRE_FATE.speciesDistanceCombine = function(list.mat.dist
     
     cat("\n  Comparison of matrix' dimensions : \n")
     combi = combn(1:no_mat, 2)
-    inti_all = unique(unlist(names_species))
-    for(x in 1:ncol(combi)){
-      inti = intersect(names_species[[combi[1, x]]], names_species[[combi[2, x]]])
-      inti_all = intersect(inti_all, inti)
-      cat("\n> Matrices ", names_mat[combi[1, x]], "-", names_mat[combi[2, x]], ": "
-          , length(inti), "species in common")
-    }
-    cat("\n  Number of species with values for all matrices : ", length(inti_all))
+    
+    inti_all = table(unlist(names_species))
+    inti_all = names(inti_all)[which(inti_all >= opt.min.noMat)]
+    cat("\n  Number of species with values for at least", opt.min.noMat, " matrices : ", length(inti_all))
     cat("\n")
+    # inti_all = unique(unlist(names_species))
+    # for(x in 1:ncol(combi)){
+    #   inti = intersect(names_species[[combi[1, x]]], names_species[[combi[2, x]]])
+    #   inti_all = intersect(inti_all, inti)
+    #   cat("\n> Matrices ", names_mat[combi[1, x]], "-", names_mat[combi[2, x]], ": "
+    #       , length(inti), "species in common")
+    # }
+    # cat("\n  Number of species with values for all matrices : ", length(inti_all))
+    # cat("\n")
     
     names_species.toKeep = inti_all
   }
@@ -245,6 +254,20 @@ PRE_FATE.speciesDistanceCombine = function(list.mat.dist
       return(z)
     })
   }
+  
+  ## Fill missing species whith NA if there is any 
+  mat.dist = lapply(mat.dist, function(x) {
+    if (ncol(x) < length(names_species.toKeep)) {
+      tmp.col = colnames(x)
+      tmp.row = rownames(x)
+      miss = setdiff(names_species.toKeep, colnames(x))
+      x = cbind(x, matrix(rep(NA, length(miss) * nrow(x)), ncol = length(miss)))
+      x = rbind(x, matrix(rep(NA, length(miss) * ncol(x)), nrow = length(miss)))
+      colnames(x) = c(tmp.col, miss)
+      rownames(x) = c(tmp.row, miss)
+    }
+    return(x)
+  })
   
   ## Multiply each distance matrix by its weight
   mat.species.DIST = lapply(1:no_mat, function(x) {

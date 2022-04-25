@@ -6,6 +6,7 @@
 \usage{
 PRE_FATE.speciesDistanceCombine(
   list.mat.dist,
+  opt.min.noMat = length(list.mat.dist),
   opt.normal = TRUE,
   opt.weights = NULL
 )
@@ -13,6 +14,10 @@ PRE_FATE.speciesDistanceCombine(
 \arguments{
 \item{list.mat.dist}{a \code{list} of matrices containing dissimilarity 
 distance values between each pair of species.}
+
+\item{opt.min.noMat}{(\emph{optional}) default \code{length(list.mat.dist)}. \cr 
+An \code{integer} corresponding to the minimal number of distance matrices for 
+which each species should have values}
 
 \item{opt.normal}{(\emph{optional}) default \code{TRUE}. \cr 
 If \code{TRUE}, all given distance matrices will be normalized 

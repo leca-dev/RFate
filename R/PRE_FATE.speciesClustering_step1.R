@@ -193,7 +193,7 @@
 ## END OF HEADER ###############################################################
 
 
-PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
+PRE_FATE.speciesClustering_step1 = function(mat.species.DIST, opt.no_clust_max = 15)
 {
   
   #############################################################################
@@ -376,7 +376,7 @@ PRE_FATE.speciesClustering_step1 = function(mat.species.DIST)
   ## Calculated for each group, and varying the number of clusters
   
   min_no_species_in_group = sapply(mat.species.DIST, function(x) ncol(as.matrix(x)))
-  min_no_species_in_group = sapply(min_no_species_in_group, function(x) min(x, 15))
+  min_no_species_in_group = sapply(min_no_species_in_group, function(x) min(x, opt.no_clust_max))
   combi = foreach(group = 1:length(group_names), .combine = "rbind") %do% {
     expand.grid(no.clusters = 2:(min_no_species_in_group[group] - 1), GROUP = group)
   }

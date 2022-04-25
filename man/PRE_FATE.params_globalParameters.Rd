@@ -42,7 +42,6 @@ PRE_FATE.params_globalParameters(
   doDrought = FALSE,
   DROUGHT.no_sub = 4,
   doAliens = FALSE,
-  ALIEN.no,
   ALIEN.freq = 1,
   doFire = FALSE,
   FIRE.no,
@@ -210,9 +209,6 @@ to the number of way a PFG could react to a drought disturbance}
 introduction is activated in the \code{FATE} simulation, and associated 
 parameters are required}
 
-\item{ALIEN.no}{(\emph{optional}) \cr an \code{integer} corresponding to the 
-number of introductions}
-
 \item{ALIEN.freq}{(\emph{optional}) \cr a \code{vector} of \code{integer} 
 corresponding to the frequency of each introduction (\emph{in years})}
 
@@ -373,7 +369,6 @@ If the simulation includes \emph{aliens introduction} :
 
 \itemize{
   \item DO_ALIENS_INTRODUCTION
-  \item ALIENS_NO
   \item ALIENS_FREQ
 }
 
@@ -446,7 +441,7 @@ define general characteristics of the simulation :
     \item{seeding_timestep}{the time interval at which occurs the seeding, 
     and until the seeding duration is not over (\emph{in years})}
     \item{seeding_input}{the number of seeds dispersed for each PFG at each 
-    time step, and until the seeding duration is not over \cr \cr \cr \cr}
+    time step, and until the seeding duration is not over \cr \cr}
   }
   }
 }
@@ -459,22 +454,21 @@ file, and if so, some additional parameters will be required :
   \item{LIGHT}{= to influence seed recruitment and plant mortality according 
   to PFG preferences for light conditions \cr (see 
   \code{\link{PRE_FATE.params_PFGlight}})\cr
-  = light resources are calculated as a proxy of PFG abundances weighted by 
-  their shade factor within each height stratum \cr \cr
-  To transform PFG abundances :
-  \deqn{abund_{\text{ Stratum}_k} = \sum abund_{\text{ PFG}_{i}\text{, }\text{Stratum}_k} * 
-  \text{shade.FACT}_{\text{ PFG}_{i}}}
+  = light resources are calculated as a proxy of PFG abundances within each 
+  height stratum \cr \cr
+  To transform PFG abundances into light resources :
+  \deqn{abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} < 
+  \text{LIGHT.thresh_medium} \;\; \Leftrightarrow \;\; 
+  light_{\text{ Stratum}_k} = \text{High}}
   
-  into light resources :
-  \itemize{
-    \item \eqn{light_{\text{ Stratum}_k} = \text{High} \;\; \;\;} if 
-    \eqn{\;\;\;\; abund_{\text{ Stratum}_k} < \text{LIGHT.thresh_medium}}
-    \item \eqn{light_{\text{ Stratum}_k} = \text{Medium} \;\; \;\;} if 
-    \eqn{\;\;\;\; \text{LIGHT.thresh_medium } < abund_{\text{ Stratum}_k} < \text{LIGHT.thresh_low}}
-    \item \eqn{light_{\text{ Stratum}_k} = \text{Low} \;\; \;\;} if 
-    \eqn{\;\;\;\; abund_{\text{ Stratum}_k} > \text{LIGHT.thresh_low}}
-  }
+  \deqn{\text{LIGHT.thresh_medium } < 
+  abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} < 
+  \text{LIGHT.thresh_low} \\ \Leftrightarrow \;\; 
+  light_{\text{ Stratum}_k} = \text{Medium}}
   
+  \deqn{abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} > 
+  \text{LIGHT.thresh_low} \;\; \Leftrightarrow \;\; 
+  light_{\text{ Stratum}_k} = \text{Low}}
   \emph{As light resources are directly obtained from PFG abundances, 
   \code{LIGHT.thresh_medium} and \code{LIGHT.thresh_low} parameters should 
   be on the same scale than \code{required.max_abund_low}, 
@@ -625,7 +619,6 @@ file, and if so, some additional parameters will be required :
   introduction areas. \cr If the habitat suitability filter is on, 
   suitability maps will also be needed for these new groups.
   \describe{
-    \item{ALIEN.no}{the number of different introductions}
     \item{ALIEN.freq}{the frequency of each introduction (\emph{in years})}
   }
   }

@@ -1,8 +1,8 @@
 Package: RFate
 Type: Package
 Title: FATE with R
-Version: 1.0.3
-Date: 2021-11-08
+Version: 1.0.4
+Date: 2022-04-25
 Authors@R: c(person("Wilfried", "Thuiller", role = "aut"
                     , email = "wilfried.thuiller@univ-grenoble-alpes.fr"),
              person("Damien", "Georges", role = "aut"),
@@ -35,14 +35,14 @@ Description: Wrapper of the C++ model FATE. FATE is a vegetation model based on 
         1) gather, prepare and format data to be used with FATE ;
         2) run FATE simulation(s)
         3) process and analyze data produced by FATE.
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 NeedsCompilation: yes
 License:
     file LICENSE
 URL: https://github.com/leca-dev/RFate.git
 SystemRequirements: GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>= 4.8.0)
-Depends: R (>= 3.6)
+Depends: R (>= 4.1)
 Imports:
     Rcpp,
     graphics, grDevices, methods, stats, utils, R.utils,
