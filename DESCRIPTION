@@ -35,7 +35,7 @@ Description: Wrapper of the C++ model FATE. FATE is a vegetation model based on 
         1) gather, prepare and format data to be used with FATE ;
         2) run FATE simulation(s)
         3) process and analyze data produced by FATE.
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Encoding: UTF-8
 NeedsCompilation: yes
 License:
