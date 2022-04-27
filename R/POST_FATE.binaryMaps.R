@@ -55,15 +55,17 @@
 ##'   \Leftrightarrow \;\; 1}}
 ##' }
 ##' 
-##' Binary maps per stratum are obtained by multiplying raster maps from 
-##' \code{ABUND_perPFG_perStrata} folder by corresponding raster maps from 
-##' \code{BIN_perPFG_allStrata} folder.
-##' 
 ##' \strong{It requires} that the \code{\link{POST_FATE.relativeAbund}} 
 ##' function has been run and that the folder \code{ABUND_REL_perPFG_allStrata} 
 ##' exists. \cr If \code{method = 2}, it requires that the 
 ##' \code{\link{POST_FATE.graphic_validationStatistics}} function has been run. 
 ##' \cr \cr
+##' 
+##' \strong{If pixel abundances per PFG per stratum were saved} (see 
+##' \code{\link{PRE_FATE.params_globalParameters}}), binary maps per stratum are 
+##' obtained by multiplying raster maps from \code{ABUND_perPFG_perStrata} folder 
+##' by corresponding raster maps from \code{BIN_perPFG_allStrata} folder. \cr \cr
+##' 
 ##' 
 ##' \strong{These binary \code{raster} files can then be used by other 
 ##' functions} :
@@ -81,7 +83,8 @@
 ##'   \item{\file{BIN_perPFG \cr_allStrata}}{containing presence / absence 
 ##'   raster maps for each PFG across all strata}
 ##'   \item{\file{BIN_perPFG \cr_perStrata}}{containing presence / absence 
-##'   raster maps for each PFG for each stratum}
+##'   raster maps for each PFG for each stratum \cr (\emph{if pixel abundances per PFG 
+##'   per stratum were saved (see \code{\link{PRE_FATE.params_globalParameters}})})}
 ##' }
 ##' 
 ##' 
@@ -226,11 +229,12 @@ POST_FATE.binaryMaps = function(
     }
     
     ## UNZIP the raster saved -------------------------------------------------
-    raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
-    .unzip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
-           , list_files = raster.perPFG.perStrata
-           , no_cores = opt.no_CPU)
-    
+    if (GLOB_SIM$saveStrat) {
+      raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
+      .unzip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
+             , list_files = raster.perPFG.perStrata
+             , no_cores = opt.no_CPU)
+    }
     
     
     ## get the data inside the rasters ----------------------------------------
@@ -274,31 +278,33 @@ POST_FATE.binaryMaps = function(
                         , overwrite = TRUE)
             
             ## SEPARATED STRATA
-            prev_names = list.files(path = GLOB_DIR$dir.output.perPFG.perStrata
-                                    , pattern = paste0("Abund_YEAR_"
-                                                       , y
-                                                       , "_"
-                                                       , fg
-                                                       , "_STRATA")
-                                    , full.names = TRUE)
-            prev_names = prev_names[grep(".tif$", prev_names)]
-            if (length(prev_names) > 0)
-            {
-              new_names = sub(GLOB_DIR$dir.output.perPFG.perStrata
-                              , GLOB_DIR$dir.output.perPFG.perStrata.BIN
-                              , prev_names)
-              new_names = sub("Abund_YEAR_", "Binary_YEAR_", new_names)
-              ras.bin.str = stack(prev_names)
-              ras.bin.str = ras.bin.str * ras.bin
-              writeRaster(x = ras.bin.str
-                          , filename = new_names
-                          , overwrite = TRUE
-                          , bylayer = TRUE)
-              
-              message(paste0("\n The output files \n"
-                             , paste0(" > ", basename(new_names), " \n"
-                                      , collapse = "")
-                             , "have been successfully created !\n"))
+            if (GLOB_SIM$saveStrat) {
+              prev_names = list.files(path = GLOB_DIR$dir.output.perPFG.perStrata
+                                      , pattern = paste0("Abund_YEAR_"
+                                                         , y
+                                                         , "_"
+                                                         , fg
+                                                         , "_STRATA")
+                                      , full.names = TRUE)
+              prev_names = prev_names[grep(".tif$", prev_names)]
+              if (length(prev_names) > 0)
+              {
+                new_names = sub(GLOB_DIR$dir.output.perPFG.perStrata
+                                , GLOB_DIR$dir.output.perPFG.perStrata.BIN
+                                , prev_names)
+                new_names = sub("Abund_YEAR_", "Binary_YEAR_", new_names)
+                ras.bin.str = stack(prev_names)
+                ras.bin.str = ras.bin.str * ras.bin
+                writeRaster(x = ras.bin.str
+                            , filename = new_names
+                            , overwrite = TRUE
+                            , bylayer = TRUE)
+                
+                message(paste0("\n The output files \n"
+                               , paste0(" > ", basename(new_names), " \n"
+                                        , collapse = "")
+                               , "have been successfully created !\n"))
+              }
             }
           } else
           {

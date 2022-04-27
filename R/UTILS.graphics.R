@@ -60,8 +60,10 @@
                                , flag = "GLOBAL_PARAMS"
                                , flag.split = "^--.*--$"
                                , is.num = FALSE)
-  no_PFG <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
-                                            , file.globalParam)
+  path.globalParam = paste0(sub(basename(name.simulation), "", name.simulation)
+                            , file.globalParam)
+  
+  no_PFG <- .getParam(params.lines = path.globalParam
                       , flag = "NO_PFG"
                       , flag.split = " "
                       , is.num = TRUE)
@@ -84,29 +86,29 @@
   }
   
   ## Get MODULES ---------------------------------------------------------------
-  no_STRATA <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
-                                               , file.globalParam)
+  no_STRATA <- .getParam(params.lines = path.globalParam
                          , flag = "NO_STRATA"
                          , flag.split = " "
                          , is.num = TRUE)
-  doDisp <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
-                                            , file.globalParam)
+  doDisp <- .getParam(params.lines = path.globalParam
                       , flag = "DO_DISPERSAL"
                       , flag.split = " "
                       , is.num = TRUE)
-  doLight <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
-                                             , file.globalParam)
+  doLight <- .getParam(params.lines = path.globalParam
                        , flag = "DO_LIGHT_INTERACTION"
                        , flag.split = " "
                        , is.num = TRUE)
-  doSoil <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
-                                            , file.globalParam)
+  doSoil <- .getParam(params.lines = path.globalParam
                       , flag = "DO_SOIL_INTERACTION"
                       , flag.split = " "
                       , is.num = TRUE)
-  doHabsuit <- .getParam(params.lines = paste0(sub(basename(name.simulation), "", name.simulation)
-                                               , file.globalParam)
+  doHabsuit <- .getParam(params.lines = path.globalParam
                          , flag = "DO_HAB_SUITABILITY"
+                         , flag.split = " "
+                         , is.num = TRUE)
+  
+  saveStrat <- .getParam(params.lines = path.globalParam
+                         , flag = "SAVING_ABUND_PFG_STRATUM"
                          , flag.split = " "
                          , is.num = TRUE)
   
@@ -116,7 +118,8 @@
               , doDisp = doDisp
               , doLight = doLight
               , doSoil = doSoil
-              , doHabsuit = doHabsuit))
+              , doHabsuit = doHabsuit
+              , saveStrat = saveStrat))
 }
 
 #################################################################################################
