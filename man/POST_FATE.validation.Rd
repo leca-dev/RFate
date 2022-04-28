@@ -13,7 +13,7 @@ POST_FATE.validation(
   doHabitat = TRUE,
   releves.PFG,
   hab.obs,
-  validation.mask,
+  validation.mask = NULL,
   studied.habitat,
   list.strata.simulations,
   doComposition = TRUE,

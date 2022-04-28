@@ -49,7 +49,8 @@ Two folders are created :
   \item{\file{BIN_perPFG \cr_allStrata}}{containing presence / absence 
   raster maps for each PFG across all strata}
   \item{\file{BIN_perPFG \cr_perStrata}}{containing presence / absence 
-  raster maps for each PFG for each stratum}
+  raster maps for each PFG for each stratum \cr (\emph{if pixel abundances per PFG 
+  per stratum were saved (see \code{\link{PRE_FATE.params_globalParameters}})})}
 }
 }
 \description{
@@ -79,15 +80,17 @@ production of as many maps as those found :
   \Leftrightarrow \;\; 1}}
 }
 
-Binary maps per stratum are obtained by multiplying raster maps from 
-\code{ABUND_perPFG_perStrata} folder by corresponding raster maps from 
-\code{BIN_perPFG_allStrata} folder.
-
 \strong{It requires} that the \code{\link{POST_FATE.relativeAbund}} 
 function has been run and that the folder \code{ABUND_REL_perPFG_allStrata} 
 exists. \cr If \code{method = 2}, it requires that the 
 \code{\link{POST_FATE.graphic_validationStatistics}} function has been run. 
 \cr \cr
+
+\strong{If pixel abundances per PFG per stratum were saved} (see 
+\code{\link{PRE_FATE.params_globalParameters}}), binary maps per stratum are 
+obtained by multiplying raster maps from \code{ABUND_perPFG_perStrata} folder 
+by corresponding raster maps from \code{BIN_perPFG_allStrata} folder. \cr \cr
+
 
 \strong{These binary \code{raster} files can then be used by other 
 functions} :
