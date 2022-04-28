@@ -296,6 +296,8 @@ POST_FATE.validation = function(name.simulation
       stop("check 'perStrata' parameter and/or the names of strata in list.strata.releves & list.strata.simulation")
     }
     
+    cat("\n Done !")
+    
     #################################################################
     # I.2 Train a RF model on observed data (habitat validation only)
     #################################################################
@@ -318,6 +320,8 @@ POST_FATE.validation = function(name.simulation
                                   , output.path = output.path
                                   , perStrata = perStrata
                                   , sim.version = sim.version)
+      
+      cat("\n Done ! \n")
       
     }
     
@@ -347,7 +351,7 @@ POST_FATE.validation = function(name.simulation
       habitat.whole.area.df = habitat.whole.area.df[which(habitat.whole.area.df$for.validation == 1),]
     }
     
-    cat("\n Habitat considered in the prediction exercise: ", c(unique(habitat.whole.area.df$habitat)), "\n", sep = "\t")
+    cat("\n Habitat considered in the prediction exercise : ", c(unique(habitat.whole.area.df$habitat)), "\n", sep = "\t")
     
     cat("\n ----------- PROCESSING SIMULATIONS")
     
@@ -365,8 +369,8 @@ POST_FATE.validation = function(name.simulation
       {
       
         sim <- sim.version[i]
-        cat("\n", sim, "\n")
-        
+        cat("\n", sim, " :")
+        cat("\n Data preparation \n")
         # get simulated abundance per pixel*strata*PFG for pixels in the simulation area
         if (perStrata == FALSE) {
           if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv")))
@@ -418,6 +422,8 @@ POST_FATE.validation = function(name.simulation
                                                    , list.strata = list.strata
                                                    , perStrata = perStrata)
           
+          cat("\n Done ! \n")
+          
         }
         
         if (doComposition == TRUE){ # Only for PFG composition validation
@@ -428,7 +434,7 @@ POST_FATE.validation = function(name.simulation
           
           ## GET OBSERVED DISTRIBUTION
           
-          cat("\n Get observed distribution \n")
+          cat("\n Get observed distribution...\n")
           
           obs.distri = get_observed_distribution(releves.PFG = releves.PFG
                                                  , hab.obs = hab.obs
@@ -441,7 +447,7 @@ POST_FATE.validation = function(name.simulation
           
           ## DO PFG COMPOSITION VALIDATION
           
-          cat("\n Comparison between observed and simulated distribution \n")
+          cat("\n Comparison between observed and simulated distribution...\n")
           
           performance.composition = do_PFG_composition_validation(sim = sim
                                                                   , PFG.considered_PFG.compo = PFG.considered_PFG.compo
@@ -450,6 +456,8 @@ POST_FATE.validation = function(name.simulation
                                                                   , observed.distribution = obs.distri
                                                                   , simu_PFG = simu_PFG
                                                                   , habitat.whole.area.df = habitat.whole.area.df)
+          
+          cat("\n Done ! \n")
           
         }
         
@@ -467,7 +475,7 @@ POST_FATE.validation = function(name.simulation
         } # Based on choice of the user, foreach loop returns different results
         
       } # End of loop on simulations
-    cat("\n End of loop on simulations")
+    cat("\n ----------- END OF SIMULATIONS \n")
     
     if(doHabitat == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
       
@@ -486,7 +494,7 @@ POST_FATE.validation = function(name.simulation
       all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
       # save
       write.csv(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
-      cat("\n Habitat results saved \n")
+      cat("\n Habitat results saved")
       
       ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
       
@@ -502,7 +510,7 @@ POST_FATE.validation = function(name.simulation
                                               , output.path = output.path
                                               , sim.version = sim.version)
       
-      cat("\n Predicted habitat plot saved \n")
+      cat("\n Predicted habitat plot saved")
     }
     
     if(doComposition == TRUE){ # If PFG composition validation activated, the function uses the results to save a table with proximity of PFG composition for each PFG and habitat*strata define by the user
@@ -610,7 +618,11 @@ POST_FATE.validation = function(name.simulation
   if(doRichness == TRUE){
     
     cat("\n ---------- PFG RICHNESS : \n")
-    cat(paste0("\n Richness at year ", year, " : ", output[[1]], "\n"))
+    for(sim in sim.version){
+      cat(paste0("\n ", sim, " :"))
+      rich = as.data.frame(read.csv(paste0(name.simulation, "/VALIDATION/PFG_RICHNESS/performance.richness.csv")))
+      cat(paste0("\n Richness at year ", year, " : ", rich[sim, 2]))
+    }
     
   } else{ 
     
@@ -638,7 +650,7 @@ POST_FATE.validation = function(name.simulation
   if(doComposition == TRUE){
     
     cat("\n ---------- PFG COMPOSITION : \n")
-    return(results.compo[,sim.version])
+    return(results.compo)
     
   } else{
     

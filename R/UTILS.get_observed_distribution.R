@@ -111,7 +111,6 @@ get_observed_distribution <- function(releves.PFG
     table.habitat.releve = levels(hab.obs)[[1]]
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat$habitat), ]
-    cat("habitat classes used in the RF algo: ", unique(mat.PFG.agg$habitat), "\n", sep = "\t")
   } else
   {
     stop("Habitat definition in hab.obs map is not correct")
@@ -152,7 +151,7 @@ get_observed_distribution <- function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage <- NULL
   
-  cat("\n releve data have been transformed into a relative metric \n")
+  cat("\n Releve data have been transformed into a relative metric \n")
   
   
   # 5. Save data

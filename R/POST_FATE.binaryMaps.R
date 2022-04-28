@@ -318,9 +318,10 @@ POST_FATE.binaryMaps = function(
       
       
       ## ZIP the raster saved ---------------------------------------------------
-      .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
-           , list_files = raster.perPFG.perStrata
-           , no_cores = opt.no_CPU)
+      if (GLOB_SIM$saveStrat && exists("raster.perPFG.perStrata")) {
+        .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
+             , list_files = raster.perPFG.perStrata
+             , no_cores = opt.no_CPU)
       
       cat("\n> Done!\n")
       

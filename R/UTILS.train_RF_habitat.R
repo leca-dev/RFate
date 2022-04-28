@@ -143,7 +143,7 @@ train_RF_habitat = function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage = NULL
   
-  cat("\n releve data have been transformed into a relative metric \n")
+  cat("\n Releves data have been transformed into a relative metric \n")
   
   # 2. Cast the df
   ################
@@ -171,7 +171,6 @@ train_RF_habitat = function(releves.PFG
     table.habitat.releve = studied.habitat
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-    cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t")
   } else
   {
     stop("Habitat definition in studied.habitat is not correct")
