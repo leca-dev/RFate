@@ -85,9 +85,7 @@ NULL
         ras.new = projectRaster(from = ras
                                 , res = resolution
                                 , crs = old.proj
-                                , method = proj.method
-                                , filename = fi
-                                , overwrite = TRUE)
+                                , method = proj.method)
         message(paste0("The raster file ", fi, " has been successfully rescaled !"))
       } else
       {
