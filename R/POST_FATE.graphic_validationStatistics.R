@@ -256,7 +256,9 @@ POST_FATE.graphic_validationStatistics = function(
     
     ## UNZIP the raster saved -------------------------------------------------
     raster.perPFG.allStrata.REL = .getRasterNames(years, "allStrata", "REL", GLOB_DIR)
-    
+    .unzip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata.REL
+           , list_files = raster.perPFG.allStrata.REL
+           , no_cores = opt.no_CPU)
     
     ## get the data inside the rasters ----------------------------------------
     cat("\n ---------- GETTING STATISTICS for")
