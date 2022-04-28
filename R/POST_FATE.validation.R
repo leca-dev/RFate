@@ -618,11 +618,8 @@ POST_FATE.validation = function(name.simulation
   if(doRichness == TRUE){
     
     cat("\n ---------- PFG RICHNESS : \n")
-    for(sim in sim.version){
-      cat(paste0("\n ", sim, " :"))
-      rich = as.data.frame(read.csv(paste0(name.simulation, "/VALIDATION/PFG_RICHNESS/performance.richness.csv")))
-      cat(paste0("\n Richness at year ", year, " : ", rich[sim, 2]))
-    }
+    rich = as.matrix(output[[1]])
+    cat(paste0("\n Richness at year ", year, " : ", rich))
     
   } else{ 
     
@@ -650,7 +647,7 @@ POST_FATE.validation = function(name.simulation
   if(doComposition == TRUE){
     
     cat("\n ---------- PFG COMPOSITION : \n")
-    return(results.compo)
+    return(results.compo[c(sim.version, "simulation")])
     
   } else{
     
