@@ -67,15 +67,21 @@ do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, s
   FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
                                , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim, "_")[[1]][2], ".txt"))
   FATE.PFG = FATE.PFG$PFG
-  if(length(setdiff(FATE.PFG,RF.PFG)) > 0 | length(setdiff(RF.PFG,FATE.PFG)) > 0) {
-    stop("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE.")
-  }
   
+  if(length(setdiff(FATE.PFG,RF.PFG)) > 0) {
+    warning(paste0("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG", setdiff(FATE.PFG,RF.PFG), "will be deleted"))
+    FATE.PFG = RF.PFG
+  }else if(length(setdiff(RF.PFG,FATE.PFG)) > 0){
+    warning(paste0("The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG", setdiff(RF.PFG,FATE.PFG), "will be deleted"))
+    RF.PFG = FATE.PFG
+  }
+
   #######################
   # I. Data preparation
   #######################
   
   #transform absolute abundance into relative abundance
+  simu_PFG = simu_PFG[which(simu_PFG$PFG %in% FATE.PFG), ]
   simu_PFG <- simu_PFG %>% group_by(pixel,strata) %>% mutate(relative.abundance = round(prop.table(abs), digits = 2)) #those are proportions, not percentages
   simu_PFG$relative.abundance[is.na(simu_PFG$relative.abundance)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (necessary to avoid risk of confusion with NA in pixels because out of the map)
   simu_PFG <- as.data.frame(simu_PFG)

@@ -177,7 +177,7 @@ POST_FATE.validation = function(name.simulation
                                 , doHabitat = TRUE
                                 , releves.PFG
                                 , hab.obs
-                                , validation.mask
+                                , validation.mask = NULL
                                 , studied.habitat
                                 , list.strata.simulations
                                 , doComposition = TRUE
@@ -228,7 +228,6 @@ POST_FATE.validation = function(name.simulation
     
     # Habitat map
     hab.obs = hab.obs
-    validation.mask = validation.mask
     
     # Simulation mask
     name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
@@ -236,6 +235,11 @@ POST_FATE.validation = function(name.simulation
                      flag.split = "^--.*--$",
                      is.num = FALSE) # isolate the access path to the simulation mask for any FATE simulation
     simulation.map = raster(paste0(name))
+    
+    # Validation mask (if provided)
+    if(!is.null(validation.mask)){
+      validation.mask = validation.mask
+    }
     
     #######################
     # I. Preliminary checks
@@ -255,16 +259,18 @@ POST_FATE.validation = function(name.simulation
     }
     
     # Check validation mask
-    if(!compareCRS(simulation.map, validation.mask) | !all(res(validation.mask)==res(simulation.map))){
-      stop(paste0("Projection & resolution of validation mask does not match with simulation mask. Please reproject validation mask with projection & resolution of ", names(simulation.map)))
-    }else if(extent(validation.mask) != extent(simulation.map)){
-      validation.mask = crop(validation.mask, simulation.map)
-    }else {
-      validation.mask = validation.mask
-    }
-    if(!all(origin(simulation.map) == origin(validation.mask))){
-      cat("\n setting origin validation mask to match simulation.map \n")
-      raster::origin(validation.mask) <- raster::origin(simulation.map)
+    if(!is.null(validation.mask)){
+      if(!compareCRS(simulation.map, validation.mask) | !all(res(validation.mask)==res(simulation.map))){
+        stop(paste0("Projection & resolution of validation mask does not match with simulation mask. Please reproject validation mask with projection & resolution of ", names(simulation.map)))
+      }else if(extent(validation.mask) != extent(simulation.map)){
+        validation.mask = crop(validation.mask, simulation.map)
+      }else {
+        validation.mask = vlidation.mask
+      }
+      if(!all(origin(simulation.map) == origin(validation.mask))){
+        cat("\n setting origin validation mask to match simulation.map \n")
+        raster::origin(validation.mask) <- raster::origin(simulation.map)
+      }
     }
     
     # Check studied habitat
@@ -288,11 +294,6 @@ POST_FATE.validation = function(name.simulation
       list.strata <- "all"
     } else {
       stop("check 'perStrata' parameter and/or the names of strata in list.strata.releves & list.strata.simulation")
-    }
-    
-    # initial consistency between habitat.FATE.map and validation.mask (do it before the adjustement of habitat.FATE.map)
-    if(!compareCRS(habitat.FATE.map,validation.mask) | !all(res(habitat.FATE.map) == res(validation.mask))){
-      stop("please provide rasters with same crs and resolution for habitat.FATE.map and validation.mask")
     }
     
     #################################################################
@@ -325,9 +326,15 @@ POST_FATE.validation = function(name.simulation
     #######################################
     
     # habitat df for the whole simulation area
-    habitat.whole.area.df <- data.frame(pixel = seq(1, ncell(habitat.FATE.map), 1)
-                                        , code.habitat = getValues(habitat.FATE.map)
-                                        , for.validation = getValues(validation.mask))
+    if(is.null(validation.mask)){
+      habitat.whole.area.df <- data.frame(pixel = seq(1, ncell(habitat.FATE.map), 1)
+                                          , code.habitat = getValues(habitat.FATE.map)
+                                          , for.validation = getValues(simulation.map))
+    }else {
+      habitat.whole.area.df <- data.frame(pixel = seq(1, ncell(habitat.FATE.map), 1)
+                                          , code.habitat = getValues(habitat.FATE.map)
+                                          , for.validation = getValues(validation.mask))
+    }
     habitat.whole.area.df <- habitat.whole.area.df[which(getValues(simulation.map) == 1), ] # index of the pixels in the simulation area
     habitat.whole.area.df <- habitat.whole.area.df[which(!is.na(habitat.whole.area.df$for.validation)), ]
     if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2){
@@ -342,7 +349,7 @@ POST_FATE.validation = function(name.simulation
     
     cat("\n Habitat considered in the prediction exercise: ", c(unique(habitat.whole.area.df$habitat)), "\n", sep = "\t")
     
-    cat("\n processing simulations \n")
+    cat("\n ----------- PROCESSING SIMULATIONS")
     
     if (opt.no_CPU > 1)
     {
