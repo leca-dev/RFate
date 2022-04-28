@@ -322,6 +322,7 @@ POST_FATE.binaryMaps = function(
         .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
              , list_files = raster.perPFG.perStrata
              , no_cores = opt.no_CPU)
+      }
       
       cat("\n> Done!\n")
       
