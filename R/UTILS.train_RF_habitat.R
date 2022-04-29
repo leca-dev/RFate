@@ -65,7 +65,8 @@ train_RF_habitat = function(releves.PFG
                             , RF.param
                             , output.path
                             , perStrata
-                            , sim.version)
+                            , sim.version
+                            , seed)
 {
   
   #############################################################################
@@ -198,7 +199,7 @@ train_RF_habitat = function(releves.PFG
   #################
   
   #separate the database into a training and a test part
-  set.seed(123)
+  set.seed(seed)
   
   training.site = sample(mat.PFG.agg$site, size = RF.param$share.training * length(mat.PFG.agg$site), replace = FALSE)
   releves.training = mat.PFG.agg[which(mat.PFG.agg$site %in% training.site), ]

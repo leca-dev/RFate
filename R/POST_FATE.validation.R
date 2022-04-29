@@ -179,6 +179,7 @@ POST_FATE.validation = function(name.simulation
                                 , hab.obs
                                 , studied.habitat
                                 , predict.all.map
+                                , seed
                                 , validation.mask = NULL
                                 , list.strata.simulations = NULL
                                 , doComposition = TRUE
@@ -216,6 +217,7 @@ POST_FATE.validation = function(name.simulation
     perStrata = perStrata
     opt.no_CPU = opt.no_CPU
     predict.all.map = predict.all.map
+    seed = seed
     
     # Observed releves data
     releves.PFG = releves.PFG
@@ -321,7 +323,8 @@ POST_FATE.validation = function(name.simulation
                                   , RF.param = RF.param
                                   , output.path = output.path
                                   , perStrata = perStrata
-                                  , sim.version = sim.version)
+                                  , sim.version = sim.version
+                                  , seed = seed)
       
       cat("\n > Done ! \n")
       
