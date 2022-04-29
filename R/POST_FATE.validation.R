@@ -492,17 +492,17 @@ POST_FATE.validation = function(name.simulation
     
     if(doHabitat == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
       
-      # deal with the results regarding model performance
-      output.path = paste0(name.simulation, "/VALIDATION")
-      RF.model = results.simul[[1]]$RF.model
-      habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 2)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
-      colnames(habitat.performance) <- c(RF.model$classes, "weighted")
-      habitat.performance$simulation <- sim.version
-      # save
-      write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
-      cat("\n > Habitat performance saved")
-      
       if(predict.all.map == TRUE){
+        
+        # deal with the results regarding model performance
+        output.path = paste0(name.simulation, "/VALIDATION")
+        RF.model = results.simul[[1]]$RF.model
+        habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 2)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
+        colnames(habitat.performance) <- c(RF.model$classes, "weighted")
+        habitat.performance$simulation <- sim.version
+        # save
+        write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
+        cat("\n > Habitat performance saved")
         
         # deal with the results regarding habitat prediction over the whole map
         all.map.prediction = as.data.frame(lapply(results.simul, "[[", 1))
@@ -527,6 +527,18 @@ POST_FATE.validation = function(name.simulation
                                                 , sim.version = sim.version)
         
         cat("\n > Predicted habitat plot saved")
+        
+      }else if(predict.all.map == FALSE){
+        
+        # deal with the results regarding model performance
+        output.path = paste0(name.simulation, "/VALIDATION")
+        RF.model = results.simul[[1]]$RF.model
+        habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 1)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
+        colnames(habitat.performance) <- c(RF.model$classes, "weighted")
+        habitat.performance$simulation <- sim.version
+        # save
+        write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
+        cat("\n > Habitat performance saved")
         
       }
     }
