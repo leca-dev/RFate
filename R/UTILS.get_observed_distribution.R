@@ -105,7 +105,6 @@ get_observed_distribution <- function(releves.PFG
     table.habitat.releve = studied.habitat
     mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
     mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-    cat("habitat classes used in the RF algo: ",unique(mat.PFG.agg$habitat),"\n",sep="\t")
   } else if (names(levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
   { # cas où on utilise les levels définis dans la carte
     table.habitat.releve = levels(hab.obs)[[1]]
@@ -151,7 +150,7 @@ get_observed_distribution <- function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage <- NULL
   
-  cat("\n Releve data have been transformed into a relative metric \n")
+  cat("> Releve data have been transformed into a relative metric \n")
   
   
   # 5. Save data

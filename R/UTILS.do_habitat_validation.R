@@ -69,10 +69,10 @@ do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, s
   FATE.PFG = FATE.PFG$PFG
   
   if(length(setdiff(FATE.PFG,RF.PFG)) > 0) {
-    cat(paste0("\n Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(FATE.PFG,RF.PFG), " will be removed from the analyses"))
+    cat(paste0("> Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(FATE.PFG,RF.PFG), " will be removed from the analyses"))
     FATE.PFG = RF.PFG
   }else if(length(setdiff(RF.PFG,FATE.PFG)) > 0){
-    cat(paste0("\n Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(RF.PFG,FATE.PFG), " will be removed from the analyses"))
+    cat(paste0("> Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(RF.PFG,FATE.PFG), " will be removed from the analyses"))
     RF.PFG = FATE.PFG
   }
 
