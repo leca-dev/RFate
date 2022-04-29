@@ -487,7 +487,7 @@ POST_FATE.validation = function(name.simulation
       } # End of loop on simulations
     cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
     
-    if(doHabitat == TRUE & predict.all.map == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
+    if(doHabitat == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
       
       # deal with the results regarding model performance
       output.path = paste0(name.simulation, "/VALIDATION")
@@ -497,30 +497,35 @@ POST_FATE.validation = function(name.simulation
       habitat.performance$simulation <- sim.version
       # save
       write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
+      cat("\n > Habitat performance saved")
       
-      # deal with the results regarding habitat prediction over the whole map
-      all.map.prediction = as.data.frame(lapply(results.simul, "[[", 1))
-      all.map.prediction = all.map.prediction[,c(sim.version, "pixel", "habitat")]
-      all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
-      # save
-      write.csv(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
-      cat("\n > Habitat results saved")
-      
-      ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
-      
-      # Provide a color df
-      col.df = data.frame(
-        habitat = RF.model$classes,
-        failure = terrain.colors(length(RF.model$classes), alpha = 0.5),
-        success = terrain.colors(length(RF.model$classes), alpha = 1))
-      
-      prediction.map = plot_predicted_habitat(predicted.habitat = all.map.prediction
-                                              , col.df = col.df
-                                              , simulation.map = simulation.map
-                                              , output.path = output.path
-                                              , sim.version = sim.version)
-      
-      cat("\n > Predicted habitat plot saved")
+      if(predict.all.map == TRUE){
+        
+        # deal with the results regarding habitat prediction over the whole map
+        all.map.prediction = as.data.frame(lapply(results.simul, "[[", 1))
+        all.map.prediction = all.map.prediction[,c(sim.version, "pixel", "habitat")]
+        all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
+        # save
+        write.csv(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
+        cat("\n > Habitat prediction saved")
+        
+        ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
+        
+        # Provide a color df
+        col.df = data.frame(
+          habitat = RF.model$classes,
+          failure = terrain.colors(length(RF.model$classes), alpha = 0.5),
+          success = terrain.colors(length(RF.model$classes), alpha = 1))
+        
+        prediction.map = plot_predicted_habitat(predicted.habitat = all.map.prediction
+                                                , col.df = col.df
+                                                , simulation.map = simulation.map
+                                                , output.path = output.path
+                                                , sim.version = sim.version)
+        
+        cat("\n > Predicted habitat plot saved")
+        
+      }
     }
     
     if(doComposition == TRUE){ # If PFG composition validation activated, the function uses the results to save a table with proximity of PFG composition for each PFG and habitat*strata define by the user
