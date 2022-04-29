@@ -172,18 +172,19 @@
 POST_FATE.validation = function(name.simulation
                                 , sim.version
                                 , year
-                                , perStrata = TRUE
+                                , perStrata = FALSE
                                 , opt.no_CPU = 1
                                 , doHabitat = TRUE
                                 , releves.PFG
                                 , hab.obs
-                                , validation.mask = NULL
                                 , studied.habitat
-                                , list.strata.simulations
+                                , predict.all.map
+                                , validation.mask = NULL
+                                , list.strata.simulations = NULL
                                 , doComposition = TRUE
                                 , PFG.considered_PFG.compo
                                 , habitat.considered_PFG.compo
-                                , strata.considered_PFG.compo
+                                , strata.considered_PFG.compo = "A"
                                 , doRichness = TRUE
                                 , list.PFG
                                 , exclude.PFG = NULL){
@@ -214,6 +215,7 @@ POST_FATE.validation = function(name.simulation
     year = year # choice in the year for validation
     perStrata = perStrata
     opt.no_CPU = opt.no_CPU
+    predict.all.map = predict.all.map
     
     # Observed releves data
     releves.PFG = releves.PFG
@@ -296,7 +298,7 @@ POST_FATE.validation = function(name.simulation
       stop("check 'perStrata' parameter and/or the names of strata in list.strata.releves & list.strata.simulation")
     }
     
-    cat("> Done !")
+    cat("\n > Done !")
     
     #################################################################
     # I.2 Train a RF model on observed data (habitat validation only)
@@ -321,7 +323,7 @@ POST_FATE.validation = function(name.simulation
                                   , perStrata = perStrata
                                   , sim.version = sim.version)
       
-      cat("> Done ! \n")
+      cat("\n > Done ! \n")
       
     }
     
@@ -351,7 +353,7 @@ POST_FATE.validation = function(name.simulation
       habitat.whole.area.df = habitat.whole.area.df[which(habitat.whole.area.df$for.validation == 1),]
     }
     
-    cat("> Habitat considered in the prediction exercise : ", c(unique(habitat.whole.area.df$habitat)), "\n", sep = "\t")
+    cat("\n > Habitat considered in the prediction exercise : ", c(unique(habitat.whole.area.df$habitat)), "\n", sep = "\t")
     
     cat("\n ----------- PROCESSING LOOP ON SIMULATIONS")
     
@@ -369,8 +371,8 @@ POST_FATE.validation = function(name.simulation
       {
       
         sim <- sim.version[i]
-        cat(">", sim, " :")
-        cat("> Data preparation \n")
+        cat("\n >", sim, " :")
+        cat("\n > Data preparation \n")
         # get simulated abundance per pixel*strata*PFG for pixels in the simulation area
         if (perStrata == FALSE) {
           if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv")))
@@ -407,11 +409,11 @@ POST_FATE.validation = function(name.simulation
         
         if (doHabitat == TRUE){ # Only for habitat validation
           
-          cat("\n ----------- HABITAT PREDICTION")
+          cat("\n ------ HABITAT PREDICTION")
           
           ## USE THE RF MODEL TO VALIDATE FATE OUTPUT
           
-          predict.all.map = TRUE
+          predict.all.map = predict.all.map
           
           results.habitat = do_habitat_validation(output.path = output.path
                                                    , RF.model = RF.model
@@ -422,13 +424,13 @@ POST_FATE.validation = function(name.simulation
                                                    , list.strata = list.strata
                                                    , perStrata = perStrata)
           
-          cat("> Done ! \n")
+          cat("\n > Done ! \n")
           
         }
         
         if (doComposition == TRUE){ # Only for PFG composition validation
           
-          cat("\n ----------- PFG COMPOSITION VALIDATION")
+          cat("\n ------ PFG COMPOSITION VALIDATION")
           
           output.path.compo = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION")
           
@@ -457,16 +459,24 @@ POST_FATE.validation = function(name.simulation
                                                                   , simu_PFG = simu_PFG
                                                                   , habitat.whole.area.df = habitat.whole.area.df)
           
-          cat("> Done ! \n")
+          cat("\n > Done ! \n")
           
         }
         
-        if(doHabitat == TRUE & doComposition == TRUE){
+        if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == TRUE){
           results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition)
           return(results)
         }
-        if(doHabitat == TRUE & doComposition == FALSE){
+        if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == FALSE){
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition)
+          return(results)
+        }
+        if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == TRUE){
           results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model)
+          return(results)
+        }
+        if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == FALSE){
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model)
           return(results)
         }
         if(doHabitat == FALSE & doComposition == TRUE){
@@ -477,7 +487,7 @@ POST_FATE.validation = function(name.simulation
       } # End of loop on simulations
     cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
     
-    if(doHabitat == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
+    if(doHabitat == TRUE & predict.all.map == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
       
       # deal with the results regarding model performance
       output.path = paste0(name.simulation, "/VALIDATION")
@@ -494,7 +504,7 @@ POST_FATE.validation = function(name.simulation
       all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
       # save
       write.csv(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
-      cat("> Habitat results saved")
+      cat("\n > Habitat results saved")
       
       ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
       
@@ -510,7 +520,7 @@ POST_FATE.validation = function(name.simulation
                                               , output.path = output.path
                                               , sim.version = sim.version)
       
-      cat("> Predicted habitat plot saved")
+      cat("\n > Predicted habitat plot saved")
     }
     
     if(doComposition == TRUE){ # If PFG composition validation activated, the function uses the results to save a table with proximity of PFG composition for each PFG and habitat*strata define by the user
@@ -527,7 +537,7 @@ POST_FATE.validation = function(name.simulation
       
       #save and return
       write.csv(results.compo, paste0(output.path.compo, "/performance.composition.csv"), row.names = FALSE)
-      cat("\n Performance composition file saved \n")
+      cat("\n > Performance composition file saved \n")
       
     }
   } # End of (doHabitat | doComposition) condition
@@ -544,7 +554,7 @@ POST_FATE.validation = function(name.simulation
     #list of PFG of interest
     list.PFG = setdiff(list.PFG,exclude.PFG)
     
-    cat("> Data preparation \n")
+    cat("\n > Data preparation \n")
     
     if (opt.no_CPU > 1)
     {
@@ -585,7 +595,7 @@ POST_FATE.validation = function(name.simulation
       
     } # End of loop
     
-    cat("> Richness computation \n")
+    cat("\n > Richness computation \n")
     
     # names the results
     names(dying.PFG.list) = sim.version
@@ -608,7 +618,7 @@ POST_FATE.validation = function(name.simulation
     write.csv(dying.distribution, paste0(output.path, "/PFG.extinction.frequency.csv"), row.names = F)
     write_rds(dying.PFG.list, file = paste0(output.path, "/dying.PFG.list.rds"), compress = "none")
     
-    cat("> PFG richness results saved \n")
+    cat("\n > PFG richness results saved \n")
   }
   
   cat("\n\n #------------------------------------------------------------#")
@@ -627,16 +637,25 @@ POST_FATE.validation = function(name.simulation
     
   }
   
-  if(doHabitat == TRUE){
+  if(doHabitat == TRUE & predict.all.map == TRUE){
     
     hab.pred = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv"))
     failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
     success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
+    hab.perf = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv"))
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
     cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by the simulations \n"))
+    cat(paste0("\n Habitat performance :", hab.perf))
     plot(prediction.map)
+    
+  } else if (doHabitat == TRUE & predict.all.map == FALSE){
+    
+    hab.perf = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv"))
+    
+    cat("\n ---------- HABITAT : \n")
+    cat(paste0("\n Habitat performance :", hab.perf))
     
   } else{
     

@@ -150,7 +150,7 @@ get_observed_distribution <- function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage <- NULL
   
-  cat("> Releve data have been transformed into a relative metric \n")
+  cat("\n > Releve data have been transformed into a relative metric \n")
   
   
   # 5. Save data

@@ -69,10 +69,10 @@ do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, s
   FATE.PFG = FATE.PFG$PFG
   
   if(length(setdiff(FATE.PFG,RF.PFG)) > 0) {
-    cat(paste0("> Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(FATE.PFG,RF.PFG), " will be removed from the analyses"))
+    cat(paste0("\n > Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(FATE.PFG,RF.PFG), " will be removed from the analyses"))
     FATE.PFG = RF.PFG
   }else if(length(setdiff(RF.PFG,FATE.PFG)) > 0){
-    cat(paste0("> Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(RF.PFG,FATE.PFG), " will be removed from the analyses"))
+    cat(paste0("\n > Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(RF.PFG,FATE.PFG), " will be removed from the analyses"))
     RF.PFG = FATE.PFG
   }
 
@@ -146,8 +146,13 @@ do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, s
   output.validation <- c(synthesis.validation$TSS, aggregate.TSS.validation)
   names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
   
-  results.habitat <- list(output.validation = output.validation, y.all.map.predicted = y.all.map.predicted)
-  names(results.habitat) <- c("output.validation", "y.all.map.predicted")
+  if(predict.all.map == TRUE){
+    results.habitat <- list(output.validation = output.validation, y.all.map.predicted = y.all.map.predicted)
+    names(results.habitat) <- c("output.validation", "y.all.map.predicted")
+  }else if(is.null(predict.all.map)){
+    results.habitat <- list(output.validation = output.validation)
+    names(results.habitat) <- c("output.validation")
+  }
   
   return(results.habitat)
   
