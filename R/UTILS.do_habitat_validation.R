@@ -149,7 +149,7 @@ do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, s
   if(predict.all.map == TRUE){
     results.habitat <- list(output.validation = output.validation, y.all.map.predicted = y.all.map.predicted)
     names(results.habitat) <- c("output.validation", "y.all.map.predicted")
-  }else if(is.null(predict.all.map)){
+  }else if(predict.all.map == FALSE){
     results.habitat <- list(output.validation = output.validation)
     names(results.habitat) <- c("output.validation")
   }
