@@ -72,7 +72,7 @@
 ##' of habitat h/number of non-observation of habitat h). \cr The final metrics this script use is the 
 ##' mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
 ##' habitat distribution. The habitat validation also provides a visual comparison of observed and 
-##' simulated habitat on the whole studied area, if option slected (see \code{\link{do_habitat_validation}} &
+##' simulated habitat on the whole studied area, if option selected (see \code{\link{do_habitat_validation}} &
 ##' \code{\link{plot_predicted_habitat}}).} \cr
 ##'   \item{PFG composition validation}{This code firstly run the \code{get_observed_distribution} 
 ##' function in order to have a \code{obs.distri} file which contain the observed distribution 
@@ -521,8 +521,8 @@ POST_FATE.validation = function(name.simulation
         # Provide a color df
         col.df = data.frame(
           habitat = RF.model$classes,
-          failure = terrain.colors(length(RF.model$classes), alpha = 0.5),
-          success = terrain.colors(length(RF.model$classes), alpha = 1))
+          failure = rainbow(length(RF.model$classes), alpha = 0.5),
+          success = rainbow(length(RF.model$classes), alpha = 1))
         
         prediction.map = plot_predicted_habitat(predicted.habitat = all.map.prediction
                                                 , col.df = col.df
