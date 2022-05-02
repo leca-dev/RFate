@@ -273,7 +273,7 @@ POST_FATE.validation = function(name.simulation
       }else if(extent(validation.mask) != extent(simulation.map)){
         validation.mask = crop(validation.mask, simulation.map)
       }else {
-        validation.mask = vlidation.mask
+        validation.mask = validation.mask
       }
       if(!all(origin(simulation.map) == origin(validation.mask))){
         cat("\n setting origin validation mask to match simulation.map \n")
