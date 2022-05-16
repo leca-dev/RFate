@@ -84,6 +84,7 @@ private:
   int m_PotentialFecundity; /*!< Potential Fecundity of mature plants */
   
   /* Light interaction module */
+  int m_LightShadeFactor; /*!< Index of shade quantity to weight PFG abundance and transform it into shade resources */
   vector<Fract> m_LightActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
   vector< vector<bool> > m_LightTolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
   
@@ -136,6 +137,7 @@ private:
     ar & m_PoolL;
     ar & m_InnateDorm;
     ar & m_PotentialFecundity;
+    ar & m_LightShadeFactor;
     ar & m_LightActiveGerm;
     ar & m_LightTolerance;
     ar & m_Dispersed;
@@ -336,6 +338,7 @@ public:
             m_PoolL == o.m_PoolL &&
             m_InnateDorm == o.m_InnateDorm &&
             m_PotentialFecundity == o.m_PotentialFecundity &&
+            m_LightShadeFactor == o.m_LightShadeFactor &&
             m_LightActiveGerm == o.m_LightActiveGerm &&
             m_LightTolerance == o.m_LightTolerance &&
             m_Dispersed == o.m_Dispersed &&
@@ -391,6 +394,7 @@ public:
   int getPoolLife(const PoolType& pt ) const;
   bool getInnateDormancy() const;
   int getPotentialFecund() const;
+  int getLightShadeFactor() const;
   const vector<Fract> getMaxRecruitLight() const;
   const Fract& getMaxRecruitLight(const Resource& r) const;
   const vector< vector<bool> >& getLightTolerance() const;
@@ -429,6 +433,7 @@ public:
   void setPoolLife(const int& poolLife, const PoolType& pt);
   void setInnateDormancy(const bool& innateDormancy);
   void setPotentialFecund(const int& potentialFecund);
+  void setLightShadeFactor(const int& lightShadeFactor);
   void setMaxRecruitLight(const Fract (&maxRecruit)[ Rcount ]);
   void setMaxRecruitLight(const Fract& maxRecruit, const Resource& r );
   void setTolerance(const bool (&tolerance)[ LScount ][ Rcount ]);
@@ -465,4 +470,3 @@ public:
 
 BOOST_CLASS_VERSION(FG, 0)
 #endif // FG_H
-  
