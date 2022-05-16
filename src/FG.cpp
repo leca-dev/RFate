@@ -49,7 +49,7 @@ m_PoolL(PTcount,0), m_InnateDorm(false), m_PotentialFecundity(100), /* Propagule
 m_LightActiveGerm(Rcount, PC100), m_LightTolerance(LScount, vector<bool>(Rcount, true)), /* Light response */
 m_Dispersed(false), m_disp50(0.0), m_disp99(0.0), m_dispLD(0.0), /* Dispersal module */
 m_SoilContrib(0.0), m_SoilLow(0.0), m_SoilHigh(0.0), /* Soil response */
- m_SoilActiveGerm(Rcount, PC100), m_SoilTolerance(LScount, vector<Fract>(Rcount, PC100)), /* Soil response */
+m_SoilActiveGerm(Rcount, PC100), m_SoilTolerance(LScount, vector<Fract>(Rcount, PC100)), /* Soil response */
 m_DistResponse(FGresponse()), /* Disturbance response */
 m_FireResponse(FGresponse()), m_Flamm(0.0), /* Fire response */
 m_DroughtResponse(FGresponse()), m_DroughtSD(2,0.0), m_CountModToSev(0), m_CountSevMort(0), m_DroughtRecovery(0), /* Drought response */
