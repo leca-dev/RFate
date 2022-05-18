@@ -12,7 +12,8 @@ train_RF_habitat(
   RF.param,
   output.path,
   perStrata,
-  sim.version
+  sim.version,
+  seed
 )
 }
 \arguments{

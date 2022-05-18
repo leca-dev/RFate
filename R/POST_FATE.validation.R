@@ -161,7 +161,7 @@
 ##' 
 ##' @importFrom stringr str_split
 ##' @importFrom raster raster res crop origin compareCRS extent ncell getValues levels
-##' @importFrom utils read.csv write.csv
+##' @importFrom utils read.csv
 ##' @importFrom foreach foreach %dopar%
 ##' @importFrom forcats fct_expand
 ##' @importFrom readr write_rds
@@ -169,6 +169,7 @@
 ##' @importFrom dplyr select rename
 ##' @importFrom tidyselect all_of
 ##' @importFrom stats aggregate
+##' @importFrom data.table fread fwrite
 ##' 
 ### END OF HEADER ###################################################################
 
@@ -384,8 +385,9 @@ POST_FATE.validation = function(name.simulation
         if (perStrata == FALSE) {
           if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv")))
           {
-            simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
-            simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))] # keep only the PFG, ID.pixel and abundance at any year columns
+            simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
+            simu_PFG = as.data.frame(simu_PFG)
+            simu_PFG = simu_PFG[,c("PFG","ID.pixel", year)] # keep only the PFG, ID.pixel and abundance at any year columns
             # careful : the number of abundance data files to save is to defined in POST_FATE.temporal.evolution function
             colnames(simu_PFG) = c("PFG", "pixel", "abs")
             simu_PFG$strata <- "A"
@@ -397,8 +399,9 @@ POST_FATE.validation = function(name.simulation
         } else if (perStrata == TRUE) {
           if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv")))
           {
-            simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
-            simu_PFG = simu_PFG[, c("PFG", "ID.pixel", "strata", paste0("X", year))]
+            simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
+            simu_PFG = as.data.frame(simu_PFG)
+            simu_PFG = simu_PFG[, c("PFG", "ID.pixel", "strata", year)]
             colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
             new.strata <- rep(NA, nrow(simu_PFG))
             for (i in 1:length(list.strata.simulations)) {
@@ -505,7 +508,7 @@ POST_FATE.validation = function(name.simulation
         colnames(habitat.performance) <- c(RF.model$classes, "weighted")
         habitat.performance$simulation <- sim.version
         # save
-        write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
+        fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
         cat("\n > Habitat performance saved")
         
         # deal with the results regarding habitat prediction over the whole map
@@ -513,7 +516,7 @@ POST_FATE.validation = function(name.simulation
         all.map.prediction = all.map.prediction[,c(sim.version, "pixel", "habitat")]
         all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
         # save
-        write.csv(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
+        fwrite(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
         cat("\n > Habitat prediction saved")
         
         ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
@@ -541,7 +544,7 @@ POST_FATE.validation = function(name.simulation
         colnames(habitat.performance) <- c(RF.model$classes, "weighted")
         habitat.performance$simulation <- sim.version
         # save
-        write.csv(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
+        fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
         cat("\n > Habitat performance saved")
         
       }
@@ -560,7 +563,7 @@ POST_FATE.validation = function(name.simulation
       results.compo$simulation <- rownames(results)
       
       #save and return
-      write.csv(results.compo, paste0(output.path.compo, "/performance.composition.csv"), row.names = FALSE)
+      fwrite(results.compo, paste0(output.path.compo, "/performance.composition.csv"), row.names = FALSE)
       cat("\n > Performance composition file saved \n")
       
     }
@@ -598,8 +601,9 @@ POST_FATE.validation = function(name.simulation
         
         if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))){
           
-          simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
-          simu_PFG = simu_PFG[,c("PFG","ID.pixel", paste0("X",year))]
+          simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
+          simu_PFG = as.data.frame(simu_PFG)
+          simu_PFG = simu_PFG[,c("PFG","ID.pixel", year)]
           colnames(simu_PFG) = c("PFG", "pixel", "abs")
           
         }
@@ -608,8 +612,9 @@ POST_FATE.validation = function(name.simulation
         
         if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))){
           
-          simu_PFG = read.csv(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
-          simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", paste0("X", year))]
+          simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
+          simu_PFG = as.data.frame(simu_PFG)
+          simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", year)]
           colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
           
         }
@@ -638,8 +643,8 @@ POST_FATE.validation = function(name.simulation
     
     dir.create(output.path, recursive = TRUE, showWarnings = FALSE)
     
-    write.csv(PFG.richness.df, paste0(output.path, "/performance.richness.csv"), row.names = F)
-    write.csv(dying.distribution, paste0(output.path, "/PFG.extinction.frequency.csv"), row.names = F)
+    fwrite(PFG.richness.df, paste0(output.path, "/performance.richness.csv"), row.names = F)
+    fwrite(dying.distribution, paste0(output.path, "/PFG.extinction.frequency.csv"), row.names = F)
     write_rds(dying.PFG.list, file = paste0(output.path, "/dying.PFG.list.rds"), compress = "none")
     
     cat("\n > PFG richness results saved \n")
@@ -663,10 +668,10 @@ POST_FATE.validation = function(name.simulation
   
   if(doHabitat == TRUE & predict.all.map == TRUE){
     
-    hab.pred = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv"))
+    hab.pred = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv")))
     failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
     success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
-    hab.perf = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv"))
+    hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
