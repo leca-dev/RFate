@@ -182,10 +182,12 @@ POST_FATE.relativeAbund = function(
                           , names(ras_REL)
                           , "_STRATA_all.tif")
         
-        writeRaster(x = ras_REL
-                    , filename = new_name
-                    , overwrite = TRUE
-                    , bylayer = TRUE)
+        for(i in 1:nlayers(ras_REL)) {
+          writeRaster(x = ras_REL[[i]]
+                      , filename = new_name[i]
+                      , overwrite = TRUE)
+          # , bylayer = TRUE)
+        }
         
         message(paste0("\n The output files \n"
                        , paste0(" > ", basename(new_name), " \n"

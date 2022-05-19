@@ -463,7 +463,6 @@ POST_FATE.graphic_mapPFG = function(
                     , flag.split = " "
                     , is.num = TRUE)
         }
-        names(light_need) = GLOB_SIM$PFG
         if (length(na.exclude(light_need)) == 0)
         {
           warning(paste0("Missing data!\n The files \n"
@@ -471,6 +470,7 @@ POST_FATE.graphic_mapPFG = function(
                          , " do not contain `LIGHT` flag parameter. Please check."))
         } else
         {
+          names(light_need) = GLOB_SIM$PFG
           ras.CWM.light = sum(ras.REL * light_need[names(ras.REL)])
           ras_list$CWM.light = ras.CWM.light
           

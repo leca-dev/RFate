@@ -295,10 +295,12 @@ POST_FATE.binaryMaps = function(
                 new_names = sub("Abund_YEAR_", "Binary_YEAR_", new_names)
                 ras.bin.str = stack(prev_names)
                 ras.bin.str = ras.bin.str * ras.bin
-                writeRaster(x = ras.bin.str
-                            , filename = new_names
-                            , overwrite = TRUE
-                            , bylayer = TRUE)
+                for(i in 1:nlayers(ras.bin.str)) {
+                  writeRaster(x = ras.bin.str[[i]]
+                              , filename = new_names[i]
+                              , overwrite = TRUE)
+                  # , bylayer = TRUE)
+                }
                 
                 message(paste0("\n The output files \n"
                                , paste0(" > ", basename(new_names), " \n"
