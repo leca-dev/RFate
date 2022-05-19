@@ -81,6 +81,7 @@ jobs:
         run: |
           install.packages("remotes")
           remotes::install_deps(dependencies = TRUE)
+          remotes::install_version("BH", version='1.75.0-0')
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
