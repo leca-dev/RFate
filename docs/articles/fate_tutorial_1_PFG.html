@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -44,7 +46,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -53,14 +55,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/fate_tutorial_0_publications.html">Publications</a>
     </li>
     <li>
       <a href="../articles/fate_tutorial_0_modelling_framework.html">Modelling framework</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/fate_tutorial_1_PFG.html">a. Principle of PFG</a>
     </li>
     <li>
@@ -72,7 +76,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -81,7 +85,8 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/rfate_tutorial_1_PFG.html">
         <span class="fa fa-battery-quarter"></span>
          
@@ -103,7 +108,8 @@
       </a>
     </li>
     <li class="divider">
-  </ul>
+  </li>
+</ul>
 </li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
@@ -136,7 +142,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/leca-dev/RFate.git">
+  <a href="https://github.com/leca-dev/RFate.git" class="external-link">
     <span class="fab fa-github"></span>
      
   </a>
@@ -151,13 +157,13 @@
 
       
 
-      </header><script src="fate_tutorial_1_PFG_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>FATE tutorial 1 - Principle of PFG</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/leca-dev/RFate.git/blob/master/vignettes/fate_tutorial_1_PFG.Rmd"><code>vignettes/fate_tutorial_1_PFG.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/leca-dev/RFate.git/blob/HEAD/vignettes/fate_tutorial_1_PFG.Rmd" class="external-link"><code>vignettes/fate_tutorial_1_PFG.Rmd</code></a></small>
       <div class="hidden name"><code>fate_tutorial_1_PFG.Rmd</code></div>
 
     </div>
@@ -167,38 +173,40 @@
 <p><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"></p>
 <p><br><br></p>
 <p>“<em>The recurring suggestions are that models should explicitly (i) include spatiotemporal dynamics; (ii) consider multiple species in interactions and (iii) account for the processes shaping biodiversity distribution.</em>”</p>
-<p><code>FATE</code> is a “<em>a biodiversity model that meets this challenge at regional scale by combining phenomenological and process-based approaches and using well-defined <strong>plant functional group</strong>. </em>” (<a href="http://www.will.chez-alice.fr/pdf/BoulangeatGCB2014.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p><code>FATE</code> is a “<em>a biodiversity model that meets this challenge at regional scale by combining phenomenological and process-based approaches and using well-defined <strong>plant functional group</strong>. </em>” (<a href="http://www.will.chez-alice.fr/pdf/BoulangeatGCB2014.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378." class="external-link">Boulangeat, 2014</a>)</p>
 <p><br><br></p>
-<div id="characteristics-of-a-plant-functional-group" class="section level2">
-<h2 class="hasAnchor">
-<a href="#characteristics-of-a-plant-functional-group" class="anchor"></a><i class="fas fa-ruler"></i> Characteristics of a plant functional group ?</h2>
+<div class="section level2">
+<h2 id="characteristics-of-a-plant-functional-group">
+<i class="fas fa-ruler"></i> Characteristics of a plant functional group ?<a class="anchor" aria-label="anchor" href="#characteristics-of-a-plant-functional-group"></a>
+</h2>
 <p><br></p>
-<p>A plant functional group, or <strong>PFG</strong>, is “<em>a set of representative species [that] is classified based on <strong>key biological characteristics</strong>, to determine groups of species</em> <strong><em>sharing</em> <em>ecological</em> <em>strategies</em></strong>.” (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.">Boulangeat, 2012</a>)</p>
+<p>A plant functional group, or <strong>PFG</strong>, is “<em>a set of representative species [that] is classified based on <strong>key biological characteristics</strong>, to determine groups of species</em> <strong><em>sharing</em> <em>ecological</em> <em>strategies</em></strong>.” (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475." class="external-link">Boulangeat, 2012</a>)</p>
 <div style="text-align:center;">
 <p><img src="pictures/SCHEMA_CRS_triangle.png" alt="CRS triangle" style="width:500px;"></p>
 <p><img src="pictures/SCHEMA_vegetationLayers.jpg" alt="Vegetation layers" style="width:800px;"></p>
 </div>
 <p><br></p>
-<p>“<strong><em>Dominant</em> <em>species</em></strong> <em>are usually seen as the main drivers of vegetation dynamics and ecosystem functioning (‘Biomass ratio hypothesis’ (Grime, 1998). Moreover, according to the well-known species-abundance distribution (Whittaker, 1965), just a few species produce most of the community’s biomass. <strong>In each vegetation strata (herbaceous, shrub, trees)</strong>, these species are the most important, not only for structuring the landscape, but also explaining patterns of functional diversity.</em>” (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.">Boulangeat, 2012</a>)</p>
+<p>“<strong><em>Dominant</em> <em>species</em></strong> <em>are usually seen as the main drivers of vegetation dynamics and ecosystem functioning (‘Biomass ratio hypothesis’ (Grime, 1998). Moreover, according to the well-known species-abundance distribution (Whittaker, 1965), just a few species produce most of the community’s biomass. <strong>In each vegetation strata (herbaceous, shrub, trees)</strong>, these species are the most important, not only for structuring the landscape, but also explaining patterns of functional diversity.</em>” (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475." class="external-link">Boulangeat, 2012</a>)</p>
 <p><br></p>
 <img src="pictures/FIG4_Cerabolini_2014_PlantBiosystems.png" alt="Fig4 Cerabolini 2014 Plant Biosystems" style="width:800px;"><figcaption>
-Fig4. <a href="https://doi.org/10.1080/11263504.2014.987848" title="Cerabolini, Bruno &amp; Pierce, Simon &amp; Verginella, A. &amp; Brusa, Guido &amp; Ceriani, R. &amp; Armiraglio, Stefano. (2014). Why are many anthropogenic agroecosystems particularly species-rich?. Plant Biosystems.">Cerabolini, 2014</a>
+Fig4. <a href="https://doi.org/10.1080/11263504.2014.987848" title="Cerabolini, Bruno &amp; Pierce, Simon &amp; Verginella, A. &amp; Brusa, Guido &amp; Ceriani, R. &amp; Armiraglio, Stefano. (2014). Why are many anthropogenic agroecosystems particularly species-rich?. Plant Biosystems." class="external-link">Cerabolini, 2014</a>
 </figcaption><p><br><br></p>
 <p>Building Plant Functional Group therefore consists of <strong>bringing together plants that have similar traits and strategies</strong>. Emphasis is placed on <strong>dominant plants</strong> that are supposed to structure the community, and groups are formed according to vegetation strata (and thus height). Soil conditions can also be taken into account (through trait measurement), as well as environmental or climatic conditions (through niche overlap).</p>
 <img src="pictures/FIG4_dePaula_2015_BiodiversityConservation.png" alt="Fig4 de Paula 2015 Biodiversity and Conservation" style="width:700px;"><figcaption>
-Fig4. <a href="https://doi.org/10.1007/s10531-015-0904-x" title="F. A. de Paula, Luiza &amp; Negreiros, Daniel &amp; Azevedo, Luísa &amp; Fernandes, Renato &amp; Stehmann, Joao &amp; Silveira, Fernando. (2015). Functional ecology as a missing link for conservation of a resource-limited flora in the Atlantic forest. Biodiversity and Conservation. 24. 2239-2253.">de Paula, 2015</a>
+Fig4. <a href="https://doi.org/10.1007/s10531-015-0904-x" title="F. A. de Paula, Luiza &amp; Negreiros, Daniel &amp; Azevedo, Luísa &amp; Fernandes, Renato &amp; Stehmann, Joao &amp; Silveira, Fernando. (2015). Functional ecology as a missing link for conservation of a resource-limited flora in the Atlantic forest. Biodiversity and Conservation. 24. 2239-2253." class="external-link">de Paula, 2015</a>
 </figcaption><p><br><br></p>
 </div>
-<div id="example-of-data-required" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example-of-data-required" class="anchor"></a><i class="fas fa-search"></i> Example of data required ?</h2>
+<div class="section level2">
+<h2 id="example-of-data-required">
+<i class="fas fa-search"></i> Example of data required ?<a class="anchor" aria-label="anchor" href="#example-of-data-required"></a>
+</h2>
 <p><br></p>
 <p>Of course, anyone can build functional groups with any trait he wishes, as long as they reflect the <strong>strategies</strong> he wants to see emerge and study between groups. <em>Here is a naive example : focusing on desert plants, traits to build the groups could include the height (to distinguish cactus and trees from wildflowers), soil preferences (sand, rocks, tundra), leaf dry matter content (water storage strategy), the flowering type, etc.</em></p>
 <p><br></p>
-<p>Here is an example of functional traits that can be used to build Plant Functional Group (and parametrize a <code>FATE</code> simulation) (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475.">Boulangeat, 2012</a>, <a href="http://www.will.chez-alice.fr/pdf/BoulangeatGCB2014.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>).</p>
-<div id="demographic-characteristics" class="section level4">
-<h4 class="hasAnchor">
-<a href="#demographic-characteristics" class="anchor"></a>Demographic characteristics</h4>
+<p>Here is an example of functional traits that can be used to build Plant Functional Group (and parametrize a <code>FATE</code> simulation) (<a href="http://j.boulangeat.free.fr/pdfs/Boulangeat2012_GCB_published.pdf" title="Boulangeat, I., Philippe, P., Abdulhak, S., Douzet, R., Garraud, L., Lavergne, S., Lavorel, S., Van Es J., Vittoz, P. and Thuiller, W. Improving plant functional groups for dynamic models of biodiversity: at the crossroad between functional and community ecology. Global Change Biology, 18, 3464-3475." class="external-link">Boulangeat, 2012</a>, <a href="http://www.will.chez-alice.fr/pdf/BoulangeatGCB2014.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378." class="external-link">Boulangeat, 2014</a>).</p>
+<div class="section level4">
+<h4 id="demographic-characteristics">Demographic characteristics<a class="anchor" aria-label="anchor" href="#demographic-characteristics"></a>
+</h4>
 <ul>
 <li>Age at maturity</li>
 <li>Longevity</li>
@@ -206,25 +214,25 @@ Fig4. <a href="https://doi.org/10.1007/s10531-015-0904-x" title="F. A. de Paula,
 <li>Height to represent a proxy for biomass</li>
 </ul>
 </div>
-<div id="dispersal-ability" class="section level4">
-<h4 class="hasAnchor">
-<a href="#dispersal-ability" class="anchor"></a>Dispersal ability</h4>
+<div class="section level4">
+<h4 id="dispersal-ability">Dispersal ability<a class="anchor" aria-label="anchor" href="#dispersal-ability"></a>
+</h4>
 <ul>
-<li>Dispersal classes (<a href="https://doi.org/10.1007/s00035-007-0797-8" title="Vittoz P, Engler R (2007) Seed dispersal distances: a typology based on dispersalmodes and plant traits.Botanica Helvetica,117, 109–124.">Vittoz &amp; Engler, 2007</a>)</li>
+<li>Dispersal classes (<a href="https://doi.org/10.1007/s00035-007-0797-8" title="Vittoz P, Engler R (2007) Seed dispersal distances: a typology based on dispersalmodes and plant traits.Botanica Helvetica,117, 109–124." class="external-link">Vittoz &amp; Engler, 2007</a>)</li>
 </ul>
 </div>
-<div id="response-to-interactions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#response-to-interactions" class="anchor"></a>Response to interactions</h4>
+<div class="section level4">
+<h4 id="response-to-interactions">Response to interactions<a class="anchor" aria-label="anchor" href="#response-to-interactions"></a>
+</h4>
 <ul>
 <li>Height to represent the competitive ability for light</li>
-<li>Indicator value for light requirement (<a href="%22https://doi.org/10.1016/S0367-2530(17)32260-0%22" title="Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. &amp; Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248.">Ellenberg et al. 1991</a>, <a href="%22%22" title="Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne.">Landolt et al. 2010</a>)</li>
-<li>Indicator value for soil requirement (<a href="%22https://doi.org/10.1016/S0367-2530(17)32260-0%22" title="Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. &amp; Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248.">Ellenberg et al. 1991</a>, <a href="%22%22" title="Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne.">Landolt et al. 2010</a>)</li>
+<li>Indicator value for light requirement (<a href="%22https://doi.org/10.1016/S0367-2530(17)32260-0%22" title="Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. &amp; Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248." class="external-link">Ellenberg et al. 1991</a>, <a href="%22%22" title="Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne.">Landolt et al. 2010</a>)</li>
+<li>Indicator value for soil requirement (<a href="%22https://doi.org/10.1016/S0367-2530(17)32260-0%22" title="Ellenberg H., Weber H. E., Dull R., Wirth V., Werner W. &amp; Pauliben D. (1991): Zeigerwerte von Pflanzen inMitteleuropa. – Scr. Geobot. 18: 1–248." class="external-link">Ellenberg et al. 1991</a>, <a href="%22%22" title="Landolt E, Baumler B, Erhardt Aet al.(2010) Flora Indicativa. Ecological Indicator Valuesand Biological Attributes of the Flora of Switzerland and the Alp. Haupt Verlag, Berne.">Landolt et al. 2010</a>)</li>
 </ul>
 </div>
-<div id="response-to-disturbances" class="section level4">
-<h4 class="hasAnchor">
-<a href="#response-to-disturbances" class="anchor"></a>Response to disturbances</h4>
+<div class="section level4">
+<h4 id="response-to-disturbances">Response to disturbances<a class="anchor" aria-label="anchor" href="#response-to-disturbances"></a>
+</h4>
 <ul>
 <li>For grazing : palatability index based on pastoral values (<a href="%22%22" title="Jouglet, JP. (1999). Les vegetations des alpages des Alpes francaises du Sud: guide technique pour la reconnaissance et la gestion des milieux patures d’altitude. Cemagref, Antony, France.">Jouglet 1999</a>)</li>
 <li>For mowing : mowing tolerance</li>
@@ -232,9 +240,10 @@ Fig4. <a href="https://doi.org/10.1007/s10531-015-0904-x" title="F. A. de Paula,
 <p><br><br></p>
 </div>
 </div>
-<div id="what-are-the-key-steps-of-this-process" class="section level2">
-<h2 class="hasAnchor">
-<a href="#what-are-the-key-steps-of-this-process" class="anchor"></a><i class="fa fa-shoe-prints"></i> What are the key steps of this process ?</h2>
+<div class="section level2">
+<h2 id="what-are-the-key-steps-of-this-process">
+<i class="fa fa-shoe-prints"></i> What are the key steps of this process ?<a class="anchor" aria-label="anchor" href="#what-are-the-key-steps-of-this-process"></a>
+</h2>
 <p><br></p>
 <p>Since the basic idea of building Functional Group is to gather a lot of elements into a few, this implies two requirements :</p>
 <ul>
@@ -263,11 +272,13 @@ See <a href="rfate_tutorial_1_PFG.html">Build PFG</a> <code>RFate</code> tutoria
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="http://www.will.chez-alice.fr/">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io">Maya Guéguen</a>, Guillaume Dupouy.</p>
+  <p></p>
+<p>Developed by <a href="http://www.will.chez-alice.fr/" class="external-link">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/" class="external-link">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io" class="external-link">Maya Guéguen</a>, Guillaume Dupouy.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -275,6 +286,8 @@ See <a href="rfate_tutorial_1_PFG.html">Build PFG</a> <code>RFate</code> tutoria
 
   
 
+
+  
 
   </body>
 </html>

@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -44,7 +46,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -53,14 +55,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/fate_tutorial_0_publications.html">Publications</a>
     </li>
     <li>
       <a href="../articles/fate_tutorial_0_modelling_framework.html">Modelling framework</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/fate_tutorial_1_PFG.html">a. Principle of PFG</a>
     </li>
     <li>
@@ -72,7 +76,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -81,7 +85,8 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/rfate_tutorial_1_PFG.html">
         <span class="fa fa-battery-quarter"></span>
          
@@ -103,7 +108,8 @@
       </a>
     </li>
     <li class="divider">
-  </ul>
+  </li>
+</ul>
 </li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
@@ -136,7 +142,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/leca-dev/RFate.git">
+  <a href="https://github.com/leca-dev/RFate.git" class="external-link">
     <span class="fab fa-github"></span>
      
   </a>
@@ -151,14 +157,14 @@
 
       
 
-      </header><script src="interface_tutorial_0_presentation_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>
 <code>shinyRFate</code> interface</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/leca-dev/RFate.git/blob/master/vignettes/interface_tutorial_0_presentation.Rmd"><code>vignettes/interface_tutorial_0_presentation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/leca-dev/RFate.git/blob/HEAD/vignettes/interface_tutorial_0_presentation.Rmd" class="external-link"><code>vignettes/interface_tutorial_0_presentation.Rmd</code></a></small>
       <div class="hidden name"><code>interface_tutorial_0_presentation.Rmd</code></div>
 
     </div>
@@ -195,17 +201,19 @@ See <a href="../reference/RFATE.html">RFATE()</a> function
 <p><br></p>
 <p><code>RFate</code> workflow, presented on <a href="../index.html">Home page</a>, is quite long and complex. Although it can be divided into <strong>4 main parts</strong>, each of them requires several steps, and the user can quickly get lost or confused in the whole process.</p>
 <p>The organization of the <a href="../reference/index.html">Reference page</a>, as well as the order of the tutorials, try to reflect these different parts.</p>
-<p>A <a href="https://shiny.rstudio.com/">shiny</a> interface, that can be launched with the <a href="../reference/RFATE.html">RFATE()</a> function from the <code>RFate</code> package allows the user to go through the different steps without going through the code. Links to the <em>functions documentation</em>, <em>vizualization tools</em>, the possibility to <em>start from pre-existing folders</em>, always being able to follow the <em>progress in the console</em> of the different functions… This interface should make it easier to take control of <code>FATE</code> with R.</p>
+<p>A <a href="https://shiny.rstudio.com/" class="external-link">shiny</a> interface, that can be launched with the <a href="../reference/RFATE.html">RFATE()</a> function from the <code>RFate</code> package allows the user to go through the different steps without going through the code. Links to the <em>functions documentation</em>, <em>vizualization tools</em>, the possibility to <em>start from pre-existing folders</em>, always being able to follow the <em>progress in the console</em> of the different functions… This interface should make it easier to take control of <code>FATE</code> with R.</p>
 <div style="text-align:center;">
 <p><img src="pictures/SHINY_RFate_1.png" alt="shinyRFate home" style="width:700px;"></p>
 </div>
 <p><br></p>
-<div id="shinyrfate-tool-box" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shinyrfate-tool-box" class="anchor"></a><i class="fas fa-tools"></i> <code>shinyRFate</code> tool box</h2>
-<div id="help-and-documentation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#help-and-documentation" class="anchor"></a><i class="fas fa-question-circle"></i> Help and documentation</h4>
+<div class="section level2">
+<h2 id="shinyrfate-tool-box">
+<i class="fas fa-tools"></i> <code>shinyRFate</code> tool box<a class="anchor" aria-label="anchor" href="#shinyrfate-tool-box"></a>
+</h2>
+<div class="section level4">
+<h4 id="help-and-documentation">
+<i class="fas fa-question-circle"></i> Help and documentation<a class="anchor" aria-label="anchor" href="#help-and-documentation"></a>
+</h4>
 <p>Two types of documentation can be accessed all over the application through <i class="fas fa-question-circle"></i> buttons. They give informations about :</p>
 <ul>
 <li>the different steps to be followed in each part<br>
@@ -239,9 +247,10 @@ See <a href="../reference/RFATE.html">RFATE()</a> function
 <img src="pictures/SHINY_RFate_8.png" alt="shinyRFate help 4"></p>
 </div>
 </div>
-<div id="monitoring-of-functions" class="section level4">
-<h4 class="hasAnchor">
-<a href="#monitoring-of-functions" class="anchor"></a><i class="fas fa-hourglass-half"></i> Monitoring of functions</h4>
+<div class="section level4">
+<h4 id="monitoring-of-functions">
+<i class="fas fa-hourglass-half"></i> Monitoring of functions<a class="anchor" aria-label="anchor" href="#monitoring-of-functions"></a>
+</h4>
 <p>Once a button was pressed to start a function, a panel is displayed as long as the function is running, indicating the selected parameters. All informations printed by the function can be followed within the <code>R</code> console. Information panels appear when the functions has finished running, results files have been created, or an error has been found.</p>
 <div class="row">
 <div class="column">
@@ -260,12 +269,14 @@ See <a href="../reference/RFATE.html">RFATE()</a> function
 <p><br><br></p>
 </div>
 </div>
-<div id="shinyrfate-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shinyrfate-workflow" class="anchor"></a><i class="fas fa-shoe-prints"></i> <code>shinyRFate</code> workflow</h2>
-<div id="plant-functional-groups" class="section level4">
-<h4 class="hasAnchor">
-<a href="#plant-functional-groups" class="anchor"></a><i class="fa fa-object-group"></i> Plant Functional Groups</h4>
+<div class="section level2">
+<h2 id="shinyrfate-workflow">
+<i class="fas fa-shoe-prints"></i> <code>shinyRFate</code> workflow<a class="anchor" aria-label="anchor" href="#shinyrfate-workflow"></a>
+</h2>
+<div class="section level4">
+<h4 id="plant-functional-groups">
+<i class="fa fa-object-group"></i> Plant Functional Groups<a class="anchor" aria-label="anchor" href="#plant-functional-groups"></a>
+</h4>
 <p>Created graphics and tables of loaded and used values can be visualized through the application.<br>
 Generally, the data shown onto the shiny application is saved into <code>.csv</code> or <code>.pdf</code> files.</p>
 <div class="row">
@@ -283,9 +294,10 @@ Generally, the data shown onto the shiny application is saved into <code>.csv</c
 </div>
 </div>
 </div>
-<div id="simulation-parameter-files" class="section level4">
-<h4 class="hasAnchor">
-<a href="#simulation-parameter-files" class="anchor"></a><i class="fa fa-copy"></i> Simulation parameter files</h4>
+<div class="section level4">
+<h4 id="simulation-parameter-files">
+<i class="fa fa-copy"></i> Simulation parameter files<a class="anchor" aria-label="anchor" href="#simulation-parameter-files"></a>
+</h4>
 <p>Parameter files and folders can be created, visualized and modified from the application.<br>
 Multiple sets of parameters can be produced from a pre-existing simulation folder.</p>
 <div class="row">
@@ -297,9 +309,10 @@ Multiple sets of parameters can be produced from a pre-existing simulation folde
 </div>
 </div>
 </div>
-<div id="run-a-fate-simulation" class="section level4">
-<h4 class="hasAnchor">
-<a href="#run-a-fate-simulation" class="anchor"></a><i class="fa fa-cogs"></i> Run a FATE simulation</h4>
+<div class="section level4">
+<h4 id="run-a-fate-simulation">
+<i class="fa fa-cogs"></i> Run a FATE simulation<a class="anchor" aria-label="anchor" href="#run-a-fate-simulation"></a>
+</h4>
 <p><code>C++</code> model is run through <code>R</code> with the <code>Rcpp</code> package. Outputs and log errors can be visualized in the application or the <code>R</code> console.</p>
 <div class="row">
 <div class="column">
@@ -310,9 +323,10 @@ Multiple sets of parameters can be produced from a pre-existing simulation folde
 </div>
 </div>
 </div>
-<div id="analyse-results" class="section level4">
-<h4 class="hasAnchor">
-<a href="#analyse-results" class="anchor"></a><i class="fa fa fa-chart-bar"></i> Analyse results</h4>
+<div class="section level4">
+<h4 id="analyse-results">
+<i class="fa fa fa-chart-bar"></i> Analyse results<a class="anchor" aria-label="anchor" href="#analyse-results"></a>
+</h4>
 <p><code>RFate</code> package provides functions to pre-analyse results of <code>FATE</code> simulations. It can produce intermediate results files, quick summary graphics, and preliminary transformation of outputs. Existing graphics can be re-viewed with the browser panel.</p>
 <div class="row">
 <div class="column">
@@ -371,11 +385,13 @@ Multiple sets of parameters can be produced from a pre-existing simulation folde
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="http://www.will.chez-alice.fr/">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io">Maya Guéguen</a>, Guillaume Dupouy.</p>
+  <p></p>
+<p>Developed by <a href="http://www.will.chez-alice.fr/" class="external-link">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/" class="external-link">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io" class="external-link">Maya Guéguen</a>, Guillaume Dupouy.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -383,6 +399,8 @@ Multiple sets of parameters can be produced from a pre-existing simulation folde
 
   
 
+
+  
 
   </body>
 </html>

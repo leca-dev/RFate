@@ -592,7 +592,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
     if (doRecruit)
     {
       /* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
-      double GerminRate = min( static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund())), AvailSeeds ) ;
+      double GerminRate = static_cast<double>(min( m_GSP->AbundToInt(FGparams->getMaxAbund()), AvailSeeds )) ;
       if (doLight && doSoil)
       {
         Fract maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );

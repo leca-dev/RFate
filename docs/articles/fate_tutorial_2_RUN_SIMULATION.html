@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -44,7 +46,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -53,14 +55,16 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/fate_tutorial_0_publications.html">Publications</a>
     </li>
     <li>
       <a href="../articles/fate_tutorial_0_modelling_framework.html">Modelling framework</a>
     </li>
     <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/fate_tutorial_1_PFG.html">a. Principle of PFG</a>
     </li>
     <li>
@@ -72,7 +76,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -81,7 +85,8 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li class="divider">
-    <li>
+    </li>
+<li>
       <a href="../articles/rfate_tutorial_1_PFG.html">
         <span class="fa fa-battery-quarter"></span>
          
@@ -103,7 +108,8 @@
       </a>
     </li>
     <li class="divider">
-  </ul>
+  </li>
+</ul>
 </li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
@@ -136,7 +142,7 @@
   </a>
 </li>
 <li>
-  <a href="https://github.com/leca-dev/RFate.git">
+  <a href="https://github.com/leca-dev/RFate.git" class="external-link">
     <span class="fab fa-github"></span>
      
   </a>
@@ -151,13 +157,13 @@
 
       
 
-      </header><script src="fate_tutorial_2_RUN_SIMULATION_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>FATE tutorial 2 - Run a simulation</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/leca-dev/RFate.git/blob/master/vignettes/fate_tutorial_2_RUN_SIMULATION.Rmd"><code>vignettes/fate_tutorial_2_RUN_SIMULATION.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/leca-dev/RFate.git/blob/HEAD/vignettes/fate_tutorial_2_RUN_SIMULATION.Rmd" class="external-link"><code>vignettes/fate_tutorial_2_RUN_SIMULATION.Rmd</code></a></small>
       <div class="hidden name"><code>fate_tutorial_2_RUN_SIMULATION.Rmd</code></div>
 
     </div>
@@ -183,14 +189,14 @@ pre.grey {
 <p>“<em>The recurring suggestions are that models should explicitly (i) include spatiotemporal dynamics; (ii) consider multiple species in interactions and (iii) account for the processes shaping biodiversity distribution.</em>”</p>
 <p><code>FATE</code> is a “<em>a biodiversity model that meets this challenge at regional scale by combining phenomenological and process-based approaches and using well-defined plant functional group</em>”. (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
 <p><br><br></p>
-<div id="what-fate-needs-to-be-run" class="section level1">
-<h1 class="hasAnchor">
-<a href="#what-fate-needs-to-be-run" class="anchor"></a>What FATE needs to be run?</h1>
+<div class="section level2">
+<h2 id="what-fate-needs-to-be-run">What FATE needs to be run?<a class="anchor" aria-label="anchor" href="#what-fate-needs-to-be-run"></a>
+</h2>
 <p><br></p>
-<div id="the-different-type-of-parameters-and-flags" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-different-type-of-parameters-and-flags" class="anchor"></a><i class="fa fa-copy"></i> The different type of parameters and <em>flags</em>
-</h3>
+<div class="section level4">
+<h4 id="the-different-type-of-parameters-and-flags">
+<i class="fa fa-copy"></i> The different type of parameters and <em>flags</em><a class="anchor" aria-label="anchor" href="#the-different-type-of-parameters-and-flags"></a>
+</h4>
 <p><code>FATE</code> requires a quite large number of parameters, which are stored into <code>.txt</code> files, presented to and recovered by the software. These <strong>parameters</strong> can be of 3 types :</p>
 <ol style="list-style-type: decimal">
 <li>
@@ -206,10 +212,11 @@ pre.grey {
 </ol>
 <p><br></p>
 </div>
-<div id="how-to-produce-all-these-parameters-files" class="section level3">
-<h3 class="hasAnchor">
-<a href="#how-to-produce-all-these-parameters-files" class="anchor"></a><i class="fas fa-wrench"></i> How to produce all these parameters files ?</h3>
-<p><a href="https://leca-dev.github.io/RFate/">RFate</a> is a <a href="https://www.r-project.org/">R</a> package available on <a href="https://github.com/leca-dev/RFate">github</a> and designed to provide support function to the <code>FATE</code> software.</p>
+<div class="section level4">
+<h4 id="how-to-produce-all-these-parameters-files">
+<i class="fas fa-wrench"></i> How to produce all these parameters files ?<a class="anchor" aria-label="anchor" href="#how-to-produce-all-these-parameters-files"></a>
+</h4>
+<p><a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> is a <a href="https://www.r-project.org/" class="external-link">R</a> package available on <a href="https://github.com/leca-dev/RFate" class="external-link">github</a> and designed to provide support function to the <code>FATE</code> software.</p>
 <p>It contains documentation and functions to create and organize all input files required by the model, as well as scripts to help analyze the resulting outputs.</p>
 <p><br></p>
 <div style="text-align:center;">
@@ -217,11 +224,12 @@ See <a href="rfate_tutorial_2_params.html">Build parameter files</a> <code>RFate
 </div>
 <p><br></p>
 </div>
-<div id="the-fate-friendly-directory-organization" class="section level3">
-<h3 class="hasAnchor">
-<a href="#the-fate-friendly-directory-organization" class="anchor"></a><i class="fas fa-folder-open"></i> The FATE friendly directory organization</h3>
+<div class="section level4">
+<h4 id="the-fate-friendly-directory-organization">
+<i class="fas fa-folder-open"></i> The FATE friendly directory organization<a class="anchor" aria-label="anchor" href="#the-fate-friendly-directory-organization"></a>
+</h4>
 <p>As <code>FATE</code> needs quite a lot of parameters given into different parameter files, it is important to organize them in a clear and intuitive way.</p>
-<p>While this is not mandatory to run a <code>FATE</code> simulation, a specific and methodical folder architecture can be obtained with the <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory function</a> from the <a href="https://leca-dev.github.io/RFate/">RFate</a> package.</p>
+<p>While this is not mandatory to run a <code>FATE</code> simulation, a specific and methodical folder architecture can be obtained with the <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory function</a> from the <a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> package.</p>
 <p>A good way to start is to create this skeleton directory, and then copy or create the needed files inside to have all simulation data into the same place.</p>
 <div style="text-align:center">
 <img src="pictures/skeleton_directory_2.png" style="width:65.0%">
@@ -229,9 +237,9 @@ See <a href="rfate_tutorial_2_params.html">Build parameter files</a> <code>RFate
 <p><br><br></p>
 </div>
 </div>
-<div id="how-to-run-a-fate-simulation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-run-a-fate-simulation" class="anchor"></a>How to run a FATE Simulation ?</h1>
+<div class="section level2">
+<h2 id="how-to-run-a-fate-simulation">How to run a FATE Simulation ?<a class="anchor" aria-label="anchor" href="#how-to-run-a-fate-simulation"></a>
+</h2>
 <p><br></p>
 <p>When all data and parameter files have been produced and correctly referred in a <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file, a <code>FATE</code> simulation can be run using the <a href="../reference/FATE.html">FATE</a> function :</p>
 <ul>
@@ -252,9 +260,9 @@ then the <code>FATE</code> simulation must be run from this specific folder<br>
 </ul>
 <p><br><br></p>
 </div>
-<div id="how-to-handle-the-results" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-handle-the-results" class="anchor"></a>How to handle the results ?</h1>
+<div class="section level2">
+<h2 id="how-to-handle-the-results">How to handle the results ?<a class="anchor" aria-label="anchor" href="#how-to-handle-the-results"></a>
+</h2>
 <p><br></p>
 <p>Once the simulation is completed, the directory defined under the flag <code>--SAVING_DIR--</code> within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file can contain the following directories (depending on the parameters selected and the modules activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file) :</p>
 <ul>
@@ -280,7 +288,7 @@ then the <code>FATE</code> simulation must be run from this specific folder<br>
 <li><em><code>LIGHT/</code></em></li>
 <li><em><code>SOIL/</code></em></li>
 </ul>
-<p>These ouputs can then be used as is, or post-treated with functions from the <a href="https://leca-dev.github.io/RFate/">RFate</a> package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).</p>
+<p>These ouputs can then be used as is, or post-treated with functions from the <a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).</p>
 <p><br></p>
 <div style="text-align:center;">
 See <a href="rfate_tutorial_3_graphics.html">Build graphics</a> <code>RFate</code> tutorial
@@ -299,11 +307,13 @@ See <a href="rfate_tutorial_3_graphics.html">Build graphics</a> <code>RFate</cod
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="http://www.will.chez-alice.fr/">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io">Maya Guéguen</a>, Guillaume Dupouy.</p>
+  <p></p>
+<p>Developed by <a href="http://www.will.chez-alice.fr/" class="external-link">Wilfried Thuiller</a>, Damien Georges, <a href="https://iboulangeat.github.io/" class="external-link">Isabelle Boulangeat</a>, <a href="https://mayagueguen.github.io" class="external-link">Maya Guéguen</a>, Guillaume Dupouy.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -311,6 +321,8 @@ See <a href="rfate_tutorial_3_graphics.html">Build graphics</a> <code>RFate</cod
 
   
 
+
+  
 
   </body>
 </html>
