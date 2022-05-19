@@ -169,13 +169,13 @@
 }
 
 ## ----------------------------------------------------------------------------
-# .testParam_notRound.m = function(param.n, param)
-# {
-#   if (round(param) != param)
-#   {
-#     .warnMessage_beRounded(param.n)
-#   }
-# }
+.testParam_notRound.m = function(param.n, param)
+{
+  if (round(param) != param)
+  {
+    .warnMessage_beRounded(param.n)
+  }
+}
 
 
 ###############################################################################
