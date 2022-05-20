@@ -152,7 +152,7 @@
 ## ----------------------------------------------------------------------------
 .testParam_notInteger = function(param)
 {
-  if (.testParam_notBetween(param, 0, 1e15) || param %% 1 != 0)
+  if (.testParam_notBetween(param, 0, 1e15) || sum(param %% 1 != 0) > 0)
   {
     return(TRUE)
   } else
@@ -169,13 +169,13 @@
 }
 
 ## ----------------------------------------------------------------------------
-.testParam_notRound.m = function(param.n, param)
-{
-  if (round(param) != param)
-  {
-    .warnMessage_beRounded(param.n)
-  }
-}
+# .testParam_notRound.m = function(param.n, param)
+# {
+#   if (round(param) != param)
+#   {
+#     .warnMessage_beRounded(param.n)
+#   }
+# }
 
 
 ###############################################################################

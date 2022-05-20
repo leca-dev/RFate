@@ -1366,7 +1366,7 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2
-                                                , FIRE.freq = c(1,2)
+                                                , FIRE.freq = c(1, 2)
                                                 , FIRE.ignit_mode = 5
                                                 , FIRE.neigh_mode = 1
                                                 , FIRE.prop_mode = 1
@@ -1669,7 +1669,7 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , required.max_abund_medium = 5000
                                                   , required.max_abund_high = 9000
                                                   , doAliens = TRUE
-                                                  , ALIEN.freq = rep(1, 10))
+                                                  , ALIEN.freq = rep(1, 5))
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
   
   ## Fire
@@ -1700,59 +1700,59 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
 
 
 ## OUTPUTS
-test_that("PRE_FATE.params_globalParameters gives correct output : warning round", {
-  if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
-  PRE_FATE.skeletonDirectory()
-  
-  expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                  , opt.replacePrevious = TRUE
-                                                  , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000.5
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000)
-                 , "`required.max_abund_low` is a double. It will be converted (rounded) to an integer"
-                 , fixed = TRUE)
-  expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                  , opt.replacePrevious = TRUE
-                                                  , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000.5
-                                                  , required.max_abund_high = 9000)
-                 , "`required.max_abund_medium` is a double. It will be converted (rounded) to an integer"
-                 , fixed = TRUE)
-  expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                  , opt.replacePrevious = TRUE
-                                                  , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000.5)
-                 , "`required.max_abund_high` is a double. It will be converted (rounded) to an integer"
-                 , fixed = TRUE)
-  expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                  , opt.replacePrevious = TRUE
-                                                  , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
-                                                  , doLight = TRUE
-                                                  , LIGHT.thresh_medium = 10.5
-                                                  , LIGHT.thresh_low = 50)
-                 , "`LIGHT.thresh_medium` is a double. It will be converted (rounded) to an integer"
-                 , fixed = TRUE)
-  expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                  , opt.replacePrevious = TRUE
-                                                  , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
-                                                  , doLight = TRUE
-                                                  , LIGHT.thresh_medium = 10
-                                                  , LIGHT.thresh_low = 50.5)
-                 , "`LIGHT.thresh_low` is a double. It will be converted (rounded) to an integer"
-                 , fixed = TRUE)
-})
+# test_that("PRE_FATE.params_globalParameters gives correct output : warning round", {
+#   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
+#   PRE_FATE.skeletonDirectory()
+#   
+#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+#                                                   , opt.replacePrevious = TRUE
+#                                                   , required.no_PFG = 5
+#                                                   , required.no_strata = 2
+#                                                   , required.max_abund_low = 3000.5
+#                                                   , required.max_abund_medium = 5000
+#                                                   , required.max_abund_high = 9000)
+#                  , "`required.max_abund_low` is a double. It will be converted (rounded) to an integer"
+#                  , fixed = TRUE)
+#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+#                                                   , opt.replacePrevious = TRUE
+#                                                   , required.no_PFG = 5
+#                                                   , required.no_strata = 2
+#                                                   , required.max_abund_low = 3000
+#                                                   , required.max_abund_medium = 5000.5
+#                                                   , required.max_abund_high = 9000)
+#                  , "`required.max_abund_medium` is a double. It will be converted (rounded) to an integer"
+#                  , fixed = TRUE)
+#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+#                                                   , opt.replacePrevious = TRUE
+#                                                   , required.no_PFG = 5
+#                                                   , required.no_strata = 2
+#                                                   , required.max_abund_low = 3000
+#                                                   , required.max_abund_medium = 5000
+#                                                   , required.max_abund_high = 9000.5)
+#                  , "`required.max_abund_high` is a double. It will be converted (rounded) to an integer"
+#                  , fixed = TRUE)
+#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+#                                                   , opt.replacePrevious = TRUE
+#                                                   , required.no_PFG = 5
+#                                                   , required.no_strata = 2
+#                                                   , required.max_abund_low = 3000
+#                                                   , required.max_abund_medium = 5000
+#                                                   , required.max_abund_high = 9000
+#                                                   , doLight = TRUE
+#                                                   , LIGHT.thresh_medium = 10.5
+#                                                   , LIGHT.thresh_low = 50)
+#                  , "`LIGHT.thresh_medium` is a double. It will be converted (rounded) to an integer"
+#                  , fixed = TRUE)
+#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+#                                                   , opt.replacePrevious = TRUE
+#                                                   , required.no_PFG = 5
+#                                                   , required.no_strata = 2
+#                                                   , required.max_abund_low = 3000
+#                                                   , required.max_abund_medium = 5000
+#                                                   , required.max_abund_high = 9000
+#                                                   , doLight = TRUE
+#                                                   , LIGHT.thresh_medium = 10
+#                                                   , LIGHT.thresh_low = 50.5)
+#                  , "`LIGHT.thresh_low` is a double. It will be converted (rounded) to an integer"
+#                  , fixed = TRUE)
+# })

@@ -284,7 +284,7 @@ POST_FATE.graphic_evolutionPixels = function(
         scale_color_manual("", values = val_col1) +
         new_scale_color() +
         geom_point(data = distriAbund[which(distriAbund$TYPE == "light"), ]
-                   , aes_string(x = "YEAR", y = "as.numeric(GROUP)", color = "factor(value)")
+                   , aes_string(x = "YEAR", y = "as.numeric(GROUP)-1", color = "factor(value)")
                    , alpha = 0.4, pch = 15, size = 15
                    , inherit.aes = FALSE) +
         scale_color_manual("", values = val_col2, labels = c("Low", "Medium", "High")) +

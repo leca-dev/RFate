@@ -140,7 +140,7 @@ void SuFate::CalculateEnvironment()
   /* if light and/or soil interaction, calculate abundances per stratum */
   if (m_GSP->getDoLightInteraction() || m_GSP->getDoSoilInteraction())
   {
-    vector< int > stProfile(m_GSP->getNoStrata(), 0);
+    vector< int > stProfile(m_GSP->getNoStrata()+1, 0);
     int noFG = m_Comm.getFuncGroupList().size();
     int noFG_pres = 0;
     
@@ -149,78 +149,22 @@ void SuFate::CalculateEnvironment()
     for (int fg=0; fg < noFG; fg++)
     {
       /* initialize strata abundance */
-      vector< int > StratX(m_GSP->getNoStrata(), 0);
+      vector< int > StratX(m_GSP->getNoStrata()+1, 0);
       
       /* create a copy of FG parameters to simplify and speed up the code */
       FGPtr FGparams = m_Comm.getFuncGroup_(fg)->getFGparams_();
       
       /* Create a vector with stratum break ages */
       vector<int> bkStratAges = FGparams->getStrata();
-      
+
       if (m_Comm.getNoCohort(fg) > 0)
       {
         noFG_pres++; /* add 1 to pfg counter */
       
-      /* Fill the stratum according to Cohorts of each PFG */
-      for (int co=0; co<m_Comm.getNoCohort(fg); co++)
-      {
-        /* Keep Legion Params */
-        int ayTemp = m_Comm.getAy(fg, co);
-        int aoTemp = m_Comm.getAo(fg, co);
-        int csizeTemp = m_Comm.getCSize(fg, co);
-        
-        int st = 0; /* Stratum counter */
-        while (ayTemp >= bkStratAges[st+1]){ st++; } /* Get the first stratum which Legion filled */
-        
-        if (aoTemp >= bkStratAges[st+1]) /* Legion cover more than a lone stratum */
-        {
-          int stm = st; /* Stratum counter */
-        while (aoTemp >= bkStratAges[stm+1])
-        {
-          /* change stratum? */
-          if(ayTemp >= bkStratAges[stm+1]) { stm++; }
-          /* fill the current stratum according to mature and immature plants proportions */
-          if (min(bkStratAges[stm+1]-1,aoTemp) < this->getMatTime(fg))
-          {
-            /* only immature plants */
-            StratX[stm] += ceil(FGparams->getImmSize() * csizeTemp * ( min(bkStratAges[stm+1]-1,aoTemp) - ayTemp+1));
-          } else if (ayTemp >= this->getMatTime(fg))
-          {
-            /* only mature plants */
-            StratX[stm] += ceil(csizeTemp * ( min(bkStratAges[stm+1]-1,aoTemp) -ayTemp+1));
-          } else
-          {
-            /* immature and mature plants are both present */
-            StratX[stm] += ceil(FGparams->getImmSize() * csizeTemp * (min(this->getMatTime(fg)-1,aoTemp)-ayTemp+1)); /* Immature part */
-            StratX[stm] += ceil(csizeTemp * (min(bkStratAges[stm+1]-1,aoTemp)-min(this->getMatTime(fg),aoTemp)+1)); /* Mature part */
-          }
-          /* remove part of legion treated */
-          ayTemp = bkStratAges[stm+1];
-        }
-        } else
-        {
-          /* the entire Legion is into a unique stratum */
-          /* fill the stratum according to mature and imature plants proportions */
-          if (aoTemp < this->getMatTime(fg))
-          {
-            /* only immature plants */
-            StratX[st] += ceil(FGparams->getImmSize() * csizeTemp * ( aoTemp - ayTemp +1));
-          } else if (ayTemp >= this->getMatTime(fg))
-          {
-            /* only mature plants */
-            StratX[st] += ceil(csizeTemp * ( aoTemp - ayTemp +1));
-          } else
-          {
-            /* immature and mature plants are both present */
-            StratX[st] += ceil(FGparams->getImmSize() * csizeTemp * ( this->getMatTime(fg) - 1 - ayTemp + 1 )); /* Immature part */
-            StratX[st] += ceil(csizeTemp * ( aoTemp - this->getMatTime(fg)+1)); /* Mature part */
-          }
-        }
-      } // end loop on strata
-      
       /* add PFG strata abundances */
-      for (unsigned st=0; st<stProfile.size(); st++)
+      for (unsigned st=1; st<stProfile.size(); st++)
       {
+        StratX[st] = static_cast<int>(m_Comm.getFuncGroup_(fg)->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
         stProfile[st] += StratX[st] * FGparams->getLightShadeFactor(); /* Abundances per stratum, to be converted into light resources */
         AbundPFG[fg] += StratX[st]; /* Abundances per PFG, to be converted into soil resources */
       }
@@ -258,19 +202,20 @@ void SuFate::CalculateEnvironment()
     if (m_GSP->getDoLightInteraction())
     {
       int XAbove = 0;
-      for (int Stm = (m_GSP->getNoStrata() - 1); Stm >= 0; Stm--) /* resource availabilities */
+      for (int Stm = m_GSP->getNoStrata(); Stm > 0; Stm--) /* resource availabilities */
       {
+        XAbove = XAbove + stProfile[Stm];
         if (XAbove < m_GSP->getLightThreshMedium())
         {
-          m_LightR.setResource(Stm,RHigh);
+          m_LightR.setResource(Stm-1,RHigh);
         } else if (XAbove < m_GSP->getLightThreshLow())
         {
-          m_LightR.setResource(Stm,RMedium);
+          m_LightR.setResource(Stm-1,RMedium);
         } else
         {
-          m_LightR.setResource(Stm,RLow);
+          m_LightR.setResource(Stm-1,RLow);
         }
-        XAbove = XAbove + stProfile[Stm];
+        // XAbove = XAbove + stProfile[Stm];
       }
     }
   }

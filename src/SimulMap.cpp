@@ -1787,7 +1787,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           abunValues2[pixId] = 0;
         }
         bool positiveVal2 = false;
-        for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
+        for (int strat=1; strat<m_glob_params.getNoStrata()+1; strat++)
         { // loop on Stratum
           //logg.info(">>>>> Stratum ", strat);
           // Calculate abundance values.
