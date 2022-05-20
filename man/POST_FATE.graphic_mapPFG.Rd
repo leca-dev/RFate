@@ -10,7 +10,7 @@ POST_FATE.graphic_mapPFG(
   name.simulation,
   file.simulParam = NULL,
   years,
-  opt.stratum_min = 1,
+  opt.stratum_min = 0,
   opt.stratum_max = 10,
   opt.doBinary = TRUE,
   opt.no_CPU = 1,
