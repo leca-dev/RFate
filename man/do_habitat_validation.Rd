@@ -17,23 +17,26 @@ do_habitat_validation(
 )
 }
 \arguments{
-\item{output.path}{access path to the for the folder where output files
+\item{output.path}{Access path to the for the folder where output files
 will be created.}
 
-\item{RF.model}{random forest model trained on observed abundance data (\code{\link{train.RF.habitat}}
+\item{RF.model}{Random forest model trained on observed abundance data (\code{\link{train_RF_habitat}}
 function)}
 
 \item{predict.all.map}{\code{Logical}. If TRUE, the script will predict 
 habitat for the whole map.}
 
-\item{sim}{name of the single simulation to validate.}
+\item{sim}{Name of the single simulation to validate.}
 
-\item{simu_PFG}{a \code{data frame} with simulated abundance for each PFG and strata 
-(if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).}
+\item{simu_PFG}{A \code{data.frame} provides by \code{POST_FATE.temporalEvolution} with simulated abundance for each PFG and strata 
+(if option selected) and pixel ID (see \code{\link{POST_FATE.temporalEvolution}}).}
 
-\item{habitat.whole.area.df}{a \code{data frame} which contain habitat names and code for each pixel that need validation.}
+\item{habitat.whole.area.df}{A \code{data.frame} provides by \code{POST_FATE.validation} with 3 columns : 
+\cr \code{pixel} which contains the ID of each pixel in the study area.
+\cr \code{code.habitat} which contains the ID of the habitat in each pixel.
+\cr \code{for.validation} for each pixel, \code{0} if does not need validation, \code{1} if needs validation.}
 
-\item{list.strata}{if abundance file is defined by strata : a character vector which contains \code{FATE} 
+\item{list.strata}{If abundance file is defined by strata : a character vector which contains \code{FATE} 
 strata definition and correspondence with observed strata definition. \cr
 If abundance file is defined for all strata : a character vector with value "all".}
 

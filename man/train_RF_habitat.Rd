@@ -17,28 +17,33 @@ train_RF_habitat(
 )
 }
 \arguments{
-\item{releves.PFG}{a data frame with PFG abundances (column named abund) at each site, 
-for each PFG and strata, if necessary, & coordinates of each site.}
+\item{releves.PFG}{A \code{data.frame} with at least 5 columns : \cr
+\code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
+\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+& name of PFG.
+\cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
+(habitat & PFG composition validation).}
 
-\item{hab.obs}{a raster map of the observed habitat in the extended studied area.}
+\item{hab.obs}{A raster map of the observed habitat in the extended studied area.}
 
-\item{external.training.mask}{default \code{NULL}. (optional) a raster map for keeping 
-releves data only in a specific area.}
+\item{external.training.mask}{default \code{NULL}. 
+\cr (optional) A raster map for keeping releves data only in a specific area.}
 
-\item{studied.habitat}{default \code{NULL}. a 2 columns data frame which contains 
-the habitats (2nd column) and the ID (1st column) for each of them which 
-will be taken into account for the validation.}
+\item{studied.habitat}{A \code{data.frame} with 2 columns : 
+\cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
+for the validation (habitat & PFG composition validation).}
 
-\item{RF.param}{a list of 2 parameters for random forest model : \cr
-share.training defines the size of the training part of the data base. \cr
-ntree is the number of trees build by the algorithm, it allows to reduce the prediction error.}
+\item{RF.param}{A \code{list} of 2 parameters to fit a random forest model : \cr
+\code{share.training} defines the size of the training part of the data base. \cr
+\code{ntree} is the number of trees build by the algorithm, it allows to reduce the prediction error.}
 
-\item{output.path}{access path to the folder where output files will be created.}
+\item{output.path}{Access path to the folder where output files will be created.}
 
-\item{perStrata}{\code{Logical}. If \code{TRUE}, the PFG abundance is defined
+\item{perStrata}{\code{Logical}. 
+\cr If \code{TRUE}, the PFG abundance is defined
 by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.}
 
-\item{sim.version}{a character vector with the name(s) of the simulation(s) to validate.}
+\item{sim.version}{A character vector with the name(s) of the simulation(s) to validate.}
 }
 \value{
 2 prepared observed releves files are created before the building of the random

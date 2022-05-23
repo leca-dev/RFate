@@ -161,23 +161,26 @@ for each habitats.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>output.path</dt>
-<dd><p>access path to the for the folder where output files
+<dd><p>Access path to the for the folder where output files
 will be created.</p></dd>
 <dt>RF.model</dt>
-<dd><p>random forest model trained on observed abundance data (<code>train.RF.habitat</code>
+<dd><p>Random forest model trained on observed abundance data (<code><a href="train_RF_habitat.html">train_RF_habitat</a></code>
 function)</p></dd>
 <dt>predict.all.map</dt>
 <dd><p><code>Logical</code>. If TRUE, the script will predict 
 habitat for the whole map.</p></dd>
 <dt>sim</dt>
-<dd><p>name of the single simulation to validate.</p></dd>
+<dd><p>Name of the single simulation to validate.</p></dd>
 <dt>simu_PFG</dt>
-<dd><p>a <code>data frame</code> with simulated abundance for each PFG and strata 
-(if option selected) and pixel ID, extracted from a <code>FATE</code> simulation (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>).</p></dd>
+<dd><p>A <code>data.frame</code> provides by <code>POST_FATE.temporalEvolution</code> with simulated abundance for each PFG and strata 
+(if option selected) and pixel ID (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>).</p></dd>
 <dt>habitat.whole.area.df</dt>
-<dd><p>a <code>data frame</code> which contain habitat names and code for each pixel that need validation.</p></dd>
+<dd><p>A <code>data.frame</code> provides by <code>POST_FATE.validation</code> with 3 columns : 
+<br><code>pixel</code> which contains the ID of each pixel in the study area.
+<br><code>code.habitat</code> which contains the ID of the habitat in each pixel.
+<br><code>for.validation</code> for each pixel, <code>0</code> if does not need validation, <code>1</code> if needs validation.</p></dd>
 <dt>list.strata</dt>
-<dd><p>if abundance file is defined by strata : a character vector which contains <code>FATE</code> 
+<dd><p>If abundance file is defined by strata : a character vector which contains <code>FATE</code> 
 strata definition and correspondence with observed strata definition. <br>
 If abundance file is defined for all strata : a character vector with value "all".</p></dd>
 <dt>perStrata</dt>

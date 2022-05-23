@@ -9,21 +9,26 @@
 ##' @description This script is designed to compute distribution, per PFG/strata/habitat,
 ##' of relative abundance, from observed data.
 ##' 
-##' @param name.simulation simulation folder name.
-##' @param releves.PFG a data frame with PFG abundances (column named abund) at each site, 
-##' for each PFG and strata & coordinates of each site.
-##' @param hab.obs a raster map of the extended studied map in the simulation, with same projection 
+##' @param name.simulation Simulation folder name.
+##' @param releves.PFG A \code{data.frame} with at least 5 columns : \cr
+##' \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
+##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+##' & name of PFG.
+##' \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
+##' (habitat & PFG composition validation).
+##' @param hab.obs A raster map of the extended studied map in the simulation, with same projection 
 ##' & resolution than simulation mask.
-##' @param studied.habitat default \code{NULL}. a 2 columns data frame which contains 
-##' the habitats (2nd column) and the ID (1st column) for each of them which 
-##' will be taken into account for the validation.
-##' @param PFG.considered_PFG.compo a character vector which contains the list of PFG considered
+##' @param studied.habitat A \code{data.frame} with 2 columns : 
+##' \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
+##' for the validation (habitat & PFG composition validation).
+##' @param PFG.considered_PFG.compo A character vector which contains the list of PFG considered
 ##' in the validation.
-##' @param strata.considered_PFG.compo a character vector which contains the list of precise 
+##' @param strata.considered_PFG.compo A character vector which contains the list of precise 
 ##' strata considered in the validation.
-##' @param habitat.considered_PFG.compo a character vector which contains the list of habitat(s)
+##' @param habitat.considered_PFG.compo A character vector which contains the list of habitat(s)
 ##' considered in the validation.
-##' @param perStrata \code{Logical}. All strata together (FALSE) or per strata (TRUE).
+##' @param perStrata \code{Logical}. 
+##' \cr All strata together (FALSE) or per strata (TRUE).
 ##' 
 ##' @details
 ##' 

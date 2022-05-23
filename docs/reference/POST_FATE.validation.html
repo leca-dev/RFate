@@ -197,14 +197,17 @@ parallelize the computation of prediction performance for habitat &amp; richness
 <dd><p><code>Logical</code>. Default <code>TRUE</code>. <br> If <code>TRUE</code>, habitat validation module is activated,
 if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dt>releves.PFG</dt>
-<dd><p>A data frame with abundance (column named abund) at each site
-and for each PFG and strata, if necessary, &amp; sites coordinates (habitat &amp; PFG composition validation).</p></dd>
+<dd><p>A <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, which contain respectively ID, x coordinate &amp; y coordinate of each site of the study area. <br><code>abund</code> &amp; <code>PFG</code> which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+&amp; name of PFG.
+<br> (<em>and optionally, <code>strata</code></em>) which contains the number of strata at each the abundance is noted. 
+(habitat &amp; PFG composition validation).</p></dd>
 <dt>hab.obs</dt>
 <dd><p>A raster map of the extended studied map in the simulation, with same projection 
 &amp; resolution than simulation mask (habitat &amp; PFG composition validation).</p></dd>
 <dt>studied.habitat</dt>
-<dd><p>A 2 columns data frame which contains the habitats (2nd column) and the ID (1st column) 
-for each of them which will be taken into account for the validation (habitat &amp; PFG composition validation).</p></dd>
+<dd><p>A <code>data.frame</code> with 2 columns : 
+<br><code>ID</code> which contains the habitat ID, &amp; <code>habitat</code> which contains the habitat names which will be taken into account 
+for the validation (habitat &amp; PFG composition validation).</p></dd>
 <dt>predict.all.map</dt>
 <dd><p>Default <code>FALSE</code>. <br> If <code>TRUE</code>, the function will compute habitat prediction
 over the whole map and will provide a prediction map.</p></dd>
@@ -305,34 +308,26 @@ simulation at a specific year.</p></dd>
 <span class="va">releves.PFG</span><span class="op">$</span><span class="va">geometry</span> <span class="op">=</span> <span class="cn">NULL</span>
 <span class="va">releves.PFG</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>,<span class="st">"y"</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="va">coor</span><span class="op">@</span><span class="va">coords</span>
 <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">releves.PFG</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site"</span>, <span class="st">"abund"</span>, <span class="st">"PFG"</span>, <span class="st">"strata"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span>
-<span class="co">## List of FATE strata &amp; correspondence with observed strata (if perStrata = TRUE, if not = NULL)</span>
-<span class="va">list.strata.simulations</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>S <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, M <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span><span class="op">)</span>, B <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">6</span>,<span class="fl">7</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## List of PFG taken into account in a FATE simulation</span>
 <span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>, <span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
 <span class="co">## Habitat, strata and PFG considered in PFG compo validation</span>
 <span class="va">habitat.considered</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span>
-<span class="va">strata.considered_PFG.compo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S"</span>, <span class="st">"M"</span>, <span class="st">"B"</span><span class="op">)</span>
 <span class="va">PFG.considered_PFG.compo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
-                     , sim.version <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"SIMUL_V4.1"</span>, <span class="st">"SIMUL_V8.1"</span><span class="op">)</span>
+                     , sim.version <span class="op">=</span> <span class="st">"SIMUL_V1"</span>
                      , year <span class="op">=</span> <span class="fl">2000</span>
-                     , perStrata <span class="op">=</span> <span class="cn">TRUE</span>
-                     , opt.no_CPU <span class="op">=</span> <span class="fl">1</span>
                      , doHabitat <span class="op">=</span> <span class="cn">TRUE</span>
                      , releves.PFG <span class="op">=</span> <span class="va">releves.PFG</span>
                      , hab.obs <span class="op">=</span> <span class="va">hab.obs</span>
                      , studied.habitat <span class="op">=</span> <span class="va">studied.habitat</span>
                      , predict.all.map <span class="op">=</span> <span class="cn">TRUE</span>
                      , seed <span class="op">=</span> <span class="fl">123</span>
-                     , list.strata.simulations <span class="op">=</span> <span class="va">list.strata.simulations</span>
                      , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
                      , PFG.considered_PFG.compo <span class="op">=</span> <span class="va">PFG.considered_PFG.compo</span>
                      , habitat.considered_PFG.compo <span class="op">=</span> <span class="va">habitat.considered</span>
-                     , strata.considered_PFG.compo <span class="op">=</span> <span class="va">strata.considered_PFG.compo</span>
                      , doRichness <span class="op">=</span> <span class="cn">TRUE</span>
-                     , list.PFG <span class="op">=</span> <span class="va">list.PFG</span>
-                     , exclude.PFG <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
+                     , list.PFG <span class="op">=</span> <span class="va">list.PFG</span><span class="op">)</span>
 
 </code></pre></div>
     </div>

@@ -15,23 +15,28 @@ do_PFG_composition_validation(
 )
 }
 \arguments{
-\item{sim}{name of the single simulation to validate.}
+\item{sim}{Name of the single simulation to validate.}
 
-\item{PFG.considered_PFG.compo}{a character vector of the list of PFG considered
+\item{PFG.considered_PFG.compo}{A character vector of the list of PFG considered
 in the validation.}
 
-\item{strata.considered_PFG.compo}{a character vector of the list of precise 
+\item{strata.considered_PFG.compo}{A character vector of the list of precise 
 strata considered in the validation.}
 
-\item{habitat.considered_PFG.compo}{a character vector of the list of habitat(s)
+\item{habitat.considered_PFG.compo}{A character vector of the list of habitat(s)
 considered in the validation.}
 
-\item{observed.distribution}{PFG observed distribution table provides by \code{\link{get.observed.distribution}} function.}
+\item{observed.distribution}{A \code{data.frame} provides by \code{get_observed_distribution} with 5 columns :
+\cr \code{PFG}, \code{habitat}, \code{strata}, \code{rank}, \code{observed.quantile}
+\cr (see \code{\link{get_observed_distribution}})}
 
-\item{simu_PFG}{a \code{data frame} with simulated abundance for each PFG and strata 
-(if option selected) and pixel ID, extracted from a \code{FATE} simulation (see \code{\link{POST_FATE.temporalEvolution}}).}
+\item{simu_PFG}{A \code{data.frame} provides by \code{POST_FATE.temporalEvolution} with simulated abundance for each PFG and strata 
+(if option selected) and pixel ID (see \code{\link{POST_FATE.temporalEvolution}}).}
 
-\item{habitat.whole.area.df}{a \code{data frame} which contain habitat names and code for each pixel that needs validation.}
+\item{habitat.whole.area.df}{A \code{data.frame} provides by \code{POST_FATE.validation} with 3 columns : 
+\cr \code{pixel} which contains the ID of each pixel in the study area.
+\cr \code{code.habitat} which contains the ID of the habitat in each pixel.
+\cr \code{for.validation} for each pixel, \code{0} if does not need validation, \code{1} if needs validation.}
 }
 \value{
 

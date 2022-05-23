@@ -11,14 +11,17 @@
 ##' based on an habitat prediction file. For each pixel, the habitat failure or success value
 ##' is associated to a color and then, the map is built.
 ##' 
-##' @param predicted.habitat a csv file created by the \code{\link{do.habitat.validation}} function
-##' which contains, for each pixel of the studied map, the simulated and observed habitat.
-##' @param col.df a data frame with all the colors associated with the failure or 
-##' success of each studied habitat prediction.
-##' @param simulation.map a raster map of the whole studied area.
-##' @param output.path access path to the for the folder where output files
+##' @param predicted.habitat a \CODE{data.frame} provides by \code{do_habitat.validation} with at least 3 columns :
+##' \cr \code{pixel}, \code{true.habitat} & 1 column per simulation in \code{sim.version} which contains the predicted habitat for this simulation.
+##' \cr (see \code{\link{do_habitat_valdiation}}).
+##' @param col.df A \code{data.frame} with 3 columns :
+##' \cr \code{habitat} which contains all the habitats taken into account in the simulation.
+##' \cr \code{failure} which contains colors to designate the failure of the prediction of each habitats
+##' \cr \code{success} which contains colors to designate the success of the prediction of each habitats
+##' @param simulation.map A raster map of the whole studied area.
+##' @param output.path Access path to the for the folder where output files
 ##' will be created.
-##' @param sim.version a character vector with the name(s) of the simulation(s) to validate.
+##' @param sim.version A character vector with the name(s) of the simulation(s) to validate.
 ##' 
 ##' @details 
 ##' 

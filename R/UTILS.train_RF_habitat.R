@@ -9,21 +9,26 @@
 ##' @description This script is designed to produce a random forest model
 ##' trained on observed PFG abundance and a map of observed habitat.
 ##' 
-##' @param releves.PFG a data frame with PFG abundances (column named abund) at each site, 
-##' for each PFG and strata, if necessary, & coordinates of each site.
-##' @param hab.obs a raster map of the observed habitat in the extended studied area.
-##' @param external.training.mask default \code{NULL}. (optional) a raster map for keeping 
-##' releves data only in a specific area.
-##' @param studied.habitat default \code{NULL}. a 2 columns data frame which contains 
-##' the habitats (2nd column) and the ID (1st column) for each of them which 
-##' will be taken into account for the validation.
-##' @param RF.param a list of 2 parameters for random forest model : \cr
-##' share.training defines the size of the training part of the data base. \cr
-##' ntree is the number of trees build by the algorithm, it allows to reduce the prediction error.
-##' @param output.path access path to the folder where output files will be created.
-##' @param perStrata \code{Logical}. If \code{TRUE}, the PFG abundance is defined
+##' @param releves.PFG A \code{data.frame} with at least 5 columns : \cr
+##' \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
+##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+##' & name of PFG.
+##' \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
+##' (habitat & PFG composition validation).
+##' @param hab.obs A raster map of the observed habitat in the extended studied area.
+##' @param external.training.mask default \code{NULL}. 
+##' \cr (optional) A raster map for keeping releves data only in a specific area.
+##' @param studied.habitat A \code{data.frame} with 2 columns : 
+##' \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
+##' for the validation (habitat & PFG composition validation).
+##' @param RF.param A \code{list} of 2 parameters to fit a random forest model : \cr
+##' \code{share.training} defines the size of the training part of the data base. \cr
+##' \code{ntree} is the number of trees build by the algorithm, it allows to reduce the prediction error.
+##' @param output.path Access path to the folder where output files will be created.
+##' @param perStrata \code{Logical}. 
+##' \cr If \code{TRUE}, the PFG abundance is defined
 ##' by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.
-##' @param sim.version a character vector with the name(s) of the simulation(s) to validate.
+##' @param sim.version A character vector with the name(s) of the simulation(s) to validate.
 ##' 
 ##' @details 
 ##' 

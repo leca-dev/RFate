@@ -158,18 +158,21 @@ is associated to a color and then, the map is built.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>predicted.habitat</dt>
-<dd><p>a csv file created by the <code>do.habitat.validation</code> function
-which contains, for each pixel of the studied map, the simulated and observed habitat.</p></dd>
+<dd><p>a data.frame provides by <code>do_habitat.validation</code> with at least 3 columns :
+<br><code>pixel</code>, <code>true.habitat</code> &amp; 1 column per simulation in <code>sim.version</code> which contains the predicted habitat for this simulation.
+<br> (see <code>do_habitat_valdiation</code>).</p></dd>
 <dt>col.df</dt>
-<dd><p>a data frame with all the colors associated with the failure or 
-success of each studied habitat prediction.</p></dd>
+<dd><p>A <code>data.frame</code> with 3 columns :
+<br><code>habitat</code> which contains all the habitats taken into account in the simulation.
+<br><code>failure</code> which contains colors to designate the failure of the prediction of each habitats
+<br><code>success</code> which contains colors to designate the success of the prediction of each habitats</p></dd>
 <dt>simulation.map</dt>
-<dd><p>a raster map of the whole studied area.</p></dd>
+<dd><p>A raster map of the whole studied area.</p></dd>
 <dt>output.path</dt>
-<dd><p>access path to the for the folder where output files
+<dd><p>Access path to the for the folder where output files
 will be created.</p></dd>
 <dt>sim.version</dt>
-<dd><p>a character vector with the name(s) of the simulation(s) to validate.</p></dd>
+<dd><p>A character vector with the name(s) of the simulation(s) to validate.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

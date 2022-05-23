@@ -159,23 +159,28 @@ distribution for a precise <code>FATE</code> simulation.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>sim</dt>
-<dd><p>name of the single simulation to validate.</p></dd>
+<dd><p>Name of the single simulation to validate.</p></dd>
 <dt>PFG.considered_PFG.compo</dt>
-<dd><p>a character vector of the list of PFG considered
+<dd><p>A character vector of the list of PFG considered
 in the validation.</p></dd>
 <dt>strata.considered_PFG.compo</dt>
-<dd><p>a character vector of the list of precise 
+<dd><p>A character vector of the list of precise 
 strata considered in the validation.</p></dd>
 <dt>habitat.considered_PFG.compo</dt>
-<dd><p>a character vector of the list of habitat(s)
+<dd><p>A character vector of the list of habitat(s)
 considered in the validation.</p></dd>
 <dt>observed.distribution</dt>
-<dd><p>PFG observed distribution table provides by <code>get.observed.distribution</code> function.</p></dd>
+<dd><p>A <code>data.frame</code> provides by <code>get_observed_distribution</code> with 5 columns :
+<br><code>PFG</code>, <code>habitat</code>, <code>strata</code>, <code>rank</code>, <code>observed.quantile</code>
+<br> (see <code><a href="get_observed_distribution.html">get_observed_distribution</a></code>)</p></dd>
 <dt>simu_PFG</dt>
-<dd><p>a <code>data frame</code> with simulated abundance for each PFG and strata 
-(if option selected) and pixel ID, extracted from a <code>FATE</code> simulation (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>).</p></dd>
+<dd><p>A <code>data.frame</code> provides by <code>POST_FATE.temporalEvolution</code> with simulated abundance for each PFG and strata 
+(if option selected) and pixel ID (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>).</p></dd>
 <dt>habitat.whole.area.df</dt>
-<dd><p>a <code>data frame</code> which contain habitat names and code for each pixel that needs validation.</p></dd>
+<dd><p>A <code>data.frame</code> provides by <code>POST_FATE.validation</code> with 3 columns : 
+<br><code>pixel</code> which contains the ID of each pixel in the study area.
+<br><code>code.habitat</code> which contains the ID of the habitat in each pixel.
+<br><code>for.validation</code> for each pixel, <code>0</code> if does not need validation, <code>1</code> if needs validation.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

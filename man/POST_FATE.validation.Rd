@@ -43,14 +43,19 @@ parallelize the computation of prediction performance for habitat & richness val
 \item{doHabitat}{\code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
 if \code{FALSE}, habitat validation module is disabled.}
 
-\item{releves.PFG}{A data frame with abundance (column named abund) at each site
-and for each PFG and strata, if necessary, & sites coordinates (habitat & PFG composition validation).}
+\item{releves.PFG}{A \code{data.frame} with at least 5 columns : \cr
+\code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
+\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+& name of PFG.
+\cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
+(habitat & PFG composition validation).}
 
 \item{hab.obs}{A raster map of the extended studied map in the simulation, with same projection 
 & resolution than simulation mask (habitat & PFG composition validation).}
 
-\item{studied.habitat}{A 2 columns data frame which contains the habitats (2nd column) and the ID (1st column) 
-for each of them which will be taken into account for the validation (habitat & PFG composition validation).}
+\item{studied.habitat}{A \code{data.frame} with 2 columns : 
+\cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
+for the validation (habitat & PFG composition validation).}
 
 \item{predict.all.map}{Default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
 over the whole map and will provide a prediction map.}
@@ -148,34 +153,26 @@ coor = spTransform(coor, CRSobj = crs(hab.obs))
 releves.PFG$geometry = NULL
 releves.PFG[,c("x","y")] = coor@coords
 colnames(releves.PFG) = c("site", "abund", "PFG", "strata", "x", "y")
-## List of FATE strata & correspondence with observed strata (if perStrata = TRUE, if not = NULL)
-list.strata.simulations = list(S = c(1,2,3), M = c(4), B = c(5,6,7))
 ## List of PFG taken into account in a FATE simulation
 list.PFG = as.factor(c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
 ## Habitat, strata and PFG considered in PFG compo validation
 habitat.considered = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland")
-strata.considered_PFG.compo = c("S", "M", "B")
 PFG.considered_PFG.compo = as.factor(c("H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
 
 POST_FATE.validation(name.simulation = "FATE_Champsaur"
-                     , sim.version = c("SIMUL_V4.1", "SIMUL_V8.1")
+                     , sim.version = "SIMUL_V1"
                      , year = 2000
-                     , perStrata = TRUE
-                     , opt.no_CPU = 1
                      , doHabitat = TRUE
                      , releves.PFG = releves.PFG
                      , hab.obs = hab.obs
                      , studied.habitat = studied.habitat
                      , predict.all.map = TRUE
                      , seed = 123
-                     , list.strata.simulations = list.strata.simulations
                      , doComposition = TRUE
                      , PFG.considered_PFG.compo = PFG.considered_PFG.compo
                      , habitat.considered_PFG.compo = habitat.considered
-                     , strata.considered_PFG.compo = strata.considered_PFG.compo
                      , doRichness = TRUE
-                     , list.PFG = list.PFG
-                     , exclude.PFG = NULL)
+                     , list.PFG = list.PFG)
 
 }
 \author{

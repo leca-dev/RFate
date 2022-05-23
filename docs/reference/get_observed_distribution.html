@@ -156,28 +156,31 @@ of relative abundance, from observed data.</p>
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>releves.PFG</dt>
-<dd><p>a data frame with PFG abundances (column named abund) at each site, 
-for each PFG and strata &amp; coordinates of each site.</p></dd>
+<dd><p>A <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, which contain respectively ID, x coordinate &amp; y coordinate of each site of the study area. <br><code>abund</code> &amp; <code>PFG</code> which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+&amp; name of PFG.
+<br> (<em>and optionally, <code>strata</code></em>) which contains the number of strata at each the abundance is noted. 
+(habitat &amp; PFG composition validation).</p></dd>
 <dt>hab.obs</dt>
-<dd><p>a raster map of the extended studied map in the simulation, with same projection 
+<dd><p>A raster map of the extended studied map in the simulation, with same projection 
 &amp; resolution than simulation mask.</p></dd>
 <dt>studied.habitat</dt>
-<dd><p>default <code>NULL</code>. a 2 columns data frame which contains 
-the habitats (2nd column) and the ID (1st column) for each of them which 
-will be taken into account for the validation.</p></dd>
+<dd><p>A <code>data.frame</code> with 2 columns : 
+<br><code>ID</code> which contains the habitat ID, &amp; <code>habitat</code> which contains the habitat names which will be taken into account 
+for the validation (habitat &amp; PFG composition validation).</p></dd>
 <dt>PFG.considered_PFG.compo</dt>
-<dd><p>a character vector which contains the list of PFG considered
+<dd><p>A character vector which contains the list of PFG considered
 in the validation.</p></dd>
 <dt>strata.considered_PFG.compo</dt>
-<dd><p>a character vector which contains the list of precise 
+<dd><p>A character vector which contains the list of precise 
 strata considered in the validation.</p></dd>
 <dt>habitat.considered_PFG.compo</dt>
-<dd><p>a character vector which contains the list of habitat(s)
+<dd><p>A character vector which contains the list of habitat(s)
 considered in the validation.</p></dd>
 <dt>perStrata</dt>
-<dd><p><code>Logical</code>. All strata together (FALSE) or per strata (TRUE).</p></dd>
+<dd><p><code>Logical</code>. 
+<br> All strata together (FALSE) or per strata (TRUE).</p></dd>
 <dt>name.simulation</dt>
-<dd><p>simulation folder name.</p></dd>
+<dd><p>Simulation folder name.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

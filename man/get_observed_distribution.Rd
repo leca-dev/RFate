@@ -16,28 +16,33 @@ get_observed_distribution(
 )
 }
 \arguments{
-\item{releves.PFG}{a data frame with PFG abundances (column named abund) at each site, 
-for each PFG and strata & coordinates of each site.}
+\item{releves.PFG}{A \code{data.frame} with at least 5 columns : \cr
+\code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
+\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+& name of PFG.
+\cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
+(habitat & PFG composition validation).}
 
-\item{hab.obs}{a raster map of the extended studied map in the simulation, with same projection 
+\item{hab.obs}{A raster map of the extended studied map in the simulation, with same projection 
 & resolution than simulation mask.}
 
-\item{studied.habitat}{default \code{NULL}. a 2 columns data frame which contains 
-the habitats (2nd column) and the ID (1st column) for each of them which 
-will be taken into account for the validation.}
+\item{studied.habitat}{A \code{data.frame} with 2 columns : 
+\cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
+for the validation (habitat & PFG composition validation).}
 
-\item{PFG.considered_PFG.compo}{a character vector which contains the list of PFG considered
+\item{PFG.considered_PFG.compo}{A character vector which contains the list of PFG considered
 in the validation.}
 
-\item{strata.considered_PFG.compo}{a character vector which contains the list of precise 
+\item{strata.considered_PFG.compo}{A character vector which contains the list of precise 
 strata considered in the validation.}
 
-\item{habitat.considered_PFG.compo}{a character vector which contains the list of habitat(s)
+\item{habitat.considered_PFG.compo}{A character vector which contains the list of habitat(s)
 considered in the validation.}
 
-\item{perStrata}{\code{Logical}. All strata together (FALSE) or per strata (TRUE).}
+\item{perStrata}{\code{Logical}. 
+\cr All strata together (FALSE) or per strata (TRUE).}
 
-\item{name.simulation}{simulation folder name.}
+\item{name.simulation}{Simulation folder name.}
 }
 \value{
 
