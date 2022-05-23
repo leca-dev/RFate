@@ -135,24 +135,19 @@ simulation at a specific year.}
 }
 \examples{
 
-library(raster)
-library(sf)
+## Load example data
+Champsaur_params = .loadData('Champsaur_params', 'RData')
+
+## Please run a FATE simulation and the function POST_FATE.temporalEvolution before
 
 ## Define a vector to choose habitats taken into account
 studied.habitat = data.frame(ID = c(6, 5, 7, 8), habitat = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland"))
 ## Habitat & validation maps
-hab.observed = raster("FATE_Champsaur/DATA_OBS/simplified.cesbio.map.grd")
-simulation.map = raster("FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
+hab.observed = Champsaur_params$stk.mask$habitat
+simulation.map = Champsaur_params$stk.mask$Champsaur
 hab.obs = projectRaster(from = hab.observed, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
 ## Observed data
-releves.sites = as.data.frame(st_read("FATE_Champsaur/DATA_OBS/releves.sites.shp"))
-releves.PFG = as.data.frame(read.csv("FATE_Champsaur/DATA_OBS/releves.PFG.abundance.csv"))
-releves.PFG = merge(releves.PFG, releves.sites[,c("site","geometry")], by = "site")
-coor = SpatialPoints(st_coordinates(releves.PFG$geometry), proj4string = crs(hab.observed))
-coor = spTransform(coor, CRSobj = crs(hab.obs))
-releves.PFG$geometry = NULL
-releves.PFG[,c("x","y")] = coor@coords
-colnames(releves.PFG) = c("site", "abund", "PFG", "strata", "x", "y")
+releves.PFG = Champsaur_params$tab.releves
 ## List of PFG taken into account in a FATE simulation
 list.PFG = as.factor(c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
 ## Habitat, strata and PFG considered in PFG compo validation
