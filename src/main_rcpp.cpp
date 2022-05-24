@@ -228,7 +228,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 using namespace std;
 
 /* some global variables */
-string FATEHDD_VERSION = "6.2-3";
+// string FATEHDD_VERSION = "6.2-3";
 SimulMap* simulMap(0);
 Logger logg;
 
@@ -241,22 +241,22 @@ void saveFATE(string objFileName)
 	ofs.close();
 
 	// Compress file
-	ostringstream ossCompressCommand;
-	ossCompressCommand <<  "gzip -9 -f " << objFileName;
-	string strCompressCommand = ossCompressCommand.str();
-	int compress_ok = system(strCompressCommand.c_str());
-	if (compress_ok != 0)
-	{
-		logg.warning("Compression failed for ", objFileName);
-	}
+	// ostringstream ossCompressCommand;
+	// ossCompressCommand <<  "gzip -9 -f " << objFileName;
+	// string strCompressCommand = ossCompressCommand.str();
+	// int compress_ok = system(strCompressCommand.c_str());
+	// if (compress_ok != 0)
+	// {
+	// 	logg.warning("Compression failed for ", objFileName);
+	// }
 }
 
 void loadFATE(string objFileName)
 {
 	// Create an input archive
-	ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
-	if (ifs.good())
-	{
+  ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
+  if (ifs.good())
+  {
 		boost::archive::text_iarchive ar(ifs);
 		ar >> simulMap; // load data
 		ifs.close(); // close file
@@ -605,7 +605,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 			logg.info("Saving simulation object...");
 			{
 				// Create an output archive
-				string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
+				string objFileName = file_of_params.getSavingDir() + "_SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
 				logg.debug(objFileName.c_str());
 				saveFATE(objFileName);
 			}
