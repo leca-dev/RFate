@@ -116,9 +116,15 @@
 ##' @examples 
 ##' 
 ##' ## Load example data
-##' Champsaur_params = .loadData('Champsaur_params', 'RData')
+##' Champsaur_params = .loadData("Champsaur_params", "RData")
 ##' 
-##' ## Please run a FATE simulation and the function POST_FATE.temporalEvolution before
+##' ## Create a skeleton folder
+##' PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur)
+##' 
+##' ## Load results from a simulation
+##' .loadData("Champsaur_results_V1", "7z")
+##' 
+##' ## Extract files from the 7z folder and put 'POST_FATE_TABLE_PIXEL_evolution_abundance_SIMUL_V1.1.csv' file in the RESULTS folder
 ##' 
 ##' ## Define a vector to choose habitats taken into account
 ##' studied.habitat = data.frame(ID = c(6, 5, 7, 8), habitat = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland"))
@@ -135,7 +141,7 @@
 ##' PFG.considered_PFG.compo = as.factor(c("H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
 ##' 
 ##' POST_FATE.validation(name.simulation = "FATE_Champsaur"
-##'                      , sim.version = "SIMUL_V1"
+##'                      , sim.version = "SIMUL_V1.1"
 ##'                      , year = 2000
 ##'                      , doHabitat = TRUE
 ##'                      , releves.PFG = releves.PFG

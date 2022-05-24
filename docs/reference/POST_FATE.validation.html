@@ -287,45 +287,6 @@ simulation at a specific year.</p></dd>
     <p>Matthieu Combaud, Maxime Delprat</p>
     </div>
 
-    <div id="ref-examples">
-    <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_params'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Please run a FATE simulation and the function POST_FATE.temporalEvolution before</span>
-
-<span class="co">## Define a vector to choose habitats taken into account</span>
-<span class="va">studied.habitat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span>, habitat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">## Habitat &amp; validation maps</span>
-<span class="va">hab.observed</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">$</span><span class="va">habitat</span>
-<span class="va">simulation.map</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">$</span><span class="va">Champsaur</span>
-<span class="va">hab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html" class="external-link">projectRaster</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">hab.observed</span>, res <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html" class="external-link">res</a></span><span class="op">(</span><span class="va">simulation.map</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">projection</a></span><span class="op">(</span><span class="va">simulation.map</span><span class="op">)</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"ngb"</span><span class="op">)</span>
-<span class="co">## Observed data</span>
-<span class="va">releves.PFG</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.releves</span>
-<span class="co">## List of PFG taken into account in a FATE simulation</span>
-<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>, <span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">## Habitat, strata and PFG considered in PFG compo validation</span>
-<span class="va">habitat.considered</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span>
-<span class="va">PFG.considered_PFG.compo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
-                     , sim.version <span class="op">=</span> <span class="st">"SIMUL_V1"</span>
-                     , year <span class="op">=</span> <span class="fl">2000</span>
-                     , doHabitat <span class="op">=</span> <span class="cn">TRUE</span>
-                     , releves.PFG <span class="op">=</span> <span class="va">releves.PFG</span>
-                     , hab.obs <span class="op">=</span> <span class="va">hab.obs</span>
-                     , studied.habitat <span class="op">=</span> <span class="va">studied.habitat</span>
-                     , predict.all.map <span class="op">=</span> <span class="cn">TRUE</span>
-                     , seed <span class="op">=</span> <span class="fl">123</span>
-                     , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
-                     , PFG.considered_PFG.compo <span class="op">=</span> <span class="va">PFG.considered_PFG.compo</span>
-                     , habitat.considered_PFG.compo <span class="op">=</span> <span class="va">habitat.considered</span>
-                     , doRichness <span class="op">=</span> <span class="cn">TRUE</span>
-                     , list.PFG <span class="op">=</span> <span class="va">list.PFG</span><span class="op">)</span>
-
-</code></pre></div>
-    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

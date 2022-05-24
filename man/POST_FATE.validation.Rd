@@ -133,43 +133,6 @@ for a simulation. The function also determine if an observed PFG is missing in t
 simulation at a specific year.}
 }
 }
-\examples{
-
-## Load example data
-Champsaur_params = .loadData('Champsaur_params', 'RData')
-
-## Please run a FATE simulation and the function POST_FATE.temporalEvolution before
-
-## Define a vector to choose habitats taken into account
-studied.habitat = data.frame(ID = c(6, 5, 7, 8), habitat = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland"))
-## Habitat & validation maps
-hab.observed = Champsaur_params$stk.mask$habitat
-simulation.map = Champsaur_params$stk.mask$Champsaur
-hab.obs = projectRaster(from = hab.observed, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
-## Observed data
-releves.PFG = Champsaur_params$tab.releves
-## List of PFG taken into account in a FATE simulation
-list.PFG = as.factor(c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
-## Habitat, strata and PFG considered in PFG compo validation
-habitat.considered = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland")
-PFG.considered_PFG.compo = as.factor(c("H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
-
-POST_FATE.validation(name.simulation = "FATE_Champsaur"
-                     , sim.version = "SIMUL_V1"
-                     , year = 2000
-                     , doHabitat = TRUE
-                     , releves.PFG = releves.PFG
-                     , hab.obs = hab.obs
-                     , studied.habitat = studied.habitat
-                     , predict.all.map = TRUE
-                     , seed = 123
-                     , doComposition = TRUE
-                     , PFG.considered_PFG.compo = PFG.considered_PFG.compo
-                     , habitat.considered_PFG.compo = habitat.considered
-                     , doRichness = TRUE
-                     , list.PFG = list.PFG)
-
-}
 \author{
 Matthieu Combaud, Maxime Delprat
 }
