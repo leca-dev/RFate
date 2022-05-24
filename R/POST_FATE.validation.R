@@ -669,20 +669,35 @@ POST_FATE.validation = function(name.simulation
     hab.pred = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv")))
     failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
     success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
+    
+    testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
+    training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
     hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
+    performances = testing[,c("habitat","TSS")]
+    colnames(performances) = c("habitat", "TSS_testing_part")
+    performances$TSS_training_part = training$TSS
+    performances$TSS_final = hab.perf[1,1:length(studied.habitat$habitat)]
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
     cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by the simulations \n"))
-    cat(paste0("\n Habitat performance :", hab.perf))
+    cat("\n Habitat performance : \n")
+    performances
     plot(prediction.map)
     
   } else if (doHabitat == TRUE & predict.all.map == FALSE){
     
-    hab.perf = read.csv(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv"))
+    testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
+    training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
+    hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
+    performances = testing[,c("habitat","TSS")]
+    colnames(performances) = c("habitat", "TSS_testing_part")
+    performances$TSS_training_part = training$TSS
+    performances$TSS_final = hab.perf[1,1:length(studied.habitat$habitat)]
     
     cat("\n ---------- HABITAT : \n")
-    cat(paste0("\n Habitat performance :", hab.perf))
+    cat("\n Habitat performance : \n")
+    performances
     
   } else{
     
