@@ -673,10 +673,11 @@ POST_FATE.validation = function(name.simulation
     testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
     training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
     hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
+    hab.perf = as.data.frame(t(hab.perf))
     performances = testing[,c("habitat","TSS")]
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
-    performances$TSS_final = hab.perf[1,1:length(studied.habitat$habitat)]
+    performances$TSS_final = hab.perf[1:length(studied.habitat),1]
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
@@ -690,10 +691,11 @@ POST_FATE.validation = function(name.simulation
     testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
     training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
     hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
+    hab.perf = as.data.frame(t(hab.perf))
     performances = testing[,c("habitat","TSS")]
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
-    performances$TSS_final = hab.perf[1,1:length(studied.habitat$habitat)]
+    performances$TSS_final = hab.perf[1:length(studied.habitat),1]
     
     cat("\n ---------- HABITAT : \n")
     cat("\n Habitat performance : \n")
