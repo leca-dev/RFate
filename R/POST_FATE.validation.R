@@ -678,6 +678,7 @@ POST_FATE.validation = function(name.simulation
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
     performances$TSS_final = hab.perf[1:length(studied.habitat),1]
+    performances = as.data.frame(performances)
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
@@ -696,6 +697,7 @@ POST_FATE.validation = function(name.simulation
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
     performances$TSS_final = hab.perf[1:length(studied.habitat),1]
+    performances = as.data.frame(performances)
     
     cat("\n ---------- HABITAT : \n")
     cat("\n Habitat performance : \n")
