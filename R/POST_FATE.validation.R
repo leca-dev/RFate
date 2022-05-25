@@ -683,7 +683,7 @@ POST_FATE.validation = function(name.simulation
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
     cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by the simulations \n"))
     cat("\n Habitat performance : \n")
-    performances
+    cat(performances)
     plot(prediction.map)
     
   } else if (doHabitat == TRUE & predict.all.map == FALSE){
@@ -699,7 +699,7 @@ POST_FATE.validation = function(name.simulation
     
     cat("\n ---------- HABITAT : \n")
     cat("\n Habitat performance : \n")
-    performances
+    cat(performances)
     
   } else{
     
