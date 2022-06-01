@@ -164,6 +164,7 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   doHabitat <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">releves.PFG</span>,
   <span class="va">hab.obs</span>,
+  hab.obs.RF <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">studied.habitat</span>,
   predict.all.map <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">seed</span>,
@@ -197,13 +198,16 @@ parallelize the computation of prediction performance for habitat &amp; richness
 <dd><p><code>Logical</code>. Default <code>TRUE</code>. <br> If <code>TRUE</code>, habitat validation module is activated,
 if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dt>releves.PFG</dt>
-<dd><p>A <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, which contain respectively ID, x coordinate &amp; y coordinate of each site of the study area. <br><code>abund</code> &amp; <code>PFG</code> which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+<dd><p>A <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, which contain respectively ID, x coordinate &amp; y coordinate of each site of the study area. <br><code>abund</code> &amp; <code>PFG</code> which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence)
 &amp; name of PFG.
 <br> (<em>and optionally, <code>strata</code></em>) which contains the number of strata at each the abundance is noted. 
 (habitat &amp; PFG composition validation).</p></dd>
 <dt>hab.obs</dt>
-<dd><p>A raster map of the extended studied map in the simulation, with same projection 
-&amp; resolution than simulation mask (habitat &amp; PFG composition validation).</p></dd>
+<dd><p>A raster map of the studied map in the simulation, with same projection 
+&amp; resolution than simulation mask, use to extract habitat information (habitat &amp; PFG composition validation).</p></dd>
+<dt>hab.obs.RF</dt>
+<dd><p>(<code>Optional</code>). Default <code>NULL</code>. <br> A raster map of the studied map, with same projection 
+than simulation mask but different resolution, use to give habitat information to build the random forest model.</p></dd>
 <dt>studied.habitat</dt>
 <dd><p>A <code>data.frame</code> with 2 columns : 
 <br><code>ID</code> which contains the habitat ID, &amp; <code>habitat</code> which contains the habitat names which will be taken into account 

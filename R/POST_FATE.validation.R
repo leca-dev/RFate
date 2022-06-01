@@ -28,12 +28,14 @@
 ##' if \code{FALSE}, habitat validation module is disabled.
 ##' @param releves.PFG A \code{data.frame} with at least 5 columns : \cr
 ##' \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence)
 ##' & name of PFG.
 ##' \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
 ##' (habitat & PFG composition validation).
-##' @param hab.obs A raster map of the extended studied map in the simulation, with same projection 
-##' & resolution than simulation mask (habitat & PFG composition validation).
+##' @param hab.obs A raster map of the studied map in the simulation, with same projection 
+##' & resolution than simulation mask, use to extract habitat information (habitat & PFG composition validation).
+##' @param hab.obs.RF (\code{Optional}). Default \code{NULL}. \cr A raster map of the studied map, with same projection 
+##' than simulation mask but different resolution, use to give habitat information to build the random forest model.
 ##' @param studied.habitat A \code{data.frame} with 2 columns : 
 ##' \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
 ##' for the validation (habitat & PFG composition validation).
@@ -180,6 +182,7 @@ POST_FATE.validation = function(name.simulation
                                 , doHabitat = TRUE
                                 , releves.PFG
                                 , hab.obs
+                                , hab.obs.RF = NULL
                                 , studied.habitat
                                 , predict.all.map = FALSE
                                 , seed
@@ -235,6 +238,11 @@ POST_FATE.validation = function(name.simulation
     
     # Habitat map
     hab.obs = hab.obs
+    if(!is.null(hab.obs.RF)){
+      hab.obs.RF = hab.obs.RF
+    }else {
+      hab.obs.RF = NULL
+    }
     
     # Simulation mask
     name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
@@ -263,6 +271,13 @@ POST_FATE.validation = function(name.simulation
     if(!all(origin(simulation.map) == origin(habitat.FATE.map))){
       cat("\n setting origin habitat.FATE.map to match simulation.map \n")
       raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
+    }
+    
+    # Check hab.obs.RF map
+    if(!is.null(hab.obs.RF)){
+      if(!compareCRS(simulation.map, hab.obs.RF) & !compareCRS(hab.obs, hab.obs.RF)){
+        stop(paste0("Projection of hab.obs.RF map does not match with simulation mask. Please reproject hab.obs.RF map with projection of ", names(simulation.map)))
+      }
     }
     
     # Check validation mask
@@ -319,15 +334,25 @@ POST_FATE.validation = function(name.simulation
       
       RF.param = list(share.training = 0.7, ntree = 500)
       
-      RF.model = train_RF_habitat(releves.PFG = releves.PFG
-                                  , hab.obs = hab.obs
-                                  , external.training.mask = NULL
-                                  , studied.habitat = studied.habitat
-                                  , RF.param = RF.param
-                                  , output.path = output.path
-                                  , perStrata = perStrata
-                                  , sim.version = sim.version
-                                  , seed = seed)
+      if(is.null(hab.obs.RF)){
+        RF.model = train_RF_habitat(releves.PFG = releves.PFG
+                                    , hab.obs = hab.obs
+                                    , external.training.mask = NULL
+                                    , studied.habitat = studied.habitat
+                                    , RF.param = RF.param
+                                    , output.path = output.path
+                                    , perStrata = perStrata
+                                    , seed = seed)
+      }else if(!is.null(hab.obs.RF)){
+        RF.model = train_RF_habitat(releves.PFG = releves.PFG
+                                    , hab.obs = hab.obs.RF
+                                    , external.training.mask = NULL
+                                    , studied.habitat = studied.habitat
+                                    , RF.param = RF.param
+                                    , output.path = output.path
+                                    , perStrata = perStrata
+                                    , seed = seed)
+      }
       
       cat("> Done ! \n")
       

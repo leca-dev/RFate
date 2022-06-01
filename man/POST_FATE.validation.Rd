@@ -13,6 +13,7 @@ POST_FATE.validation(
   doHabitat = TRUE,
   releves.PFG,
   hab.obs,
+  hab.obs.RF = NULL,
   studied.habitat,
   predict.all.map = FALSE,
   seed,
@@ -45,13 +46,16 @@ if \code{FALSE}, habitat validation module is disabled.}
 
 \item{releves.PFG}{A \code{data.frame} with at least 5 columns : \cr
 \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
+\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence)
 & name of PFG.
 \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
 (habitat & PFG composition validation).}
 
-\item{hab.obs}{A raster map of the extended studied map in the simulation, with same projection 
-& resolution than simulation mask (habitat & PFG composition validation).}
+\item{hab.obs}{A raster map of the studied map in the simulation, with same projection 
+& resolution than simulation mask, use to extract habitat information (habitat & PFG composition validation).}
+
+\item{hab.obs.RF}{(\code{Optional}). Default \code{NULL}. \cr A raster map of the studied map, with same projection 
+than simulation mask but different resolution, use to give habitat information to build the random forest model.}
 
 \item{studied.habitat}{A \code{data.frame} with 2 columns : 
 \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 

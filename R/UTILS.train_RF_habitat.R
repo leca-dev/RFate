@@ -28,7 +28,6 @@
 ##' @param perStrata \code{Logical}. 
 ##' \cr If \code{TRUE}, the PFG abundance is defined
 ##' by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.
-##' @param sim.version A character vector with the name(s) of the simulation(s) to validate.
 ##' 
 ##' @details 
 ##' 
@@ -70,7 +69,6 @@ train_RF_habitat = function(releves.PFG
                             , RF.param
                             , output.path
                             , perStrata
-                            , sim.version
                             , seed)
 {
   

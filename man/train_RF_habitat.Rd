@@ -12,7 +12,6 @@ train_RF_habitat(
   RF.param,
   output.path,
   perStrata,
-  sim.version,
   seed
 )
 }
@@ -42,8 +41,6 @@ for the validation (habitat & PFG composition validation).}
 \item{perStrata}{\code{Logical}. 
 \cr If \code{TRUE}, the PFG abundance is defined
 by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.}
-
-\item{sim.version}{A character vector with the name(s) of the simulation(s) to validate.}
 }
 \value{
 2 prepared observed releves files are created before the building of the random
