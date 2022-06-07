@@ -16,7 +16,8 @@ POST_FATE.validation(
   hab.obs.RF = NULL,
   studied.habitat,
   predict.all.map = FALSE,
-  seed,
+  RF.seed,
+  RF.training = 0.7,
   validation.mask = NULL,
   list.strata.simulations = NULL,
   doComposition = TRUE,
@@ -64,7 +65,9 @@ for the validation (habitat & PFG composition validation).}
 \item{predict.all.map}{Default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
 over the whole map and will provide a prediction map.}
 
-\item{seed}{\code{Numerical}. Number of seeds to set in order to generate a Random Forest model.}
+\item{RF.seed}{\code{Numerical}. Number of seeds to set in order to generate a \code{Random Forest} model.}
+
+\item{RF.training}{Default \code{0.7}. Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.}
 
 \item{validation.mask}{(\code{Optional}). Default \code{NULL}. \cr A raster mask (with 0 or 1 in each pixel) that specified on 
 which pixels the performance of the prediction will be compute, with same projection & resolution than simulation mask 

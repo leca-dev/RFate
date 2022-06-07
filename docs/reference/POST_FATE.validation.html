@@ -167,7 +167,8 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   hab.obs.RF <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">studied.habitat</span>,
   predict.all.map <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">seed</span>,
+  <span class="va">RF.seed</span>,
+  RF.training <span class="op">=</span> <span class="fl">0.7</span>,
   validation.mask <span class="op">=</span> <span class="cn">NULL</span>,
   list.strata.simulations <span class="op">=</span> <span class="cn">NULL</span>,
   doComposition <span class="op">=</span> <span class="cn">TRUE</span>,
@@ -215,8 +216,10 @@ for the validation (habitat &amp; PFG composition validation).</p></dd>
 <dt>predict.all.map</dt>
 <dd><p>Default <code>FALSE</code>. <br> If <code>TRUE</code>, the function will compute habitat prediction
 over the whole map and will provide a prediction map.</p></dd>
-<dt>seed</dt>
-<dd><p><code>Numerical</code>. Number of seeds to set in order to generate a Random Forest model.</p></dd>
+<dt>RF.seed</dt>
+<dd><p><code>Numerical</code>. Number of seeds to set in order to generate a <code>Random Forest</code> model.</p></dd>
+<dt>RF.training</dt>
+<dd><p>Default <code>0.7</code>. Part of the data used for training a <code>Random Forest</code> model on <code>releves.PFG</code> data.</p></dd>
 <dt>validation.mask</dt>
 <dd><p>(<code>Optional</code>). Default <code>NULL</code>. <br> A raster mask (with 0 or 1 in each pixel) that specified on 
 which pixels the performance of the prediction will be compute, with same projection &amp; resolution than simulation mask 
