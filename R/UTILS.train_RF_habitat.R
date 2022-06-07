@@ -9,25 +9,24 @@
 ##' @description This script is designed to produce a random forest model
 ##' trained on observed PFG abundance and a map of observed habitat.
 ##' 
-##' @param releves.PFG A \code{data.frame} with at least 5 columns : \cr
-##' \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
-##' & name of PFG.
-##' \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
-##' (habitat & PFG composition validation).
-##' @param hab.obs A raster map of the observed habitat in the extended studied area.
-##' @param external.training.mask default \code{NULL}. 
-##' \cr (optional) A raster map for keeping releves data only in a specific area.
-##' @param studied.habitat A \code{data.frame} with 2 columns : 
-##' \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
-##' for the validation (habitat & PFG composition validation).
-##' @param RF.param A \code{list} of 2 parameters to fit a random forest model : \cr
+##' @param releves.PFG a \code{data.frame} with at least 5 columns : \cr
+##' \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
+##' \cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+##' \cr (see \href{train_RF_habitat#details}{\code{Details}})
+##' @param hab.obs.RF (optional) default \code{NULL].
+##' \cr If habitat ID is not provided in \code{releves.PFG}, a \code{raster} map of the observed habitat in the studied area.
+##' @param external.training.mask (optional) default \code{NULL}. 
+##' \cr a \code{raster} map for keeping releves data only in a specific area.
+##' @param studied.habitat a \code{data.frame} with 2 columns : \cr
+##' \code{ID} ,\code{habitat}
+##' \cr (see \href{train_RF_habitat#details}{\code{Details}})
+##' @param RF.param a \code{list} of 2 parameters to fit a random forest model : \cr
 ##' \code{share.training} defines the size of the training part of the data base. \cr
 ##' \code{ntree} is the number of trees build by the algorithm, it allows to reduce the prediction error.
-##' @param output.path Access path to the folder where output files will be created.
-##' @param perStrata \code{Logical}. 
-##' \cr If \code{TRUE}, the PFG abundance is defined
-##' by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.
+##' @param output.path access path to the folder where output files will be created.
+##' @param perStrata (\code{Logical}) default \code{FALSE}. 
+##' \cr If \code{TRUE}, the PFG abundance must be defined
+##' by strata in each site. If \code{FALSE}, PFG abundance must be defined for all strata.
 ##' 
 ##' @details 
 ##' 
@@ -63,19 +62,39 @@
 
 
 train_RF_habitat = function(releves.PFG
-                            , hab.obs
+                            , hab.obs.RF = NULL
                             , external.training.mask = NULL
-                            , studied.habitat = NULL
+                            , studied.habitat
                             , RF.param
                             , output.path
-                            , perStrata
+                            , perStrata = FALSE
                             , seed)
 {
   
   #############################################################################
   
+  ## CHECK studied.habitat data frame
+  if (.testParam_notDf(studied.habitat))
+  {
+    .stopMessage_beDataframe(studied.habitat)
+  } else
+  {
+    studied.habitat = as.data.frame(studied.habitat)
+    if (nrow(studied.habitat) == 0 || ncol(studied.habitat) != 2)
+    {
+      .stopMessage_numRowCol("studied.habitat", c("ID", "habitat"))
+    }
+    if (!is.numeric(studied.habitat$ID))
+    {
+      stop("Habitat ID in studied.habitat are not in the right format. Please make sure you have numeric values")
+    }
+    if (!is.character(studied.habitat$habitat))
+    {
+      stop("Habitat name in studied.habitat are not in the right format. Please make sure you have character values")
+    }
+  }
   ## CHECK parameter releves.PFG
-  if(perStrata == TRUE)
+  if(perStrata == TRUE & !is.null(hab.obs.RF))
   {
     if (.testParam_notDf(releves.PFG))
     {
@@ -96,7 +115,7 @@ train_RF_habitat = function(releves.PFG
         stop("strata definition in releves.PFG is not in the right format. Please make sure you have a character or numeric values")
       }
     }
-  }else if(perStrata == FALSE)
+  }else if(perStrata == FALSE & !is.null(hab.obs.RF))
   {
     if (.testParam_notDf(releves.PFG))
     {
@@ -113,8 +132,53 @@ train_RF_habitat = function(releves.PFG
         stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
       }
     }
+  }else if(perStrata == TRUE & is.null(hab.obs.RF))
+  {
+    if (.testParam_notDf(releves.PFG))
+    {
+      .stopMessage_beDataframe("releves.PFG")
+    } else
+    {
+      releves.PFG = as.data.frame(releves.PFG)
+      if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 7)
+      {
+        .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "strata", "abund", "x", "y", "code.habitat"))
+      }
+      if (!is.numeric(releves.PFG$site))
+      {
+        stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
+      }
+      if (!is.character(releves.PFG$strata) & !is.numeric(releves.PFG$strata))
+      {
+        stop("strata definition in releves.PFG is not in the right format. Please make sure you have character or numeric values")
+      }
+      if (!is.numeric(releves.PFG$code.habitat))
+      {
+        stop("Code.habitat values in releves.PFG are note in the right format. Please make sure you have numeric values")
+      }
+    }
+  }else if(perStrata == FALSE & is.null(hab.obs.RF))
+  {
+    if (.testParam_notDf(releves.PFG))
+    {
+      .stopMessage_beDataframe("releves.PFG")
+    } else
+    {
+      releves.PFG = as.data.frame(releves.PFG)
+      if (nrow(releves.PFG) == 0 || ncol(releves.PFG) != 6)
+      {
+        .stopMessage_numRowCol("releves.PFG", c("site", "PFG", "abund", "x", "y", "code.habitat"))
+      }
+      if (!is.numeric(releves.PFG$site))
+      {
+        stop("Sites in releves.PFG are not in the right format. Please make sure you have numeric values")
+      }
+      if (!is.numeric(releves.PFG$code.habitat))
+      {
+        stop("Code.habitat values in releves.PFG are note in the right format. Please make sure you have numeric values")
+      }
+    }
   }
-  
   
   # 1. Compute relative abundance metric
   ######################################
@@ -130,13 +194,21 @@ train_RF_habitat = function(releves.PFG
   } else if (is.numeric(releves.PFG$abund)) #absolute abundance
   {
     releves.PFG$coverage = releves.PFG$abund
+  }else
+  {
+    stop("Abund data in releves.PFG must be Braun-Blanquet abundance, presences absence or absolute abundance values.")
   }
   
-  if (perStrata == TRUE) {
+  if (perStrata == TRUE & !is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
-  } else if (perStrata == FALSE) {
+  } else if (perStrata == FALSE & !is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
     mat.PFG.agg$strata = "A" #"A" is for "all". Important to have a single-letter code here (useful to check consistency between relevés strata and model strata)
+  } else if (perStrata = TRUE & is.null(hab.obs.RF)) {
+    mat.PFG.agg = aggregate(coverage ~ site + PFG + strata + code.habitat, data = releves.PFG, FUN = "sum")
+  } else if (perStata = FALSE & is.null(hab.obs.RF)) {
+    mat.PFG.agg = aggregate(coverage ~ site + PFG + code.habitat, data = releves.PFG, FUN = "sum")
+    mat.PFG.agg$strata = "A"
   }
   
   #transformation into a relative metric (here relative.metric is relative coverage)
@@ -163,22 +235,19 @@ train_RF_habitat = function(releves.PFG
   #get habitat code and name
   coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
   mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
-  mat.PFG.agg$code.habitat = extract(x = hab.obs, y = mat.PFG.agg[,c("x", "y")])
-  mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
-  if (nrow(mat.PFG.agg) == 0) {
-    stop("Code habitat vector is empty. Please verify values of your hab.obs map")
+  if(!is.null(hab.obs.RF))
+  {
+    mat.PFG.agg$code.habitat = extract(x = hab.obs.RF, y = mat.PFG.agg[,c("x", "y")])
+    mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
+    if (nrow(mat.PFG.agg) == 0) {
+      stop("Code habitat vector is empty. Please verify values of your hab.obs.RF map")
+    }
   }
   
   #correspondence habitat code/habitat name
-  if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2)
-  {
-    table.habitat.releve = studied.habitat
-    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
-    mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-  } else
-  {
-    stop("Habitat definition in studied.habitat is not correct")
-  }
+  table.habitat.releve = studied.habitat
+  mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
+  mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
   
   #(optional) keep only releves data in a specific area
   if (!is.null(external.training.mask)) {

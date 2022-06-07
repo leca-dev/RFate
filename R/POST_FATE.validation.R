@@ -16,56 +16,55 @@
 ##' \cr \code{PFG Richness} : Computes the PFG richness over the whole simulation area 
 ##' for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.
 ##' 
-##' @param name.simulation Simulation folder name.
-##' @param sim.version A character vector with the name(s) of the simulation(s) to validate.
-##' @param year Year of simulation for validation.
-##' @param perStrata \code{Logical}. \cr Default \code{FALSE}. If \code{TRUE}, PFG abundance is defined by strata. 
-##' If \code{FALSE}, PFG abundance defined for all strata (habitat & PFG composition & PFG richness validation).
-##' @param opt.no_CPU Default \code{1}. \cr The number of resources that can be used to 
+##' @param name.simulation a \code{string} corresponding to the simulation folder name.
+##' @param sim.version a \code{character} vector with the name(s) of the simulation(s) to validate.
+##' @param year an \code{integer} corresponding to the year of simulation for validation.
+##' @param perStrata (\code{Logical}) Default \code{FALSE}. \cr 
+##' If \code{TRUE}, habitat & PFG composition are computed with PFG abundance defined by strata. 
+##' If \code{FALSE}, habitat & PFG composition are computed with PFG abundance defined for all strata.
+##' @param opt.no_CPU default \code{1}. \cr An \code{integer} corresponding to the number of resources that can be used to 
 ##' parallelize the computation of prediction performance for habitat & richness validation.
 ##' 
-##' @param doHabitat \code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
+##' @param doHabitat (\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
 ##' if \code{FALSE}, habitat validation module is disabled.
-##' @param releves.PFG A \code{data.frame} with at least 5 columns : \cr
-##' \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence)
-##' & name of PFG.
-##' \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
-##' (habitat & PFG composition validation).
-##' @param hab.obs A raster map of the studied map in the simulation, with same projection 
-##' & resolution than simulation mask, use to extract habitat information (habitat & PFG composition validation).
-##' @param hab.obs.RF (\code{Optional}). Default \code{NULL}. \cr A raster map of the studied map, with same projection 
-##' than simulation mask but different resolution, use to give habitat information to build the random forest model.
-##' @param studied.habitat A \code{data.frame} with 2 columns : 
-##' \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
-##' for the validation (habitat & PFG composition validation).
-##' @param predict.all.map Default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
+##' @param releves.PFG a \code{data.frame} with at least 5 columns : \cr
+##' \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
+##' \cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+##' \cr (see \href{POST_FATE.validation#details}{\code{Details}})
+##' \cr (habitat & PFG composition validation).
+##' @param hab.obs a \code{raster} map of the studied map in the simulation, with same projection 
+##' & resolution than simulation mask, used to predict habitat & PFG composition.
+##' @param studied.habitat a \code{data.frame} with 2 columns : \cr
+##' \code{ID} ,\code{habitat}
+##' \cr (see \href{POST_FATE.validation#details}{\code{Details}})
+##' \cr (habitat & PFG composition validation).
+##' @param predict.all.map (\code{Logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
 ##' over the whole map and will provide a prediction map.
-##' @param RF.seed \code{Numerical}. Number of seeds to set in order to generate a \code{Random Forest} model.
-##' @param RF.training Default \code{0.7}. Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.
-##' @param validation.mask (\code{Optional}). Default \code{NULL}. \cr A raster mask (with 0 or 1 in each pixel) that specified on 
+##' @param RF.seed an \code{integer} corresponding to the number of seeds to set in order to generate a \code{Random Forest} model.
+##' @param RF.training default \code{0.7}. \cr Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.
+##' @param validation.mask (\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
 ##' which pixels the performance of the prediction will be compute, with same projection & resolution than simulation mask 
 ##' (habitat & PFG composition validation). \cr
 ##' If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map)
-##' @param list.strata.simulations (\code{Optional}). Default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
+##' @param list.strata.simulations (\code{optional}) default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
 ##' a character vector which contain \code{FATE} strata definition and correspondence with observed strata definition. 
 ##' If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.
 ##' 
-##' @param doComposition \code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
+##' @param doComposition (\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
 ##' if \code{FALSE}, PFG composition validation module is disabled.
-##' @param PFG.considered_PFG.compo A character vector of the list of PFG considered
+##' @param PFG.considered_PFG.compo a \code{character} vector of the list of PFG considered
 ##' in the validation (PFG composition validation).
-##' @param habitat.considered_PFG.compo A character vector of the list of habitat(s)
+##' @param habitat.considered_PFG.compo a \code{character} vector of the list of habitat(s)
 ##' considered in the validation (PFG composition validation).
-##' @param strata.considered_PFG.compo Default \code{"A"}. \cr If \code{perStrata} = \code{FALSE}, a character vector with value "A" 
-##' (selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a character 
+##' @param strata.considered_PFG.compo default \code{"A"}. \cr If \code{perStrata} = \code{FALSE}, a \code{character} vector with value "A" 
+##' (selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a \code{character} 
 ##' vector with at least one of the observed strata (PFG composition validation).
 ##' 
-##' @param doRichness \code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
+##' @param doRichness (\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
 ##' if \code{FALSE}, PFG richness validation module is disabled.
-##' @param list.PFG A character vector which contain all the PFGs taken account in
+##' @param list.PFG a \code{character} vector which contain all the PFGs taken account in
 ##' the simulation and observed in the simulation area (PFG richness validation).
-##' @param exclude.PFG (\code{Optional}). Default \code{NULL}. \cr A character vector containing the names 
+##' @param exclude.PFG (\code{optional}) default \code{NULL}. \cr a \code{character} vector containing the names 
 ##' of the PFG you want to exclude from the analysis (PFG richness validation).
 ##' 
 ##' @details 
@@ -183,7 +182,6 @@ POST_FATE.validation = function(name.simulation
                                 , doHabitat = TRUE
                                 , releves.PFG
                                 , hab.obs
-                                , hab.obs.RF = NULL
                                 , studied.habitat
                                 , predict.all.map = FALSE
                                 , RF.seed
@@ -241,11 +239,6 @@ POST_FATE.validation = function(name.simulation
     
     # Habitat map
     hab.obs = hab.obs
-    if(!is.null(hab.obs.RF)){
-      hab.obs.RF = hab.obs.RF
-    }else {
-      hab.obs.RF = NULL
-    }
     
     # Simulation mask
     name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
@@ -276,13 +269,6 @@ POST_FATE.validation = function(name.simulation
       raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
     }
     
-    # Check hab.obs.RF map
-    if(!is.null(hab.obs.RF)){
-      if(!compareCRS(simulation.map, hab.obs.RF) & !compareCRS(hab.obs, hab.obs.RF)){
-        stop(paste0("Projection of hab.obs.RF map does not match with simulation mask. Please reproject hab.obs.RF map with projection of ", names(simulation.map)))
-      }
-    }
-    
     # Check validation mask
     if(!is.null(validation.mask)){
       if(!compareCRS(simulation.map, validation.mask) | !all(res(validation.mask)==res(simulation.map))){
@@ -301,10 +287,24 @@ POST_FATE.validation = function(name.simulation
     # Check studied habitat
     if(is.null(studied.habitat)){
       stop("studied.habitat vector is null, please specify at least one habitat which will be taken into account in the validation")
-    } else if(is.data.frame(studied.habitat)){
-      studied.habitat = studied.habitat # if a data frame with habitat names and codes, the function will study only the habitats in the vector
-    } else{
-      stop("studied.habitat is not a data frame")
+    } else if (.testParam_notDf(studied.habitat))
+    {
+      .stopMessage_beDataframe(studied.habitat)
+    } else
+    {
+      studied.habitat = as.data.frame(studied.habitat)
+      if (nrow(studied.habitat) == 0 || ncol(studied.habitat) != 2)
+      {
+        .stopMessage_numRowCol("studied.habitat", c("ID", "habitat"))
+      }
+      if (!is.numeric(studied.habitat$ID))
+      {
+        stop("Habitat ID in studied.habitat are not in the right format. Please make sure you have numeric values")
+      }
+      if (!is.character(studied.habitat$habitat))
+      {
+        stop("Habitat name in studied.habitat are not in the right format. Please make sure you have character values")
+      }
     }
     
     # check if strata definition used in the RF model is the same as the one used to analyze FATE output
@@ -337,25 +337,13 @@ POST_FATE.validation = function(name.simulation
       
       RF.param = list(share.training = RF.training, ntree = 500)
       
-      if(is.null(hab.obs.RF)){
-        RF.model = train_RF_habitat(releves.PFG = releves.PFG
-                                    , hab.obs = hab.obs
-                                    , external.training.mask = NULL
-                                    , studied.habitat = studied.habitat
-                                    , RF.param = RF.param
-                                    , output.path = output.path
-                                    , perStrata = perStrata
-                                    , seed = RF.seed)
-      }else if(!is.null(hab.obs.RF)){
-        RF.model = train_RF_habitat(releves.PFG = releves.PFG
-                                    , hab.obs = hab.obs.RF
-                                    , external.training.mask = NULL
-                                    , studied.habitat = studied.habitat
-                                    , RF.param = RF.param
-                                    , output.path = output.path
-                                    , perStrata = perStrata
-                                    , seed = RF.seed)
-      }
+      RF.model = train_RF_habitat(releves.PFG = releves.PFG
+                                  , hab.obs.RF = habitat.FATE.map
+                                  , studied.habitat = studied.habitat
+                                  , RF.param = RF.param
+                                  , output.path = output.path
+                                  , perStrata = perStrata
+                                  , seed = RF.seed)
       
       cat("> Done ! \n")
       
