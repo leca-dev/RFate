@@ -234,9 +234,13 @@ train_RF_habitat = function(releves.PFG
   
   #get habitat code and name
   coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
-  mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
+  if(is.null(hab.obs.RF))
+  {
+    mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y","code.habitat")], by = "site")
+  }
   if(!is.null(hab.obs.RF))
   {
+    mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
     mat.PFG.agg$code.habitat = extract(x = hab.obs.RF, y = mat.PFG.agg[,c("x", "y")])
     mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
     if (nrow(mat.PFG.agg) == 0) {
