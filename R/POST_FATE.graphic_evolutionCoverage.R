@@ -112,7 +112,7 @@
 ##' @importFrom ggplot2 ggplot aes_string 
 ##' geom_line 
 ##' scale_color_manual
-##' facet_wrap labs theme element_text element_blank
+##' facet_wrap labs theme element_text element_blank geom_ribbon
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##'
 ## END OF HEADER ###############################################################
