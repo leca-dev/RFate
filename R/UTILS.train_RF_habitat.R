@@ -204,9 +204,9 @@ train_RF_habitat = function(releves.PFG
   } else if (perStrata == FALSE & !is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
     mat.PFG.agg$strata = "A"
-  } else if (perStrata = TRUE & is.null(hab.obs.RF)) {
+  } else if (perStrata == TRUE & is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata + code.habitat, data = releves.PFG, FUN = "sum")
-  } else if (perStata = FALSE & is.null(hab.obs.RF)) {
+  } else if (perStrata == FALSE & is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + code.habitat, data = releves.PFG, FUN = "sum")
     mat.PFG.agg$strata = "A"
   }
