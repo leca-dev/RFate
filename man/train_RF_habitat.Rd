@@ -6,41 +6,37 @@
 \usage{
 train_RF_habitat(
   releves.PFG,
-  hab.obs,
+  hab.obs.RF = NULL,
   external.training.mask = NULL,
-  studied.habitat = NULL,
+  studied.habitat,
   RF.param,
   output.path,
-  perStrata,
+  perStrata = FALSE,
   seed
 )
 }
 \arguments{
-\item{releves.PFG}{A \code{data.frame} with at least 5 columns : \cr
-\code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
-& name of PFG.
-\cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
-(habitat & PFG composition validation).}
+\item{releves.PFG}{a \code{data.frame} with at least 5 columns : \cr
+\code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
+\cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+\cr (see \href{train_RF_habitat#details}{\code{Details}})}
 
-\item{hab.obs}{A raster map of the observed habitat in the extended studied area.}
+\item{external.training.mask}{(optional) default \code{NULL}. 
+\cr a \code{raster} map for keeping releves data only in a specific area.}
 
-\item{external.training.mask}{default \code{NULL}. 
-\cr (optional) A raster map for keeping releves data only in a specific area.}
+\item{studied.habitat}{a \code{data.frame} with 2 columns : \cr
+\code{ID} ,\code{habitat}
+\cr (see \href{train_RF_habitat#details}{\code{Details}})}
 
-\item{studied.habitat}{A \code{data.frame} with 2 columns : 
-\cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
-for the validation (habitat & PFG composition validation).}
-
-\item{RF.param}{A \code{list} of 2 parameters to fit a random forest model : \cr
+\item{RF.param}{a \code{list} of 2 parameters to fit a random forest model : \cr
 \code{share.training} defines the size of the training part of the data base. \cr
 \code{ntree} is the number of trees build by the algorithm, it allows to reduce the prediction error.}
 
-\item{output.path}{Access path to the folder where output files will be created.}
+\item{output.path}{access path to the folder where output files will be created.}
 
-\item{perStrata}{\code{Logical}. 
-\cr If \code{TRUE}, the PFG abundance is defined
-by strata in each site. If \code{FALSE}, PFG abundance is defined for all strata.}
+\item{perStrata}{(\code{Logical}) default \code{FALSE}. 
+\cr If \code{TRUE}, the PFG abundance must be defined
+by strata in each site. If \code{FALSE}, PFG abundance must be defined for all strata.}
 }
 \value{
 2 prepared observed releves files are created before the building of the random

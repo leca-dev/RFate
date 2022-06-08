@@ -164,7 +164,6 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   doHabitat <span class="op">=</span> <span class="cn">TRUE</span>,
   <span class="va">releves.PFG</span>,
   <span class="va">hab.obs</span>,
-  hab.obs.RF <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">studied.habitat</span>,
   predict.all.map <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">RF.seed</span>,
@@ -184,72 +183,70 @@ for a <code>FATE</code> simulation and computes the difference between observed 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>name.simulation</dt>
-<dd><p>Simulation folder name.</p></dd>
+<dd><p>a <code>string</code> corresponding to the simulation folder name.</p></dd>
 <dt>sim.version</dt>
-<dd><p>A character vector with the name(s) of the simulation(s) to validate.</p></dd>
+<dd><p>a <code>character</code> vector with the name(s) of the simulation(s) to validate.</p></dd>
 <dt>year</dt>
-<dd><p>Year of simulation for validation.</p></dd>
+<dd><p>an <code>integer</code> corresponding to the year of simulation for validation.</p></dd>
 <dt>perStrata</dt>
-<dd><p><code>Logical</code>. <br> Default <code>FALSE</code>. If <code>TRUE</code>, PFG abundance is defined by strata. 
-If <code>FALSE</code>, PFG abundance defined for all strata (habitat &amp; PFG composition &amp; PFG richness validation).</p></dd>
+<dd><p>(<code>Logical</code>) Default <code>FALSE</code>. <br> 
+If <code>TRUE</code>, habitat &amp; PFG composition are computed with PFG abundance defined by strata. 
+If <code>FALSE</code>, habitat &amp; PFG composition are computed with PFG abundance defined for all strata.</p></dd>
 <dt>opt.no_CPU</dt>
-<dd><p>Default <code>1</code>. <br> The number of resources that can be used to 
+<dd><p>default <code>1</code>. <br> An <code>integer</code> corresponding to the number of resources that can be used to 
 parallelize the computation of prediction performance for habitat &amp; richness validation.</p></dd>
 <dt>doHabitat</dt>
-<dd><p><code>Logical</code>. Default <code>TRUE</code>. <br> If <code>TRUE</code>, habitat validation module is activated,
+<dd><p>(<code>Logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, habitat validation module is activated,
 if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dt>releves.PFG</dt>
-<dd><p>A <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, which contain respectively ID, x coordinate &amp; y coordinate of each site of the study area. <br><code>abund</code> &amp; <code>PFG</code> which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence)
-&amp; name of PFG.
-<br> (<em>and optionally, <code>strata</code></em>) which contains the number of strata at each the abundance is noted. 
-(habitat &amp; PFG composition validation).</p></dd>
+<dd><p>a <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, <code>abund</code>, <code>PFG</code>
+<br> (<em>and optionally, <code>strata</code></em>, <code>code.habitat</code>)
+<br> (see <a href="POST_FATE.validation#details"><code>Details</code></a>)
+<br> (habitat &amp; PFG composition validation).</p></dd>
 <dt>hab.obs</dt>
-<dd><p>A raster map of the studied map in the simulation, with same projection 
-&amp; resolution than simulation mask, use to extract habitat information (habitat &amp; PFG composition validation).</p></dd>
-<dt>hab.obs.RF</dt>
-<dd><p>(<code>Optional</code>). Default <code>NULL</code>. <br> A raster map of the studied map, with same projection 
-than simulation mask but different resolution, use to give habitat information to build the random forest model.</p></dd>
+<dd><p>a <code>raster</code> map of the studied map in the simulation, with same projection 
+&amp; resolution than simulation mask, used to predict habitat &amp; PFG composition.</p></dd>
 <dt>studied.habitat</dt>
-<dd><p>A <code>data.frame</code> with 2 columns : 
-<br><code>ID</code> which contains the habitat ID, &amp; <code>habitat</code> which contains the habitat names which will be taken into account 
-for the validation (habitat &amp; PFG composition validation).</p></dd>
+<dd><p>a <code>data.frame</code> with 2 columns : <br><code>ID</code> ,<code>habitat</code>
+<br> (see <a href="POST_FATE.validation#details"><code>Details</code></a>)
+<br> (habitat &amp; PFG composition validation).</p></dd>
 <dt>predict.all.map</dt>
-<dd><p>Default <code>FALSE</code>. <br> If <code>TRUE</code>, the function will compute habitat prediction
+<dd><p>(<code>Logical</code>) default <code>FALSE</code>. <br> If <code>TRUE</code>, the function will compute habitat prediction
 over the whole map and will provide a prediction map.</p></dd>
 <dt>RF.seed</dt>
-<dd><p><code>Numerical</code>. Number of seeds to set in order to generate a <code>Random Forest</code> model.</p></dd>
+<dd><p>an <code>integer</code> corresponding to the number of seeds to set in order to generate a <code>Random Forest</code> model.</p></dd>
 <dt>RF.training</dt>
-<dd><p>Default <code>0.7</code>. Part of the data used for training a <code>Random Forest</code> model on <code>releves.PFG</code> data.</p></dd>
+<dd><p>default <code>0.7</code>. <br> Part of the data used for training a <code>Random Forest</code> model on <code>releves.PFG</code> data.</p></dd>
 <dt>validation.mask</dt>
-<dd><p>(<code>Optional</code>). Default <code>NULL</code>. <br> A raster mask (with 0 or 1 in each pixel) that specified on 
+<dd><p>(<code>optional</code>) default <code>NULL</code>. <br> A <code>raster</code> map (with 0 or 1 in each pixel) that specified on 
 which pixels the performance of the prediction will be compute, with same projection &amp; resolution than simulation mask 
 (habitat &amp; PFG composition validation). <br>
 If <code>NULL</code>, the function will take the simulation mask (which means that the performance will be compute over the whole map)</p></dd>
 <dt>list.strata.simulations</dt>
-<dd><p>(<code>Optional</code>). Default <code>NULL</code>. <br> If <code>perStrata</code> = <code>TRUE</code>, 
+<dd><p>(<code>optional</code>) default <code>NULL</code>. <br> If <code>perStrata</code> = <code>TRUE</code>, 
 a character vector which contain <code>FATE</code> strata definition and correspondence with observed strata definition. 
 If <code>perStrata</code> = <code>FALSE</code>, please specify <code>NULL</code> value.</p></dd>
 <dt>doComposition</dt>
-<dd><p><code>Logical</code>. Default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG composition validation module is activated,
+<dd><p>(<code>Logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG composition validation module is activated,
 if <code>FALSE</code>, PFG composition validation module is disabled.</p></dd>
 <dt>PFG.considered_PFG.compo</dt>
-<dd><p>A character vector of the list of PFG considered
+<dd><p>a <code>character</code> vector of the list of PFG considered
 in the validation (PFG composition validation).</p></dd>
 <dt>habitat.considered_PFG.compo</dt>
-<dd><p>A character vector of the list of habitat(s)
+<dd><p>a <code>character</code> vector of the list of habitat(s)
 considered in the validation (PFG composition validation).</p></dd>
 <dt>strata.considered_PFG.compo</dt>
-<dd><p>Default <code>"A"</code>. <br> If <code>perStrata</code> = <code>FALSE</code>, a character vector with value "A" 
-(selection of one or several specific strata disabled). If <code>perStrata</code> = <code>TRUE</code>, a character 
+<dd><p>default <code>"A"</code>. <br> If <code>perStrata</code> = <code>FALSE</code>, a <code>character</code> vector with value "A" 
+(selection of one or several specific strata disabled). If <code>perStrata</code> = <code>TRUE</code>, a <code>character</code> 
 vector with at least one of the observed strata (PFG composition validation).</p></dd>
 <dt>doRichness</dt>
-<dd><p><code>Logical</code>. Default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG richness validation module is activated,
+<dd><p>(<code>Logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG richness validation module is activated,
 if <code>FALSE</code>, PFG richness validation module is disabled.</p></dd>
 <dt>list.PFG</dt>
-<dd><p>A character vector which contain all the PFGs taken account in
+<dd><p>a <code>character</code> vector which contain all the PFGs taken account in
 the simulation and observed in the simulation area (PFG richness validation).</p></dd>
 <dt>exclude.PFG</dt>
-<dd><p>(<code>Optional</code>). Default <code>NULL</code>. <br> A character vector containing the names 
+<dd><p>(<code>optional</code>) default <code>NULL</code>. <br> a <code>character</code> vector containing the names 
 of the PFG you want to exclude from the analysis (PFG richness validation).</p></dd>
 </dl></div>
     <div id="value">

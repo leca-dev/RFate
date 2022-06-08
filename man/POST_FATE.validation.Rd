@@ -13,7 +13,6 @@ POST_FATE.validation(
   doHabitat = TRUE,
   releves.PFG,
   hab.obs,
-  hab.obs.RF = NULL,
   studied.habitat,
   predict.all.map = FALSE,
   RF.seed,
@@ -30,74 +29,72 @@ POST_FATE.validation(
 )
 }
 \arguments{
-\item{name.simulation}{Simulation folder name.}
+\item{name.simulation}{a \code{string} corresponding to the simulation folder name.}
 
-\item{sim.version}{A character vector with the name(s) of the simulation(s) to validate.}
+\item{sim.version}{a \code{character} vector with the name(s) of the simulation(s) to validate.}
 
-\item{year}{Year of simulation for validation.}
+\item{year}{an \code{integer} corresponding to the year of simulation for validation.}
 
-\item{perStrata}{\code{Logical}. \cr Default \code{FALSE}. If \code{TRUE}, PFG abundance is defined by strata. 
-If \code{FALSE}, PFG abundance defined for all strata (habitat & PFG composition & PFG richness validation).}
+\item{perStrata}{(\code{Logical}) Default \code{FALSE}. \cr 
+If \code{TRUE}, habitat & PFG composition are computed with PFG abundance defined by strata. 
+If \code{FALSE}, habitat & PFG composition are computed with PFG abundance defined for all strata.}
 
-\item{opt.no_CPU}{Default \code{1}. \cr The number of resources that can be used to 
+\item{opt.no_CPU}{default \code{1}. \cr An \code{integer} corresponding to the number of resources that can be used to 
 parallelize the computation of prediction performance for habitat & richness validation.}
 
-\item{doHabitat}{\code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
+\item{doHabitat}{(\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
 if \code{FALSE}, habitat validation module is disabled.}
 
-\item{releves.PFG}{A \code{data.frame} with at least 5 columns : \cr
-\code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-\code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence)
-& name of PFG.
-\cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
-(habitat & PFG composition validation).}
+\item{releves.PFG}{a \code{data.frame} with at least 5 columns : \cr
+\code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
+\cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+\cr (see \href{POST_FATE.validation#details}{\code{Details}})
+\cr (habitat & PFG composition validation).}
 
-\item{hab.obs}{A raster map of the studied map in the simulation, with same projection 
-& resolution than simulation mask, use to extract habitat information (habitat & PFG composition validation).}
+\item{hab.obs}{a \code{raster} map of the studied map in the simulation, with same projection 
+& resolution than simulation mask, used to predict habitat & PFG composition.}
 
-\item{hab.obs.RF}{(\code{Optional}). Default \code{NULL}. \cr A raster map of the studied map, with same projection 
-than simulation mask but different resolution, use to give habitat information to build the random forest model.}
+\item{studied.habitat}{a \code{data.frame} with 2 columns : \cr
+\code{ID} ,\code{habitat}
+\cr (see \href{POST_FATE.validation#details}{\code{Details}})
+\cr (habitat & PFG composition validation).}
 
-\item{studied.habitat}{A \code{data.frame} with 2 columns : 
-\cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
-for the validation (habitat & PFG composition validation).}
-
-\item{predict.all.map}{Default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
+\item{predict.all.map}{(\code{Logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
 over the whole map and will provide a prediction map.}
 
-\item{RF.seed}{\code{Numerical}. Number of seeds to set in order to generate a \code{Random Forest} model.}
+\item{RF.seed}{an \code{integer} corresponding to the number of seeds to set in order to generate a \code{Random Forest} model.}
 
-\item{RF.training}{Default \code{0.7}. Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.}
+\item{RF.training}{default \code{0.7}. \cr Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.}
 
-\item{validation.mask}{(\code{Optional}). Default \code{NULL}. \cr A raster mask (with 0 or 1 in each pixel) that specified on 
+\item{validation.mask}{(\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
 which pixels the performance of the prediction will be compute, with same projection & resolution than simulation mask 
 (habitat & PFG composition validation). \cr
 If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map)}
 
-\item{list.strata.simulations}{(\code{Optional}). Default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
+\item{list.strata.simulations}{(\code{optional}) default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
 a character vector which contain \code{FATE} strata definition and correspondence with observed strata definition. 
 If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.}
 
-\item{doComposition}{\code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
+\item{doComposition}{(\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
 if \code{FALSE}, PFG composition validation module is disabled.}
 
-\item{PFG.considered_PFG.compo}{A character vector of the list of PFG considered
+\item{PFG.considered_PFG.compo}{a \code{character} vector of the list of PFG considered
 in the validation (PFG composition validation).}
 
-\item{habitat.considered_PFG.compo}{A character vector of the list of habitat(s)
+\item{habitat.considered_PFG.compo}{a \code{character} vector of the list of habitat(s)
 considered in the validation (PFG composition validation).}
 
-\item{strata.considered_PFG.compo}{Default \code{"A"}. \cr If \code{perStrata} = \code{FALSE}, a character vector with value "A" 
-(selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a character 
+\item{strata.considered_PFG.compo}{default \code{"A"}. \cr If \code{perStrata} = \code{FALSE}, a \code{character} vector with value "A" 
+(selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a \code{character} 
 vector with at least one of the observed strata (PFG composition validation).}
 
-\item{doRichness}{\code{Logical}. Default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
+\item{doRichness}{(\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
 if \code{FALSE}, PFG richness validation module is disabled.}
 
-\item{list.PFG}{A character vector which contain all the PFGs taken account in
+\item{list.PFG}{a \code{character} vector which contain all the PFGs taken account in
 the simulation and observed in the simulation area (PFG richness validation).}
 
-\item{exclude.PFG}{(\code{Optional}). Default \code{NULL}. \cr A character vector containing the names 
+\item{exclude.PFG}{(\code{optional}) default \code{NULL}. \cr a \code{character} vector containing the names 
 of the PFG you want to exclude from the analysis (PFG richness validation).}
 }
 \value{
