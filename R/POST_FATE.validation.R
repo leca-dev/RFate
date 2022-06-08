@@ -228,7 +228,6 @@ POST_FATE.validation = function(name.simulation
     
     # Observed releves data
     releves.PFG = releves.PFG
-    # releves.sites = releves.sites
     if(perStrata==TRUE){
       list.strata.releves = as.character(unique(releves.PFG$strata))
       list.strata.simulations = list.strata.simulations
@@ -337,8 +336,23 @@ POST_FATE.validation = function(name.simulation
       
       RF.param = list(share.training = RF.training, ntree = 500)
       
+      if(perStrata == TRUE & ncol(releves.PFG) == 7)
+      {
+        hab.obs.RF = NULL
+      }else if(perStrata == TRUE & ncol(releves.PFG) == 6)
+      {
+        hab.obs.RF = habitat.FATE.map
+      }else if(perStrata == FALSE & ncol(releves.PFG) == 6)
+      {
+        hab.obs.RF = NULL
+      }else if(perStrata == FALSE & ncol(releves.PFG) == 5)
+      {
+        hab.obs.RF = habitat.FATE.map
+      }else {
+        stop("releves.PFG must be a data frame with at least 5 columns : 'site', 'x', 'y', 'abund', 'PFG' and optionally, 'strata', 'code.habitat'")
+      }
       RF.model = train_RF_habitat(releves.PFG = releves.PFG
-                                  , hab.obs.RF = habitat.FATE.map
+                                  , hab.obs.RF = hab.obs.RF
                                   , studied.habitat = studied.habitat
                                   , RF.param = RF.param
                                   , output.path = output.path
