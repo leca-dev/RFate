@@ -35,19 +35,19 @@ POST_FATE.validation(
 
 \item{year}{an \code{integer} corresponding to the year of simulation for validation.}
 
-\item{perStrata}{(\code{Logical}) Default \code{FALSE}. \cr 
+\item{perStrata}{(\code{logical}) Default \code{FALSE}. \cr 
 If \code{TRUE}, habitat & PFG composition are computed with PFG abundance defined by strata. 
 If \code{FALSE}, habitat & PFG composition are computed with PFG abundance defined for all strata.}
 
 \item{opt.no_CPU}{default \code{1}. \cr An \code{integer} corresponding to the number of resources that can be used to 
 parallelize the computation of prediction performance for habitat & richness validation.}
 
-\item{doHabitat}{(\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
+\item{doHabitat}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
 if \code{FALSE}, habitat validation module is disabled.}
 
 \item{releves.PFG}{a \code{data.frame} with at least 5 columns : \cr
 \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
-\cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+\cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
 \cr (see \href{POST_FATE.validation#details}{\code{Details}})
 \cr (habitat & PFG composition validation).}
 
@@ -59,7 +59,7 @@ if \code{FALSE}, habitat validation module is disabled.}
 \cr (see \href{POST_FATE.validation#details}{\code{Details}})
 \cr (habitat & PFG composition validation).}
 
-\item{predict.all.map}{(\code{Logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
+\item{predict.all.map}{(\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction
 over the whole map and will provide a prediction map.}
 
 \item{RF.seed}{an \code{integer} corresponding to the number of seeds to set in order to generate a \code{Random Forest} model.}
@@ -75,7 +75,7 @@ If \code{NULL}, the function will take the simulation mask (which means that the
 a character vector which contain \code{FATE} strata definition and correspondence with observed strata definition. 
 If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.}
 
-\item{doComposition}{(\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
+\item{doComposition}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
 if \code{FALSE}, PFG composition validation module is disabled.}
 
 \item{PFG.considered_PFG.compo}{a \code{character} vector of the list of PFG considered
@@ -88,7 +88,7 @@ considered in the validation (PFG composition validation).}
 (selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a \code{character} 
 vector with at least one of the observed strata (PFG composition validation).}
 
-\item{doRichness}{(\code{Logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
+\item{doRichness}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
 if \code{FALSE}, PFG richness validation module is disabled.}
 
 \item{list.PFG}{a \code{character} vector which contain all the PFGs taken account in
@@ -98,43 +98,82 @@ the simulation and observed in the simulation area (PFG richness validation).}
 of the PFG you want to exclude from the analysis (PFG richness validation).}
 }
 \value{
-
+\describe{
+  \item{Habitat}{into the \code{name.simulation/VALIDATION/HABITAT/ directory :} \cr
+  1 .csv file containing the prepared observed data. \cr
+  1 .rds file containing the RF model. \cr
+  5 .csv file containing the performance analyzes (confusion matrix and TSS) for the training & 
+  testing parts of the RF model and the final habitat performance. \cr
+  If option selected, 1 .csv file containing the habitat prediction within each pixel, 1 .csv file with 
+  sucess or failure of the prediction and 1 .png prediction map.}
+}
+\describe{
+  \item{PFG Composition}{into the \code{name.simulation/VALIDATION/PFG COMPOSITION/ directory :} \cr
+  1 .csv file containing the proximity between observed and simulated data computed for each PFG/strata/habitat. \cr 
+  1 .csv file containing the observed releves transformed into relative metrics. \cr 
+  1 .csv file containing the final output with the distribution per PFG, strata and habitat.}
+}
+\describe{
+  \item{PFG richness}{into the \code{name.simulation/VALIDATION/PFG RICHNESS/ directory :} \cr
+  1 .csv file of PFG richness in a \code{FATE} simulation. \cr 
+  1 .csv fie of the PFG extinction frequency in a \code{FATE} simulation. \cr 
+  1 .rds file which is the abundance per PFG file.}
+}
 }
 \description{
-This script is designed to compute validation data for : 
-\cr \code{Habitat} : Compares habitat simulations and observations and
+This script is designed to compute validation data for : \cr
+\describe{
+  \item{Habitat}{Compares habitat simulations and observations and
 create a map to visualize this comparison with all the \code{FATE} and
-observed data (if option selected).
-\cr \code{PFG Composition} : Produced a computation of observed distribution 
+observed data (if option selected).}
+  \item{PFG Composition}{Produced a computation of observed distribution 
 of relative abundance in the simulation area and a computation of distance between
-observed and simulated distribution.
-\cr \code{PFG Richness} : Computes the PFG richness over the whole simulation area 
-for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.
+observed and simulated distribution.}
+  \item{PFG Richness}{Computes the PFG richness over the whole simulation area 
+for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.}
+}
 }
 \details{
 \describe{
-  \item{Habitat validation}{The observed habitat is derived from a map of the area or, if defined, 
-from \code{studied.habitat}, the simulated habitat is derived from \code{FATE} simulated relative 
-abundance, based on a random forest algorithm trained on observed releves data (see \code{\link{train_RF_habitat}}). \cr
-To compare observations and simulations, the function computes confusion matrix between 
-observations and predictions and then compute the TSS for each habitat h 
-(number of prediction of habitat h/number of observation of habitat h + number of non-prediction 
-of habitat h/number of non-observation of habitat h). \cr The final metrics this script use is the 
-mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
-habitat distribution. The habitat validation also provides a visual comparison of observed and 
-simulated habitat on the whole studied area, if option selected (see \code{\link{do_habitat_validation}} &
-\code{\link{plot_predicted_habitat}}).} \cr
-  \item{PFG composition validation}{This code firstly run the \code{get_observed_distribution} 
-function in order to have a \code{obs.distri} file which contain the observed distribution 
-per PFG, strata and habitat. This file is also an argument for the \code{do_PFG_composition_validation} 
-function run next. This second sub function provides the computation of distance between observed 
-and simulated distribution.}
-  \item{PFG richness validation}{Firstly, the function updates the \code{list.PFG} with \code{exclude.PFG} vector.
-Then, the script takes the abundance per PFG (and per strata if option selected) file from the 
-results of the \code{FATE} simulation and computes the difference between the \code{list.PFG} 
-and all the PFG which are presents in the abundance file, in order to obtain the PFG richness 
-for a simulation. The function also determine if an observed PFG is missing in the results of the 
-simulation at a specific year.}
+  \item{Habitat validation}{ \cr
+  \describe{
+    \item{Observed habitat}{is provided by the \strong{hab.obs} map. The final set of habitats taken into account
+    in the validation is provided by \strong{studied.habitat} table which contains 
+    all the \strong{habitats}, with their corresponding \strong{ID}.}
+    \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances, thanks to a
+    \code{Random Forest} algorithm. \cr 
+    The model is trained on \strong{releves.PFG} data. Information about \strong{PFG abundances} at each
+    \strong{sites} with \strong{xy} coordinates are necessary. \cr
+    Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} name.
+    (see \code{\link{train_RF_habitat}}).}
+  }
+  To compare observations and simulations, the function computes confusion matrix between 
+  observations and predictions and then computes the TSS for each habitat h 
+  (number of prediction of habitat h/number of observation of habitat h + number of non-prediction 
+  of habitat h/number of non-observation of habitat h). \cr The final metric used is the 
+  mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
+  habitat distribution. The habitat validation also provides a visual comparison of observed and 
+  simulated habitat on the whole studied area, if option selected 
+  (see \code{\link{do_habitat_validation}} & \code{\link{plot_predicted_habitat}}).}
+  
+  \item{PFG composition validation}{ \cr 
+  \describe{
+    \item{Observed distribution}{is computed for a chosen set of PFG, habitat & strata
+  (for all strata if strata definition is not activated) by computing 4 quartiles of the distribution, based
+  on observed releves provided (see \code{\link{get_observed_distribution}}).}
+    \item{Simulated distribution}{is computed in the same way than the observed distribution, with 
+    \code{FATE} abundances.}
+  }
+  Then, a distribution similarity between each habitat/strata combination is provided by computing a 
+  pseudo-distance between observed and simulated quartiles for each PFG y.
+  \deqn{S_{\text{ habitat, strata}} = \sum S_{\text{ y}}}
+  with
+  \deqn{S_{\text{ y}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
+  }
+  \item{PFG richness validation}{the observed PFG richness is computed based on observed data, 
+  the simulated PFG richness is the number of PFG for which abundance over the simulation area 
+  is strictly superior to zero for the simulation year under scrutiny. \cr
+  Then, observed and simulated richness are compared for a set of PFG in order to quantify the PFG mortality.}
 }
 }
 \author{

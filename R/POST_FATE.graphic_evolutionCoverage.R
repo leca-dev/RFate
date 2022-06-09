@@ -428,8 +428,8 @@ POST_FATE.graphic_evolutionCoverage = function(
         hop = foreach(tab = distriPix.melt.split, .combine = "rbind") %do%
           {
             res = data.frame(MEAN = tapply(tab$value, tab$YEAR, mean), YEAR = unique(tab$YEAR))
-            res_seeding = round(mean(res$MEAN[which(res$YEAR <= seeding)]))
-            res_simul = round(mean(res$MEAN[which(res$YEAR > seeding)]))
+            res_seeding = round(mean(res$MEAN[which(res$YEAR <= seeding)], na.rm = TRUE))
+            res_simul = round(mean(res$MEAN[which(res$YEAR > seeding)], na.rm = TRUE))
             res = data.frame(MEAN.seeding = res_seeding, MEAN.simul = res_simul, ST = unique(tab$ST), SF = unique(tab$SF))
             return(res)
           }
@@ -445,8 +445,8 @@ POST_FATE.graphic_evolutionCoverage = function(
             tmp = hap[which(hap$ST == st), ]
             if (nrow(tmp) > 0) {
               return(data.frame(ST = st
-                                , MAX.seeding = sum(tmp$SF * tmp$MEAN.seeding)
-                                , MAX.simul = sum(tmp$SF * tmp$MEAN.simul)))
+                                , MAX.seeding = sum(tmp$SF * tmp$MEAN.seeding, na.rm = TRUE)
+                                , MAX.simul = sum(tmp$SF * tmp$MEAN.simul, na.rm = TRUE)))
             }
           }
         print(hip)

@@ -11,7 +11,7 @@
 ##' 
 ##' @param releves.PFG a \code{data.frame} with at least 5 columns : \cr
 ##' \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
-##' \cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+##' \cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
 ##' \cr (see \href{train_RF_habitat#details}{\code{Details}})
 ##' @param hab.obs.RF (optional) default \code{NULL].
 ##' \cr If habitat ID is not provided in \code{releves.PFG}, a \code{raster} map of the observed habitat in the studied area.

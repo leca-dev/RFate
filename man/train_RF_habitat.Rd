@@ -18,7 +18,7 @@ train_RF_habitat(
 \arguments{
 \item{releves.PFG}{a \code{data.frame} with at least 5 columns : \cr
 \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
-\cr (\emph{and optionally, \code{strata}}, \code{code.habitat})
+\cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
 \cr (see \href{train_RF_habitat#details}{\code{Details}})}
 
 \item{external.training.mask}{(optional) default \code{NULL}. 
