@@ -102,7 +102,7 @@ of the PFG you want to exclude from the analysis (PFG richness validation).}
   \item{Habitat}{into the \code{name.simulation/VALIDATION/HABITAT/ directory :} \cr
   1 .csv file containing the prepared observed data. \cr
   1 .rds file containing the RF model. \cr
-  5 .csv file containing the performance analyzes (confusion matrix and TSS) for the training & 
+  5 .csv files containing the performance analyzes (confusion matrix and TSS) for the training & 
   testing parts of the RF model and the final habitat performance. \cr
   If option selected, 1 .csv file containing the habitat prediction within each pixel, 1 .csv file with 
   sucess or failure of the prediction and 1 .png prediction map.}
