@@ -29,32 +29,33 @@ train_RF_habitat(
 \cr (see \href{train_RF_habitat#details}{\code{Details}})}
 
 \item{RF.param}{a \code{list} of 2 parameters to fit a random forest model : \cr
-\code{share.training} defines the size of the training part of the data base. \cr
-\code{ntree} is the number of trees build by the algorithm, it allows to reduce the prediction error.}
+\code{share.training} defines the proportion of the data base used for training the model. \cr
+\code{ntree} is the number of trees built by the algorithm, it allows to reduce the prediction error.}
 
 \item{output.path}{access path to the folder where output files will be created.}
 
-\item{perStrata}{(\code{Logical}) default \code{FALSE}. 
+\item{perStrata}{(\code{logical}) default \code{FALSE}. 
 \cr If \code{TRUE}, the PFG abundance must be defined
 by strata in each site. If \code{FALSE}, PFG abundance must be defined for all strata.}
 }
 \value{
-2 prepared observed releves files are created before the building of the random
-forest model in a folder previously defined. \cr
-5 more files are created at the end of the script to save the RF model and
-the performance analyzes (confusion matrix and TSS) for the training and 
-testing parts.
+into the \code{name.simulation/VALIDATION/HABITAT/ directory :} \cr
+1 .csv file containing the prepared observed data (relative abundances & habitat information). \cr
+1 .rds file containing the RF model. \cr
+4 .csv files containing the performance analysis (2 TSS per habitat files, and 2 aggregate TSS files) for the training & 
+testing samples.
 }
 \description{
-This script is designed to produce a random forest model
-trained on observed PFG abundance and a map of observed habitat.
+This script is designed to produce a \code{Random Forest} model
+trained on observed PFG abundances & habitats.
 }
 \details{
-This function transforms PFG abundance in relative abundance,
-gets habitat information from an habitat data frame previously defined and a habitat map, 
-keep releves on interesting habitat(s) and then builds a random forest model. Finally, 
-the function analyzes the model performance with computation of confusion matrix and TSS between
-the training and testing sample.
+The \code{Random Forest} algorithm is trained on \strong{releves.PFG} data. \cr
+Information about \strong{PFG abundances} at each \strong{sites} with \strong{xy} coordinates are necessary. \cr
+Eventually, \strong{habitat ID} information can be provided. If not, observed habitat is provided by the 
+\strong{hab.obs.RF} map. The final set of habitats taken into account in the validation is provided by 
+\strong{studied.habitat} table containing all the \strong{habitats}, with their corresponding \strong{ID}.
+Finally, a performance analysis is provided by computing TSS between training and testing samples of the data base.
 }
 \author{
 Matthieu Combaud, Maxime Delprat

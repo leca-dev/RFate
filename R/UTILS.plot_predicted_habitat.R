@@ -35,8 +35,6 @@
 ##' 
 ##' a synthetic.prediction.png file which contain the final prediction map.
 ##' 
-##' @export
-##' 
 ##' @importFrom dplyr all_of rename select
 ##' @importFrom utils write.csv
 ##' @importFrom raster raster crs extent res ratify writeRaster levels

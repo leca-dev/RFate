@@ -268,9 +268,9 @@ of the PFG you want to exclude from the analysis (PFG richness validation).</p><
     <h2>Value</h2>
     <dl><dt>Habitat</dt>
 <dd><p>into the <code>name.simulation/VALIDATION/HABITAT/ directory :</code> <br>
-  1 .csv file containing the prepared observed data. <br>
+  1 .csv file containing the prepared observed data (relative abundances &amp; habitat information). <br>
   1 .rds file containing the RF model. <br>
-  5 .csv files containing the performance analyzes (confusion matrix and TSS) for the training &amp; 
+  5 .csv files containing the performance analysis (confusion matrix and TSS) for the training &amp; 
   testing parts of the RF model and the final habitat performance. <br>
   If option selected, 1 .csv file containing the habitat prediction within each pixel, 1 .csv file with 
   sucess or failure of the prediction and 1 .png prediction map.</p></dd>
@@ -305,8 +305,7 @@ of the PFG you want to exclude from the analysis (PFG richness validation).</p><
     <code>Random Forest</code> algorithm. <br> 
     The model is trained on <strong>releves.PFG</strong> data. Information about <strong>PFG abundances</strong> at each
     <strong>sites</strong> with <strong>xy</strong> coordinates are necessary. <br>
-    Eventually, <strong>habitat ID</strong> information can be provided, as well as <strong>strata</strong> name.
-    (see <code><a href="train_RF_habitat.html">train_RF_habitat</a></code>).</p></dd>
+    Eventually, <strong>habitat ID</strong> information can be provided, as well as <strong>strata</strong> name.</p></dd>
 
   
 </dl><p>To compare observations and simulations, the function computes confusion matrix between 
@@ -315,15 +314,14 @@ of the PFG you want to exclude from the analysis (PFG richness validation).</p><
   of habitat h/number of non-observation of habitat h). <br> The final metric used is the 
   mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
   habitat distribution. The habitat validation also provides a visual comparison of observed and 
-  simulated habitat on the whole studied area, if option selected 
-  (see <code><a href="do_habitat_validation.html">do_habitat_validation</a></code> &amp; <code><a href="plot_predicted_habitat.html">plot_predicted_habitat</a></code>).</p></dd>
+  simulated habitat on the whole studied area, if option selected.</p></dd>
 
   
   <dt>PFG composition validation</dt>
 <dd><p><br></p><dl><dt>Observed distribution</dt>
 <dd><p>is computed for a chosen set of PFG, habitat &amp; strata
   (for all strata if strata definition is not activated) by computing 4 quartiles of the distribution, based
-  on observed releves provided (see <code><a href="get_observed_distribution.html">get_observed_distribution</a></code>).</p></dd>
+  on observed releves provided.</p></dd>
 
     <dt>Simulated distribution</dt>
 <dd><p>is computed in the same way than the observed distribution, with 
@@ -334,7 +332,8 @@ of the PFG you want to exclude from the analysis (PFG richness validation).</p><
   pseudo-distance between observed and simulated quartiles for each PFG y.
   $$S_{\text{ habitat, strata}} = \sum S_{\text{ y}}$$
   with
-  $$S_{\text{ y}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})$$</p></dd>
+  $$S_{\text{ y}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})$$
+  with i varying from 1 to 4.</p></dd>
 
   <dt>PFG richness validation</dt>
 <dd><p>the observed PFG richness is computed based on observed data, 
@@ -349,6 +348,59 @@ of the PFG you want to exclude from the analysis (PFG richness validation).</p><
     <p>Matthieu Combaud, Maxime Delprat</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
+
+<span class="co">## Load example data</span>
+<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span>, <span class="st">"RData"</span><span class="op">)</span>
+
+<span class="co">## Create a skeleton folder</span>
+<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span><span class="op">)</span>
+
+<span class="co">## Load results from a simulation</span>
+<span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_results_V1"</span>, <span class="st">"7z"</span><span class="op">)</span>
+
+<span class="co">## Please extract files from the 7z folder in 'FATE_CHAMPSAUR/RESULTS'</span>
+
+<span class="co">## Define a vector to choose habitats taken into account</span>
+<span class="va">studied.habitat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span>, habitat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co">## Habitat &amp; validation maps</span>
+<span class="va">hab.observed</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">$</span><span class="va">habitat</span>
+<span class="va">simulation.map</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">$</span><span class="va">Champsaur</span>
+<span class="va">hab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html" class="external-link">projectRaster</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">hab.observed</span>, res <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html" class="external-link">res</a></span><span class="op">(</span><span class="va">simulation.map</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">projection</a></span><span class="op">(</span><span class="va">simulation.map</span><span class="op">)</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"ngb"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">simulation.map</span>, filename <span class="op">=</span> <span class="st">"FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif"</span><span class="op">)</span>
+
+<span class="co">## Observed data</span>
+<span class="va">releves.PFG</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.releves</span>
+
+<span class="co">## List of PFG taken into account in a FATE simulation</span>
+<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>, <span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co">## Habitat, strata and PFG considered in PFG compo validation</span>
+<span class="va">habitat.considered</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span>
+<span class="va">PFG.considered_PFG.compo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                     , sim.version <span class="op">=</span> <span class="st">"SIMUL_V1.1"</span>
+                     , year <span class="op">=</span> <span class="fl">2000</span>
+                     , doHabitat <span class="op">=</span> <span class="cn">TRUE</span>
+                     , releves.PFG <span class="op">=</span> <span class="va">releves.PFG</span>
+                     , hab.obs <span class="op">=</span> <span class="va">hab.obs</span>
+                     , studied.habitat <span class="op">=</span> <span class="va">studied.habitat</span>
+                     , predict.all.map <span class="op">=</span> <span class="cn">TRUE</span>
+                     , RF.seed <span class="op">=</span> <span class="fl">123</span>
+                     , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
+                     , PFG.considered_PFG.compo <span class="op">=</span> <span class="va">PFG.considered_PFG.compo</span>
+                     , habitat.considered_PFG.compo <span class="op">=</span> <span class="va">habitat.considered</span>
+                     , doRichness <span class="op">=</span> <span class="cn">TRUE</span>
+                     , list.PFG <span class="op">=</span> <span class="va">list.PFG</span><span class="op">)</span>
+
+
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>

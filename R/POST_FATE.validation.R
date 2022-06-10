@@ -81,8 +81,7 @@
 ##'     \code{Random Forest} algorithm. \cr 
 ##'     The model is trained on \strong{releves.PFG} data. Information about \strong{PFG abundances} at each
 ##'     \strong{sites} with \strong{xy} coordinates are necessary. \cr
-##'     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} name.
-##'     (see \code{\link{train_RF_habitat}}).}
+##'     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} name.}
 ##'   }
 ##'   To compare observations and simulations, the function computes confusion matrix between 
 ##'   observations and predictions and then computes the TSS for each habitat h 
@@ -90,14 +89,13 @@
 ##'   of habitat h/number of non-observation of habitat h). \cr The final metric used is the 
 ##'   mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
 ##'   habitat distribution. The habitat validation also provides a visual comparison of observed and 
-##'   simulated habitat on the whole studied area, if option selected 
-##'   (see \code{\link{do_habitat_validation}} & \code{\link{plot_predicted_habitat}}).}
+##'   simulated habitat on the whole studied area, if option selected.}
 ##'   
 ##'   \item{PFG composition validation}{ \cr 
 ##'   \describe{
 ##'     \item{Observed distribution}{is computed for a chosen set of PFG, habitat & strata
 ##'   (for all strata if strata definition is not activated) by computing 4 quartiles of the distribution, based
-##'   on observed releves provided (see \code{\link{get_observed_distribution}}).}
+##'   on observed releves provided.}
 ##'     \item{Simulated distribution}{is computed in the same way than the observed distribution, with 
 ##'     \code{FATE} abundances.}
 ##'   }
@@ -106,6 +104,7 @@
 ##'   \deqn{S_{\text{ habitat, strata}} = \sum S_{\text{ y}}}
 ##'   with
 ##'   \deqn{S_{\text{ y}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
+##'   with i varying from 1 to 4.
 ##'   }
 ##'   \item{PFG richness validation}{the observed PFG richness is computed based on observed data, 
 ##'   the simulated PFG richness is the number of PFG for which abundance over the simulation area 
@@ -116,9 +115,9 @@
 ##' @return
 ##' \describe{
 ##'   \item{Habitat}{into the \code{name.simulation/VALIDATION/HABITAT/ directory :} \cr
-##'   1 .csv file containing the prepared observed data. \cr
+##'   1 .csv file containing the prepared observed data (relative abundances & habitat information). \cr
 ##'   1 .rds file containing the RF model. \cr
-##'   5 .csv files containing the performance analyzes (confusion matrix and TSS) for the training & 
+##'   5 .csv files containing the performance analysis (confusion matrix and TSS) for the training & 
 ##'   testing parts of the RF model and the final habitat performance. \cr
 ##'   If option selected, 1 .csv file containing the habitat prediction within each pixel, 1 .csv file with 
 ##'   sucess or failure of the prediction and 1 .png prediction map.}
@@ -138,27 +137,34 @@
 ##' 
 ##' @examples 
 ##' 
+##' library(raster)
+##' 
 ##' ## Load example data
 ##' Champsaur_params = .loadData("Champsaur_params", "RData")
 ##' 
 ##' ## Create a skeleton folder
-##' PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur)
+##' PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur")
 ##' 
 ##' ## Load results from a simulation
 ##' .loadData("Champsaur_results_V1", "7z")
 ##' 
-##' ## Extract files from the 7z folder and put 'POST_FATE_TABLE_PIXEL_evolution_abundance_SIMUL_V1.1.csv' file in the RESULTS folder
+##' ## Please extract files from the 7z folder in 'FATE_CHAMPSAUR/RESULTS'
 ##' 
 ##' ## Define a vector to choose habitats taken into account
 ##' studied.habitat = data.frame(ID = c(6, 5, 7, 8), habitat = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland"))
+##' 
 ##' ## Habitat & validation maps
 ##' hab.observed = Champsaur_params$stk.mask$habitat
 ##' simulation.map = Champsaur_params$stk.mask$Champsaur
 ##' hab.obs = projectRaster(from = hab.observed, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
+##' writeRaster(simulation.map, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
+##' 
 ##' ## Observed data
 ##' releves.PFG = Champsaur_params$tab.releves
+##' 
 ##' ## List of PFG taken into account in a FATE simulation
 ##' list.PFG = as.factor(c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
+##' 
 ##' ## Habitat, strata and PFG considered in PFG compo validation
 ##' habitat.considered = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland")
 ##' PFG.considered_PFG.compo = as.factor(c("H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
@@ -171,7 +177,7 @@
 ##'                      , hab.obs = hab.obs
 ##'                      , studied.habitat = studied.habitat
 ##'                      , predict.all.map = TRUE
-##'                      , seed = 123
+##'                      , RF.seed = 123
 ##'                      , doComposition = TRUE
 ##'                      , PFG.considered_PFG.compo = PFG.considered_PFG.compo
 ##'                      , habitat.considered_PFG.compo = habitat.considered

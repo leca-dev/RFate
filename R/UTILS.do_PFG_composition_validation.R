@@ -44,8 +44,6 @@
 ##'   \item{\file{VALIDATION/PFG_COMPOSITION} : \cr
 ##'   A .csv file which contain the proximity between observed and simulated data computed
 ##'   for each PFG/strata/habitat.
-##'   
-##' @export
 ##' 
 ##' @importFrom dplyr rename filter group_by mutate %>% select
 ##' @importFrom raster raster projectRaster res crs crop extent origin compareRaster 

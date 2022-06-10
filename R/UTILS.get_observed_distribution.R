@@ -45,8 +45,6 @@
 ##'   \item{\file{VALIDATION/PFG_COMPOSITION} : \cr
 ##'   1 .csv file which contain the observed relevés transformed into relative metrics. \cr
 ##'   1 .csv file which contain the final output with the distribution per PFG, strata and habitat.
-##'   
-##' @export
 ##' 
 ##' @importFrom dplyr select filter group_by mutate %>% rename
 ##' @importFrom raster compareCRS res crs levels
