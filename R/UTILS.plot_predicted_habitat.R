@@ -1,51 +1,5 @@
-### HEADER #####################################################################
-##'
-##' @title Create a raster map of habitat prediction for a set of \code{FATE} 
-##' simulations at a specific simulation year.
-##' 
-##' @name plot_predicted_habitat
-##' 
-##' @author Matthieu Combaud, Maxime Delprat
-##' 
-##' @description This script is designed to create a raster map of habitat prediction
-##' based on an habitat prediction file. For each pixel, the habitat failure or success value
-##' is associated to a color and then, the map is built.
-##' 
-##' @param predicted.habitat a \CODE{data.frame} provides by \code{do_habitat.validation} with at least 3 columns :
-##' \cr \code{pixel}, \code{true.habitat} & 1 column per simulation in \code{sim.version} which contains the predicted habitat for this simulation.
-##' \cr (see \code{\link{do_habitat_valdiation}}).
-##' @param col.df A \code{data.frame} with 3 columns :
-##' \cr \code{habitat} which contains all the habitats taken into account in the simulation.
-##' \cr \code{failure} which contains colors to designate the failure of the prediction of each habitats
-##' \cr \code{success} which contains colors to designate the success of the prediction of each habitats
-##' @param simulation.map A raster map of the whole studied area.
-##' @param output.path Access path to the for the folder where output files
-##' will be created.
-##' @param sim.version A character vector with the name(s) of the simulation(s) to validate.
-##' 
-##' @details 
-##' 
-##' The function determines true/false prediction ('failure' if false, 'success' if true)
-##' and prepare a data frame containing colors and habitats codes. Then, the script merge
-##' the prediction data frame with the color and code habitat data frame. Finally,
-##' the function draw a raster map and a plot of prediction habitat over it, thanks
-##' to the data prepared before.
-##' 
-##' @return
-##' 
-##' a synthetic.prediction.png file which contain the final prediction map.
-##' 
-##' @importFrom dplyr all_of rename select
-##' @importFrom utils write.csv
-##' @importFrom raster raster crs extent res ratify writeRaster levels
-##' @importFrom stats complete.cases
-##' @importFrom ggplot2 ggplot geom_raster coord_equal scale_fill_manual 
-##' ggtitle guides theme ggsave guide_legend
-##' @importFrom reshape2 melt
-##' @importFrom prettyR Mode
-##' 
-### END OF HEADER ##############################################################
 
+#############################################################################
 
 plot_predicted_habitat = function(predicted.habitat
                                  , col.df

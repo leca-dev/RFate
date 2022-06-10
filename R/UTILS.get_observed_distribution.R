@@ -1,71 +1,15 @@
-### HEADER #####################################################################
-##'
-##' @title Compute distribution of relative abundance over observed releves.
-##'
-##' @name get_observed_distribution
-##'
-##' @author Matthieu Combaud, Maxime Delprat
-##' 
-##' @description This script is designed to compute distribution, per PFG/strata/habitat,
-##' of relative abundance, from observed data.
-##' 
-##' @param name.simulation Simulation folder name.
-##' @param releves.PFG A \code{data.frame} with at least 5 columns : \cr
-##' \code{site}, \code{x}, \code{y}, which contain respectively ID, x coordinate & y coordinate of each site of the study area. \cr
-##' \code{abund} & \code{PFG} which contain respectively abundance (can be absolute abundance, Braun-Blanquet abundance or presence-absence) 
-##' & name of PFG.
-##' \cr (\emph{and optionally, \code{strata}}) which contains the number of strata at each the abundance is noted. 
-##' (habitat & PFG composition validation).
-##' @param hab.obs A raster map of the extended studied map in the simulation, with same projection 
-##' & resolution than simulation mask.
-##' @param studied.habitat A \code{data.frame} with 2 columns : 
-##' \cr \code{ID} which contains the habitat ID, & \code{habitat} which contains the habitat names which will be taken into account 
-##' for the validation (habitat & PFG composition validation).
-##' @param PFG.considered_PFG.compo A character vector which contains the list of PFG considered
-##' in the validation.
-##' @param strata.considered_PFG.compo A character vector which contains the list of precise 
-##' strata considered in the validation.
-##' @param habitat.considered_PFG.compo A character vector which contains the list of habitat(s)
-##' considered in the validation.
-##' @param perStrata \code{Logical}. 
-##' \cr All strata together (FALSE) or per strata (TRUE).
-##' 
-##' @details
-##' 
-##' The function takes the \code{releves.PFG} file and aggregate coverage per PFG. 
-##' Then, the code gets habitat information from the \code{hab.obs} map & the \code{studied.habitat}
-##' data frame, keep only interesting habitat(s), strata and PFG, and transforms 
-##' the data into relative metrics. Finally, the script computes distribution per PFG 
-##' and if required per strata/habitat (else all strata/habitat will be considered together).
-##' 
-##' @return 
-##' 
-##' 2 files are created in
-##' \describe{
-##'   \item{\file{VALIDATION/PFG_COMPOSITION} : \cr
-##'   1 .csv file which contain the observed relevés transformed into relative metrics. \cr
-##'   1 .csv file which contain the final output with the distribution per PFG, strata and habitat.
-##' 
-##' @importFrom dplyr select filter group_by mutate %>% rename
-##' @importFrom raster compareCRS res crs levels
-##' @importFrom stats aggregate
-##' @importFrom sf st_transform st_crop
-##' @importFrom utils write.csv
-##' @importFrom data.table setDT
-##' 
-### END OF HEADER ##############################################################
+ 
+#################################################################
 
 get_observed_distribution <- function(releves.PFG
-                                    , hab.obs
-                                    , studied.habitat = NULL
+                                    , hab.obs.compo = NULL
+                                    , studied.habitat
                                     , PFG.considered_PFG.compo
                                     , strata.considered_PFG.compo
                                     , habitat.considered_PFG.compo
-                                    , perStrata
+                                    , perStrata = FALSE
                                     , output.path){
 
-  
-  # composition.mask = NULL
   
   #1. Aggregate coverage per PFG
   #########################################
@@ -81,13 +25,21 @@ get_observed_distribution <- function(releves.PFG
   } else if (is.numeric(releves.PFG$abund)) # absolute abundance
   {
     releves.PFG$coverage = releves.PFG$abund
+  }else
+  {
+    stop("Abund data in releves.PFG must be Braun-Blanquet abundance, presences absence or absolute abundance values.")
   }
   
-  if(perStrata == T){
-    mat.PFG.agg <- aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
-  }else if(perStrata == F){
-    mat.PFG.agg <- aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
-    mat.PFG.agg$strata <- "A" #"A" is for "all".
+  if (perStrata == TRUE & !is.null(hab.obs.compo)) {
+    mat.PFG.agg = aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
+  } else if (perStrata == FALSE & !is.null(hab.obs.compo)) {
+    mat.PFG.agg = aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
+    mat.PFG.agg$strata = "A"
+  } else if (perStrata == TRUE & is.null(hab.obs.compo)) {
+    mat.PFG.agg = aggregate(coverage ~ site + PFG + strata + code.habitat, data = releves.PFG, FUN = "sum")
+  } else if (perStrata == FALSE & is.null(hab.obs.compo)) {
+    mat.PFG.agg = aggregate(coverage ~ site + PFG + code.habitat, data = releves.PFG, FUN = "sum")
+    mat.PFG.agg$strata = "A"
   }
   
   #2. Get habitat information
@@ -95,40 +47,24 @@ get_observed_distribution <- function(releves.PFG
   
   #get habitat code and name
   coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
-  mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
-  mat.PFG.agg$code.habitat = extract(x = hab.obs, y = mat.PFG.agg[,c("x", "y")])
-  mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
-  if (nrow(mat.PFG.agg) == 0) {
-    stop("Code habitat vector is empty. Please verify values of your hab.obs map")
+  if(is.null(hab.obs.compo))
+  {
+    mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y","code.habitat")], by = "site")
+  }
+  if(!is.null(hab.obs.compo))
+  {
+    mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y")], by = "site")
+    mat.PFG.agg$code.habitat = extract(x = hab.obs.compo, y = mat.PFG.agg[,c("x", "y")])
+    mat.PFG.agg = mat.PFG.agg[which(!is.na(mat.PFG.agg$code.habitat)), ]
+    if (nrow(mat.PFG.agg) == 0) {
+      stop("Code habitat vector is empty. Please verify values of your hab.obs map")
+    }
   }
   
   #correspondence habitat code/habitat name
-  if (!is.null(studied.habitat) & nrow(studied.habitat) > 0 & ncol(studied.habitat) == 2)
-  { # cas où pas de levels dans la carte d'habitat et utilisation d'un vecteur d'habitat
-    table.habitat.releve = studied.habitat
-    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
-    mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-  } else if (names(levels(hab.obs)[[1]]) == c("ID", "habitat", "colour") & nrow(levels(hab.obs)[[1]]) > 0 & is.null(studied.habitat))
-  { # cas où on utilise les levels définis dans la carte
-    table.habitat.releve = levels(hab.obs)[[1]]
-    mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
-    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$habitat %in% studied.habitat$habitat), ]
-  } else
-  {
-    stop("Habitat definition in hab.obs map is not correct")
-  }
-  
-  # #(optional) keep only releves data in a specific area
-  # if(!is.null(composition.mask)){
-  #   
-  #   if(compareCRS(mat.PFG.agg,composition.mask)==F){ #as this stage it is not a problem to transform crs(mat.PFG.agg) since we have no more merge to do (we have already extracted habitat info from the map)
-  #     mat.PFG.agg<-st_transform(x=mat.PFG.agg,crs=crs(composition.mask))
-  #   }
-  #   
-  #   mat.PFG.agg<-st_crop(x=mat.PFG.agg,y=composition.mask)
-  #   print("'releve' map has been cropped to match 'external.training.mask'.")
-  # }
-  
+  table.habitat.releve = studied.habitat
+  mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% studied.habitat$ID), ] # filter non interesting habitat + NA
+  mat.PFG.agg = merge(mat.PFG.agg, table.habitat.releve[, c("ID", "habitat")], by.x = "code.habitat", by.y = "ID")
   
   # 3. Keep only releve on interesting habitat, strata and PFG
   ##################################################################"

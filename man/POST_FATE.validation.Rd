@@ -52,7 +52,7 @@ if \code{FALSE}, habitat validation module is disabled.}
 \cr (habitat & PFG composition validation).}
 
 \item{hab.obs}{a \code{raster} map of the studied map in the simulation, with same projection 
-& resolution than simulation mask, used to predict habitat & PFG composition.}
+& resolution than simulation mask, used to predict habitat & PFG distribution}
 
 \item{studied.habitat}{a \code{data.frame} with 2 columns : \cr
 \code{ID} ,\code{habitat}

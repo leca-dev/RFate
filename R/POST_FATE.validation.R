@@ -35,7 +35,7 @@
 ##' \cr (see \href{POST_FATE.validation#details}{\code{Details}})
 ##' \cr (habitat & PFG composition validation).
 ##' @param hab.obs a \code{raster} map of the studied map in the simulation, with same projection 
-##' & resolution than simulation mask, used to predict habitat & PFG composition.
+##' & resolution than simulation mask, used to predict habitat & PFG distribution
 ##' @param studied.habitat a \code{data.frame} with 2 columns : \cr
 ##' \code{ID} ,\code{habitat}
 ##' \cr (see \href{POST_FATE.validation#details}{\code{Details}})
@@ -504,8 +504,23 @@ POST_FATE.validation = function(name.simulation
           
           cat("\n Get observed distribution...\n")
           
+          if(perStrata == TRUE & ncol(releves.PFG) == 7)
+          {
+            hab.obs.compo = NULL
+          }else if(perStrata == TRUE & ncol(releves.PFG) == 6)
+          {
+            hab.obs.compo = habitat.FATE.map
+          }else if(perStrata == FALSE & ncol(releves.PFG) == 6)
+          {
+            hab.obs.compo = NULL
+          }else if(perStrata == FALSE & ncol(releves.PFG) == 5)
+          {
+            hab.obs.compo = habitat.FATE.map
+          }else {
+            stop("releves.PFG must be a data frame with at least 5 columns : 'site', 'x', 'y', 'abund', 'PFG' and optionally, 'strata', 'code.habitat'")
+          }
           obs.distri = get_observed_distribution(releves.PFG = releves.PFG
-                                                 , hab.obs = hab.obs
+                                                 , hab.obs.compo = hab.obs.compo
                                                  , studied.habitat = studied.habitat
                                                  , PFG.considered_PFG.compo = PFG.considered_PFG.compo
                                                  , strata.considered_PFG.compo = strata.considered_PFG.compo
