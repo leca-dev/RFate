@@ -145,8 +145,3 @@ reference:
       - ".scaleMaps"
       - ".getCutoff"
       - ".unzip_ALL"
-      - "train_RF_habitat"
-      - "do_habitat_validation"
-      - "do_PFG_composition_validation"
-      - "get_observed_distribution"
-      - "plot_predicted_habitat"
