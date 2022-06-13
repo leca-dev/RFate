@@ -150,7 +150,7 @@ for a \code{FATE} simulation and computes the difference between observed and si
   }
   To compare observations and simulations, the function computes confusion matrix between 
   observations and predictions and then computes the TSS for each habitat h.
-  \deqn{\frac{\text{number of prediction}_{\text{ h}}}{\text{number of observation}_{\text{ h}}} + \frac{\text{number of non-prediction}_{\text{ h}}}{\text{number of non-observation}_{\text{ h}}}}
+  \deqn{TSS_{\text{ h}} = \frac{\text{number of prediction}_{\text{ h}}}{\text{number of observation}_{\text{ h}}} + \frac{\text{number of non-prediction}_{\text{ h}}}{\text{number of non-observation}_{\text{ h}}}}
   The final metric used is the mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
   habitat distribution. The habitat validation also provides a visual comparison of observed and 
   simulated habitat on the whole studied area, if option selected.}
@@ -165,9 +165,9 @@ for a \code{FATE} simulation and computes the difference between observed and si
   }
   Then, a distribution similarity between each habitat/strata combination is provided by computing a 
   pseudo-distance between observed and simulated quartiles for each PFG y.
-  \deqn{S_{\text{ habitat, strata}} = \sum S_{\text{ y}}}
+  \deqn{S_{\text{ habitat, strata}} = \sum S_{\text{ y}{\text{, }habitat}{\text{, }strata}}}
   with
-  \deqn{S_{\text{ y}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
+  \deqn{S_{\text{ y}{\text{, }habitat}{\text{, }strata}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
   with i varying from 1 to 4.
   }
   \item{PFG richness validation}{the observed PFG richness is computed based on observed data, 
