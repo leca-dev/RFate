@@ -708,6 +708,7 @@ POST_FATE.validation = function(name.simulation
     dyingPFG.vector = as.factor(unlist(dying.PFG.list))
     dyingPFG.vector = fct_expand(dyingPFG.vector, list.PFG)
     dying.distribution = round(table(dyingPFG.vector)/length(sim.version), digits = 2)
+    dying.distribution = as.data.frame(dying.distribution)
     
     # output
     output = list(PFG.richness.df, dying.distribution , dying.PFG.list)
