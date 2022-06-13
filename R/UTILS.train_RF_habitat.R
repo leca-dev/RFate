@@ -1,4 +1,15 @@
-
+################################################################
+##' @importFrom dplyr filter %>% group_by select
+##' @importFrom stats aggregate
+##' @importFrom reshape2 dcast
+##' @importFrom data.table setDT
+##' @importFrom raster extract compareCRS levels crs
+##' @importFrom sf st_transform st_crop
+##' @importFrom randomForest randomForest tuneRF
+##' @importFrom caret confusionMatrix
+##' @importFrom readr write_rds
+##' @importFrom utils read.csv write.csv
+##' @importFrom stringr str_split
 #################################################################
 
 

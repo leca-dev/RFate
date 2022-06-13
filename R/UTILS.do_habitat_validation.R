@@ -1,4 +1,11 @@
-
+#################################################################
+##' @importFrom dplyr group_by %>% mutate rename select
+##' @importFrom raster predict
+##' @importFrom reshape2 dcast
+##' @importFrom caret confusionMatrix
+##' @importFrom utils write.csv
+##' @importFrom tidyselect all_of
+##' @importFrom stringr str_split
 #################################################################
 
 do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, simu_PFG, habitat.whole.area.df, list.strata, perStrata)

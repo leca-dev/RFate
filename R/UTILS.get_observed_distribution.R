@@ -1,5 +1,11 @@
- 
-#################################################################
+####################################################################
+##' @importFrom dplyr select filter group_by mutate %>% rename
+##' @importFrom raster compareCRS res crs levels
+##' @importFrom stats aggregate
+##' @importFrom sf st_transform st_crop
+##' @importFrom utils write.csv
+##' @importFrom data.table setDT
+####################################################################
 
 get_observed_distribution <- function(releves.PFG
                                     , hab.obs.compo = NULL

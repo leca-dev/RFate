@@ -15,7 +15,7 @@ POST_FATE.validation(
   hab.obs,
   studied.habitat,
   predict.all.map = FALSE,
-  RF.seed,
+  RF.seed = 123,
   RF.training = 0.7,
   validation.mask = NULL,
   list.strata.simulations = NULL,
@@ -62,7 +62,8 @@ if \code{FALSE}, habitat validation module is disabled.}
 \item{predict.all.map}{(\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction 
 & performance over the whole map and will provide a prediction map.}
 
-\item{RF.seed}{an \code{integer} corresponding to the number of seeds to set in order to generate a \code{Random Forest} model.}
+\item{RF.seed}{default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
+in order to generate a \code{Random Forest} model.}
 
 \item{RF.training}{default \code{0.7}. \cr Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.}
 
@@ -126,7 +127,7 @@ This script is designed to compute validation data for : \cr
   \item{Habitat}{Compares habitat simulations and observations and
 create a map to visualize this comparison with all the \code{FATE} and
 observed data (if option selected).}
-  \item{PFG Composition}{Produced a computation of observed distribution 
+  \item{PFG Composition}{Produces a computation of observed distribution 
 of relative abundance in the simulation area and a computation of distance between
 observed and simulated distribution.}
   \item{PFG Richness}{Computes the PFG richness over the whole simulation area 
@@ -217,7 +218,6 @@ POST_FATE.validation(name.simulation = "FATE_Champsaur"
                      , hab.obs = hab.obs
                      , studied.habitat = studied.habitat
                      , predict.all.map = TRUE
-                     , RF.seed = 123
                      , doComposition = TRUE
                      , PFG.considered_PFG.compo = PFG.considered_PFG.compo
                      , habitat.considered_PFG.compo = habitat.considered

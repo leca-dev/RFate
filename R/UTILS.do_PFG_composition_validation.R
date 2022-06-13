@@ -1,5 +1,11 @@
-
-#################################################################
+#############################################################################################
+##' @importFrom dplyr rename filter group_by mutate %>% select
+##' @importFrom raster raster projectRaster res crs crop extent origin compareRaster 
+##' getValues ncell compareCRS levels
+##' @importFrom stats aggregate
+##' @importFrom data.table setDT
+##' @importFrom tidyselect all_of
+#############################################################################################
 
 do_PFG_composition_validation <- function(sim, PFG.considered_PFG.compo
                                           , strata.considered_PFG.compo, habitat.considered_PFG.compo

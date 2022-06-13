@@ -6,7 +6,7 @@ create a map to visualize this comparison with all the FATE and
 observed data (if option selected).
 
   PFG Composition
-Produced a computation of observed distribution 
+Produces a computation of observed distribution 
 of relative abundance in the simulation area and a computation of distance between
 observed and simulated distribution.
 
@@ -158,7 +158,7 @@ create a map to visualize this comparison with all the <code>FATE</code> and
 observed data (if option selected).</p></dd>
 
   <dt>PFG Composition</dt>
-<dd><p>Produced a computation of observed distribution 
+<dd><p>Produces a computation of observed distribution 
 of relative abundance in the simulation area and a computation of distance between
 observed and simulated distribution.</p></dd>
 
@@ -181,7 +181,7 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   <span class="va">hab.obs</span>,
   <span class="va">studied.habitat</span>,
   predict.all.map <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">RF.seed</span>,
+  RF.seed <span class="op">=</span> <span class="fl">123</span>,
   RF.training <span class="op">=</span> <span class="fl">0.7</span>,
   validation.mask <span class="op">=</span> <span class="cn">NULL</span>,
   list.strata.simulations <span class="op">=</span> <span class="cn">NULL</span>,
@@ -229,7 +229,8 @@ if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dd><p>(<code>logical</code>) default <code>FALSE</code>. <br> If <code>TRUE</code>, the function will compute habitat prediction 
 &amp; performance over the whole map and will provide a prediction map.</p></dd>
 <dt>RF.seed</dt>
-<dd><p>an <code>integer</code> corresponding to the number of seeds to set in order to generate a <code>Random Forest</code> model.</p></dd>
+<dd><p>default <code>123</code>. <br> An <code>integer</code> corresponding to the number of seeds to set 
+in order to generate a <code>Random Forest</code> model.</p></dd>
 <dt>RF.training</dt>
 <dd><p>default <code>0.7</code>. <br> Part of the data used for training a <code>Random Forest</code> model on <code>releves.PFG</code> data.</p></dd>
 <dt>validation.mask</dt>
@@ -391,7 +392,6 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
                      , hab.obs <span class="op">=</span> <span class="va">hab.obs</span>
                      , studied.habitat <span class="op">=</span> <span class="va">studied.habitat</span>
                      , predict.all.map <span class="op">=</span> <span class="cn">TRUE</span>
-                     , RF.seed <span class="op">=</span> <span class="fl">123</span>
                      , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
                      , PFG.considered_PFG.compo <span class="op">=</span> <span class="va">PFG.considered_PFG.compo</span>
                      , habitat.considered_PFG.compo <span class="op">=</span> <span class="va">habitat.considered</span>

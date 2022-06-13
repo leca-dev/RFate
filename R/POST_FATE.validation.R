@@ -11,7 +11,7 @@
 ##'   \item{Habitat}{Compares habitat simulations and observations and
 ##' create a map to visualize this comparison with all the \code{FATE} and
 ##' observed data (if option selected).}
-##'   \item{PFG Composition}{Produced a computation of observed distribution 
+##'   \item{PFG Composition}{Produces a computation of observed distribution 
 ##' of relative abundance in the simulation area and a computation of distance between
 ##' observed and simulated distribution.}
 ##'   \item{PFG Richness}{Computes the PFG richness over the whole simulation area 
@@ -42,7 +42,8 @@
 ##' \cr (habitat & PFG composition validation).
 ##' @param predict.all.map (\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction 
 ##' & performance over the whole map and will provide a prediction map.
-##' @param RF.seed an \code{integer} corresponding to the number of seeds to set in order to generate a \code{Random Forest} model.
+##' @param RF.seed default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
+##' in order to generate a \code{Random Forest} model.
 ##' @param RF.training default \code{0.7}. \cr Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.
 ##' @param validation.mask (\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
 ##' which pixels the performance of the prediction will be compute, with same projection & resolution than simulation mask 
@@ -177,7 +178,6 @@
 ##'                      , hab.obs = hab.obs
 ##'                      , studied.habitat = studied.habitat
 ##'                      , predict.all.map = TRUE
-##'                      , RF.seed = 123
 ##'                      , doComposition = TRUE
 ##'                      , PFG.considered_PFG.compo = PFG.considered_PFG.compo
 ##'                      , habitat.considered_PFG.compo = habitat.considered
@@ -212,7 +212,7 @@ POST_FATE.validation = function(name.simulation
                                 , hab.obs
                                 , studied.habitat
                                 , predict.all.map = FALSE
-                                , RF.seed
+                                , RF.seed = 123
                                 , RF.training = 0.7
                                 , validation.mask = NULL
                                 , list.strata.simulations = NULL

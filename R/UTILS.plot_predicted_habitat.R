@@ -1,4 +1,12 @@
-
+#############################################################################
+##' @importFrom dplyr all_of rename select
+##' @importFrom utils write.csv
+##' @importFrom raster raster crs extent res ratify writeRaster levels
+##' @importFrom stats complete.cases
+##' @importFrom ggplot2 ggplot geom_raster coord_equal scale_fill_manual 
+##' ggtitle guides theme ggsave guide_legend
+##' @importFrom reshape2 melt
+##' @importFrom prettyR Mode
 #############################################################################
 
 plot_predicted_habitat = function(predicted.habitat
