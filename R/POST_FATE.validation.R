@@ -519,6 +519,7 @@ POST_FATE.validation = function(name.simulation
           }else {
             stop("releves.PFG must be a data frame with at least 5 columns : 'site', 'x', 'y', 'abund', 'PFG' and optionally, 'strata', 'code.habitat'")
           }
+          
           obs.distri = get_observed_distribution(releves.PFG = releves.PFG
                                                  , hab.obs.compo = hab.obs.compo
                                                  , studied.habitat = studied.habitat

@@ -55,7 +55,7 @@ get_observed_distribution <- function(releves.PFG
   coord = releves.PFG %>% group_by(site) %>% filter(!duplicated(site))
   if(is.null(hab.obs.compo))
   {
-    mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y","code.habitat")], by = "site")
+    mat.PFG.agg = merge(mat.PFG.agg, coord[,c("site","x","y","code.habitat")], by = c("site", "code.habitat"))
   }
   if(!is.null(hab.obs.compo))
   {
