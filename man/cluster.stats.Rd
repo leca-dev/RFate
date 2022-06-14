@@ -4,7 +4,7 @@
 \alias{cluster.stats}
 \title{From fpc package 2.2-9 : cluster.stats function}
 \usage{
-cluster.stats(
+\method{cluster}{stats}(
   d = NULL,
   clustering,
   alt.clustering = NULL,
