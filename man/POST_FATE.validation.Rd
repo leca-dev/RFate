@@ -86,14 +86,14 @@ in the composition validation.}
 considered in the composition validation.}
 
 \item{strata.considered_PFG.compo}{default \code{"A"}. \cr If \code{perStrata} = \code{FALSE}, a \code{character} vector with value "A" 
-(selection of one or several specific strata disabled). If \code{perStrata} = \code{TRUE}, a \code{character} 
+(selection of one or several specific strata disabled). \cr If \code{perStrata} = \code{TRUE}, a \code{character} 
 vector containing at least one of the observed strata (PFG composition validation).}
 
 \item{doRichness}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
 if \code{FALSE}, PFG richness validation module is disabled.}
 
 \item{list.PFG}{a \code{character} vector containing all the PFGs taken into account in
-the simulation and observed in the simulation area (PFG richness validation).}
+the simulation and observed in the simulation area \cr (PFG richness validation).}
 
 \item{exclude.PFG}{(\code{optional}) default \code{NULL}. \cr A \code{character} vector containing the name(s) 
 of the PFG(s) that will be excluded from the analysis (PFG richness validation).}
@@ -124,9 +124,9 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
 \description{
 This script is designed to compute validation data for : \cr
 \describe{
-  \item{Habitat}{Compares habitat simulations and observations and
+  \item{Habitat}{Compares simulated and observed habitat and
 create a map to visualize this comparison with all the \code{FATE} and
-observed data (if option selected).}
+observed data \cr (if option selected).}
   \item{PFG Composition}{Produces a computation of observed distribution 
 of relative abundance in the simulation area and a computation of distance between
 observed and simulated distribution.}
@@ -142,7 +142,7 @@ for a \code{FATE} simulation and computes the difference between observed and si
     in the validation is provided by \strong{studied.habitat} table which contains 
     all the \strong{habitats}, with their corresponding \strong{ID}.}
     \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances 
-    (see \code{\link{POST_FATE.temporalEvolution}}), thanks to a \code{Random Forest} algorithm. \cr 
+    (see \code{\link{POST_FATE.temporalEvolution}}), thanks to a \code{Random Forest} algorithm. 
     The model is trained on \strong{releves.PFG} data. Information about \strong{PFG abundances} at each
     \strong{sites} with \strong{xy} coordinates are necessary. \cr
     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} name.
