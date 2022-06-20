@@ -546,23 +546,23 @@ POST_FATE.validation = function(name.simulation
         }
         
         if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == TRUE){
-          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition)
+          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, simu_PFG = simu_PFG)
           return(results)
         }
         if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == FALSE){
-          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition)
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, simu_PFG = simu_PFG)
           return(results)
         }
         if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == TRUE){
-          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model)
+          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, simu_PFG = simu_PFG)
           return(results)
         }
         if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == FALSE){
-          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model)
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, simu_PFG = simu_PFG)
           return(results)
         }
         if(doHabitat == FALSE & doComposition == TRUE){
-          results = list(performance.compo = performance.composition)
+          results = list(performance.compo = performance.composition, simu_PFG = simu_PFG)
           return(results)
         } # Based on choice of the user, foreach loop returns different results
         
@@ -691,7 +691,7 @@ POST_FATE.validation = function(name.simulation
           
         }
       } else if(doHabitat == TRUE | doComposition == TRUE){
-        simu_PFG = simu_PFG
+        simu_PFG = as.data.frame(sapply(results.simul, "[[", "performance.compo"))
       }
       
       return(setdiff(list.PFG,unique(simu_PFG$PFG)))
