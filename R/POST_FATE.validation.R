@@ -669,7 +669,7 @@ POST_FATE.validation = function(name.simulation
       
       sim <- sim.version[i]
       
-      if(perStrata == FALSE){
+      if(perStrata == FALSE & doHabitat == FALSE & doComposition == FALSE){
         
         if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))){
           
@@ -680,7 +680,7 @@ POST_FATE.validation = function(name.simulation
           
         }
         
-      } else if(perStrata == TRUE){
+      } else if(perStrata == TRUE & doHabitat == FALSE & doComposition == FALSE){
         
         if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))){
           
@@ -690,6 +690,8 @@ POST_FATE.validation = function(name.simulation
           colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
           
         }
+      } else if(doHabitat == TRUE | doComposition == TRUE){
+        simu_PFG = simu_PFG
       }
       
       return(setdiff(list.PFG,unique(simu_PFG$PFG)))
@@ -775,6 +777,7 @@ POST_FATE.validation = function(name.simulation
     performances$TSS_training_part = training$TSS
     performances = cbind(performances, hab.perf[1:length(studied.habitat[,1]),])
     colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", sim.version)
+    rownames(performances) = seq(1, length(studied.habitat[,1]), 1)
     
     cat("\n ---------- HABITAT : \n")
     cat("\n Habitat performance : \n")
@@ -789,7 +792,7 @@ POST_FATE.validation = function(name.simulation
   if(doComposition == TRUE){
     
     cat("\n ---------- PFG COMPOSITION : \n")
-    return(results.compo[c(sim.version, "simulation")])
+    return(results.compo[sim.version])
     
   } else{
     
