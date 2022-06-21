@@ -655,48 +655,55 @@ POST_FATE.validation = function(name.simulation
     
     cat("\n > Data preparation \n")
     
-    if (opt.no_CPU > 1)
-    {
-      if (.getOS() != "windows")
+    if(doHabitat == FALSE & doComposition == FALSE){
+      if (opt.no_CPU > 1)
       {
-        registerDoParallel(cores = opt.no_CPU)
-      } else
-      {
-        warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
+        if (.getOS() != "windows")
+        {
+          registerDoParallel(cores = opt.no_CPU)
+        } else
+        {
+          warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
+        }
       }
+      dying.PFG.list <- foreach(i = 1:length(all_of(sim.version))) %dopar% { # Loop on simulations
+        
+        sim <- sim.version[i]
+        
+        if(perStrata == FALSE){
+          
+          if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))){
+            
+            simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
+            simu_PFG = as.data.frame(simu_PFG)
+            simu_PFG = simu_PFG[,c("PFG","ID.pixel", year)]
+            colnames(simu_PFG) = c("PFG", "pixel", "abs")
+            
+          }
+          
+        } else if(perStrata == TRUE){
+          
+          if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))){
+            
+            simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
+            simu_PFG = as.data.frame(simu_PFG)
+            simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", year)]
+            colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
+            
+          }
+        }
+        
+        return(setdiff(list.PFG,unique(simu_PFG$PFG)))
+        
+      } # End of loop
+      
+    } else if(doHabitat == TRUE | doComposition == TRUE){
+      
+      simu_PFG = results.simul[[1]]$simu_PFG
+      dying.PFG.list = list()
+      dying.PFG.list[[1]] = setdiff(list.PFG, unique(simu_PFG$PFG))
+      
     }
-    dying.PFG.list <- foreach(i = 1:length(all_of(sim.version))) %dopar% { # Loop on simulations
-      
-      sim <- sim.version[i]
-      
-      if(perStrata == FALSE & doHabitat == FALSE & doComposition == FALSE){
-        
-        if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))){
-          
-          simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
-          simu_PFG = as.data.frame(simu_PFG)
-          simu_PFG = simu_PFG[,c("PFG","ID.pixel", year)]
-          colnames(simu_PFG) = c("PFG", "pixel", "abs")
-          
-        }
-        
-      } else if(perStrata == TRUE & doHabitat == FALSE & doComposition == FALSE){
-        
-        if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))){
-          
-          simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_", sim, ".csv"))
-          simu_PFG = as.data.frame(simu_PFG)
-          simu_PFG = simu_PFG[,c("PFG","ID.pixel", "strata", year)]
-          colnames(simu_PFG) = c("PFG", "pixel", "strata", "abs")
-          
-        }
-      } else if(doHabitat == TRUE | doComposition == TRUE){
-        simu_PFG = as.data.frame(sapply(results.simul, "[[", "performance.compo"))
-      }
-      
-      return(setdiff(list.PFG,unique(simu_PFG$PFG)))
-      
-    } # End of loop
     
     cat("\n > Richness computation \n")
     
