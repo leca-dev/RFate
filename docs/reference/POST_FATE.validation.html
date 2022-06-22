@@ -6,9 +6,8 @@ create a map to visualize this comparison with all the FATE and
 observed data  (if option selected).
 
   PFG Composition
-Produces a computation of observed distribution 
-of relative abundance in the simulation area and a computation of distance between
-observed and simulated distribution.
+Computes the similarity between observed and simulated 
+  PFG composition for a chosen set of PFG/habitat/strata combinations.
 
   PFG Richness
 Computes the PFG richness over the whole simulation area 
@@ -158,9 +157,8 @@ create a map to visualize this comparison with all the <code>FATE</code> and
 observed data <br> (if option selected).</p></dd>
 
   <dt>PFG Composition</dt>
-<dd><p>Produces a computation of observed distribution 
-of relative abundance in the simulation area and a computation of distance between
-observed and simulated distribution.</p></dd>
+<dd><p>Computes the similarity between observed and simulated 
+  PFG composition for a chosen set of PFG/habitat/strata combinations.</p></dd>
 
   <dt>PFG Richness</dt>
 <dd><p>Computes the PFG richness over the whole simulation area 
@@ -319,17 +317,17 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
 
   
   <dt>PFG composition validation</dt>
-<dd><p><br></p><dl><dt>Observed distribution</dt>
+<dd><p><br></p><dl><dt>Observed composition</dt>
 <dd><p>is computed for a chosen set of PFG, habitat &amp; strata
-  (for all strata if strata definition is not activated) by computing 4 quartiles of the distribution, based
+  (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
   on <strong>releves.PFG</strong> data provided.</p></dd>
 
-    <dt>Simulated distribution</dt>
-<dd><p>is computed in the same way than the observed distribution, with 
+    <dt>Simulated composition</dt>
+<dd><p>is computed in the same way than the observed composition, with 
     <code>FATE</code> abundances <br> (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>).</p></dd>
 
   
-</dl><p>Then, a distribution similarity between each habitat/strata combination is provided by computing a 
+</dl><p>Then, a composition similarity between each habitat/strata combinations is provided by computing a 
   pseudo-distance between observed and simulated quartiles for each PFG y.
   $$S_{\text{ habitat, strata}} = \sum S_{\text{ y}{\text{, }habitat}{\text{, }strata}}$$
   with

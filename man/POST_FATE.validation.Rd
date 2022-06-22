@@ -127,9 +127,8 @@ This script is designed to compute validation data for : \cr
   \item{Habitat}{Compares simulated and observed habitat and
 create a map to visualize this comparison with all the \code{FATE} and
 observed data \cr (if option selected).}
-  \item{PFG Composition}{Produces a computation of observed distribution 
-of relative abundance in the simulation area and a computation of distance between
-observed and simulated distribution.}
+  \item{PFG Composition}{Computes the similarity between observed and simulated 
+  PFG composition for a chosen set of PFG/habitat/strata combinations.}
   \item{PFG Richness}{Computes the PFG richness over the whole simulation area 
 for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.}
 }
@@ -157,13 +156,13 @@ for a \code{FATE} simulation and computes the difference between observed and si
   
   \item{PFG composition validation}{ \cr 
   \describe{
-    \item{Observed distribution}{is computed for a chosen set of PFG, habitat & strata
-  (for all strata if strata definition is not activated) by computing 4 quartiles of the distribution, based
+    \item{Observed composition}{is computed for a chosen set of PFG, habitat & strata
+  (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
   on \strong{releves.PFG} data provided.}
-    \item{Simulated distribution}{is computed in the same way than the observed distribution, with 
+    \item{Simulated composition}{is computed in the same way than the observed composition, with 
     \code{FATE} abundances \cr (see \code{\link{POST_FATE.temporalEvolution}}).}
   }
-  Then, a distribution similarity between each habitat/strata combination is provided by computing a 
+  Then, a composition similarity between each habitat/strata combinations is provided by computing a 
   pseudo-distance between observed and simulated quartiles for each PFG y.
   \deqn{S_{\text{ habitat, strata}} = \sum S_{\text{ y}{\text{, }habitat}{\text{, }strata}}}
   with
