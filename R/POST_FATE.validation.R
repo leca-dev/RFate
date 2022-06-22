@@ -387,7 +387,7 @@ POST_FATE.validation = function(name.simulation
                                   , perStrata = perStrata
                                   , seed = RF.seed)
       
-      cat("> Done ! \n")
+      cat("\n > Done ! \n")
       
     }
     
@@ -502,7 +502,7 @@ POST_FATE.validation = function(name.simulation
           
           ## GET OBSERVED DISTRIBUTION
           
-          cat("\n Get observed distribution...\n")
+          cat("\n > Get observed distribution...")
           
           if(perStrata == TRUE & ncol(releves.PFG) == 7)
           {
@@ -531,7 +531,7 @@ POST_FATE.validation = function(name.simulation
           
           ## DO PFG COMPOSITION VALIDATION
           
-          cat("\n Comparison between observed and simulated distribution...\n")
+          cat("\n > Comparison between observed and simulated distribution...")
           
           performance.composition = do_PFG_composition_validation(sim = sim
                                                                   , PFG.considered_PFG.compo = PFG.considered_PFG.compo
@@ -740,11 +740,23 @@ POST_FATE.validation = function(name.simulation
     
     cat("\n ---------- PFG RICHNESS : \n")
     rich = as.matrix(output[[1]])
-    cat(paste0("\n Richness at year ", year, " : ", rich))
+    cat(paste0("\n Richness at year ", year, " : \n"))
+    print(rich)
     
   } else{ 
     
     cat("\n ---------- PFG RICHNESS VALIDATION DISABLED \n")
+    
+  }
+  
+  if(doComposition == TRUE){
+    
+    cat("\n ---------- PFG COMPOSITION : \n")
+    print(results.compo[sim.version])
+    
+  } else{
+    
+    cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
     
   }
   
@@ -770,7 +782,7 @@ POST_FATE.validation = function(name.simulation
     cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by the simulations \n"))
     cat("\n Habitat performance : \n")
     print(performances)
-    plot(prediction.map)
+    return(prediction.map)
     
   } else if (doHabitat == TRUE & predict.all.map == FALSE){
     
@@ -788,22 +800,11 @@ POST_FATE.validation = function(name.simulation
     
     cat("\n ---------- HABITAT : \n")
     cat("\n Habitat performance : \n")
-    print(performances)
+    return(performances)
     
   } else{
     
     cat("\n ---------- HABITAT VALIDATION DISABLED \n")
-    
-  }
-  
-  if(doComposition == TRUE){
-    
-    cat("\n ---------- PFG COMPOSITION : \n")
-    return(results.compo[sim.version])
-    
-  } else{
-    
-    cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
     
   }
   
