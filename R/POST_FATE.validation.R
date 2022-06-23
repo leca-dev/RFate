@@ -588,6 +588,8 @@ POST_FATE.validation = function(name.simulation
           results = list(dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
         } # Based on choice of the user, foreach loop returns different results
         
+        return(results)
+        
       } # End of loop on simulations
     cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
     
