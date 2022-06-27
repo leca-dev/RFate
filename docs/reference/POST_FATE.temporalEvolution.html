@@ -22,7 +22,7 @@ simulation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -34,7 +34,7 @@ simulation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -60,7 +60,7 @@ simulation."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -153,8 +153,7 @@ simulation.</p>
   file.simulParam <span class="op">=</span> <span class="cn">NULL</span>,
   <span class="va">no_years</span>,
   opt.ras_habitat <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.no_CPU <span class="op">=</span> <span class="fl">1</span>,
-  perStrata <span class="op">=</span> <span class="cn">FALSE</span>
+  opt.no_CPU <span class="op">=</span> <span class="fl">1</span>
 <span class="op">)</span></code></pre></div>
     </div>
 
@@ -178,10 +177,6 @@ A <code>string</code> corresponding to the file name of a raster mask, with an
 <dd><p>(<em>optional</em>) default <code>1</code>. <br> The number of 
 resources that can be used to parallelize the <code>unzip/zip</code> of raster 
 files, as well as the extraction of values from raster files</p></dd>
-<dt>perStrata</dt>
-<dd><p>default <code>FALSE</code>. <br> If abundance per PFG &amp; per Strata
-activated in global parameters, the function saved a temporal evolution file
-per PFG &amp; per Strata.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -190,7 +185,7 @@ following columns :</p><dl><dt><code>PFG</code></dt>
 <dd><p>concerned plant functional group (for abundance)</p></dd>
 
   <dt><code>STRATUM</code></dt>
-<dd><p>concerned height stratum (for LIGHT &amp; abundance if option selected)</p></dd>
+<dd><p>concerned height stratum (for LIGHT)</p></dd>
 
   <dt><code>ID.pixel</code></dt>
 <dd><p>number of the concerned pixel</p></dd>
@@ -223,15 +218,12 @@ following columns :</p><dl><dt><code>PFG</code></dt>
 a specific parameter file within this simulation, <strong>one to three 
 preanalytical tables that can then be used to create graphics</strong>. <br><br></p>
 <p>For each PFG and each selected simulation year, raster maps are retrieved 
-from the results folder <code>ABUND_perPFG_allStrata</code> and unzipped. If
-<code>perStrata</code> = <code>TRUE</code>, raster maps are retrieved from the folder
-<code>ABUND_perPFG_perStrata</code> and unzipped.
+from the results folder <code>ABUND_perPFG_allStrata</code> and unzipped.
 Informations extracted lead to the production of one table before the maps 
 are compressed again :</p>
-<ul><li><p>the value of <strong>abundance for each Plant Functional Group</strong>
-  for each selected simulation year(s) and, if option selected, each height
-  stratum in every pixel in which the PFG is present for at least one of 
-  the selected simulation year(s) <br><br></p></li>
+<ul><li><p>the value of <strong>abundance for each Plant Functional Group</strong> 
+  for each selected simulation year(s) in every pixel in which the PFG is 
+  present for at least one of the selected simulation year(s) <br><br></p></li>
 </ul><p><strong>If the light module was activated</strong> (see 
 <code><a href="PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a></code>), for each height stratum 
 and each selected simulation year, raster maps are retrieved from the 
@@ -286,7 +278,7 @@ also contain information about the pixel habitat. <br><br></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>

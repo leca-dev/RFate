@@ -20,7 +20,7 @@ containing GLOBAL PARAMETERS used in FATE model."><!-- mathjax --><script src="h
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ containing GLOBAL PARAMETERS used in FATE model."><!-- mathjax --><script src="h
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -58,7 +58,7 @@ containing GLOBAL PARAMETERS used in FATE model."><!-- mathjax --><script src="h
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -181,7 +181,6 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
   doDrought <span class="op">=</span> <span class="cn">FALSE</span>,
   DROUGHT.no_sub <span class="op">=</span> <span class="fl">4</span>,
   doAliens <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">ALIEN.no</span>,
   ALIEN.freq <span class="op">=</span> <span class="fl">1</span>,
   doFire <span class="op">=</span> <span class="cn">FALSE</span>,
   <span class="va">FIRE.no</span>,
@@ -351,9 +350,6 @@ to the number of way a PFG could react to a drought disturbance</p></dd>
 <dd><p>default <code>FALSE</code>. <br> If <code>TRUE</code>, invasive plant 
 introduction is activated in the <code>FATE</code> simulation, and associated 
 parameters are required</p></dd>
-<dt>ALIEN.no</dt>
-<dd><p>(<em>optional</em>) <br> an <code>integer</code> corresponding to the 
-number of introductions</p></dd>
 <dt>ALIEN.freq</dt>
 <dd><p>(<em>optional</em>) <br> a <code>vector</code> of <code>integer</code> 
 corresponding to the frequency of each introduction (<em>in years</em>)</p></dd>
@@ -472,7 +468,6 @@ parameters :</p><ul><li><p>NO_CPU</p></li>
 </ul><p>If the simulation includes <em>drought disturbance</em> :</p><ul><li><p>DO_DROUGHT_DISTURBANCE</p></li>
 <li><p>DROUGHT_NOSUB</p></li>
 </ul><p>If the simulation includes <em>aliens introduction</em> :</p><ul><li><p>DO_ALIENS_INTRODUCTION</p></li>
-<li><p>ALIENS_NO</p></li>
 <li><p>ALIENS_FREQ</p></li>
 </ul><p>If the simulation includes <em>fire disturbance</em> :</p><ul><li><p>DO_FIRE_DISTURBANCE</p></li>
 <li><p>FIRE_NO</p></li>
@@ -548,7 +543,7 @@ define general characteristics of the simulation :</p>
 
     <dt>seeding_input</dt>
 <dd><p>the number of seeds dispersed for each PFG at each 
-    time step, and until the seeding duration is not over <br><br><br><br></p></dd>
+    time step, and until the seeding duration is not over <br><br></p></dd>
 
   
 </dl><p></p></dd>
@@ -560,18 +555,20 @@ file, and if so, some additional parameters will be required :</p>
 <dd><p>= to influence seed recruitment and plant mortality according 
   to PFG preferences for light conditions <br> (see 
   <code><a href="PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></code>)<br>
-  = light resources are calculated as a proxy of PFG abundances weighted by 
-  their shade factor within each height stratum <br><br>
-  To transform PFG abundances :
-  $$abund_{\text{ Stratum}_k} = \sum abund_{\text{ PFG}_{i}\text{, }\text{Stratum}_k} * 
-  \text{shade.FACT}_{\text{ PFG}_{i}}$$</p>  
-<p>into light resources :</p><ul><li><p>\(light_{\text{ Stratum}_k} = \text{High} \;\; \;\;\) if 
-    \(\;\;\;\; abund_{\text{ Stratum}_k} &lt; \text{LIGHT.thresh_medium}\)</p></li>
-<li><p>\(light_{\text{ Stratum}_k} = \text{Medium} \;\; \;\;\) if 
-    \(\;\;\;\; \text{LIGHT.thresh_medium } &lt; abund_{\text{ Stratum}_k} &lt; \text{LIGHT.thresh_low}\)</p></li>
-<li><p>\(light_{\text{ Stratum}_k} = \text{Low} \;\; \;\;\) if 
-    \(\;\;\;\; abund_{\text{ Stratum}_k} &gt; \text{LIGHT.thresh_low}\)</p></li>
-</ul><p><em>As light resources are directly obtained from PFG abundances, 
+  = light resources are calculated as a proxy of PFG abundances within each 
+  height stratum <br><br>
+  To transform PFG abundances into light resources :
+  $$abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &lt; 
+  \text{LIGHT.thresh_medium} \;\; \Leftrightarrow \;\; 
+  light_{\text{ Stratum}_k} = \text{High}$$</p>  
+<p>$$\text{LIGHT.thresh_medium } &lt; 
+  abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &lt; 
+  \text{LIGHT.thresh_low} \\ \Leftrightarrow \;\; 
+  light_{\text{ Stratum}_k} = \text{Medium}$$</p>  
+<p>$$abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &gt; 
+  \text{LIGHT.thresh_low} \;\; \Leftrightarrow \;\; 
+  light_{\text{ Stratum}_k} = \text{Low}$$
+  <em>As light resources are directly obtained from PFG abundances, 
   <code>LIGHT.thresh_medium</code> and <code>LIGHT.thresh_low</code> parameters should 
   be on the same scale than <code>required.max_abund_low</code>, 
   <code>required.max_abund_medium</code> and <code>required.max_abund_high</code> 
@@ -725,10 +722,7 @@ file, and if so, some additional parameters will be required :</p>
   <code><a href="PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></code>) <br><br>
   These maps, containing either <code>0</code> or <code>1</code>, define the 
   introduction areas. <br> If the habitat suitability filter is on, 
-  suitability maps will also be needed for these new groups.</p><dl><dt>ALIEN.no</dt>
-<dd><p>the number of different introductions</p></dd>
-
-    <dt>ALIEN.freq</dt>
+  suitability maps will also be needed for these new groups.</p><dl><dt>ALIEN.freq</dt>
 <dd><p>the frequency of each introduction (<em>in years</em>)</p></dd>
 
   
@@ -940,7 +934,7 @@ file, and if so, some additional parameters will be required :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
