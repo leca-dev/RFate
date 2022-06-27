@@ -586,22 +586,22 @@ POST_FATE.validation = function(name.simulation
         }
         if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == TRUE & doRichness == TRUE){
           list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = PFG.richness.simulated)
+          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated))
         }
         if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == FALSE & doRichness == TRUE){
-          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = PFG.richness.simulated)
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated))
         }
         if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == TRUE & doRichness == TRUE){
-          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = PFG.richness.simulated)
+          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated))
         }
         if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == FALSE & doRichness == TRUE){
-          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = PFG.richness.simulated)
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated))
         }
         if(doHabitat == FALSE & doComposition == TRUE & doRichness == TRUE){
-          results = list(performance.compo = performance.composition, dying.PFG.list = PFG.richness.simulated)
+          results = list(performance.compo = performance.composition, dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated))
         }
         if(doHabitat == FALSE & doComposition == FALSE & doRichness == TRUE){
-          results = list(dying.PFG.list = PFG.richness.simulated)
+          results = list(dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated))
         } # Based on choice of the user, foreach loop returns different results
         
         return(results)
@@ -683,7 +683,7 @@ POST_FATE.validation = function(name.simulation
   
   if(doRichness == TRUE){ # PFG Richness validation
     
-    if(doComposition == FALSE & doHabitat == FALSE){
+    if(doComposition == FALSE | doHabitat == FALSE){
       cat("\n\n #------------------------------------------------------------#")
       cat("\n # PFG RICHNESS VALIDATION")
       cat("\n #------------------------------------------------------------# \n")
