@@ -192,7 +192,7 @@ POST_FATE.graphic_mapPFG = function(
   name.simulation
   , file.simulParam = NULL
   , years
-  , opt.stratum_min = 1
+  , opt.stratum_min = 0
   , opt.stratum_max = 10
   , opt.doBinary = TRUE
   , opt.no_CPU = 1
@@ -251,7 +251,7 @@ POST_FATE.graphic_mapPFG = function(
     
     opt.doStrata = FALSE
     name_strata = "all"
-    range_strata = max(1, opt.stratum_min):min(GLOB_SIM$no_STRATA, opt.stratum_max)
+    range_strata = max(0, opt.stratum_min):min(GLOB_SIM$no_STRATA, opt.stratum_max)
     if (opt.stratum_min > 1 || opt.stratum_max < GLOB_SIM$no_STRATA)
     {
       opt.doStrata = TRUE
@@ -463,7 +463,6 @@ POST_FATE.graphic_mapPFG = function(
                     , flag.split = " "
                     , is.num = TRUE)
         }
-        names(light_need) = GLOB_SIM$PFG
         if (length(na.exclude(light_need)) == 0)
         {
           warning(paste0("Missing data!\n The files \n"
@@ -471,6 +470,7 @@ POST_FATE.graphic_mapPFG = function(
                          , " do not contain `LIGHT` flag parameter. Please check."))
         } else
         {
+          names(light_need) = GLOB_SIM$PFG
           ras.CWM.light = sum(ras.REL * light_need[names(ras.REL)])
           ras_list$CWM.light = ras.CWM.light
           

@@ -233,6 +233,9 @@ train_RF_habitat = function(releves.PFG
   releves.training = mat.PFG.agg[which(mat.PFG.agg$site %in% training.site), ]
   releves.testing = mat.PFG.agg[-which(mat.PFG.agg$site %in% training.site), ]
   
+  print(table(releves.training$habitat))
+  print(table(releves.testing$habitat))
+  
   #train the model (with correction for imbalances in sampling)
   
   #run optimization algo (careful : optimization over OOB...)

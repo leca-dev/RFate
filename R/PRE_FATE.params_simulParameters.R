@@ -729,11 +729,16 @@ PRE_FATE.params_simulParameters = function(
         .testParam_existFile(paste0(name.simulation
                                     , "/DATA/MASK/"
                                     , get(paste0("name.", mod))))
-        assign(x = paste0("no.", mod)
-               , value = .getParam(params.lines = globi
-                                   , flag = paste0(mod, "_NO")
-                                   , flag.split = " "
-                                   , is.num = TRUE))
+        
+        if (mod != "ALIENS") {
+          assign(x = paste0("no.", mod)
+                 , value = .getParam(params.lines = globi
+                                     , flag = paste0(mod, "_NO")
+                                     , flag.split = " "
+                                     , is.num = TRUE))
+        } else {
+          assign(x = paste0("no.", mod), value = no_PFG)
+        }
       } else
       {
         assign(x = paste0("no.", mod), value = 0)

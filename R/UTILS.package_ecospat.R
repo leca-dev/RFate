@@ -72,7 +72,7 @@ ecospat.kd = function (x, ext, R = 100, th = 0, env.mask = c(), method = "adehab
       x.dens <- kernelUD(SpatialPoints(xr[, 1:2]), h = "href", grid = mask, kern = "bivnorm")
       x.dens <- raster(xmn = ext[1], xmx = ext[2], ymn = ext[3], ymx = ext[4], matrix(x.dens$ud, nrow = R))
       if (!is.null(th)) {
-        th.value <- quantile(extract(x.dens, x), th)
+        th.value <- quantile(extract(x.dens, x), th, na.rm = TRUE)
         x.dens[x.dens < th.value] <- 0
       }
       if (!is.null(env.mask)) {
@@ -86,7 +86,7 @@ ecospat.kd = function (x, ext, R = 100, th = 0, env.mask = c(), method = "adehab
       }
       if (!is.null(th)) {
         xr <- sapply(x, findInterval, x.dens$x)
-        th.value <- quantile(x.dens$y[xr], th)
+        th.value <- quantile(x.dens$y[xr], th, na.rm = TRUE)
         sprm <- which(x.dens$y < th.value)
         x.dens$y[sprm] <- 0
       }
