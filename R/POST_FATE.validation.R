@@ -424,6 +424,14 @@ POST_FATE.validation = function(name.simulation
       
     }
     
+    if(doRichness == TRUE & doComposition == FALSE & doHabitat == FALSE){
+      
+      cat("\n\n #------------------------------------------------------------#")
+      cat("\n # PFG RICHNESS VALIDATION")
+      cat("\n #------------------------------------------------------------# \n")
+      
+    }
+    
     if (opt.no_CPU > 1)
     {
       if (.getOS() != "windows")
@@ -474,7 +482,20 @@ POST_FATE.validation = function(name.simulation
           }
         }
         
-        simu_PFG <- aggregate(abs ~ pixel + strata + PFG, data = simu_PFG, FUN = "sum")
+        if(doComposition == TRUE & doHabitat == TRUE){
+          simu_PFG <- aggregate(abs ~ pixel + strata + PFG, data = simu_PFG, FUN = "sum")
+        }
+        
+        if(doRichness == TRUE){
+          PFG.richness.simulated = NULL
+          for(pfg in list.PFG){
+            sub = subset(simu_PFG, simu_PFG$PFG == pfg)
+            if(!all(is.na(sub[,"abs"]))){
+              PFG = pfg
+              PFG.richness.simulated = c(PFG.richness.simulated, PFG)
+            }
+          }
+        }
         
         if (doHabitat == TRUE){ # Only for habitat validation
           
@@ -565,27 +586,22 @@ POST_FATE.validation = function(name.simulation
         }
         if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == TRUE & doRichness == TRUE){
           list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
+          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = PFG.richness.simulated)
         }
         if(doHabitat == TRUE & doComposition == TRUE & predict.all.map == FALSE & doRichness == TRUE){
-          list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, performance.compo = performance.composition, dying.PFG.list = PFG.richness.simulated)
         }
         if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == TRUE & doRichness == TRUE){
-          list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
+          results = list(habitat.prediction = results.habitat$y.all.map.predicted, habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = PFG.richness.simulated)
         }
         if(doHabitat == TRUE & doComposition == FALSE & predict.all.map == FALSE & doRichness == TRUE){
-          list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
+          results = list(habitat.performance = results.habitat$output.validation, RF.model = RF.model, dying.PFG.list = PFG.richness.simulated)
         }
         if(doHabitat == FALSE & doComposition == TRUE & doRichness == TRUE){
-          list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(performance.compo = performance.composition, dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
+          results = list(performance.compo = performance.composition, dying.PFG.list = PFG.richness.simulated)
         }
         if(doHabitat == FALSE & doComposition == FALSE & doRichness == TRUE){
-          list.PFG = setdiff(list.PFG,exclude.PFG) # list of PFG of interest
-          results = list(dying.PFG.list = setdiff(list.PFG,unique(simu_PFG$PFG)))
+          results = list(dying.PFG.list = PFG.richness.simulated)
         } # Based on choice of the user, foreach loop returns different results
         
         return(results)
@@ -667,14 +683,19 @@ POST_FATE.validation = function(name.simulation
   
   if(doRichness == TRUE){ # PFG Richness validation
     
-    cat("\n\n #------------------------------------------------------------#")
-    cat("\n # PFG RICHNESS VALIDATION")
-    cat("\n #------------------------------------------------------------# \n")
+    if(doComposition == FALSE & doHabitat == FALSE){
+      cat("\n\n #------------------------------------------------------------#")
+      cat("\n # PFG RICHNESS VALIDATION")
+      cat("\n #------------------------------------------------------------# \n")
+    }
     
     output.path = paste0(name.simulation, "/VALIDATION/PFG_RICHNESS")
     perStrata = perStrata
     
-    dying.PFG.list = results.simul[[1]]$dying.PFG.list
+    dying.PFG.list = list()
+    for(i in 1:length(all_of(sim.version))){
+      dying.PFG.list[[i]] = results.simul[[i]]$dying.PFG.list
+    }
     
     cat("\n > Richness computation \n")
     
