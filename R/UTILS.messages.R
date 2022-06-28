@@ -102,3 +102,11 @@
   stop(paste0("Wrong type of data!\n `", param1, "` must be either `", end_message, "`"))
 }
 
+#################################################################################################
+
+.stopMessage_raster = function(param1, param2)
+{
+  stop(paste0("Wrong dimension(s) of data!\n `", param1
+              , "` must have the same projection, resolution, origin and extent as `", param2, "`"))
+}
+

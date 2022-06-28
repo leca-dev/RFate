@@ -18,7 +18,9 @@
 ##' }
 ##' 
 ##' @param name.simulation a \code{string} corresponding to the simulation folder name.
-##' @param sim.version a \code{character} vector with at least one name of a \code{FATE} simulation to validate.
+##' @param file.simulParam default \code{NULL}. \cr A \code{string} 
+##' corresponding to the name of a parameter file that will be contained into 
+##' the \code{PARAM_SIMUL} folder of the \code{FATE} simulation
 ##' @param year an \code{integer} corresponding to the year of simulation for validation.
 ##' @param perStrata (\code{logical}) default \code{FALSE}. \cr 
 ##' If \code{TRUE}, habitat & PFG composition are computed with PFG abundance defined by strata. \cr
@@ -202,7 +204,8 @@
 
 
 POST_FATE.validation = function(name.simulation
-                                , sim.version
+                                # , sim.version
+                                , file.simulParam
                                 , year
                                 , perStrata = FALSE
                                 , opt.no_CPU = 1
@@ -221,134 +224,142 @@ POST_FATE.validation = function(name.simulation
                                 , strata.considered_PFG.compo = "A"
                                 , doRichness = TRUE
                                 , list.PFG
-                                , exclude.PFG = NULL){
+                                , exclude.PFG = NULL)
+{
+  #############################################################################
+  
+  ## CHECK parameter name.simulation
+  .testParam_existFolder(name.simulation, "PARAM_SIMUL/")
+  .testParam_existFolder(name.simulation, "RESULTS/")
+  .testParam_existFolder(name.simulation, "DATA/")
+  .testParam_existFolder(name.simulation, "VALIDATION/")
+  name.simulation = sub("/", "", name.simulation)
+  ## CHECK parameter file.simulParam
+  abs.simulParams = .getParam_abs.simulParams(file.simulParam, name.simulation)
+  ## CHECK parameter year
+  .testParam_notInteger.m("year", year)
+  ## CHECK parameter releves.PFG
+  if (.testParam_notDf(releves.PFG))
+  {
+    .stopMessage_beDataframe("releves.PFG")
+  } else
+  {
+    if (nrow(releves.PFG) == 0 || !(ncol(releves.PFG) %in% c(5, 6, 7)))
+    {
+      .stopMessage_numRowCol("releves.PFG", c("site", "x", "y", "PFG", "abund", "(strata)", "(code.habitat)"))
+    } else
+    {
+      notCorrect = switch(as.character(ncol(releves.PFG))
+                          , "5" = .testParam_notColnames(releves.PFG, c("site", "x", "y", "PFG", "abund"))
+                          , "6" = .testParam_notColnames(releves.PFG, c("site", "x", "y", "PFG", "abund", "strata"))
+                          , "6" = .testParam_notColnames(releves.PFG, c("site", "x", "y", "PFG", "abund", "code.habitat"))
+                          , "7" = .testParam_notColnames(releves.PFG, c("site", "x", "y", "PFG", "abund", "strata", "code.habitat"))
+                          , TRUE)
+      if (notCorrect){
+        .stopMessage_columnNames("releves.PFG", c("site", "x", "y", "PFG", "abund", "(strata)", "(code.habitat)"))
+      }
+      .testParam_notNum.m("releves.PFG$site", releves.PFG$site)
+      .testParam_notNum.m("releves.PFG$abund", releves.PFG$abund)
+      .testParam_notBetween.m("releves.PFG$abund", releves.PFG$abund, 0, 1)
+      # releves.PFG$coverage = releves.PFG$abund
+      if (sum(colnames(releves.PFG) == "strata") == 1)
+      {
+        .testParam_notNum.m("releves.PFG$strata", releves.PFG$strata)
+      }
+      if (sum(colnames(releves.PFG) == "code.habitat") == 1)
+      {
+        .testParam_notNum.m("releves.PFG$code.habitat", releves.PFG$code.habitat)
+      }
+    }
+  }
+  if ((perStrata == TRUE && ncol(releves.PFG) == 7) ||
+      (perStrata == FALSE && ncol(releves.PFG) == 6)) {
+    hab.obs.RF = hab.obs.compo = NULL
+    if (ncol(releves.PFG) == 6 && .testParam_notColnames(releves.PFG, c("site", "x", "y", "PFG", "abund", "code.habitat"))) {
+      .stopMessage_columnNames("releves.PFG", c("site", "x", "y", "PFG", "abund", "code.habitat"))
+    }
+  } else if ((perStrata == TRUE && ncol(releves.PFG) == 6) ||
+             (perStrata == FALSE && ncol(releves.PFG) == 5)) {
+    hab.obs.RF = hab.obs.compo = hab.obs
+    if (ncol(releves.PFG) == 6 && .testParam_notColnames(releves.PFG, c("site", "x", "y", "PFG", "abund", "strata"))) {
+      .stopMessage_columnNames("releves.PFG", c("site", "x", "y", "PFG", "abund", "strata"))
+    }
+  }
+  
+  ## CHECK perStrata parameters
+  list.strata.releves = NULL
+  list.strata = "all"
+  if (perStrata) {
+    list.strata.releves = as.character(unique(releves.PFG$strata))
+    
+    ## CHECK parameter list.strata.simulations
+    # check if strata definition used in the RF model is the same as the one used to analyze FATE output
+    list.strata = names(list.strata.simulations)
+    .testParam_notInValues.m("names(list.strata.simulations)", names(list.strata.simulations), list.strata.releves)
+  }
+  ## CHECK doHabitat parameters
+  if (doHabitat)
+  {
+    ## CHECK parameter studied.habitat
+    if (.testParam_notDf(studied.habitat))
+    {
+      .stopMessage_beDataframe("studied.habitat")
+    } else
+    {
+      if (nrow(studied.habitat) == 0 || ncol(studied.habitat) != 2)
+      {
+        .stopMessage_numRowCol("studied.habitat", c("ID", "habitat"))
+      }
+      studied.habitat$habitat = as.character(studied.habitat$habitat)
+      .testParam_notNum.m("studied.habitat$ID", studied.habitat$ID)
+      .testParam_notChar.m("studied.habitat$habitat", studied.habitat$habitat)
+    }
+  }
+  
+  cat("\n\n #------------------------------------------------------------#")
+  cat("\n # POST_FATE.validation")
+  cat("\n #------------------------------------------------------------# \n")
+  
+  #############################################################################
+  
+  
+  ## Get raster mask --------------------------------------------------------
+  GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                , abs.simulParam = abs.simulParams[1])
+  simulation.map = GLOB_MASK$ras.mask
   
   if (doHabitat == TRUE | doComposition == TRUE | doRichness == TRUE){ # Habitat or composition or both validation
     
     if(doHabitat == TRUE | doComposition == TRUE){
-    
-      if(doHabitat == TRUE & doComposition == TRUE){
-        cat("\n\n #------------------------------------------------------------#")
-        cat("\n # HABITAT & PFG COMPOSITION VALIDATION")
-        cat("\n #------------------------------------------------------------# \n")
-      }else if(doHabitat == TRUE & doComposition == FALSE){
-        cat("\n\n #------------------------------------------------------------#")
-        cat("\n # HABITAT VALIDATION")
-        cat("\n #------------------------------------------------------------# \n")
-      }else if(doHabitat ==  FALSE & doComposition == TRUE){
-        cat("\n\n #------------------------------------------------------------#")
-        cat("\n # PFG COMPOSITION VALIDATION")
-        cat("\n #------------------------------------------------------------# \n")
-      }
+      
+      # if(doHabitat == TRUE & doComposition == TRUE){
+      #   cat("\n\n #------------------------------------------------------------#")
+      #   cat("\n # HABITAT & PFG COMPOSITION VALIDATION")
+      #   cat("\n #------------------------------------------------------------# \n")
+      # }else if(doHabitat == TRUE & doComposition == FALSE){
+      #   cat("\n\n #------------------------------------------------------------#")
+      #   cat("\n # HABITAT VALIDATION")
+      #   cat("\n #------------------------------------------------------------# \n")
+      # }else if(doHabitat ==  FALSE & doComposition == TRUE){
+      #   cat("\n\n #------------------------------------------------------------#")
+      #   cat("\n # PFG COMPOSITION VALIDATION")
+      #   cat("\n #------------------------------------------------------------# \n")
+      # }
       
       cat("\n ----------- PRELIMINARY CHECKS")
-      
-      #######################
-      # 0. Global parameters
-      #######################
-      
-      # General
-      year = year # choice in the year for validation
-      perStrata = perStrata
-      opt.no_CPU = opt.no_CPU
-      predict.all.map = predict.all.map
-      RF.seed = RF.seed
-      RF.training = RF.training
-      
-      # Observed releves data
-      releves.PFG = releves.PFG
-      if(perStrata==TRUE){
-        list.strata.releves = as.character(unique(releves.PFG$strata))
-        list.strata.simulations = list.strata.simulations
-      }else {
-        list.strata.releves = NULL
-        list.strata.simulations = NULL
-      }
-      
-      # Habitat map
-      hab.obs = hab.obs
-      
-      # Simulation mask
-      name = .getParam(params.lines = paste0(name.simulation, "/PARAM_SIMUL/Simul_parameters_", str_split(sim.version, "_")[[1]][2], ".txt"),
-                       flag = "MASK",
-                       flag.split = "^--.*--$",
-                       is.num = FALSE) # isolate the access path to the simulation mask for any FATE simulation
-      simulation.map = raster(paste0(name))
-      
-      # Validation mask (if provided)
-      if(!is.null(validation.mask)){
-        validation.mask = validation.mask
-      }
       
       #######################
       # I. Preliminary checks
       #######################
       
       # Check hab.obs map
-      if(!compareCRS(simulation.map, hab.obs) | !all(res(hab.obs)==res(simulation.map))){
-        stop(paste0("Projection & resolution of hab.obs map does not match with simulation mask. Please reproject hab.obs map with projection & resolution of ", names(simulation.map)))
-      }else if(extent(simulation.map) != extent(hab.obs)){
-        habitat.FATE.map = crop(hab.obs, simulation.map)
-      }else {
-        habitat.FATE.map = hab.obs
-      }
-      if(!all(origin(simulation.map) == origin(habitat.FATE.map))){
-        cat("\n setting origin habitat.FATE.map to match simulation.map \n")
-        raster::origin(habitat.FATE.map) <- raster::origin(simulation.map)
-      }
+      .testParam_notSameRaster.m("simulation.map", simulation.map, "hab.obs", hab.obs)
+      habitat.FATE.map = hab.obs
       
       # Check validation mask
       if(!is.null(validation.mask)){
-        if(!compareCRS(simulation.map, validation.mask) | !all(res(validation.mask)==res(simulation.map))){
-          stop(paste0("Projection & resolution of validation mask does not match with simulation mask. Please reproject validation mask with projection & resolution of ", names(simulation.map)))
-        }else if(extent(validation.mask) != extent(simulation.map)){
-          validation.mask = crop(validation.mask, simulation.map)
-        }else {
-          validation.mask = validation.mask
-        }
-        if(!all(origin(simulation.map) == origin(validation.mask))){
-          cat("\n setting origin validation mask to match simulation.map \n")
-          raster::origin(validation.mask) <- raster::origin(simulation.map)
-        }
+        .testParam_notSameRaster.m("simulation.map", simulation.map, "validation.mask", validation.mask)
       }
-      
-      # Check studied habitat
-      if(is.null(studied.habitat)){
-        stop("studied.habitat vector is null, please specify at least one habitat which will be taken into account in the validation")
-      } else if (.testParam_notDf(studied.habitat))
-      {
-        .stopMessage_beDataframe(studied.habitat)
-      } else
-      {
-        studied.habitat = as.data.frame(studied.habitat)
-        if (nrow(studied.habitat) == 0 || ncol(studied.habitat) != 2)
-        {
-          .stopMessage_numRowCol("studied.habitat", c("ID", "habitat"))
-        }
-        if (!is.numeric(studied.habitat$ID))
-        {
-          stop("Habitat ID in studied.habitat are not in the right format. Please make sure you have numeric values")
-        }
-        if (!is.character(studied.habitat$habitat))
-        {
-          stop("Habitat name in studied.habitat are not in the right format. Please make sure you have character values")
-        }
-      }
-      
-      # check if strata definition used in the RF model is the same as the one used to analyze FATE output
-      if (perStrata == TRUE) {
-        if (all(intersect(names(list.strata.simulations), list.strata.releves) == names(list.strata.simulations))) {
-          list.strata = names(list.strata.simulations)
-          cat("\n strata definition OK \n")
-        } else {
-          stop("wrong strata definition")
-        }
-      } else if (perStrata == FALSE) {
-        list.strata <- "all"
-      } else {
-        stop("check 'perStrata' parameter and/or the names of strata in list.strata.releves & list.strata.simulation")
-      }
-      
       cat("\n > Done !")
       
       #################################################################
@@ -364,22 +375,6 @@ POST_FATE.validation = function(name.simulation
         ## TRAIN A RF ON OBSERVED DATA
         
         RF.param = list(share.training = RF.training, ntree = 500)
-        
-        if(perStrata == TRUE & ncol(releves.PFG) == 7)
-        {
-          hab.obs.RF = NULL
-        }else if(perStrata == TRUE & ncol(releves.PFG) == 6)
-        {
-          hab.obs.RF = habitat.FATE.map
-        }else if(perStrata == FALSE & ncol(releves.PFG) == 6)
-        {
-          hab.obs.RF = NULL
-        }else if(perStrata == FALSE & ncol(releves.PFG) == 5)
-        {
-          hab.obs.RF = habitat.FATE.map
-        }else {
-          stop("releves.PFG must be a data frame with at least 5 columns : 'site', 'x', 'y', 'abund', 'PFG' and optionally, 'strata', 'code.habitat'")
-        }
         RF.model = train_RF_habitat(releves.PFG = releves.PFG
                                     , hab.obs.RF = hab.obs.RF
                                     , studied.habitat = studied.habitat
@@ -442,14 +437,47 @@ POST_FATE.validation = function(name.simulation
         warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
       }
     }
-    results.simul = foreach(i = 1:length(all_of(sim.version))) %dopar% # loop on simulations
+    
+    
+    results.simul = foreach (abs.simulParam = abs.simulParams) %do%
       {
-      
-        sim <- sim.version[i]
+        
+        cat("\n+++++++\n")
+        cat("\n  Simulation name : ", name.simulation)
+        cat("\n  Simulation file : ", abs.simulParam)
+        cat("\n")
+        
+        ## Get results directories ------------------------------------------------
+        GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                        , abs.simulParam = abs.simulParam)
+        
+        ## Get number of PFGs -----------------------------------------------------
+        ## Get PFG names ----------------------------------------------------------
+        GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
+                                    , abs.simulParam = abs.simulParam)
+        
+        ## Get raster mask --------------------------------------------------------
+        GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
+                                      , abs.simulParam = abs.simulParam)
+        # simulation.map = GLOB_MASK$ras.mask
+        # results.simul = foreach(i = 1:length(all_of(sim.version))) %dopar% # loop on simulations
+        # {
+        
+        # sim <- sim.version[i]
+        sim = basename(GLOB_DIR$dir.save)
         cat("\n >", sim, " :")
         cat("\n > Data preparation \n")
         # get simulated abundance per pixel*strata*PFG for pixels in the simulation area
         if (perStrata == FALSE) {
+          ## Get the abundance table ------------------------------------------------
+          # file.abundance = paste0(name.simulation
+          #                         , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
+          #                         , basename(GLOB_DIR$dir.save)
+          #                         , ".csv")
+          # .testParam_existFile(file.abundance)
+          # tab.totalAbundance = fread(file.abundance)
+          # tab.totalAbundance = as.data.frame(tab.totalAbundance, stringsAsFactors = FALSE)
+          
           if(file.exists(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv")))
           {
             simu_PFG = fread(paste0(name.simulation, "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_", sim, ".csv"))
@@ -498,52 +526,31 @@ POST_FATE.validation = function(name.simulation
         }
         
         if (doHabitat == TRUE){ # Only for habitat validation
-          
           cat("\n ------ HABITAT PREDICTION")
           
           ## USE THE RF MODEL TO VALIDATE FATE OUTPUT
-          
           predict.all.map = predict.all.map
           
           results.habitat = do_habitat_validation(output.path = output.path
-                                                   , RF.model = RF.model
-                                                   , predict.all.map = predict.all.map
-                                                   , sim = sim
-                                                   , simu_PFG = simu_PFG
-                                                   , habitat.whole.area.df = habitat.whole.area.df
-                                                   , list.strata = list.strata
-                                                   , perStrata = perStrata)
+                                                  , RF.model = RF.model
+                                                  , predict.all.map = predict.all.map
+                                                  , sim = sim
+                                                  , simu_PFG = simu_PFG
+                                                  , habitat.whole.area.df = habitat.whole.area.df
+                                                  , list.strata = list.strata
+                                                  , perStrata = perStrata)
           
           cat("\n > Done ! \n")
-          
         }
         
         if (doComposition == TRUE){ # Only for PFG composition validation
           
           cat("\n ------ PFG COMPOSITION VALIDATION")
-          
           output.path.compo = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION")
           
           ## GET OBSERVED DISTRIBUTION
           
           cat("\n > Get observed distribution...")
-          
-          if(perStrata == TRUE & ncol(releves.PFG) == 7)
-          {
-            hab.obs.compo = NULL
-          }else if(perStrata == TRUE & ncol(releves.PFG) == 6)
-          {
-            hab.obs.compo = habitat.FATE.map
-          }else if(perStrata == FALSE & ncol(releves.PFG) == 6)
-          {
-            hab.obs.compo = NULL
-          }else if(perStrata == FALSE & ncol(releves.PFG) == 5)
-          {
-            hab.obs.compo = habitat.FATE.map
-          }else {
-            stop("releves.PFG must be a data frame with at least 5 columns : 'site', 'x', 'y', 'abund', 'PFG' and optionally, 'strata', 'code.habitat'")
-          }
-          
           obs.distri = get_observed_distribution(releves.PFG = releves.PFG
                                                  , hab.obs.compo = hab.obs.compo
                                                  , studied.habitat = studied.habitat
@@ -605,6 +612,7 @@ POST_FATE.validation = function(name.simulation
         } # Based on choice of the user, foreach loop returns different results
         
         return(results)
+        # results.simul = results
         
       } # End of loop on simulations
     cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
@@ -618,14 +626,14 @@ POST_FATE.validation = function(name.simulation
         RF.model = results.simul[[1]]$RF.model
         habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 2)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
         colnames(habitat.performance) <- c(RF.model$classes, "weighted")
-        habitat.performance$simulation <- sim.version
+        habitat.performance$simulation <- abs.simulParams
         # save
         fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
         cat("\n > Habitat performance saved")
         
         # deal with the results regarding habitat prediction over the whole map
         all.map.prediction = as.data.frame(lapply(results.simul, "[[", 1))
-        all.map.prediction = all.map.prediction[,c(sim.version, "pixel", "habitat")]
+        all.map.prediction = all.map.prediction[,c(abs.simulParams, "pixel", "habitat")]
         all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
         # save
         fwrite(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
@@ -643,7 +651,7 @@ POST_FATE.validation = function(name.simulation
                                                 , col.df = col.df
                                                 , simulation.map = simulation.map
                                                 , output.path = output.path
-                                                , sim.version = sim.version)
+                                                , sim.version = abs.simulParams)
         
         cat("\n > Predicted habitat plot saved")
         
@@ -654,7 +662,7 @@ POST_FATE.validation = function(name.simulation
         RF.model = results.simul[[1]]$RF.model
         habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 1)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
         colnames(habitat.performance) <- c(RF.model$classes, "weighted")
-        habitat.performance$simulation <- sim.version
+        habitat.performance$simulation <- abs.simulParams
         # save
         fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
         cat("\n > Habitat performance saved")
@@ -669,7 +677,7 @@ POST_FATE.validation = function(name.simulation
       results.compo = sapply(results.simul, "[[", "performance.compo")
       results <- sapply(results.compo, function(X){X$aggregated.proximity})
       rownames(results) <- paste0(results.compo[[1]]$habitat, "_", results.compo[[1]]$strata)
-      colnames(results) <- sim.version
+      colnames(results) <- abs.simulParams
       results.compo <- t(results)
       results.compo <- as.data.frame(results)
       results.compo$simulation <- rownames(results)
@@ -693,14 +701,14 @@ POST_FATE.validation = function(name.simulation
     perStrata = perStrata
     
     dying.PFG.list = list()
-    for(i in 1:length(all_of(sim.version))){
+    for(i in 1:length(all_of(abs.simulParams))){
       dying.PFG.list[[i]] = results.simul[[i]]$dying.PFG.list
     }
     
     cat("\n > Richness computation \n")
     
     # names the results
-    names(dying.PFG.list) = sim.version
+    names(dying.PFG.list) = abs.simulParams
     
     # get table with PFG richness
     PFG.richness.df = data.frame(simulation = names(dying.PFG.list), richness = length(list.PFG) - unlist(lapply(dying.PFG.list, FUN = "length")))
@@ -708,7 +716,7 @@ POST_FATE.validation = function(name.simulation
     # get vector with one occurence per PFG*simulation with dying of the PFG, as factor with completed levels in order to have table with all PFG, including those which never die
     dyingPFG.vector = as.factor(unlist(dying.PFG.list))
     dyingPFG.vector = fct_expand(dyingPFG.vector, list.PFG)
-    dying.distribution = round(table(dyingPFG.vector)/length(sim.version), digits = 2)
+    dying.distribution = round(table(dyingPFG.vector)/length(abs.simulParams), digits = 2)
     dying.distribution = as.data.frame(dying.distribution)
     
     # output
@@ -729,28 +737,20 @@ POST_FATE.validation = function(name.simulation
   cat("\n #------------------------------------------------------------# \n")
   
   if(doRichness == TRUE){
-    
     cat("\n ---------- PFG RICHNESS : \n")
     rich = as.matrix(output[[1]])
-    rownames(rich) = seq(1, length(sim.version), 1)
+    rownames(rich) = seq(1, length(abs.simulParams), 1)
     cat(paste0("\n Richness at year ", year, " : \n"))
     print(rich)
-    
   } else{ 
-    
     cat("\n ---------- PFG RICHNESS VALIDATION DISABLED \n")
-    
   }
   
   if(doComposition == TRUE){
-    
     cat("\n ---------- PFG COMPOSITION : \n")
-    print(results.compo[sim.version])
-    
+    print(results.compo[abs.simulParams])
   } else{
-    
     cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
-    
   }
   
   if(doHabitat == TRUE & predict.all.map == TRUE){
@@ -768,7 +768,7 @@ POST_FATE.validation = function(name.simulation
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
     performances = cbind(performances, hab.perf[1:length(studied.habitat[,1]),])
-    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", sim.version)
+    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", abs.simulParams)
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
@@ -788,7 +788,7 @@ POST_FATE.validation = function(name.simulation
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
     performances = cbind(performances, hab.perf[1:length(studied.habitat[,1]),])
-    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", sim.version)
+    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", abs.simulParams)
     rownames(performances) = seq(1, length(studied.habitat[,1]), 1)
     
     cat("\n ---------- HABITAT : \n")
@@ -796,9 +796,6 @@ POST_FATE.validation = function(name.simulation
     return(performances)
     
   } else{
-    
     cat("\n ---------- HABITAT VALIDATION DISABLED \n")
-    
   }
-  
 }

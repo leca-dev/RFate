@@ -21,20 +21,21 @@ get_observed_distribution <- function(releves.PFG
   #########################################
   
   #transformation into coverage percentage
-  if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance
-  {
-    releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
-    releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
-  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) # presence-absence data
-  {
-    releves.PFG$coverage = releves.PFG$abund
-  } else if (is.numeric(releves.PFG$abund)) # absolute abundance
-  {
-    releves.PFG$coverage = releves.PFG$abund
-  }else
-  {
-    stop("Abund data in releves.PFG must be Braun-Blanquet abundance, presences absence or absolute abundance values.")
-  }
+  # if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance
+  # {
+  #   releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
+  #   releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
+  # } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) # presence-absence data
+  # {
+  #   releves.PFG$coverage = releves.PFG$abund
+  # } else if (is.numeric(releves.PFG$abund)) # absolute abundance
+  # {
+  #   releves.PFG$coverage = releves.PFG$abund
+  # }else
+  # {
+  #   stop("Abund data in releves.PFG must be Braun-Blanquet abundance, presences absence or absolute abundance values.")
+  # }
+  releves.PFG$coverage = releves.PFG$abund
   
   if (perStrata == TRUE & !is.null(hab.obs.compo)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
