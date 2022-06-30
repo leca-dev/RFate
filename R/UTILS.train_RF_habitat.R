@@ -26,32 +26,16 @@ train_RF_habitat = function(releves.PFG
   # 1. Compute relative abundance metric
   ######################################
   
-  #transformation into coverage percentage
-  if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance ## Not sure that this should be kept
-  {
-    releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
-    releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
-  } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) #presence-absence data
-  {
-    releves.PFG$coverage = releves.PFG$abund
-  } else if (is.numeric(releves.PFG$abund)) #absolute abundance
-  {
-    releves.PFG$coverage = releves.PFG$abund
-  }else
-  {
-    stop("Abund data in releves.PFG must be Braun-Blanquet abundance, presences absence or absolute abundance values.")
-  }
-  
   if (perStrata == TRUE & !is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
   } else if (perStrata == FALSE & !is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
-    mat.PFG.agg$strata = "A"
+    mat.PFG.agg$strata = "all"
   } else if (perStrata == TRUE & is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata + code.habitat, data = releves.PFG, FUN = "sum")
   } else if (perStrata == FALSE & is.null(hab.obs.RF)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + code.habitat, data = releves.PFG, FUN = "sum")
-    mat.PFG.agg$strata = "A"
+    mat.PFG.agg$strata = "all"
   }
   
   #transformation into a relative metric (here relative.metric is relative coverage)
@@ -62,7 +46,7 @@ train_RF_habitat = function(releves.PFG
   mat.PFG.agg$relative.metric[is.na(mat.PFG.agg$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (maybe not necessary)
   mat.PFG.agg$coverage = NULL
   
-  cat("\n > Releves data have been transformed into a relative metric \n")
+  cat("\n > Releves data have been transformed into a relative metric")
   
   # 2. Cast the df
   ################
@@ -113,18 +97,34 @@ train_RF_habitat = function(releves.PFG
   
   mat.PFG.agg = as.data.frame(mat.PFG.agg) #get rid of the spatial structure before entering the RF process
   mat.PFG.agg$habitat = as.factor(mat.PFG.agg$habitat)
+  exclude.habitat = NULL
+  for(hab in unique(mat.PFG.agg$habitat)){
+    sub = subset(mat.PFG.agg, mat.PFG.agg$habitat == hab)
+    perc = (length(sub$habitat) / length(mat.PFG.agg$habitat)) * 100
+    if(perc <= 1){
+      exclude.habitat = c(exclude.habitat, hab)
+    }
+  }
+  if(!is.null(exclude.habitat)){
+    mat.PFG.agg = mat.PFG.agg[-which(mat.PFG.agg$habitat %in% exclude.habitat),]
+    studied.habitat = studied.habitat[-which(studied.habitat$habitat %in% exclude.habitat),]
+    cat("\n > ", exclude.habitat, " represent 1% or less of the habitats in the whole area, there will be deleted for the next steps. \n")
+  }
   
   # 6.Random forest
   #################
   
   #separate the database into a training and a test part
+  cat("\n > Separate the database into a training and a test part")
   set.seed(seed)
   
   training.site = sample(mat.PFG.agg$site, size = RF.param$share.training * length(mat.PFG.agg$site), replace = FALSE)
   releves.training = mat.PFG.agg[which(mat.PFG.agg$site %in% training.site), ]
   releves.testing = mat.PFG.agg[-which(mat.PFG.agg$site %in% training.site), ]
   
+  cat("\n Training part of the data :")
   print(table(releves.training$habitat))
+  cat("\n Test part of the data :")
   print(table(releves.testing$habitat))
   
   #train the model (with correction for imbalances in sampling)
@@ -191,6 +191,10 @@ train_RF_habitat = function(releves.PFG
   write.csv(synthesis.testing, paste0(path.save, "/RF_perf.per.hab_testing.csv"), row.names = FALSE)
   write.csv(aggregate.TSS.testing, paste0(path.save, "/RF_aggregate.TSS_testing.csv"), row.names = FALSE)
   
-  return(model)
+  results = list()
+  results$RF = model
+  results$habitat = studied.habitat
+  
+  return(results)
 }
 

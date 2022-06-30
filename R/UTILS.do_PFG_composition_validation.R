@@ -7,8 +7,8 @@
 ##' @importFrom tidyselect all_of
 #############################################################################################
 
-do_PFG_composition_validation <- function(sim, PFG.considered_PFG.compo
-                                          , strata.considered_PFG.compo, habitat.considered_PFG.compo
+do_PFG_composition_validation <- function(sim, list.PFG
+                                          , studied.habitat, list.strata
                                           , observed.distribution, simu_PFG, habitat.whole.area.df){
   
   
@@ -29,9 +29,8 @@ do_PFG_composition_validation <- function(sim, PFG.considered_PFG.compo
   
   simu_PFG<-filter(
     simu_PFG,
-    is.element(PFG,PFG.considered_PFG.compo)&
-      is.element(strata,strata.considered_PFG.compo)&
-      is.element(habitat,habitat.considered_PFG.compo)
+    is.element(PFG,list.PFG)&
+      is.element(strata,list.strata)
   )
   
   # 3. Transform into a relative metrics (here relative.metric is relative coverage)
@@ -49,9 +48,9 @@ do_PFG_composition_validation <- function(sim, PFG.considered_PFG.compo
   
   #prepare the df storing quantile values
   simulated.distribution <- expand.grid(
-    PFG = PFG.considered_PFG.compo,                              
-    habitat = habitat.considered_PFG.compo,
-    strata = strata.considered_PFG.compo
+    PFG = list.PFG,                              
+    habitat = studied.habitat$habitat,
+    strata = list.strata
   )
   
   null.quantile <- data.frame(rank = seq(0, 4, 1)) #to have 5 rows per PFG*strata*habitat

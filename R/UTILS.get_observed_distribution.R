@@ -10,43 +10,26 @@
 get_observed_distribution <- function(releves.PFG
                                     , hab.obs.compo = NULL
                                     , studied.habitat
-                                    , PFG.considered_PFG.compo
-                                    , strata.considered_PFG.compo
-                                    , habitat.considered_PFG.compo
+                                    , list.PFG
+                                    , list.strata
                                     , perStrata = FALSE
                                     , output.path){
 
   
   #1. Aggregate coverage per PFG
   #########################################
-  
-  #transformation into coverage percentage
-  # if(!is.numeric(releves.PFG$abund)) # Braun-Blanquet abundance
-  # {
-  #   releves.PFG <- filter(releves.PFG,is.element(abund,c(NA, "NA", 0, "+", "r", 1:5)))
-  #   releves.PFG$coverage = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
-  # } else if (is.numeric(releves.PFG$abund) & max(releves.PFG$abund) == 1) # presence-absence data
-  # {
-  #   releves.PFG$coverage = releves.PFG$abund
-  # } else if (is.numeric(releves.PFG$abund)) # absolute abundance
-  # {
-  #   releves.PFG$coverage = releves.PFG$abund
-  # }else
-  # {
-  #   stop("Abund data in releves.PFG must be Braun-Blanquet abundance, presences absence or absolute abundance values.")
-  # }
   releves.PFG$coverage = releves.PFG$abund
   
   if (perStrata == TRUE & !is.null(hab.obs.compo)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata, data = releves.PFG, FUN = "sum")
   } else if (perStrata == FALSE & !is.null(hab.obs.compo)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG, data = releves.PFG, FUN = "sum")
-    mat.PFG.agg$strata = "A"
+    mat.PFG.agg$strata = "all"
   } else if (perStrata == TRUE & is.null(hab.obs.compo)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + strata + code.habitat, data = releves.PFG, FUN = "sum")
   } else if (perStrata == FALSE & is.null(hab.obs.compo)) {
     mat.PFG.agg = aggregate(coverage ~ site + PFG + code.habitat, data = releves.PFG, FUN = "sum")
-    mat.PFG.agg$strata = "A"
+    mat.PFG.agg$strata = "all"
   }
   
   #2. Get habitat information
@@ -81,9 +64,9 @@ get_observed_distribution <- function(releves.PFG
   
   mat.PFG.agg <- filter(
     mat.PFG.agg,
-    is.element(PFG, PFG.considered_PFG.compo) &
-      is.element(strata, strata.considered_PFG.compo) &
-      is.element(habitat, habitat.considered_PFG.compo)
+    is.element(PFG, list.PFG) &
+      is.element(strata, list.strata) &
+      is.element(habitat, studied.habitat$habitat)
   )
   
   
@@ -115,9 +98,9 @@ get_observed_distribution <- function(releves.PFG
   #final distribution is the distribution once the missing combination have been added. For these combination, all quantiles are set to 0
   
   observed.distribution <- expand.grid(
-    PFG = PFG.considered_PFG.compo,                              
-    habitat = habitat.considered_PFG.compo,
-    strata = strata.considered_PFG.compo
+    PFG = list.PFG,                              
+    habitat = studied.habitat$habitat,
+    strata = list.strata
   )
   
   null.quantile <- data.frame(rank = seq(0, 4, 1)) #to have 5 rows per PFG*strata*habitat
