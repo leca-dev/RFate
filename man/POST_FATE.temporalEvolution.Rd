@@ -10,8 +10,7 @@ POST_FATE.temporalEvolution(
   file.simulParam = NULL,
   no_years,
   opt.ras_habitat = NULL,
-  opt.no_CPU = 1,
-  perStrata = FALSE
+  opt.no_CPU = 1
 )
 }
 \arguments{
@@ -32,17 +31,13 @@ A \code{string} corresponding to the file name of a raster mask, with an
 \item{opt.no_CPU}{(\emph{optional}) default \code{1}. \cr The number of 
 resources that can be used to parallelize the \code{unzip/zip} of raster 
 files, as well as the extraction of values from raster files}
-
-\item{perStrata}{default \code{FALSE}. \cr If abundance per PFG & per Strata
-activated in global parameters, the function saved a temporal evolution file
-per PFG & per Strata.}
 }
 \value{
 A \code{list} containing three \code{data.frame} objects with the 
 following columns :
 \describe{
   \item{\code{PFG}}{concerned plant functional group (for abundance)}
-  \item{\code{STRATUM}}{concerned height stratum (for LIGHT & abundance if option selected)}
+  \item{\code{STRATUM}}{concerned height stratum (for LIGHT)}
   \item{\code{ID.pixel}}{number of the concerned pixel}
   \item{\code{X, Y}}{coordinates of the concerned pixel}
   \item{\code{HAB}}{habitat of the concerned pixel}
@@ -69,17 +64,14 @@ a specific parameter file within this simulation, \strong{one to three
 preanalytical tables that can then be used to create graphics}. \cr \cr
 
 For each PFG and each selected simulation year, raster maps are retrieved 
-from the results folder \code{ABUND_perPFG_allStrata} and unzipped. If
-\code{perStrata} = \code{TRUE}, raster maps are retrieved from the folder
-\code{ABUND_perPFG_perStrata} and unzipped.
+from the results folder \code{ABUND_perPFG_allStrata} and unzipped.
 Informations extracted lead to the production of one table before the maps 
 are compressed again :
 
 \itemize{
-  \item{the value of \strong{abundance for each Plant Functional Group}
-  for each selected simulation year(s) and, if option selected, each height
-  stratum in every pixel in which the PFG is present for at least one of 
-  the selected simulation year(s) \cr \cr
+  \item{the value of \strong{abundance for each Plant Functional Group} 
+  for each selected simulation year(s) in every pixel in which the PFG is 
+  present for at least one of the selected simulation year(s) \cr \cr
   }
 }
 

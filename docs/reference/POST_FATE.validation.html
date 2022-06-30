@@ -170,7 +170,7 @@ for a <code>FATE</code> simulation and computes the difference between observed 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">POST_FATE.validation</span><span class="op">(</span>
   <span class="va">name.simulation</span>,
-  <span class="va">sim.version</span>,
+  <span class="va">file.simulParam</span>,
   <span class="va">year</span>,
   perStrata <span class="op">=</span> <span class="cn">FALSE</span>,
   opt.no_CPU <span class="op">=</span> <span class="fl">1</span>,
@@ -184,11 +184,7 @@ for a <code>FATE</code> simulation and computes the difference between observed 
   validation.mask <span class="op">=</span> <span class="cn">NULL</span>,
   list.strata.simulations <span class="op">=</span> <span class="cn">NULL</span>,
   doComposition <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">PFG.considered_PFG.compo</span>,
-  <span class="va">habitat.considered_PFG.compo</span>,
-  strata.considered_PFG.compo <span class="op">=</span> <span class="st">"A"</span>,
   doRichness <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">list.PFG</span>,
   exclude.PFG <span class="op">=</span> <span class="cn">NULL</span>
 <span class="op">)</span></code></pre></div>
     </div>
@@ -197,8 +193,10 @@ for a <code>FATE</code> simulation and computes the difference between observed 
     <h2>Arguments</h2>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the simulation folder name.</p></dd>
-<dt>sim.version</dt>
-<dd><p>a <code>character</code> vector with at least one name of a <code>FATE</code> simulation to validate.</p></dd>
+<dt>file.simulParam</dt>
+<dd><p>default <code>NULL</code>. <br> A <code>string</code> 
+corresponding to the name of a parameter file that will be contained into 
+the <code>PARAM_SIMUL</code> folder of the <code>FATE</code> simulation.</p></dd>
 <dt>year</dt>
 <dd><p>an <code>integer</code> corresponding to the year of simulation for validation.</p></dd>
 <dt>perStrata</dt>
@@ -214,15 +212,13 @@ if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dt>releves.PFG</dt>
 <dd><p>a <code>data.frame</code> with at least 5 columns : <br><code>site</code>, <code>x</code>, <code>y</code>, <code>abund</code>, <code>PFG</code>
 <br> (<em>and optionally, <code>strata</code>, <code>code.habitat</code></em>)
-<br> (see <a href="POST_FATE.validation#details"><code>Details</code></a>)
-<br> (habitat &amp; PFG composition validation).</p></dd>
+<br> (see <a href="POST_FATE.validation#details"><code>Details</code></a>).</p></dd>
 <dt>hab.obs</dt>
 <dd><p>a <code>raster</code> map of the habitats within the studied area, with same projection 
 &amp; resolution than simulation mask.</p></dd>
 <dt>studied.habitat</dt>
 <dd><p>a <code>data.frame</code> with 2 columns : <br><code>ID</code> ,<code>habitat</code>
-<br> (see <a href="POST_FATE.validation#details"><code>Details</code></a>)
-<br> (habitat &amp; PFG composition validation).</p></dd>
+<br> (see <a href="POST_FATE.validation#details"><code>Details</code></a>).</p></dd>
 <dt>predict.all.map</dt>
 <dd><p>(<code>logical</code>) default <code>FALSE</code>. <br> If <code>TRUE</code>, the function will compute habitat prediction 
 &amp; performance over the whole map and will provide a prediction map.</p></dd>
@@ -230,38 +226,23 @@ if <code>FALSE</code>, habitat validation module is disabled.</p></dd>
 <dd><p>default <code>123</code>. <br> An <code>integer</code> corresponding to the number of seeds to set 
 in order to generate a <code>Random Forest</code> model.</p></dd>
 <dt>RF.training</dt>
-<dd><p>default <code>0.7</code>. <br> Part of the data used for training a <code>Random Forest</code> model on <code>releves.PFG</code> data.</p></dd>
+<dd><p>default <code>0.7</code>. <br> A <code>double</code> between 0 &amp; 1 corresponding to the part of the data used for 
+training a <code>Random Forest</code> model on <code>releves.PFG</code> data.</p></dd>
 <dt>validation.mask</dt>
 <dd><p>(<code>optional</code>) default <code>NULL</code>. <br> A <code>raster</code> map (with 0 or 1 in each pixel) that specified on 
-which pixels the performance of the prediction will be compute, with same projection &amp; resolution than simulation mask 
-(habitat &amp; PFG composition validation). <br>
-If <code>NULL</code>, the function will take the simulation mask (which means that the performance will be compute over the whole map).</p></dd>
+which pixels the performance of the habitat prediction will be compute, with same projection &amp; resolution than simulation mask 
+<br> If <code>NULL</code>, the function will take the simulation mask (which means that the performance will be compute over the whole map).</p></dd>
 <dt>list.strata.simulations</dt>
 <dd><p>(<code>optional</code>) default <code>NULL</code>. <br> If <code>perStrata</code> = <code>TRUE</code>, 
-a <code>character</code> vector which contain <code>FATE</code> strata definition and correspondence with observed strata definition. 
+a <code>list</code> which contains, for each stratum defined in <code>releves.PFG</code>, the correspondence with <code>FATE</code> strata definition. <br>
 If <code>perStrata</code> = <code>FALSE</code>, please specify <code>NULL</code> value.</p></dd>
 <dt>doComposition</dt>
-<dd><p>(<code>logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG composition validation module is activated,
-if <code>FALSE</code>, PFG composition validation module is disabled.</p></dd>
-<dt>PFG.considered_PFG.compo</dt>
-<dd><p>a <code>character</code> vector containing all PFG(s) considered
-in the composition validation.</p></dd>
-<dt>habitat.considered_PFG.compo</dt>
-<dd><p>a <code>character</code> vector containing all habitat(s)
-considered in the composition validation.</p></dd>
-<dt>strata.considered_PFG.compo</dt>
-<dd><p>default <code>"A"</code>. <br> If <code>perStrata</code> = <code>FALSE</code>, a <code>character</code> vector with value "A" 
-(selection of one or several specific strata disabled). <br> If <code>perStrata</code> = <code>TRUE</code>, a <code>character</code> 
-vector containing at least one of the observed strata (PFG composition validation).</p></dd>
+<dd><p>(<code>logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG composition validation module is activated.</p></dd>
 <dt>doRichness</dt>
-<dd><p>(<code>logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG richness validation module is activated,
-if <code>FALSE</code>, PFG richness validation module is disabled.</p></dd>
-<dt>list.PFG</dt>
-<dd><p>a <code>character</code> vector containing all the PFGs taken into account in
-the simulation and observed in the simulation area <br> (PFG richness validation).</p></dd>
+<dd><p>(<code>logical</code>) default <code>TRUE</code>. <br> If <code>TRUE</code>, PFG richness validation module is activated.</p></dd>
 <dt>exclude.PFG</dt>
 <dd><p>(<code>optional</code>) default <code>NULL</code>. <br> A <code>character</code> vector containing the name(s) 
-of the PFG(s) that will be excluded from the analysis (PFG richness validation).</p></dd>
+of the PFG(s) that will be excluded from the composition and richness analysis.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -318,9 +299,11 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
   
   <dt>PFG composition validation</dt>
 <dd><p><br></p><dl><dt>Observed composition</dt>
-<dd><p>is computed for a chosen set of PFG, habitat &amp; strata
+<dd><p>is computed for a set of PFG, habitat &amp; strata
   (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
-  on <strong>releves.PFG</strong> data provided.</p></dd>
+  on <strong>releves.PFG</strong> data provided. Habitats are chosen in <code>studied.habitat</code>,
+  PFG list is defined in the file <code>file.simulParam</code> and, if defined, <code>releves.PFG</code> strata
+  are taken into account. Optionally, PFGs contained in <code>exclude.PFG</code> can be excluded from the analysis.</p></dd>
 
     <dt>Simulated composition</dt>
 <dd><p>is computed in the same way than the observed composition, with 
@@ -335,16 +318,17 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
   with i varying from 1 to 4.</p></dd>
 
   <dt>PFG richness validation</dt>
-<dd><p>the observed PFG richness is computed based on observed data, 
+<dd><p>the observed PFG richness corresponds to the PFG list contained in the file <code>file.simulParam</code>, 
   the simulated PFG richness is the number of PFG for which abundance over the simulation area 
   is strictly superior to zero for the simulation year under scrutiny. <br>
-  Then, observed and simulated richness are compared for a set of PFG in order to quantify the PFG mortality.</p></dd>
+  Then, observed and simulated richness are compared for all the PFGs in the simulation in order to quantify the PFG mortality.
+  Optionally, PFGs contained in <code>exclude.PFG</code> can be excluded from the analysis.</p></dd>
 
 
 </dl></div>
     <div id="author">
     <h2>Author</h2>
-    <p>Matthieu Combaud, Maxime Delprat</p>
+    <p>Matthieu Combaud, Maxime Delprat, Maya Guéguen</p>
     </div>
 
     <div id="ref-examples">
@@ -376,11 +360,7 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
 <span class="va">releves.PFG</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.releves</span>
 
 <span class="co">## List of PFG taken into account in a FATE simulation</span>
-<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>, <span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## Habitat, strata and PFG considered in PFG compo validation</span>
-<span class="va">habitat.considered</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span>
-<span class="va">PFG.considered_PFG.compo</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/factor.html" class="external-link">as.factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>, <span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span>
 
 <span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
                      , sim.version <span class="op">=</span> <span class="st">"SIMUL_V1.1"</span>
@@ -391,10 +371,7 @@ of the PFG(s) that will be excluded from the analysis (PFG richness validation).
                      , studied.habitat <span class="op">=</span> <span class="va">studied.habitat</span>
                      , predict.all.map <span class="op">=</span> <span class="cn">TRUE</span>
                      , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
-                     , PFG.considered_PFG.compo <span class="op">=</span> <span class="va">PFG.considered_PFG.compo</span>
-                     , habitat.considered_PFG.compo <span class="op">=</span> <span class="va">habitat.considered</span>
-                     , doRichness <span class="op">=</span> <span class="cn">TRUE</span>
-                     , list.PFG <span class="op">=</span> <span class="va">list.PFG</span><span class="op">)</span>
+                     , doRichness <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 
 </code></pre></div>

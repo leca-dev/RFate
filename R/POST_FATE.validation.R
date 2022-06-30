@@ -4,7 +4,7 @@
 ##' 
 ##' @name POST_FATE.validation
 ##' 
-##' @author Matthieu Combaud, Maxime Delprat
+##' @author Matthieu Combaud, Maxime Delprat, Maya Guéguen
 ##' 
 ##' @description This script is designed to compute validation data for : \cr
 ##' \describe{
@@ -33,34 +33,30 @@
 ##' @param releves.PFG a \code{data.frame} with at least 5 columns : \cr
 ##' \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
 ##' \cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
-##' \cr (see \href{POST_FATE.validation#details}{\code{Details}})
-##' \cr (habitat & PFG composition validation).
+##' \cr (see \href{POST_FATE.validation#details}{\code{Details}}).
 ##' @param hab.obs a \code{raster} map of the habitats within the studied area, with same projection 
 ##' & resolution than simulation mask.
 ##' @param studied.habitat a \code{data.frame} with 2 columns : \cr
 ##' \code{ID} ,\code{habitat}
-##' \cr (see \href{POST_FATE.validation#details}{\code{Details}})
-##' \cr (habitat & PFG composition validation).
+##' \cr (see \href{POST_FATE.validation#details}{\code{Details}}).
 ##' @param predict.all.map (\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction 
 ##' & performance over the whole map and will provide a prediction map.
 ##' @param RF.seed default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
 ##' in order to generate a \code{Random Forest} model.
-##' @param RF.training default \code{0.7}. \cr Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.
+##' @param RF.training default \code{0.7}. \cr A \code{double} between 0 & 1 corresponding to the part of the data used for 
+##' training a \code{Random Forest} model on \code{releves.PFG} data.
 ##' @param validation.mask (\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
-##' which pixels the performance of the prediction will be compute, with same projection & resolution than simulation mask 
-##' (habitat & PFG composition validation). \cr
-##' If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map).
+##' which pixels the performance of the habitat prediction will be compute, with same projection & resolution than simulation mask 
+##' \cr If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map).
 ##' @param list.strata.simulations (\code{optional}) default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
-##' a \code{character} vector which contain \code{FATE} strata definition and correspondence with observed strata definition. 
+##' a \code{list} which contains, for each stratum defined in \code{releves.PFG}, the correspondence with \code{FATE} strata definition. \cr
 ##' If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.
 ##' 
-##' @param doComposition (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
-##' if \code{FALSE}, PFG composition validation module is disabled.
+##' @param doComposition (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated.
 ##' 
-##' @param doRichness (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
-##' if \code{FALSE}, PFG richness validation module is disabled.
+##' @param doRichness (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated.
 ##' @param exclude.PFG (\code{optional}) default \code{NULL}. \cr A \code{character} vector containing the name(s) 
-##' of the PFG(s) that will be excluded from the analysis (PFG richness validation).
+##' of the PFG(s) that will be excluded from the composition and richness analysis.
 ##' 
 ##' @details 
 ##' 
@@ -86,9 +82,11 @@
 ##'   
 ##'   \item{PFG composition validation}{ \cr 
 ##'   \describe{
-##'     \item{Observed composition}{is computed for a chosen set of PFG, habitat & strata
+##'     \item{Observed composition}{is computed for a set of PFG, habitat & strata
 ##'   (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
-##'   on \strong{releves.PFG} data provided.}
+##'   on \strong{releves.PFG} data provided. Habitats are chosen in \code{studied.habitat},
+##'   PFG list is defined in the file \code{file.simulParam} and, if defined, \code{releves.PFG} strata
+##'   are taken into account. Optionally, PFGs contained in \code{exclude.PFG} can be excluded from the analysis.}
 ##'     \item{Simulated composition}{is computed in the same way than the observed composition, with 
 ##'     \code{FATE} abundances \cr (see \code{\link{POST_FATE.temporalEvolution}}).}
 ##'   }
@@ -99,10 +97,11 @@
 ##'   \deqn{S_{\text{ y}{\text{, }habitat}{\text{, }strata}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
 ##'   with i varying from 1 to 4.
 ##'   }
-##'   \item{PFG richness validation}{the observed PFG richness is computed based on observed data, 
+##'   \item{PFG richness validation}{the observed PFG richness corresponds to the PFG list contained in the file \code{file.simulParam}, 
 ##'   the simulated PFG richness is the number of PFG for which abundance over the simulation area 
 ##'   is strictly superior to zero for the simulation year under scrutiny. \cr
-##'   Then, observed and simulated richness are compared for a set of PFG in order to quantify the PFG mortality.}
+##'   Then, observed and simulated richness are compared for all the PFGs in the simulation in order to quantify the PFG mortality.
+##'   Optionally, PFGs contained in \code{exclude.PFG} can be excluded from the analysis.}
 ##' }
 ##' 
 ##' @return
@@ -247,7 +246,10 @@ POST_FATE.validation = function(name.simulation
       }
       if (sum(colnames(releves.PFG) == "strata") == 1)
       {
-        .testParam_notNum.m("releves.PFG$strata", releves.PFG$strata)
+        if(.testParam_notNum(releves.PFG$strata) & .testParam_notChar(releves.PFG$strata))
+        {
+          stop("Wrong type of data!\n 'releves.PFG$strata' must contain numeric or character values")
+        }
       }
       if (sum(colnames(releves.PFG) == "code.habitat") == 1)
       {

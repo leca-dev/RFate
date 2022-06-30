@@ -6,7 +6,7 @@
 \usage{
 POST_FATE.validation(
   name.simulation,
-  sim.version,
+  file.simulParam,
   year,
   perStrata = FALSE,
   opt.no_CPU = 1,
@@ -20,18 +20,16 @@ POST_FATE.validation(
   validation.mask = NULL,
   list.strata.simulations = NULL,
   doComposition = TRUE,
-  PFG.considered_PFG.compo,
-  habitat.considered_PFG.compo,
-  strata.considered_PFG.compo = "A",
   doRichness = TRUE,
-  list.PFG,
   exclude.PFG = NULL
 )
 }
 \arguments{
 \item{name.simulation}{a \code{string} corresponding to the simulation folder name.}
 
-\item{sim.version}{a \code{character} vector with at least one name of a \code{FATE} simulation to validate.}
+\item{file.simulParam}{default \code{NULL}. \cr A \code{string} 
+corresponding to the name of a parameter file that will be contained into 
+the \code{PARAM_SIMUL} folder of the \code{FATE} simulation.}
 
 \item{year}{an \code{integer} corresponding to the year of simulation for validation.}
 
@@ -48,16 +46,14 @@ if \code{FALSE}, habitat validation module is disabled.}
 \item{releves.PFG}{a \code{data.frame} with at least 5 columns : \cr
 \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
 \cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
-\cr (see \href{POST_FATE.validation#details}{\code{Details}})
-\cr (habitat & PFG composition validation).}
+\cr (see \href{POST_FATE.validation#details}{\code{Details}}).}
 
 \item{hab.obs}{a \code{raster} map of the habitats within the studied area, with same projection 
 & resolution than simulation mask.}
 
 \item{studied.habitat}{a \code{data.frame} with 2 columns : \cr
 \code{ID} ,\code{habitat}
-\cr (see \href{POST_FATE.validation#details}{\code{Details}})
-\cr (habitat & PFG composition validation).}
+\cr (see \href{POST_FATE.validation#details}{\code{Details}}).}
 
 \item{predict.all.map}{(\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction 
 & performance over the whole map and will provide a prediction map.}
@@ -65,38 +61,23 @@ if \code{FALSE}, habitat validation module is disabled.}
 \item{RF.seed}{default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
 in order to generate a \code{Random Forest} model.}
 
-\item{RF.training}{default \code{0.7}. \cr Part of the data used for training a \code{Random Forest} model on \code{releves.PFG} data.}
+\item{RF.training}{default \code{0.7}. \cr A \code{double} between 0 & 1 corresponding to the part of the data used for 
+training a \code{Random Forest} model on \code{releves.PFG} data.}
 
 \item{validation.mask}{(\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
-which pixels the performance of the prediction will be compute, with same projection & resolution than simulation mask 
-(habitat & PFG composition validation). \cr
-If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map).}
+which pixels the performance of the habitat prediction will be compute, with same projection & resolution than simulation mask 
+\cr If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map).}
 
 \item{list.strata.simulations}{(\code{optional}) default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
-a \code{character} vector which contain \code{FATE} strata definition and correspondence with observed strata definition. 
+a \code{list} which contains, for each stratum defined in \code{releves.PFG}, the correspondence with \code{FATE} strata definition. \cr
 If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.}
 
-\item{doComposition}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated,
-if \code{FALSE}, PFG composition validation module is disabled.}
+\item{doComposition}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated.}
 
-\item{PFG.considered_PFG.compo}{a \code{character} vector containing all PFG(s) considered
-in the composition validation.}
-
-\item{habitat.considered_PFG.compo}{a \code{character} vector containing all habitat(s)
-considered in the composition validation.}
-
-\item{strata.considered_PFG.compo}{default \code{"A"}. \cr If \code{perStrata} = \code{FALSE}, a \code{character} vector with value "A" 
-(selection of one or several specific strata disabled). \cr If \code{perStrata} = \code{TRUE}, a \code{character} 
-vector containing at least one of the observed strata (PFG composition validation).}
-
-\item{doRichness}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated,
-if \code{FALSE}, PFG richness validation module is disabled.}
-
-\item{list.PFG}{a \code{character} vector containing all the PFGs taken into account in
-the simulation and observed in the simulation area \cr (PFG richness validation).}
+\item{doRichness}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated.}
 
 \item{exclude.PFG}{(\code{optional}) default \code{NULL}. \cr A \code{character} vector containing the name(s) 
-of the PFG(s) that will be excluded from the analysis (PFG richness validation).}
+of the PFG(s) that will be excluded from the composition and richness analysis.}
 }
 \value{
 \describe{
@@ -156,9 +137,11 @@ for a \code{FATE} simulation and computes the difference between observed and si
   
   \item{PFG composition validation}{ \cr 
   \describe{
-    \item{Observed composition}{is computed for a chosen set of PFG, habitat & strata
+    \item{Observed composition}{is computed for a set of PFG, habitat & strata
   (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
-  on \strong{releves.PFG} data provided.}
+  on \strong{releves.PFG} data provided. Habitats are chosen in \code{studied.habitat},
+  PFG list is defined in the file \code{file.simulParam} and, if defined, \code{releves.PFG} strata
+  are taken into account. Optionally, PFGs contained in \code{exclude.PFG} can be excluded from the analysis.}
     \item{Simulated composition}{is computed in the same way than the observed composition, with 
     \code{FATE} abundances \cr (see \code{\link{POST_FATE.temporalEvolution}}).}
   }
@@ -169,10 +152,11 @@ for a \code{FATE} simulation and computes the difference between observed and si
   \deqn{S_{\text{ y}{\text{, }habitat}{\text{, }strata}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
   with i varying from 1 to 4.
   }
-  \item{PFG richness validation}{the observed PFG richness is computed based on observed data, 
+  \item{PFG richness validation}{the observed PFG richness corresponds to the PFG list contained in the file \code{file.simulParam}, 
   the simulated PFG richness is the number of PFG for which abundance over the simulation area 
   is strictly superior to zero for the simulation year under scrutiny. \cr
-  Then, observed and simulated richness are compared for a set of PFG in order to quantify the PFG mortality.}
+  Then, observed and simulated richness are compared for all the PFGs in the simulation in order to quantify the PFG mortality.
+  Optionally, PFGs contained in \code{exclude.PFG} can be excluded from the analysis.}
 }
 }
 \examples{
@@ -203,11 +187,7 @@ writeRaster(simulation.map, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.
 releves.PFG = Champsaur_params$tab.releves
 
 ## List of PFG taken into account in a FATE simulation
-list.PFG = as.factor(c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
-
-## Habitat, strata and PFG considered in PFG compo validation
-habitat.considered = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland")
-PFG.considered_PFG.compo = as.factor(c("H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5"))
+list.PFG = c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5")
 
 POST_FATE.validation(name.simulation = "FATE_Champsaur"
                      , sim.version = "SIMUL_V1.1"
@@ -218,13 +198,10 @@ POST_FATE.validation(name.simulation = "FATE_Champsaur"
                      , studied.habitat = studied.habitat
                      , predict.all.map = TRUE
                      , doComposition = TRUE
-                     , PFG.considered_PFG.compo = PFG.considered_PFG.compo
-                     , habitat.considered_PFG.compo = habitat.considered
-                     , doRichness = TRUE
-                     , list.PFG = list.PFG)
+                     , doRichness = TRUE)
 
 
 }
 \author{
-Matthieu Combaud, Maxime Delprat
+Matthieu Combaud, Maxime Delprat, Maya Guéguen
 }
