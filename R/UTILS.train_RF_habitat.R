@@ -115,7 +115,7 @@ train_RF_habitat = function(releves.PFG
   #################
   
   #separate the database into a training and a test part
-  cat("\n > Separate the database into a training and a test part")
+  cat("\n > Separate the database into a training and a test part \n")
   set.seed(seed)
   
   training.site = sample(mat.PFG.agg$site, size = RF.param$share.training * length(mat.PFG.agg$site), replace = FALSE)

@@ -69,8 +69,9 @@
 ##'     \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances 
 ##'     (see \code{\link{POST_FATE.temporalEvolution}}), thanks to a \code{Random Forest} algorithm. 
 ##'     The model is trained on \strong{releves.PFG} data. Information about \strong{PFG abundances} at each
-##'     \strong{sites} with \strong{xy} coordinates are necessary. \cr
-##'     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} name.
+##'     \strong{sites} with \strong{xy} coordinates are necessary. PFG abundances can be given in absolute abundance
+##'     (only in sites where at least one PFG is present) or in presence-absence data.\cr
+##'     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} names.
 ##'     If not, habitat information will be taken from \strong{hab.obs} map, and PFG abundance will be considered for all strata.}
 ##'   }
 ##'   To compare observations and simulations, the function computes confusion matrix between 
@@ -131,39 +132,71 @@
 ##' 
 ##' library(raster)
 ##' 
-##' ## Load example data
-##' Champsaur_params = .loadData("Champsaur_params", "RData")
-##' 
-##' ## Create a skeleton folder
+##' ## Create a simulation folder
 ##' PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur")
 ##' 
-##' ## Load results from a simulation
+##' ## Load example data
+##' Champsaur_params = .loadData("Champsaur_params", "RData")
 ##' .loadData("Champsaur_results_V1", "7z")
 ##' 
-##' ## Please extract files from the 7z folder in 'FATE_CHAMPSAUR/RESULTS'
+##' ## Please extract results files in the 'FATE_Champsaur/RESULTS' folder
 ##' 
 ##' ## Define a vector to choose habitats taken into account
-##' studied.habitat = data.frame(ID = c(6, 5, 7, 8), habitat = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland"))
+##' studied.habitat = data.frame(ID = c(6, 5, 7, 8)
+##'                              , habitat = c("coniferous.forest"
+##'                                            , "deciduous.forest"
+##'                                            , "natural.grassland"
+##'                                            , "woody.heatland"))
 ##' 
 ##' ## Habitat & validation maps
 ##' hab.observed = Champsaur_params$stk.mask$habitat
 ##' simulation.map = Champsaur_params$stk.mask$Champsaur
-##' hab.obs = projectRaster(from = hab.observed, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
+##' hab.obs = projectRaster(from = hab.observed, to = simulation.map, method = "ngb")
 ##' writeRaster(simulation.map, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
 ##' 
 ##' ## Observed data
 ##' releves.PFG = Champsaur_params$tab.releves
 ##' 
-##' ## List of PFG taken into account in a FATE simulation
-##' list.PFG = c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5")
+##' ## Transform observed PFG abundances into relative abundances
+##' releves.PFG$abund = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
+##' releves.PFG = aggregate(abund ~ site + PFG + strata + x + y
+##'                         , data = releves.PFG, FUN = "sum")
+##'                         
+##' ## Create Global and Simulation parameters
+##' PRE_FATE.params_globalParameters(name.simulation = "FATE_Champsaur"
+##'                                 , opt.saving_abund_PFG_stratum = TRUE
+##'                                 , opt.saving_abund_PFG = TRUE
+##'                                 , opt.saving_abund_stratum = FALSE
+##'                                 , required.no_PFG = 15
+##'                                 , required.no_strata = 7
+##'                                 , required.simul_duration = 2000
+##'                                 , required.seeding_duration = 1000
+##'                                 , required.seeding_timestep = 1
+##'                                 , required.seeding_input = 100
+##'                                 , required.potential_fecundity = 1
+##'                                 , required.max_abund_low = 1000
+##'                                 , required.max_abund_medium = 2000
+##'                                 , required.max_abund_high = 3000
+##'                                 , doDispersal = TRUE
+##'                                 , DISPERSAL.mode = 1
+##'                                 , DISPERSAL.saving = FALSE
+##'                                 , doHabSuitability = TRUE
+##'                                 , HABSUIT.mode = 1)
+##'                                 
+##' PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
+##'                                 , name.MASK = "MASK_Champsaur.tif")
+##' 
+##' param = "Simul_parameters_V1.txt"
+##' simul.param = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
 ##' 
 ##' POST_FATE.validation(name.simulation = "FATE_Champsaur"
-##'                      , sim.version = "SIMUL_V1.1"
+##'                      , file.simulParam = simul.param
 ##'                      , year = 2000
 ##'                      , doHabitat = TRUE
 ##'                      , releves.PFG = releves.PFG
 ##'                      , hab.obs = hab.obs
 ##'                      , studied.habitat = studied.habitat
+##'                      , list.strata.simulations = list.strata.simulations
 ##'                      , predict.all.map = TRUE
 ##'                      , doComposition = TRUE
 ##'                      , doRichness = TRUE)
@@ -378,9 +411,12 @@ POST_FATE.validation = function(name.simulation
       }
       habitat.whole.area.df <- habitat.whole.area.df[which(getValues(simulation.map) == 1), ] # index of the pixels in the simulation area
       habitat.whole.area.df <- habitat.whole.area.df[which(!is.na(habitat.whole.area.df$for.validation)), ]
-      if (!is.null(new.studied.habitat)){
+      if (doHabitat == TRUE){
         habitat.whole.area.df <- merge(habitat.whole.area.df, dplyr::select(new.studied.habitat,c(ID,habitat)), by.x = "code.habitat", by.y = "ID")
         habitat.whole.area.df <- habitat.whole.area.df[which(habitat.whole.area.df$habitat %in% new.studied.habitat$habitat), ]
+      } else if (doHabitat == FALSE){
+        habitat.whole.area.df <- merge(habitat.whole.area.df, dplyr::select(studied.habitat,c(ID,habitat)), by.x = "code.habitat", by.y = "ID")
+        habitat.whole.area.df <- habitat.whole.area.df[which(habitat.whole.area.df$habitat %in% studied.habitat$habitat), ]
       } else {
         stop("Habitat definition in studied.habitat is not correct")
       }
@@ -452,7 +488,7 @@ POST_FATE.validation = function(name.simulation
         } else if (perStrata == TRUE) {
           ## Get the abundance table ------------------------------------------------
           file.abundance = paste0(name.simulation
-                                  , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata"
+                                  , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_perStrata_"
                                   , basename(GLOB_DIR$dir.save)
                                   , ".csv")
           .testParam_existFile(file.abundance)
@@ -468,7 +504,7 @@ POST_FATE.validation = function(name.simulation
           simu_PFG$strata = new.strata
         }
         
-        if(doComposition == TRUE & doHabitat == TRUE){
+        if(doComposition == TRUE | doHabitat == TRUE){
           simu_PFG <- aggregate(abs ~ pixel + strata + PFG, data = simu_PFG, FUN = "sum")
         }
         
@@ -509,25 +545,46 @@ POST_FATE.validation = function(name.simulation
           ## GET OBSERVED DISTRIBUTION
           
           cat("\n > Get observed distribution...")
-          obs.distri = get_observed_distribution(releves.PFG = releves.PFG
-                                                 , hab.obs.compo = hab.obs.compo
-                                                 , studied.habitat = new.studied.habitat
-                                                 , list.PFG = list.PFG
-                                                 , list.strata = list.strata
-                                                 , perStrata = perStrata
-                                                 , output.path = output.path.compo)
+          
+          if (doHabitat == TRUE){
+            obs.distri = get_observed_distribution(releves.PFG = releves.PFG
+                                                   , hab.obs.compo = hab.obs.compo
+                                                   , studied.habitat = new.studied.habitat
+                                                   , list.PFG = list.PFG
+                                                   , list.strata = list.strata
+                                                   , perStrata = perStrata
+                                                   , output.path = output.path.compo)
+          } else {
+            obs.distri = get_observed_distribution(releves.PFG = releves.PFG
+                                                   , hab.obs.compo = hab.obs.compo
+                                                   , studied.habitat = studied.habitat
+                                                   , list.PFG = list.PFG
+                                                   , list.strata = list.strata
+                                                   , perStrata = perStrata
+                                                   , output.path = output.path.compo)
+          }
           
           ## DO PFG COMPOSITION VALIDATION
           
           cat("\n > Comparison between observed and simulated distribution... \n")
           
-          performance.composition = do_PFG_composition_validation(sim = sim
-                                                                  , list.PFG = list.PFG
-                                                                  , studied.habitat = new.studied.habitat
-                                                                  , list.strata = list.strata
-                                                                  , observed.distribution = obs.distri
-                                                                  , simu_PFG = simu_PFG
-                                                                  , habitat.whole.area.df = habitat.whole.area.df)
+          if (doHabitat == TRUE){
+            performance.composition = do_PFG_composition_validation(sim = sim
+                                                                    , list.PFG = list.PFG
+                                                                    , studied.habitat = new.studied.habitat
+                                                                    , list.strata = list.strata
+                                                                    , observed.distribution = obs.distri
+                                                                    , simu_PFG = simu_PFG
+                                                                    , habitat.whole.area.df = habitat.whole.area.df)
+          } else {
+            performance.composition = do_PFG_composition_validation(sim = sim
+                                                                    , list.PFG = list.PFG
+                                                                    , studied.habitat = studied.habitat
+                                                                    , list.strata = list.strata
+                                                                    , observed.distribution = obs.distri
+                                                                    , simu_PFG = simu_PFG
+                                                                    , habitat.whole.area.df = habitat.whole.area.df)
+          }
           
           cat("\n > Done ! \n")
           
@@ -573,6 +630,14 @@ POST_FATE.validation = function(name.simulation
       } # End of loop on simulations
     cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
     
+    simulations = NULL
+    for(simul in abs.simulParams){
+      GLOB_DIR = .getGraphics_results(name.simulation  = name.simulation
+                                      , abs.simulParam = simul)
+      s = basename(GLOB_DIR$dir.save)
+      simulations = c(simulations, s)
+    }
+    
     if(doHabitat == TRUE){ # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
       
       if(predict.all.map == TRUE){
@@ -582,14 +647,16 @@ POST_FATE.validation = function(name.simulation
         RF.model = results.simul[[1]]$RF.model
         habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 2)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
         colnames(habitat.performance) <- c(RF.model$classes, "weighted")
-        habitat.performance$simulation <- abs.simulParams
+        # habitat.performance$simulation <- abs.simulParams
+        habitat.performance$simulation <- simulations
+        
         # save
         fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
         cat("\n > Habitat performance saved")
         
         # deal with the results regarding habitat prediction over the whole map
         all.map.prediction = as.data.frame(lapply(results.simul, "[[", 1))
-        all.map.prediction = all.map.prediction[,c(abs.simulParams, "pixel", "habitat")]
+        all.map.prediction = all.map.prediction[, c(simulations, "pixel", "habitat")]
         all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
         # save
         fwrite(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
@@ -607,7 +674,7 @@ POST_FATE.validation = function(name.simulation
                                                 , col.df = col.df
                                                 , simulation.map = simulation.map
                                                 , output.path = output.path
-                                                , sim.version = abs.simulParams)
+                                                , sim.version = simulations)
         
         cat("\n > Predicted habitat plot saved")
         
@@ -618,7 +685,8 @@ POST_FATE.validation = function(name.simulation
         RF.model = results.simul[[1]]$RF.model
         habitat.performance <- as.data.frame(matrix(unlist(lapply(results.simul,"[[", 1)), ncol = length(RF.model$classes) + 1, byrow = TRUE))
         colnames(habitat.performance) <- c(RF.model$classes, "weighted")
-        habitat.performance$simulation <- abs.simulParams
+        # habitat.performance$simulation <- abs.simulParams
+        habitat.performance$simulation <- simulations
         # save
         fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
         cat("\n > Habitat performance saved")
@@ -633,7 +701,8 @@ POST_FATE.validation = function(name.simulation
       results.compo = sapply(results.simul, "[[", "performance.compo")
       results <- sapply(results.compo, function(X){X$aggregated.proximity})
       rownames(results) <- paste0(results.compo[[1]]$habitat, "_", results.compo[[1]]$strata)
-      colnames(results) <- abs.simulParams
+      # colnames(results) <- abs.simulParams
+      colnames(results) <- simulations
       results.compo <- t(results)
       results.compo <- as.data.frame(results)
       results.compo$simulation <- rownames(results)
@@ -651,14 +720,14 @@ POST_FATE.validation = function(name.simulation
     perStrata = perStrata
     
     dying.PFG.list = list()
-    for(i in 1:length(all_of(abs.simulParams))){
+    for(i in 1:length(all_of(simulations))){
       dying.PFG.list[[i]] = results.simul[[i]]$dying.PFG.list
     }
     
     cat("\n ----------- RICHNESS COMPUTATION \n")
     
     # names the results
-    names(dying.PFG.list) = abs.simulParams
+    names(dying.PFG.list) = simulations
     
     # get table with PFG richness
     PFG.richness.df = data.frame(simulation = names(dying.PFG.list), richness = length(list.PFG) - unlist(lapply(dying.PFG.list, FUN = "length")))
@@ -666,7 +735,7 @@ POST_FATE.validation = function(name.simulation
     # get vector with one occurence per PFG*simulation with dying of the PFG, as factor with completed levels in order to have table with all PFG, including those which never die
     dyingPFG.vector = as.factor(unlist(dying.PFG.list))
     dyingPFG.vector = fct_expand(dyingPFG.vector, list.PFG)
-    dying.distribution = round(table(dyingPFG.vector)/length(abs.simulParams), digits = 2)
+    dying.distribution = round(table(dyingPFG.vector)/length(simulations), digits = 2)
     dying.distribution = as.data.frame(dying.distribution)
     
     # output
@@ -690,6 +759,7 @@ POST_FATE.validation = function(name.simulation
     cat("\n ---------- PFG RICHNESS : \n")
     rich = as.matrix(output[[1]])
     rownames(rich) = seq(1, length(abs.simulParams), 1)
+    rich[1:length(simulations),1] = simulations
     cat(paste0("\n Richness at year ", year, " : \n"))
     print(rich)
   } else{ 
@@ -698,7 +768,7 @@ POST_FATE.validation = function(name.simulation
   
   if(doComposition == TRUE){
     cat("\n ---------- PFG COMPOSITION : \n")
-    print(results.compo[abs.simulParams])
+    print(results.compo[simulations])
   } else{
     cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
   }
@@ -718,7 +788,8 @@ POST_FATE.validation = function(name.simulation
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
     performances = cbind(performances, hab.perf[1:length(new.studied.habitat[,1]),])
-    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", abs.simulParams)
+    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", simulations)
+    rownames(performances) = seq(1, length(studied.habitat[,1]), 1)
     
     cat("\n ---------- HABITAT : \n")
     cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
@@ -738,7 +809,7 @@ POST_FATE.validation = function(name.simulation
     colnames(performances) = c("habitat", "TSS_testing_part")
     performances$TSS_training_part = training$TSS
     performances = cbind(performances, hab.perf[1:length(new.studied.habitat[,1]),])
-    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", abs.simulParams)
+    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", simulations)
     rownames(performances) = seq(1, length(studied.habitat[,1]), 1)
     
     cat("\n ---------- HABITAT : \n")
