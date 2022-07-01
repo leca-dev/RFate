@@ -124,8 +124,9 @@ for a \code{FATE} simulation and computes the difference between observed and si
     \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances 
     (see \code{\link{POST_FATE.temporalEvolution}}), thanks to a \code{Random Forest} algorithm. 
     The model is trained on \strong{releves.PFG} data. Information about \strong{PFG abundances} at each
-    \strong{sites} with \strong{xy} coordinates are necessary. \cr
-    Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} name.
+    \strong{sites} with \strong{xy} coordinates are necessary. PFG abundances can be given in absolute abundance
+    (only in sites where at least one PFG is present) or in presence-absence data.\cr
+    Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} names.
     If not, habitat information will be taken from \strong{hab.obs} map, and PFG abundance will be considered for all strata.}
   }
   To compare observations and simulations, the function computes confusion matrix between 
@@ -163,39 +164,71 @@ for a \code{FATE} simulation and computes the difference between observed and si
 
 library(raster)
 
-## Load example data
-Champsaur_params = .loadData("Champsaur_params", "RData")
-
-## Create a skeleton folder
+## Create a simulation folder
 PRE_FATE.skeletonDirectory(name.simulation = "FATE_Champsaur")
 
-## Load results from a simulation
+## Load example data
+Champsaur_params = .loadData("Champsaur_params", "RData")
 .loadData("Champsaur_results_V1", "7z")
 
-## Please extract files from the 7z folder in 'FATE_CHAMPSAUR/RESULTS'
+## Please extract results files in the 'FATE_Champsaur/RESULTS' folder
 
 ## Define a vector to choose habitats taken into account
-studied.habitat = data.frame(ID = c(6, 5, 7, 8), habitat = c("coniferous.forest", "deciduous.forest", "natural.grassland", "woody.heatland"))
+studied.habitat = data.frame(ID = c(6, 5, 7, 8)
+                             , habitat = c("coniferous.forest"
+                                           , "deciduous.forest"
+                                           , "natural.grassland"
+                                           , "woody.heatland"))
 
 ## Habitat & validation maps
 hab.observed = Champsaur_params$stk.mask$habitat
 simulation.map = Champsaur_params$stk.mask$Champsaur
-hab.obs = projectRaster(from = hab.observed, res = res(simulation.map)[1], crs = crs(projection(simulation.map)), method = "ngb")
+hab.obs = projectRaster(from = hab.observed, to = simulation.map, method = "ngb")
 writeRaster(simulation.map, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
 
 ## Observed data
 releves.PFG = Champsaur_params$tab.releves
 
-## List of PFG taken into account in a FATE simulation
-list.PFG = c("C1", "C2", "C3", "C4", "H1", "H2", "H3", "H4", "H5", "H6", "P1", "P2", "P3", "P4", "P5")
+## Transform observed PFG abundances into relative abundances
+releves.PFG$abund = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
+releves.PFG = aggregate(abund ~ site + PFG + strata + x + y
+                        , data = releves.PFG, FUN = "sum")
+                        
+## Create Global and Simulation parameters
+PRE_FATE.params_globalParameters(name.simulation = "FATE_Champsaur"
+                                , opt.saving_abund_PFG_stratum = TRUE
+                                , opt.saving_abund_PFG = TRUE
+                                , opt.saving_abund_stratum = FALSE
+                                , required.no_PFG = 15
+                                , required.no_strata = 7
+                                , required.simul_duration = 2000
+                                , required.seeding_duration = 1000
+                                , required.seeding_timestep = 1
+                                , required.seeding_input = 100
+                                , required.potential_fecundity = 1
+                                , required.max_abund_low = 1000
+                                , required.max_abund_medium = 2000
+                                , required.max_abund_high = 3000
+                                , doDispersal = TRUE
+                                , DISPERSAL.mode = 1
+                                , DISPERSAL.saving = FALSE
+                                , doHabSuitability = TRUE
+                                , HABSUIT.mode = 1)
+                                
+PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
+                                , name.MASK = "MASK_Champsaur.tif")
+
+param = "Simul_parameters_V1.txt"
+simul.param = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
 
 POST_FATE.validation(name.simulation = "FATE_Champsaur"
-                     , sim.version = "SIMUL_V1.1"
+                     , file.simulParam = simul.param
                      , year = 2000
                      , doHabitat = TRUE
                      , releves.PFG = releves.PFG
                      , hab.obs = hab.obs
                      , studied.habitat = studied.habitat
+                     , list.strata.simulations = list.strata.simulations
                      , predict.all.map = TRUE
                      , doComposition = TRUE
                      , doRichness = TRUE)

@@ -284,8 +284,9 @@ of the PFG(s) that will be excluded from the composition and richness analysis.<
 <dd><p>is determined from <code>FATE</code> simulated relative abundances 
     (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>), thanks to a <code>Random Forest</code> algorithm. 
     The model is trained on <strong>releves.PFG</strong> data. Information about <strong>PFG abundances</strong> at each
-    <strong>sites</strong> with <strong>xy</strong> coordinates are necessary. <br>
-    Eventually, <strong>habitat ID</strong> information can be provided, as well as <strong>strata</strong> name.
+    <strong>sites</strong> with <strong>xy</strong> coordinates are necessary. PFG abundances can be given in absolute abundance
+    (only in sites where at least one PFG is present) or in presence-absence data.<br>
+    Eventually, <strong>habitat ID</strong> information can be provided, as well as <strong>strata</strong> names.
     If not, habitat information will be taken from <strong>hab.obs</strong> map, and PFG abundance will be considered for all strata.</p></dd>
 
   
@@ -336,39 +337,71 @@ of the PFG(s) that will be excluded from the composition and richness analysis.<
     <div class="sourceCode"><pre class="sourceCode r"><code>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rspatial.org/raster" class="external-link">raster</a></span><span class="op">)</span>
 
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span>, <span class="st">"RData"</span><span class="op">)</span>
-
-<span class="co">## Create a skeleton folder</span>
+<span class="co">## Create a simulation folder</span>
 <span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span><span class="op">)</span>
 
-<span class="co">## Load results from a simulation</span>
+<span class="co">## Load example data</span>
+<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_params"</span>, <span class="st">"RData"</span><span class="op">)</span>
 <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">"Champsaur_results_V1"</span>, <span class="st">"7z"</span><span class="op">)</span>
 
-<span class="co">## Please extract files from the 7z folder in 'FATE_CHAMPSAUR/RESULTS'</span>
+<span class="co">## Please extract results files in the 'FATE_Champsaur/RESULTS' folder</span>
 
 <span class="co">## Define a vector to choose habitats taken into account</span>
-<span class="va">studied.habitat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span>, habitat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>, <span class="st">"deciduous.forest"</span>, <span class="st">"natural.grassland"</span>, <span class="st">"woody.heatland"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">studied.habitat</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>ID <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">6</span>, <span class="fl">5</span>, <span class="fl">7</span>, <span class="fl">8</span><span class="op">)</span>
+                             , habitat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"coniferous.forest"</span>
+                                           , <span class="st">"deciduous.forest"</span>
+                                           , <span class="st">"natural.grassland"</span>
+                                           , <span class="st">"woody.heatland"</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co">## Habitat &amp; validation maps</span>
 <span class="va">hab.observed</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">$</span><span class="va">habitat</span>
 <span class="va">simulation.map</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">stk.mask</span><span class="op">$</span><span class="va">Champsaur</span>
-<span class="va">hab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html" class="external-link">projectRaster</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">hab.observed</span>, res <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/resolution.html" class="external-link">res</a></span><span class="op">(</span><span class="va">simulation.map</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, crs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">crs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/raster/man/projection.html" class="external-link">projection</a></span><span class="op">(</span><span class="va">simulation.map</span><span class="op">)</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"ngb"</span><span class="op">)</span>
+<span class="va">hab.obs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/projectRaster.html" class="external-link">projectRaster</a></span><span class="op">(</span>from <span class="op">=</span> <span class="va">hab.observed</span>, to <span class="op">=</span> <span class="va">simulation.map</span>, method <span class="op">=</span> <span class="st">"ngb"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/raster/man/writeRaster.html" class="external-link">writeRaster</a></span><span class="op">(</span><span class="va">simulation.map</span>, filename <span class="op">=</span> <span class="st">"FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif"</span><span class="op">)</span>
 
 <span class="co">## Observed data</span>
 <span class="va">releves.PFG</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.releves</span>
 
-<span class="co">## List of PFG taken into account in a FATE simulation</span>
-<span class="va">list.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C1"</span>, <span class="st">"C2"</span>, <span class="st">"C3"</span>, <span class="st">"C4"</span>, <span class="st">"H1"</span>, <span class="st">"H2"</span>, <span class="st">"H3"</span>, <span class="st">"H4"</span>, <span class="st">"H5"</span>, <span class="st">"H6"</span>, <span class="st">"P1"</span>, <span class="st">"P2"</span>, <span class="st">"P3"</span>, <span class="st">"P4"</span>, <span class="st">"P5"</span><span class="op">)</span>
+<span class="co">## Transform observed PFG abundances into relative abundances</span>
+<span class="va">releves.PFG</span><span class="op">$</span><span class="va">abund</span> <span class="op">=</span> <span class="fu"><a href="PRE_FATE.abundBraunBlanquet.html">PRE_FATE.abundBraunBlanquet</a></span><span class="op">(</span><span class="va">releves.PFG</span><span class="op">$</span><span class="va">abund</span><span class="op">)</span><span class="op">/</span><span class="fl">100</span>
+<span class="va">releves.PFG</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">abund</span> <span class="op">~</span> <span class="va">site</span> <span class="op">+</span> <span class="va">PFG</span> <span class="op">+</span> <span class="va">strata</span> <span class="op">+</span> <span class="va">x</span> <span class="op">+</span> <span class="va">y</span>
+                        , data <span class="op">=</span> <span class="va">releves.PFG</span>, FUN <span class="op">=</span> <span class="st">"sum"</span><span class="op">)</span>
+                        
+<span class="co">## Create Global and Simulation parameters</span>
+<span class="fu"><a href="PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                                , opt.saving_abund_PFG_stratum <span class="op">=</span> <span class="cn">TRUE</span>
+                                , opt.saving_abund_PFG <span class="op">=</span> <span class="cn">TRUE</span>
+                                , opt.saving_abund_stratum <span class="op">=</span> <span class="cn">FALSE</span>
+                                , required.no_PFG <span class="op">=</span> <span class="fl">15</span>
+                                , required.no_strata <span class="op">=</span> <span class="fl">7</span>
+                                , required.simul_duration <span class="op">=</span> <span class="fl">2000</span>
+                                , required.seeding_duration <span class="op">=</span> <span class="fl">1000</span>
+                                , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span>
+                                , required.seeding_input <span class="op">=</span> <span class="fl">100</span>
+                                , required.potential_fecundity <span class="op">=</span> <span class="fl">1</span>
+                                , required.max_abund_low <span class="op">=</span> <span class="fl">1000</span>
+                                , required.max_abund_medium <span class="op">=</span> <span class="fl">2000</span>
+                                , required.max_abund_high <span class="op">=</span> <span class="fl">3000</span>
+                                , doDispersal <span class="op">=</span> <span class="cn">TRUE</span>
+                                , DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span>
+                                , DISPERSAL.saving <span class="op">=</span> <span class="cn">FALSE</span>
+                                , doHabSuitability <span class="op">=</span> <span class="cn">TRUE</span>
+                                , HABSUIT.mode <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+                                
+<span class="fu"><a href="PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
+                                , name.MASK <span class="op">=</span> <span class="st">"MASK_Champsaur.tif"</span><span class="op">)</span>
+
+<span class="va">param</span> <span class="op">=</span> <span class="st">"Simul_parameters_V1.txt"</span>
+<span class="va">simul.param</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"FATE_Champsaur/PARAM_SIMUL/"</span>, <span class="va">param</span><span class="op">)</span>
 
 <span class="fu">POST_FATE.validation</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_Champsaur"</span>
-                     , sim.version <span class="op">=</span> <span class="st">"SIMUL_V1.1"</span>
+                     , file.simulParam <span class="op">=</span> <span class="va">simul.param</span>
                      , year <span class="op">=</span> <span class="fl">2000</span>
                      , doHabitat <span class="op">=</span> <span class="cn">TRUE</span>
                      , releves.PFG <span class="op">=</span> <span class="va">releves.PFG</span>
                      , hab.obs <span class="op">=</span> <span class="va">hab.obs</span>
                      , studied.habitat <span class="op">=</span> <span class="va">studied.habitat</span>
+                     , list.strata.simulations <span class="op">=</span> <span class="va">list.strata.simulations</span>
                      , predict.all.map <span class="op">=</span> <span class="cn">TRUE</span>
                      , doComposition <span class="op">=</span> <span class="cn">TRUE</span>
                      , doRichness <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
