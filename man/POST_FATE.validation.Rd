@@ -61,7 +61,7 @@ if \code{FALSE}, habitat validation module is disabled.}
 \item{RF.seed}{default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
 in order to generate a \code{Random Forest} model.}
 
-\item{RF.training}{default \code{0.7}. \cr A \code{double} between 0 & 1 corresponding to the part of the data used for 
+\item{RF.training}{default \code{0.7}. \cr A \code{numeric} between 0 & 1 corresponding to the part of the data used for 
 training a \code{Random Forest} model on \code{releves.PFG} data.}
 
 \item{validation.mask}{(\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
