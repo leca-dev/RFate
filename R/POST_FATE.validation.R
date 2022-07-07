@@ -76,7 +76,7 @@
 ##'   }
 ##'   To compare observations and simulations, the function computes confusion matrix between 
 ##'   observations and predictions and then computes the TSS for each habitat h.
-##'   \deqn{TSS_{\text{ h}} = (\frac{\text{number of prediction}_{\text{ h}}}{\text{number of observation}_{\text{ h}}} + \frac{\text{number of non-prediction}_{\text{ h}}}{\text{number of non-observation}_{\text{ h}}}) - \text{1}}
+##'   \deqn{TSS_{\text{ h}} = (\frac{\text{True Positives}_{\text{ h}}}{\text{True Positives}_{\text{ h}}{\text{ + False Negatives}_{\text{ h}}}} + \frac{\text{True Negatives}_{\text{ h}}}{\text{True Negatives}_{\text{ h}}{\text{ + False Positives}_{\text{ h}}}}) - \text{1}}
 ##'   The final metric used is the mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
 ##'   habitat distribution. The habitat validation also provides a visual comparison of observed and 
 ##'   simulated habitat on the whole studied area, if option selected.}
