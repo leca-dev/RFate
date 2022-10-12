@@ -5,58 +5,60 @@
 ##' @importFrom caret confusionMatrix
 ##' @importFrom utils write.csv
 ##' @importFrom tidyselect all_of
-##' @importFrom stringr str_split
+## @importFrom stringr str_split
 #################################################################
 
-do_habitat_validation <- function(output.path, RF.model, predict.all.map, sim, simu_PFG, habitat.whole.area.df, list.strata, perStrata)
+do_habitat_validation <- function(output.path,
+                                  RF.model, 
+                                  PFG_names, 
+                                  predict.all.map,
+                                  sim,
+                                  simu_PFG,
+                                  hab.whole.df, 
+                                  list.strata)
+                                  # perStrata)
 {
   
   # check consistency for PFG & strata classes between FATE output vs the RF model
   RF.predictors <- rownames(RF.model$importance)
-  PFG <- str_split(RF.predictors, "_")
-  RF.PFG = NULL
-  for(n in 1:length(PFG)){
-    pfg = PFG[[n]][1]
-    RF.PFG = c(RF.PFG,pfg)
-    RF.PFG = unique(RF.PFG)
-  }
-  FATE.PFG <- .getGraphics_PFG(name.simulation  = str_split(output.path, "/")[[1]][1]
-                               , abs.simulParam = paste0(str_split(output.path, "/")[[1]][1], "/PARAM_SIMUL/Simul_parameters_", str_split(sim, "_")[[1]][2], ".txt"))
-  FATE.PFG = FATE.PFG$PFG
-  
-  if(length(setdiff(FATE.PFG,RF.PFG)) > 0) {
-    cat(paste0("\n > Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(FATE.PFG,RF.PFG), " will be removed from the analyses"))
-    FATE.PFG = RF.PFG
-  }else if(length(setdiff(RF.PFG,FATE.PFG)) > 0){
-    cat(paste0("\n > Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG ", setdiff(RF.PFG,FATE.PFG), " will be removed from the analyses"))
-    RF.PFG = FATE.PFG
-  }
+  RF.PFG = unique(sapply(RF.predictors, function(x) strsplit(x, "_")[[1]][1]))
+  # FATE.PFG = PFG_names
+  # 
+  # if (length(setdiff(FATE.PFG,RF.PFG)) > 0 || length(setdiff(RF.PFG,FATE.PFG)) > 0) {
+  #   warning("PROBLEM") ## TODO
+  #   # cat(paste0("\n > Warning : The PFG used to train the RF algorithm are not the same as the PFG used to run FATE ! The PFG "
+  #   #            , setdiff(FATE.PFG,RF.PFG), " will be removed from the analyses"))
+  #   # FATE.PFG = RF.PFG = intersect(FATE.PFG, RF.PFG)
+  # }
+  # toKeep.PFG = intersect(FATE.PFG, RF.PFG)
 
   #######################
   # I. Data preparation
   #######################
   
-  #transform absolute abundance into relative abundance
-  simu_PFG = simu_PFG[which(simu_PFG$PFG %in% FATE.PFG), ]
-  simu_PFG <- simu_PFG %>% group_by(pixel,strata) %>% mutate(relative.abundance = round(prop.table(abs), digits = 2)) #those are proportions, not percentages
-  simu_PFG$relative.abundance[is.na(simu_PFG$relative.abundance)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (necessary to avoid risk of confusion with NA in pixels because out of the map)
-  simu_PFG <- as.data.frame(simu_PFG)
+  # #transform absolute abundance into relative abundance
+  # simu_PFG = simu_PFG[which(simu_PFG$PFG %in% toKeep.PFG), ]
+  # # mat.PFG.agg = as.data.frame(
+  # #   mat.PFG.agg %>% group_by(site, strata) %>% 
+  # #     mutate(relative.metric = round(prop.table(abund), digits = 2))
+  # # )
+  # simu_PFG = as.data.frame(
+  #   simu_PFG %>% group_by(pixel, strata) %>% 
+  #     mutate(relative.metric = round(prop.table(abs), digits = 2))
+  # )
+  # simu_PFG$relative.metric[is.na(simu_PFG$relative.metric)] <- 0 #NA because abs==0 for some PFG, so put 0 instead of NA (necessary to avoid risk of confusion with NA in pixels because out of the map)
+  # simu_PFG$abs <- NULL
   
-  #drop the absolute abundance
-  simu_PFG$abs <- NULL
-  
+  #transfo into factor to be sure to create all the combination when doing "dcast"
   #correct the levels (to have all PFG and all strata) to make the dcast transfo easier (all PFG*strata combination will be automatically created thanks to the factor structure, even if no line corresponds to it)
   simu_PFG$PFG <- as.factor(simu_PFG$PFG)
-  simu_PFG$PFG <- factor(simu_PFG$PFG, sort(unique(c(levels(simu_PFG$PFG), RF.PFG))))
+  # simu_PFG$PFG <- factor(simu_PFG$PFG, sort(unique(c(levels(simu_PFG$PFG), RF.PFG))))
   simu_PFG$strata <- as.factor(simu_PFG$strata)
-  simu_PFG$strata <- factor(simu_PFG$strata, sort(unique(c(levels(simu_PFG$strata), list.strata))))
-  
-  #cast
-  simu_PFG <- reshape2::dcast(simu_PFG, pixel ~ PFG * strata, value.var = c("relative.abundance"), fill = 0, drop = FALSE)
-  #merge PFG info and habitat + transform habitat into factor
+  # simu_PFG$strata <- factor(simu_PFG$strata, sort(unique(c(levels(simu_PFG$strata), list.strata))))
+  simu_PFG <- reshape2::dcast(simu_PFG, pixel ~ PFG * strata, value.var = "relative.metric", fill = 0, drop = FALSE)
   
   #here it is crucial to have exactly the same raster structure for "simulation.map" and "habitat.FATE.map", so as to be able to do the merge on the "pixel" variable
-  data.FATE.PFG.habitat <- merge(simu_PFG, habitat.whole.area.df, by = "pixel") #at this stage we have all the pixels in the simulation area
+  data.FATE.PFG.habitat <- merge(simu_PFG, hab.whole.df, by = "pixel") #at this stage we have all the pixels in the simulation area
   data.FATE.PFG.habitat$habitat <- factor(data.FATE.PFG.habitat$habitat, levels = RF.model$classes) #thanks to the "levels" argument, we have the same order for the habitat factor in the RF model and in the FATE outputs
   
   ############################
