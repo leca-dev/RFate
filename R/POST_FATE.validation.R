@@ -630,6 +630,7 @@ POST_FATE.validation = function(name.simulation
                                                        , mod.ref = factor(mat.cast.sim$habitat, RF.model$classes))
           
         RF.perf = do.call(rbind, list(aggregate.TSS.training, aggregate.TSS.testing, aggregate.TSS.validation))
+        rownames(RF.perf) = NULL
         
         
         ########################
@@ -678,6 +679,10 @@ POST_FATE.validation = function(name.simulation
                   axis.title = element_blank(),
                   axis.text = element_blank(),
                   axis.ticks = element_blank())
+          
+          
+          # failure = 100 * table(pred.allMap$fail_succ)[1] / sum(table(pred.allMap$fail_succ))
+          # success = 100 - failure
         } 
         # output.validation <- c(synthesis.validation$TSS, aggregate.TSS.validation)
         # names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
@@ -706,112 +711,6 @@ POST_FATE.validation = function(name.simulation
     } # End of loop on simulations
   cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
   
-  
-  #############################################################################
-  
-  if(doRichness == TRUE){ # PFG Richness validation
-    
-    output.path = paste0(name.simulation, "/VALIDATION/PFG_RICHNESS")
-    dying.PFG.list = list()
-    for(i in 1:length(all_of(simulations))){
-      dying.PFG.list[[i]] = results.simul[[i]]$dying.PFG.list
-    }
-    
-    cat("\n ----------- RICHNESS COMPUTATION \n")
-    
-    # names the results
-    names(dying.PFG.list) = simulations
-    
-    # get table with PFG richness
-    PFG.richness.df = data.frame(simulation = names(dying.PFG.list), richness = length(list.PFG) - unlist(lapply(dying.PFG.list, FUN = "length")))
-    
-    # get vector with one occurence per PFG*simulation with dying of the PFG, as factor with completed levels in order to have table with all PFG, including those which never die
-    dyingPFG.vector = as.factor(unlist(dying.PFG.list))
-    dyingPFG.vector = fct_expand(dyingPFG.vector, list.PFG)
-    dying.distribution = round(table(dyingPFG.vector)/length(simulations), digits = 2)
-    dying.distribution = as.data.frame(dying.distribution)
-    
-    # output
-    output = list(PFG.richness.df, dying.distribution , dying.PFG.list)
-    names(output) = c("PFG.richness.df", "dying.distribution", "dying.PFG.list")
-    
-    dir.create(output.path, recursive = TRUE, showWarnings = FALSE)
-    
-    fwrite(PFG.richness.df, paste0(output.path, "/performance.richness.csv"), row.names = F)
-    fwrite(dying.distribution, paste0(output.path, "/PFG.extinction.frequency.csv"), row.names = F)
-    write_rds(dying.PFG.list, file = paste0(output.path, "/dying.PFG.list.rds"), compress = "none")
-    
-    cat("\n > PFG richness results saved \n")
-  }
-  
-  cat("\n\n #------------------------------------------------------------#")
-  cat("\n # RESULTS : ")
-  cat("\n #------------------------------------------------------------# \n")
-  
-  if(doRichness == TRUE){
-    cat("\n ---------- PFG RICHNESS : \n")
-    rich = as.matrix(output[[1]])
-    rownames(rich) = seq(1, length(abs.simulParams), 1)
-    rich[1:length(simulations),1] = simulations
-    cat(paste0("\n Richness at year ", year, " : \n"))
-    print(rich)
-  } else{ 
-    cat("\n ---------- PFG RICHNESS VALIDATION DISABLED \n")
-  }
-  
-  if(doComposition == TRUE){
-    cat("\n ---------- PFG COMPOSITION : \n")
-    print(results.compo[simulations])
-  } else{
-    cat("\n ---------- PFG COMPOSITION VALIDATION DISABLED \n")
-  }
-  
-  if(doHabitat == TRUE & doHabitat.allMap == TRUE){
-    
-    hab.pred = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv")))
-    failure = as.numeric((table(hab.pred$fail_succ)[1]/sum(table(hab.pred$fail_succ)))*100)
-    success = as.numeric((table(hab.pred$fail_succ)[2]/sum(table(hab.pred$fail_succ)))*100)
-    
-    testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
-    training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
-    hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
-    hab.perf = as.data.frame(t(hab.perf))
-    colnames(hab.perf) = hab.perf["simulation",]
-    performances = testing[,c("habitat","TSS")]
-    colnames(performances) = c("habitat", "TSS_testing_part")
-    performances$TSS_training_part = training$TSS
-    performances = cbind(performances, hab.perf[1:length(new.mat.hab[,1]),])
-    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", simulations)
-    rownames(performances) = seq(1, length(mat.hab[,1]), 1)
-    
-    cat("\n ---------- HABITAT : \n")
-    cat(paste0("\n", round(failure, digits = 2), "% of habitats are not correctly predicted by the simulations \n"))
-    cat(paste0("\n", round(success, digits = 2), "% of habitats are correctly predicted by the simulations \n"))
-    cat("\n Habitat performance : \n")
-    print(performances)
-    return(prediction.map)
-    
-  } else if (doHabitat == TRUE & doHabitat.allMap == FALSE){
-    
-    testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
-    training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
-    hab.perf = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/performance.habitat.csv")))
-    hab.perf = as.data.frame(t(hab.perf))
-    colnames(hab.perf) = hab.perf["simulation",]
-    performances = testing[,c("habitat","TSS")]
-    colnames(performances) = c("habitat", "TSS_testing_part")
-    performances$TSS_training_part = training$TSS
-    performances = cbind(performances, hab.perf[1:length(new.mat.hab[,1]),])
-    colnames(performances) = c("habitat", "TSS_testing_part", "TSS_training_part", simulations)
-    rownames(performances) = seq(1, length(mat.hab[,1]), 1)
-    
-    cat("\n ---------- HABITAT : \n")
-    cat("\n Habitat performance : \n")
-    return(performances)
-    
-  } else{
-    cat("\n ---------- HABITAT VALIDATION DISABLED \n")
-  }
 }
 
 
