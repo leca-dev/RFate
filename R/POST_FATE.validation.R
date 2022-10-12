@@ -307,7 +307,7 @@ POST_FATE.validation = function(name.simulation
   }
   ## CHECK parameter opt.keep_PFG
   GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
-                              , abs.simulParam = abs.simulParam[1])
+                              , abs.simulParam = abs.simulParams[1])
   
   list.PFG = GLOB_SIM$PFG
   if (!is.null(opt.keep_PFG)) {
@@ -373,147 +373,140 @@ POST_FATE.validation = function(name.simulation
   #   }
   # }
   
+  # 3. Keep only releve on interesting habitat, strata and PFG
+  # mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% mat.hab$code.habitat &
+  #                                   mat.PFG.agg$strata %in% list.strata &
+  #                                   mat.PFG.agg$PFG %in% opt.keep_PFG), ]
+  
   #############################################################################
   
+  cat("\n ----------- OBSERVED DATA")
   
   if (doHabitat == TRUE | doComposition == TRUE) {
+    ## GET INFOS on site / habitat for OBSERVED data ----------------------------------------------
+    sites.obs = unique(mat.obs[, which(colnames(mat.obs) %in% c("site", "x", "y", "code.habitat"))])
+    sites.obs = merge(sites.obs, mat.hab, by = "code.habitat")
+    sites.obs = sites.obs[, c("site", "x", "y", "code.habitat", "habitat")]
     
-    #################################################################
-    # I.2 Train a RF model on observed data (habitat validation only)
-    #################################################################
+    perc = sapply(unique(sites.obs$habitat), function(x) {
+      ind = which(sites.obs$habitat == x)
+      return(100 * length(ind) / nrow(sites.obs))
+    })
+    names(perc) = unique(sites.obs$habitat)
     
-    # 3. Keep only releve on interesting habitat, strata and PFG
-    ##################################################################"
-    mat.PFG.agg <- as.data.frame(mat.obs[, which(colnames(mat.obs) %in% c("site", "code.habitat", "strata", "PFG", "abund"))])
-    mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% mat.hab$code.habitat &
-                                      mat.PFG.agg$strata %in% list.strata &
-                                      mat.PFG.agg$PFG %in% opt.keep_PFG), ]
-
-    ## Compute sum of abundance per PFG (and per strata and per code.habitat if provided)
-    mat.PFG.agg = aggregate(abund ~ site + PFG + strata + code.habitat, data = mat.PFG.agg, FUN = "sum")
-
-    ## Compute relative abundance per site and strata (might be all if not provided)
-    mat.PFG.agg = as.data.frame(
-      mat.PFG.agg %>% group_by(site, strata) %>%
-        mutate(relative.metric = round(prop.table(abund), digits = 2))
-    )
-
-    ## Remove NA and abund column
-    if (length(which(is.na(mat.PFG.agg$relative.metric)))) {
-      mat.PFG.agg$relative.metric[which(is.na(mat.PFG.agg$relative.metric))] = 0
-    }
-    mat.PFG.agg$abund = NULL
-    cat("\n > Releves data have been transformed into a relative metric")
-
-    # write.csv(mat.PFG.agg, paste0(output.path,"/HABITAT/obs.releves.prepared.csv"),row.names = FALSE)
-    
-    if (doComposition) {
-      ## GET OBSERVED DISTRIBUTION
-      # output.path.compo = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION")
-      cat("\n > Get observed distribution...")
-      
-      distrib = split(mat.PFG.agg, list(mat.PFG.agg$PFG, mat.PFG.agg$code.habitat, mat.PFG.agg$strata), drop = TRUE)
-      distrib = foreach(tmp = distrib, .combine = "rbind") %do%
-        {
-          qt = quantile(tmp$relative.metric, probs = seq(0, 1, 0.25))
-          return(data.frame(PFG = unique(tmp$PFG)
-                            , code.habitat = unique(tmp$code.habitat)
-                            , strata = unique(tmp$strata)
-                            , quantile.perc = seq(0, 1, 0.25)
-                            , quantile.obs = as.vector(qt)))
-        }
-      
-      # 7. Add the missing PFG*habitat*strata
-      #final distribution is the distribution once the missing combination have been added. For these combination, all quantiles are set to 0
-      
-      all.distrib <- expand.grid(PFG = list.PFG,                              
-                                 code.habitat = studied.habitat$code.habitat,
-                                 strata = list.strata, 
-                                 quantile.perc = seq(0, 1, 0.25),
-                                 stringsAsFactors = FALSE)
-      all.distrib <- merge(all.distrib, distrib, by = c("PFG", "code.habitat", "strata", "quantile.perc"), all.x = TRUE)
-      all.distrib$quantile.obs[is.na(all.distrib$quantile.obs)] <- 0
-      all.distrib = all.distrib[order(all.distrib$code.habitat, all.distrib$strata, all.distrib$PFG, all.distrib$quantile.perc), ]
-      
-      write.csv(all.distrib, paste0(output.path, "/all.distrib.csv"), row.names = F)
-      obs.distri = all.distrib
-      
-      # obs.distri = get_observed_distribution(mat.obs = mat.PFG.agg
-      #                                        , ras_habitat.compo = ras_habitat
-      #                                        , mat.hab = mat.hab
-      #                                        , list.PFG = list.PFG
-      #                                        , list.strata = list.strata
-      #                                        , output.path = output.path.compo)
+    if (length(which(perc <= 1)) > 0) {
+      toRemove.name = names(perc)[which(perc <= 1)]
+      toRemove.code = mat.hab$code.habitat[which(mat.hab$habitat %in% toRemove.name)]
+      mat.obs = mat.obs[-which(mat.obs$code.habitat %in% toRemove.code), ]
+      mat.hab = mat.hab[-which(mat.hab$code.habitat %in% toRemove.code),]
+      cat("\n > (", paste0(toRemove.name, collapse = " / ")
+          , ") represent 1% or less of the habitats in the whole area, they will be deleted for the next steps. \n")
     }
     
-    
-    #############
-    
-    if (doHabitat) {
-      
-      cat("\n ----------- TRAIN A RANDOM FOREST MODEL ON OBSERVED DATA")
-      
-      
-      # 2. Cast the df
-      ################
-      
-      ## Get site and habitat informations
-      infos = unique(mat.obs[, which(colnames(mat.obs) %in% c("site", "x", "y", "code.habitat"))])
-      infos = merge(infos, mat.hab, by = "code.habitat")
-      infos = infos[, c("site", "x", "y", "code.habitat", "habitat")]
-      
-      #transfo into factor to be sure to create all the combination when doing "dcast"
-      tab2 = mat.PFG.agg
-      tab2$PFG = as.factor(tab2$PFG)
-      tab2$strata = as.factor(tab2$strata)
-      tab2 = reshape2::dcast(tab2, site ~ PFG + strata, value.var = "relative.metric", fill = 0, drop = FALSE)
-      tab3 = merge(infos, tab2, by = "site")
-      
-      # write.csv(mat.PFG.agg, paste0(output.path,"/HABITAT/obs.releves.prepared.csv"),row.names = FALSE)
-      
-      
-      ## TRAIN A RF ON OBSERVED DATA
-      RF.param = list(share.training = RF.training, ntree = 500)
-      RF.train = train_RF_habitat(mat.obs = tab3
-                                  , ras_habitat.RF = ras_habitat
-                                  , mat.hab = mat.hab
-                                  , RF.param = RF.param
-                                  , output.path = output.path
-                                  , seed = RF.seed)
-      RF.model = RF.train$RF
-      new.mat.hab = RF.train$habitat
-      cat("\n > Done ! \n")
-    } else {
-      new.mat.hab = mat.hab
-    }
-    
-    #######################################
-    # II. Prepare database for FATE habitat
-    #######################################
-    
-    # habitat df for the whole simulation area
-    hab.whole.df = as.data.frame(rasterToPoints(ras_habitat))
-    colnames(hab.whole.df) = c("x", "y", "code.habitat")
-    # hab.whole.df$pixel = cellFromXY(ras_habitat, hab.whole.df[, c("x", "y")])
-    hab.whole.df$pixel = cellFromXY(ras_simulation, hab.whole.df[, c("x", "y")])
+    ## GET INFOS on site / habitat for SIMULATION data --------------------------------------------
+    sites.sim = as.data.frame(rasterToPoints(ras_habitat))
+    colnames(sites.sim) = c("x", "y", "code.habitat")
+    sites.sim$pixel = cellFromXY(ras_simulation, sites.sim[, c("x", "y")])
     if (!is.null(opt.ras_validation)) {
-      toKeep = opt.ras_validation[cellFromXY(opt.ras_validation, hab.whole.df[, c("x", "y")])]
+      toKeep = opt.ras_validation[cellFromXY(opt.ras_validation, sites.sim[, c("x", "y")])]
     } else {
-      toKeep = ras_simulation[cellFromXY(ras_simulation, hab.whole.df[, c("x", "y")])]
+      toKeep = ras_simulation[cellFromXY(ras_simulation, sites.sim[, c("x", "y")])]
     }
-    hab.whole.df = hab.whole.df[which(toKeep == 1), ]
-    if (nrow(hab.whole.df)) {
+    sites.sim = sites.sim[which(toKeep == 1), ]
+    if (nrow(sites.sim)) {
       stop("PROBLEM") ## TODO
     }
-    hab.whole.df <- merge(hab.whole.df, new.mat.hab, by = "code.habitat")
+    sites.sim <- merge(sites.sim, mat.hab, by = "code.habitat")
+    sites.sim = sites.sim[, c("pixel", "x", "y", "code.habitat", "habitat")]
     
-    cat("\n > Habitat considered in the prediction exercise : ", paste0(unique(hab.whole.df$habitat), collapse = " / "), "\n")
+    ## ----------------------------------------------------------------
+      
+    OBS = .valid_organizeData(mat = mat.obs
+                              , fac.agg = c("site", "code.habitat", "strata", "PFG")
+                              , fac.rel = c("site", "strata")
+                              , fac.cast = "site"
+                              , mat.sites = sites.obs)
+      
+    if (doComposition) {
+      cat("\n > Get observed distribution...")
+      obs.distri = .valid_getDistrib(mat.agg = OBS$mat.agg
+                                     , list.PFG = list.PFG
+                                     , list.habitat = mat.hab$code.habitat
+                                     , list.strata = list.strata)
+      colnames(obs.distri)[which(colnames(obs.distri) == "quantile.val")] = "quantile.obs"
+    }
+    
+    if (doHabitat) {
+      cat("\n ----------- TRAIN A RANDOM FOREST MODEL ON OBSERVED DATA")
+      #separate the database into a training and a test part
+      cat("\n > Separate the database into a training and a test part \n")
+      set.seed(RF.seed)
+      
+      mat.cast = OBS$mat.cast
+      mat.cast$habitat = as.factor(mat.cast$habitat)
+      freq = table(mat.cast$code.habitat) / nrow(mat.cast)
+      no.hab = sample(names(freq), size = RF.training * nrow(mat.cast), prob = freq, replace = TRUE)
+      no.hab = table(no.hab)
+      if (length(no.hab) != length(freq)) {
+        stop("PROBLEM") ## TODO
+      }
+      training.site = foreach(hab = 1:length(no.hab), .combine = "c") %do%
+        {
+          sample(mat.cast$site[which(mat.cast$code.habitat == names(no.hab)[hab])]
+                 , size = no.hab[hab], replace = FALSE)
+        }
+      tab.train = mat.cast[which(mat.cast$site %in% training.site), ]
+      tab.test = mat.cast[-which(mat.cast$site %in% training.site), ]
+      
+      cat("\n Training part of the data :")
+      print(table(tab.train$habitat))
+      cat("\n Testing part of the data :")
+      print(table(tab.test$habitat))
+      
+      #train the model (with correction for imbalances in sampling)
+      #run optimization algo (careful : optimization over OOB...)
+      mtry.perf = tuneRF(x = tab.train[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
+                         y = tab.train$habitat,
+                         strata = tab.train$habitat,
+                         sampsize = nrow(tab.train),
+                         ntreeTry = 500,
+                         stepFactor = 2,
+                         improve = 0.05,
+                         doBest = FALSE,
+                         plot = FALSE,
+                         trace = FALSE)
+      #select mtry
+      mtry.perf = as.data.frame(mtry.perf)
+      mtry = mtry.perf$mtry[which.min(mtry.perf$OOBError)]  #the lowest n achieving minimum OOB
+      
+      #run real model
+      RF.model = randomForest(x = tab.train[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
+                           y = tab.train$habitat,
+                           xtest = tab.test[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
+                           ytest = tab.test$habitat,
+                           strata = tab.train$habitat,
+                           sampsize = nrow(tab.train),
+                           ntree = 500,
+                           mtry = mtry,
+                           norm.votes = TRUE,
+                           keep.forest = TRUE)
+      
+      #analyse model performance
+      aggregate.TSS.training = .valid_getModelPerf(dataset = "train"
+                                                   , mod.pred = RF.model$predicted
+                                                   , mod.ref = tab.train$habitat)
+      
+      aggregate.TSS.testing = .valid_getModelPerf(dataset = "test"
+                                                  , mod.pred = RF.model$test$predicted
+                                                  , mod.ref = tab.test$habitat)
+      cat("\n > Done ! \n")
+    }
   }
   
   
   #############################################################################
   
-  cat("\n ----------- PROCESSING LOOP ON SIMULATIONS")
+  cat("\n ----------- SIMULATED DATA")
   
   if (opt.no_CPU > 1)
   {
@@ -544,52 +537,29 @@ POST_FATE.validation = function(name.simulation
         mat.sim$strata = new.strata
       }
       
+      # 3. Keep only releve on interesting habitat, strata and PFG
+      # mat.sim.agg = mat.sim.agg[which(mat.sim.agg$strata %in% list.strata &
+      #                                   mat.sim.agg$PFG %in% opt.keep_PFG), ]
+      
       if (doRichness == TRUE) {
         PFG.richness.simulated = unique(mat.sim$PFG)
         PFG.richness.simulated = PFG.richness.simulated[which(PFG.richness.simulated %in% list.PFG)]
       }
       
+      SIM = .valid_organizeData(mat = mat.sim
+                                , fac.agg = c("pixel", "strata", "PFG")
+                                , fac.rel = c("pixel", "strata")
+                                , fac.cast = "pixel"
+                                , mat.sites = sites.sim)
+      mat.sim.agg = SIM$mat.agg
+      data.FATE.PFG.habitat = SIM$mat.cast
+      # data.FATE.PFG.habitat$habitat <- factor(data.FATE.PFG.habitat$habitat, levels = RF.model$classes) #thanks to the "levels" argument, we have the same order for the habitat factor in the RF model and in the FATE outputs
+      
       
       
       if (doHabitat == TRUE){ # Only for habitat validation
         cat("\n ------ HABITAT PREDICTION")
-        
-        # 3. Keep only releve on interesting habitat, strata and PFG
-        ##################################################################"
-        mat.sim.agg <- as.data.frame(mat.sim[, which(colnames(mat.sim) %in% c("pixel", "strata", "PFG", "abs"))])
-        mat.sim.agg = mat.sim.agg[which(mat.sim.agg$strata %in% list.strata &
-                                          mat.sim.agg$PFG %in% opt.keep_PFG), ]
-        
-        ## Compute sum of abundance per PFG (and per strata and per code.habitat if provided)
-        mat.sim.agg = aggregate(abs ~ pixel + PFG + strata, data = mat.sim.agg, FUN = "sum")
-        
-        ## Compute relative abundance per site and strata (might be all if not provided)
-        mat.sim.agg = as.data.frame(
-          mat.sim.agg %>% group_by(pixel, strata) %>% 
-            mutate(relative.metric = round(prop.table(abs), digits = 2))
-        )
-        
-        ## Remove NA and abs column
-        if (length(which(is.na(mat.sim.agg$relative.metric)))) {
-          mat.sim.agg$relative.metric[which(is.na(mat.sim.agg$relative.metric))] = 0
-        }
-        mat.sim.agg$abs = NULL
-        cat("\n > Simulated data have been transformed into a relative metric")
-        
-        #transfo into factor to be sure to create all the combination when doing "dcast"
-        #correct the levels (to have all PFG and all strata) to make the dcast transfo easier 
-        #(all PFG*strata combination will be automatically created thanks to the factor structure, even if no line corresponds to it)
-        tab2 = mat.sim.agg
-        tab2$PFG <- as.factor(tab2$PFG)
-        tab2$strata <- as.factor(tab2$strata)
-        tab3 <- reshape2::dcast(tab2, pixel ~ PFG * strata, value.var = "relative.metric", fill = 0, drop = FALSE)
-        
-        # ## USE THE RF MODEL TO VALIDATE FATE OUTPUT
-        
-        #here it is crucial to have exactly the same raster structure for "simulation.map" and "habitat.FATE.map", so as to be able to do the merge on the "pixel" variable
-        data.FATE.PFG.habitat <- merge(tab3, hab.whole.df, by = "pixel") #at this stage we have all the pixels in the simulation area
-        data.FATE.PFG.habitat$habitat <- factor(data.FATE.PFG.habitat$habitat, levels = RF.model$classes) #thanks to the "levels" argument, we have the same order for the habitat factor in the RF model and in the FATE outputs
-        
+
         ############################
         # II. Prediction of habitat with the RF algorithm
         #################################
@@ -598,48 +568,28 @@ POST_FATE.validation = function(name.simulation
         x.validation <- dplyr::select(data.validation,all_of(RF.predictors))
         y.validation <- data.validation$habitat
         y.validation.predicted <- predict(object = RF.model, newdata = x.validation, type = "response", norm.votes = TRUE)
-        
-        ##############################
-        # III. Analysis of the results
-        ################################
+
         #analyse model performance
-        conf.valid = confusionMatrix(data = y.validation.predicted, reference = factor(y.validation, sort(unique(c(levels(y.validation), levels(y.validation.predicted))))))
-        
-        synthesis = foreach(ii = c("valid"), .combine = "rbind") %do%
-          {
-            tab = get(paste0("conf.", ii))
-            synth = data.frame(dataset = ii
-                               , habitat = colnames(tab$table)
-                               , sensitivity = tab$byClass[, 1]
-                               , specificity = tab$byClass[, 2]
-                               , weight = colSums(tab$table) / sum(colSums(tab$table)))
-            #warning: prevalence is the weight of predicted habitat, not of observed habitat
-            synth$TSS = round(synth$sensitivity + synth$specificity - 1, digits = 2)
-            return(synth)
-          }
-        aggregate.TSS.validation = round(sum(synthesis$weight[which(synthesis$dataset == "valid")] * 
-                                               synthesis$TSS[which(synthesis$dataset == "valid")]), digits = 2)
+        aggregate.TSS.validation = .valid_getModelPerf(dataset = "valid"
+                                                       , mod.pred = y.validation.predicted
+                                                       , mod.ref = factor(y.validation, sort(unique(c(levels(y.validation), levels(y.validation.predicted))))))
+          
         
         ########################
         # IV. Predict habitat for the whole map if option selected (do it only for a small number of simulations)
         ############################################
         
-        if (predict.all.map == TRUE) {
-          y.all.map.predicted = predict(object = RF.model, newdata =  data.FATE.PFG.habitat[, RF.predictors], type = "response", norm.votes = TRUE)
-          y.all.map.predicted = as.data.frame(y.all.map.predicted)
-          y.all.map.predicted$pixel = data.FATE.PFG.habitat$pixel
-          y.all.map.predicted$habitat = data.FATE.PFG.habitat$habitat
-          colnames(y.all.map.predicted) = c(sim, "pixel", "habitat")
-        } else {
-          y.all.map.predicted <- NULL
-        }
+        if (doHabitat.allMap == TRUE) {
+          y.all.map.predicted = data.frame(pixel = data.FATE.PFG.habitat$pixel
+                                           , habitat = data.FATE.PFG.habitat$habitat
+                                           , sim = predict(object = RF.model, newdata =  data.FATE.PFG.habitat[, RF.predictors], type = "response", norm.votes = TRUE))
+        } 
         
         #prepare outputs
         output.validation <- c(synthesis.validation$TSS, aggregate.TSS.validation)
         names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
         results.habitat <- list(output.validation = output.validation)
-        
-        if(predict.all.map == TRUE){
+        if(doHabitat.allMap == TRUE){
           results.habitat$y.all.map.predicted = y.all.map.predicted
         }
       }
@@ -647,85 +597,24 @@ POST_FATE.validation = function(name.simulation
       if (doComposition == TRUE){ # Only for PFG composition validation
         
         cat("\n ------ PFG COMPOSITION VALIDATION")
-        
-        
-        ## DO PFG COMPOSITION VALIDATION
-        cat("\n > Comparison between observed and simulated distribution... \n")
-        mat.sim.agg <- merge(mat.sim, hab.whole.df, by = c("pixel", "x", "y")) #at this stage we have all the pixels in the simulation area
-        # mat.sim.agg <- as.data.frame(mat.sim[, which(colnames(mat.sim) %in% c("pixel", "strata", "PFG", "abs"))])
-        mat.sim.agg = mat.sim.agg[which(mat.sim.agg$strata %in% list.strata &
-                                          mat.sim.agg$PFG %in% opt.keep_PFG), ]
-        
-        ## Compute relative abundance per site and strata (might be all if not provided)
-        mat.sim.agg = as.data.frame(
-          mat.sim.agg %>% group_by(pixel, strata) %>% 
-            mutate(relative.metric = round(prop.table(abs), digits = 2))
-        )
-        
-        ## Remove NA and abs column
-        if (length(which(is.na(mat.sim.agg$relative.metric)))) {
-          mat.sim.agg$relative.metric[which(is.na(mat.sim.agg$relative.metric))] = 0
-        }
-        mat.sim.agg$abs = NULL
-        cat("\n > Simulated data have been transformed into a relative metric")
-        
         cat("\n > Get simulated distribution...")
+        sim.distri = .valid_getDistrib(mat.agg = mat.sim.agg
+                                       , list.PFG = list.PFG
+                                       , list.habitat = mat.hab$code.habitat
+                                       , list.strata = list.strata)
         
-        distrib = split(mat.sim.agg, list(mat.sim.agg$PFG, mat.sim.agg$code.habitat, mat.sim.agg$strata), drop = TRUE)
-        distrib = foreach(tmp = distrib, .combine = "rbind") %do%
-          {
-            qt = quantile(tmp$relative.metric, probs = seq(0, 1, 0.25))
-            return(data.frame(PFG = unique(tmp$PFG)
-                              , code.habitat = unique(tmp$code.habitat)
-                              , strata = unique(tmp$strata)
-                              , quantile.perc = seq(0, 1, 0.25)
-                              , quantile.sim = as.vector(qt)))
-          }
-        
-        all.distrib <- expand.grid(PFG = list.PFG,                              
-                                   code.habitat = studied.habitat$code.habitat,
-                                   strata = list.strata, 
-                                   quantile.perc = seq(0, 1, 0.25),
-                                   stringsAsFactors = FALSE)
-        all.distrib <- merge(all.distrib, distrib, by = c("PFG", "code.habitat", "strata", "quantile.perc"), all.x = TRUE)
-        all.distrib$quantile.obs[is.na(all.distrib$quantile.obs)] <- 0
-        all.distrib = all.distrib[order(all.distrib$code.habitat, all.distrib$strata, all.distrib$PFG, all.distrib$quantile.perc), ]
-        
-        write.csv(all.distrib, paste0(output.path, "/all.distrib.csv"), row.names = F)
-        sim.distri = all.distrib
-        
-        
-        # # "if" to check that observed and simulated databases are in the same order
-        # if(
-        #   !(
-        #     all(simulated.distribution$PFG == observed.distribution$PFG)&
-        #     all(simulated.distribution$habitat == observed.distribution$habitat)&
-        #     all(simulated.distribution$strata == observed.distribution$strata)&
-        #     all(simulated.distribution$rank == observed.distribution$rank)
-        #   )
-        # ){
-        #   stop("Problem in observed vs simulated database (problem in the PFG*strata*habitat considered or in the database order)")
-        # }
-        
-        # 8. Merge observed and simulated data
         #######################################
+        # 9. Compute proximity between observed and simulated data, per PFG*strata*habitat
         
         ALL.distrib <- merge(obs.distri, sim.distri, by = c("PFG", "code.habitat", "strata", "quantile.perc"))
-        # cbind(simulated.distribution, observed.quantile = observed.distribution$observed.quantile) #quicker than a merge, but we can do it only because we have worked on the order of the DT
-        
-        # 9. Compute proximity between observed and simulated data, per PFG*strata*habitat
-        ###################################################################################
         
         #Auxiliary function to compute proximity (on a 0 to 1 scale, 1 means quantile equality)
         #for a given PFG*habitat*strata, return a "distance", computed as the sum of the absolute gap between observed and simulated quantile
         compute.proximity <- function(sim.qt, obs.qt) {
           return(1 - sum(abs(sim.qt - obs.qt)) / 4)
         }
-        
         #we get rid off rank==0 because there is good chance that it is nearly always equal to zero both in observed and simulated data, and that would provide a favorable bias in the results
-        
         ALL.distrib = ALL.distrib[which(ALL.distrib$quantile.perc > 0), ]
-        # simulated.distribution <- filter(simulated.distribution, rank != 0)
         
         proximity = split(ALL.distrib, list(ALL.distrib$PFG, ALL.distrib$code.habitat, ALL.distrib$strata), drop = TRUE)
         proximity = foreach(tmp = proximity, .combine = "rbind") %do%
@@ -950,4 +839,82 @@ POST_FATE.validation = function(name.simulation
   } else{
     cat("\n ---------- HABITAT VALIDATION DISABLED \n")
   }
+}
+
+
+###################################################################################################
+
+.valid_organizeData = function(mat, fac.agg, fac.rel, fac.cast, mat.sites)
+{
+  mat <- mat[, c(fac.agg, "abund")]
+  
+  ## Compute sum of abundance per fac.agg -------------------------------------
+  txt.command = paste0(fac.agg, collapse = " + ")
+  eval(parse(text = paste0('mat.agg = aggregate(abund ~ ', txt.command, ', data = mat, FUN = "sum")')))
+  
+  ## Compute relative abundance per fac.rel
+  eval(parse(text = paste0('tmp = mat.agg %>% group_by(', paste0(fac.rel, collapse = ", "), ')')))
+  mat.agg = as.data.frame(
+    tmp %>% mutate(relative.metric = round(prop.table(abund), digits = 2))
+  )
+  
+  ## Remove NA and abund column
+  if (length(which(is.na(mat.agg$relative.metric)))) {
+    mat.agg$relative.metric[which(is.na(mat.agg$relative.metric))] = 0
+  }
+  mat.agg$abund = NULL
+  # cat("\n > Releves data have been transformed into a relative metric")
+  
+  ## --------------------------------------------------------------------------
+  mat.cast = mat.agg
+  mat.cast$PFG = as.factor(mat.cast$PFG)
+  mat.cast$strata = as.factor(mat.cast$strata)
+  eval(parse(text = paste0('mat.cast = reshape2::dcast(mat.cast, ', fac.cast
+                           , ' ~ PFG * strata, value.var = "relative.metric", fill = 0, drop = FALSE)')))
+  mat.cast = merge(mat.sites, mat.cast, by = fac.cast)
+  
+  ## --------------------------------------------------------------------------
+  return(list(mat.agg = mat.agg, mat.cast = mat.cast))
+}
+
+
+.valid_getDistrib = function(mat.agg, list.PFG, list.habitat, list.strata) #, fac.agg)
+{
+  # txt.command = paste0('mat.agg$', fac.agg, collapse = ", ")
+  distrib = split(mat.agg, list(mat.agg$PFG, mat.agg$code.habitat, mat.agg$strata), drop = TRUE)
+  distrib = foreach(tmp = distrib, .combine = "rbind") %do%
+    {
+      qt = quantile(tmp$relative.metric, probs = seq(0, 1, 0.25))
+      return(data.frame(PFG = unique(tmp$PFG)
+                        , code.habitat = unique(tmp$code.habitat)
+                        , strata = unique(tmp$strata)
+                        , quantile.perc = seq(0, 1, 0.25)
+                        , quantile.val = as.vector(qt)))
+    }
+  
+  all.distrib <- expand.grid(PFG = list.PFG                            
+                             , code.habitat = list.habitat
+                             , strata = list.strata
+                             , quantile.perc = seq(0, 1, 0.25)
+                             , stringsAsFactors = FALSE)
+  all.distrib <- merge(all.distrib, distrib, by = c("PFG", "code.habitat", "strata", "quantile.perc"), all.x = TRUE)
+  all.distrib$quantile.val[is.na(all.distrib$quantile.val)] <- 0
+  # all.distrib = all.distrib[order(all.distrib$code.habitat, all.distrib$strata, all.distrib$PFG, all.distrib$quantile.perc), ]
+  
+  return(all.distrib)
+}
+
+
+.valid_getModelPerf = function(dataset, mod.pred, mod.ref)
+{
+  mat.conf = confusionMatrix(data = mod.pred, reference = mod.ref)
+  mat.synth = data.frame(dataset = dataset
+                         , habitat = colnames(mat.conf$table)
+                         , sensitivity = mat.conf$byClass[, 1]
+                         , specificity = mat.conf$byClass[, 2]
+                         , weight = colSums(mat.conf$table) / sum(colSums(mat.conf$table)))
+  #warning: prevalence is the weight of predicted habitat, not of observed habitat
+  mat.synth$TSS = round(mat.synth$sensitivity + mat.synth$specificity - 1, digits = 2)
+  mat.synth$TSSw = round(sum(mat.synth$weight * mat.synth$TSS), digits = 2)
+  return(mat.synth)
 }
