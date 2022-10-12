@@ -335,12 +335,25 @@ POST_FATE.validation = function(name.simulation
     {
       GLOB_DIR = .getGraphics_results(name.simulation = name.simulation
                                       , abs.simulParam = abs.simulParam)
+      file.abund = paste0(name.simulation
+                          , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
+                          , ifelse(length(list.strata) == 1 && list.strata == "all", "", "perStrata_")
+                          , basename(GLOB_DIR$dir.save)
+                          , ".csv")
+      if (!file.exists(file.abund)) {
+        file.abund = paste0(name.simulation
+                            , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
+                            , basename(GLOB_DIR$dir.save)
+                            , ".csv")
+        mat.obs$strata = "all"
+        list.strata = "all"
+        warning("PROBLEM") ##TODO
+      }
+      if (!file.exists(file.abund)) {
+        stop("PROBLEM") ##TODO
+      }
       return(list(dir.save = basename(GLOB_DIR$dir.save)
-                  , file.abund = paste0(name.simulation
-                                        , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
-                                        , ifelse(length(list.strata) == 1 && list.strata == "all", "", "perStrata_")
-                                        , basename(GLOB_DIR$dir.save)
-                                        , ".csv")))
+                  , file.abund = file.abund))
     }
   
   ## Get raster mask --------------------------------------------------------
@@ -429,11 +442,11 @@ POST_FATE.validation = function(name.simulation
       
     if (doComposition) {
       cat("\n > Get observed distribution...")
-      obs.distri = .valid_getDistrib(mat.agg = OBS$mat.agg
+      distrib.obs = .valid_getDistrib(mat.agg = OBS$mat.agg
                                      , list.PFG = list.PFG
                                      , list.habitat = mat.hab$code.habitat
                                      , list.strata = list.strata)
-      colnames(obs.distri)[which(colnames(obs.distri) == "quantile.val")] = "quantile.obs"
+      colnames(distrib.obs)[which(colnames(distrib.obs) == "quantile.val")] = "quantile.obs"
     }
     
     if (doHabitat) {
@@ -527,7 +540,7 @@ POST_FATE.validation = function(name.simulation
         mat.sim$strata = "all"
       }
       mat.sim = mat.sim[, c("ID.pixel", "X", "Y", "strata", "PFG", year)]
-      colnames(mat.sim) = c("pixel", "x", "y", "strata", "PFG", "abs")
+      colnames(mat.sim) = c("pixel", "x", "y", "strata", "PFG", "abund")
       if (!is.null(opt.keep_strata)) {
         new.strata <- rep("all", nrow(mat.sim))
         for (i in 1:length(opt.keep_strata)) {
@@ -542,8 +555,8 @@ POST_FATE.validation = function(name.simulation
       #                                   mat.sim.agg$PFG %in% opt.keep_PFG), ]
       
       if (doRichness == TRUE) {
-        PFG.richness.simulated = unique(mat.sim$PFG)
-        PFG.richness.simulated = PFG.richness.simulated[which(PFG.richness.simulated %in% list.PFG)]
+        rich.sim = unique(mat.sim$PFG)
+        rich.sim = rich.sim[which(rich.sim %in% list.PFG)]
       }
       
       SIM = .valid_organizeData(mat = mat.sim
@@ -551,97 +564,129 @@ POST_FATE.validation = function(name.simulation
                                 , fac.rel = c("pixel", "strata")
                                 , fac.cast = "pixel"
                                 , mat.sites = sites.sim)
-      mat.sim.agg = SIM$mat.agg
-      data.FATE.PFG.habitat = SIM$mat.cast
-      # data.FATE.PFG.habitat$habitat <- factor(data.FATE.PFG.habitat$habitat, levels = RF.model$classes) #thanks to the "levels" argument, we have the same order for the habitat factor in the RF model and in the FATE outputs
       
+      if (doComposition == TRUE){ # Only for PFG composition validation
+        
+        cat("\n ------ PFG COMPOSITION VALIDATION")
+        cat("\n > Get simulated distribution...")
+        distrib.sim = .valid_getDistrib(mat.agg = SIM$mat.agg
+                                       , list.PFG = list.PFG
+                                       , list.habitat = mat.hab$code.habitat
+                                       , list.strata = list.strata)
+        colnames(distrib.sim)[which(colnames(distrib.sim) == "quantile.val")] = "quantile.sim"
+        
+        #######################################
+        # 9. Compute proximity between observed and simulated data, per PFG*strata*habitat
+        
+        distrib.ALL <- merge(distrib.obs, distrib.sim, by = c("PFG", "code.habitat", "strata", "quantile.perc"), all = TRUE)
+        
+        #Auxiliary function to compute proximity (on a 0 to 1 scale, 1 means quantile equality)
+        #return a "distance", computed as the sum of the absolute gap between observed and simulated quantile
+        compute.proximity <- function(qt.obs, qt.sim) {
+          return(1 - sum(abs(qt.sim - qt.obs)) / 4)
+        }
+        
+        proximity = split(distrib.ALL, list(distrib.ALL$PFG, distrib.ALL$code.habitat, distrib.ALL$strata), drop = TRUE)
+        proximity = foreach(tmp = proximity, .combine = "rbind") %do%
+          {
+            qt = compute.proximity(qt.obs = tmp$quantile.obs, qt.sim = tmp$quantile.sim)
+            return(data.frame(PFG = unique(tmp$PFG)
+                              , code.habitat = unique(tmp$code.habitat)
+                              , strata = unique(tmp$strata)
+                              , proximity = qt))
+          }
+        
+        # 10. Aggregate results for the different PFG
+        aggregated.proximity = split(proximity, list(proximity$code.habitat, proximity$strata), drop = TRUE)
+        aggregated.proximity = foreach(tmp = aggregated.proximity, .combine = "rbind") %do%
+          {
+            return(data.frame(simul = simul$dir.save
+                              , code.habitat = unique(tmp$code.habitat)
+                              , strata = unique(tmp$strata)
+                              , aggregated.proximity = mean(tmp$proximity)))
+          }
+        performance.composition <- list(aggregated.proximity = aggregated.proximity)
+        cat("\n > Done ! \n")
+        
+      }
       
       
       if (doHabitat == TRUE){ # Only for habitat validation
         cat("\n ------ HABITAT PREDICTION")
-
-        ############################
-        # II. Prediction of habitat with the RF algorithm
-        #################################
         
-        data.validation <- data.FATE.PFG.habitat #[which(data.FATE.PFG.habitat$for.validation == 1), ]
-        x.validation <- dplyr::select(data.validation,all_of(RF.predictors))
-        y.validation <- data.validation$habitat
-        y.validation.predicted <- predict(object = RF.model, newdata = x.validation, type = "response", norm.votes = TRUE)
+        mat.cast.sim = SIM$mat.cast
+        mat.cast.sim$habitat <- factor(mat.cast.sim$habitat, levels = RF.model$classes)
+        #thanks to the "levels" argument, we have the same order for the habitat factor in the RF model and in the FATE outputs
+        
+        RF.predictors <- rownames(RF.model$importance)
+        if (length(setdiff(RF.predictors, colnames(mat.cast.sim))) > 0) {
+          stop("PROBLEM") ##TODO
+        }
+        RF.pred <- predict(object = RF.model, newdata = mat.cast.sim[, RF.predictors], type = "response", norm.votes = TRUE)
 
         #analyse model performance
         aggregate.TSS.validation = .valid_getModelPerf(dataset = "valid"
-                                                       , mod.pred = y.validation.predicted
-                                                       , mod.ref = factor(y.validation, sort(unique(c(levels(y.validation), levels(y.validation.predicted))))))
+                                                       , mod.pred = RF.pred
+                                                       , mod.ref = factor(mat.cast.sim$habitat, RF.model$classes))
           
+        RF.perf = do.call(rbind, list(aggregate.TSS.training, aggregate.TSS.testing, aggregate.TSS.validation))
+        
         
         ########################
         # IV. Predict habitat for the whole map if option selected (do it only for a small number of simulations)
         ############################################
         
         if (doHabitat.allMap == TRUE) {
-          y.all.map.predicted = data.frame(pixel = data.FATE.PFG.habitat$pixel
-                                           , habitat = data.FATE.PFG.habitat$habitat
-                                           , sim = predict(object = RF.model, newdata =  data.FATE.PFG.habitat[, RF.predictors], type = "response", norm.votes = TRUE))
+          col.df = data.frame(habitat.obs = RF.model$classes,
+                              failure = hcl.colors(n = length(RF.model$classes), palette = "Roma", alpha = 0.5),
+                              success = hcl.colors(n = length(RF.model$classes), palette = "Roma", alpha = 1))
+          col.df = melt(col.df, id.vars = c("habitat.obs"), variable.name = "fail_succ", value.name = "color")
+          
+          col_label = paste0(col.df$habitat.obs, " - ", col.df$fail_succ)
+          names(col_label) = col.df$color
+          
+          #true/false prediction
+          pred.allMap = data.frame(pixel = mat.cast.sim$pixel
+                                   , habitat.obs = as.character(mat.cast.sim$habitat)
+                                   , habitat.sim = as.character(RF.pred))
+          pred.allMap$habitat.final = pred.allMap$habitat.sim
+          pred.allMap$habitat.final[which(pred.allMap$habitat.obs != pred.allMap$habitat.sim)] = "failure"
+          pred.allMap$fail_succ = ifelse(pred.allMap$habitat.final == "failure", "failure", "success")
+          pred.allMap = merge(pred.allMap, col.df, by.x = c("habitat.obs", "fail_succ"))
+          pred.allMap = merge(pred.allMap, sites.sim, by.x = c("pixel", "habitat.obs"), by.y = c("pixel", "habitat"), all.x = TRUE)
+          pred.allMap$code.habitat[which(pred.allMap$habitat.final == "failure")] = -1
+          
+          ## Raster map
+          prediction.map = ras_simulation
+          prediction.map[] = -1
+          prediction.map[pred.allMap$pixel] = pred.allMap$code.habitat
+          prediction.map = ratify(prediction.map)
+          map.rat = unique(pred.allMap[, c("code.habitat", "habitat.final")])
+          colnames(map.rat) = c("ID", "habitat")
+          levels(prediction.map) = map.rat[order(map.rat$ID), ]
+          
+          ## ggplot
+          ggplot(pred.allMap, aes(x = x, y = y, fill = factor(color, levels(factor(col.df$color))))) +
+            geom_raster() +
+            coord_equal() +
+            scale_fill_identity(guide = "legend", labels = col_label, drop = FALSE) +
+            guides(fill = guide_legend(nrow = 4, byrow = FALSE)) +
+            theme(plot.title = element_text(size = 8),
+                  legend.text = element_text(size = 8, colour = "black"),
+                  legend.title = element_blank(),
+                  legend.position = "bottom",
+                  axis.title = element_blank(),
+                  axis.text = element_blank(),
+                  axis.ticks = element_blank())
         } 
-        
-        #prepare outputs
-        output.validation <- c(synthesis.validation$TSS, aggregate.TSS.validation)
-        names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
-        results.habitat <- list(output.validation = output.validation)
+        # output.validation <- c(synthesis.validation$TSS, aggregate.TSS.validation)
+        # names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
+        results.habitat <- list(output.validation = aggregate.TSS.validation)
         if(doHabitat.allMap == TRUE){
-          results.habitat$y.all.map.predicted = y.all.map.predicted
+          results.habitat$pred.allMap = pred.allMap
         }
       }
-      
-      if (doComposition == TRUE){ # Only for PFG composition validation
-        
-        cat("\n ------ PFG COMPOSITION VALIDATION")
-        cat("\n > Get simulated distribution...")
-        sim.distri = .valid_getDistrib(mat.agg = mat.sim.agg
-                                       , list.PFG = list.PFG
-                                       , list.habitat = mat.hab$code.habitat
-                                       , list.strata = list.strata)
-        
-        #######################################
-        # 9. Compute proximity between observed and simulated data, per PFG*strata*habitat
-        
-        ALL.distrib <- merge(obs.distri, sim.distri, by = c("PFG", "code.habitat", "strata", "quantile.perc"))
-        
-        #Auxiliary function to compute proximity (on a 0 to 1 scale, 1 means quantile equality)
-        #for a given PFG*habitat*strata, return a "distance", computed as the sum of the absolute gap between observed and simulated quantile
-        compute.proximity <- function(sim.qt, obs.qt) {
-          return(1 - sum(abs(sim.qt - obs.qt)) / 4)
-        }
-        #we get rid off rank==0 because there is good chance that it is nearly always equal to zero both in observed and simulated data, and that would provide a favorable bias in the results
-        ALL.distrib = ALL.distrib[which(ALL.distrib$quantile.perc > 0), ]
-        
-        proximity = split(ALL.distrib, list(ALL.distrib$PFG, ALL.distrib$code.habitat, ALL.distrib$strata), drop = TRUE)
-        proximity = foreach(tmp = proximity, .combine = "rbind") %do%
-          {
-            qt = compute.proximity(sim.qt = tmp$quantile.sim, obs.qt = tmp$quantile.obs)
-            return(data.frame(PFG = unique(tmp$PFG)
-                              , code.habitat = unique(tmp$code.habitat)
-                              , strata = unique(tmp$strata)
-                              , proximity = qt))
-          }
-        proximity = proximity[order(proximity$code.habitat, proximity$strata, proximity$PFG), ]
-        
-        
-        # 10. Aggregate results for the different PFG
-        ##############################################
-        
-        ## TODO
-        # aggregated.proximity <- proximity[,mean(proximity), by = c("habitat", "strata")]
-        # aggregated.proximity <- rename(aggregated.proximity, "aggregated.proximity" = "V1")
-        # aggregated.proximity$aggregated.proximity <- round(aggregated.proximity$aggregated.proximity, digits = 2)
-        # aggregated.proximity$simul <- sim
-        
-        performance.composition <- list(aggregated.proximity = aggregated.proximity)
-        
-        cat("\n > Done ! \n")
-        
-      }
+
       
       results = list(simul = basename(GLOB_DIR$dir.save))
       if (doHabitat) {
@@ -649,13 +694,13 @@ POST_FATE.validation = function(name.simulation
         results$habitat.performance = results.habitat$output.validation
       }
       if (doHabitat.allMap) {
-        results$habitat.prediction = results.habitat$y.all.map.predicted
+        results$habitat.prediction = results.habitat$pred.allMap
       }
       if (doComposition) {
         results$performance.compo = performance.composition
       }
       if (doRichness) {
-        results$dying.PFG.list = setdiff(list.PFG, PFG.richness.simulated)
+        results$dying.PFG.list = setdiff(list.PFG, rich.sim)
       }
       return(results)
     } # End of loop on simulations
@@ -663,78 +708,6 @@ POST_FATE.validation = function(name.simulation
   
   
   #############################################################################
-  
-  if (doHabitat == TRUE) { # If habitat validation activated, the function uses the results to build and save a final map of habitat prediction
-    output.path = paste0(name.simulation, "/VALIDATION")
-    
-    # deal with the results regarding model performance
-    habitat.performance = foreach(res = results.simul, .combine = "rbind") %do% {
-      tmp = t(res$habitat.performance)
-      colnames(tmp) <- c(RF.model$classes, "weighted")
-      tmp$simulation <- res$simul
-      return(tmp)
-    }
-    fwrite(habitat.performance, paste0(output.path, "/HABITAT/performance.habitat.csv"), row.names = FALSE)
-    cat("\n > Habitat performance saved")
-    
-    if (doHabitat.allMap) {
-      # deal with the results regarding habitat prediction over the whole map
-      all.map.prediction = foreach(res = results.simul, .combine = "rbind") %do% {
-        tmp = res$habitat.prediction
-        tmp$simulation <- res$simul
-        return(tmp)
-      }
-      # all.map.prediction = as.data.frame(lapply(results.simul, "[[", 1))
-      all.map.prediction = all.map.prediction[, c(simulations, "pixel", "habitat")]
-      all.map.prediction = rename(all.map.prediction, "true.habitat" = "habitat")
-      fwrite(all.map.prediction, paste0(output.path,"/HABITAT/habitat.prediction.csv"), row.names = FALSE)
-      cat("\n > Habitat prediction saved")
-      
-      ## AGGREGATE HABITAT PREDICTION AND PLOT PREDICTED HABITAT
-      # Provide a color df
-      col.df = data.frame(
-        habitat = RF.model$classes,
-        failure = rainbow(length(RF.model$classes), alpha = 0.5),
-        success = rainbow(length(RF.model$classes), alpha = 1))
-      
-      prediction.map = plot_predicted_habitat(predicted.habitat = all.map.prediction
-                                              , col.df = col.df
-                                              , ras_simulation = ras_simulation
-                                              , output.path = output.path
-                                              , sim.version = simulations)
-      
-      cat("\n > Predicted habitat plot saved")
-    }
-  }
-  
-  if(doComposition == TRUE){ # If PFG composition validation activated, the function uses the results to save a table with proximity of PFG composition for each PFG and habitat*strata define by the user
-    
-    output.path.compo = paste0(name.simulation, "/VALIDATION/PFG_COMPOSITION")
-    
-    # results.compo = foreach(res = results.simul, .combine = "rbind") %do% {
-    #   tmp = t(res$performance.compo)
-    #   # colnames(tmp) <- c(RF.model$classes, "weighted")
-    #   # tmp$simulation <- res$simul
-    #   return(tmp)
-    # }
-    # fwrite(results.compo, paste0(output.path.compo, "/performance.composition.csv"), row.names = FALSE)
-    # cat("\n > Performance composition file saved \n")
-    
-    
-    results.compo = sapply(results.simul, "[[", "performance.compo")
-    results <- sapply(results.compo, function(X){X$aggregated.proximity})
-    rownames(results) <- paste0(results.compo[[1]]$habitat, "_", results.compo[[1]]$strata)
-    # colnames(results) <- abs.simulParams
-    colnames(results) <- simulations
-    results.compo <- t(results)
-    results.compo <- as.data.frame(results)
-    results.compo$simulation <- rownames(results)
-    
-    #save and return
-    # fwrite(results.compo, paste0(output.path.compo, "/performance.composition.csv"), row.names = FALSE)
-    # cat("\n > Performance composition file saved \n")
-    
-  }
   
   if(doRichness == TRUE){ # PFG Richness validation
     
@@ -796,8 +769,8 @@ POST_FATE.validation = function(name.simulation
   if(doHabitat == TRUE & doHabitat.allMap == TRUE){
     
     hab.pred = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/hab.pred.csv")))
-    failure = as.numeric((table(hab.pred$prediction.code)[1]/sum(table(hab.pred$prediction.code)))*100)
-    success = as.numeric((table(hab.pred$prediction.code)[2]/sum(table(hab.pred$prediction.code)))*100)
+    failure = as.numeric((table(hab.pred$fail_succ)[1]/sum(table(hab.pred$fail_succ)))*100)
+    success = as.numeric((table(hab.pred$fail_succ)[2]/sum(table(hab.pred$fail_succ)))*100)
     
     testing = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_testing.csv")))
     training = as.data.frame(fread(paste0(name.simulation, "/VALIDATION/HABITAT/RF_perf.per.hab_training.csv")))
@@ -863,6 +836,7 @@ POST_FATE.validation = function(name.simulation
     mat.agg$relative.metric[which(is.na(mat.agg$relative.metric))] = 0
   }
   mat.agg$abund = NULL
+  mat.agg = merge(mat.sites, mat.agg, by = intersect(colnames(mat.sites), colnames(mat.agg)))
   # cat("\n > Releves data have been transformed into a relative metric")
   
   ## --------------------------------------------------------------------------
@@ -880,26 +854,27 @@ POST_FATE.validation = function(name.simulation
 
 .valid_getDistrib = function(mat.agg, list.PFG, list.habitat, list.strata) #, fac.agg)
 {
-  # txt.command = paste0('mat.agg$', fac.agg, collapse = ", ")
-  distrib = split(mat.agg, list(mat.agg$PFG, mat.agg$code.habitat, mat.agg$strata), drop = TRUE)
+  fac.agg = c("PFG", "code.habitat", "strata")
+  txt.command = paste0('mat.agg$', fac.agg, collapse = ", ")
+  eval(parse(text = paste0('distrib = split(mat.agg, list(', txt.command, '), drop = TRUE)')))
+  # distrib = split(mat.agg, list(mat.agg$PFG, mat.agg$code.habitat, mat.agg$strata), drop = TRUE)
   distrib = foreach(tmp = distrib, .combine = "rbind") %do%
     {
-      qt = quantile(tmp$relative.metric, probs = seq(0, 1, 0.25))
+      qt = quantile(tmp$relative.metric, probs = seq(0.25, 1, 0.25))
       return(data.frame(PFG = unique(tmp$PFG)
                         , code.habitat = unique(tmp$code.habitat)
                         , strata = unique(tmp$strata)
-                        , quantile.perc = seq(0, 1, 0.25)
+                        , quantile.perc = seq(0.25, 1, 0.25)
                         , quantile.val = as.vector(qt)))
     }
   
   all.distrib <- expand.grid(PFG = list.PFG                            
                              , code.habitat = list.habitat
                              , strata = list.strata
-                             , quantile.perc = seq(0, 1, 0.25)
+                             , quantile.perc = seq(0.25, 1, 0.25)
                              , stringsAsFactors = FALSE)
-  all.distrib <- merge(all.distrib, distrib, by = c("PFG", "code.habitat", "strata", "quantile.perc"), all.x = TRUE)
+  all.distrib <- merge(all.distrib[, c(fac.agg, "quantile.perc")], distrib, by = c(fac.agg, "quantile.perc"), all.x = TRUE)
   all.distrib$quantile.val[is.na(all.distrib$quantile.val)] <- 0
-  # all.distrib = all.distrib[order(all.distrib$code.habitat, all.distrib$strata, all.distrib$PFG, all.distrib$quantile.perc), ]
   
   return(all.distrib)
 }
@@ -910,8 +885,8 @@ POST_FATE.validation = function(name.simulation
   mat.conf = confusionMatrix(data = mod.pred, reference = mod.ref)
   mat.synth = data.frame(dataset = dataset
                          , habitat = colnames(mat.conf$table)
-                         , sensitivity = mat.conf$byClass[, 1]
-                         , specificity = mat.conf$byClass[, 2]
+                         , sensitivity = mat.conf$byClass[, "Sensitivity"]
+                         , specificity = mat.conf$byClass[, "Specificity"]
                          , weight = colSums(mat.conf$table) / sum(colSums(mat.conf$table)))
   #warning: prevalence is the weight of predicted habitat, not of observed habitat
   mat.synth$TSS = round(mat.synth$sensitivity + mat.synth$specificity - 1, digits = 2)
