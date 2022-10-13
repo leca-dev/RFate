@@ -17,6 +17,25 @@
 ##' for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.}
 ##' }
 ##' 
+##' 
+# name.simulation
+# , file.simulParam
+# , year
+# , mat.obs
+# , mat.hab
+# , ras_habitat
+# , doRichness = TRUE
+# , doComposition = TRUE
+# , doHabitat = TRUE
+# , RF.seed = 123
+# , RF.training = 0.7
+# , doHabitat.allMap = FALSE
+# , opt.ras_validation = NULL
+# , opt.keep_PFG = NULL
+# , opt.keep_strata = NULL)
+##' 
+##' 
+##' 
 ##' @param name.simulation a \code{string} corresponding to the simulation folder name.
 ##' @param file.simulParam default \code{NULL}. \cr A \code{string} 
 ##' corresponding to the name of a parameter file that will be contained into 
@@ -204,17 +223,15 @@
 ##' 
 ##' @export
 ##' 
-##' @importFrom stringr str_split
-##' @importFrom raster raster res crop origin compareCRS extent ncell getValues levels
-##' @importFrom utils read.csv
-##' @importFrom foreach foreach %dopar%
-##' @importFrom forcats fct_expand
-##' @importFrom readr write_rds
-##' @importFrom doParallel registerDoParallel
-##' @importFrom dplyr select rename
-##' @importFrom tidyselect all_of
+##' 
 ##' @importFrom stats aggregate
+##' @importFrom foreach foreach %do%
+##' @importFrom reshape2 melt
 ##' @importFrom data.table fread fwrite
+##' @importFrom dplyr group_by
+##' @importFrom randomForest tuneRF
+##' @importFrom caret confusionMatrix
+##' @importFrom raster ratify levels writeRaster
 ##' 
 ### END OF HEADER ###################################################################
 
@@ -225,16 +242,15 @@ POST_FATE.validation = function(name.simulation
                                 , mat.obs
                                 , mat.hab
                                 , ras_habitat
+                                , doRichness = TRUE
+                                , doComposition = TRUE
+                                , doHabitat = TRUE
                                 , RF.seed = 123
                                 , RF.training = 0.7
-                                , doHabitat = TRUE
                                 , doHabitat.allMap = FALSE
-                                , doComposition = TRUE
-                                , doRichness = TRUE
                                 , opt.ras_validation = NULL
                                 , opt.keep_PFG = NULL
-                                , opt.keep_strata = NULL
-                                , opt.no_CPU = 1)
+                                , opt.keep_strata = NULL)
 {
   #############################################################################
   
@@ -312,16 +328,15 @@ POST_FATE.validation = function(name.simulation
   list.PFG = GLOB_SIM$PFG
   if (!is.null(opt.keep_PFG)) {
     .testParam_notChar.m("opt.keep_PFG", opt.keep_PFG)
-    list.PFG = list.PFG[which(list.PFG %in% opt.keep_PFG)]
-    if (length(list.PFG) == 0) {
-      stop("PROBLEM") ##TODO
-    }
+    .testParam_notInValues.m("opt.keep_PFG", opt.keep_PFG, list.PFG)
+    list.PFG = opt.keep_PFG
   }
   ## CHECK parameter opt.keep_strata
   list.strata = as.character(unique(mat.obs$strata))
   if (!is.null(opt.keep_strata)) {
     .testParam_notInValues.m("names(opt.keep_strata)", names(opt.keep_strata), as.character(unique(mat.obs$strata)))
-    list.strata = names(opt.keep_strata)
+    list.strata.obs = names(opt.keep_strata)
+    list.strata.sim = unique(unlist(opt.keep_strata))
   }
   
   
@@ -329,6 +344,8 @@ POST_FATE.validation = function(name.simulation
   cat("\n # POST_FATE.validation")
   cat("\n #------------------------------------------------------------# \n")
   
+  #############################################################################
+  ### Preliminary checks
   #############################################################################
   
   infos.simul = foreach (abs.simulParam = abs.simulParams) %do%
@@ -341,36 +358,34 @@ POST_FATE.validation = function(name.simulation
                           , basename(GLOB_DIR$dir.save)
                           , ".csv")
       if (!file.exists(file.abund)) {
+        warning(paste0("File `perStrata` (", file.abund, ") does not exist. Validation per stratum has been desactivated."))
         file.abund = paste0(name.simulation
                             , "/RESULTS/POST_FATE_TABLE_PIXEL_evolution_abundance_"
                             , basename(GLOB_DIR$dir.save)
                             , ".csv")
         mat.obs$strata = "all"
         list.strata = "all"
-        warning("PROBLEM") ##TODO
       }
-      if (!file.exists(file.abund)) {
-        stop("PROBLEM") ##TODO
-      }
+      .testParam_existFile(file.abund)
       return(list(dir.save = basename(GLOB_DIR$dir.save)
                   , file.abund = file.abund))
     }
+  names(infos.simul) = abs.simulParams
   
-  ## Get raster mask --------------------------------------------------------
+  ## Get raster mask ----------------------------------------------------------
   GLOB_MASK = .getGraphics_mask(name.simulation  = name.simulation
                                 , abs.simulParam = abs.simulParams[1])
   ras_simulation = GLOB_MASK$ras.mask
-  
   
   .testParam_notSameRaster.m("ras_habitat", ras_habitat, "ras_simulation", ras_simulation)
   if (.testParam_notInValues("code.habitat", colnames(mat.obs))) {
     mat.obs$code.habitat = extract(x = ras_habitat, y = mat.obs[, c("x", "y")])
     mat.obs = mat.obs[which(!is.na(mat.obs$code.habitat)), ]
     if (nrow(mat.obs) == 0) {
-      # stop("Code habitat vector is empty. Please verify values of your ras_habitat map")
-      # stop("Make sure to provide habitat values") TODO
+      stop("Wrong type of data!\n Extracted values from `ras_habitat` are NA. Please check.")
     }
   }
+  
   if (!is.null(opt.ras_validation)) {
     .testParam_notSameRaster.m("opt.ras_validation", opt.ras_validation, "ras_simulation", ras_simulation)
   }
@@ -387,16 +402,23 @@ POST_FATE.validation = function(name.simulation
   # }
   
   # 3. Keep only releve on interesting habitat, strata and PFG
-  # mat.PFG.agg = mat.PFG.agg[which(mat.PFG.agg$code.habitat %in% mat.hab$code.habitat &
-  #                                   mat.PFG.agg$strata %in% list.strata &
-  #                                   mat.PFG.agg$PFG %in% opt.keep_PFG), ]
+  mat.obs = mat.obs[which(mat.obs$code.habitat %in% mat.hab$code.habitat &
+                            mat.obs$strata %in% list.strata &
+                            mat.obs$PFG %in% list.PFG), ]
+  if (nrow(mat.obs) == 0) {
+    stop("Wrong type of data!\n Values in `mat.obs` do not match required levels (code.habitat, strata, PFG). Please check.")
+  }
+  
   
   #############################################################################
+  ### A. EXTRACT INFORMATION FROM OBSERVED DATA
+  #############################################################################
   
-  cat("\n ----------- OBSERVED DATA")
+  cat("\n ---------- OBSERVED DATA \n")
   
-  if (doHabitat == TRUE | doComposition == TRUE) {
-    ## GET INFOS on site / habitat for OBSERVED data ----------------------------------------------
+  if (doHabitat | doComposition) {
+    
+    cat("\n> Get information table on site / habitat (mat.obs)...")
     sites.obs = unique(mat.obs[, which(colnames(mat.obs) %in% c("site", "x", "y", "code.habitat"))])
     sites.obs = merge(sites.obs, mat.hab, by = "code.habitat")
     sites.obs = sites.obs[, c("site", "x", "y", "code.habitat", "habitat")]
@@ -412,11 +434,11 @@ POST_FATE.validation = function(name.simulation
       toRemove.code = mat.hab$code.habitat[which(mat.hab$habitat %in% toRemove.name)]
       mat.obs = mat.obs[-which(mat.obs$code.habitat %in% toRemove.code), ]
       mat.hab = mat.hab[-which(mat.hab$code.habitat %in% toRemove.code),]
-      cat("\n > (", paste0(toRemove.name, collapse = " / ")
+      cat("\n    (", paste0(toRemove.name, collapse = " / ")
           , ") represent 1% or less of the habitats in the whole area, they will be deleted for the next steps. \n")
     }
     
-    ## GET INFOS on site / habitat for SIMULATION data --------------------------------------------
+    cat("\n> Get information table on site / habitat (simul)...")
     sites.sim = as.data.frame(rasterToPoints(ras_habitat))
     colnames(sites.sim) = c("x", "y", "code.habitat")
     sites.sim$pixel = cellFromXY(ras_simulation, sites.sim[, c("x", "y")])
@@ -426,43 +448,46 @@ POST_FATE.validation = function(name.simulation
       toKeep = ras_simulation[cellFromXY(ras_simulation, sites.sim[, c("x", "y")])]
     }
     sites.sim = sites.sim[which(toKeep == 1), ]
-    if (nrow(sites.sim)) {
-      stop("PROBLEM") ## TODO
+    if (nrow(sites.sim) == 0) {
+      stop("Wrong type of data!\n Extracted values from `ras_simulation` (or `ras_validation`) are NA. Please check.")
     }
     sites.sim <- merge(sites.sim, mat.hab, by = "code.habitat")
     sites.sim = sites.sim[, c("pixel", "x", "y", "code.habitat", "habitat")]
     
-    ## ----------------------------------------------------------------
-      
+    #############################################################################
+    ## Reorganize mat.obs by aggregating PFG abundances
+    
     OBS = .valid_organizeData(mat = mat.obs
                               , fac.agg = c("site", "code.habitat", "strata", "PFG")
                               , fac.rel = c("site", "strata")
                               , fac.cast = "site"
                               , mat.sites = sites.obs)
-      
+    
+    #############################################################################
+    ## Obtain quantiles of PFG abundances
+    
     if (doComposition) {
-      cat("\n > Get observed distribution...")
+      cat("\n> Get observed distribution...")
       distrib.obs = .valid_getDistrib(mat.agg = OBS$mat.agg
-                                     , list.PFG = list.PFG
-                                     , list.habitat = mat.hab$code.habitat
-                                     , list.strata = list.strata)
+                                      , list.PFG = list.PFG
+                                      , list.habitat = mat.hab$code.habitat
+                                      , list.strata = list.strata)
       colnames(distrib.obs)[which(colnames(distrib.obs) == "quantile.val")] = "quantile.obs"
     }
     
+    #############################################################################
+    ## Train a Random Forest model on observed data
+    
     if (doHabitat) {
-      cat("\n ----------- TRAIN A RANDOM FOREST MODEL ON OBSERVED DATA")
-      #separate the database into a training and a test part
-      cat("\n > Separate the database into a training and a test part \n")
+      cat("\n> Split observations into training / testing...")
       set.seed(RF.seed)
       
       mat.cast = OBS$mat.cast
       mat.cast$habitat = as.factor(mat.cast$habitat)
       freq = table(mat.cast$code.habitat) / nrow(mat.cast)
       no.hab = sample(names(freq), size = RF.training * nrow(mat.cast), prob = freq, replace = TRUE)
-      no.hab = table(no.hab)
-      if (length(no.hab) != length(freq)) {
-        stop("PROBLEM") ## TODO
-      }
+      no.hab = table(no.hab) ## Is it possible that length(no.hab) != length(freq) ?
+      
       training.site = foreach(hab = 1:length(no.hab), .combine = "c") %do%
         {
           sample(mat.cast$site[which(mat.cast$code.habitat == names(no.hab)[hab])]
@@ -476,8 +501,8 @@ POST_FATE.validation = function(name.simulation
       cat("\n Testing part of the data :")
       print(table(tab.test$habitat))
       
-      #train the model (with correction for imbalances in sampling)
-      #run optimization algo (careful : optimization over OOB...)
+      cat("\n> Calibrate Random Forest model...")
+      ## Train the RF model (with correction for unbalanced sampling)
       mtry.perf = tuneRF(x = tab.train[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
                          y = tab.train$habitat,
                          strata = tab.train$habitat,
@@ -488,51 +513,52 @@ POST_FATE.validation = function(name.simulation
                          doBest = FALSE,
                          plot = FALSE,
                          trace = FALSE)
-      #select mtry
+      
+      ## Select model (lowest n achieving minimum OOB)
       mtry.perf = as.data.frame(mtry.perf)
-      mtry = mtry.perf$mtry[which.min(mtry.perf$OOBError)]  #the lowest n achieving minimum OOB
+      mtry = mtry.perf$mtry[which.min(mtry.perf$OOBError)]
       
-      #run real model
+      ## Run selected model on testing data
       RF.model = randomForest(x = tab.train[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
-                           y = tab.train$habitat,
-                           xtest = tab.test[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
-                           ytest = tab.test$habitat,
-                           strata = tab.train$habitat,
-                           sampsize = nrow(tab.train),
-                           ntree = 500,
-                           mtry = mtry,
-                           norm.votes = TRUE,
-                           keep.forest = TRUE)
+                              y = tab.train$habitat,
+                              xtest = tab.test[, -which(colnames(tab.train) %in% c("site", "x", "y", "code.habitat", "habitat"))],
+                              ytest = tab.test$habitat,
+                              strata = tab.train$habitat,
+                              sampsize = nrow(tab.train),
+                              ntree = 500,
+                              mtry = mtry,
+                              norm.votes = TRUE,
+                              keep.forest = TRUE)
       
-      #analyse model performance
-      aggregate.TSS.training = .valid_getModelPerf(dataset = "train"
-                                                   , mod.pred = RF.model$predicted
-                                                   , mod.ref = tab.train$habitat)
+      ## Analyse model performance
+      RF.perf.train = .valid_getModelPerf(dataset = "train"
+                                          , mod.pred = RF.model$predicted
+                                          , mod.ref = tab.train$habitat)
       
-      aggregate.TSS.testing = .valid_getModelPerf(dataset = "test"
-                                                  , mod.pred = RF.model$test$predicted
-                                                  , mod.ref = tab.test$habitat)
-      cat("\n > Done ! \n")
+      RF.perf.test = .valid_getModelPerf(dataset = "test"
+                                         , mod.pred = RF.model$test$predicted
+                                         , mod.ref = tab.test$habitat)
+      cat("\n")
     }
   }
   
   
   #############################################################################
+  ### B. EXTRACT INFORMATION FROM SIMULATED DATA
+  #############################################################################
   
-  cat("\n ----------- SIMULATED DATA")
+  cat("\n ---------- SIMULATED DATA")
   
-  if (opt.no_CPU > 1)
-  {
-    if (.getOS() != "windows")
+  res = foreach (abs.simulParam = abs.simulParams) %do%
     {
-      registerDoParallel(cores = opt.no_CPU)
-    } else
-    {
-      warning("Parallelisation with `foreach` is not available for Windows. Sorry.")
-    }
-  }
-  results.simul = foreach (simul = infos.simul) %do%
-    {
+      
+      cat("\n+++++++\n")
+      cat("\n  Simulation name : ", name.simulation)
+      cat("\n  Simulation file : ", abs.simulParam)
+      cat("\n")
+      
+      simul = infos.simul[[abs.simulParam]]
+      
       ## Get the abundance table ------------------------------------------------
       .testParam_existFile(simul$file.abund)
       mat.sim = fread(simul$file.abund, data.table = FALSE)
@@ -550,14 +576,17 @@ POST_FATE.validation = function(name.simulation
         mat.sim$strata = new.strata
       }
       
-      # 3. Keep only releve on interesting habitat, strata and PFG
-      # mat.sim.agg = mat.sim.agg[which(mat.sim.agg$strata %in% list.strata &
-      #                                   mat.sim.agg$PFG %in% opt.keep_PFG), ]
+      mat.sim = mat.sim[which(mat.sim$strata %in% list.strata &
+                                mat.sim$PFG %in% list.PFG), ]
       
+      ## Get the abundance table ------------------------------------------------
       if (doRichness == TRUE) {
         rich.sim = unique(mat.sim$PFG)
         rich.sim = rich.sim[which(rich.sim %in% list.PFG)]
       }
+      
+      #############################################################################
+      ## Reorganize mat.sim by aggregating PFG abundances
       
       SIM = .valid_organizeData(mat = mat.sim
                                 , fac.agg = c("pixel", "strata", "PFG")
@@ -565,23 +594,33 @@ POST_FATE.validation = function(name.simulation
                                 , fac.cast = "pixel"
                                 , mat.sites = sites.sim)
       
-      if (doComposition == TRUE){ # Only for PFG composition validation
+      #############################################################################
+      
+      if (doComposition) {
         
-        cat("\n ------ PFG COMPOSITION VALIDATION")
-        cat("\n > Get simulated distribution...")
+        ## Obtain quantiles of PFG abundances ---------------------------------
+        cat("\n> Get simulated distribution...")
         distrib.sim = .valid_getDistrib(mat.agg = SIM$mat.agg
-                                       , list.PFG = list.PFG
-                                       , list.habitat = mat.hab$code.habitat
-                                       , list.strata = list.strata)
+                                        , list.PFG = list.PFG
+                                        , list.habitat = mat.hab$code.habitat
+                                        , list.strata = list.strata)
         colnames(distrib.sim)[which(colnames(distrib.sim) == "quantile.val")] = "quantile.sim"
         
-        #######################################
-        # 9. Compute proximity between observed and simulated data, per PFG*strata*habitat
-        
+        ## Merge observed and simulated distributions
         distrib.ALL <- merge(distrib.obs, distrib.sim, by = c("PFG", "code.habitat", "strata", "quantile.perc"), all = TRUE)
         
-        #Auxiliary function to compute proximity (on a 0 to 1 scale, 1 means quantile equality)
-        #return a "distance", computed as the sum of the absolute gap between observed and simulated quantile
+        fwrite(distrib.ALL
+               , file = paste0(name.simulation
+                               , "/RESULTS/POST_FATE_TABLE_HAB_validation_compo_distribution_"
+                               , simul$dir.save
+                               , ".csv")
+               , row.names = FALSE)
+        
+        ## Compute proximity --------------------------------------------------
+        cat("\n> Compute proximity...")
+        
+        ## Distance, computed as the sum of absolute gap between obs and sim quantile
+        ## (on a 0 to 1 scale, 1 meaning quantile equality)
         compute.proximity <- function(qt.obs, qt.sim) {
           return(1 - sum(abs(qt.sim - qt.obs)) / 4)
         }
@@ -596,48 +635,64 @@ POST_FATE.validation = function(name.simulation
                               , proximity = qt))
           }
         
-        # 10. Aggregate results for the different PFG
-        aggregated.proximity = split(proximity, list(proximity$code.habitat, proximity$strata), drop = TRUE)
-        aggregated.proximity = foreach(tmp = aggregated.proximity, .combine = "rbind") %do%
-          {
-            return(data.frame(simul = simul$dir.save
-                              , code.habitat = unique(tmp$code.habitat)
-                              , strata = unique(tmp$strata)
-                              , aggregated.proximity = mean(tmp$proximity)))
-          }
-        performance.composition <- list(aggregated.proximity = aggregated.proximity)
-        cat("\n > Done ! \n")
+        fwrite(proximity
+               , file = paste0(name.simulation
+                               , "/RESULTS/POST_FATE_TABLE_HAB_validation_compo_proximity_"
+                               , simul$dir.save
+                               , ".csv")
+               , row.names = FALSE)
         
+        # # 10. Aggregate results for the different PFG
+        # aggregated.proximity = split(proximity, list(proximity$code.habitat, proximity$strata), drop = TRUE)
+        # aggregated.proximity = foreach(tmp = aggregated.proximity, .combine = "rbind") %do%
+        #   {
+        #     return(data.frame(simul = simul$dir.save
+        #                       , code.habitat = unique(tmp$code.habitat)
+        #                       , strata = unique(tmp$strata)
+        #                       , aggregated.proximity = mean(tmp$proximity)))
+        #   }
+        # performance.composition <- list(aggregated.proximity = aggregated.proximity)
       }
       
+      #############################################################################
+      ## Run selected Random Forest model on simulated data
       
-      if (doHabitat == TRUE){ # Only for habitat validation
-        cat("\n ------ HABITAT PREDICTION")
+      if (doHabitat) {
+        cat("\n> Run and evaluate Random Forest model on simulated data...")
         
         mat.cast.sim = SIM$mat.cast
         mat.cast.sim$habitat <- factor(mat.cast.sim$habitat, levels = RF.model$classes)
-        #thanks to the "levels" argument, we have the same order for the habitat factor in the RF model and in the FATE outputs
-        
         RF.predictors <- rownames(RF.model$importance)
         if (length(setdiff(RF.predictors, colnames(mat.cast.sim))) > 0) {
-          stop("PROBLEM") ##TODO
+          stop(paste0("Missing data!\n Some PFG used within the random forest model are not found within the simulated dataset ("
+                      , paste0(setdiff(RF.predictors, colnames(mat.cast.sim)), collapse = " / "), ")"))
         }
+        
+        ## Use selected RF to predict habitat onto simulated data
         RF.pred <- predict(object = RF.model, newdata = mat.cast.sim[, RF.predictors], type = "response", norm.votes = TRUE)
-
-        #analyse model performance
-        aggregate.TSS.validation = .valid_getModelPerf(dataset = "valid"
-                                                       , mod.pred = RF.pred
-                                                       , mod.ref = factor(mat.cast.sim$habitat, RF.model$classes))
-          
-        RF.perf = do.call(rbind, list(aggregate.TSS.training, aggregate.TSS.testing, aggregate.TSS.validation))
+        
+        ## Analyse model performance
+        RF.perf.valid = .valid_getModelPerf(dataset = "valid"
+                                            , mod.pred = RF.pred
+                                            , mod.ref = factor(mat.cast.sim$habitat, RF.model$classes))
+        
+        ## Merge all model performances
+        RF.perf = do.call(rbind, list(RF.perf.train, RF.perf.test, RF.perf.valid))
         rownames(RF.perf) = NULL
         
+        fwrite(RF.perf
+               , file = paste0(name.simulation
+                               , "/RESULTS/POST_FATE_TABLE_HAB_validation_RF_performance_"
+                               , simul$dir.save
+                               , ".csv")
+               , row.names = FALSE)
         
-        ########################
-        # IV. Predict habitat for the whole map if option selected (do it only for a small number of simulations)
-        ############################################
         
-        if (doHabitat.allMap == TRUE) {
+        ## Predict / plot habitat for whole simulation map --------------------
+        if (doHabitat.allMap) {
+          cat("\n> Predict habitat on simulated data...")
+          
+          ## Create a correspondance table between predicted habitat / colors
           col.df = data.frame(habitat.obs = RF.model$classes,
                               failure = hcl.colors(n = length(RF.model$classes), palette = "Roma", alpha = 0.5),
                               success = hcl.colors(n = length(RF.model$classes), palette = "Roma", alpha = 1))
@@ -646,7 +701,7 @@ POST_FATE.validation = function(name.simulation
           col_label = paste0(col.df$habitat.obs, " - ", col.df$fail_succ)
           names(col_label) = col.df$color
           
-          #true/false prediction
+          ## Create the whole map prediction table
           pred.allMap = data.frame(pixel = mat.cast.sim$pixel
                                    , habitat.obs = as.character(mat.cast.sim$habitat)
                                    , habitat.sim = as.character(RF.pred))
@@ -657,17 +712,27 @@ POST_FATE.validation = function(name.simulation
           pred.allMap = merge(pred.allMap, sites.sim, by.x = c("pixel", "habitat.obs"), by.y = c("pixel", "habitat"), all.x = TRUE)
           pred.allMap$code.habitat[which(pred.allMap$habitat.final == "failure")] = -1
           
-          ## Raster map
-          prediction.map = ras_simulation
-          prediction.map[] = -1
-          prediction.map[pred.allMap$pixel] = pred.allMap$code.habitat
-          prediction.map = ratify(prediction.map)
+          fwrite(pred.allMap
+                 , file = paste0(name.simulation
+                                 , "/RESULTS/POST_FATE_TABLE_PIXEL_validation_RF_prediction_"
+                                 , simul$dir.save
+                                 , ".csv")
+                 , row.names = FALSE)
+          
+          ## Transform into a categorical raster map
+          ras.allMap = ras_simulation
+          ras.allMap[] = -1
+          ras.allMap[pred.allMap$pixel] = pred.allMap$code.habitat
+          ras.allMap = ratify(ras.allMap)
           map.rat = unique(pred.allMap[, c("code.habitat", "habitat.final")])
           colnames(map.rat) = c("ID", "habitat")
-          levels(prediction.map) = map.rat[order(map.rat$ID), ]
+          levels(ras.allMap) = map.rat[order(map.rat$ID), ]
           
-          ## ggplot
-          ggplot(pred.allMap, aes(x = x, y = y, fill = factor(color, levels(factor(col.df$color))))) +
+          output.name = paste0(name.simulation, "/RESULTS/", simul$dir.save, "/HabitatPrediction_YEAR_", year, ".tif")
+          writeRaster(ras.allMap, filename = output.name, overwrite = TRUE)
+          
+          ## Create a ggplot
+          pp = ggplot(pred.allMap, aes(x = x, y = y, fill = factor(color, levels(factor(col.df$color))))) +
             geom_raster() +
             coord_equal() +
             scale_fill_identity(guide = "legend", labels = col_label, drop = FALSE) +
@@ -679,38 +744,59 @@ POST_FATE.validation = function(name.simulation
                   axis.title = element_blank(),
                   axis.text = element_blank(),
                   axis.ticks = element_blank())
-          
-          
-          # failure = 100 * table(pred.allMap$fail_succ)[1] / sum(table(pred.allMap$fail_succ))
-          # success = 100 - failure
         } 
-        # output.validation <- c(synthesis.validation$TSS, aggregate.TSS.validation)
-        # names(output.validation) <- c(synthesis.validation$habitat, "aggregated")
-        results.habitat <- list(output.validation = aggregate.TSS.validation)
-        if(doHabitat.allMap == TRUE){
-          results.habitat$pred.allMap = pred.allMap
-        }
       }
-
       
-      results = list(simul = basename(GLOB_DIR$dir.save))
-      if (doHabitat) {
-        results$RF.model = RF.model
-        results$habitat.performance = results.habitat$output.validation
-      }
-      if (doHabitat.allMap) {
-        results$habitat.prediction = results.habitat$pred.allMap
+      #############################################################################
+      
+      cat("\n> Done!\n")
+      
+      results = list()
+      if (doRichness) {
+        results$rich.obs = sort(list.PFG)
+        results$rich.sim = sort(rich.sim)
+        results$rich.diff = setdiff(list.PFG, rich.sim)
       }
       if (doComposition) {
-        results$performance.compo = performance.composition
+        results$compo.distrib = distrib.ALL
+        results$compo.proximity = proximity
       }
-      if (doRichness) {
-        results$dying.PFG.list = setdiff(list.PFG, rich.sim)
+      if (doHabitat) {
+        results$hab.RF.model = RF.model
+        results$hab.RF.perf = RF.perf
+        if (doHabitat.allMap) {
+          results$hab.tab.pred = pred.allMap
+          results$hab.ras.pred = ras.allMap
+          results$hab.plot = pp
+        }
       }
+      
+      if (doComposition || doHabitat)
+      {
+        message(paste0("\n The output files \n"
+                       , ifelse(doComposition
+                                , paste0(" > POST_FATE_TABLE_HAB_validation_compo_", c("distribution_", "proximity_")
+                                         , simul$dir.save
+                                         , ".csv \n")
+                                , "")
+                       , ifelse(doHabitat
+                                , paste0(" > POST_FATE_TABLE_HAB_validation_RF_performance_"
+                                         , simul$dir.save
+                                         , ".csv \n")
+                                , "")
+                       , ifelse(doHabitat.allMap
+                                , paste0(" > POST_FATE_TABLE_PIXEL_validation_RF_prediction_"
+                                         , simul$dir.save
+                                         , ".csv \n")
+                                , "")
+                       , "have been successfully created !\n"))
+      }
+      
       return(results)
-    } # End of loop on simulations
-  cat("\n ----------- END OF LOOP ON SIMULATIONS \n")
+    } ## END loop on abs.simulParams
+  names(res) = abs.simulParams
   
+  return(res)
 }
 
 
@@ -736,7 +822,7 @@ POST_FATE.validation = function(name.simulation
   }
   mat.agg$abund = NULL
   mat.agg = merge(mat.sites, mat.agg, by = intersect(colnames(mat.sites), colnames(mat.agg)))
-  # cat("\n > Releves data have been transformed into a relative metric")
+  # cat("\n> Releves data have been transformed into a relative metric")
   
   ## --------------------------------------------------------------------------
   mat.cast = mat.agg
