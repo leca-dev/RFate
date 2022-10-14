@@ -18,12 +18,6 @@
 ##' }
 ##' 
 ##' 
-# name.simulation
-# , file.simulParam
-# , year
-# , mat.obs
-# , mat.hab
-# , ras_habitat
 # , doRichness = TRUE
 # , doComposition = TRUE
 # , doHabitat = TRUE
@@ -34,55 +28,56 @@
 # , opt.keep_PFG = NULL
 # , opt.keep_strata = NULL)
 ##' 
-##' 
-##' 
-##' @param name.simulation a \code{string} corresponding to the simulation folder name.
+##' @param name.simulation a \code{string} corresponding to the main directory 
+##' or simulation name of the \code{FATE} simulation
 ##' @param file.simulParam default \code{NULL}. \cr A \code{string} 
 ##' corresponding to the name of a parameter file that will be contained into 
-##' the \code{PARAM_SIMUL} folder of the \code{FATE} simulation.
-##' @param year an \code{integer} corresponding to the year of simulation for validation.
-##' @param perStrata (\code{logical}) default \code{FALSE}. \cr 
-##' If \code{TRUE}, habitat & PFG composition are computed with PFG abundance defined by strata. \cr
-##' If \code{FALSE}, habitat & PFG composition are computed with PFG abundance defined for all strata.
-##' @param opt.no_CPU default \code{1}. \cr An \code{integer} corresponding to the number of resources that can be used to 
-##' parallelize the computation of prediction performance for habitat & richness validation.
+##' the \code{PARAM_SIMUL} folder of the \code{FATE} simulation
+##' @param year an \code{integer} corresponding to the simulation year that will 
+##' be used to extract PFG abundance table
+##' @param mat.obs a \code{data.frame} with at least 5 columns : \cr 
+##' \code{site}, \code{x}, \code{y}, \code{PFG}, \code{abund} 
+##' \cr (\emph{and optionally, \code{strata}, \code{code.habitat}}) 
+##' (see \href{POST_FATE.validation#details}{\code{Details}})
+##' @param mat.hab a \code{data.frame} with 2 columns : \code{code.habitat}, 
+##' \code{habitat}
+##' @param ras.habitat a \code{string} corresponding to the file name of a 
+##' raster mask, with an \code{integer} value within each pixel, corresponding 
+##' to a specific habitat 
+##' @param doRichness (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, 
+##' difference in observed and simulated PFG richness will be run.
+##' @param doComposition (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, 
+##' difference in observed and simulated PFG distribution over habitat will be run.
+##' @param doHabitat (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, 
+##' a random forest model to predict habitat from PFG abundances will be run.
+##' @param RF.seed default \code{123}. \cr An \code{integer} to be given to 
+##' \code{\link[base]{set.seed}} function, in order to fix the produced results 
+##' if needed, as dataset will be divided randomly into training and testing 
+##' datasets for the random forest model
+##' @param RF.training default \code{0.7}. \cr A \code{numeric} between \code{0} 
+##' and \code{1} corresponding to the percentage of data that will be used as 
+##' training dataset in the random forest model
+##' @param doHabitat.allMap (\code{logical}) default \code{TRUE}. \cr If 
+##' \code{TRUE}, habitat prediction over the whole simulation map will be run.
+##' @param opt.ras_validation (\emph{optional}) default \code{NULL}. \cr 
+##' A \code{string} corresponding to the file name of a raster mask, with either 
+##' \code{0} or \code{1} within each pixel, \code{1} corresponding to the cells 
+##' of the studied area in which the validation will take place
+##' @param opt.keep_PFG (\emph{optional}) default \code{NULL}. \cr 
+##' A \code{vector} of \code{character} corresponding to the names of the PFG to 
+##' keep for the validation
+##' @param opt.keep_strata (\emph{optional}) default \code{NULL}. \cr 
+##' A \code{list} with names corresponding to the strata to keep for the 
+##' validation, and each element containing correspondence with \code{FATE} 
+##' strata definition
 ##' 
-##' @param doHabitat (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
-##' if \code{FALSE}, habitat validation module is disabled.
-##' @param mat.obs a \code{data.frame} with at least 5 columns : \cr
-##' \code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
-##' \cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
-##' \cr (see \href{POST_FATE.validation#details}{\code{Details}}).
-##' @param ras_habitat a \code{raster} map of the habitats within the studied area, with same projection 
-##' & resolution than simulation mask.
-##' @param mat.hab a \code{data.frame} with 2 columns : \cr
-##' \code{ID} ,\code{habitat}
-##' \cr (see \href{POST_FATE.validation#details}{\code{Details}}).
-##' @param doHabitat.allMap (\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction 
-##' & performance over the whole map and will provide a prediction map.
-##' @param RF.seed default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
-##' in order to generate a \code{Random Forest} model.
-##' @param RF.training default \code{0.7}. \cr A \code{numeric} between 0 & 1 corresponding to the part of the data used for 
-##' training a \code{Random Forest} model on \code{mat.obs} data.
-##' @param opt.ras_validation (\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
-##' which pixels the performance of the habitat prediction will be compute, with same projection & resolution than simulation mask 
-##' \cr If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map).
-##' @param opt.keep_strata (\code{optional}) default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
-##' a \code{list} which contains, for each stratum defined in \code{mat.obs}, the correspondence with \code{FATE} strata definition. \cr
-##' If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.
-##' 
-##' @param doComposition (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated.
-##' 
-##' @param doRichness (\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated.
-##' @param opt.keep_PFG (\code{optional}) default \code{NULL}. \cr A \code{character} vector containing the name(s) 
-##' of the PFG(s) that will be excluded from the composition and richness analysis.
 ##' 
 ##' @details 
 ##' 
 ##' \describe{
 ##'   \item{Habitat validation}{ \cr
 ##'   \describe{
-##'     \item{Observed habitat}{is provided by the \strong{ras_habitat} map. The final set of habitats taken into account
+##'     \item{Observed habitat}{is provided by the \strong{ras.habitat} map. The final set of habitats taken into account
 ##'     in the validation is provided by \strong{mat.hab} table which contains 
 ##'     all the \strong{habitats}, with their corresponding \strong{ID}.}
 ##'     \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances 
@@ -91,7 +86,7 @@
 ##'     \strong{sites} with \strong{xy} coordinates are necessary. PFG abundances can be given in absolute abundance
 ##'     (only in sites where at least one PFG is present) or in presence-absence data.\cr
 ##'     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} names.
-##'     If not, habitat information will be taken from \strong{ras_habitat} map, and PFG abundance will be considered for all strata.}
+##'     If not, habitat information will be taken from \strong{ras.habitat} map, and PFG abundance will be considered for all strata.}
 ##'   }
 ##'   To compare observations and simulations, the function computes confusion matrix between 
 ##'   observations and predictions and then computes the TSS for each habitat h.
@@ -168,9 +163,9 @@
 ##'                                            , "woody.heatland"))
 ##' 
 ##' ## Habitat & validation maps
-##' ras_habitaterved = Champsaur_params$stk.mask$habitat
+##' ras.habitaterved = Champsaur_params$stk.mask$habitat
 ##' ras_simulation = Champsaur_params$stk.mask$Champsaur
-##' ras_habitat = projectRaster(from = ras_habitaterved, to = ras_simulation, method = "ngb")
+##' ras.habitat = projectRaster(from = ras.habitaterved, to = ras_simulation, method = "ngb")
 ##' writeRaster(ras_simulation, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
 ##' 
 ##' ## Observed data
@@ -213,7 +208,7 @@
 ##'                      , year = 2000
 ##'                      , doHabitat = TRUE
 ##'                      , mat.obs = mat.obs
-##'                      , ras_habitat = ras_habitat
+##'                      , ras.habitat = ras.habitat
 ##'                      , mat.hab = mat.hab
 ##'                      , opt.keep_strata = opt.keep_strata
 ##'                      , doHabitat.allMap = TRUE
@@ -241,7 +236,7 @@ POST_FATE.validation = function(name.simulation
                                 , year
                                 , mat.obs
                                 , mat.hab
-                                , ras_habitat
+                                , ras.habitat
                                 , doRichness = TRUE
                                 , doComposition = TRUE
                                 , doHabitat = TRUE
@@ -321,6 +316,10 @@ POST_FATE.validation = function(name.simulation
       .testParam_notChar.m("mat.hab$habitat", mat.hab$habitat)
     }
   }
+  ## CHECK parameter ras.habitat
+  .testParam_notChar.m("ras.habitat", ras.habitat)
+  .testParam_existFile(ras.habitat)
+  ras.habitat = raster(ras.habitat)
   ## CHECK parameter opt.keep_PFG
   GLOB_SIM = .getGraphics_PFG(name.simulation  = name.simulation
                               , abs.simulParam = abs.simulParams[1])
@@ -377,12 +376,12 @@ POST_FATE.validation = function(name.simulation
                                 , abs.simulParam = abs.simulParams[1])
   ras_simulation = GLOB_MASK$ras.mask
   
-  .testParam_notSameRaster.m("ras_habitat", ras_habitat, "ras_simulation", ras_simulation)
+  .testParam_notSameRaster.m("ras.habitat", ras.habitat, "ras_simulation", ras_simulation)
   if (.testParam_notInValues("code.habitat", colnames(mat.obs))) {
-    mat.obs$code.habitat = extract(x = ras_habitat, y = mat.obs[, c("x", "y")])
+    mat.obs$code.habitat = extract(x = ras.habitat, y = mat.obs[, c("x", "y")])
     mat.obs = mat.obs[which(!is.na(mat.obs$code.habitat)), ]
     if (nrow(mat.obs) == 0) {
-      stop("Wrong type of data!\n Extracted values from `ras_habitat` are NA. Please check.")
+      stop("Wrong type of data!\n Extracted values from `ras.habitat` are NA. Please check.")
     }
   }
   
@@ -396,7 +395,7 @@ POST_FATE.validation = function(name.simulation
   #   mat.obs = mat.obs[which(!is.na(inMask)), ]
   #   # cat("\n 'releve' map has been cropped to match 'external.training.mask'. \n") TODO
   #   if (nrow(mat.obs) == 0) {
-  #     # stop("Code habitat vector is empty. Please verify values of your ras_habitat map")
+  #     # stop("Code habitat vector is empty. Please verify values of your ras.habitat map")
   #     # stop("Make sure to provide habitat values") TODO
   #   }
   # }
@@ -439,7 +438,7 @@ POST_FATE.validation = function(name.simulation
     }
     
     cat("\n> Get information table on site / habitat (simul)...")
-    sites.sim = as.data.frame(rasterToPoints(ras_habitat))
+    sites.sim = as.data.frame(rasterToPoints(ras.habitat))
     colnames(sites.sim) = c("x", "y", "code.habitat")
     sites.sim$pixel = cellFromXY(ras_simulation, sites.sim[, c("x", "y")])
     if (!is.null(opt.ras_validation)) {
