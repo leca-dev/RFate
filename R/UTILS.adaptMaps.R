@@ -43,7 +43,7 @@
                       
 ){
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/", "", name.simulation)
+  name.simulation = sub("/$", "", name.simulation)
   
   .testParam_notChar.m("extension.old", extension.old)
   if (!is.null(extension.new)){

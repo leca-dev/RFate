@@ -929,6 +929,7 @@ PRE_FATE.params_simulParameters = function(
       ### -------------------------------------------------------------------- ###
       
       params = c(params.list, list(""))
+      params = lapply(params, function(x) sub(name.simulation, basename(name.simulation), x))
       names(params) = c(names.params.list, "--END_OF_FILE--")
       
       .createParams(params.file = paste0(name.simulation
