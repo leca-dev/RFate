@@ -6,27 +6,11 @@
 ##' 
 ##' @author Matthieu Combaud, Maxime Delprat, Maya Guéguen
 ##' 
-##' @description This script is designed to compute validation data for : \cr
-##' \describe{
-##'   \item{Habitat}{Compares simulated and observed habitat and
-##' create a map to visualize this comparison with all the \code{FATE} and
-##' observed data \cr (if option selected).}
-##'   \item{PFG Composition}{Computes the similarity between observed and simulated 
-##'   PFG composition for a chosen set of PFG/habitat/strata combinations.}
-##'   \item{PFG Richness}{Computes the PFG richness over the whole simulation area 
-##' for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.}
-##' }
+##' @description This script is designed to compare observed and simulated 
+##' PFG distribution for one specific \code{FATE} simulation year by computing 
+##' a) difference in PFG richness ; b) similarity between distribution quantiles ; 
+##' c) a random forest model to predict habitat classes.
 ##' 
-##' 
-# , doRichness = TRUE
-# , doComposition = TRUE
-# , doHabitat = TRUE
-# , RF.seed = 123
-# , RF.training = 0.7
-# , doHabitat.allMap = FALSE
-# , opt.ras_validation = NULL
-# , opt.keep_PFG = NULL
-# , opt.keep_strata = NULL)
 ##' 
 ##' @param name.simulation a \code{string} corresponding to the main directory 
 ##' or simulation name of the \code{FATE} simulation
@@ -73,6 +57,14 @@
 ##' 
 ##' 
 ##' @details 
+##' 
+##' This function allows to obtain, for a specific \code{FATE} simulation and 
+##' a specific parameter file within this simulation, \strong{PFG validation 
+##' habitat model and predictions} and one preanalytical graphic. \cr \cr
+##' 
+##' 
+##' 
+##' 
 ##' 
 ##' \describe{
 ##'   \item{Habitat validation}{ \cr
