@@ -105,7 +105,7 @@ plot(sp.SELECT$plot.robustness$`All dataset`)
 # ## Calculate mat.overlap matrix
 # ## Add absences in community sites
 # tab.dom.PA = sp.SELECT$tab.dom.PA
-# for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])
+# for (si in tab.occ$sites[which(tab.occ$TYPE == "COMMUNITY")])
 # {
 #   ind = which(rownames(tab.dom.PA) == si)
 #   tab.dom.PA[ind, which(is.na(tab.dom.PA[ind, ]))] = 0
@@ -159,7 +159,7 @@ str(sp.DIST.P)
   require(ggdendro)
   pp = foreach(x = names(sp.DIST)) %do%
   {
-    hc = hclust(sp.DIST[[x]])
+    hc = hclust(as.dist(sp.DIST[[x]]))
     pp = ggdendrogram(hc, rotate = TRUE) +
       labs(title = paste0("Hierarchical clustering based on species distance "
                           , ifelse(length(names(sp.DIST)) > 1
@@ -180,8 +180,8 @@ sp.CLUST2.P = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.P$c
 names(sp.CLUST2.P)
 str(sp.CLUST2.P$determ.sp)
 str(sp.CLUST2.P$determ.all)
-plot(sp.DETERM$plot.distance)
-plot(sp.DETERM$plot.PCO$Phanerophyte)
+plot(sp.CLUST2.P$plot.distance)
+plot(sp.CLUST2.P$plot.PCO$GROUP1)
 
 
 
