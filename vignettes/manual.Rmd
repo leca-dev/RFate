@@ -368,29 +368,29 @@ for(pfg in colnames(tab.occ))
   bm.opt <- BIOMOD_ModelingOptions(GLM = list(type = "quadratic", interaction.level = 0, test = "AIC")
                                    , GAM = list(k = 3))
   
-  bm.mod <- BIOMOD_Modeling(data = bm.form
+  bm.mod <- BIOMOD_Modeling(bm.format = bm.form
                             , models = c('RF', 'GLM', 'GAM')
-                            , models.options = bm.opt
-                            , NbRunEval = nrep
-                            , DataSplit = 70
-                            , Prevalence = 0.5
-                            , VarImport = 3
-                            , models.eval.meth = c('TSS','ROC')
+                            , bm.options = bm.opt
+                            , nb.rep = nrep
+                            , data.split.perc = 70
+                            , prevalence = 0.5
+                            , var.import = 3
+                            , metric.eval = c('TSS','ROC')
                             , do.full.models = FALSE
                             , modeling.id = 'mod1')
   
   ## run ensemble models ---------------------------------------------------------
-  bm.em <- BIOMOD_EnsembleModeling(modeling.output = bm.mod
-                                   , chosen.models = "all"
+  bm.em <- BIOMOD_EnsembleModeling(bm.mod = bm.mod
+                                   , models.chosen = "all"
                                    , em.by = "all"
-                                   , eval.metric = c('TSS')
-                                   , eval.metric.quality.threshold = 0.4
-                                   , models.eval.meth = c('TSS', 'ROC')
+                                   , metric.select = c('TSS')
+                                   , metric.select.thresh = 0.4
+                                   , metric.eval = c('TSS', 'ROC')
                                    , prob.mean = FALSE
                                    , prob.mean.weight = TRUE
                                    , prob.mean.weight.decay = 'proportional'
                                    , committee.averaging = TRUE
-                                   , VarImport = 3)
+                                   , var.import = 3)
   
   ## project ensemble models -----------------------------------------------------
   bm.ef <- BIOMOD_EnsembleForecasting(EM.output = bm.em
