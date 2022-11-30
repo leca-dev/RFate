@@ -105,7 +105,7 @@ plot(sp.SELECT$plot.robustness$`All dataset`)
 # ## Calculate mat.overlap matrix
 # ## Add absences in community sites
 # tab.dom.PA = sp.SELECT$tab.dom.PA
-# for (si in sites$sites[which(sites$TYPE == "COMMUNITY")])
+# for (si in tab.occ$sites[which(tab.occ$TYPE == "COMMUNITY")])
 # {
 #   ind = which(rownames(tab.dom.PA) == si)
 #   tab.dom.PA[ind, which(is.na(tab.dom.PA[ind, ]))] = 0
@@ -159,7 +159,7 @@ str(sp.DIST.P)
   require(ggdendro)
   pp = foreach(x = names(sp.DIST)) %do%
   {
-    hc = hclust(sp.DIST[[x]])
+    hc = hclust(as.dist(sp.DIST[[x]]))
     pp = ggdendrogram(hc, rotate = TRUE) +
       labs(title = paste0("Hierarchical clustering based on species distance "
                           , ifelse(length(names(sp.DIST)) > 1
@@ -180,8 +180,8 @@ sp.CLUST2.P = PRE_FATE.speciesClustering_step2(clust.dendrograms = sp.CLUST1.P$c
 names(sp.CLUST2.P)
 str(sp.CLUST2.P$determ.sp)
 str(sp.CLUST2.P$determ.all)
-plot(sp.DETERM$plot.distance)
-plot(sp.DETERM$plot.PCO$Phanerophyte)
+plot(sp.CLUST2.P$plot.distance)
+plot(sp.CLUST2.P$plot.PCO$GROUP1)
 
 
 
@@ -368,29 +368,29 @@ for(pfg in colnames(tab.occ))
   bm.opt <- BIOMOD_ModelingOptions(GLM = list(type = "quadratic", interaction.level = 0, test = "AIC")
                                    , GAM = list(k = 3))
   
-  bm.mod <- BIOMOD_Modeling(data = bm.form
+  bm.mod <- BIOMOD_Modeling(bm.format = bm.form
                             , models = c('RF', 'GLM', 'GAM')
-                            , models.options = bm.opt
-                            , NbRunEval = nrep
-                            , DataSplit = 70
-                            , Prevalence = 0.5
-                            , VarImport = 3
-                            , models.eval.meth = c('TSS','ROC')
+                            , bm.options = bm.opt
+                            , nb.rep = nrep
+                            , data.split.perc = 70
+                            , prevalence = 0.5
+                            , var.import = 3
+                            , metric.eval = c('TSS','ROC')
                             , do.full.models = FALSE
                             , modeling.id = 'mod1')
   
   ## run ensemble models ---------------------------------------------------------
-  bm.em <- BIOMOD_EnsembleModeling(modeling.output = bm.mod
-                                   , chosen.models = "all"
+  bm.em <- BIOMOD_EnsembleModeling(bm.mod = bm.mod
+                                   , models.chosen = "all"
                                    , em.by = "all"
-                                   , eval.metric = c('TSS')
-                                   , eval.metric.quality.threshold = 0.4
-                                   , models.eval.meth = c('TSS', 'ROC')
+                                   , metric.select = c('TSS')
+                                   , metric.select.thresh = 0.4
+                                   , metric.eval = c('TSS', 'ROC')
                                    , prob.mean = FALSE
                                    , prob.mean.weight = TRUE
                                    , prob.mean.weight.decay = 'proportional'
                                    , committee.averaging = TRUE
-                                   , VarImport = 3)
+                                   , var.import = 3)
   
   ## project ensemble models -----------------------------------------------------
   bm.ef <- BIOMOD_EnsembleForecasting(EM.output = bm.em

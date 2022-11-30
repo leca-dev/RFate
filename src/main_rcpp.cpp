@@ -52,7 +52,7 @@
   
   /* to get CPU information */
   #include "sys/times.h" // Unix
-  #include "sys/vtimes.h" // Unix
+  // #include "sys/vtimes.h" // Unix
   
 	#include "gdal.h"
 	#include <ogr_spatialref.h>

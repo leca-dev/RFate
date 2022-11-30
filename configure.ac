@@ -1,10 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.71])
 
 define([pkgversion], esyscmd([sh -c "grep Version: DESCRIPTION | cut -d' ' -f2 | tr -d '\n'"]))
-AC_INIT([RFate], [pkgversion], [maya.gueguen@univ-grenoble-alpes.fr])
+AC_INIT([RFate],[pkgversion],[maya.gueguen@univ-grenoble-alpes.fr])
 AC_CONFIG_SRCDIR([src/main_rcpp.cpp])
 #AC_CONFIG_HEADERS([config.h])
 
@@ -61,8 +61,7 @@ GDAL_CONFIG="gdal-config"
 GDAL_CONFIG_SET="no"
 
 AC_ARG_WITH([gdal-config],
-    AC_HELP_STRING([--with-gdal-config=GDAL_CONFIG],
-           [the location of gdal-config]),
+    AS_HELP_STRING([--with-gdal-config=GDAL_CONFIG],[the location of gdal-config]),
            [gdal_config=$withval])
 if test [ -n "$gdal_config" ] ; then
     GDAL_CONFIG_SET="yes"
@@ -271,6 +270,7 @@ fi
 # PROJ.4
 
 # copied from sf/configure.ac
+# updated copy 2022/11/07 to adjust for PROJ7 and PROJ8
 
 PROJ_CONFIG="pkg-config proj"
 
@@ -278,218 +278,162 @@ if `$PROJ_CONFIG --exists` ; then
   AC_MSG_NOTICE([pkg-config proj exists, will use it])
   proj_config_ok=yes
 else
-  AC_MSG_NOTICE([pkg-config proj not available])
-  echo "  set PKG_CONFIG_PATH to the directory containing proj.pc"
   proj_config_ok=no
 fi
 
-PROJ_VERSION=""
-PROJ6=""
-
-if test "${proj_config_ok}" = yes; then
-  PROJ_VERSION=`${PROJ_CONFIG} --modversion`
-  AC_MSG_NOTICE([PROJ version: ${PROJ_VERSION}])
-
-  PROJV1=`echo "${PROJ_VERSION}" | cut -c 1`
-
-  if test "${PROJV1}" = "6"; then
-    AC_MSG_NOTICE([Support for PROJ >= 6.0.0 not yet available, deprecated API defined])
-    PKG_CPPFLAGS="-DACCEPT_USE_OF_DEPRECATED_PROJ_API_H"
-    PROJ6="yes"
-  else
-    AC_MSG_NOTICE([PROJ version < 6.0.0])
-    PKG_CPPFLAGS=""
-    PROJ6="no"
-  fi
-
-else
-
-  AC_MSG_NOTICE([PROJ version not determined using pkg-config proj])
-
-fi
-#AC_MSG_NOTICE([Package CPP flags: ${PKG_CPPFLAGS}])
-
-#PKG_CPPFLAGS=""
-
 AC_ARG_WITH([proj-include],
-    AC_HELP_STRING([--with-proj-include=DIR],
-                   [location of proj header files]),
+    AS_HELP_STRING([--with-proj-include=DIR],[location of proj header files]),
     [proj_include_path=$withval])
 if test [ -n "$proj_include_path" ] ; then
-   proj_include_path="-I${proj_include_path}"
-   AC_SUBST([PKG_CPPFLAGS],["${PKG_CPPFLAGS} ${proj_include_path} ${INPKG_CPPFLAGS}"])
+   AC_SUBST([PROJ_CPPFLAGS],["-I${proj_include_path}"])
 else
   if test "${proj_config_ok}" = yes; then
     PROJ_INCLUDE_PATH=`${PROJ_CONFIG} --cflags`
-    proj_include_path=${PROJ_INCLUDE_PATH}
-    AC_SUBST([PKG_CPPFLAGS],["${PKG_CPPFLAGS} ${PROJ_INCLUDE_PATH} ${INPKG_CPPFLAGS}"])
+    AC_SUBST([PROJ_CPPFLAGS],["${PROJ_INCLUDE_PATH}"])
   fi
 fi
-#AC_MSG_NOTICE([Package CPP flags: ${PKG_CPPFLAGS}])
 
 # honor PKG_xx overrides
 # for CPPFLAGS we will superfluously double R's flags
 # since we'll set PKG_CPPFLAGS with this, but that shouldn't hurt
-CPPFLAGS="${INCPPFLAGS} ${PKG_CPPFLAGS}"
-AC_MSG_NOTICE([proj CPP flags: ${PKG_CPPFLAGS}])
 
-PKG_LIBS=""
-PROJ_LIB_PATH=""
-
-# dnl ditto for a library path
-AC_ARG_WITH([proj-lib],
-    AC_HELP_STRING([--with-proj-lib=LIB_PATH],
-               [the location of proj libraries]),
-               [proj_lib_path=$withval])
-if test [ -n "$proj_lib_path" ] ; then
-    AC_SUBST([PKG_LIBS], ["-L${proj_lib_path} ${INPKG_LIBS}"])
+AC_ARG_WITH([proj-api],
+    AS_HELP_STRING([--with-proj-api=yes/no],[use the deprecated proj_api.h even when PROJ 6 is available; default no]),
+               [proj_api=$withval])
+PROJ6="no"
+PROJH="no"
+if test "${proj_config_ok}" = yes; then
+  PROJ_VERSION=`${PROJ_CONFIG} --modversion`
+  PROJV1=`echo "${PROJ_VERSION}" | cut -c 1`
+  if test "${PROJV1}" -ge 6; then
+    PROJ6="yes"
+    PROJ_CPPFLAGS="${PROJ_CPPFLAGS} -DHAVE_PROJ_H"
+    if test "${proj_api}" = yes; then
+        AC_MSG_NOTICE([using proj_api.h even with PROJ 5/6])
+        PROJ_CPPFLAGS="${PROJ_CPPFLAGS} -DACCEPT_USE_OF_DEPRECATED_PROJ_API_H"
+    else
+        AC_MSG_NOTICE([using proj.h.])
+        PROJH="yes"
+    fi
+  fi
 else
-  if test ${proj_config_ok} = "yes"; then
-    PROJ_LIB_PATH=`${PROJ_CONFIG} --libs`
-    AC_SUBST([PKG_LIBS], ["${PROJ_LIB_PATH} ${INPKG_LIBS}"])
-  else
-    AC_SUBST([PKG_LIBS], ["${INPKG_LIBS} -lproj"])
+  if test "${PROJH}" = no ; then
+    PROJH=yes
+    AC_CHECK_HEADERS(proj.h,,PROJH=no)
+    if test "${PROJH}" = yes; then
+      PROJ6="yes"
+      PROJ_CPPFLAGS="${PROJ_CPPFLAGS} -DHAVE_PROJ_H"
+    fi
   fi
 fi
 
-AC_MSG_NOTICE([PROJ LIBS: ${PKG_LIBS}])
+CPPFLAGS="${INCPPFLAGS} ${PKG_CPPFLAGS} ${PROJ_CPPFLAGS}"
 
-
-AC_ARG_WITH([proj_api],
-    [  --with-proj_api[=ARG]        legacy proj_api.h while still available, or current proj.h (ARG="proj_api.h"(default), "proj.h")],,)
-
-AC_MSG_CHECKING([PROJ header API:])
-
-if test "$with_proj_api" = "" ; then
-  PROJ_API="proj_api.h"
-else
-  PROJ_API="$with_proj_api"
+if test "${PROJH}" = no
+then
+  proj4ok=yes
+  AC_CHECK_HEADERS(proj_api.h,,proj4ok=no)
+  if test "${proj4ok}" = no; then
+     AC_MSG_ERROR([proj_api.h not found in standard or given locations.])
+  fi
 fi
 
-AC_MSG_RESULT(${PROJ_API})
+# dnl ditto for a library path
+AC_ARG_WITH([proj-lib],
+    AS_HELP_STRING([--with-proj-lib=LIB_PATH],[the location of proj libraries]),
+               [proj_lib_path=$withval])
+if test [ -n "$proj_lib_path" ] ; then
+    AC_SUBST([PROJ_LIBS], ["-L${proj_lib_path} ${INPKG_LIBS} -lproj"])
+else
+  if test "${proj_config_ok}" = yes; then
+    if test `uname` = "Darwin"; then
+      PROJ_LIB_PATH=`${PROJ_CONFIG} --libs --static`
+    else
+      PROJ_LIB_PATH=`${PROJ_CONFIG} --libs`
+    fi
+    AC_SUBST([PROJ_LIBS], ["${PROJ_LIB_PATH} ${INPKG_LIBS}"])
+	proj_version=`${PROJ_CONFIG} --modversion`
+	AC_MSG_NOTICE([PROJ: ${proj_version}])
+  else
+    PROJ_LIBS="${PKG_LIBS} -lproj"
+  fi
+fi
 
-LIBS="${INLIBS} ${PKG_LIBS}"
-#PKG_LIBS="${PKG_LIBS} -lproj"
-#AC_MSG_NOTICE([${CFLAGS} ${PKG_CPPFLAGS}])
-AC_MSG_CHECKING(proj_api.h presence and usability)
-# FIXME re-using names
-[cat > proj_conf_test1.c <<_EOCONF
+LIBS="${PROJ_LIBS} ${INLIBS} ${PKG_LIBS}"
+
+if test "${PROJH}" = no; then
+  proj4ok=yes
+  AC_CHECK_LIB(proj,pj_init_plus,,proj4ok=no)
+  if test "${proj4ok}" = no; then
+     AC_MSG_ERROR([libproj not found in standard or given locations.])
+  fi
+[cat > proj_conf_test.c <<_EOCONF
 #include <stdio.h>
+#include <stdlib.h>
 #include <proj_api.h>
-
-int main() {
+int main(void) {
     printf("%d\n", PJ_VERSION);
     exit(0);
 }
 _EOCONF]
-
-if test `${CC} ${CFLAGS} ${PKG_CPPFLAGS} -o proj_conf_test1 proj_conf_test1.c ${PKG_LIBS} 2> /dev/null; echo $?` = 0; then
-  PROJ_VERSION_H=`./proj_conf_test1`
-  AC_MSG_RESULT(yes)
 else
-  if test `${CC} ${CFLAGS} ${PKG_CPPFLAGS} -DACCEPT_USE_OF_DEPRECATED_PROJ_API_H -o proj_conf_test1 proj_conf_test1.c ${PKG_LIBS} 2> /dev/null; echo $?` = 0; then
-    PROJ6="yes"
-    PKG_CPPFLAGS="${PKG_CPPFLAGS} -DACCEPT_USE_OF_DEPRECATED_PROJ_API_H"
-    PROJ_VERSION_H=`./proj_conf_test1`
-    AC_MSG_RESULT(yes)
-  else
-    AC_MSG_RESULT(no)
-    AC_MSG_ERROR([proj_api.h not found in standard or given locations.])
-  fi
-fi
-
-rm -f proj_conf_test1.c proj_conf_test1
-
-#AC_MSG_NOTICE(["|${PROJ_VERSION}| |${PROJ_VERSION_H}|"])
-
-if test -n "${PROJ_VERSION}" ; then
-  AC_MSG_CHECKING([PROJ version agreement])
-  PROJ_VERSION_DOT=`echo ${PROJ_VERSION} | tr -d "."`
-#echo "|${PROJ_VERSION}| |${PROJ_VERSION_DOT}| |${PROJ_VERSION_H}|"
-  if test "${PROJ_VERSION_DOT}$" = "${PROJ_VERSION_H}$"; then
-    AC_MSG_RESULT(yes)
-  else
-    AC_MSG_RESULT(no)
-    AC_MSG_ERROR([proj_api.h and pkg-config give different versions])
-  fi
-fi
-
-AC_MSG_CHECKING([PROJ version >= 4.8.0])
-if test ${PROJ_VERSION_H} -lt 480 ; then
-  AC_MSG_RESULT(no)
-  AC_MSG_ERROR([upgrade PROJ to 4.8.0 or later])
-else
-  AC_MSG_RESULT(yes)
-fi
-
-if test ${PROJ_VERSION_H} -lt 493; then
-
-if test ${PROJ_VERSION_H} = 480 ; then
-  ADDED_PKG_INCL_480=`pwd`"/inst/include"
-  AC_SUBST([PKG_CPPFLAGS],["${PKG_CPPFLAGS} -I${ADDED_PKG_INCL_480}"])
-  proj_include_path="${PKG_CPPFLAGS} -I${ADDED_PKG_INCL_480}"
-  CPPFLAGS="${INCPPFLAGS} ${PKG_CPPFLAGS}"
-fi
-
-#AC_MSG_NOTICE([${CFLAGS} ${PKG_CPPFLAGS}])
-
-AC_MSG_CHECKING(projects.h presence and usability)
-# FIXME re-using names
-[cat > proj_conf_test1a.c <<_EOCONF
+[cat > proj_conf_test.cpp <<_EOCONF
 #include <stdio.h>
-#include <projects.h>
-
-int main() {
+#include <stdlib.h>
+#include <proj.h>
+int main(void) {
+	proj_context_create();
     exit(0);
 }
 _EOCONF]
+  #AC_CHECK_LIB(proj,proj_context_create,,proj6ok=no)
+  AC_MSG_CHECKING(PROJ: checking whether PROJ and sqlite3 are available for linking:)
+  ${CXX} ${CPPFLAGS} -o proj_conf_test proj_conf_test.cpp ${LIBS} $SQLITE3_LIBS -lsqlite3 2> errors.txt
+  if test `echo $?` -ne 0 ; then
+    proj6ok=no
+    AC_MSG_RESULT(no)
+  else
+    proj6ok=yes
+    AC_MSG_RESULT(yes)
+  fi
+  if test "${proj6ok}" = no; then
+     AC_MSG_ERROR([libproj or sqlite3 not found in standard or given locations.])
+  fi
 
-if test `${CC} ${CFLAGS} ${PKG_CPPFLAGS} -o proj_conf_test1a proj_conf_test1a.c ${PKG_LIBS} 2> /dev/null; echo $?` = 0; then
-  AC_MSG_RESULT(yes)
-else
-  AC_MSG_RESULT(no)
-  STOP="stop"
+[cat > proj_conf_test.c <<_EOCONF
+#include <stdio.h>
+#include <stdlib.h>
+#include <proj.h>
+int main(void) {
+    printf("%d.%d.%d\n", PROJ_VERSION_MAJOR, PROJ_VERSION_MINOR, PROJ_VERSION_PATCH);
+    exit(0);
+}
+_EOCONF]
 fi
-rm -f proj_conf_test1a.c proj_conf_test1a
 
-if test "$STOP" = "stop" ; then
-    echo "projects.h not found in standard or given locations."
-    echo "PROJ 4.8.0 was bundled wrongly, and did not provide"
-    echo "the file. A copy is provided in init/include in the source"
-    echo "package for the users to place in the same directory"
-    echo "as proj_api.h manually."
-    exit 1
-fi
+#AC_MSG_NOTICE([PKG_LIBS: ${PKG_LIBS}])
 
-fi # < 493 test for projects.h
+${CC} ${CFLAGS} ${CPPFLAGS} -o proj_conf_test proj_conf_test.c ${PROJ_LIBS}
 
-
-
-AC_SUBST([PKG_CPPFLAGS],["-DP4CTX=1 ${PKG_CPPFLAGS}"])
+proj_version=`./proj_conf_test`
 
 AC_ARG_WITH([proj-share],
-    AC_HELP_STRING([--with-proj-share=SHARE_PATH],
-               [the location of proj metadata files]),
+    AS_HELP_STRING([--with-proj-share=SHARE_PATH],[the location of proj metadata files]),
                [proj_share_path=$withval])
 if test [ -n "$proj_share_path" ] ; then
     AC_MSG_NOTICE([PROJ_LIB: ${proj_share_path}])
 fi
 
-
 if test ${PROJ6} = "no"; then
 
-AC_MSG_CHECKING(PROJ.6: )
-AC_MSG_RESULT(no)
-
-[cat > proj_conf_test2.c <<_EOCONF
+[cat > proj_conf_test.c <<_EOCONF
 #include <stdio.h>
 #include <proj_api.h>
-#if PJ_VERSION == 480
+#if PJ_VERSION <= 480
 FILE *pj_open_lib(projCtx, const char *, const char *);
 #endif
-
-int main() {
-#if PJ_VERSION == 480
+int main(void) {
+#if PJ_VERSION <= 480
     FILE *fp;
 #else
     PAFile fp;
@@ -498,7 +442,7 @@ int main() {
     ctx = pj_get_default_ctx();
     fp = pj_open_lib(ctx, "epsg", "rb");
     if (fp == NULL) exit(1);
-#if PJ_VERSION == 480
+#if PJ_VERSION <= 480
     fclose(fp);
 #else
     pj_ctx_fclose(ctx, fp);
@@ -507,16 +451,16 @@ int main() {
 }
 _EOCONF]
 
-${CC} ${CFLAGS} ${PKG_CPPFLAGS} -o proj_conf_test2 proj_conf_test2.c ${PKG_LIBS}
+${CC} ${CFLAGS} ${CPPFLAGS} -o proj_conf_test proj_conf_test.c ${PROJ_LIBS}
 if test [ -n "$proj_share_path" ] ; then
-  PROJ_LIB="${proj_share_path}" ./proj_conf_test2
+  PROJ_LIB="${proj_share_path}" ./proj_conf_test
   proj_share=`echo $?`
 else
-  ./proj_conf_test2
+  ./proj_conf_test
   proj_share=`echo $?`
 fi
 
-AC_MSG_CHECKING(PROJ.4: epsg found and readable)
+AC_MSG_CHECKING(PROJ: epsg found and readable)
 if test ${proj_share} -eq 1 ; then
     AC_MSG_RESULT(no)
     STOP="stop"
@@ -524,7 +468,7 @@ else
     AC_MSG_RESULT(yes)
 fi
 
-rm -f proj_conf_test2.c proj_conf_test2
+rm -f proj_conf_test.c proj_conf_test
 
 if test "$STOP" = "stop" ; then
     echo "Error: proj/epsg not found"
@@ -536,13 +480,14 @@ if test "$STOP" = "stop" ; then
     exit 1
 fi
 
-else # test for new files if PROJ6
+else # proj >= 6
 
-[cat > proj_conf_test2.cpp <<_EOCONF
+if test "${PROJH}" = no; then
+
+[cat > proj_conf_test.c <<_EOCONF
 #include <stdio.h>
 #include <proj_api.h>
-
-int main() {
+int main(void) {
     PAFile fp;
     projCtx ctx;
     ctx = pj_get_default_ctx();
@@ -553,12 +498,12 @@ int main() {
 }
 _EOCONF]
 
-${CXX} ${CPPFLAGS} ${PKG_CPPFLAGS} -o proj_conf_test2 proj_conf_test2.cpp ${PKG_LIBS} -lproj -lsqlite3
+${CC} ${CFLAGS} ${CPPFLAGS} -o proj_conf_test proj_conf_test.c ${PROJ_LIBS}
 if test [ -n "$proj_share_path" ] ; then
-  PROJ_LIB="${proj_share_path}" ./proj_conf_test2
+  PROJ_LIB="${proj_share_path}" ./proj_conf_test
   proj_share=`echo $?`
 else
-  ./proj_conf_test2
+  ./proj_conf_test
   proj_share=`echo $?`
 fi
 
@@ -570,7 +515,7 @@ else
     AC_MSG_RESULT(yes)
 fi
 
-rm -f proj_conf_test2.cpp proj_conf_test2
+rm -f proj_conf_test.c proj_conf_test
 
 if test "$STOP" = "stop" ; then
     echo "Error: proj/proj.db not found"
@@ -580,18 +525,14 @@ if test "$STOP" = "stop" ; then
     exit 1
 fi
 
-fi # don't test for old files if PROJ6
-
-
-[cat > proj_conf_test3.c <<_EOCONF
+[cat > proj_conf_test.c <<_EOCONF
 #include <stdio.h>
 #include <proj_api.h>
-#if PJ_VERSION == 480
+#if PJ_VERSION <= 480
 FILE *pj_open_lib(projCtx, const char *, const char *);
 #endif
-
-int main() {
-#if PJ_VERSION == 480
+int main(void) {
+#if PJ_VERSION <= 480
     FILE *fp;
 #else
     PAFile fp;
@@ -600,7 +541,7 @@ int main() {
     ctx = pj_get_default_ctx();
     fp = pj_open_lib(ctx, "conus", "rb");
     if (fp == NULL) exit(1);
-#if PJ_VERSION == 480
+#if PJ_VERSION <= 480
     fclose(fp);
 #else
     pj_ctx_fclose(ctx, fp);
@@ -609,47 +550,48 @@ int main() {
 }
 _EOCONF]
 
-if test ${PROJ6} = "no"; then
- ${CC} ${CFLAGS} ${PKG_CPPFLAGS} -o proj_conf_test3 proj_conf_test3.c ${PKG_LIBS}
- if test [ -n "$proj_share_path" ] ; then
-   PROJ_LIB="${proj_share_path}" ./proj_conf_test3
-   proj_share=`echo $?`
- else
-   ./proj_conf_test3
-   proj_share=`echo $?`
- fi
-
- AC_MSG_CHECKING(PROJ.4: conus found and readable)
- if test ${proj_share} -eq 1 ; then
-     WARN="warn"
-     AC_MSG_RESULT(no)
- else
-     AC_MSG_RESULT(yes)
- fi
-
- if test "$WARN" = "warn" ; then
-     echo "Note: proj/conus not found"
-     echo "No support available in PROJ4 for NAD grid datum transformations"
-     echo "If required, consider re-installing from source with the contents"
-     echo "of proj-datumgrid-1.<latest>.zip from http://download.osgeo.org/proj/ in nad/."
- fi
+${CC} ${CFLAGS} ${CPPFLAGS} -o proj_conf_test proj_conf_test.c ${PROJ_LIBS}
+if test [ -n "$proj_share_path" ] ; then
+  PROJ_LIB="${proj_share_path}" ./proj_conf_test
+  proj_share=`echo $?`
+else
+  ./proj_conf_test
+  proj_share=`echo $?`
 fi
 
-rm -f proj_conf_test3.c proj_conf_test3
+AC_MSG_CHECKING(PROJ: conus found and readable)
+if test ${proj_share} -eq 1 ; then
+    WARN="warn"
+    AC_MSG_RESULT(no)
+else
+    AC_MSG_RESULT(yes)
+fi
+
+rm -f proj_conf_test.c proj_conf_test
+
+if test "$WARN" = "warn" ; then
+    echo "Note: proj/conus not found"
+    echo "No support available in PROJ4 for NAD grid datum transformations"
+    echo "If required, consider re-installing from source with the contents"
+    echo "of proj-datumgrid-1.<latest>.zip from http://download.osgeo.org/proj/ in nad/."
+fi
+
+fi # PROJH = no
+
+fi # proj >= 6
+
 
 # Optional local copy of GDAL datadir and PROJ_LIB
 
 data_copy=no
 AC_ARG_WITH([data-copy],
-    AC_HELP_STRING([--with-data-copy=yes/no],
-               [local copy of data directories in package, default no]),
+    AS_HELP_STRING([--with-data-copy=yes/no],[local copy of data directories in package, default no]),
                [data_copy=$withval])
 if test "${data_copy}" = "yes" ; then
 AC_MSG_NOTICE([Copy data for:])
   proj_lib0="${PROJ_LIB}"
   AC_ARG_WITH([proj-data],
-    AC_HELP_STRING([--with-proj-data=DIR],
-                   [location of PROJ.4 data directory]),
+    AS_HELP_STRING([--with-proj-data=DIR],[location of PROJ.4 data directory]),
     [proj_lib1=$withval])
   if test -n "${proj_lib0}" ; then
     proj_lib="${proj_lib0}"
