@@ -59,6 +59,6 @@ Suggests:
     testthat,
     covr,
     knitr, markdown, rmarkdown
-LinkingTo: Rcpp, RcppThread, BH (== 1.75.0-0)
+LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
 Language: en-US
