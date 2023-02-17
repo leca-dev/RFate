@@ -713,7 +713,6 @@ void SimulMap::DoAliensIntroduction(int yr)
   /* Do succession only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  
   for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
   {
     unsigned cell_ID = m_MaskCells[ID];
@@ -1202,73 +1201,88 @@ void SimulMap::DoFireDisturbance(int yr)
 
 void SimulMap::DoDroughtDisturbance_part1()
 {
-  /* Calculation of abundance per strata for each pixel */
-  unsigned noStrata = m_glob_params.getNoStrata();
-  SpatialMap<double, double> moistValues = getDroughtMap();
+//   /* Calculation of abundance per strata for each pixel */
+//   unsigned noStrata = m_glob_params.getNoStrata();
+//   SpatialMap<double, double> moistValues = getDroughtMap();
+//   
+//   omp_set_num_threads(m_glob_params.getNoCPU());
+// #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+//   
+//   for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+//   { // loop on pixels
+//     unsigned cell_ID = m_MaskCells[ID];
+//     vector<int> tmpAbund(noStrata+1, 0);
+//     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+//     { // loop on PFG
+//       /* create a copy of FG parameters to simplify and speed up the code */
+//       FuncGroupPtr FuncG = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg);
+//       FGPtr FGparams = FuncG->getFGparams_();
+//       if (m_SuccModelMap(cell_ID)->getCommunity_()->getNoCohort(fg) > 0)
+//       {
+//         /* Create a vector with stratum break ages */
+//         vector<int> bkStratAges = FGparams->getStrata();
+//         
+//         /* add PFG strata abundances */
+//         for (unsigned st=1; st<noStrata; st++)
+//         {
+//           tmpAbund[st] = static_cast<int>(FuncG->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
+//         } // end loop on Stratum
+//       }
+//     } // end loop on PFG
+//       
+//     /* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
+//     double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end()); // SHOULD be only the upper stratum ?
+//     // accumulate(tmpAbund.begin(), tmpAbund.end(),0); ?
+//     double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); // SHOULD by MaxAbundHigh * noPFG * (1 + ImmSizes) ?
+//     if (pixAbund>maxVal) pixAbund = maxVal;
+//     pixAbund = pixAbund/maxVal;
+//     if (pixAbund>0.5){ moistValues(cell_ID) = m_DroughtMap(cell_ID) + abs(m_DroughtMap(cell_ID))/2.0; } // SHOULD be adjustable both parameters (0.5 and 2) ?
+//   } // end loop on pixels
   
-  // omp_set_num_threads( m_glob_params.getNoCPU() );
-  // #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
-    vector<int> tmpAbund(noStrata,0);
-    for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-    { // loop on PFG
-      vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get stratum changing ages
-      
-      // #pragma omp parallel for ordered
-      for (unsigned strat=1; strat<noStrata; strat++)
-      { // loop on Stratum
-        tmpAbund[strat-1] += static_cast<int>(m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
-      } // end loop on Stratum
-    } // end loop on PFG
-    
-    /* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
-    double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end());
-    double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); //7000.0;
-    if (pixAbund>maxVal) pixAbund = maxVal;
-    pixAbund = pixAbund/maxVal;
-    if (pixAbund>0.5){ moistValues(*cell_ID) = m_DroughtMap(*cell_ID) + abs(m_DroughtMap(*cell_ID))/2.0; }
-  }
   
   /* Do disturbances only on points within mask */
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
+  omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+  
+  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  {
+    unsigned cell_ID = m_MaskCells[ID];
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
     { // loop on PFG
-      m_IsDroughtMap(*cell_ID, fg) = 0;
-      m_ApplyPostDroughtMap(*cell_ID, fg) = 0;
-      m_ApplyCurrDroughtMap(*cell_ID, fg) = 1;
+      m_IsDroughtMap(cell_ID, fg) = 0;
+      m_ApplyPostDroughtMap(cell_ID, fg) = 0;
+      m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
       
-      if (m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
+      if (m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
       {
         /* 0.Check Habitat Suitability */
         // set recruit and fecund to 0 ?
         // automatic at the beginning of DoSuccession
         
         /* 2.Check Post Drought Mortality */
-        if (m_PostDroughtMap(*cell_ID, fg)==1)
+        if (m_PostDroughtMap(cell_ID, fg)==1)
         {
           /* Set recruitment and fecundity to 0 */
-          m_IsDroughtMap(*cell_ID, fg) = 1;
-          m_ApplyPostDroughtMap(*cell_ID, fg) = 1;
+          m_IsDroughtMap(cell_ID, fg) = 1;
+          m_ApplyPostDroughtMap(cell_ID, fg) = 1;
         }
         
         /* 1.Check Moisture Index */
-        double moistIndex = moistValues(*cell_ID);
+        double moistIndex = moistValues(cell_ID);
         if (moistIndex>m_FGparams[fg].getDroughtSD()[0])
         {
           /* 3.If NO drought : apply Drought Recovery */
-          m_CountDroughtMap(*cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
-          if (m_CountDroughtMap(*cell_ID, fg)<0)
+          m_CountDroughtMap(cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
+          if (m_CountDroughtMap(cell_ID, fg)<0)
           {
-            m_CountDroughtMap(*cell_ID, fg) = 0;
+            m_CountDroughtMap(cell_ID, fg) = 0;
           }
         } else
         {
           /* Set recruitment and fecundity to 0 */
-          m_IsDroughtMap(*cell_ID, fg) = 1;
+          m_IsDroughtMap(cell_ID, fg) = 1;
           
-          if (m_CountDroughtMap(*cell_ID, fg)<m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(*cell_ID, fg) ++; }
+          if (m_CountDroughtMap(cell_ID, fg)<m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
           bool currSevDrought = false, currModDrought = false;
           if (moistIndex<m_FGparams[fg].getDroughtSD()[1])
           {
@@ -1277,24 +1291,24 @@ void SimulMap::DoDroughtDisturbance_part1()
           {
             currModDrought = true;
           }
-          if (currSevDrought && m_CountDroughtMap(*cell_ID, fg)==1)
+          if (currSevDrought && m_CountDroughtMap(cell_ID, fg)==1)
           {
-            m_PostDroughtMap(*cell_ID, fg) = 1;
+            m_PostDroughtMap(cell_ID, fg) = 1;
           }
-          bool modToSev = (currModDrought && (m_CountDroughtMap(*cell_ID, fg)==m_FGparams[fg].getCountModToSev()));
-          bool SevMort = (currSevDrought && (m_CountDroughtMap(*cell_ID, fg)==m_FGparams[fg].getCountSevMort()));
+          bool modToSev = (currModDrought && (m_CountDroughtMap(cell_ID, fg)==m_FGparams[fg].getCountModToSev()));
+          bool SevMort = (currSevDrought && (m_CountDroughtMap(cell_ID, fg)==m_FGparams[fg].getCountSevMort()));
           
           /* 4.If drought : check Current Drought Mortality */
           if (modToSev || SevMort )
           {
-            m_PostDroughtMap(*cell_ID, fg) = 1;
-            m_ApplyCurrDroughtMap(*cell_ID, fg) = 1;
+            m_PostDroughtMap(cell_ID, fg) = 1;
+            m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
           }
         }
       } else
       {
         /* If NO PFG anymore : reset count */
-        m_CountDroughtMap(*cell_ID, fg) = 0;
+        m_CountDroughtMap(cell_ID, fg) = 0;
       }
     }
   }
@@ -1303,32 +1317,50 @@ void SimulMap::DoDroughtDisturbance_part1()
 
 void SimulMap::DoDroughtDisturbance_part2(string chrono)
 {
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
-    for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-    { // loop on PFG
-      if ((m_ApplyPostDroughtMap(*cell_ID, fg)==1) && (m_ApplyCurrDroughtMap(*cell_ID, fg)==0))
-      { /* Apply post drought effects */
-        if (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0)
-        {
-          //logg.info(">> Post drought effect this year !");
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 1, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
-          //m_SuccModelMap(*cell_ID)->DoDisturbance(1,"drought");
+  cond1 = (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0)
+  cond2 = (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
+  
+  if (cond1)
+  {
+    omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+    
+    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+    { // loop on pixels
+      unsigned cell_ID = m_MaskCells[ID];
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        /* create a copy of FG parameters to simplify and speed up the code */
+        FGPtr FGparams = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_();
+        
+        if ((m_ApplyPostDroughtMap(cell_ID, fg)==1) && (m_ApplyCurrDroughtMap(cell_ID, fg)==0))
+        { /* Apply post drought effects */
+        //logg.info(">> Post drought effect this year !");
+        m_SuccModelMap(cell_ID)->DoDisturbance(fg, 1, 1.0, FGparams->getDroughtResponse());
         }
-      } else if ((m_ApplyCurrDroughtMap(*cell_ID, fg)==1) && (m_ApplyPostDroughtMap(*cell_ID, fg)==0))
-      { /* Apply current drought effects */
-        if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
-        {
+      }
+    }
+  } else if (cond2)
+  {
+    omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+    
+    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+    { // loop on pixels
+      unsigned cell_ID = m_MaskCells[ID];
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        /* create a copy of FG parameters to simplify and speed up the code */
+        FGPtr FGparams = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_();
+        
+        if ((m_ApplyCurrDroughtMap(cell_ID, fg)==1) && (m_ApplyPostDroughtMap(cell_ID, fg)==0))
+        { /* Apply current drought effects */
           //logg.info(">> Current drought effect this year !");
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 0, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
-          //m_SuccModelMap(*cell_ID)->DoDisturbance(0,"drought");
-        }
-      } else if ((m_ApplyCurrDroughtMap(*cell_ID, fg)==1) && (m_ApplyPostDroughtMap(*cell_ID, fg)==1))
-      { /* Apply cumulated post-current drought effects */
-        if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
-        {
+          m_SuccModelMap(cell_ID)->DoDisturbance(fg, 0, 1.0, FGparams->getDroughtResponse());
+        } else if ((m_ApplyCurrDroughtMap(cell_ID, fg)==1) && (m_ApplyPostDroughtMap(cell_ID, fg)==1))
+        { /* Apply cumulated post-current drought effects */
           //logg.info(">> Current+Post drought effect this year !");
-          FGresponse CurrPostResp = m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse();
+          FGresponse CurrPostResp = FGparams->getDroughtResponse();
           vector<vector<int> > tmpBreakAge = CurrPostResp.getBreakAge(), tmpResprAge = CurrPostResp.getResprAge();
           vector<Fract> tmpDormBreaks = CurrPostResp.getDormBreaks();
           vector<Fract> tmpPropKilled = CurrPostResp.getPropKilled();
@@ -1353,10 +1385,10 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
               double mortSup = 0.0;
               if (FractToDouble(tmpFates[0][sub][0])==0)
               { // no killed
-                mortSup = 0.1*m_CountDroughtMap(*cell_ID, fg);
+                mortSup = 0.1*m_CountDroughtMap(cell_ID, fg);
               } else
               {
-                mortSup = FractToDouble(tmpFates[0][sub][0])*0.1*m_CountDroughtMap(*cell_ID, fg);
+                mortSup = FractToDouble(tmpFates[0][sub][0])*0.1*m_CountDroughtMap(cell_ID, fg);
               }
               tmpKiUnRe[0] = DoubleToFract(FractToDouble(tmpFates[0][sub][0])+mortSup);
               if (FractToDouble(tmpFates[0][sub][1])==0)
@@ -1379,7 +1411,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           CurrPostResp.setDormBreaks(tmpDormBreaks);
           CurrPostResp.setPropKilled(tmpPropKilled);
           CurrPostResp.setFates(tmpFates);
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 0, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
+          m_SuccModelMap(cell_ID)->DoDisturbance(fg, 0, 1.0, FGparams->getDroughtResponse());
         }
       }
     }
