@@ -562,11 +562,14 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
     {
       vector< vector<double> > newMaps; // DOUBLE VALUES
       newMaps.reserve(noFiles);
-      for (unsigned file_id=0; file_id<noFiles; file_id++)
-      {
-        if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"dist")==0 | strcmp(typeFile.c_str(),"aliens")==0){
+      if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"dist")==0 | strcmp(typeFile.c_str(),"aliens")==0){
+        for (unsigned file_id=0; file_id<noFiles; file_id++)
+        {
           newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], 0.0, 1.0 ) );
-        } else if (strcmp(typeFile.c_str(),"drought")==0){
+        }
+      } else if (strcmp(typeFile.c_str(),"drought")==0){
+        for (unsigned file_id=0; file_id<noFiles; file_id++)
+        {
           newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], -5000.0, 1000.0 ) );
         }
       }
@@ -788,9 +791,9 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
         abundTmpFG.push_back(abundTmp);
       }
       double probFuel = 0;
-      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      if (abundTmpTot>0)
       {
-        if (abundTmpTot>0)
+        for (unsigned fg=0; fg<m_FGparams.size(); fg++)
         {
           probFuel += (m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFlamm() / m_glob_params.getFireIgnitFlammMax())* (abundTmpFG[fg]/abundTmpTot);
         }
@@ -975,9 +978,9 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
               abundTmpFG.push_back(abundTmp);
             }
             double probFuel = 0.0;
-            for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+            if (abundTmpTot>0)
             {
-              if (abundTmpTot>0)
+              for (unsigned fg=0; fg<m_FGparams.size(); fg++)
               {
                 probFuel += (m_SuccModelMap(*it2)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFlamm() /*/ m_glob_params.getFireIgnitFlammMax()*/)* (abundTmpFG[fg]/abundTmpTot);
               }
@@ -1097,66 +1100,112 @@ void SimulMap::DoFireDisturbance(int yr)
   apply propagation function
   update the fire disturbances masks */
   vector< vector<unsigned int> > ALLburntCell(m_glob_params.getNoFireDist());
-  for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
-  {
-    if (applyDist[dist] && m_glob_params.getFireIgnitMode()!=5 /* map */)
+  if (m_glob_params.getFireIgnitMode()!=5 /* map */ && m_glob_params.getFireNeighMode()==1)
+  { // CASE 1 ---------------------------------------------------------------------------------------
+    for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
     {
-      vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
-      vector<unsigned int> burntCell;
-      if (m_glob_params.getFireNeighMode()==1)
+      if (applyDist[dist])
       {
-        burntCell = DoPropagation(dist,startCell,m_MaskCells);
-      } else
+        vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+        ALLburntCell[dist] = DoPropagation(dist,startCell,m_MaskCells);;
+      }
+    }
+  } else if (m_glob_params.getFireIgnitMode()!=5 /* map */)
+  { // CASE 2 ---------------------------------------------------------------------------------------
+    int no = m_glob_params.getFireNeighCC()[0];
+    int ea = m_glob_params.getFireNeighCC()[1];
+    int so = m_glob_params.getFireNeighCC()[2];
+    int we = m_glob_params.getFireNeighCC()[3];
+    if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
+    {
+      UniInt distrib_no(0,no);
+      UniInt distrib_ea(0,ea);
+      UniInt distrib_we(0,we);
+      UniInt distrib_so(0,so);
+      GeneratorUniInt draw_from_distrib_no(rng,distrib_no);
+      GeneratorUniInt draw_from_distrib_ea(rng,distrib_ea);
+      GeneratorUniInt draw_from_distrib_we(rng,distrib_we);
+      GeneratorUniInt draw_from_distrib_so(rng,distrib_so);
+    }
+    
+    if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
+    { // CASE 2a --------------------------------------------------------------
+      for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
-        for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
+        if (applyDist[dist])
         {
-          int no = m_glob_params.getFireNeighCC()[0];
-          int ea = m_glob_params.getFireNeighCC()[1];
-          int so = m_glob_params.getFireNeighCC()[2];
-          int we = m_glob_params.getFireNeighCC()[3];
-          if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
+          vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+          vector<unsigned int> burntCell;
+          for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
           {
-            UniInt distrib_no(0,no);
-            UniInt distrib_ea(0,ea);
-            UniInt distrib_we(0,we);
-            UniInt distrib_so(0,so);
-            GeneratorUniInt draw_from_distrib_no(rng,distrib_no);
-            GeneratorUniInt draw_from_distrib_ea(rng,distrib_ea);
-            GeneratorUniInt draw_from_distrib_we(rng,distrib_we);
-            GeneratorUniInt draw_from_distrib_so(rng,distrib_so);
             no = draw_from_distrib_no(); //rand() % no + 1;
             ea = draw_from_distrib_ea(); //rand() % ea + 1;
             we = draw_from_distrib_we(); //rand() % we + 1;
             so = draw_from_distrib_so(); //rand() % so + 1;
-          }
-          for (int yy=(-no); yy<=so; yy++)
-          {
-            for (int xx=(-we); xx<=ea; xx++)
+            for (int yy=(-no); yy<=so; yy++)
             {
-              unsigned id = *it1+yy+xx*m_Mask.getYncell();
-              if ( id>=0 && /* border precaution */
+              for (int xx=(-we); xx<=ea; xx++)
+              {
+                unsigned id = *it1+yy+xx*m_Mask.getYncell();
+                if ( id>=0 && /* border precaution */
   id<m_Mask.getTotncell() && /* border precaution */
   find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
   m_Mask(id)==1)
-              { // studied area
-                burntCell.push_back(id);
+                { // studied area
+                  burntCell.push_back(id);
+                }
               }
             }
           }
+          ALLburntCell[dist] = burntCell;
         }
       }
-      ALLburntCell[dist] = burntCell;
-    } else if (applyDist[dist] && m_glob_params.getFireIgnitMode()==5 /* map */)
+    } else
     {
-      for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+      for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
-        if (m_FireMap(*cell_ID, dist) == 1 )
+        if (applyDist[dist])
         {
-          ALLburntCell[dist].push_back(*cell_ID);
+          vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+          vector<unsigned int> burntCell;
+          for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
+          {
+            for (int yy=(-no); yy<=so; yy++)
+            {
+              for (int xx=(-we); xx<=ea; xx++)
+              {
+                unsigned id = *it1+yy+xx*m_Mask.getYncell();
+                if ( id>=0 && /* border precaution */
+  id<m_Mask.getTotncell() && /* border precaution */
+  find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
+  m_Mask(id)==1)
+                { // studied area
+                  burntCell.push_back(id);
+                }
+              }
+            }
+          }
+          ALLburntCell[dist] = burntCell;
+        }
+      }
+    }
+  } else if (m_glob_params.getFireIgnitMode()==5 /* map */)
+  { // CASE 4 ---------------------------------------------------------------------------------------
+    for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
+    {
+      if (applyDist[dist])
+      {
+        for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+        {
+          if (m_FireMap(*cell_ID, dist) == 1 )
+          {
+            ALLburntCell[dist].push_back(*cell_ID);
+          }
         }
       }
     }
   }
+  
   /* If a cell has been burnt by several disturbances, only the most severe is applied */
   for (int dist2=m_glob_params.getNoFireDist()-1; dist2>0; dist2--)
   {
