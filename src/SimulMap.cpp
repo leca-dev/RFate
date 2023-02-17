@@ -748,17 +748,13 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
   Uni01 random_01(rng);
   
   int noFires = m_glob_params.getFireIgnitNo()[dist];
-  
-  /* No of starting fires : normal distribution */
   if (m_glob_params.getFireIgnitMode()==2)
-  {
+  { /* No of starting fires : normal distribution */
     Normal distrib(noFires,noFires/10+1);
     GeneratorNorm draw_from_distrib(rng,distrib);
     noFires = draw_from_distrib();
-  }
-  /* No of starting fires : previous data distribution */
-  if (m_glob_params.getFireIgnitMode()==3)
-  {
+  } else if (m_glob_params.getFireIgnitMode()==3)
+  {  /* No of starting fires : previous data distribution */
     UniInt distrib(0,m_glob_params.getFireIgnitNoHist().size()-1);
     GeneratorUniInt draw_from_distrib(rng,distrib);
     noFires = m_glob_params.getFireIgnitNoHist()[draw_from_distrib()];
@@ -800,7 +796,6 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
       }
       /* Drought proba */
       double probDrought = (-1.0) * m_DroughtMap(*cell_ID);
-      
       if (random_01() < probBL*probFuel*probDrought)
       { //(rand()/(double)RAND_MAX)
         startCell.push_back(*cell_ID);
@@ -839,35 +834,66 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   
   while (currCell.size())
   {
-    for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
-    {
-      /* Get the IDs of the 8 neighbour cells */
-      for (int xx=-1; xx<=1; xx++)
+    /* FIRST CASES : fire spread depends on a probability of the current burning cell */
+    if (m_glob_params.getFirePropMode()==1)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
-        for (int yy=-1; yy<=1; yy++)
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
         {
-          unsigned id = *it1+xx*m_Mask.getYncell()+yy;
-          if (id>=0 && // border precaution
-              id<m_Mask.getTotncell() && // border precaution
-              m_Mask(id)==1 && // studied area
-              find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-              id!=*it1 && // current cell
-              find(postCell.begin(),postCell.end(),id)==postCell.end())
-          { // not already burnt
-            neighCell.push_back(id);
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
           }
         }
-      }
-      
-      /* FIRST CASE : fire spread depends on a probability of the current burning cell */
-      /* fireIntensity */
-      if (m_glob_params.getFirePropMode()==1)
-      {
+        
+        /* fireIntensity */
         prob = m_glob_params.getFirePropIntensity()[dist];
-      }
-      /* percentConsumed : How much stuff was consumed in the current cell ? */
-      else if (m_glob_params.getFirePropMode()==2)
+        
+        /* For each neighbour cell : does the fire propagate ? */
+        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        {
+          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01() < prob)
+          { //(rand()/(double)RAND_MAX)
+            preCell.push_back(*it2);
+            if (m_glob_params.getFireQuotaMode()==2 /* "maxConsume" */){ stepCount += prob; }
+          }
+        } // end loop on neighCell
+        neighCell.clear();
+      } // end loop on currCell
+    } else if (m_glob_params.getFirePropMode()==2)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
+        /* percentConsumed : How much stuff was consumed in the current cell ? */
         unsigned abundTmpTot = 0;
         vector<unsigned> abundTmpFG;
         vector<double> propKillFG;
@@ -895,11 +921,8 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             prob += 1.0*propKillFG[fg]*abundTmpFG[fg]/abundTmpTot;
           }
         }
-      }
-      
-      /* For each neighbour cell : does the fire propagate ? */
-      if (m_glob_params.getFirePropMode()==1 || m_glob_params.getFirePropMode()==2)
-      {
+        
+        /* For each neighbour cell : does the fire propagate ? */
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01() < prob)
@@ -907,12 +930,34 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             preCell.push_back(*it2);
             if (m_glob_params.getFireQuotaMode()==2 /* "maxConsume" */){ stepCount += prob; }
           }
-        }
-      }
-      
-      /* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
-      if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
+        } // end loop on neighCell
+        neighCell.clear();
+      } // end loop on currCell
+    } 
+    
+    /* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
+    else if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
         vector<unsigned> abundTmp;
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
@@ -922,7 +967,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             abund += m_SuccModelMap(*it2)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() * m_SuccModelMap(*it2)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFlamm();
           }
           abundTmp.push_back(abund);
-        }
+        } // end loop on neighCell
         if (accumulate(abundTmp.begin(),abundTmp.end(),0)>0)
         {
           unsigned posMaxCell = distance(abundTmp.begin(),max_element(abundTmp.begin(),abundTmp.end()));
@@ -944,14 +989,35 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
-      } else if(m_glob_params.getFirePropMode()==4 /* "maxAmountSoil" */)
+        neighCell.clear();
+      } // end loop on currCell
+    }  else if (m_glob_params.getFirePropMode()==4 /* "maxAmountSoil" */)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
         vector<double> soilTmp;
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           soilTmp.push_back(m_SuccModelMap(*it2)->getSoilResources());
-        }
+        } // end loop on neighCell
         if (accumulate(soilTmp.begin(),soilTmp.end(),0)>0)
         {
           unsigned maxCell = neighCell[distance(soilTmp.begin(),max_element(soilTmp.begin(),soilTmp.end()))];
@@ -960,8 +1026,30 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             preCell.push_back(maxCell);
           }
         }
-      } else if(m_glob_params.getFirePropMode()==5 /* "probLandClim" */)
+        neighCell.clear();
+      } // end loop on currCell
+    }  else if (m_glob_params.getFirePropMode()==5 /* "probLandClim" */)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end())
@@ -1003,9 +1091,9 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
               preCell.push_back(*it2);
             }
           }
-        }
-      }
-      neighCell.clear();
+        } // end loop on neighCell
+        neighCell.clear();
+      } // end loop on currCell
     }
     
     /* IN ANY CASE : Update cells vectors : CURR->POST and PRE->CURR*/
@@ -1037,7 +1125,8 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
     }
     
     if(stepCount>=lim) { break; }
-  }
+    
+  } // end while
   
   /* if you want to stop the fires only when you reach the quota (maxConsume & maxCell) */
   /*	if (stepCount<lim)
@@ -1116,20 +1205,18 @@ void SimulMap::DoFireDisturbance(int yr)
     int ea = m_glob_params.getFireNeighCC()[1];
     int so = m_glob_params.getFireNeighCC()[2];
     int we = m_glob_params.getFireNeighCC()[3];
-    if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
-    {
-      UniInt distrib_no(0,no);
-      UniInt distrib_ea(0,ea);
-      UniInt distrib_we(0,we);
-      UniInt distrib_so(0,so);
-      GeneratorUniInt draw_from_distrib_no(rng,distrib_no);
-      GeneratorUniInt draw_from_distrib_ea(rng,distrib_ea);
-      GeneratorUniInt draw_from_distrib_we(rng,distrib_we);
-      GeneratorUniInt draw_from_distrib_so(rng,distrib_so);
-    }
     
     if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
     { // CASE 2a --------------------------------------------------------------
+      UniInt distrib_no(0,m_glob_params.getFireNeighCC()[0]);
+      UniInt distrib_ea(0,m_glob_params.getFireNeighCC()[1]);
+      UniInt distrib_so(0,m_glob_params.getFireNeighCC()[2]);
+      UniInt distrib_we(0,m_glob_params.getFireNeighCC()[3]);
+      GeneratorUniInt draw_from_distrib_no(rng,distrib_no);
+      GeneratorUniInt draw_from_distrib_ea(rng,distrib_ea);
+      GeneratorUniInt draw_from_distrib_so(rng,distrib_so);
+      GeneratorUniInt draw_from_distrib_we(rng,distrib_we);
+      
       for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
         if (applyDist[dist])
@@ -1161,7 +1248,7 @@ void SimulMap::DoFireDisturbance(int yr)
         }
       }
     } else
-    {
+    { // CASE 2b --------------------------------------------------------------
       for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
         if (applyDist[dist])
@@ -1190,7 +1277,7 @@ void SimulMap::DoFireDisturbance(int yr)
       }
     }
   } else if (m_glob_params.getFireIgnitMode()==5 /* map */)
-  { // CASE 4 ---------------------------------------------------------------------------------------
+  { // CASE 3 ---------------------------------------------------------------------------------------
     for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
     {
       if (applyDist[dist])
@@ -1288,6 +1375,7 @@ void SimulMap::DoDroughtDisturbance_part1()
 //     if (pixAbund>0.5){ moistValues(cell_ID) = m_DroughtMap(cell_ID) + abs(m_DroughtMap(cell_ID))/2.0; } // SHOULD be adjustable both parameters (0.5 and 2) ?
 //   } // end loop on pixels
   
+  SpatialMap<double, double> moistValues = getDroughtMap();
   
   /* Do disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1366,8 +1454,8 @@ void SimulMap::DoDroughtDisturbance_part1()
 
 void SimulMap::DoDroughtDisturbance_part2(string chrono)
 {
-  cond1 = (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0)
-  cond2 = (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
+  bool cond1 = (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0);
+  bool cond2 = (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0);
   
   if (cond1)
   {
