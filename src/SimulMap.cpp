@@ -29,9 +29,7 @@
 #include <numeric>
 #include <chrono>
 #include <random>
-
-#include <boost/math/distributions/normal.hpp>
-#include <boost/random.hpp>
+#include <string>
 
 #include "gdal_priv.h" // to read raster files
 #include "gdal.h"
@@ -45,19 +43,12 @@
 namespace bo = boost::iostreams;
 using namespace std;
 
-// boost::normal_distribution<double> génère une distribution normale
 // boost::mt19937 est un Mersenne twister generator, ou générateur de nombres pseudo-aléatoires
-// boost::uniform_01<RandomGenerator> génère une distribution aléatoire uniforme
-// boost::variate_generator<RandomGenerator&, Normal> est un bivariate generator (générateur MT19937+distribution standard uniforme)
 
-typedef boost::normal_distribution<double> Normal;
-typedef boost::mt19937 RandomGenerator;
-typedef boost::uniform_01<RandomGenerator&> Uni01;
-typedef boost::uniform_real<double> UniReal;
-typedef boost::uniform_int<int> UniInt;
-typedef boost::variate_generator<RandomGenerator&, Normal> GeneratorNorm;
-typedef boost::variate_generator<RandomGenerator&, UniReal> GeneratorUniReal;
-typedef boost::variate_generator<RandomGenerator&, UniInt> GeneratorUniInt;
+typedef std::mt19937 RandomGenerator;
+typedef std::uniform_real_distribution<double> UniReal;
+typedef std::uniform_int_distribution<int> UniInt;
+typedef std::normal_distribution<double> Normal;
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Constructor                                                                                     */
@@ -745,19 +736,17 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  Uni01 random_01(rng);
+  UniReal random_01(0.0, 1.0);
   
   int noFires = m_glob_params.getFireIgnitNo()[dist];
   if (m_glob_params.getFireIgnitMode()==2)
   { /* No of starting fires : normal distribution */
     Normal distrib(noFires,noFires/10+1);
-    GeneratorNorm draw_from_distrib(rng,distrib);
-    noFires = draw_from_distrib();
+    noFires = distrib(rng);
   } else if (m_glob_params.getFireIgnitMode()==3)
   {  /* No of starting fires : previous data distribution */
     UniInt distrib(0,m_glob_params.getFireIgnitNoHist().size()-1);
-    GeneratorUniInt draw_from_distrib(rng,distrib);
-    noFires = m_glob_params.getFireIgnitNoHist()[draw_from_distrib()];
+    noFires = m_glob_params.getFireIgnitNoHist()[distrib(rng)];
   }
   
   vector<unsigned> startCell;
@@ -766,10 +755,9 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
   if (m_glob_params.getFireIgnitMode()==1 || m_glob_params.getFireIgnitMode()==2 || m_glob_params.getFireIgnitMode()==3)
   {
     UniInt distrib(0,availCells.size()-1);
-    GeneratorUniInt draw_from_distrib(rng,distrib);
     for (int n=0; n<noFires; n++)
     {
-      startCell.push_back(availCells[draw_from_distrib()]); //rand() % availCells.size();
+      startCell.push_back(availCells[distrib(rng)]); //rand() % availCells.size();
     }
   } else if (m_glob_params.getFireIgnitMode()==4) /* ChaoLi probability adaptation */
   {
@@ -796,7 +784,7 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
       }
       /* Drought proba */
       double probDrought = (-1.0) * m_DroughtMap(*cell_ID);
-      if (random_01() < probBL*probFuel*probDrought)
+      if (random_01(rng) < probBL*probFuel*probDrought)
       { //(rand()/(double)RAND_MAX)
         startCell.push_back(*cell_ID);
       }
@@ -811,7 +799,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  Uni01 random_01(rng);
+  UniReal random_01(0.0, 1.0);
   
   vector<unsigned int> preCell, currCell, postCell, neighCell;
   currCell = start;
@@ -863,7 +851,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         /* For each neighbour cell : does the fire propagate ? */
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
-          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01() < prob)
+          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01(rng) < prob)
           { //(rand()/(double)RAND_MAX)
             preCell.push_back(*it2);
             if (m_glob_params.getFireQuotaMode()==2 /* "maxConsume" */){ stepCount += prob; }
@@ -925,7 +913,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         /* For each neighbour cell : does the fire propagate ? */
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
-          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01() < prob)
+          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01(rng) < prob)
           { //(rand()/(double)RAND_MAX)
             preCell.push_back(*it2);
             if (m_glob_params.getFireQuotaMode()==2 /* "maxConsume" */){ stepCount += prob; }
@@ -1086,7 +1074,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
               probSlope = 1 + 0.001*max(-30.0,(-1.0)*m_SlopeMap(*it2));
             }
             
-            if ( random_01() < probBL*probFuel*probDrought*probSlope)
+            if ( random_01(rng) < probBL*probFuel*probDrought*probSlope)
             { //(rand()/(double)RAND_MAX)
               preCell.push_back(*it2);
             }
@@ -1212,10 +1200,6 @@ void SimulMap::DoFireDisturbance(int yr)
       UniInt distrib_ea(0,m_glob_params.getFireNeighCC()[1]);
       UniInt distrib_so(0,m_glob_params.getFireNeighCC()[2]);
       UniInt distrib_we(0,m_glob_params.getFireNeighCC()[3]);
-      GeneratorUniInt draw_from_distrib_no(rng,distrib_no);
-      GeneratorUniInt draw_from_distrib_ea(rng,distrib_ea);
-      GeneratorUniInt draw_from_distrib_so(rng,distrib_so);
-      GeneratorUniInt draw_from_distrib_we(rng,distrib_we);
       
       for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
@@ -1225,10 +1209,10 @@ void SimulMap::DoFireDisturbance(int yr)
           vector<unsigned int> burntCell;
           for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
           {
-            no = draw_from_distrib_no(); //rand() % no + 1;
-            ea = draw_from_distrib_ea(); //rand() % ea + 1;
-            we = draw_from_distrib_we(); //rand() % we + 1;
-            so = draw_from_distrib_so(); //rand() % so + 1;
+            no = distrib_no(rng); //rand() % no + 1;
+            ea = distrib_ea(rng); //rand() % ea + 1;
+            we = distrib_we(rng); //rand() % we + 1;
+            so = distrib_so(rng); //rand() % so + 1;
             for (int yy=(-no); yy<=so; yy++)
             {
               for (int xx=(-we); xx<=ea; xx++)
@@ -1599,14 +1583,14 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
   
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  Uni01 random_01(rng);
+  UniReal random_01(0.0, 1.0);
   
   if (option==1)
   {
     /* draw a random number for each pixel*/
     for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     {
-      envSuitRefVal[*cell_ID] = random_01(); //( rand()/(double)RAND_MAX );
+      envSuitRefVal[*cell_ID] = random_01(rng); //( rand()/(double)RAND_MAX );
     }
     /* assign these same numbers for each pfg */
     m_EnvSuitRefMap.emptyStack();
@@ -1620,20 +1604,19 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
     for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
     {
       /* to each pfg assign a mean and a standard deviation */
-      double meanFG = random_01(); //( rand()/(double)RAND_MAX );
-      double sdFG = random_01(); //( rand()/(double)RAND_MAX );
+      double meanFG = random_01(rng); //( rand()/(double)RAND_MAX );
+      double sdFG = random_01(rng); //( rand()/(double)RAND_MAX );
       logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=",
                 meanFG, " and sd=", sdFG);
       
       /* build the distribution corresponding to these mean and sd */
       Normal distrib(meanFG,sdFG);
-      GeneratorNorm draw_from_distrib(rng,distrib);
       
       /* draw a random number from this distribution for each pixel*/
       envSuitRefVal.resize(m_Mask.getTotncell(),0.5);
       for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
       {
-        envSuitRefVal[*cell_ID] = draw_from_distrib();
+        envSuitRefVal[*cell_ID] = distrib(rng);
       }
       m_EnvSuitRefMap.setValues(fg_id, envSuitRefVal);
     }
@@ -1985,8 +1968,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           if (m_glob_params.getDoSavingPFGStratum() && positiveVal1)
           {
             // Create the output file only if the PFG is present somewhere.
-            string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+
-              "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+            string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+
+              "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
             //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
             //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt16, NULL );
             GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
@@ -2017,7 +2000,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         if (m_glob_params.getDoSavingPFG() && positiveVal2)
         {
           // Create the output file only if the PFG is present somewhere.
-          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
+          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
           GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
           CPLAssert( rasOutput != NULL );
           GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
@@ -2083,7 +2066,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           positiveVal33 = true;
           
           // Create the output file only if the PFG is present somewhere.
-          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_allPFG_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+to_string(year)+"_allPFG_STRATA_"+to_string(strat)+prevFile_path.extension().string();
           GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
           CPLAssert( rasOutput != NULL );
           GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
@@ -2138,7 +2121,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         soilValues[cell_ID] = m_SuccModelMap(cell_ID)->getSoilResources();
       }
       // Create the output file.
-      string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+boost::lexical_cast<string>(year)+prevFile_path.extension().string();
+      string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+to_string(year)+prevFile_path.extension().string();
       GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
       CPLAssert( rasOutput != NULL );
       
@@ -2188,8 +2171,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         
         // Create the output file.
-        string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+boost::lexical_cast<string>(year)+
-          "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+        string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+to_string(year)+
+          "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
         GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
         CPLAssert( rasOutput != NULL );
         
@@ -2239,7 +2222,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         
         // Create the output file only if the PFG is present somewhere.
-        string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
+        string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
         GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
         CPLAssert( rasOutput != NULL );
         

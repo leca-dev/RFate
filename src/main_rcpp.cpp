@@ -38,6 +38,7 @@
 #include <vector>
 #include <cmath>
 #include <ctime>
+#include <string>
 
 #include "stdlib.h"
 #include "stdio.h"
@@ -91,8 +92,6 @@
 /* to save and load simulation objects */
 #include <boost/archive/text_oarchive.hpp> // to create archive
 #include <boost/archive/text_iarchive.hpp> // to read archive
-#include <boost/lexical_cast.hpp> // to transform int into string
-#include <boost/filesystem.hpp>   // for file manipulation
 #include <boost/serialization/export.hpp> // for children class serialisation
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -605,7 +604,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 			logg.info("Saving simulation object...");
 			{
 				// Create an output archive
-				string objFileName = file_of_params.getSavingDir() + "_SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
+				string objFileName = file_of_params.getSavingDir() + "_SimulMap_" + to_string(year) + ".sav";
 				logg.debug(objFileName.c_str());
 				saveFATE(objFileName);
 			}
@@ -615,7 +614,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 			simul_objects_saving_times.erase(simul_objects_saving_times.begin());
 
 			/* TEST EQUALITY */
-			/*string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
+			/*string objFileName = file_of_params.getSavingDir() + "SimulMap_" + to_string(year) + ".sav";
 			loadFATE(objFileName);
 			assert(*test == *simulMap);*/
 		}

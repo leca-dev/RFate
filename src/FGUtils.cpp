@@ -23,6 +23,9 @@
 #include "FGUtils.h"
 #include "Params.h"
 
+#include <filesystem>
+
+namespace fs = std::filesystem;
 using namespace std;
 
 
@@ -174,7 +177,7 @@ vector< int > ReadTimingsFile(string paramFile)
 
 Coordinates<double> ReadCoordinates( string file_name )
 {
-	boost::filesystem::path file_name_path(file_name.c_str());
+	fs::path file_name_path(file_name.c_str());
 	if (file_name_path.extension() != ".asc" &&
 			file_name_path.extension() != ".img" &&
 			file_name_path.extension() != ".tif")
@@ -276,10 +279,10 @@ void testDirExist(const string& param, const string& dir_name, const bool& optio
 {
 	if (dir_name != "0")
 	{
-		boost::filesystem::path dir_to_test(dir_name);
-		if (!boost::filesystem::is_directory(dir_to_test))
+		fs::path dir_to_test(dir_name);
+		if (!fs::is_directory(dir_to_test))
 		{
-			boost::filesystem::create_directories(dir_to_test);
+			fs::create_directory(dir_to_test);
 			logg.warning("!!! Parameter ", param, " : the directory ", dir_name,
 									 " has been created.");
 		}
@@ -291,14 +294,14 @@ void testDirExist(const string& param, const string& dir_name, const bool& optio
 
 void testFileExist(const string& param, const string& file_name, const bool& optional)
 {
-	boost::filesystem::path file_to_test(file_name);
+	fs::path file_to_test(file_name);
 	if ((file_name == "0" && optional == false) ||
-		(file_name != "0" && optional == false && !boost::filesystem::exists(file_to_test)))
+		(file_name != "0" && optional == false && !fs::exists(file_to_test)))
 	{
 		logg.error("!!! Parameter ", param, " : the file ", file_name,
 							 " does not exist. Please check!");
 	}
-	if (file_name != "0" && optional == false && boost::filesystem::exists(file_to_test))
+	if (file_name != "0" && optional == false && fs::exists(file_to_test))
 	{
 		ifstream f(file_name.c_str());
 		if (!f.good())
@@ -321,8 +324,8 @@ void testFileExist_changeFile(const string& param, vector<string> vector_name, c
 {
 	for (vector<string>::iterator file_name=vector_name.begin(); file_name!=vector_name.end(); ++file_name)
 	{
-		boost::filesystem::path file_to_test(*file_name);
-		if ((*file_name) != "0" && boost::filesystem::exists(file_to_test))
+		fs::path file_to_test(*file_name);
+		if ((*file_name) != "0" && fs::exists(file_to_test))
 		{
 			ifstream file((*file_name).c_str(), ios::in);
 			if (file)
