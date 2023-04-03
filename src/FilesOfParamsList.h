@@ -37,7 +37,6 @@
 
 #include "FGUtils.h"
 #include "Logger.h"
-#include <boost/filesystem.hpp>
 
 using namespace std;
 

@@ -30,6 +30,7 @@
 #include <chrono>
 #include <random>
 #include <string>
+#include <filesystem>
 
 #include "gdal_priv.h" // to read raster files
 #include "gdal.h"
@@ -41,6 +42,7 @@
 #include <boost/iostreams/filter/gzip.hpp>
 
 namespace bo = boost::iostreams;
+namespace fs = std::filesystem;
 using namespace std;
 
 // boost::mt19937 est un Mersenne twister generator, ou générateur de nombres pseudo-aléatoires
@@ -1886,7 +1888,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
   
   // Get output driver (GeoTIFF format).
   const char * driverInput = "GTiff";
-  boost::filesystem::path prevFile_path(prevFile.c_str());
+  fs::path prevFile_path(prevFile.c_str());
   if (prevFile_path.extension()==".tif"){ driverInput = "GTiff";
   } else if (prevFile_path.extension()==".img"){ driverInput = "HFA";
   } else {

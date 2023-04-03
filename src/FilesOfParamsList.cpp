@@ -22,6 +22,9 @@
 
 #include "FilesOfParamsList.h"
 
+#include <filesystem>
+
+namespace fs = std::filesystem;
 using namespace std;
 
 
@@ -406,7 +409,7 @@ void FOPL::testSameCoord(const string& param, const string& file_name, const str
 {
 	if (file_name != "0")
 	{
-		boost::filesystem::path file_to_test(file_name);
+		fs::path file_to_test(file_name);
 		if (file_to_test.extension()!=ext_REF)
 		{ // TEST file extension
 			logg.error("!!! Parameter ", param,  " : the file ",  file_name,
@@ -443,7 +446,7 @@ void FOPL::checkCorrectMasks()
 	logg.info("\n===========> RUNNING Check of RASTER MASKS :");
 
 	/* Get mask extension */
-	boost::filesystem::path mask_path(m_Mask.c_str());
+	fs::path mask_path(m_Mask.c_str());
 	string ext_REF = mask_path.extension().string();
 
 	if (ext_REF==".asc")

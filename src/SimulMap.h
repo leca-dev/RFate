@@ -45,7 +45,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <boost/filesystem.hpp>
 #include "openmp.h"
 
 typedef SuFate* SuFatePtr;

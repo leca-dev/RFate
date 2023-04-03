@@ -41,16 +41,17 @@
 #include <fstream>
 #include <cstdio>
 #include <vector>
+#include <filesystem>
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
-#include <boost/filesystem.hpp>
 
 #include "gdal_priv.h" // to read raster files
 #include "gdal.h"
 #include "cpl_conv.h"
 #include "Logger.h"
 
+namespace fs = std::filesystem;
 using namespace std;
 
 
@@ -652,7 +653,7 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 
 	// Get output driver (GeoTIFF format).
 	const char * driverInput = "GTiff";
-	boost::filesystem::path file_name_path(file_name.c_str());
+	fs::path file_name_path(file_name.c_str());
 	if (file_name_path.extension()==".tif")
 	{
 		driverInput = "GTiff";
@@ -765,7 +766,7 @@ template< typename T >
 vector< T > ReadMask(string file_name, double lim_inf=(-1.0)*numeric_limits<double>::infinity(),
 double lim_sup=numeric_limits<double>::infinity(), bool print_info=false)
 {
-	boost::filesystem::path file_name_path(file_name.c_str());
+	fs::path file_name_path(file_name.c_str());
 	//if(file_name_path.extension()==".asc"){ // ASCII file
 	//  res = ReadAscii< T >(file_name);
 	//} else
