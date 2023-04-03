@@ -253,50 +253,6 @@ struct path_source_traits< boost::basic_string_view< wchar_t, std::char_traits< 
     static BOOST_CONSTEXPR_OR_CONST bool is_native = false;
 };
 
-#if !defined(BOOST_FILESYSTEM_NO_DEPRECATED) && BOOST_FILESYSTEM_VERSION < 4
-template< >
-struct
-BOOST_FILESYSTEM_DETAIL_DEPRECATED("Boost.Filesystem path construction/assignment/appending from containers is deprecated, use strings or iterators instead.")
-path_source_traits< std::vector< char > >
-{
-    // Since C++11 this could be string_class_tag as std::vector gained data() member
-    typedef range_type_tag tag_type;
-    typedef char char_type;
-    static BOOST_CONSTEXPR_OR_CONST bool is_native = false;
-};
-
-template< >
-struct
-BOOST_FILESYSTEM_DETAIL_DEPRECATED("Boost.Filesystem path construction/assignment/appending from containers is deprecated, use strings or iterators instead.")
-path_source_traits< std::vector< wchar_t > >
-{
-    // Since C++11 this could be string_class_tag as std::vector gained data() member
-    typedef range_type_tag tag_type;
-    typedef wchar_t char_type;
-    static BOOST_CONSTEXPR_OR_CONST bool is_native = false;
-};
-
-template< >
-struct
-BOOST_FILESYSTEM_DETAIL_DEPRECATED("Boost.Filesystem path construction/assignment/appending from containers is deprecated, use strings or iterators instead.")
-path_source_traits< std::list< char > >
-{
-    typedef range_type_tag tag_type;
-    typedef char char_type;
-    static BOOST_CONSTEXPR_OR_CONST bool is_native = false;
-};
-
-template< >
-struct
-BOOST_FILESYSTEM_DETAIL_DEPRECATED("Boost.Filesystem path construction/assignment/appending from containers is deprecated, use strings or iterators instead.")
-path_source_traits< std::list< wchar_t > >
-{
-    typedef range_type_tag tag_type;
-    typedef wchar_t char_type;
-    static BOOST_CONSTEXPR_OR_CONST bool is_native = false;
-};
-#endif // !defined(BOOST_FILESYSTEM_NO_DEPRECATED) && BOOST_FILESYSTEM_VERSION < 4
-
 template< >
 struct path_source_traits< directory_entry >
 {
