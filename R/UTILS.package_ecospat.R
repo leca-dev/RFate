@@ -48,7 +48,7 @@
 ##' prevalence of the environments in their range (TRUE = yes, FALSE = no).
 ##' 
 ##' 
-##' @keywords ecospat, niche overlap
+##' @keywords ecospat, niche overlap, internal
 ##' 
 ##' @seealso \code{\link[ecospat]{ecospat.grid.clim.dyn}},
 ##' \code{\link[ecospat]{ecospat.niche.overlap}}

@@ -24,3 +24,4 @@ This function calculates the diversity of each site of a site
 by species matrix according to the q parameter according to 
 \href{http://www.jstor.org/stable/23143936}{Leinster & Cobbold 2012 Ecology}.
 }
+\keyword{internal}

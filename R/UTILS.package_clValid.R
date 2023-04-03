@@ -3,7 +3,7 @@
 ##' 
 ##' @name dunn
 ##' 
-##' @keywords clValid
+##' @keywords clValid, internal
 ##' 
 ##' @param distance The distance matrix (as a matrix object) of the clustered 
 ##' observations. Required if Data is NULL.

@@ -14,7 +14,7 @@
 ##' @param index.family family of dissimilarity indices, partial match of 
 ##' "sorensen" or "jaccard".
 ##' 
-##' @keywords betapart
+##' @keywords betapart, internal
 ##' 
 ##' @seealso \code{\link[betapart]{beta.pair}}
 ##' 

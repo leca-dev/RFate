@@ -45,7 +45,7 @@
 ##' clusterwise but only aggregated information is given out (this cuts 
 ##' the size of the output down a bit).
 ##' 
-##' @keywords fpc
+##' @keywords fpc, internal
 ##' 
 ##' @seealso \code{\link[fpc]{cluster.stats}}
 ##' 

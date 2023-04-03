@@ -53,4 +53,5 @@ From SPOT package 2.5.0 : designLHD and designLHDNorm functions
 \keyword{Hypercube}
 \keyword{Latin}
 \keyword{SPOT,}
-\keyword{Sampling}
+\keyword{Sampling,}
+\keyword{internal}

@@ -18,7 +18,7 @@ tree to run a FATE simulation."><!-- mathjax --><script src="https://cdnjs.cloud
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -141,7 +141,7 @@ tree to run a <code>FATE</code> simulation.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.skeletonDirectory</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_simulation"</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.skeletonDirectory</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_simulation"</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -149,10 +149,13 @@ tree to run a <code>FATE</code> simulation.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> that will be used as the main 
 directory and simulation name</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A directory tree with folders to contain the parameter files, the
+    
+
+<p>A directory tree with folders to contain the parameter files, the
 simulation files and the results.</p>
     </div>
     <div id="details">
@@ -258,14 +261,13 @@ structure.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span>
-<span class="fu">PRE_FATE.skeletonDirectory</span><span class="op">(</span><span class="op">)</span>
-
-<span class="co">## Create a skeleton folder with a specific name ---------------------------------------------</span>
-<span class="fu">PRE_FATE.skeletonDirectory</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_AlpineForest'</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span></span>
+<span><span class="fu">PRE_FATE.skeletonDirectory</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create a skeleton folder with a specific name ---------------------------------------------</span></span>
+<span><span class="fu">PRE_FATE.skeletonDirectory</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_AlpineForest'</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -279,7 +281,7 @@ structure.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

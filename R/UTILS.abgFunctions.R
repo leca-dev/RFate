@@ -16,6 +16,8 @@
 ##' @param check (\emph{optional}) default \code{TRUE}. \cr If \code{TRUE}, the 
 ##' given arguments will be checked
 ##' 
+##' @keywords internal
+##' 
 ##' @export
 ##'
 ## END OF HEADER ###############################################################

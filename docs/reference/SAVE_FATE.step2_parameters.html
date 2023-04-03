@@ -18,7 +18,7 @@ used to build a FATE simulation folder."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -141,32 +141,32 @@ used to build a <code>FATE</code> simulation folder.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">SAVE_FATE.step2_parameters</span><span class="op">(</span>
-  <span class="va">name.dataset</span>,
-  name.simulation <span class="op">=</span> <span class="cn">NA</span>,
-  <span class="va">strata.limits</span>,
-  <span class="va">mat.PFG.succ</span>,
-  mat.PFG.light <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.light.tol <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.soil <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.soil.tol <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.disp <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.dist <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.dist.tol <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.drought <span class="op">=</span> <span class="cn">NULL</span>,
-  mat.PFG.drought.tol <span class="op">=</span> <span class="cn">NULL</span>,
-  rasters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name.MASK <span class="op">=</span> <span class="cn">NA</span>, name.DIST <span class="op">=</span> <span class="cn">NA</span>, name.DROUGHT <span class="op">=</span> <span class="cn">NA</span>, name.FIRE <span class="op">=</span> <span class="cn">NA</span>,
-    name.ELEVATION <span class="op">=</span> <span class="cn">NA</span>, name.SLOPE <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
-  multipleSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name.simulation.1 <span class="op">=</span> <span class="cn">NA</span>, name.simulation.2 <span class="op">=</span> <span class="cn">NA</span>, file.simulParam.1
-    <span class="op">=</span> <span class="cn">NA</span>, file.simulParam.2 <span class="op">=</span> <span class="cn">NA</span>, no_simulations <span class="op">=</span> <span class="cn">NA</span>, opt.percent_maxAbund <span class="op">=</span> <span class="cn">NA</span>,
-    opt.percent_seeding <span class="op">=</span> <span class="cn">NA</span>, opt.percent_light <span class="op">=</span> <span class="cn">NA</span>, opt.percent_soil <span class="op">=</span> <span class="cn">NA</span>,
-    do.max_abund_low <span class="op">=</span> <span class="cn">NA</span>, do.max_abund_medium <span class="op">=</span> <span class="cn">NA</span>, do.max_abund_high <span class="op">=</span> <span class="cn">NA</span>,
-    do.seeding_duration <span class="op">=</span> <span class="cn">NA</span>, do.seeding_timestep <span class="op">=</span> <span class="cn">NA</span>, do.seeding_input <span class="op">=</span> <span class="cn">NA</span>,
-    do.no_strata <span class="op">=</span> <span class="cn">NA</span>, do.LIGHT.thresh_medium <span class="op">=</span> <span class="cn">NA</span>, do.LIGHT.thresh_low <span class="op">=</span> <span class="cn">NA</span>,
-    do.SOIL.init <span class="op">=</span> <span class="cn">NA</span>, do.SOIL.retention <span class="op">=</span> <span class="cn">NA</span>, do.DISPERSAL.mode <span class="op">=</span> <span class="cn">NA</span>, 
-    
-    do.HABSUIT.mode <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SAVE_FATE.step2_parameters</span><span class="op">(</span></span>
+<span>  <span class="va">name.dataset</span>,</span>
+<span>  name.simulation <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="va">strata.limits</span>,</span>
+<span>  <span class="va">mat.PFG.succ</span>,</span>
+<span>  mat.PFG.light <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.light.tol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.soil <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.soil.tol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.disp <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.dist <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.dist.tol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.drought <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mat.PFG.drought.tol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  rasters <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name.MASK <span class="op">=</span> <span class="cn">NA</span>, name.DIST <span class="op">=</span> <span class="cn">NA</span>, name.DROUGHT <span class="op">=</span> <span class="cn">NA</span>, name.FIRE <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    name.ELEVATION <span class="op">=</span> <span class="cn">NA</span>, name.SLOPE <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  multipleSet <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name.simulation.1 <span class="op">=</span> <span class="cn">NA</span>, name.simulation.2 <span class="op">=</span> <span class="cn">NA</span>, file.simulParam.1 <span class="op">=</span></span>
+<span>    <span class="cn">NA</span>, file.simulParam.2 <span class="op">=</span> <span class="cn">NA</span>, no_simulations <span class="op">=</span> <span class="cn">NA</span>, opt.percent_maxAbund <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    opt.percent_seeding <span class="op">=</span> <span class="cn">NA</span>, opt.percent_light <span class="op">=</span> <span class="cn">NA</span>, opt.percent_soil <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    do.max_abund_low <span class="op">=</span> <span class="cn">NA</span>, do.max_abund_medium <span class="op">=</span> <span class="cn">NA</span>, do.max_abund_high <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    do.seeding_duration <span class="op">=</span> <span class="cn">NA</span>, do.seeding_timestep <span class="op">=</span> <span class="cn">NA</span>, do.seeding_input <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    do.no_strata <span class="op">=</span> <span class="cn">NA</span>, do.LIGHT.thresh_medium <span class="op">=</span> <span class="cn">NA</span>, do.LIGHT.thresh_low <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    do.SOIL.init <span class="op">=</span> <span class="cn">NA</span>, do.SOIL.retention <span class="op">=</span> <span class="cn">NA</span>, do.DISPERSAL.mode <span class="op">=</span> <span class="cn">NA</span>, </span>
+<span>    </span>
+<span>    do.HABSUIT.mode <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -174,17 +174,25 @@ used to build a <code>FATE</code> simulation folder.</p>
     <dl><dt>name.dataset</dt>
 <dd><p>a <code>string</code> corresponding to the name to give to 
 archive folder</p></dd>
+
+
 <dt>name.simulation</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>string</code> corresponding to the name of the simulation folder</p></dd>
+
+
 <dt>strata.limits</dt>
 <dd><p>a <code>vector</code> of <code>integer</code> containing height 
 strata limits</p></dd>
+
+
 <dt>mat.PFG.succ</dt>
 <dd><p>a <code>data.frame</code> with at least 5 columns : <br><code>PFG</code>, <code>type</code>, <code>height</code>, <code>maturity</code>, <code>longevity</code> 
 <br> (<em>and optionally, <code>max_abundance</code>, <code>potential_fecundity</code>, 
 <code>immature_size</code>, <code>is_alien</code>, <code>flammability</code></em>) 
 <br> (see <code><a href="PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a></code>)</p></dd>
+
+
 <dt>mat.PFG.light</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 2 to 6 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
@@ -193,12 +201,16 @@ A <code>data.frame</code> with 2 to 6 columns : <br></p><ul><li><p><code>PFG</co
   <code>strategy_ag</code></em>)</p></li>
 <li><p><em><code>type</code>, <code>light_need</code></em></p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></code>)</p></dd>
+
+
 <dt>mat.PFG.light.tol</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 2 to 4 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
 <li><p><code>lifeStage</code>, <code>resources</code>, <code>tolerance</code> 
   (<em>or <code>strategy_tol</code></em>)</p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></code>)</p></dd>
+
+
 <dt>mat.PFG.soil</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
@@ -208,20 +220,28 @@ A <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>PFG</co
 <li><p><code>soil_contrib</code>, <code>soil_tol_min</code>, <code>soil_tol_max</code> 
   (<em>or <code>strategy_contrib</code></em>)</p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a></code>)</p></dd>
+
+
 <dt>mat.PFG.soil.tol</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 2 to 4 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
 <li><p><code>lifeStage</code>, <code>resources</code>, <code>tolerance</code> 
   (<em>or <code>strategy_tol</code></em>)</p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a></code>)</p></dd>
+
+
 <dt>mat.PFG.disp</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 4 columns : <code>PFG</code>, <code>d50</code>, <code>d99</code>, 
 <code>ldd</code> (see <code><a href="PRE_FATE.params_PFGdispersal.html">PRE_FATE.params_PFGdispersal</a></code>)</p></dd>
+
+
 <dt>mat.PFG.dist</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 5 columns : <br><code>PFG</code>, <code>type</code>, <code>maturity</code>, <code>longevity</code>, 
 <code>age_above_150cm</code> (see <code><a href="PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a></code>)</p></dd>
+
+
 <dt>mat.PFG.dist.tol</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>nameDist</code>,</p></li>
@@ -230,6 +250,8 @@ A <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>nameDis
 <li><p><code>responseStage</code>, <code>killedIndiv</code>, <code>resproutIndiv</code>  
   (<em>or <code>strategy_tol</code></em>)</p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a></code>)</p></dd>
+
+
 <dt>mat.PFG.drought</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 4 or 6 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
@@ -237,6 +259,8 @@ A <code>data.frame</code> with 4 or 6 columns : <br></p><ul><li><p><code>PFG</co
 <li><p><code>counter_recovery</code>, <code>counter_sens</code>, <code>counter_cum</code>
   (<em>or <code>strategy_drou</code></em>)</p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGdrought.html">PRE_FATE.params_PFGdrought</a></code>)</p></dd>
+
+
 <dt>mat.PFG.drought.tol</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 A <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>nameDist</code>,</p></li>
@@ -245,11 +269,15 @@ A <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>nameDis
 <li><p><code>responseStage</code>, <code>killedIndiv</code>, <code>resproutIndiv</code>  
   (<em>or <code>strategy_tol</code></em>)</p></li>
 </ul><p>(see <code><a href="PRE_FATE.params_PFGdrought.html">PRE_FATE.params_PFGdrought</a></code>)</p></dd>
+
+
 <dt>rasters</dt>
 <dd><p>a <code>list</code> containing all the rasters given to the 
 <code><a href="PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></code> function, if used 
 (<code>name.MASK</code>, <code>name.DIST</code>, <code>name.DROUGHT</code>, <code>name.FIRE</code>, 
 <code>name.ELEVATION</code>, <code>name.SLOPE</code>)</p></dd>
+
+
 <dt>multipleSet</dt>
 <dd><p>a <code>list</code> containing all the parameter values given 
 to the <code><a href="PRE_FATE.params_multipleSet.html">PRE_FATE.params_multipleSet</a></code> function, if used 
@@ -264,11 +292,17 @@ to the <code><a href="PRE_FATE.params_multipleSet.html">PRE_FATE.params_multiple
 <code>do.LIGHT.thresh_medium</code>, <code>do.LIGHT.thresh_low</code>, 
 <code>do.SOIL.init</code>, <code>do.SOIL.retention</code>, 
 <code>do.DISPERSAL.mode</code>, <code>do.HABSUIT.mode</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> containing all the elements given to the function and 
-checked, and two archive files :</p><dl><dt>name.dataset</dt>
+    
+
+<p>A <code>list</code> containing all the elements given to the function and 
+checked, and two archive files :</p>
+
+
+<dl><dt>name.dataset</dt>
 <dd><p>name of the dataset</p></dd>
 
   <dt>strata.limits</dt>
@@ -346,10 +380,9 @@ checked, and two archive files :</p><dl><dt>name.dataset</dt>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -363,7 +396,7 @@ checked, and two archive files :</p><dl><dt>name.dataset</dt>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

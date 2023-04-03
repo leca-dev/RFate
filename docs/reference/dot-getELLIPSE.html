@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -55,7 +55,7 @@
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -139,43 +139,64 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">util.ELLIPSE2</span><span class="op">(</span><span class="va">mx</span>, <span class="va">my</span>, <span class="va">vx</span>, <span class="va">cxy</span>, <span class="va">vy</span>, <span class="va">coeff</span><span class="op">)</span>
-<span class="fu">util.ELLIPSE1</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">z</span><span class="op">)</span>
-<span class="fu">.getELLIPSE</span><span class="op">(</span><span class="va">xy</span>, <span class="va">fac</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">util.ELLIPSE2</span><span class="op">(</span><span class="va">mx</span>, <span class="va">my</span>, <span class="va">vx</span>, <span class="va">cxy</span>, <span class="va">vy</span>, <span class="va">coeff</span><span class="op">)</span></span>
+<span><span class="fu">util.ELLIPSE1</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">z</span><span class="op">)</span></span>
+<span><span class="fu">.getELLIPSE</span><span class="op">(</span><span class="va">xy</span>, <span class="va">fac</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>mx</dt>
 <dd><p>\(\Sigma x * \frac{z}{\Sigma z}\)</p></dd>
+
+
 <dt>my</dt>
 <dd><p>\(\Sigma y * \frac{z}{\Sigma z}\)</p></dd>
+
+
 <dt>vx</dt>
 <dd><p>\(\Sigma (x - mx) * (x - mx) * \frac{z}{\Sigma z}\)</p></dd>
+
+
 <dt>cxy</dt>
 <dd><p>\(\Sigma (x - mx) * (y - my) * \frac{z}{\Sigma z}\)</p></dd>
+
+
 <dt>vy</dt>
 <dd><p>\(\Sigma (y - my) * (y - my) * \frac{z}{\Sigma z}\)</p></dd>
+
+
 <dt>coeff</dt>
 <dd><p>default <code>1</code></p></dd>
+
+
 <dt>xy</dt>
 <dd><p>a <code>data.frame</code> or <code>matrix</code> with 2 columns corresponding 
 to individuals coordinates, extracted from example from 
 <code><a href="https://rdrr.io/pkg/ade4/man/dudi.pco.html" class="external-link">dudi.pco</a></code> analysis</p></dd>
+
+
 <dt>fac</dt>
 <dd><p>a <code>vector</code> containing group labels for individuals (with 
 <code>length(fac) = nrow(xy)</code>)</p></dd>
+
+
 <dt>x</dt>
 <dd><p>a <code>vector</code> corresponding to abscissa coordinates of 
 individuals (column <code>1</code> of <code>xy</code>)</p></dd>
+
+
 <dt>y</dt>
 <dd><p>a <code>vector</code> corresponding to ordinate coordinates of 
 individuals (column <code>2</code> of <code>xy</code>)</p></dd>
+
+
 <dt>z</dt>
 <dd><p>a <code>data.frame</code> with one column for each level represented in 
 <code>fac</code> and <code>nrow(z) = length(fac) = nrow(xy)</code>. Values are 
 corresponding to the relative representation of each level (for level 
 <code>i</code> : \(\frac{1}{N_i}\))</p></dd>
+
 </dl></div>
 
   </div>
@@ -190,7 +211,7 @@ corresponding to the relative representation of each level (for level
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

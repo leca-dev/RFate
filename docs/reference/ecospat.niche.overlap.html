@@ -23,7 +23,7 @@ adehabitatHR 0.4.19 packages"><!-- mathjax --><script src="https://cdnjs.cloudfl
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -35,7 +35,7 @@ adehabitatHR 0.4.19 packages"><!-- mathjax --><script src="https://cdnjs.cloudfl
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -61,7 +61,7 @@ adehabitatHR 0.4.19 packages"><!-- mathjax --><script src="https://cdnjs.cloudfl
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -149,65 +149,98 @@ adehabitatHR 0.4.19 packages</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ecospat.kd</span><span class="op">(</span><span class="va">x</span>, <span class="va">ext</span>, R <span class="op">=</span> <span class="fl">100</span>, th <span class="op">=</span> <span class="fl">0</span>, env.mask <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"adehabitat"</span><span class="op">)</span>
-<span class="fu">ecospat.grid.clim.dyn</span><span class="op">(</span><span class="va">glob</span>, <span class="va">glob1</span>, <span class="va">sp</span>, R <span class="op">=</span> <span class="fl">100</span>, th.sp <span class="op">=</span> <span class="fl">0</span>, th.env <span class="op">=</span> <span class="fl">0</span>, 
-geomask <span class="op">=</span> <span class="cn">NULL</span>, kernel.method <span class="op">=</span> <span class="st">"adehabitat"</span>, extend.extent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-<span class="fu">ecospat.niche.overlap</span><span class="op">(</span><span class="va">z1</span>, <span class="va">z2</span>, <span class="va">cor</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ecospat.kd</span><span class="op">(</span><span class="va">x</span>, <span class="va">ext</span>, R <span class="op">=</span> <span class="fl">100</span>, th <span class="op">=</span> <span class="fl">0</span>, env.mask <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"adehabitat"</span><span class="op">)</span></span>
+<span><span class="fu">ecospat.grid.clim.dyn</span><span class="op">(</span><span class="va">glob</span>, <span class="va">glob1</span>, <span class="va">sp</span>, R <span class="op">=</span> <span class="fl">100</span>, th.sp <span class="op">=</span> <span class="fl">0</span>, th.env <span class="op">=</span> <span class="fl">0</span>, </span>
+<span>geomask <span class="op">=</span> <span class="cn">NULL</span>, kernel.method <span class="op">=</span> <span class="st">"adehabitat"</span>, extend.extent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">ecospat.niche.overlap</span><span class="op">(</span><span class="va">z1</span>, <span class="va">z2</span>, <span class="va">cor</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>x</dt>
 <dd><p>two-column dataframe (or a vector)</p></dd>
+
+
 <dt>ext</dt>
 <dd><p>c(xmin, xmax)</p></dd>
+
+
 <dt>R</dt>
 <dd><p>The resolution of the grid.</p></dd>
+
+
 <dt>th</dt>
 <dd><p>quantile</p></dd>
+
+
 <dt>env.mask</dt>
 <dd><p>mask</p></dd>
+
+
 <dt>method</dt>
 <dd><p>kernel.method</p></dd>
+
+
 <dt>glob</dt>
 <dd><p>A two-column dataframe (or a vector) of the environmental 
 values (in column) for background pixels of the whole study area (in row).</p></dd>
+
+
 <dt>glob1</dt>
 <dd><p>A two-column dataframe (or a vector) of the environmental 
 values (in column) for the background pixels of the species (in row).</p></dd>
+
+
 <dt>sp</dt>
 <dd><p>A two-column dataframe (or a vector) of the environmental 
 values (in column) for the occurrences of the species (in row).</p></dd>
+
+
 <dt>th.sp</dt>
 <dd><p>The quantile used to delimit a threshold to exclude low 
 species density values.</p></dd>
+
+
 <dt>th.env</dt>
 <dd><p>The quantile used to delimit a threshold to exclude low 
 environmental density values of the study area.</p></dd>
+
+
 <dt>geomask</dt>
 <dd><p>A geographical mask to delimit the background extent if the 
 analysis takes place in the geographical space.It can be a SpatialPolygon 
 or a raster object. Note that the CRS should be the same as the one used 
 for the points.</p></dd>
+
+
 <dt>kernel.method</dt>
 <dd><p>Method used to estimate the the kernel density. 
 Currently, there are two methods: by default, it is the methode from 
 'adehabitat'. Method from the library 'ks' is also available.</p></dd>
+
+
 <dt>extend.extent</dt>
 <dd><p>Vector with extention values of the window size 
 (see details).</p></dd>
+
+
 <dt>z1</dt>
 <dd><p>Species 1 occurrence density grid created by ecospat.grid.clim.</p></dd>
+
+
 <dt>z2</dt>
 <dd><p>Species 2 occurrence density grid created by ecospat.grid.clim.</p></dd>
+
+
 <dt>cor</dt>
 <dd><p>Correct the occurrence densities of each species by the 
 prevalence of the environments in their range (TRUE = yes, FALSE = no).</p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.grid.clim.dyn.html" class="external-link">ecospat.grid.clim.dyn</a></code>,
-<code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html" class="external-link">ecospat.niche.overlap</a></code></p></div>
+    <div class="dont-index"><p><code>ecospat.grid.clim.dyn</code>,
+<code>ecospat.niche.overlap</code></p></div>
     </div>
 
   </div>
@@ -222,7 +255,7 @@ prevalence of the environments in their range (TRUE = yes, FALSE = no).</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

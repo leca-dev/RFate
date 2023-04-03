@@ -36,7 +36,7 @@
 ##' for infeasible points. Used to replace infeasible points with random 
 ##' points. Has to evaluate points in interval [0;1].
 ##' 
-##' @keywords SPOT, Latin Hypercube Sampling
+##' @keywords SPOT, Latin Hypercube Sampling, internal
 ##' 
 ##' @seealso \code{\link[SPOT]{designLHD}}
 ##' 
