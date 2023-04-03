@@ -1060,11 +1060,11 @@ void init_directory_iterator_impl() BOOST_NOEXCEPT
 
 #endif // defined(BOOST_WINDOWS_API) && !defined(UNDER_CE)
 
-BOOST_FILESYSTEM_DECL
-dir_itr_imp::~dir_itr_imp() BOOST_NOEXCEPT
-{
-    dir_itr_close(*this);
-}
+//BOOST_FILESYSTEM_DECL
+//dir_itr_imp::~dir_itr_imp() BOOST_NOEXCEPT
+//{
+//    dir_itr_close(*this);
+//}
 
 BOOST_FILESYSTEM_DECL
 void directory_iterator_construct(directory_iterator& it, path const& p, unsigned int opts, directory_iterator_params* params, system::error_code* ec)
