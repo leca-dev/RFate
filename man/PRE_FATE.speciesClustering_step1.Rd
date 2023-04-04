@@ -11,6 +11,10 @@ PRE_FATE.speciesClustering_step1(mat.species.DIST, opt.no_clust_max = 15)
 \code{dist} objects (one for each \code{GROUP} value), corresponding to the 
 dissimilarity distance between each pair of species. \cr Such an object can 
 be obtained with the \code{\link{PRE_FATE.speciesDistance}} function.}
+
+\item{opt.no_clust_max}{(\emph{optional}) default \code{15}. \cr an 
+\code{integer} corresponding to the maximum number of clusters to be tested 
+for each distance matrix}
 }
 \value{
 A \code{list} containing one \code{list}, one \code{data.frame} with 

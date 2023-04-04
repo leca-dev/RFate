@@ -11,8 +11,9 @@
 ##'              
 ##' @param name.simulation a \code{string} corresponding to the main directory 
 ##' or simulation name of the \code{FATE} simulation
-##' @param opt.global.name (\emph{optional}) \cr a \code{string} corresponding 
-##' to the name of the global parameter file to be created
+##' @param opt.global.name (\emph{optional}) default \code{NULL} \cr 
+##' a \code{string} corresponding to the name of the global parameter file to 
+##' be created
 ##' @param opt.no_CPU (\emph{optional}) default \code{1}. \cr an \code{integer} 
 ##' corresponding to the number of resources that can be used to parallelize 
 ##' the \code{FATE} simulation
@@ -731,7 +732,7 @@
 
 PRE_FATE.params_globalParameters = function(
   name.simulation
-  , opt.global.name
+  , opt.global.name = NULL
   , opt.no_CPU = 1
   , opt.replacePrevious = FALSE
   , opt.saving_abund_PFG_stratum = TRUE

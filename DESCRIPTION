@@ -48,7 +48,7 @@ Imports:
     graphics, grDevices, methods, stats, utils, R.utils,
     ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
     reshape2, foreach, data.table,
-    raster, rgdal, sp,
+    raster, sp,
     phyloclim, FD, PresenceAbsence, ade4, adehabitatMA, adehabitatHR, 
     cluster, huge, 
     RColorBrewer, colorspace,
@@ -58,7 +58,8 @@ Suggests:
     spelling, 
     testthat,
     covr,
-    knitr, markdown, rmarkdown
+    knitr, markdown, rmarkdown,
+    SPOT, fpc, clValid, ecospat, betapart
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
 Language: en-US

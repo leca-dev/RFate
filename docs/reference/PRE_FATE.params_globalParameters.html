@@ -146,7 +146,7 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.params_globalParameters</span><span class="op">(</span></span>
 <span>  <span class="va">name.simulation</span>,</span>
-<span>  <span class="va">opt.global.name</span>,</span>
+<span>  opt.global.name <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  opt.no_CPU <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  opt.replacePrevious <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  opt.saving_abund_PFG_stratum <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -210,8 +210,9 @@ or simulation name of the <code>FATE</code> simulation</p></dd>
 
 
 <dt>opt.global.name</dt>
-<dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding 
-to the name of the global parameter file to be created</p></dd>
+<dd><p>(<em>optional</em>) default <code>NULL</code> <br> 
+a <code>string</code> corresponding to the name of the global parameter file to 
+be created</p></dd>
 
 
 <dt>opt.no_CPU</dt>
