@@ -136,6 +136,11 @@ PRE_FATE.speciesDistanceTraits = function(mat.traits
       warning(paste0("`mat.traits` does not contain any column with `GROUP` information\n"
                      , "Data will be considered as one unique dataset."))
       mat.traits$GROUP = "AllSpecies"
+    } else if ("GROUP" %in% colnames(mat.traits) && ncol(mat.traits) <= 3 )
+    {
+      stop(paste0("Wrong dimension(s) of data!\n `mat.traits` does not have the "
+                  , "appropriate number of rows (>=2, at least 2 species) "
+                  , "or columns (>=3, at least 2 traits)"))
     }
     mat.traits$species = as.character(mat.traits$species)
     mat.traits$GROUP = as.character(mat.traits$GROUP)

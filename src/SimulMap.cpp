@@ -2190,8 +2190,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         );
         if (rasterAccess > 0)
         {
-          logg.warning("Writing ", newFile, " raster: acces status ",
-                       rasterAccess);
+          logg.warning("Writing ", newFile, " raster: acces status ", rasterAccess);
         }
         GDALClose( rasOutput ); // Once we're done, close properly the dataset
         

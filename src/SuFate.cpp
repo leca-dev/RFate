@@ -144,7 +144,7 @@ void SuFate::CalculateEnvironment()
     int noFG = m_Comm.getFuncGroupList().size();
     int noFG_pres = 0;
     
-    vector < int > AbundPFG(noFG,0); // vector to store abundances of PFGs
+    vector < int > AbundPFG(noFG, 0); // vector to store abundances of PFGs
     
     for (int fg=0; fg < noFG; fg++)
     {
@@ -177,7 +177,7 @@ void SuFate::CalculateEnvironment()
       double soilResource = 0.0;
       if (noFG_pres > 0)
       {
-        int TotAbund = accumulate(AbundPFG.begin(),AbundPFG.end(),0);
+        int TotAbund = accumulate(AbundPFG.begin(), AbundPFG.end(), 0);
         
         /* test if we have a full coverage or not to calculate soil resources */
         if (TotAbund > 0)
@@ -207,13 +207,13 @@ void SuFate::CalculateEnvironment()
         XAbove = XAbove + stProfile[Stm];
         if (XAbove < m_GSP->getLightThreshMedium())
         {
-          m_LightR.setResource(Stm-1,RHigh);
+          m_LightR.setResource(Stm-1, RHigh);
         } else if (XAbove < m_GSP->getLightThreshLow())
         {
-          m_LightR.setResource(Stm-1,RMedium);
+          m_LightR.setResource(Stm-1, RMedium);
         } else
         {
-          m_LightR.setResource(Stm-1,RLow);
+          m_LightR.setResource(Stm-1, RLow);
         }
         // XAbove = XAbove + stProfile[Stm];
       }
@@ -279,46 +279,47 @@ void SuFate::CheckSurvival()
         while (co < noCohort)
         {
           /* Keep Legion Params */
-          int ayTemp = m_Comm.getAy(fg,co);
-          int aoTemp = m_Comm.getAo(fg,co);
+          int ayTemp = m_Comm.getAy(fg, co);
+          int aoTemp = m_Comm.getAo(fg, co);
           
           /* Get the first stratum which Legion filled */
           int st = 0;
-          while (ayTemp >= bkStratAges[st+1]) { st++; }
+          while (ayTemp >= bkStratAges[st]) { st++; }
+          if (st == m_GSP->getNoStrata()) { break; } // last stratum, get out of the loop
           
           /* only matures or only immature plants in this Legion */
           if (ayTemp >= this->getMatTime(fg) || aoTemp < this->getMatTime(fg))
           {
             bool survive; /* are the plants able to survive or not */
-          /* check if plants are able to survive in this strata */
-          if (ayTemp >= this->getMatTime(fg))
-          { // only mature plants
-            survive = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
-          } else
-          {
-            survive = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
-          }
-          if (survive)
-          { /* If plants survives */
-          if (aoTemp < bkStratAges[st+1])
-          { /* All Legion Plants are in the same stratum, The whole Legion survives */
-          co++;
-          } else
-          {	/* Plants covered more than a lone stratum */
-          /* We are just sure that individuals in this stratum can survive */
-          FGlegion->splitCohort(co, bkStratAges[st+1]-1);
-            noCohort++;
-            co++;
-          }
-          } else
-          {	/* If some plants die, individuals in this stratum die */
-          FGlegion->removeCohort(ayTemp, min(aoTemp, bkStratAges[st+1]-1));
-            noCohort = m_Comm.getNoCohort(fg);
-          }
+            /* check if plants are able to survive in this strata */
+            if (ayTemp >= this->getMatTime(fg))
+            { // only mature plants
+              survive = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
+            } else
+            {
+              survive = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
+            }
+            if (survive)
+            { /* If plants survives */
+              if (aoTemp < bkStratAges[st])
+              { /* All Legion Plants are in the same stratum, The whole Legion survives */
+                co++;
+              } else
+              {	/* Plants covered more than a lone stratum */
+                /* We are just sure that individuals in this stratum can survive */
+                FGlegion->splitCohort(co, bkStratAges[st]-1);
+                noCohort++;
+                co++;
+              }
+            } else
+            {	/* If some plants die, individuals in this stratum die */
+              FGlegion->removeCohort(ayTemp, min(aoTemp, bkStratAges[st]-1));
+              noCohort = m_Comm.getNoCohort(fg);
+            }
           } else
           {	/* If there are both immatures and matures plants in this Legion */
-          /* split the legion according to maturation age */
-          FGlegion->splitCohort(co, this->getMatTime(fg)-1);
+            /* split the legion according to maturation age */
+            FGlegion->splitCohort(co, this->getMatTime(fg)-1);
             noCohort++;
           }
         }
