@@ -15,6 +15,8 @@
 ##' parameter names
 ##' @param separator a \code{string} to separate each parameter values within 
 ##' the parameter file
+##' 
+##' @keywords internal
 ##'
 ## END OF HEADER ###############################################################
 

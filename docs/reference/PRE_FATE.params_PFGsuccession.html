@@ -19,7 +19,7 @@ core module of FATE."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -31,7 +31,7 @@ core module of FATE."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -57,7 +57,7 @@ core module of FATE."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -143,13 +143,13 @@ core module of <code>FATE</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  <span class="va">mat.PFG.succ</span>,
-  strata.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span>, <span class="fl">2000</span>, <span class="fl">5000</span>, <span class="fl">10000</span><span class="op">)</span>,
-  strata.limits_reduce <span class="op">=</span> <span class="cn">TRUE</span>,
-  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  <span class="va">mat.PFG.succ</span>,</span>
+<span>  strata.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span>, <span class="fl">2000</span>, <span class="fl">5000</span>, <span class="fl">10000</span><span class="op">)</span>,</span>
+<span>  strata.limits_reduce <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -157,28 +157,42 @@ core module of <code>FATE</code>.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory 
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>mat.PFG.succ</dt>
 <dd><p>a <code>data.frame</code> with at least 5 columns : <br><code>PFG</code>, <code>type</code>, <code>height</code>, <code>maturity</code>, <code>longevity</code> 
 <br> (<em>and optionally, <code>max_abundance</code>, <code>potential_fecundity</code>, 
 <code>immature_size</code>, <code>is_alien</code>, <code>flammability</code></em>) 
 <br> (see <a href="PRE_FATE.params_PFGsuccession.html#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>strata.limits</dt>
 <dd><p>a <code>vector</code> of <code>integer</code> containing values 
 among which height strata limits will be chosen</p></dd>
+
+
 <dt>strata.limits_reduce</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, stratum 
 height limits are checked to try and bring several PFGs together in a same 
 stratum</p></dd>
+
+
 <dt>opt.folder.name</dt>
 <dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding 
 to the name of the folder that will be created into the 
 <code>name.simulation/DATA/PFGS/SUCC/</code> directory to store the results</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>.txt</code> file per PFG into the 
+    
+
+<p>A <code>.txt</code> file per PFG into the 
 <code class="file">name.simulation/DATA/PFGS/SUCC/</code> directory with the following 
-parameters :</p><dl><dt>NAME</dt>
+parameters :</p>
+
+
+<dl><dt>NAME</dt>
 <dd><p>name of the PFG</p></dd>
 
   <dt>TYPE</dt>
@@ -233,9 +247,14 @@ parameters :</p><dl><dt>NAME</dt>
 
 
 </dl><p>A <code class="file">SUCC_COMPLETE_TABLE.csv</code> file summarizing information for all 
-groups into the <code class="file">name.simulation/DATA/PFGS/</code> directory. <br>This file can be used to parameterize the disturbance files (see 
-<code><a href="PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a></code>).
-If the <code>opt.folder.name</code> has been used, the files will be into the 
+groups into the <code class="file">name.simulation/DATA/PFGS/</code> directory. <br></p>
+
+
+<p>This file can be used to parameterize the disturbance files (see 
+<code><a href="PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a></code>).</p>
+
+
+<p>If the <code>opt.folder.name</code> has been used, the files will be into the 
 folder <code class="file">name.simulation/DATA/PFGS/SUCC/opt.folder.name/</code>.</p>
     </div>
     <div id="details">
@@ -364,56 +383,55 @@ all PFG :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co">## Create PFG succession parameter files -----------------------------------------------------</span>
-<span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                              , mat.PFG.succ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                                                          , type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>, <span class="st">'C'</span>, <span class="st">'H'</span>, <span class="st">'H'</span>, <span class="st">'P'</span>, <span class="st">'P'</span><span class="op">)</span>
-                                                          , height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">250</span>, <span class="fl">36</span>, <span class="fl">68</span>, <span class="fl">1250</span>, <span class="fl">550</span><span class="op">)</span>
-                                                          , maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span>
-                                                          , longevity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">200</span>, <span class="fl">25</span>, <span class="fl">4</span>, <span class="fl">110</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-                                                        
-
-<span class="co">## Create PFG succession parameter files (with immature_size) --------------------------------</span>
-<span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                              , mat.PFG.succ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                                                          , type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>, <span class="st">'C'</span>, <span class="st">'H'</span>, <span class="st">'H'</span>, <span class="st">'P'</span>, <span class="st">'P'</span><span class="op">)</span>
-                                                          , height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">250</span>, <span class="fl">36</span>, <span class="fl">68</span>, <span class="fl">1250</span>, <span class="fl">550</span><span class="op">)</span>
-                                                          , maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span>
-                                                          , longevity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">200</span>, <span class="fl">25</span>, <span class="fl">4</span>, <span class="fl">110</span>, <span class="fl">70</span><span class="op">)</span>
-                                                          , immature_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">8</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-                                                        
-                                                        
-<span class="co">## -------------------------------------------------------------------------------------------</span>
-
-
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_params'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Create a skeleton folder</span>
-<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span><span class="op">)</span>
-
-
-
-<span class="co">## PFG traits for succession</span>
-<span class="va">tab.succ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.succ</span><span class="op">)</span>
-
-<span class="co">## Create PFG succession parameter files -----------------------------------------------------</span>
-<span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span>
-                           , mat.PFG.succ <span class="op">=</span> <span class="va">tab.succ</span><span class="op">)</span>
-
-<span class="co">## Create PFG succession parameter files (fixing strata limits) ------------------------------</span>
-<span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span>
-                              , mat.PFG.succ <span class="op">=</span> <span class="va">tab.succ</span>
-                              , strata.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span>
-                              , strata.limits_reduce <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-                                                        
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation')</span></span>
+<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create PFG succession parameter files -----------------------------------------------------</span></span>
+<span><span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                              , mat.PFG.succ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                                                          , type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>, <span class="st">'C'</span>, <span class="st">'H'</span>, <span class="st">'H'</span>, <span class="st">'P'</span>, <span class="st">'P'</span><span class="op">)</span></span>
+<span>                                                          , height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">250</span>, <span class="fl">36</span>, <span class="fl">68</span>, <span class="fl">1250</span>, <span class="fl">550</span><span class="op">)</span></span>
+<span>                                                          , maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span>                                                          , longevity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">200</span>, <span class="fl">25</span>, <span class="fl">4</span>, <span class="fl">110</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                                                        </span>
+<span></span>
+<span><span class="co">## Create PFG succession parameter files (with immature_size) --------------------------------</span></span>
+<span><span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                              , mat.PFG.succ <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                                                          , type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>, <span class="st">'C'</span>, <span class="st">'H'</span>, <span class="st">'H'</span>, <span class="st">'P'</span>, <span class="st">'P'</span><span class="op">)</span></span>
+<span>                                                          , height <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">250</span>, <span class="fl">36</span>, <span class="fl">68</span>, <span class="fl">1250</span>, <span class="fl">550</span><span class="op">)</span></span>
+<span>                                                          , maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span>                                                          , longevity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">200</span>, <span class="fl">25</span>, <span class="fl">4</span>, <span class="fl">110</span>, <span class="fl">70</span><span class="op">)</span></span>
+<span>                                                          , immature_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">8</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>                                                        </span>
+<span>                                                        </span>
+<span><span class="co">## -------------------------------------------------------------------------------------------</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_params'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create a skeleton folder</span></span>
+<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co">## PFG traits for succession</span></span>
+<span><span class="va">tab.succ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.succ</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create PFG succession parameter files -----------------------------------------------------</span></span>
+<span><span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span></span>
+<span>                           , mat.PFG.succ <span class="op">=</span> <span class="va">tab.succ</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create PFG succession parameter files (fixing strata limits) ------------------------------</span></span>
+<span><span class="fu">PRE_FATE.params_PFGsuccession</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span></span>
+<span>                              , mat.PFG.succ <span class="op">=</span> <span class="va">tab.succ</span></span>
+<span>                              , strata.limits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span>, <span class="fl">150</span>, <span class="fl">400</span>, <span class="fl">1000</span>, <span class="fl">2000</span><span class="op">)</span></span>
+<span>                              , strata.limits_reduce <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>                                                        </span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -427,7 +445,7 @@ all PFG :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

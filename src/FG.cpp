@@ -37,7 +37,7 @@
 
 using namespace std;
 
-  /* Note : New version of FG constructor using Matt T. parameters handler utilities (Params.h) */
+/* Note : New version of FG constructor using Matt T. parameters handler utilities (Params.h) */
 
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -49,388 +49,388 @@ m_PoolL(PTcount,0), m_InnateDorm(false), m_PotentialFecundity(100), /* Propagule
 m_LightShadeFactor(1), m_LightActiveGerm(Rcount, PC100), m_LightTolerance(LScount, vector<bool>(Rcount, true)), /* Light response */
 m_Dispersed(false), m_disp50(0.0), m_disp99(0.0), m_dispLD(0.0), /* Dispersal module */
 m_SoilContrib(0.0), m_SoilLow(0.0), m_SoilHigh(0.0), /* Soil response */
- m_SoilActiveGerm(Rcount, PC100), m_SoilTolerance(LScount, vector<Fract>(Rcount, PC100)), /* Soil response */
+m_SoilActiveGerm(Rcount, PC100), m_SoilTolerance(LScount, vector<Fract>(Rcount, PC100)), /* Soil response */
 m_DistResponse(FGresponse()), /* Disturbance response */
 m_FireResponse(FGresponse()), m_Flamm(0.0), /* Fire response */
 m_DroughtResponse(FGresponse()), m_DroughtSD(2,0.0), m_CountModToSev(0), m_CountSevMort(0), m_DroughtRecovery(0), /* Drought response */
 m_IsAlien(false) /* Alien module */
 {
-  	/* Nothing to do */
+  /* Nothing to do */
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile)
 {
-	/* 1. check parameter file existence */
-	testFileExist("--PFG_PARAMS_LIFE_HISTORY--", PFG_LifeHistoryFile, false);
-
-	/* 2. read succession parameters */
-	par::Params SuccParams(PFG_LifeHistoryFile.c_str(), " = \"", "#"); /* opening PFG life history traits parameters file */
-
-	logg.info("\n*********************************************",
+  /* 1. check parameter file existence */
+  testFileExist("--PFG_PARAMS_LIFE_HISTORY--", PFG_LifeHistoryFile, false);
+  
+  /* 2. read succession parameters */
+  par::Params SuccParams(PFG_LifeHistoryFile.c_str(), " = \"", "#"); /* opening PFG life history traits parameters file */
+  
+  logg.info("\n*********************************************",
             "\n** PFG : ", SuccParams.get_val<string>("NAME")[0],
-            "\n*********************************************\n",
-            "\n> Succession files opened");
-
-	/* 3. fill FG object according to given parameters */
-
-	/* PFG Life History parameters filling =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-	m_Name = SuccParams.get_val<string>("NAME")[0];
-	m_M = SuccParams.get_val<int>("MATURITY")[0];
-	m_L = SuccParams.get_val<int>("LONGEVITY")[0];
-	if (m_M >= m_L)
-	{
-		logg.error("!!! MATURITY is superior or equal to LONGEVITY. Please check!");
-	}
-
-	m_MaxA = Abund(SuccParams.get_val<int>("MAX_ABUNDANCE")[0]);
-	m_ImmSize = FractToDouble(Fract(SuccParams.get_val<int>("IMM_SIZE")[0]));
-	//m_MaxStratum = SuccParams.get_val<int>("MAX_STRATUM")[0];
-	vector<int> v_int = SuccParams.get_val<int>("MAX_STRATUM", true);
-	if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
-	m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
-	m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
-	if (m_Strata.size() != glob_params.getNoStrata() + 1)
-	{
-		logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
+                                                             "\n*********************************************\n",
+                                                             "\n> Succession files opened");
+  
+  /* 3. fill FG object according to given parameters */
+  
+  /* PFG Life History parameters filling =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  m_Name = SuccParams.get_val<string>("NAME")[0];
+  m_M = SuccParams.get_val<int>("MATURITY")[0];
+  m_L = SuccParams.get_val<int>("LONGEVITY")[0];
+  if (m_M >= m_L)
+  {
+    logg.error("!!! MATURITY is superior or equal to LONGEVITY. Please check!");
+  }
+  
+  m_MaxA = Abund(SuccParams.get_val<int>("MAX_ABUNDANCE")[0]);
+  m_ImmSize = FractToDouble(Fract(SuccParams.get_val<int>("IMM_SIZE")[0]));
+  //m_MaxStratum = SuccParams.get_val<int>("MAX_STRATUM")[0];
+  vector<int> v_int = SuccParams.get_val<int>("MAX_STRATUM", true);
+  if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
+  m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
+  m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
+  if (m_Strata.size() != glob_params.getNoStrata() + 1)
+  {
+    logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
                m_Strata.size() - 1," instead of ", glob_params.getNoStrata(),
                "). Please check!");
-	}
-	bool is_sup = false;
-	int prev_age = m_Strata[0];
-	for(unsigned i=1; i<m_Strata.size(); i++)
-	{
-		if (m_Strata[i] < prev_age)
-		{
-			is_sup = true;
-		}
-		prev_age = m_Strata[i];
-		if (is_sup)
-		{
-			logg.error("!!! CHANG_STR_AGES must be given in ascending order. Please check!");
-		}
-	}
-
-	v_int = SuccParams.get_val<int>("IS_ALIEN", true);
-	if (v_int.size()) m_IsAlien = v_int[0]; else m_IsAlien = false;
-
-	/* Propagule biology parameters filling =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-	m_PoolL = SuccParams.get_val<int>("SEED_POOL_LIFE");
-	if (m_PoolL.size() != PTcount)
-	{
-		logg.error("!!! Wrong number of parameters provided for SEED_POOL_LIFE (",
+  }
+  bool is_sup = false;
+  int prev_age = m_Strata[0];
+  for(unsigned i=1; i<m_Strata.size(); i++)
+  {
+    if (m_Strata[i] < prev_age)
+    {
+      is_sup = true;
+    }
+    prev_age = m_Strata[i];
+    if (is_sup)
+    {
+      logg.error("!!! CHANG_STR_AGES must be given in ascending order. Please check!");
+    }
+  }
+  
+  v_int = SuccParams.get_val<int>("IS_ALIEN", true);
+  if (v_int.size()) m_IsAlien = v_int[0]; else m_IsAlien = false;
+  
+  /* Propagule biology parameters filling =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  m_PoolL = SuccParams.get_val<int>("SEED_POOL_LIFE");
+  if (m_PoolL.size() != PTcount)
+  {
+    logg.error("!!! Wrong number of parameters provided for SEED_POOL_LIFE (",
                m_PoolL.size(), " instead of ", PTcount, "). Please check!");
-	}
-	m_InnateDorm = bool(SuccParams.get_val<int>("SEED_DORMANCY")[0]);
-
-	/* Potential fecundity parameter filling  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-	v_int = SuccParams.get_val<int>("POTENTIAL_FECUNDITY", true);
-	if (v_int.size()) m_PotentialFecundity = v_int[0]; else m_PotentialFecundity = glob_params.getPotentialFecundity();
-
-	logg.info("> Life History parameters provided");
+  }
+  m_InnateDorm = bool(SuccParams.get_val<int>("SEED_DORMANCY")[0]);
+  
+  /* Potential fecundity parameter filling  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
+  v_int = SuccParams.get_val<int>("POTENTIAL_FECUNDITY", true);
+  if (v_int.size()) m_PotentialFecundity = v_int[0]; else m_PotentialFecundity = glob_params.getPotentialFecundity();
+  
+  logg.info("> Life History parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
 {
-	/* 1. check parameter file existence */
-	testFileExist("--PFG_PARAMS_LIGHT--", PFG_LightFile, false);
-
-	/* 2. read light parameters */
-	par::Params LightParams(PFG_LightFile.c_str(), " = \"", "#");
-	
-	m_LightShadeFactor = LightParams.get_val<int>("SHADE_FACTOR")[0];
-	if (m_LightShadeFactor < 0)
-	{
-	  logg.error("!!! SHADE_FACTOR must be superior or equal to 0. Please check!");
-	}
-
-	vector<int> v_int = LightParams.get_val<int>("ACTIVE_GERM");
-	m_LightActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
-	if (m_LightActiveGerm.size() != Rcount)
-	{
-		logg.error("!!! Wrong number of parameters provided for ACTIVE_GERM (LIGHT) (",
+  /* 1. check parameter file existence */
+  testFileExist("--PFG_PARAMS_LIGHT--", PFG_LightFile, false);
+  
+  /* 2. read light parameters */
+  par::Params LightParams(PFG_LightFile.c_str(), " = \"", "#");
+  
+  m_LightShadeFactor = LightParams.get_val<int>("SHADE_FACTOR")[0];
+  if (m_LightShadeFactor < 0)
+  {
+    logg.error("!!! SHADE_FACTOR must be superior or equal to 0. Please check!");
+  }
+  
+  vector<int> v_int = LightParams.get_val<int>("ACTIVE_GERM");
+  m_LightActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
+  if (m_LightActiveGerm.size() != Rcount)
+  {
+    logg.error("!!! Wrong number of parameters provided for ACTIVE_GERM (LIGHT) (",
                m_LightActiveGerm.size(), " instead of ", Rcount, "). Please check!");
-	}
-
-	/* get light tolerance as vector and reshape it into matrix format */
-	v_int = LightParams.get_val<int>("LIGHT_TOL");
-	if (v_int.size() < (LScount-1) * Rcount)
-	{
-		logg.error("!!! Wrong number of parameters provided for LIGHT_TOL (",
+  }
+  
+  /* get light tolerance as vector and reshape it into matrix format */
+  v_int = LightParams.get_val<int>("LIGHT_TOL");
+  if (v_int.size() < (LScount-1) * Rcount)
+  {
+    logg.error("!!! Wrong number of parameters provided for LIGHT_TOL (",
                v_int.size(), " instead of ", (LScount-1) * Rcount,
                "). Please check!");
-	}
-	int counter = 0;
-	m_LightTolerance.resize(LScount);
-	for (int ls=1; ls<LScount; ls++)
-	{
-		m_LightTolerance[ls].resize(Rcount);
-		for (int r=0; r<Rcount; r++)
-		{
-			m_LightTolerance[ls][r] = v_int[counter];
-			counter ++;
-		}
-	}
-	/* Propagule Light tolerance is assumed to be the same as germinants */
-	m_LightTolerance[0].resize(Rcount);
-	for (int r=0; r<Rcount; r++)
-	{
-		m_LightTolerance[0][r] = m_LightTolerance[1][r];
-	}
-	logg.info("> PFG light parameters provided");
+  }
+  int counter = 0;
+  m_LightTolerance.resize(LScount);
+  for (int ls=1; ls<LScount; ls++)
+  {
+    m_LightTolerance[ls].resize(Rcount);
+    for (int r=0; r<Rcount; r++)
+    {
+      m_LightTolerance[ls][r] = v_int[counter];
+      counter ++;
+    }
+  }
+  /* Propagule Light tolerance is assumed to be the same as germinants */
+  m_LightTolerance[0].resize(Rcount);
+  for (int r=0; r<Rcount; r++)
+  {
+    m_LightTolerance[0][r] = m_LightTolerance[1][r];
+  }
+  logg.info("> PFG light parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getDispParams(const GSP& glob_params, const string& PFG_DispersalFile)
 {
-	/* 1. check parameter file existence */
-	testFileExist("--PFG_PARAMS_DISPERSAL--", PFG_DispersalFile, false);
-
-	/* 2. read dispersal parameters */
-	par::Params DispParams(PFG_DispersalFile.c_str(), " = \"", "#");
-
-	m_Dispersed = false;
-
-	vector<double> v_double = DispParams.get_val<double>("DISPERS_DIST");
-	if (v_double.size() == 3)
-	{
-		m_disp50 = v_double[0];
-		m_disp99 = v_double[1];
-		m_dispLD = v_double[2];
-	} else
-	{
-		logg.error("!!! Wrong number of parameters provided for DISPERS_DIST (",
+  /* 1. check parameter file existence */
+  testFileExist("--PFG_PARAMS_DISPERSAL--", PFG_DispersalFile, false);
+  
+  /* 2. read dispersal parameters */
+  par::Params DispParams(PFG_DispersalFile.c_str(), " = \"", "#");
+  
+  m_Dispersed = false;
+  
+  vector<double> v_double = DispParams.get_val<double>("DISPERS_DIST");
+  if (v_double.size() == 3)
+  {
+    m_disp50 = v_double[0];
+    m_disp99 = v_double[1];
+    m_dispLD = v_double[2];
+  } else
+  {
+    logg.error("!!! Wrong number of parameters provided for DISPERS_DIST (",
                v_double.size(), " instead of ", 3, "). Please check!");
-	}
-	if (m_disp99 < m_disp50 || m_dispLD < m_disp50 || m_dispLD < m_disp99)
-	{
-		logg.error("!!! DISPERS_DIST must be given in ascending order (disp50 <= disp99 <= dispLD). Please check!");
-	}
-
-	logg.info("> PFG dispersal parameters provided");
+  }
+  if (m_disp99 < m_disp50 || m_dispLD < m_disp50 || m_dispLD < m_disp99)
+  {
+    logg.error("!!! DISPERS_DIST must be given in ascending order (disp50 <= disp99 <= dispLD). Please check!");
+  }
+  
+  logg.info("> PFG dispersal parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getDistParams(const GSP& glob_params, const string& PFG_DisturbancesFile)
 {
-	m_DistResponse = FGresponse(PFG_DisturbancesFile, glob_params.getNoDist(), glob_params.getNoDistSub());
-	logg.info("> PFG disturbances parameters provided");
+  m_DistResponse = FGresponse(PFG_DisturbancesFile, glob_params.getNoDist(), glob_params.getNoDistSub());
+  logg.info("> PFG disturbances parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
 {
-	/* 1. check parameter file existence */
-	testFileExist("--PFG_PARAMS_SOIL--", PFG_SoilFile, false);
-
-	/* 2. read dispersal parameters */
-	par::Params SoilParams(PFG_SoilFile.c_str(), " = \"", "#");
-
-	m_SoilContrib = SoilParams.get_val<double>("SOIL_CONTRIB")[0];
-	m_SoilLow = SoilParams.get_val<double>("SOIL_LOW")[0];
-	m_SoilHigh = SoilParams.get_val<double>("SOIL_HIGH")[0];
-	if (m_SoilHigh < m_SoilContrib || m_SoilContrib < m_SoilLow || m_SoilHigh < m_SoilLow)
-	{
-		logg.error("!!! Soil values must be given in ascending order (SOIL_LOW <= SOIL_CONTRIB <= SOIL_HIGH). Please check!");
-	}
-
-	vector<int> v_int = SoilParams.get_val<int>("ACTIVE_GERM");
-	m_SoilActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
-	if (m_SoilActiveGerm.size() != Rcount)
-	{
-		logg.error("!!! Wrong number of parameters provided for ACTIVE_GERM (SOIL) (",
+  /* 1. check parameter file existence */
+  testFileExist("--PFG_PARAMS_SOIL--", PFG_SoilFile, false);
+  
+  /* 2. read dispersal parameters */
+  par::Params SoilParams(PFG_SoilFile.c_str(), " = \"", "#");
+  
+  m_SoilContrib = SoilParams.get_val<double>("SOIL_CONTRIB")[0];
+  m_SoilLow = SoilParams.get_val<double>("SOIL_LOW")[0];
+  m_SoilHigh = SoilParams.get_val<double>("SOIL_HIGH")[0];
+  if (m_SoilHigh < m_SoilContrib || m_SoilContrib < m_SoilLow || m_SoilHigh < m_SoilLow)
+  {
+    logg.error("!!! Soil values must be given in ascending order (SOIL_LOW <= SOIL_CONTRIB <= SOIL_HIGH). Please check!");
+  }
+  
+  vector<int> v_int = SoilParams.get_val<int>("ACTIVE_GERM");
+  m_SoilActiveGerm = convert_int_to_enum<Fract>("ACTIVE_GERM", v_int, "Fract", Fcount);
+  if (m_SoilActiveGerm.size() != Rcount)
+  {
+    logg.error("!!! Wrong number of parameters provided for ACTIVE_GERM (SOIL) (",
                m_SoilActiveGerm.size(), " instead of ", Rcount, "). Please check!");
-	}
-
-	/* get soil tolerance as vector and reshape it into matrix format */
-	v_int = SoilParams.get_val<int>("SOIL_TOL", true);
-	if (v_int.size() != Rcount * (LScount - 1))
-	{
-		logg.error("!!! Wrong number of parameters provided for SOIL_TOL (",
+  }
+  
+  /* get soil tolerance as vector and reshape it into matrix format */
+  v_int = SoilParams.get_val<int>("SOIL_TOL", true);
+  if (v_int.size() != Rcount * (LScount - 1))
+  {
+    logg.error("!!! Wrong number of parameters provided for SOIL_TOL (",
                v_int.size(), " instead of ", Rcount * (LScount - 1),
                "). Please check!");
-	}
-	int counter = 0;
-	m_SoilTolerance.resize(LScount);
-	for (unsigned i=1; i<m_SoilTolerance.size(); i++)
-	{ // fill automatically germinant LS case ==> not use at time
-		m_SoilTolerance[i].resize(Rcount);
-		for (unsigned j=0; j<m_SoilTolerance[i].size(); j++)
-		{
-			m_SoilTolerance[i][j] = convert_int_to_enum<Fract>("SOIL_TOL", v_int[counter], "Fract", Fcount);
-			counter ++;
-		}
-	}
-
-	/* Propagule Soil tolerance is assumed to be the same as germinants */
-	m_SoilTolerance[0].resize(Rcount);
-	for (unsigned c=0; c<m_SoilTolerance[0].size(); c++)
-	{
-		m_SoilTolerance[0][c] = m_SoilTolerance[1][c];
-	}
-
-	logg.info("> PFG soil parameters provided");
+  }
+  int counter = 0;
+  m_SoilTolerance.resize(LScount);
+  for (unsigned i=1; i<m_SoilTolerance.size(); i++)
+  { // fill automatically germinant LS case ==> not use at time
+    m_SoilTolerance[i].resize(Rcount);
+    for (unsigned j=0; j<m_SoilTolerance[i].size(); j++)
+    {
+      m_SoilTolerance[i][j] = convert_int_to_enum<Fract>("SOIL_TOL", v_int[counter], "Fract", Fcount);
+      counter ++;
+    }
+  }
+  
+  /* Propagule Soil tolerance is assumed to be the same as germinants */
+  m_SoilTolerance[0].resize(Rcount);
+  for (unsigned c=0; c<m_SoilTolerance[0].size(); c++)
+  {
+    m_SoilTolerance[0][c] = m_SoilTolerance[1][c];
+  }
+  
+  logg.info("> PFG soil parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getFireParams(const GSP& glob_params, const string& PFG_FireFile)
 {
-	/* 1. check parameter file existence */
-	testFileExist("--PFG_PARAMS_FIRE--", PFG_FireFile, false);
-
-	/* 2. read fire disturbance parameters */
-	par::Params FireParams(PFG_FireFile.c_str(), " = \"", "#");
-	m_FireResponse = FGresponse(PFG_FireFile, glob_params.getNoFireDist(), glob_params.getNoFireDistSub());
-	m_Flamm = FireParams.get_val<double>("FLAMMABILITY")[0];
-	logg.info("> PFG fire parameters provided");
+  /* 1. check parameter file existence */
+  testFileExist("--PFG_PARAMS_FIRE--", PFG_FireFile, false);
+  
+  /* 2. read fire disturbance parameters */
+  par::Params FireParams(PFG_FireFile.c_str(), " = \"", "#");
+  m_FireResponse = FGresponse(PFG_FireFile, glob_params.getNoFireDist(), glob_params.getNoFireDistSub());
+  m_Flamm = FireParams.get_val<double>("FLAMMABILITY")[0];
+  logg.info("> PFG fire parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 void FG::getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile)
 {
-	/* 1. check parameter file existence */
-	testFileExist("--PFG_PARAMS_DROUGHT--", PFG_DroughtFile, false);
-
-	/* 2. read drought disturbance parameters */
-	par::Params DroughtParams(PFG_DroughtFile.c_str(), " = \"", "#");
-	m_DroughtResponse = FGresponse(PFG_DroughtFile, 2, glob_params.getNoDroughtSub());
-	m_DroughtSD = DroughtParams.get_val<double>("DROUGHT_SD");
-	m_CountModToSev = DroughtParams.get_val<unsigned>("COUNT_MOD_TO_SEV")[0];
-	m_CountSevMort = DroughtParams.get_val<unsigned>("COUNT_SEV_MORT")[0];
-	m_DroughtRecovery = DroughtParams.get_val<unsigned>("DROUGHT_RECOVERY")[0];
-	logg.info("> PFG drought parameters provided");
+  /* 1. check parameter file existence */
+  testFileExist("--PFG_PARAMS_DROUGHT--", PFG_DroughtFile, false);
+  
+  /* 2. read drought disturbance parameters */
+  par::Params DroughtParams(PFG_DroughtFile.c_str(), " = \"", "#");
+  m_DroughtResponse = FGresponse(PFG_DroughtFile, 2, glob_params.getNoDroughtSub());
+  m_DroughtSD = DroughtParams.get_val<double>("DROUGHT_SD");
+  m_CountModToSev = DroughtParams.get_val<unsigned>("COUNT_MOD_TO_SEV")[0];
+  m_CountSevMort = DroughtParams.get_val<unsigned>("COUNT_SEV_MORT")[0];
+  m_DroughtRecovery = DroughtParams.get_val<unsigned>("DROUGHT_RECOVERY")[0];
+  logg.info("> PFG drought parameters provided");
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
 FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id)
 {
-	bool wrong_identifier = false;
-
-	bool doLight = glob_params.getDoLightInteraction();
-	bool doDisp = glob_params.getDoDispersal();
-	bool doDist = glob_params.getDoDisturbances();
-	bool doSoil = glob_params.getDoSoilInteraction();
-	bool doFire = glob_params.getDoFireDisturbances();
-	bool doDrought = glob_params.getDoDroughtDisturbances();
-
-	if (fg_id < file_of_params.getFGLifeHistory().size())
-	{
-		getSuccParams(glob_params,file_of_params.getFGLifeHistory()[fg_id]);
-		if (doLight)
-		{
-			if (fg_id < file_of_params.getFGLight().size())
-			{
-				getLightParams(glob_params,file_of_params.getFGLight()[fg_id]);
-			} else
-			{
-				wrong_identifier = true;
-			}
-		} else
-		{
-		  m_LightShadeFactor = 1;
-			m_LightActiveGerm.resize(Rcount, PC100);
-			m_LightTolerance.resize(LScount, vector<bool>(Rcount, true));
-		}
-		if (doDisp)
-		{
-			if (fg_id < file_of_params.getFGDispersal().size())
-			{
-				getDispParams(glob_params,file_of_params.getFGDispersal()[fg_id]);
-			} else
-			{
-				wrong_identifier = true;
-			}
-		} else
-		{
-			m_Dispersed = false;
-			m_disp50 = 0.0;
-			m_disp99 = 0.0;
-			m_dispLD = 0.0;
-		}
-		if (doSoil)
-		{
-			if (fg_id < file_of_params.getFGSoil().size())
-			{
-				getSoilParams(glob_params,file_of_params.getFGSoil()[fg_id]);
-			} else
-			{
-				wrong_identifier = true;
-			}
-		} else
-		{
-			m_SoilContrib = 0.0;
-			m_SoilLow = 0.0;
-			m_SoilHigh = 0.0;
-			m_SoilActiveGerm.resize(Rcount, PC100);
-			m_SoilTolerance.resize(LScount, vector<Fract>(Rcount, PC100));
-			//m_SoilTolerance.resize(LScount, vector<bool>(1, true));
-		}
-		if (doDist)
-		{
-			if (fg_id < file_of_params.getFGDisturbance().size())
-			{
-				getDistParams(glob_params, file_of_params.getFGDisturbance()[fg_id]);
-			} else
-			{
-				wrong_identifier = true;
-			}
-		} else
-		{
-			m_DistResponse = FGresponse();
-		}
-		if (doFire)
-		{
-			if (fg_id < file_of_params.getFGFire().size())
-			{
-				getFireParams(glob_params, file_of_params.getFGFire()[fg_id]);
-			} else
-			{
-				wrong_identifier = true;
-			}
-		} else
-		{
-			m_FireResponse = FGresponse();
-			m_Flamm = 0.0;
-		}
-		if (doDrought)
-		{
-			if (fg_id < file_of_params.getFGDrought().size())
-			{
-				getDrouParams(glob_params, file_of_params.getFGDrought()[fg_id]);
-			} else
-			{
-				wrong_identifier = true;
-			}
-		} else
-		{
-			m_DroughtResponse = FGresponse();
-			m_DroughtSD.resize(2,0.0);
-			m_CountModToSev = 0;
-			m_CountSevMort = 0;
-			m_DroughtRecovery = 0;
-		}
-
-	} else
-	{
-		wrong_identifier = true;
-	}
-
-	if (wrong_identifier)
-	{
-		logg.error("!!! Wrong identifier of FG given. Please check!");
-	} else
-	{
-		this->show();
-	}
+  bool wrong_identifier = false;
+  
+  bool doLight = glob_params.getDoLightInteraction();
+  bool doDisp = glob_params.getDoDispersal();
+  bool doDist = glob_params.getDoDisturbances();
+  bool doSoil = glob_params.getDoSoilInteraction();
+  bool doFire = glob_params.getDoFireDisturbances();
+  bool doDrought = glob_params.getDoDroughtDisturbances();
+  
+  if (fg_id < file_of_params.getFGLifeHistory().size())
+  {
+    getSuccParams(glob_params,file_of_params.getFGLifeHistory()[fg_id]);
+    if (doLight)
+    {
+      if (fg_id < file_of_params.getFGLight().size())
+      {
+        getLightParams(glob_params,file_of_params.getFGLight()[fg_id]);
+      } else
+      {
+        wrong_identifier = true;
+      }
+    } else
+    {
+      m_LightShadeFactor = 1;
+      m_LightActiveGerm.resize(Rcount, PC100);
+      m_LightTolerance.resize(LScount, vector<bool>(Rcount, true));
+    }
+    if (doDisp)
+    {
+      if (fg_id < file_of_params.getFGDispersal().size())
+      {
+        getDispParams(glob_params,file_of_params.getFGDispersal()[fg_id]);
+      } else
+      {
+        wrong_identifier = true;
+      }
+    } else
+    {
+      m_Dispersed = false;
+      m_disp50 = 0.0;
+      m_disp99 = 0.0;
+      m_dispLD = 0.0;
+    }
+    if (doSoil)
+    {
+      if (fg_id < file_of_params.getFGSoil().size())
+      {
+        getSoilParams(glob_params,file_of_params.getFGSoil()[fg_id]);
+      } else
+      {
+        wrong_identifier = true;
+      }
+    } else
+    {
+      m_SoilContrib = 0.0;
+      m_SoilLow = 0.0;
+      m_SoilHigh = 0.0;
+      m_SoilActiveGerm.resize(Rcount, PC100);
+      m_SoilTolerance.resize(LScount, vector<Fract>(Rcount, PC100));
+      //m_SoilTolerance.resize(LScount, vector<bool>(1, true));
+    }
+    if (doDist)
+    {
+      if (fg_id < file_of_params.getFGDisturbance().size())
+      {
+        getDistParams(glob_params, file_of_params.getFGDisturbance()[fg_id]);
+      } else
+      {
+        wrong_identifier = true;
+      }
+    } else
+    {
+      m_DistResponse = FGresponse();
+    }
+    if (doFire)
+    {
+      if (fg_id < file_of_params.getFGFire().size())
+      {
+        getFireParams(glob_params, file_of_params.getFGFire()[fg_id]);
+      } else
+      {
+        wrong_identifier = true;
+      }
+    } else
+    {
+      m_FireResponse = FGresponse();
+      m_Flamm = 0.0;
+    }
+    if (doDrought)
+    {
+      if (fg_id < file_of_params.getFGDrought().size())
+      {
+        getDrouParams(glob_params, file_of_params.getFGDrought()[fg_id]);
+      } else
+      {
+        wrong_identifier = true;
+      }
+    } else
+    {
+      m_DroughtResponse = FGresponse();
+      m_DroughtSD.resize(2,0.0);
+      m_CountModToSev = 0;
+      m_CountSevMort = 0;
+      m_DroughtRecovery = 0;
+    }
+    
+  } else
+  {
+    wrong_identifier = true;
+  }
+  
+  if (wrong_identifier)
+  {
+    logg.error("!!! Wrong identifier of FG given. Please check!");
+  } else
+  {
+    this->show();
+  }
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -439,7 +439,7 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
 
 FG::~FG()
 {
-  	/* Nothing to do */
+  /* Nothing to do */
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -535,7 +535,7 @@ void FG::setIsAlien(const bool& isAlien){m_IsAlien = isAlien;}
 
 void FG::show()
 {
-	logg.debug("\n*********************************************",
+  logg.debug("\n*********************************************",
              "\n** Functional Group Parameters:",
              "\n*********************************************\n",
              "\nm_Name = ", m_Name,
@@ -556,18 +556,18 @@ void FG::show()
              "\nm_disp99 = ", m_disp99,
              "\nm_dispLD = ", m_dispLD,
              "\n** m_DistResponse =");
-	m_DistResponse.show();
+  m_DistResponse.show();
   logg.debug("\nm_SoilContrib = ", m_SoilContrib,
              "\nm_SoilLow = ", m_SoilLow,
              "\nm_SoilHigh = ", m_SoilHigh,
              "\nm_SoilActiveGerm = (column: resource) ", m_SoilActiveGerm,
              "\nm_SoilTolerance = (line: life stage, column: resource)", m_SoilTolerance,
              "\n** m_FireResponse =");
-	m_FireResponse.show();
+  m_FireResponse.show();
   logg.debug("\nm_Flamm = ", m_Flamm,
              "\n** m_DroughtResponse =");
-	m_DroughtResponse.show();
-	logg.debug("\nm_DroughtSD = ", m_DroughtSD,
+  m_DroughtResponse.show();
+  logg.debug("\nm_DroughtSD = ", m_DroughtSD,
              "\nm_CountModToSev = ", m_CountModToSev,
              "\nm_CountSevMort = ", m_CountSevMort,
              "\nm_DroughtRecovery = ", m_DroughtRecovery,

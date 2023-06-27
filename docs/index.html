@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -82,7 +82,7 @@
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -211,9 +211,7 @@ devtools::install_github(repo="leca-dev/RFate")
 <p><br></p>
 <p><code>FATE</code> is a <strong>spatially and temporally explicit vegetation model</strong>. It uses <strong>plant functional groups (PFG)</strong> and integrates important mechanisms driving vegetation dynamics, structure and diversity, such as <strong>demographic cycle</strong>, obviously, but also <strong>seeds dispersal</strong>, <strong>abiotic filtering</strong> or <strong>biotic interactions</strong> (through the competition for resources like light availability or soil nutrient availability).</p>
 <p>If <strong>primary succession</strong> is the most obvious ecological process that can be modelled with <code>FATE</code>, events related to <strong>secondary succession</strong> can be represented as well using the various <strong><code>FATE</code> add-on modules</strong> : disturbances (mowing, grazing, fire..), drought event, invasive species.</p>
-<div style="text-align:center;">
-<p><img src="articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></p>
-</div>
+<div style="text-align:center;"><p><img src="articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></p></div>
 <p><br></p>
 <p>As vegetation modelling can be challenging (data gathering, parameterization, handling results…), <code>RFate</code> provides <strong>user-friendly functions</strong> to go through the <strong>whole <code>FATE</code> workflow</strong>. Links below present some <strong>guidance documents</strong>, for the vegetation model as well as for the <code>R</code>package.</p>
 <p><br></p>
@@ -234,13 +232,8 @@ devtools::install_github(repo="leca-dev/RFate")
 <li><a href="articles/rfate_tutorial_2_params.html">and how to prepare the corresponding parameter files</a></li>
 </ul>
 <p><strong>3. Analyze the outputs :</strong></p>
-<ul>
-<li><a href="articles/rfate_tutorial_3_graphics.html">transform results and produce graphics</a></li>
-</ul>
-<div class="zoom">
-<p>
-<img src="articles/pictures/SCHEMA_FATE_WORKFLOW_functions.png" alt="Main workflow"></p>
-</div>
+<ul><li><a href="articles/rfate_tutorial_3_graphics.html">transform results and produce graphics</a></li></ul>
+<div class="zoom"><p><img src="articles/pictures/SCHEMA_FATE_WORKFLOW_functions.png" alt="Main workflow"></p></div>
 </div>
 
   </div>
@@ -305,7 +298,7 @@ devtools::install_github(repo="leca-dev/RFate")
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

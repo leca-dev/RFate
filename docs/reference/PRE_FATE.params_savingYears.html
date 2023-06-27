@@ -20,7 +20,7 @@ activated) and/or simulation objects."><!-- mathjax --><script src="https://cdnj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ activated) and/or simulation objects."><!-- mathjax --><script src="https://cdnj
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -58,7 +58,7 @@ activated) and/or simulation objects."><!-- mathjax --><script src="https://cdnj
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -145,12 +145,12 @@ activated) and/or simulation objects.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.params_savingYears</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  years.maps <span class="op">=</span> <span class="cn">NULL</span>,
-  years.objects <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.params_savingYears</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  years.maps <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  years.objects <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,21 +158,35 @@ activated) and/or simulation objects.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>years.maps</dt>
 <dd><p>(<em>optional</em>) <br> a <code>vector</code> of simulation years 
 at which PFG abundance maps will be saved <br> (<em>as well as maps of 
 light and soil resources if these modules are activated</em>)</p></dd>
+
+
 <dt>years.objects</dt>
 <dd><p>(<em>optional</em>) <br> a <code>vector</code> of simulation 
 years at which <code>FATE</code> simulation state will be saved</p></dd>
+
+
 <dt>opt.folder.name</dt>
 <dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding 
 to the name of the folder that will be created into the 
 <code>name.simulation/DATA/SAVE/</code> directory to store the results</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Two <code>.txt</code> files into the <code>name.simulation/DATA/SAVE/</code>directory :</p><ul><li><p><code class="file">SAVE_YEARS_maps.txt</code> : one line for each simulation year for 
+    
+
+<p>Two <code>.txt</code> files into the <code>name.simulation/DATA/SAVE/</code></p>
+
+
+<p>directory :</p>
+<p></p>
+<ul><li><p><code class="file">SAVE_YEARS_maps.txt</code> : one line for each simulation year for 
    which the raster maps are to be saved</p></li>
 <li><p><code class="file">SAVE_YEARS_objects.txt</code> : one line for each simulation year 
    for which the <code>FATE</code> objects are to be saved <br><br></p></li>
@@ -215,16 +229,15 @@ outputs :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span>
-<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co">## Create a SAVE_year_maps or/and SAVE_year_objects parameter file ---------------------------</span>
-<span class="fu">PRE_FATE.params_savingYears</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                            , years.maps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span><span class="op">)</span>
-                            , years.objects <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span></span>
+<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create a SAVE_year_maps or/and SAVE_year_objects parameter file ---------------------------</span></span>
+<span><span class="fu">PRE_FATE.params_savingYears</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                            , years.maps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">150</span>, <span class="fl">200</span><span class="op">)</span></span>
+<span>                            , years.objects <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -238,7 +251,7 @@ outputs :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

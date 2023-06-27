@@ -20,13 +20,14 @@ SAVE_FATE.step2_parameters(
   mat.PFG.drought.tol = NULL,
   rasters = list(name.MASK = NA, name.DIST = NA, name.DROUGHT = NA, name.FIRE = NA,
     name.ELEVATION = NA, name.SLOPE = NA),
-  multipleSet = list(name.simulation.1 = NA, name.simulation.2 = NA, file.simulParam.1
-    = NA, file.simulParam.2 = NA, no_simulations = NA, opt.percent_maxAbund = NA,
+  multipleSet = list(name.simulation.1 = NA, name.simulation.2 = NA, file.simulParam.1 =
+    NA, file.simulParam.2 = NA, no_simulations = NA, opt.percent_maxAbund = NA,
     opt.percent_seeding = NA, opt.percent_light = NA, opt.percent_soil = NA,
     do.max_abund_low = NA, do.max_abund_medium = NA, do.max_abund_high = NA,
     do.seeding_duration = NA, do.seeding_timestep = NA, do.seeding_input = NA,
     do.no_strata = NA, do.LIGHT.thresh_medium = NA, do.LIGHT.thresh_low = NA,
-    do.SOIL.init = NA, do.SOIL.retention = NA, do.DISPERSAL.mode = NA,     
+    do.SOIL.init = NA, do.SOIL.retention = NA, do.DISPERSAL.mode = NA, 
+    
     do.HABSUIT.mode = NA)
 )
 }

@@ -18,7 +18,7 @@ species, combining several dissimilarity distance matrices."><!-- mathjax --><sc
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@ species, combining several dissimilarity distance matrices."><!-- mathjax --><sc
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -56,7 +56,7 @@ species, combining several dissimilarity distance matrices."><!-- mathjax --><sc
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -141,12 +141,12 @@ species, combining several dissimilarity distance matrices.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.speciesDistanceCombine</span><span class="op">(</span>
-  <span class="va">list.mat.dist</span>,
-  opt.min.noMat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">list.mat.dist</span><span class="op">)</span>,
-  opt.normal <span class="op">=</span> <span class="cn">TRUE</span>,
-  opt.weights <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.speciesDistanceCombine</span><span class="op">(</span></span>
+<span>  <span class="va">list.mat.dist</span>,</span>
+<span>  opt.min.noMat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">list.mat.dist</span><span class="op">)</span>,</span>
+<span>  opt.normal <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opt.weights <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -154,24 +154,39 @@ species, combining several dissimilarity distance matrices.</p>
     <dl><dt>list.mat.dist</dt>
 <dd><p>a <code>list</code> of matrices containing dissimilarity 
 distance values between each pair of species.</p></dd>
+
+
 <dt>opt.min.noMat</dt>
 <dd><p>(<em>optional</em>) default <code>length(list.mat.dist)</code>. <br> 
 An <code>integer</code> corresponding to the minimal number of distance matrices for 
 which each species should have values</p></dd>
+
+
 <dt>opt.normal</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> 
 If <code>TRUE</code>, all given distance matrices will be normalized 
 (see <a href="PRE_FATE.speciesDistanceCombine#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>opt.weights</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> 
 A <code>vector</code> of <code>double</code> (between <code>0</code> and <code>1</code>) 
 corresponding to the weights for each distance matrix provided in 
 <code>list.mat.dist</code>. They must sum up to <code>1</code>.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> containing the weighted (or not) combination of 
-the different transformed (or not) distance matrices given. <br><br>The information for the combination of all distances is written in 
+    
+
+<p>A <code>matrix</code> containing the weighted (or not) combination of 
+the different transformed (or not) distance matrices given. <br></p>
+<p></p>
+<p><br></p>
+
+
+
+<p>The information for the combination of all distances is written in 
 <code class="file">PRE_FATE_DOMINANT_speciesDistance.csv</code> file.</p>
     </div>
     <div id="details">
@@ -202,63 +217,62 @@ to each distance matrix before combining them :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Species traits</span>
-<span class="va">tab.traits</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.traits</span>
-<span class="va">tab.traits</span> <span class="op">=</span> <span class="va">tab.traits</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'species'</span>, <span class="st">'GROUP'</span>, <span class="st">'MATURITY'</span>, <span class="st">'LONGEVITY'</span>
-                            , <span class="st">'HEIGHT'</span>, <span class="st">'DISPERSAL'</span>, <span class="st">'LIGHT'</span>, <span class="st">'NITROGEN'</span><span class="op">)</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.traits</span><span class="op">)</span>
-
-<span class="co">## Species niche overlap (dissimilarity distances)</span>
-<span class="va">DIST.overlap</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">mat.overlap</span>
-<span class="va">DIST.overlap</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-
-<span class="co">## Species functional distances (dissimilarity)</span>
-<span class="va">DIST.traits</span> <span class="op">=</span> <span class="fu"><a href="PRE_FATE.speciesDistanceTraits.html">PRE_FATE.speciesDistanceTraits</a></span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.traits</span>
-                                             , opt.maxPercent.NA <span class="op">=</span> <span class="fl">0.05</span>
-                                             , opt.maxPercent.similarSpecies <span class="op">=</span> <span class="fl">0.3</span>
-                                             , opt.min.sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
-<span class="va">DIST.traits</span><span class="op">$</span><span class="va">Chamaephyte</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-
-<span class="co">## Combine distances ---------------------------------------------------------</span>
-<span class="va">list.DIST</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">DIST.overlap</span>, <span class="va">DIST.traits</span><span class="op">$</span><span class="va">Chamaephyte</span><span class="op">)</span>
-<span class="va">sp.DIST.n</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistanceCombine</span><span class="op">(</span>list.mat.dist <span class="op">=</span> <span class="va">list.DIST</span>
-                                            , opt.weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
-<span class="va">sp.DIST.un</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistanceCombine</span><span class="op">(</span>list.mat.dist <span class="op">=</span> <span class="va">list.DIST</span>
-                                             , opt.norm <span class="op">=</span> <span class="cn">FALSE</span>
-                                             , opt.weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span>
-
-
-
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/taiyun/corrplot" class="external-link">corrplot</a></span><span class="op">)</span>
-<span class="va">list.DIST</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">DIST.overlap</span>, <span class="va">DIST.traits</span><span class="op">$</span><span class="va">Chamaephyte</span>
-                 , <span class="va">sp.DIST.un</span>, <span class="va">sp.DIST.n</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">list.DIST</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'overlap'</span>, <span class="st">'traits'</span>, <span class="st">'un-normed'</span>, <span class="st">'normed'</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">li</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">list.DIST</span><span class="op">)</span><span class="op">)</span>
-<span class="op">{</span>
-  <span class="va">tmp</span> <span class="op">=</span> <span class="va">list.DIST</span><span class="op">[[</span><span class="va">li</span><span class="op">]</span><span class="op">]</span>
-  <span class="va">tmp</span> <span class="op">=</span> <span class="va">tmp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span><span class="op">]</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span><span class="va">tmp</span>, method <span class="op">=</span> <span class="st">'shade'</span>
-           , type <span class="op">=</span> <span class="st">'lower'</span>, cl.lim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>
-           , is.corr <span class="op">=</span> <span class="cn">FALSE</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/raster/man/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">list.DIST</span><span class="op">)</span><span class="op">[</span><span class="va">li</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/andrie/ggdendro" class="external-link">ggdendro</a></span><span class="op">)</span>
-<span class="va">hc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span><span class="op">)</span>
-<span class="va">pp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html" class="external-link">ggdendrogram</a></span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Hierarchical clustering based on species distances'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/raster/man/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">)</span>
-<span class="op">}</span>
-
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Species traits</span></span>
+<span><span class="va">tab.traits</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.traits</span></span>
+<span><span class="va">tab.traits</span> <span class="op">=</span> <span class="va">tab.traits</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'species'</span>, <span class="st">'GROUP'</span>, <span class="st">'MATURITY'</span>, <span class="st">'LONGEVITY'</span></span>
+<span>                            , <span class="st">'HEIGHT'</span>, <span class="st">'DISPERSAL'</span>, <span class="st">'LIGHT'</span>, <span class="st">'NITROGEN'</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.traits</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Species niche overlap (dissimilarity distances)</span></span>
+<span><span class="va">DIST.overlap</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">mat.overlap</span></span>
+<span><span class="va">DIST.overlap</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## Species functional distances (dissimilarity)</span></span>
+<span><span class="va">DIST.traits</span> <span class="op">=</span> <span class="fu"><a href="PRE_FATE.speciesDistanceTraits.html">PRE_FATE.speciesDistanceTraits</a></span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.traits</span></span>
+<span>                                             , opt.maxPercent.NA <span class="op">=</span> <span class="fl">0.05</span></span>
+<span>                                             , opt.maxPercent.similarSpecies <span class="op">=</span> <span class="fl">0.3</span></span>
+<span>                                             , opt.min.sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="va">DIST.traits</span><span class="op">$</span><span class="va">Chamaephyte</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## Combine distances ---------------------------------------------------------</span></span>
+<span><span class="va">list.DIST</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">DIST.overlap</span>, <span class="va">DIST.traits</span><span class="op">$</span><span class="va">Chamaephyte</span><span class="op">)</span></span>
+<span><span class="va">sp.DIST.n</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistanceCombine</span><span class="op">(</span>list.mat.dist <span class="op">=</span> <span class="va">list.DIST</span></span>
+<span>                                            , opt.weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">sp.DIST.un</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistanceCombine</span><span class="op">(</span>list.mat.dist <span class="op">=</span> <span class="va">list.DIST</span></span>
+<span>                                             , opt.norm <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>                                             , opt.weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/taiyun/corrplot" class="external-link">corrplot</a></span><span class="op">)</span></span>
+<span><span class="va">list.DIST</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">DIST.overlap</span>, <span class="va">DIST.traits</span><span class="op">$</span><span class="va">Chamaephyte</span></span>
+<span>                 , <span class="va">sp.DIST.un</span>, <span class="va">sp.DIST.n</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">list.DIST</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'overlap'</span>, <span class="st">'traits'</span>, <span class="st">'un-normed'</span>, <span class="st">'normed'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">li</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">list.DIST</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">{</span></span>
+<span>  <span class="va">tmp</span> <span class="op">=</span> <span class="va">list.DIST</span><span class="op">[[</span><span class="va">li</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="va">tmp</span> <span class="op">=</span> <span class="va">tmp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html" class="external-link">corrplot</a></span><span class="op">(</span><span class="va">tmp</span>, method <span class="op">=</span> <span class="st">'shade'</span></span>
+<span>           , type <span class="op">=</span> <span class="st">'lower'</span>, cl.lim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
+<span>           , is.corr <span class="op">=</span> <span class="cn">FALSE</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">list.DIST</span><span class="op">)</span><span class="op">[</span><span class="va">li</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/andrie/ggdendro" class="external-link">ggdendro</a></span><span class="op">)</span></span>
+<span><span class="va">hc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="va">sp.DIST.n</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pp</span> <span class="op">=</span> <span class="fu">ggdendrogram</span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Hierarchical clustering based on species distances'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -272,7 +286,7 @@ to each distance matrix before combining them :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

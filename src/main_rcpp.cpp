@@ -38,6 +38,7 @@
 #include <vector>
 #include <cmath>
 #include <ctime>
+#include <string>
 
 #include "stdlib.h"
 #include "stdio.h"
@@ -52,7 +53,7 @@
   
   /* to get CPU information */
   #include "sys/times.h" // Unix
-  #include "sys/vtimes.h" // Unix
+  // #include "sys/vtimes.h" // Unix
   
 	#include "gdal.h"
 	#include <ogr_spatialref.h>
@@ -91,8 +92,6 @@
 /* to save and load simulation objects */
 #include <boost/archive/text_oarchive.hpp> // to create archive
 #include <boost/archive/text_iarchive.hpp> // to read archive
-#include <boost/lexical_cast.hpp> // to transform int into string
-#include <boost/filesystem.hpp>   // for file manipulation
 #include <boost/serialization/export.hpp> // for children class serialisation
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -228,7 +227,7 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 using namespace std;
 
 /* some global variables */
-string FATEHDD_VERSION = "6.2-3";
+// string FATEHDD_VERSION = "6.2-3";
 SimulMap* simulMap(0);
 Logger logg;
 
@@ -241,22 +240,22 @@ void saveFATE(string objFileName)
 	ofs.close();
 
 	// Compress file
-	ostringstream ossCompressCommand;
-	ossCompressCommand <<  "gzip -9 -f " << objFileName;
-	string strCompressCommand = ossCompressCommand.str();
-	int compress_ok = system(strCompressCommand.c_str());
-	if (compress_ok != 0)
-	{
-		logg.warning("Compression failed for ", objFileName);
-	}
+	// ostringstream ossCompressCommand;
+	// ossCompressCommand <<  "gzip -9 -f " << objFileName;
+	// string strCompressCommand = ossCompressCommand.str();
+	// int compress_ok = system(strCompressCommand.c_str());
+	// if (compress_ok != 0)
+	// {
+	// 	logg.warning("Compression failed for ", objFileName);
+	// }
 }
 
 void loadFATE(string objFileName)
 {
 	// Create an input archive
-	ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
-	if (ifs.good())
-	{
+  ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
+  if (ifs.good())
+  {
 		boost::archive::text_iarchive ar(ifs);
 		ar >> simulMap; // load data
 		ifs.close(); // close file
@@ -478,45 +477,6 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		GSP glob_params = GSP(file_of_params.getGlobSimulParams());
 		int noFG = glob_params.getNoFG();
 		logg.info("*** REBUILDING Functional groups...");
-		if (noFG != file_of_params.getFGLifeHistory().size())
-		{
-			logg.error("!!! Parameters NO_PFG (", noFG,
-								 ") and --PFG_PARAMS_LIFE_HISTORY-- (",
-								 file_of_params.getFGLifeHistory().size(),
-								 ") do not match in term of number!");
-		}
-		if (glob_params.getDoDispersal() &&
-				noFG != file_of_params.getFGDispersal().size())
-		{
-			logg.error("!!! Parameters NO_PFG (", noFG,
-								 ") and --PFG_PARAMS_DISPERSAL-- (",
-								 file_of_params.getFGDispersal().size(),
-								 ") do not match in term of number!");
-		}
-		if (glob_params.getDoDisturbances() &&
-				noFG != file_of_params.getFGDisturbance().size())
-		{
-			logg.error("!!! Parameters NO_PFG (", noFG,
-								 ") and --PFG_PARAMS_DISTURBANCES-- (",
-								 file_of_params.getFGDisturbance().size(),
-								 ") do not match in term of number!");
-		}
-		if (glob_params.getDoFireDisturbances() &&
-				noFG != file_of_params.getFGFire().size())
-		{
-			logg.error("!!! Parameters NO_PFG (", noFG,
-								 ") and --PFG_PARAMS_FIRE-- (",
-								 file_of_params.getFGFire().size(),
-								 ") do not match in term of number!");
-		}
-		if (glob_params.getDoDroughtDisturbances() &&
-				noFG != file_of_params.getFGDrought().size())
-		{
-			logg.error("!!! Parameters NO_PFG (", noFG,
-								 ") and --PFG_PARAMS_DROUGHT-- (",
-								 file_of_params.getFGDrought().size(),
-								 ") do not match in term of number!");
-		}
 		vector<FG> fg_vec_tmp;
 		for (int fg_id=0; fg_id<noFG; fg_id++)
 		{
@@ -644,7 +604,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 			logg.info("Saving simulation object...");
 			{
 				// Create an output archive
-				string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
+				string objFileName = file_of_params.getSavingDir() + "_SimulMap_" + to_string(year) + ".sav";
 				logg.debug(objFileName.c_str());
 				saveFATE(objFileName);
 			}
@@ -654,7 +614,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 			simul_objects_saving_times.erase(simul_objects_saving_times.begin());
 
 			/* TEST EQUALITY */
-			/*string objFileName = file_of_params.getSavingDir() + "SimulMap_" + boost::lexical_cast<string>(year) + ".sav";
+			/*string objFileName = file_of_params.getSavingDir() + "SimulMap_" + to_string(year) + ".sav";
 			loadFATE(objFileName);
 			assert(*test == *simulMap);*/
 		}

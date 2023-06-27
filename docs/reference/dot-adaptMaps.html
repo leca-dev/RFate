@@ -21,7 +21,7 @@ a raster mask and save them with the specified extension."><!-- mathjax --><scri
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ a raster mask and save them with the specified extension."><!-- mathjax --><scri
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -59,7 +59,7 @@ a raster mask and save them with the specified extension."><!-- mathjax --><scri
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -146,13 +146,13 @@ a raster mask and save them with the specified extension.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">.adaptMaps</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  opt.name.file <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">extension.old</span>,
-  extension.new <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.name.MASK <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.adaptMaps</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  opt.name.file <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">extension.old</span>,</span>
+<span>  extension.new <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opt.name.MASK <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -160,17 +160,25 @@ a raster mask and save them with the specified extension.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory 
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>opt.name.file</dt>
 <dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding
 to the complete or partial name of the file in which to search and change 
 the pattern</p></dd>
+
+
 <dt>extension.old</dt>
 <dd><p>a <code>string</code> corresponding to the extension of 
 raster files to be found</p></dd>
+
+
 <dt>extension.new</dt>
 <dd><p>(<em>optional</em>) <br> a <code>string</code> (either 
 <code>tif</code> or <code>img</code>) corresponding to the new extension to save all 
 the maps</p></dd>
+
+
 <dt>opt.name.MASK</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> 
 A <code>string</code> corresponding to the file name of a raster 
@@ -178,6 +186,7 @@ mask, with either <code>0</code> or <code>1</code> within each pixel, <code>1</c
 corresponding to the cells of the studied area in which the succession 
 (core) module of the <code>FATE</code> simulation will take place (see 
 <a href="PRE_FATE.params_globalParameters.html#details"><code>PRE_FATE.params_globalParameters</code></a>)</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -196,7 +205,7 @@ corresponding to the cells of the studied area in which the succession
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

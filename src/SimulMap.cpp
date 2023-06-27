@@ -29,9 +29,8 @@
 #include <numeric>
 #include <chrono>
 #include <random>
-
-#include <boost/math/distributions/normal.hpp>
-#include <boost/random.hpp>
+#include <string>
+#include <filesystem>
 
 #include "gdal_priv.h" // to read raster files
 #include "gdal.h"
@@ -43,21 +42,15 @@
 #include <boost/iostreams/filter/gzip.hpp>
 
 namespace bo = boost::iostreams;
+namespace fs = std::filesystem;
 using namespace std;
 
-// boost::normal_distribution<double> génère une distribution normale
 // boost::mt19937 est un Mersenne twister generator, ou générateur de nombres pseudo-aléatoires
-// boost::uniform_01<RandomGenerator> génère une distribution aléatoire uniforme
-// boost::variate_generator<RandomGenerator&, Normal> est un bivariate generator (générateur MT19937+distribution standard uniforme)
 
-typedef boost::normal_distribution<double> Normal;
-typedef boost::mt19937 RandomGenerator;
-typedef boost::uniform_01<RandomGenerator&> Uni01;
-typedef boost::uniform_real<double> UniReal;
-typedef boost::uniform_int<int> UniInt;
-typedef boost::variate_generator<RandomGenerator&, Normal> GeneratorNorm;
-typedef boost::variate_generator<RandomGenerator&, UniReal> GeneratorUniReal;
-typedef boost::variate_generator<RandomGenerator&, UniInt> GeneratorUniInt;
+typedef std::mt19937 RandomGenerator;
+typedef std::uniform_real_distribution<double> UniReal;
+typedef std::uniform_int_distribution<int> UniInt;
+typedef std::normal_distribution<double> Normal;
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Constructor                                                                                     */
@@ -562,11 +555,14 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
     {
       vector< vector<double> > newMaps; // DOUBLE VALUES
       newMaps.reserve(noFiles);
-      for (unsigned file_id=0; file_id<noFiles; file_id++)
-      {
-        if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"dist")==0 | strcmp(typeFile.c_str(),"aliens")==0){
+      if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"dist")==0 | strcmp(typeFile.c_str(),"aliens")==0){
+        for (unsigned file_id=0; file_id<noFiles; file_id++)
+        {
           newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], 0.0, 1.0 ) );
-        } else if (strcmp(typeFile.c_str(),"drought")==0){
+        }
+      } else if (strcmp(typeFile.c_str(),"drought")==0){
+        for (unsigned file_id=0; file_id<noFiles; file_id++)
+        {
           newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], -5000.0, 1000.0 ) );
         }
       }
@@ -713,7 +709,6 @@ void SimulMap::DoAliensIntroduction(int yr)
   /* Do succession only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  
   for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
   {
     unsigned cell_ID = m_MaskCells[ID];
@@ -743,23 +738,17 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  Uni01 random_01(rng);
+  UniReal random_01(0.0, 1.0);
   
   int noFires = m_glob_params.getFireIgnitNo()[dist];
-  
-  /* No of starting fires : normal distribution */
   if (m_glob_params.getFireIgnitMode()==2)
-  {
+  { /* No of starting fires : normal distribution */
     Normal distrib(noFires,noFires/10+1);
-    GeneratorNorm draw_from_distrib(rng,distrib);
-    noFires = draw_from_distrib();
-  }
-  /* No of starting fires : previous data distribution */
-  if (m_glob_params.getFireIgnitMode()==3)
-  {
+    noFires = distrib(rng);
+  } else if (m_glob_params.getFireIgnitMode()==3)
+  {  /* No of starting fires : previous data distribution */
     UniInt distrib(0,m_glob_params.getFireIgnitNoHist().size()-1);
-    GeneratorUniInt draw_from_distrib(rng,distrib);
-    noFires = m_glob_params.getFireIgnitNoHist()[draw_from_distrib()];
+    noFires = m_glob_params.getFireIgnitNoHist()[distrib(rng)];
   }
   
   vector<unsigned> startCell;
@@ -768,10 +757,9 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
   if (m_glob_params.getFireIgnitMode()==1 || m_glob_params.getFireIgnitMode()==2 || m_glob_params.getFireIgnitMode()==3)
   {
     UniInt distrib(0,availCells.size()-1);
-    GeneratorUniInt draw_from_distrib(rng,distrib);
     for (int n=0; n<noFires; n++)
     {
-      startCell.push_back(availCells[draw_from_distrib()]); //rand() % availCells.size();
+      startCell.push_back(availCells[distrib(rng)]); //rand() % availCells.size();
     }
   } else if (m_glob_params.getFireIgnitMode()==4) /* ChaoLi probability adaptation */
   {
@@ -789,17 +777,16 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
         abundTmpFG.push_back(abundTmp);
       }
       double probFuel = 0;
-      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      if (abundTmpTot>0)
       {
-        if (abundTmpTot>0)
+        for (unsigned fg=0; fg<m_FGparams.size(); fg++)
         {
           probFuel += (m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFlamm() / m_glob_params.getFireIgnitFlammMax())* (abundTmpFG[fg]/abundTmpTot);
         }
       }
       /* Drought proba */
       double probDrought = (-1.0) * m_DroughtMap(*cell_ID);
-      
-      if (random_01() < probBL*probFuel*probDrought)
+      if (random_01(rng) < probBL*probFuel*probDrought)
       { //(rand()/(double)RAND_MAX)
         startCell.push_back(*cell_ID);
       }
@@ -814,7 +801,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  Uni01 random_01(rng);
+  UniReal random_01(0.0, 1.0);
   
   vector<unsigned int> preCell, currCell, postCell, neighCell;
   currCell = start;
@@ -837,35 +824,66 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   
   while (currCell.size())
   {
-    for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
-    {
-      /* Get the IDs of the 8 neighbour cells */
-      for (int xx=-1; xx<=1; xx++)
+    /* FIRST CASES : fire spread depends on a probability of the current burning cell */
+    if (m_glob_params.getFirePropMode()==1)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
-        for (int yy=-1; yy<=1; yy++)
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
         {
-          unsigned id = *it1+xx*m_Mask.getYncell()+yy;
-          if (id>=0 && // border precaution
-              id<m_Mask.getTotncell() && // border precaution
-              m_Mask(id)==1 && // studied area
-              find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-              id!=*it1 && // current cell
-              find(postCell.begin(),postCell.end(),id)==postCell.end())
-          { // not already burnt
-            neighCell.push_back(id);
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
           }
         }
-      }
-      
-      /* FIRST CASE : fire spread depends on a probability of the current burning cell */
-      /* fireIntensity */
-      if (m_glob_params.getFirePropMode()==1)
-      {
+        
+        /* fireIntensity */
         prob = m_glob_params.getFirePropIntensity()[dist];
-      }
-      /* percentConsumed : How much stuff was consumed in the current cell ? */
-      else if (m_glob_params.getFirePropMode()==2)
+        
+        /* For each neighbour cell : does the fire propagate ? */
+        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        {
+          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01(rng) < prob)
+          { //(rand()/(double)RAND_MAX)
+            preCell.push_back(*it2);
+            if (m_glob_params.getFireQuotaMode()==2 /* "maxConsume" */){ stepCount += prob; }
+          }
+        } // end loop on neighCell
+        neighCell.clear();
+      } // end loop on currCell
+    } else if (m_glob_params.getFirePropMode()==2)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
+        /* percentConsumed : How much stuff was consumed in the current cell ? */
         unsigned abundTmpTot = 0;
         vector<unsigned> abundTmpFG;
         vector<double> propKillFG;
@@ -893,24 +911,43 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             prob += 1.0*propKillFG[fg]*abundTmpFG[fg]/abundTmpTot;
           }
         }
-      }
-      
-      /* For each neighbour cell : does the fire propagate ? */
-      if (m_glob_params.getFirePropMode()==1 || m_glob_params.getFirePropMode()==2)
-      {
+        
+        /* For each neighbour cell : does the fire propagate ? */
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
-          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01() < prob)
+          if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01(rng) < prob)
           { //(rand()/(double)RAND_MAX)
             preCell.push_back(*it2);
             if (m_glob_params.getFireQuotaMode()==2 /* "maxConsume" */){ stepCount += prob; }
           }
-        }
-      }
-      
-      /* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
-      if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
+        } // end loop on neighCell
+        neighCell.clear();
+      } // end loop on currCell
+    } 
+    
+    /* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
+    else if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
         vector<unsigned> abundTmp;
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
@@ -920,7 +957,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             abund += m_SuccModelMap(*it2)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() * m_SuccModelMap(*it2)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFlamm();
           }
           abundTmp.push_back(abund);
-        }
+        } // end loop on neighCell
         if (accumulate(abundTmp.begin(),abundTmp.end(),0)>0)
         {
           unsigned posMaxCell = distance(abundTmp.begin(),max_element(abundTmp.begin(),abundTmp.end()));
@@ -942,14 +979,35 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
-      } else if(m_glob_params.getFirePropMode()==4 /* "maxAmountSoil" */)
+        neighCell.clear();
+      } // end loop on currCell
+    }  else if (m_glob_params.getFirePropMode()==4 /* "maxAmountSoil" */)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
         vector<double> soilTmp;
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           soilTmp.push_back(m_SuccModelMap(*it2)->getSoilResources());
-        }
+        } // end loop on neighCell
         if (accumulate(soilTmp.begin(),soilTmp.end(),0)>0)
         {
           unsigned maxCell = neighCell[distance(soilTmp.begin(),max_element(soilTmp.begin(),soilTmp.end()))];
@@ -958,8 +1016,30 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             preCell.push_back(maxCell);
           }
         }
-      } else if(m_glob_params.getFirePropMode()==5 /* "probLandClim" */)
+        neighCell.clear();
+      } // end loop on currCell
+    }  else if (m_glob_params.getFirePropMode()==5 /* "probLandClim" */)
+    { // -------------------------------------------------------------------------------------
+      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
+        /* Get the IDs of the 8 neighbour cells */
+        for (int xx=-1; xx<=1; xx++)
+        {
+          for (int yy=-1; yy<=1; yy++)
+          {
+            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            if (id>=0 && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
+                m_Mask(id)==1 && // studied area
+                find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
+                id!=*it1 && // current cell
+                find(postCell.begin(),postCell.end(),id)==postCell.end())
+            { // not already burnt
+              neighCell.push_back(id);
+            }
+          }
+        }
+        
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end())
@@ -976,9 +1056,9 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
               abundTmpFG.push_back(abundTmp);
             }
             double probFuel = 0.0;
-            for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+            if (abundTmpTot>0)
             {
-              if (abundTmpTot>0)
+              for (unsigned fg=0; fg<m_FGparams.size(); fg++)
               {
                 probFuel += (m_SuccModelMap(*it2)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFlamm() /*/ m_glob_params.getFireIgnitFlammMax()*/)* (abundTmpFG[fg]/abundTmpTot);
               }
@@ -996,14 +1076,14 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
               probSlope = 1 + 0.001*max(-30.0,(-1.0)*m_SlopeMap(*it2));
             }
             
-            if ( random_01() < probBL*probFuel*probDrought*probSlope)
+            if ( random_01(rng) < probBL*probFuel*probDrought*probSlope)
             { //(rand()/(double)RAND_MAX)
               preCell.push_back(*it2);
             }
           }
-        }
-      }
-      neighCell.clear();
+        } // end loop on neighCell
+        neighCell.clear();
+      } // end loop on currCell
     }
     
     /* IN ANY CASE : Update cells vectors : CURR->POST and PRE->CURR*/
@@ -1035,7 +1115,8 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
     }
     
     if(stepCount>=lim) { break; }
-  }
+    
+  } // end while
   
   /* if you want to stop the fires only when you reach the quota (maxConsume & maxCell) */
   /*	if (stepCount<lim)
@@ -1098,66 +1179,106 @@ void SimulMap::DoFireDisturbance(int yr)
   apply propagation function
   update the fire disturbances masks */
   vector< vector<unsigned int> > ALLburntCell(m_glob_params.getNoFireDist());
-  for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
-  {
-    if (applyDist[dist] && m_glob_params.getFireIgnitMode()!=5 /* map */)
+  if (m_glob_params.getFireIgnitMode()!=5 /* map */ && m_glob_params.getFireNeighMode()==1)
+  { // CASE 1 ---------------------------------------------------------------------------------------
+    for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
     {
-      vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
-      vector<unsigned int> burntCell;
-      if (m_glob_params.getFireNeighMode()==1)
+      if (applyDist[dist])
       {
-        burntCell = DoPropagation(dist,startCell,m_MaskCells);
-      } else
+        vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+        ALLburntCell[dist] = DoPropagation(dist,startCell,m_MaskCells);;
+      }
+    }
+  } else if (m_glob_params.getFireIgnitMode()!=5 /* map */)
+  { // CASE 2 ---------------------------------------------------------------------------------------
+    int no = m_glob_params.getFireNeighCC()[0];
+    int ea = m_glob_params.getFireNeighCC()[1];
+    int so = m_glob_params.getFireNeighCC()[2];
+    int we = m_glob_params.getFireNeighCC()[3];
+    
+    if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
+    { // CASE 2a --------------------------------------------------------------
+      UniInt distrib_no(0,m_glob_params.getFireNeighCC()[0]);
+      UniInt distrib_ea(0,m_glob_params.getFireNeighCC()[1]);
+      UniInt distrib_so(0,m_glob_params.getFireNeighCC()[2]);
+      UniInt distrib_we(0,m_glob_params.getFireNeighCC()[3]);
+      
+      for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
-        for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
+        if (applyDist[dist])
         {
-          int no = m_glob_params.getFireNeighCC()[0];
-          int ea = m_glob_params.getFireNeighCC()[1];
-          int so = m_glob_params.getFireNeighCC()[2];
-          int we = m_glob_params.getFireNeighCC()[3];
-          if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
+          vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+          vector<unsigned int> burntCell;
+          for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
           {
-            UniInt distrib_no(0,no);
-            UniInt distrib_ea(0,ea);
-            UniInt distrib_we(0,we);
-            UniInt distrib_so(0,so);
-            GeneratorUniInt draw_from_distrib_no(rng,distrib_no);
-            GeneratorUniInt draw_from_distrib_ea(rng,distrib_ea);
-            GeneratorUniInt draw_from_distrib_we(rng,distrib_we);
-            GeneratorUniInt draw_from_distrib_so(rng,distrib_so);
-            no = draw_from_distrib_no(); //rand() % no + 1;
-            ea = draw_from_distrib_ea(); //rand() % ea + 1;
-            we = draw_from_distrib_we(); //rand() % we + 1;
-            so = draw_from_distrib_so(); //rand() % so + 1;
-          }
-          for (int yy=(-no); yy<=so; yy++)
-          {
-            for (int xx=(-we); xx<=ea; xx++)
+            no = distrib_no(rng); //rand() % no + 1;
+            ea = distrib_ea(rng); //rand() % ea + 1;
+            we = distrib_we(rng); //rand() % we + 1;
+            so = distrib_so(rng); //rand() % so + 1;
+            for (int yy=(-no); yy<=so; yy++)
             {
-              unsigned id = *it1+yy+xx*m_Mask.getYncell();
-              if ( id>=0 && /* border precaution */
+              for (int xx=(-we); xx<=ea; xx++)
+              {
+                unsigned id = *it1+yy+xx*m_Mask.getYncell();
+                if ( id>=0 && /* border precaution */
   id<m_Mask.getTotncell() && /* border precaution */
   find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
   m_Mask(id)==1)
-              { // studied area
-                burntCell.push_back(id);
+                { // studied area
+                  burntCell.push_back(id);
+                }
               }
             }
           }
+          ALLburntCell[dist] = burntCell;
         }
       }
-      ALLburntCell[dist] = burntCell;
-    } else if (applyDist[dist] && m_glob_params.getFireIgnitMode()==5 /* map */)
-    {
-      for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    } else
+    { // CASE 2b --------------------------------------------------------------
+      for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
-        if (m_FireMap(*cell_ID, dist) == 1 )
+        if (applyDist[dist])
         {
-          ALLburntCell[dist].push_back(*cell_ID);
+          vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+          vector<unsigned int> burntCell;
+          for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
+          {
+            for (int yy=(-no); yy<=so; yy++)
+            {
+              for (int xx=(-we); xx<=ea; xx++)
+              {
+                unsigned id = *it1+yy+xx*m_Mask.getYncell();
+                if ( id>=0 && /* border precaution */
+  id<m_Mask.getTotncell() && /* border precaution */
+  find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
+  m_Mask(id)==1)
+                { // studied area
+                  burntCell.push_back(id);
+                }
+              }
+            }
+          }
+          ALLburntCell[dist] = burntCell;
+        }
+      }
+    }
+  } else if (m_glob_params.getFireIgnitMode()==5 /* map */)
+  { // CASE 3 ---------------------------------------------------------------------------------------
+    for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
+    {
+      if (applyDist[dist])
+      {
+        for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+        {
+          if (m_FireMap(*cell_ID, dist) == 1 )
+          {
+            ALLburntCell[dist].push_back(*cell_ID);
+          }
         }
       }
     }
   }
+  
   /* If a cell has been burnt by several disturbances, only the most severe is applied */
   for (int dist2=m_glob_params.getNoFireDist()-1; dist2>0; dist2--)
   {
@@ -1202,73 +1323,89 @@ void SimulMap::DoFireDisturbance(int yr)
 
 void SimulMap::DoDroughtDisturbance_part1()
 {
-  /* Calculation of abundance per strata for each pixel */
-  unsigned noStrata = m_glob_params.getNoStrata();
+//   /* Calculation of abundance per strata for each pixel */
+//   unsigned noStrata = m_glob_params.getNoStrata();
+//   SpatialMap<double, double> moistValues = getDroughtMap();
+//   
+//   omp_set_num_threads(m_glob_params.getNoCPU());
+// #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+//   
+//   for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+//   { // loop on pixels
+//     unsigned cell_ID = m_MaskCells[ID];
+//     vector<int> tmpAbund(noStrata+1, 0);
+//     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+//     { // loop on PFG
+//       /* create a copy of FG parameters to simplify and speed up the code */
+//       FuncGroupPtr FuncG = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg);
+//       FGPtr FGparams = FuncG->getFGparams_();
+//       if (m_SuccModelMap(cell_ID)->getCommunity_()->getNoCohort(fg) > 0)
+//       {
+//         /* Create a vector with stratum break ages */
+//         vector<int> bkStratAges = FGparams->getStrata();
+//         
+//         /* add PFG strata abundances */
+//         for (unsigned st=1; st<noStrata; st++)
+//         {
+//           tmpAbund[st] = static_cast<int>(FuncG->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
+//         } // end loop on Stratum
+//       }
+//     } // end loop on PFG
+//       
+//     /* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
+//     double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end()); // SHOULD be only the upper stratum ?
+//     // accumulate(tmpAbund.begin(), tmpAbund.end(),0); ?
+//     double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); // SHOULD by MaxAbundHigh * noPFG * (1 + ImmSizes) ?
+//     if (pixAbund>maxVal) pixAbund = maxVal;
+//     pixAbund = pixAbund/maxVal;
+//     if (pixAbund>0.5){ moistValues(cell_ID) = m_DroughtMap(cell_ID) + abs(m_DroughtMap(cell_ID))/2.0; } // SHOULD be adjustable both parameters (0.5 and 2) ?
+//   } // end loop on pixels
+  
   SpatialMap<double, double> moistValues = getDroughtMap();
   
-  // omp_set_num_threads( m_glob_params.getNoCPU() );
-  // #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
-    vector<int> tmpAbund(noStrata,0);
-    for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-    { // loop on PFG
-      vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get stratum changing ages
-      
-      // #pragma omp parallel for ordered
-      for (unsigned strat=1; strat<noStrata; strat++)
-      { // loop on Stratum
-        tmpAbund[strat-1] += static_cast<int>(m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
-      } // end loop on Stratum
-    } // end loop on PFG
-    
-    /* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
-    double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end());
-    double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); //7000.0;
-    if (pixAbund>maxVal) pixAbund = maxVal;
-    pixAbund = pixAbund/maxVal;
-    if (pixAbund>0.5){ moistValues(*cell_ID) = m_DroughtMap(*cell_ID) + abs(m_DroughtMap(*cell_ID))/2.0; }
-  }
-  
   /* Do disturbances only on points within mask */
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
+  omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+  
+  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  {
+    unsigned cell_ID = m_MaskCells[ID];
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
     { // loop on PFG
-      m_IsDroughtMap(*cell_ID, fg) = 0;
-      m_ApplyPostDroughtMap(*cell_ID, fg) = 0;
-      m_ApplyCurrDroughtMap(*cell_ID, fg) = 1;
+      m_IsDroughtMap(cell_ID, fg) = 0;
+      m_ApplyPostDroughtMap(cell_ID, fg) = 0;
+      m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
       
-      if (m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
+      if (m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
       {
         /* 0.Check Habitat Suitability */
         // set recruit and fecund to 0 ?
         // automatic at the beginning of DoSuccession
         
         /* 2.Check Post Drought Mortality */
-        if (m_PostDroughtMap(*cell_ID, fg)==1)
+        if (m_PostDroughtMap(cell_ID, fg)==1)
         {
           /* Set recruitment and fecundity to 0 */
-          m_IsDroughtMap(*cell_ID, fg) = 1;
-          m_ApplyPostDroughtMap(*cell_ID, fg) = 1;
+          m_IsDroughtMap(cell_ID, fg) = 1;
+          m_ApplyPostDroughtMap(cell_ID, fg) = 1;
         }
         
         /* 1.Check Moisture Index */
-        double moistIndex = moistValues(*cell_ID);
+        double moistIndex = moistValues(cell_ID);
         if (moistIndex>m_FGparams[fg].getDroughtSD()[0])
         {
           /* 3.If NO drought : apply Drought Recovery */
-          m_CountDroughtMap(*cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
-          if (m_CountDroughtMap(*cell_ID, fg)<0)
+          m_CountDroughtMap(cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
+          if (m_CountDroughtMap(cell_ID, fg)<0)
           {
-            m_CountDroughtMap(*cell_ID, fg) = 0;
+            m_CountDroughtMap(cell_ID, fg) = 0;
           }
         } else
         {
           /* Set recruitment and fecundity to 0 */
-          m_IsDroughtMap(*cell_ID, fg) = 1;
+          m_IsDroughtMap(cell_ID, fg) = 1;
           
-          if (m_CountDroughtMap(*cell_ID, fg)<m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(*cell_ID, fg) ++; }
+          if (m_CountDroughtMap(cell_ID, fg)<m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
           bool currSevDrought = false, currModDrought = false;
           if (moistIndex<m_FGparams[fg].getDroughtSD()[1])
           {
@@ -1277,24 +1414,24 @@ void SimulMap::DoDroughtDisturbance_part1()
           {
             currModDrought = true;
           }
-          if (currSevDrought && m_CountDroughtMap(*cell_ID, fg)==1)
+          if (currSevDrought && m_CountDroughtMap(cell_ID, fg)==1)
           {
-            m_PostDroughtMap(*cell_ID, fg) = 1;
+            m_PostDroughtMap(cell_ID, fg) = 1;
           }
-          bool modToSev = (currModDrought && (m_CountDroughtMap(*cell_ID, fg)==m_FGparams[fg].getCountModToSev()));
-          bool SevMort = (currSevDrought && (m_CountDroughtMap(*cell_ID, fg)==m_FGparams[fg].getCountSevMort()));
+          bool modToSev = (currModDrought && (m_CountDroughtMap(cell_ID, fg)==m_FGparams[fg].getCountModToSev()));
+          bool SevMort = (currSevDrought && (m_CountDroughtMap(cell_ID, fg)==m_FGparams[fg].getCountSevMort()));
           
           /* 4.If drought : check Current Drought Mortality */
           if (modToSev || SevMort )
           {
-            m_PostDroughtMap(*cell_ID, fg) = 1;
-            m_ApplyCurrDroughtMap(*cell_ID, fg) = 1;
+            m_PostDroughtMap(cell_ID, fg) = 1;
+            m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
           }
         }
       } else
       {
         /* If NO PFG anymore : reset count */
-        m_CountDroughtMap(*cell_ID, fg) = 0;
+        m_CountDroughtMap(cell_ID, fg) = 0;
       }
     }
   }
@@ -1303,32 +1440,50 @@ void SimulMap::DoDroughtDisturbance_part1()
 
 void SimulMap::DoDroughtDisturbance_part2(string chrono)
 {
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-  { // loop on pixels
-    for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-    { // loop on PFG
-      if ((m_ApplyPostDroughtMap(*cell_ID, fg)==1) && (m_ApplyCurrDroughtMap(*cell_ID, fg)==0))
-      { /* Apply post drought effects */
-        if (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0)
-        {
-          //logg.info(">> Post drought effect this year !");
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 1, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
-          //m_SuccModelMap(*cell_ID)->DoDisturbance(1,"drought");
+  bool cond1 = (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0);
+  bool cond2 = (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0);
+  
+  if (cond1)
+  {
+    omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+    
+    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+    { // loop on pixels
+      unsigned cell_ID = m_MaskCells[ID];
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        /* create a copy of FG parameters to simplify and speed up the code */
+        FGPtr FGparams = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_();
+        
+        if ((m_ApplyPostDroughtMap(cell_ID, fg)==1) && (m_ApplyCurrDroughtMap(cell_ID, fg)==0))
+        { /* Apply post drought effects */
+        //logg.info(">> Post drought effect this year !");
+        m_SuccModelMap(cell_ID)->DoDisturbance(fg, 1, 1.0, FGparams->getDroughtResponse());
         }
-      } else if ((m_ApplyCurrDroughtMap(*cell_ID, fg)==1) && (m_ApplyPostDroughtMap(*cell_ID, fg)==0))
-      { /* Apply current drought effects */
-        if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
-        {
+      }
+    }
+  } else if (cond2)
+  {
+    omp_set_num_threads( m_glob_params.getNoCPU() );
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+    
+    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+    { // loop on pixels
+      unsigned cell_ID = m_MaskCells[ID];
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        /* create a copy of FG parameters to simplify and speed up the code */
+        FGPtr FGparams = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_();
+        
+        if ((m_ApplyCurrDroughtMap(cell_ID, fg)==1) && (m_ApplyPostDroughtMap(cell_ID, fg)==0))
+        { /* Apply current drought effects */
           //logg.info(">> Current drought effect this year !");
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 0, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
-          //m_SuccModelMap(*cell_ID)->DoDisturbance(0,"drought");
-        }
-      } else if ((m_ApplyCurrDroughtMap(*cell_ID, fg)==1) && (m_ApplyPostDroughtMap(*cell_ID, fg)==1))
-      { /* Apply cumulated post-current drought effects */
-        if (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0)
-        {
+          m_SuccModelMap(cell_ID)->DoDisturbance(fg, 0, 1.0, FGparams->getDroughtResponse());
+        } else if ((m_ApplyCurrDroughtMap(cell_ID, fg)==1) && (m_ApplyPostDroughtMap(cell_ID, fg)==1))
+        { /* Apply cumulated post-current drought effects */
           //logg.info(">> Current+Post drought effect this year !");
-          FGresponse CurrPostResp = m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse();
+          FGresponse CurrPostResp = FGparams->getDroughtResponse();
           vector<vector<int> > tmpBreakAge = CurrPostResp.getBreakAge(), tmpResprAge = CurrPostResp.getResprAge();
           vector<Fract> tmpDormBreaks = CurrPostResp.getDormBreaks();
           vector<Fract> tmpPropKilled = CurrPostResp.getPropKilled();
@@ -1353,10 +1508,10 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
               double mortSup = 0.0;
               if (FractToDouble(tmpFates[0][sub][0])==0)
               { // no killed
-                mortSup = 0.1*m_CountDroughtMap(*cell_ID, fg);
+                mortSup = 0.1*m_CountDroughtMap(cell_ID, fg);
               } else
               {
-                mortSup = FractToDouble(tmpFates[0][sub][0])*0.1*m_CountDroughtMap(*cell_ID, fg);
+                mortSup = FractToDouble(tmpFates[0][sub][0])*0.1*m_CountDroughtMap(cell_ID, fg);
               }
               tmpKiUnRe[0] = DoubleToFract(FractToDouble(tmpFates[0][sub][0])+mortSup);
               if (FractToDouble(tmpFates[0][sub][1])==0)
@@ -1379,7 +1534,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           CurrPostResp.setDormBreaks(tmpDormBreaks);
           CurrPostResp.setPropKilled(tmpPropKilled);
           CurrPostResp.setFates(tmpFates);
-          m_SuccModelMap(*cell_ID)->DoDisturbance(fg, 0, 1.0, m_SuccModelMap(*cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDroughtResponse());
+          m_SuccModelMap(cell_ID)->DoDisturbance(fg, 0, 1.0, FGparams->getDroughtResponse());
         }
       }
     }
@@ -1430,14 +1585,14 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
   
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  Uni01 random_01(rng);
+  UniReal random_01(0.0, 1.0);
   
   if (option==1)
   {
     /* draw a random number for each pixel*/
     for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     {
-      envSuitRefVal[*cell_ID] = random_01(); //( rand()/(double)RAND_MAX );
+      envSuitRefVal[*cell_ID] = random_01(rng); //( rand()/(double)RAND_MAX );
     }
     /* assign these same numbers for each pfg */
     m_EnvSuitRefMap.emptyStack();
@@ -1451,20 +1606,19 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
     for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
     {
       /* to each pfg assign a mean and a standard deviation */
-      double meanFG = random_01(); //( rand()/(double)RAND_MAX );
-      double sdFG = random_01(); //( rand()/(double)RAND_MAX );
+      double meanFG = random_01(rng); //( rand()/(double)RAND_MAX );
+      double sdFG = random_01(rng); //( rand()/(double)RAND_MAX );
       logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=",
                 meanFG, " and sd=", sdFG);
       
       /* build the distribution corresponding to these mean and sd */
       Normal distrib(meanFG,sdFG);
-      GeneratorNorm draw_from_distrib(rng,distrib);
       
       /* draw a random number from this distribution for each pixel*/
       envSuitRefVal.resize(m_Mask.getTotncell(),0.5);
       for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
       {
-        envSuitRefVal[*cell_ID] = draw_from_distrib();
+        envSuitRefVal[*cell_ID] = distrib(rng);
       }
       m_EnvSuitRefMap.setValues(fg_id, envSuitRefVal);
     }
@@ -1483,45 +1637,114 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
   GSP old_glob_params(m_glob_params);
   
   /* read new global parameters file */
+  logg.info("*** REBUILDING Global simulation parameters...");
   m_glob_params  = GSP(file_of_params.getGlobSimulParams());
   
-  /* check some parameters compatibility */
+  /* check some parameters compatibility (between SAVED_STATE and "new" global parameter file) */
   if (old_glob_params.getNoFG() != m_glob_params.getNoFG())
   {
-    logg.error("!!! Number of functional groups involved in saved object (",
-               old_glob_params.getNoFG(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoFG(), ")!");
-  }
-  if (old_glob_params.getDoHabSuitability() != m_glob_params.getDoHabSuitability())
-  {
-    logg.error("!!! Succession model involved in saved object (",
-               old_glob_params.getDoHabSuitability(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getDoHabSuitability(), ")!");
+    logg.error("!!! Number of functional groups involved in saved object (", old_glob_params.getNoFG(),
+               ") is incompatible with new parameters (", m_glob_params.getNoFG(), ")!");
   }
   if (old_glob_params.getNoStrata() != m_glob_params.getNoStrata())
   {
-    logg.error("!!! Number of strata involved in saved object (",
-               old_glob_params.getNoStrata(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoStrata(), ")!");
+    logg.error("!!! Number of strata involved in saved object (", old_glob_params.getNoStrata(),
+               ") is incompatible with new parameters (", m_glob_params.getNoStrata(), ")!");
   }
-  if (old_glob_params.getNoDist() != m_glob_params.getNoDist())
+  if (m_glob_params.getDoDisturbances())
   {
-    logg.error("!!! Number of disturbances involved in saved object (",
-               old_glob_params.getNoDist(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoDist(), ")!");
+    if (old_glob_params.getNoDist() != m_glob_params.getNoDist())
+    {
+      logg.error("!!! Number of disturbances involved in saved object (", old_glob_params.getNoDist(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoDist(), ")!");
+    }
+    if (old_glob_params.getNoDistSub() != m_glob_params.getNoDistSub())
+    {
+      logg.error("!!! Number of way to be influenced by disturbances involved in saved object (", old_glob_params.getNoDistSub(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoDistSub(), ")!");
+    }
   }
-  if (old_glob_params.getNoDistSub() != m_glob_params.getNoDistSub())
+  if (m_glob_params.getDoDroughtDisturbances())
   {
-    logg.error("!!! Number of way to be influence by disturbances involved in saved object (",
-               old_glob_params.getNoDistSub(),
-               ") is incompatible with new parameters (",
-               m_glob_params.getNoDistSub(), ")");
+    if (old_glob_params.getNoDroughtSub() != m_glob_params.getNoDroughtSub())
+    {
+      logg.error("!!! Number of way to be influenced by drought disturbances involved in saved object (", old_glob_params.getNoDroughtSub(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoDroughtSub(), ")!");
+    }
+  }
+  if (m_glob_params.getDoFireDisturbances())
+  {
+    if (old_glob_params.getNoFireDist() != m_glob_params.getNoFireDist())
+    {
+      logg.error("!!! Number of fire disturbances involved in saved object (", old_glob_params.getNoFireDist(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoFireDist(), ")!");
+    }
+    if (old_glob_params.getNoFireDistSub() != m_glob_params.getNoFireDistSub())
+    {
+      logg.error("!!! Number of way to be influenced by fire disturbances involved in saved object (", old_glob_params.getNoFireDistSub(),
+                 ") is incompatible with new parameters (", m_glob_params.getNoFireDistSub(), ")!");
+    }
   }
   /* end of check parameters compatibility */
+  
+  /* check some parameters compatibility (between "new" global and simul parameter files) */
+  int noFG = m_glob_params.getNoFG();
+  if (noFG != file_of_params.getFGLifeHistory().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_LIFE_HISTORY-- (",
+               file_of_params.getFGLifeHistory().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoLightInteraction() && noFG != file_of_params.getFGLight().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_LIGHT-- (",
+               file_of_params.getFGLight().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoSoilInteraction() && noFG != file_of_params.getFGSoil().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_SOIL-- (",
+               file_of_params.getFGSoil().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoDispersal() && noFG != file_of_params.getFGDispersal().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DISPERSAL-- (",
+               file_of_params.getFGDispersal().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoDisturbances() && noFG != file_of_params.getFGDisturbance().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DISTURBANCES-- (",
+               file_of_params.getFGDisturbance().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoDroughtDisturbances() && noFG != file_of_params.getFGDrought().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DROUGHT-- (",
+               file_of_params.getFGDrought().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoFireDisturbances() && noFG != file_of_params.getFGFire().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_FIRE-- (",
+               file_of_params.getFGFire().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoHabSuitability() && noFG != file_of_params.getFGMapsHabSuit().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_MASK_HABSUIT-- (",
+               file_of_params.getFGMapsHabSuit().size(), ") do not match in term of number!");
+  }
+  if (m_glob_params.getDoAliensIntroduction() && noFG != file_of_params.getFGMapsAliens().size())
+  {
+    logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_MASK_ALIENS-- (",
+               file_of_params.getFGMapsAliens().size(), ") do not match in term of number!");
+  }
+  /* end of check parameters compatibility */
+  
+  /* check for parameters file */
+  file_of_params.checkCorrectParams(m_glob_params.getDoLightInteraction(),
+                                    m_glob_params.getDoHabSuitability(),
+                                    m_glob_params.getDoDispersal(),
+                                    m_glob_params.getDoDisturbances(),
+                                    m_glob_params.getDoSoilInteraction(),
+                                    m_glob_params.getDoFireDisturbances(),
+                                    m_glob_params.getDoDroughtDisturbances(),
+                                    m_glob_params.getDoAliensIntroduction());
   
   /* update fg environmental suitability conditions if needed */
   if (file_of_params.getFGMapsHabSuit()[0] != "0")
@@ -1576,6 +1799,45 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
     }
   }
   
+  /* build simulation fire disturbances masks */
+  // if (m_glob_params.getDoFireDisturbances())
+  // {
+  //   if (m_glob_params.getFireIgnitMode()==5)
+  //   {
+  //     logg.info("> build simulation fire disturbances masks...");
+  //     if (m_glob_params.getNoFireDist() == file_of_params.getMaskFire().size())
+  //     {
+  //       vector< vector< int > > fireMap; // fire disturbances masks
+  //       fireMap.reserve(m_glob_params.getNoFireDist());
+  //       for (int dist_id=0; dist_id<m_glob_params.getNoFireDist(); dist_id++)
+  //       {
+  //         fireMap.emplace_back( ReadMask<int>( file_of_params.getMaskFire()[dist_id], 0.0, 1.0 ) );
+  //       }
+  //       m_FireMap = SpatialStack<double, int>(m_Coord_ptr, fireMap);
+  //     } else
+  //     {
+  //       logg.error("!!! Parameters FIRE_NO and --FIRE_MASK-- ",
+  //                  "do not match in term of number!");
+  //     }
+  //   } else
+  //   {
+  //     m_FireMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
+  //   }
+  // 
+  //   /* build fire masks */
+  //   logg.info("> build fire masks...");
+  //   if (m_glob_params.getFirePropMode()==4)
+  //   {
+  //     m_DroughtMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskDrought(), 0.0, 1.0 ) );
+  //     m_ElevationMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskElevation()) );
+  //     m_SlopeMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskSlope()) );
+  //   }
+  // 
+  //   /* build TSLF mask (study area) */
+  //   logg.info("> build TSLF mask (study area)...");
+  //   m_TslfMap = SpatialMap<double, int>(m_Coord_ptr, ReadMask<int>( file_of_params.getMask(), 0.0, 1.0 ) );
+  // }
+  
   /* build aliens introduction masks */
   if (file_of_params.getFGMapsAliens()[0] != "0")
   {
@@ -1626,7 +1888,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
   
   // Get output driver (GeoTIFF format).
   const char * driverInput = "GTiff";
-  boost::filesystem::path prevFile_path(prevFile.c_str());
+  fs::path prevFile_path(prevFile.c_str());
   if (prevFile_path.extension()==".tif"){ driverInput = "GTiff";
   } else if (prevFile_path.extension()==".img"){ driverInput = "HFA";
   } else {
@@ -1679,7 +1941,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           abunValues2[pixId] = 0;
         }
         bool positiveVal2 = false;
-        for (int strat=1; strat<m_glob_params.getNoStrata(); strat++)
+        for (int strat=1; strat<m_glob_params.getNoStrata()+1; strat++)
         { // loop on Stratum
           //logg.info(">>>>> Stratum ", strat);
           // Calculate abundance values.
@@ -1708,8 +1970,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           if (m_glob_params.getDoSavingPFGStratum() && positiveVal1)
           {
             // Create the output file only if the PFG is present somewhere.
-            string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+
-              "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+            string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+
+              "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
             //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
             //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt16, NULL );
             GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
@@ -1740,7 +2002,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         if (m_glob_params.getDoSavingPFG() && positiveVal2)
         {
           // Create the output file only if the PFG is present somewhere.
-          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
+          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
           GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
           CPLAssert( rasOutput != NULL );
           GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
@@ -1763,10 +2025,10 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         delete [] abunValues2;
       } // end loop on PFG
       
-      if (!positiveVal12)
-      {
-        logg.error("!!! ALL PFG DIED! Stopping simulation.");
-      }
+      // if (!positiveVal12 && year > m_glob_params.getSeedingDuration())
+      // {
+      //   logg.error("!!! ALL PFG DIED! Stopping simulation.");
+      // }
     }
     
     if (m_glob_params.getDoSavingStratum())
@@ -1806,7 +2068,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           positiveVal33 = true;
           
           // Create the output file only if the PFG is present somewhere.
-          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+boost::lexical_cast<string>(year)+"_allPFG_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+to_string(year)+"_allPFG_STRATA_"+to_string(strat)+prevFile_path.extension().string();
           GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
           CPLAssert( rasOutput != NULL );
           GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
@@ -1829,10 +2091,10 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         delete [] abunValues3;
       } // end loop on Stratum*/
       
-      if (!positiveVal33)
-      {
-        logg.error("!!! ALL PFG DIED! Stopping simulation.");
-      }
+      // if (!positiveVal33 && year > m_glob_params.getSeedingDuration())
+      // {
+      //   logg.error("!!! ALL PFG DIED! Stopping simulation.");
+      // }
     }
   }
   
@@ -1861,7 +2123,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         soilValues[cell_ID] = m_SuccModelMap(cell_ID)->getSoilResources();
       }
       // Create the output file.
-      string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+boost::lexical_cast<string>(year)+prevFile_path.extension().string();
+      string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+to_string(year)+prevFile_path.extension().string();
       GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
       CPLAssert( rasOutput != NULL );
       
@@ -1911,8 +2173,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         
         // Create the output file.
-        string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+boost::lexical_cast<string>(year)+
-          "_STRATA_"+boost::lexical_cast<string>(strat)+prevFile_path.extension().string();
+        string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+to_string(year)+
+          "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
         GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
         CPLAssert( rasOutput != NULL );
         
@@ -1928,8 +2190,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         );
         if (rasterAccess > 0)
         {
-          logg.warning("Writing ", newFile, " raster: acces status ",
-                       rasterAccess);
+          logg.warning("Writing ", newFile, " raster: acces status ", rasterAccess);
         }
         GDALClose( rasOutput ); // Once we're done, close properly the dataset
         
@@ -1962,7 +2223,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         
         // Create the output file only if the PFG is present somewhere.
-        string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+boost::lexical_cast<string>(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
+        string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
         GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
         CPLAssert( rasOutput != NULL );
         

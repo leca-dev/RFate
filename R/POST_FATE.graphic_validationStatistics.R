@@ -27,6 +27,9 @@
 ##' @param opt.doPlot (\emph{optional}) default \code{TRUE}. \cr If \code{TRUE}, 
 ##' plot(s) will be processed, otherwise only the calculation and reorganization 
 ##' of outputs will occur, be saved and returned
+##' @param opt.no_CPU (\emph{optional}) default \code{1}. \cr The number of 
+##' resources that can be used to parallelize the \code{unzip/zip} of raster 
+##' files
 ##' 
 ##' 
 ##' @details 
@@ -153,6 +156,7 @@ POST_FATE.graphic_validationStatistics = function(
   , mat.PFG.obs
   , opt.ras_habitat = NULL
   , opt.doPlot = TRUE
+  , opt.no_CPU = 1
 ){
   
   #############################################################################

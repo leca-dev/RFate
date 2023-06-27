@@ -44,3 +44,4 @@ corresponding to the relative representation of each level (for level
 \description{
 Obtain ellipse coordinates from (PCO) X,Y and a factor value
 }
+\keyword{internal}

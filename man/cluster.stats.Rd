@@ -81,4 +81,5 @@ From fpc package 2.2-9 : cluster.stats function
 \seealso{
 \code{\link[fpc]{cluster.stats}}
 }
-\keyword{fpc}
+\keyword{fpc,}
+\keyword{internal}

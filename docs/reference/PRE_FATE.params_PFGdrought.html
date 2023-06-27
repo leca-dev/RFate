@@ -21,7 +21,7 @@ of them) used in the drought disturbance module of FATE."><!-- mathjax --><scrip
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ of them) used in the drought disturbance module of FATE."><!-- mathjax --><scrip
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -59,7 +59,7 @@ of them) used in the drought disturbance module of FATE."><!-- mathjax --><scrip
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -146,13 +146,13 @@ of them) used in the drought disturbance module of <code>FATE</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.params_PFGdrought</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  mat.PFG.dist <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">mat.PFG.tol</span>,
-  <span class="va">mat.PFG.drought</span>,
-  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.params_PFGdrought</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  mat.PFG.dist <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">mat.PFG.tol</span>,</span>
+<span>  <span class="va">mat.PFG.drought</span>,</span>
+<span>  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -160,11 +160,15 @@ of them) used in the drought disturbance module of <code>FATE</code>.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory 
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>mat.PFG.dist</dt>
 <dd><p>(<em>optional</em>) <br> 
 a <code>data.frame</code> with 5 columns : <br><code>PFG</code>, <code>type</code>, <code>maturity</code>, <code>longevity</code>, 
 <code>age_above_150cm</code> (see 
 <a href="PRE_FATE.params_PFGdrought.html#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>mat.PFG.tol</dt>
 <dd><p>a <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>nameDist</code>,</p></li>
 <li><p><code>PFG</code>,</p></li>
@@ -172,22 +176,32 @@ a <code>data.frame</code> with 5 columns : <br><code>PFG</code>, <code>type</cod
 <li><p><code>responseStage</code>, <code>killedIndiv</code>, <code>resproutIndiv</code>  
   (<em>or <code>strategy_tol</code></em>)</p></li>
 </ul><p>(see <a href="PRE_FATE.params_PFGdrought.html#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>mat.PFG.drought</dt>
 <dd><p>a <code>data.frame</code> with 4 or 6 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
 <li><p><code>threshold_moderate</code>, <code>threshold_severe</code>,</p></li>
 <li><p><code>counter_recovery</code>, <code>counter_sens</code>, <code>counter_cum</code>
   (<em>or <code>strategy_drou</code></em>)</p></li>
 </ul></dd>
+
+
 <dt>opt.folder.name</dt>
 <dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding 
 to the name of the folder that will be created into the 
 <code>name.simulation/DATA/PFGS/DROUGHT/</code> directory to store the results</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>.txt</code> file per PFG into the 
+    
+
+<p>A <code>.txt</code> file per PFG into the 
 <code>name.simulation/DATA/PFGS/DROUGHT/</code> directory with the following 
-parameters :</p><dl><dt>BREAK_AGE</dt>
+parameters :</p>
+
+
+<dl><dt>BREAK_AGE</dt>
 <dd><p>ages at which the PFG changes of response stage 
   <em>(in years)</em></p></dd>
 
@@ -247,8 +261,10 @@ parameters :</p><dl><dt>BREAK_AGE</dt>
 
 
 </dl><p>A <code>DROUGHT_COMPLETE_TABLE.csv</code> file summarizing information for all 
-groups into the <code>name.simulation/DATA/PFGS/</code> directory.  
-If the <code>opt.folder.name</code> has been used, the files will be into the 
+groups into the <code>name.simulation/DATA/PFGS/</code> directory.</p>
+
+
+<p>If the <code>opt.folder.name</code> has been used, the files will be into the 
 folder <code>name.simulation/DATA/PFGS/DROUGHT/opt.folder.name/</code>.</p>
     </div>
     <div id="details">
@@ -408,73 +424,72 @@ each PFG :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span>
-
-
-<span class="va">mat.char</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                      , type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>, <span class="st">'C'</span>, <span class="st">'H'</span>, <span class="st">'H'</span>, <span class="st">'P'</span>, <span class="st">'P'</span><span class="op">)</span>
-                      , maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span>
-                      , longevity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">200</span>, <span class="fl">25</span>, <span class="fl">4</span>, <span class="fl">110</span>, <span class="fl">70</span><span class="op">)</span>
-                      , age_above_150cm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">100</span>, <span class="fl">1000</span>, <span class="fl">1000</span>, <span class="fl">10</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">mat.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>nameDist <span class="op">=</span> <span class="st">'immediate'</span>
-                     , PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                     , strategy_tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'herbs_cham_1'</span>, <span class="st">'herbs_cham_2'</span>
-                                        , <span class="st">'herbs_cham_2'</span>, <span class="st">'herbs_cham_3'</span>
-                                        , <span class="st">'trees_1'</span>, <span class="st">'trees_3'</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">mat.drought</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                         , threshold_moderate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span><span class="op">)</span>
-                         , threshold_severe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span><span class="op">)</span>
-                         , strategy_drou <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'chamaephytes'</span>, <span class="st">'trees_shrubs'</span>, <span class="st">'herbs'</span>
-                                             , <span class="st">'herbs'</span>, <span class="st">'trees_shrubs'</span>, <span class="st">'trees_shrubs'</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co">## Create PFG response to drought parameter files (with PFG characteristics) -----------------</span>
-<span class="fu">PRE_FATE.params_PFGdrought</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                           , mat.PFG.dist <span class="op">=</span> <span class="va">mat.char</span>
-                           , mat.PFG.tol <span class="op">=</span> <span class="va">mat.tol</span>
-                           , mat.PFG.drought <span class="op">=</span> <span class="va">mat.drought</span><span class="op">)</span>
-
-
-<span class="co">## Create PFG response to drought parameter files (with all values) --------------------------</span>
-<span class="va">mat.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>responseStage <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>
-                      , PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                      , nameDist <span class="op">=</span> <span class="st">'delayed'</span><span class="op">)</span>
-<span class="va">mat.tol</span><span class="op">$</span><span class="va">breakAge</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span>
-                     , <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span>
-                     , <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">50</span>
-                     , <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">20</span>
-                     , <span class="fl">2</span>, <span class="fl">6</span>, <span class="fl">95</span>
-                     , <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">55</span><span class="op">)</span>
-<span class="va">mat.tol</span><span class="op">$</span><span class="va">resproutAge</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span>
-                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span>
-                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span>
-                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span>
-                        , <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">5</span>
-                        , <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">7</span><span class="op">)</span>
-<span class="va">mat.tol</span><span class="op">$</span><span class="va">killedIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span>
-                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span>
-                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span>
-                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span>
-                        , <span class="fl">10</span>, <span class="fl">7</span>, <span class="fl">4</span>
-                        , <span class="fl">10</span>, <span class="fl">6</span>, <span class="fl">3</span><span class="op">)</span>
-<span class="va">mat.tol</span><span class="op">$</span><span class="va">resproutIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span>
-                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span>
-                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span>
-                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span>
-                          , <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">4</span>
-                          , <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">mat.tol</span><span class="op">)</span>
-
-<span class="fu">PRE_FATE.params_PFGdrought</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                           , mat.PFG.tol <span class="op">=</span> <span class="va">mat.tol</span>
-                           , mat.PFG.drought <span class="op">=</span> <span class="va">mat.drought</span><span class="op">)</span>
-                                                        
-                                                        
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation')</span></span>
+<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">mat.char</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                      , type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'C'</span>, <span class="st">'C'</span>, <span class="st">'H'</span>, <span class="st">'H'</span>, <span class="st">'P'</span>, <span class="st">'P'</span><span class="op">)</span></span>
+<span>                      , maturity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span>                      , longevity <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">12</span>, <span class="fl">200</span>, <span class="fl">25</span>, <span class="fl">4</span>, <span class="fl">110</span>, <span class="fl">70</span><span class="op">)</span></span>
+<span>                      , age_above_150cm <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">100</span>, <span class="fl">1000</span>, <span class="fl">1000</span>, <span class="fl">10</span>, <span class="fl">12</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mat.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>nameDist <span class="op">=</span> <span class="st">'immediate'</span></span>
+<span>                     , PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                     , strategy_tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'herbs_cham_1'</span>, <span class="st">'herbs_cham_2'</span></span>
+<span>                                        , <span class="st">'herbs_cham_2'</span>, <span class="st">'herbs_cham_3'</span></span>
+<span>                                        , <span class="st">'trees_1'</span>, <span class="st">'trees_3'</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">mat.drought</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                         , threshold_moderate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">0.8</span>, <span class="fl">0.5</span><span class="op">)</span></span>
+<span>                         , threshold_severe <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span><span class="op">)</span></span>
+<span>                         , strategy_drou <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'chamaephytes'</span>, <span class="st">'trees_shrubs'</span>, <span class="st">'herbs'</span></span>
+<span>                                             , <span class="st">'herbs'</span>, <span class="st">'trees_shrubs'</span>, <span class="st">'trees_shrubs'</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create PFG response to drought parameter files (with PFG characteristics) -----------------</span></span>
+<span><span class="fu">PRE_FATE.params_PFGdrought</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                           , mat.PFG.dist <span class="op">=</span> <span class="va">mat.char</span></span>
+<span>                           , mat.PFG.tol <span class="op">=</span> <span class="va">mat.tol</span></span>
+<span>                           , mat.PFG.drought <span class="op">=</span> <span class="va">mat.drought</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Create PFG response to drought parameter files (with all values) --------------------------</span></span>
+<span><span class="va">mat.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>responseStage <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span></span>
+<span>                      , PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                      , nameDist <span class="op">=</span> <span class="st">'delayed'</span><span class="op">)</span></span>
+<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">breakAge</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span></span>
+<span>                     , <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">10</span></span>
+<span>                     , <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">50</span></span>
+<span>                     , <span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">20</span></span>
+<span>                     , <span class="fl">2</span>, <span class="fl">6</span>, <span class="fl">95</span></span>
+<span>                     , <span class="fl">3</span>, <span class="fl">8</span>, <span class="fl">55</span><span class="op">)</span></span>
+<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">resproutAge</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span></span>
+<span>                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">4</span></span>
+<span>                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span></span>
+<span>                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span></span>
+<span>                        , <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">5</span></span>
+<span>                        , <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">7</span><span class="op">)</span></span>
+<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">killedIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
+<span>                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
+<span>                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
+<span>                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
+<span>                        , <span class="fl">10</span>, <span class="fl">7</span>, <span class="fl">4</span></span>
+<span>                        , <span class="fl">10</span>, <span class="fl">6</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">resproutIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">4</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">mat.tol</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">PRE_FATE.params_PFGdrought</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                           , mat.PFG.tol <span class="op">=</span> <span class="va">mat.tol</span></span>
+<span>                           , mat.PFG.drought <span class="op">=</span> <span class="va">mat.drought</span><span class="op">)</span></span>
+<span>                                                        </span>
+<span>                                                        </span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -488,7 +503,7 @@ each PFG :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -1,6 +1,7 @@
-PKG_CXXFLAGS=@PKG_CPPFLAGS@ -Iinclude $(SHLIB_OPENMP_CXXFLAGS)
+PKG_CXXFLAGS=@PKG_CPPFLAGS@ -Iinclude $(SHLIB_OPENMP_CXXFLAGS) \
+	-DBOOST_NO_AUTO_PTR #-DBOOST_FILESYSTEM_NO_CXX20_ATOMIC_REF -DBOOST_FILESYSTEM_SINGLE_THREADED 
 PKG_LIBS=@PKG_LIBS@ $(SHLIB_OPENMP_CXXFLAGS)
-CXX_STD=CXX11
+CXX_STD=CXX17
 
 SOURCES = \
 	Cohort.cpp \
@@ -23,16 +24,6 @@ SOURCES = \
 	SimulMap.cpp \
 	SuFate.cpp \
 	SuFateH.cpp \
-	./libs/filesystem/src/codecvt_error_category.cpp \
-	./libs/filesystem/src/directory.cpp \
-	./libs/filesystem/src/exception.cpp \
-	./libs/filesystem/src/operations.cpp \
-	./libs/filesystem/src/path.cpp \
-	./libs/filesystem/src/path_traits.cpp \
-	./libs/filesystem/src/portability.cpp \
-	./libs/filesystem/src/unique_path.cpp \
-	./libs/filesystem/src/utf8_codecvt_facet.cpp \
-	./libs/filesystem/src/windows_file_codecvt.cpp \
 	./libs/serialization/src/archive_exception.cpp \
 	./libs/serialization/src/basic_archive.cpp \
 	./libs/serialization/src/basic_iarchive.cpp \

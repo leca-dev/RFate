@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -29,7 +29,7 @@
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -55,7 +55,7 @@
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -139,9 +139,9 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">designLHDNorm</span><span class="op">(</span><span class="va">dim</span>, <span class="va">size</span>, calcMinDistance <span class="op">=</span> <span class="cn">FALSE</span>, nested <span class="op">=</span> <span class="cn">NULL</span>, 
-inequalityConstraint <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>
-<span class="fu">designLHD</span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">lower</span>, <span class="va">upper</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">designLHDNorm</span><span class="op">(</span><span class="va">dim</span>, <span class="va">size</span>, calcMinDistance <span class="op">=</span> <span class="cn">FALSE</span>, nested <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>inequalityConstraint <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">designLHD</span><span class="op">(</span>x <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">lower</span>, <span class="va">upper</span>, control <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -149,18 +149,28 @@ inequalityConstraint <span class="op">=</span> <span class="cn">NULL</span><span
     <dl><dt>dim</dt>
 <dd><p>number, dimension of the problem (will be no. of columns of 
 the result matrix)</p></dd>
+
+
 <dt>size</dt>
 <dd><p>number of points with that dimension needed. (will be no. 
 of rows of the result matrix).</p></dd>
+
+
 <dt>calcMinDistance</dt>
 <dd><p>Boolean to indicate whether a minimal distance 
 should be calculated.</p></dd>
+
+
 <dt>nested</dt>
 <dd><p>nested design to be considered during distance calculation.</p></dd>
+
+
 <dt>inequalityConstraint</dt>
 <dd><p>inequality constraint function, smaller zero 
 for infeasible points. Used to replace infeasible points with random 
 points. Has to evaluate points in interval [0;1].</p></dd>
+
+
 <dt>x</dt>
 <dd><p>optional matrix x, rows for points, columns for dimensions. This 
 can contain one or more points which are part of the design, but specified 
@@ -170,16 +180,23 @@ the design size. E.g., if x has two rows, control$replicates is one and
 control$size is ten, the returned design will have 12 points (12 rows). 
 The first two rows will be identical to x. Only the remaining ten rows are 
 guaranteed to be a valid LHD.</p></dd>
+
+
 <dt>lower</dt>
 <dd><p>vector with lower boundary of the design variables (in case 
 of categorical parameters, please map the respective factor to a set of 
 contiguous integers, e.g., with lower = 1 and upper = number of levels)</p></dd>
+
+
 <dt>upper</dt>
 <dd><p>vector with upper boundary of the design variables (in case 
 of categorical parameters, please map the respective factor to a set of 
 contiguous integers, e.g., with lower = 1 and upper = number of levels)</p></dd>
+
+
 <dt>control</dt>
 <dd><p>list of controls: see <code>designLHD</code></p></dd>
+
 </dl></div>
     <div id="see-also">
     <h2>See also</h2>
@@ -198,7 +215,7 @@ contiguous integers, e.g., with lower = 1 and upper = number of levels)</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

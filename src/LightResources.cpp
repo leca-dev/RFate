@@ -28,7 +28,7 @@ using namespace std;
 /* Constructors                                                                                    */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-LightResources::LightResources() : m_ResourceList(0,RHigh)
+LightResources::LightResources() : m_ResourceList(0, RHigh)
 {
 	/* Nothing to do */
 }

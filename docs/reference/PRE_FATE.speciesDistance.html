@@ -21,7 +21,7 @@ and niche overlap (based on co-occurrence of species)."><!-- mathjax --><script 
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ and niche overlap (based on co-occurrence of species)."><!-- mathjax --><script 
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -59,7 +59,7 @@ and niche overlap (based on co-occurrence of species)."><!-- mathjax --><script 
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -146,15 +146,15 @@ and niche overlap (based on co-occurrence of species).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.speciesDistance</span><span class="op">(</span>
-  <span class="va">mat.traits</span>,
-  <span class="va">mat.overlap.option</span>,
-  <span class="va">mat.overlap.object</span>,
-  opt.weights <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.maxPercent.NA <span class="op">=</span> <span class="fl">0</span>,
-  opt.maxPercent.similarSpecies <span class="op">=</span> <span class="fl">0.25</span>,
-  opt.min.sd <span class="op">=</span> <span class="fl">0.3</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.speciesDistance</span><span class="op">(</span></span>
+<span>  <span class="va">mat.traits</span>,</span>
+<span>  <span class="va">mat.overlap.option</span>,</span>
+<span>  <span class="va">mat.overlap.object</span>,</span>
+<span>  opt.weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opt.maxPercent.NA <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  opt.maxPercent.similarSpecies <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  opt.min.sd <span class="op">=</span> <span class="fl">0.3</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -173,11 +173,15 @@ divide the species into data subsets (see
 
 
 </dl></dd>
+
+
 <dt>mat.overlap.option</dt>
 <dd><p>a <code>string</code> corresponding to the way to 
 calculate the distance between species based on niche overlap (either 
 <code>PCA</code>, <code>raster</code> or <code>dist</code>, see 
 <a href="PRE_FATE.speciesDistance#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>mat.overlap.object</dt>
 <dd><p>three options, depending on the value of 
 <code>mat.overlap.option</code> :</p><ul><li><p>(<code>PCA</code> option) a <code>list</code> with 2 elements :</p><dl><dt><code>tab.dom.PA</code></dt>
@@ -203,30 +207,47 @@ calculate the distance between species based on niche overlap (either
   niche overlap between each pair of species. It can be a <code>dist</code> 
   object, a <code>niolap</code> object, or simply a <code>matrix</code>.</p></li>
 </ul></dd>
+
+
 <dt>opt.weights</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> 
 A <code>vector</code> of two <code>double</code> (between <code>0</code> and <code>1</code>) 
 corresponding to the weights for traits and overlap distances 
 respectively. They must sum up to <code>1</code>.</p></dd>
+
+
 <dt>opt.maxPercent.NA</dt>
 <dd><p>(<em>optional</em>) default <code>0</code>. <br> Maximum 
 percentage of missing values (<code>NA</code>) allowed for each trait (between 
 <code>0</code> and <code>1</code>)</p></dd>
+
+
 <dt>opt.maxPercent.similarSpecies</dt>
 <dd><p>(<em>optional</em>) default <code>0.25</code>. 
 <br> Maximum percentage of similar species (same value) 
 allowed for each trait (between <code>0</code> and <code>1</code>)</p></dd>
+
+
 <dt>opt.min.sd</dt>
 <dd><p>(<em>optional</em>) default <code>0.5</code>. <br> Minimum 
 standard deviation allowed for each trait (trait unit)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> of 3 <code>dist</code> objects (functional distances, 
+    
+
+<p>A <code>list</code> of 3 <code>dist</code> objects (functional distances, 
 overlap distances, and combination of both according to the weights given 
 (or not) by the <code>opt.weights</code> parameter), each of them corresponding 
 to : the distance between each pair of species, or a <code>list</code> of 
-<code>dist</code> objects, one for each <code>GROUP</code> value. <br><br>The information for the combination of both distances is written in 
+<code>dist</code> objects, one for each <code>GROUP</code> value. <br></p>
+<p></p>
+<p><br></p>
+
+
+
+<p>The information for the combination of both distances is written in 
 <code class="file">PRE_FATE_DOMINANT_speciesDistance.csv</code> file (or if necessary, one 
 file is created for each group).</p>
     </div>
@@ -256,7 +277,7 @@ based on two types of distance information :</p>
 </ul></li>
 <li><p><strong>Niche overlap : </strong>
   </p><ul><li><p>If <code>PCA</code> option is selected, the degree of niche overlap will 
-    be computed using the <code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html" class="external-link">ecospat.niche.overlap</a></code>.</p></li>
+    be computed using the <code>ecospat.niche.overlap</code>.</p></li>
 <li><p>If <code>raster</code> option is selected, the degree of niche overlap will 
     be computed using the <code><a href="https://rdrr.io/pkg/phyloclim/man/niche.overlap.html" class="external-link">niche.overlap</a></code>. <br><br><br></p></li>
 </ul></li>
@@ -277,7 +298,7 @@ is weighted by the number of traits used</strong>.</p>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/FD/man/gowdis.html" class="external-link">gowdis</a></code>,
-<code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html" class="external-link">ecospat.niche.overlap</a></code>
+<code>ecospat.niche.overlap</code>
 <code><a href="https://rdrr.io/pkg/phyloclim/man/niche.overlap.html" class="external-link">niche.overlap</a></code></p></div>
     </div>
     <div id="author">
@@ -287,54 +308,53 @@ is weighted by the number of traits used</strong>.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Species traits</span>
-<span class="va">tab.traits</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.traits</span>
-<span class="va">tab.traits</span> <span class="op">=</span> <span class="va">tab.traits</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'species'</span>, <span class="st">'GROUP'</span>, <span class="st">'MATURITY'</span>, <span class="st">'LONGEVITY'</span>
-                            , <span class="st">'HEIGHT'</span>, <span class="st">'DISPERSAL'</span>, <span class="st">'LIGHT'</span>, <span class="st">'NITROGEN'</span><span class="op">)</span><span class="op">]</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.traits</span><span class="op">)</span>
-
-<span class="co">## Species niche overlap (dissimilarity distances)</span>
-<span class="va">tab.overlap</span> <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">mat.overlap</span> <span class="co">## transform into similarity</span>
-<span class="va">tab.overlap</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-
-<span class="co">## Give warnings -------------------------------------------------------------</span>
-<span class="va">sp.DIST</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistance</span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.traits</span>
-                                   , mat.overlap.option <span class="op">=</span> <span class="st">'dist'</span>
-                                   , mat.overlap.object <span class="op">=</span> <span class="va">tab.overlap</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">)</span>
-
-<span class="co">## Change parameters to allow more NAs (and change traits used) --------------</span>
-<span class="va">sp.DIST</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistance</span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.traits</span>
-                                   , mat.overlap.option <span class="op">=</span> <span class="st">'dist'</span>
-                                   , mat.overlap.object <span class="op">=</span> <span class="va">tab.overlap</span>
-                                   , opt.maxPercent.NA <span class="op">=</span> <span class="fl">0.05</span>
-                                   , opt.maxPercent.similarSpecies <span class="op">=</span> <span class="fl">0.3</span>
-                                   , opt.min.sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">)</span>
-
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/andrie/ggdendro" class="external-link">ggdendro</a></span><span class="op">)</span>
-<span class="va">pp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span>
-  <span class="op">{</span>
-    <span class="va">hc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-    <span class="va">pp</span> <span class="op">=</span> <span class="fu">ggdendrogram</span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'Hierarchical clustering based on species distance '</span>
-                          , <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/fifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span>
-                                   , <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'(group '</span>, <span class="va">x</span>, <span class="st">')'</span><span class="op">)</span>
-                                   , <span class="st">''</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">pp</span><span class="op">)</span>
-  <span class="op">}</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-<span class="op">}</span>
-
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Species traits</span></span>
+<span><span class="va">tab.traits</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.traits</span></span>
+<span><span class="va">tab.traits</span> <span class="op">=</span> <span class="va">tab.traits</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'species'</span>, <span class="st">'GROUP'</span>, <span class="st">'MATURITY'</span>, <span class="st">'LONGEVITY'</span></span>
+<span>                            , <span class="st">'HEIGHT'</span>, <span class="st">'DISPERSAL'</span>, <span class="st">'LIGHT'</span>, <span class="st">'NITROGEN'</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.traits</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Species niche overlap (dissimilarity distances)</span></span>
+<span><span class="va">tab.overlap</span> <span class="op">=</span> <span class="fl">1</span> <span class="op">-</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">mat.overlap</span> <span class="co">## transform into similarity</span></span>
+<span><span class="va">tab.overlap</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## Give warnings -------------------------------------------------------------</span></span>
+<span><span class="va">sp.DIST</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistance</span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.traits</span></span>
+<span>                                   , mat.overlap.option <span class="op">=</span> <span class="st">'dist'</span></span>
+<span>                                   , mat.overlap.object <span class="op">=</span> <span class="va">tab.overlap</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Change parameters to allow more NAs (and change traits used) --------------</span></span>
+<span><span class="va">sp.DIST</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistance</span><span class="op">(</span>mat.traits <span class="op">=</span> <span class="va">tab.traits</span></span>
+<span>                                   , mat.overlap.option <span class="op">=</span> <span class="st">'dist'</span></span>
+<span>                                   , mat.overlap.object <span class="op">=</span> <span class="va">tab.overlap</span></span>
+<span>                                   , opt.maxPercent.NA <span class="op">=</span> <span class="fl">0.05</span></span>
+<span>                                   , opt.maxPercent.similarSpecies <span class="op">=</span> <span class="fl">0.3</span></span>
+<span>                                   , opt.min.sd <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/RevolutionAnalytics/foreach" class="external-link">foreach</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://github.com/andrie/ggdendro" class="external-link">ggdendro</a></span><span class="op">)</span></span>
+<span><span class="va">pp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span></span>
+<span>  <span class="op">{</span></span>
+<span>    <span class="va">hc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>    <span class="va">pp</span> <span class="op">=</span> <span class="fu">ggdendrogram</span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'Hierarchical clustering based on species distance '</span></span>
+<span>                          , <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.DIST</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span></span>
+<span>                                   , <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'(group '</span>, <span class="va">x</span>, <span class="st">')'</span><span class="op">)</span></span>
+<span>                                   , <span class="st">''</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">pp</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">pp</span><span class="op">[[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -348,7 +368,7 @@ is weighted by the number of traits used</strong>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

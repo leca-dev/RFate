@@ -20,7 +20,7 @@ decompress (.gz) files contained in a given folder."><!-- mathjax --><script src
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ decompress (.gz) files contained in a given folder."><!-- mathjax --><script src
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -58,7 +58,7 @@ decompress (.gz) files contained in a given folder."><!-- mathjax --><script src
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -144,10 +144,10 @@ decompress (<code>.gz</code>) files contained in a given folder.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">.unzip_ALL</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">no_cores</span><span class="op">)</span>
-<span class="fu">.unzip</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">list_files</span>, <span class="va">no_cores</span><span class="op">)</span>
-<span class="fu">.zip_ALL</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">no_cores</span><span class="op">)</span>
-<span class="fu">.zip</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">list_files</span>, <span class="va">no_cores</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.unzip_ALL</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">no_cores</span><span class="op">)</span></span>
+<span><span class="fu">.unzip</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">list_files</span>, <span class="va">no_cores</span><span class="op">)</span></span>
+<span><span class="fu">.zip_ALL</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">no_cores</span><span class="op">)</span></span>
+<span><span class="fu">.zip</span><span class="op">(</span><span class="va">folder_name</span>, <span class="va">list_files</span>, <span class="va">no_cores</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -155,13 +155,18 @@ decompress (<code>.gz</code>) files contained in a given folder.</p>
     <dl><dt>folder_name</dt>
 <dd><p>a <code>string</code> corresponding to the directory to be 
 scanned</p></dd>
+
+
 <dt>list_files</dt>
 <dd><p>a <code>vector</code> containing filenames to be compress or 
 decompress, in order not to scan the whole given directory</p></dd>
+
+
 <dt>no_cores</dt>
 <dd><p>default <code>1</code>. <br> an <code>integer</code> corresponding to the 
 number of computing resources that can be used to parallelize the 
 (de)compression</p></dd>
+
 </dl></div>
     <div id="author">
     <h2>Author</h2>
@@ -180,7 +185,7 @@ number of computing resources that can be used to parallelize the
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -22,4 +22,5 @@ From betapart package 1.5.4 : beta.pair and betapart.core functions
 \seealso{
 \code{\link[betapart]{beta.pair}}
 }
-\keyword{betapart}
+\keyword{betapart,}
+\keyword{internal}

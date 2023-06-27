@@ -18,4 +18,5 @@ From clValid package O.7 : dunn function
 \seealso{
 \code{\link[clValid]{dunn}}
 }
-\keyword{clValid}
+\keyword{clValid,}
+\keyword{internal}

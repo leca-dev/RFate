@@ -8,6 +8,8 @@
 ##' 
 ##' @param package.name a \code{string} corresponding to the name of the package 
 ##' that will be loaded or installed
+##' 
+##' @keywords internal
 ##'
 ##' @export
 ##'

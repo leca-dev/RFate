@@ -18,7 +18,7 @@ species, based on co-occurrence of species."><!-- mathjax --><script src="https:
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -30,7 +30,7 @@ species, based on co-occurrence of species."><!-- mathjax --><script src="https:
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -56,7 +56,7 @@ species, based on co-occurrence of species."><!-- mathjax --><script src="https:
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -141,7 +141,7 @@ species, based on co-occurrence of species.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.speciesDistanceOverlap</span><span class="op">(</span><span class="va">mat.overlap.option</span>, <span class="va">mat.overlap.object</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.speciesDistanceOverlap</span><span class="op">(</span><span class="va">mat.overlap.option</span>, <span class="va">mat.overlap.object</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -151,6 +151,8 @@ species, based on co-occurrence of species.</p>
 calculate the distance between species based on niche overlap (either 
 <code>PCA</code> or <code>raster</code>, see 
 <a href="PRE_FATE.speciesDistance#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>mat.overlap.object</dt>
 <dd><p>two options, depending on the value of 
 <code>mat.overlap.option</code> :</p><ul><li><p>(<code>PCA</code> option) a <code>list</code> with 2 elements :</p><dl><dt><code>tab.dom.PA</code></dt>
@@ -173,10 +175,13 @@ calculate the distance between species based on niche overlap (either
   
 </dl></li>
 </ul></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>matrix</code> containing overlap distances between each pair 
+    
+
+<p>A <code>matrix</code> containing overlap distances between each pair 
 of species, calculated as <code>1 - Schoeners D</code>.</p>
     </div>
     <div id="details">
@@ -184,13 +189,13 @@ of species, calculated as <code>1 - Schoeners D</code>.</p>
     <p>This function allows to obtain a <strong>distance matrix between species</strong> 
 (1 - Schoeners D), based on niche overlap information :</p>
 <ul><li><p>If <code>PCA</code> option is selected, the degree of niche overlap will 
-  be computed using the <code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html" class="external-link">ecospat.niche.overlap</a></code>.</p></li>
+  be computed using the <code>ecospat.niche.overlap</code>.</p></li>
 <li><p>If <code>raster</code> option is selected, the degree of niche overlap will 
   be computed using the <code><a href="https://rdrr.io/pkg/phyloclim/man/niche.overlap.html" class="external-link">niche.overlap</a></code>. <br><br><br></p></li>
 </ul></div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html" class="external-link">ecospat.niche.overlap</a></code>, 
+    <div class="dont-index"><p><code>ecospat.niche.overlap</code>, 
 <code><a href="https://rdrr.io/pkg/phyloclim/man/niche.overlap.html" class="external-link">niche.overlap</a></code></p></div>
     </div>
     <div id="author">
@@ -200,30 +205,29 @@ of species, calculated as <code>1 - Schoeners D</code>.</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Prepare sites x species table</span>
-<span class="co">## Add absences in community sites</span>
-<span class="va">sites</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.observations</span>
-<span class="va">tab.dom.PA</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">tab.dom.PA</span>
-<span class="kw">for</span> <span class="op">(</span><span class="va">si</span> <span class="kw">in</span> <span class="va">sites</span><span class="op">$</span><span class="va">sites</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">TYPE</span> <span class="op">==</span> <span class="st">"COMMUNITY"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>
-<span class="op">{</span>
-  <span class="va">ind</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tab.dom.PA</span><span class="op">)</span> <span class="op">==</span> <span class="va">si</span><span class="op">)</span>
-  <span class="va">tab.dom.PA</span><span class="op">[</span><span class="va">ind</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">tab.dom.PA</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0</span>
-<span class="op">}</span>
-
-<span class="co">## Prepare environmental table</span>
-<span class="va">tab.env</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">tab.env</span>
-
-<span class="co">## Calculate niche overlap distances -----------------------------------------</span>
-<span class="va">list.over</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tab.dom.PA</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="va">tab.env</span><span class="op">)</span>
-<span class="va">DIST.overlap</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistanceOverlap</span><span class="op">(</span>mat.overlap.option <span class="op">=</span> <span class="st">"PCA"</span>
-                                               , mat.overlap.object <span class="op">=</span> <span class="va">list.over</span><span class="op">)</span>
-<span class="op">(</span><span class="va">DIST.overlap</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Prepare sites x species table</span></span>
+<span><span class="co">## Add absences in community sites</span></span>
+<span><span class="va">sites</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.observations</span></span>
+<span><span class="va">tab.dom.PA</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">tab.dom.PA</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">si</span> <span class="kw">in</span> <span class="va">sites</span><span class="op">$</span><span class="va">sites</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">TYPE</span> <span class="op">==</span> <span class="st">"COMMUNITY"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">{</span></span>
+<span>  <span class="va">ind</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">tab.dom.PA</span><span class="op">)</span> <span class="op">==</span> <span class="va">si</span><span class="op">)</span></span>
+<span>  <span class="va">tab.dom.PA</span><span class="op">[</span><span class="va">ind</span>, <span class="fu"><a href="https://rdrr.io/r/base/which.html" class="external-link">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">tab.dom.PA</span><span class="op">[</span><span class="va">ind</span>, <span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">]</span> <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## Prepare environmental table</span></span>
+<span><span class="va">tab.env</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">tab.env</span></span>
+<span></span>
+<span><span class="co">## Calculate niche overlap distances -----------------------------------------</span></span>
+<span><span class="va">list.over</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">tab.dom.PA</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">]</span>, <span class="va">tab.env</span><span class="op">)</span></span>
+<span><span class="va">DIST.overlap</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesDistanceOverlap</span><span class="op">(</span>mat.overlap.option <span class="op">=</span> <span class="st">"PCA"</span></span>
+<span>                                               , mat.overlap.object <span class="op">=</span> <span class="va">list.over</span><span class="op">)</span></span>
+<span><span class="op">(</span><span class="va">DIST.overlap</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -237,7 +241,7 @@ of species, calculated as <code>1 - Schoeners D</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

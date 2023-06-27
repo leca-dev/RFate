@@ -34,20 +34,15 @@
 #include <cstdlib>
 #include <ctime>
 #include <chrono>
-
-#include <boost/random.hpp>
-#include <boost/random/uniform_int.hpp>
+#include <random>
 
 using namespace std;
 
 // boost::mt19937 est un Mersenne twister generator, ou générateur de nombres pseudo-aléatoires
-// boost::uniform_01<RandomGenerator> génère une distribution aléatoire uniforme
-// boost::variate_generator<RandomGenerator&, Normal> est un bivariate generator (générateur MT19937+distribution standard uniforme)
 
-typedef boost::mt19937 RandomGenerator;
-typedef boost::uniform_01<RandomGenerator&> Uni01;
-typedef boost::uniform_int<int> UniInt;
-typedef boost::variate_generator<RandomGenerator&, UniInt> GeneratorUniInt;
+typedef std::mt19937 RandomGenerator;
+typedef std::uniform_real_distribution<double> UniReal;
+typedef std::uniform_int_distribution<int> UniInt;
 
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -286,7 +281,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 
 			if (dispOption==2 || dispOption==3)
 			{
-				Uni01 random_01(rng);
+			  UniReal random_01(0.0, 1.0);
 
 				/* select cell receiving seeds according to a probability decreasing with distance */
 				for (int id = 0; id < m_FGdistCircle[fg][0].size(); id++)
@@ -296,7 +291,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
-						if (dispOption == 2 || (dispOption == 3 && random_01() < m_prob_d1[fg][dist_pt]))
+						if (dispOption == 2 || (dispOption == 3 && random_01(rng) < m_prob_d1[fg][dist_pt]))
 						{
 							v1x_select.push_back(m_FGdistCircle[fg][0][id]);
 							v1y_select.push_back(m_FGdistCircle[fg][3][id]);
@@ -311,7 +306,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
-						if (dispOption == 2 || (dispOption == 3 && random_01() < m_prob_d2[fg][dist_pt]))
+						if (dispOption == 2 || (dispOption == 3 && random_01(rng) < m_prob_d2[fg][dist_pt]))
 						{
 							v2x_select.push_back(m_FGdistCircle[fg][1][id]);
 							v2y_select.push_back(m_FGdistCircle[fg][4][id]);
@@ -378,12 +373,11 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 							v2y_select.reserve(noDrawMax);
 
 							UniInt distrib(0, m_FGdistCircle[fg][1].size());
-							GeneratorUniInt draw_from_distrib(rng,distrib);
 							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
 							{ /* Draw of cells into crown that will received seeds */
 								/*!*/
-								int d2_draw = draw_from_distrib();
-								/*!*/
+								int d2_draw = distrib(rng);
+							  /*!*/
 								v2x_select.push_back(m_FGdistCircle[fg][1][d2_draw]);
 								v2y_select.push_back(m_FGdistCircle[fg][4][d2_draw]);
 							}
@@ -401,8 +395,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 
 									/* x of its neighbour */
 									UniInt distrib(0,3);
-									GeneratorUniInt draw_from_distrib(rng,distrib);
-									switch(draw_from_distrib())
+									switch(distrib(rng))
 									{
 										case 0 : xt++;
 													break;
@@ -434,10 +427,9 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						if(m_FGdistCircle[fg][2].size()>0)
 						{
 							UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
-							GeneratorUniInt draw_from_distrib(rng,distrib);
 
 							/*!*/
-							int LD_draw = draw_from_distrib(); //rand()% vSize;
+							int LD_draw = distrib(rng); //rand()% vSize;
 							/*!*/
 							xt = x + m_FGdistCircle[fg][2][LD_draw];
 							yt = y + m_FGdistCircle[fg][5][LD_draw];

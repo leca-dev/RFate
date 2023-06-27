@@ -20,7 +20,7 @@ these groups by identifying determinant species in each of them."><!-- mathjax -
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -32,7 +32,7 @@ these groups by identifying determinant species in each of them."><!-- mathjax -
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -58,7 +58,7 @@ these groups by identifying determinant species in each of them."><!-- mathjax -
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -145,11 +145,11 @@ these groups by identifying determinant species in each of them.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.speciesClustering_step2</span><span class="op">(</span>
-  <span class="va">clust.dendrograms</span>,
-  <span class="va">no.clusters</span>,
-  <span class="va">mat.species.DIST</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.speciesClustering_step2</span><span class="op">(</span></span>
+<span>  <span class="va">clust.dendrograms</span>,</span>
+<span>  <span class="va">no.clusters</span>,</span>
+<span>  <span class="va">mat.species.DIST</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -158,18 +158,31 @@ these groups by identifying determinant species in each of them.</p>
 <dd><p>a dendrogram, or a <code>list</code> of dendrograms (one 
 for each <code>GROUP</code> value). <br> Such an object can be obtained 
 with the <code><a href="PRE_FATE.speciesClustering_step1.html">PRE_FATE.speciesClustering_step1</a></code> function.</p></dd>
+
+
 <dt>no.clusters</dt>
 <dd><p>an <code>integer</code>, or a <code>vector</code> of <code>integer</code> 
 (one for each <code>GROUP</code> value), with the number of clusters to be kept</p></dd>
+
+
 <dt>mat.species.DIST</dt>
 <dd><p>a <code>dist</code> object, or a <code>list</code> of 
 <code>dist</code> objects (one for each <code>GROUP</code> value), corresponding to the 
 distance between each pair of species. <br> Such an object can be obtained 
 with the <code><a href="PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></code> function.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> containing one <code>vector</code>, one <code>data.frame</code>with the following columns, and two <code>ggplot2</code> objects :</p><dl><dt>determ.sp</dt>
+    
+
+<p>A <code>list</code> containing one <code>vector</code>, one <code>data.frame</code></p>
+ 
+
+<p>with the following columns, and two <code>ggplot2</code> objects :</p>
+
+
+<dl><dt>determ.sp</dt>
 <dd><p>the names of all determinant species</p></dd>
 
   <dt>determ.all</dt>
@@ -276,42 +289,41 @@ species based on these PFG. <br><br></p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Species dissimilarity distances (niche overlap + traits distance)</span>
-<span class="va">tab.dist</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Phanerophyte"</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.DIST.P</span><span class="op">$</span><span class="va">mat.ALL</span>
-                , <span class="st">"Chamaephyte"</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.DIST.C</span><span class="op">$</span><span class="va">mat.ALL</span>
-                , <span class="st">"Herbaceous"</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.DIST.H</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.dist</span><span class="op">)</span>
-<span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">tab.dist</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>
-
-<span class="co">## Build dendrograms ---------------------------------------------------------</span>
-<span class="va">sp.CLUST</span> <span class="op">=</span> <span class="fu"><a href="PRE_FATE.speciesClustering_step1.html">PRE_FATE.speciesClustering_step1</a></span><span class="op">(</span>mat.species.DIST <span class="op">=</span> <span class="va">tab.dist</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.CLUST</span><span class="op">)</span>
-
-
-<span class="co">## Number of clusters per group</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.CLUST</span><span class="op">$</span><span class="va">plot.clustNo</span><span class="op">)</span>
-<span class="va">no.clusters</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span> <span class="co">## Phanerophyte, Chamaephyte, Herbaceous</span>
-
-
-
-<span class="co">## Find determinant species ------------------------------------------------------------------</span>
-<span class="va">sp.DETERM</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesClustering_step2</span><span class="op">(</span>clust.dendrograms <span class="op">=</span> <span class="va">sp.CLUST</span><span class="op">$</span><span class="va">clust.dendrograms</span>
-                                             , no.clusters <span class="op">=</span> <span class="va">no.clusters</span>
-                                             , mat.species.DIST <span class="op">=</span> <span class="va">tab.dist</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">determ.sp</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">determ.all</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.distance</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.PCO</span><span class="op">$</span><span class="va">Chamaephyte</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.PCO</span><span class="op">$</span><span class="va">Herbaceous</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.PCO</span><span class="op">$</span><span class="va">Phanerophyte</span><span class="op">)</span>
-
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Species dissimilarity distances (niche overlap + traits distance)</span></span>
+<span><span class="va">tab.dist</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Phanerophyte"</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.DIST.P</span><span class="op">$</span><span class="va">mat.ALL</span></span>
+<span>                , <span class="st">"Chamaephyte"</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.DIST.C</span><span class="op">$</span><span class="va">mat.ALL</span></span>
+<span>                , <span class="st">"Herbaceous"</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.DIST.H</span><span class="op">$</span><span class="va">mat.ALL</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.dist</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">tab.dist</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co">## Build dendrograms ---------------------------------------------------------</span></span>
+<span><span class="va">sp.CLUST</span> <span class="op">=</span> <span class="fu"><a href="PRE_FATE.speciesClustering_step1.html">PRE_FATE.speciesClustering_step1</a></span><span class="op">(</span>mat.species.DIST <span class="op">=</span> <span class="va">tab.dist</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.CLUST</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Number of clusters per group</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.CLUST</span><span class="op">$</span><span class="va">plot.clustNo</span><span class="op">)</span></span>
+<span><span class="va">no.clusters</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">3</span>, <span class="fl">8</span><span class="op">)</span> <span class="co">## Phanerophyte, Chamaephyte, Herbaceous</span></span>
+<span></span>
+<span></span>
+<span></span>
+<span><span class="co">## Find determinant species ------------------------------------------------------------------</span></span>
+<span><span class="va">sp.DETERM</span> <span class="op">=</span> <span class="fu">PRE_FATE.speciesClustering_step2</span><span class="op">(</span>clust.dendrograms <span class="op">=</span> <span class="va">sp.CLUST</span><span class="op">$</span><span class="va">clust.dendrograms</span></span>
+<span>                                             , no.clusters <span class="op">=</span> <span class="va">no.clusters</span></span>
+<span>                                             , mat.species.DIST <span class="op">=</span> <span class="va">tab.dist</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">determ.sp</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">determ.all</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.distance</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.PCO</span><span class="op">$</span><span class="va">Chamaephyte</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.PCO</span><span class="op">$</span><span class="va">Herbaceous</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/plot.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.DETERM</span><span class="op">$</span><span class="va">plot.PCO</span><span class="op">$</span><span class="va">Phanerophyte</span><span class="op">)</span></span>
+<span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -325,7 +337,7 @@ species based on these PFG. <br><br></p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

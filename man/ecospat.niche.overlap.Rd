@@ -70,5 +70,6 @@ adehabitatHR 0.4.19 packages
 \code{\link[ecospat]{ecospat.niche.overlap}}
 }
 \keyword{ecospat,}
+\keyword{internal}
 \keyword{niche}
-\keyword{overlap}
+\keyword{overlap,}

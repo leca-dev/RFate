@@ -14,6 +14,9 @@
 ##' \code{dist} objects (one for each \code{GROUP} value), corresponding to the 
 ##' dissimilarity distance between each pair of species. \cr Such an object can 
 ##' be obtained with the \code{\link{PRE_FATE.speciesDistance}} function.
+##' @param opt.no_clust_max (\emph{optional}) default \code{15}. \cr an 
+##' \code{integer} corresponding to the maximum number of clusters to be tested 
+##' for each distance matrix
 ##' 
 ##' 
 ##' @details 

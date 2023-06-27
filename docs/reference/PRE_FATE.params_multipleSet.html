@@ -21,7 +21,7 @@ using Latin Hypercube Sampling to help find best combination of parameters
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -33,7 +33,7 @@ using Latin Hypercube Sampling to help find best combination of parameters
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -59,7 +59,7 @@ using Latin Hypercube Sampling to help find best combination of parameters
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -146,33 +146,33 @@ using Latin Hypercube Sampling to help find best combination of parameters
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.params_multipleSet</span><span class="op">(</span>
-  <span class="va">name.simulation.1</span>,
-  name.simulation.2 <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">file.simulParam.1</span>,
-  file.simulParam.2 <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">no_simulations</span>,
-  opt.folder.name <span class="op">=</span> <span class="st">"FATE_simulation_MULTIPLE_SET"</span>,
-  opt.seed <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.percent_maxAbund <span class="op">=</span> <span class="fl">0.5</span>,
-  opt.percent_seeding <span class="op">=</span> <span class="fl">0.5</span>,
-  opt.percent_light <span class="op">=</span> <span class="fl">0.5</span>,
-  opt.percent_soil <span class="op">=</span> <span class="fl">0.5</span>,
-  do.max_abund_low <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.max_abund_medium <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.max_abund_high <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.seeding_duration <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.seeding_timestep <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.seeding_input <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.potential_fecundity <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.no_strata <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.LIGHT.thresh_medium <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.LIGHT.thresh_low <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.SOIL.init <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.SOIL.retention <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.DISPERSAL.mode <span class="op">=</span> <span class="cn">TRUE</span>,
-  do.HABSUIT.mode <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.params_multipleSet</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation.1</span>,</span>
+<span>  name.simulation.2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">file.simulParam.1</span>,</span>
+<span>  file.simulParam.2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">no_simulations</span>,</span>
+<span>  opt.folder.name <span class="op">=</span> <span class="st">"FATE_simulation_MULTIPLE_SET"</span>,</span>
+<span>  opt.seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opt.percent_maxAbund <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  opt.percent_seeding <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  opt.percent_light <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  opt.percent_soil <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  do.max_abund_low <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.max_abund_medium <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.max_abund_high <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.seeding_duration <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.seeding_timestep <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.seeding_input <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.potential_fecundity <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.no_strata <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.LIGHT.thresh_medium <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.LIGHT.thresh_low <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.SOIL.init <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.SOIL.retention <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.DISPERSAL.mode <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  do.HABSUIT.mode <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -183,79 +183,115 @@ or simulation name of the <code>FATE</code> simulation from which to
 retrieve the first parameter simulation file (<code>file.simulParam.1</code>), 
 and the second if given (<code>file.simulParam.2</code>) and no other directory 
 provided (<code>name.simulation.2 = NULL</code>)</p></dd>
+
+
 <dt>name.simulation.2</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> 
 A <code>string</code> corresponding to the main directory or simulation name of 
 the <code>FATE</code> simulation from which to retrieve the second parameter 
 simulation file (<code>file.simulParam.2</code>)</p></dd>
+
+
 <dt>file.simulParam.1</dt>
 <dd><p>a <code>string</code> corresponding to the name of the 
 simulation parameter file from which to retrieve parameter values that will 
 be used to build the multiple set of new parameters</p></dd>
+
+
 <dt>file.simulParam.2</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> 
 A <code>string</code> corresponding to the name of the second simulation parameter 
 file from which to retrieve parameter values that will be used to build 
 parameter ranges in comparison with values from <code>file.simulParam.1</code></p></dd>
+
+
 <dt>no_simulations</dt>
 <dd><p>an <code>integer</code> corresponding to the number of set 
 of parameters that will be produced according to Latin Hypercube Sampling 
 (LHS)</p></dd>
+
+
 <dt>opt.folder.name</dt>
 <dd><p>(<em>optional</em>) default 
 <code>FATE_simulation_MULTIPLE_SET</code>. <br> A <code>string</code> corresponding 
 to the name of the folder that will be created to store the results</p></dd>
+
+
 <dt>opt.seed</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br>
 An <code>integer</code> to be given to <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></code> function, in 
 order to fix the produced results if needed, as 
 <code>designLHD</code> is also a random value generator</p></dd>
+
+
 <dt>opt.percent_maxAbund</dt>
 <dd><p>default <code>0.5</code>. Amount of variation 
 (between <code>0</code> and <code>1</code>) around the original value of 
 <code>MAX_ABUND_LOW</code>, <code>MAX_ABUND_MEDIUM</code>, <code>MAX_ABUND_HIGH</code> if 
 selected</p></dd>
+
+
 <dt>opt.percent_seeding</dt>
 <dd><p>default <code>0.5</code>. Amount of variation (between 
 <code>0</code> and <code>1</code>) around the original value of <code>SEEDING_DURATION</code>, 
 <code>SEEDING_TIMESTEP</code>, <code>SEEDING_INPUT</code>, <code>POTENTIAL_FECUNDITY</code> 
 if selected</p></dd>
+
+
 <dt>opt.percent_light</dt>
 <dd><p>default <code>0.5</code>. Amount of variation (between 
 <code>0</code> and <code>1</code>) around the original value of 
 <code>LIGHT_THRESH_MEDIUM</code>, <code>LIGHT_THRESH_LOW</code> if selected</p></dd>
+
+
 <dt>opt.percent_soil</dt>
 <dd><p>default <code>0.5</code>. Amount of variation (between 
 <code>0</code> and <code>1</code>) around the original value of <code>SOIL_INIT</code>, 
 <code>SOIL_RETENTION</code> if selected</p></dd>
+
+
 <dt>do.max_abund_low</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>MAX_ABUND_LOW</code> parameter within <em>Global_parameters</em> file will be 
 declined into a range of values</p></dd>
+
+
 <dt>do.max_abund_medium</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>MAX_ABUND_MEDIUM</code> parameter within <em>Global_parameters</em> file will 
 be declined into a range of values</p></dd>
+
+
 <dt>do.max_abund_high</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>MAX_ABUND_HIGH</code> parameter within <em>Global_parameters</em> file will 
 be declined into a range of values</p></dd>
+
+
 <dt>do.seeding_duration</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>SEEDING_DURATION</code> parameter within <em>Global_parameters</em> file will 
 be declined into a range of values</p></dd>
+
+
 <dt>do.seeding_timestep</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>SEEDING_TIMESTEP</code> parameter within <em>Global_parameters</em> file will 
 be declined into a range of values</p></dd>
+
+
 <dt>do.seeding_input</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>SEEDING_INPUT</code> parameter within <em>Global_parameters</em> file will be 
 declined into a range of values</p></dd>
+
+
 <dt>do.potential_fecundity</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>POTENTIAL_FECUNDITY</code> parameter within <em>Global_parameters</em> file 
 will be declined into a range of values</p></dd>
+
+
 <dt>do.no_strata</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, <code>NO_STRATA</code> 
 parameter within <em>Global_parameters</em> file will be declined into a range 
@@ -264,43 +300,63 @@ of values, with potential impact on some parameters within PFG succession
 <code>IMM_SIZE</code>, <code>CHANG_STR_AGES</code> (and <code>LIGHT_TOL</code>), see 
 <code><a href="PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a></code> (and 
 <code><a href="PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a></code>))</p></dd>
+
+
 <dt>do.LIGHT.thresh_medium</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>LIGHT_THRESH_MEDIUM</code> parameter within <em>Global_parameters</em> file 
 will be declined into a range of values</p></dd>
+
+
 <dt>do.LIGHT.thresh_low</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>LIGHT_THRESH_LOW</code> parameter within <em>Global_parameters</em> file 
 will be declined into a range of values</p></dd>
+
+
 <dt>do.SOIL.init</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, <code>SOIL_INIT</code> 
 parameter within <em>Global_parameters</em> file will be declined into a range 
 of values</p></dd>
+
+
 <dt>do.SOIL.retention</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>SOIL_RETENTION</code> parameter within <em>Global_parameters</em> file will be 
 declined into a range of values</p></dd>
+
+
 <dt>do.DISPERSAL.mode</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>DISPERSAL_MODE</code> parameter within <em>Global_parameters</em> file will be 
 declined into its three possible values (either either packets kernel 
 (<code>1</code>), exponential kernel (<code>2</code>) or exponential kernel with 
 probability (<code>3</code>), see <code><a href="PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a></code>)</p></dd>
+
+
 <dt>do.HABSUIT.mode</dt>
 <dd><p>default <code>TRUE</code>. If <code>TRUE</code>, 
 <code>HABSUIT_MODE</code> parameter within <em>Global_parameters</em> file will be 
 declined into its two possible values (either random (<code>1</code>) or PFG 
 specific (<code>2</code>), see <code><a href="PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a></code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A new folder containing the different sets of parameters asked. 
-Depending on what elements have been asked to be varied, three types of 
+    
+
+<p>A new folder containing the different sets of parameters asked.</p>
+
+
+<p>Depending on what elements have been asked to be varied, three types of 
 files can have been modified :</p><ol><li><p>the global parameter file</p></li>
 <li><p>the PFG succession files</p></li>
 <li><p>the PFG light succession files <br><br></p></li>
 </ol><p>Below are listed the parameters that can change (if selected) within each 
-file :</p><ul><li><p>Into the <code>name.simulation/DATA/GLOBAL_PARAMETERS</code> folder :</p><ul><li><p>NO_STRATA</p></li>
+file :</p>
+
+
+<ul><li><p>Into the <code>name.simulation/DATA/GLOBAL_PARAMETERS</code> folder :</p><ul><li><p>NO_STRATA</p></li>
 <li><p>SEEDING_DURATION</p></li>
 <li><p>SEEDING_TIMESTEP</p></li>
 <li><p>SEEDING_INPUT</p></li>
@@ -401,7 +457,7 @@ drawn in order to explore the whole space of combinations.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

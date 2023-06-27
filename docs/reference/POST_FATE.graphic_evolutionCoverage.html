@@ -23,7 +23,7 @@ over the whole area."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.2.0</span>
       </span>
     </div>
 
@@ -35,7 +35,7 @@ over the whole area."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fab fa-pagelines"></span>
      
     FATE
@@ -61,7 +61,7 @@ over the whole area."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fas fa-toolbox"></span>
      
     RFate
@@ -150,12 +150,12 @@ over the whole area.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">POST_FATE.graphic_evolutionCoverage</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  file.simulParam <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.fixedScale <span class="op">=</span> <span class="cn">TRUE</span>,
-  opt.doPlot <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">POST_FATE.graphic_evolutionCoverage</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  file.simulParam <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opt.fixedScale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opt.doPlot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -163,23 +163,35 @@ over the whole area.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory 
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>file.simulParam</dt>
 <dd><p>default <code>NULL</code>. <br> A <code>string</code> 
 corresponding to the name of a parameter file that will be contained into 
 the <code>PARAM_SIMUL</code> folder of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>opt.fixedScale</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> If 
 <code>FALSE</code>, the ordinate scale will be adapted for each PFG for the 
 graphical representation of the evolution of abundances through time</p></dd>
+
+
 <dt>opt.doPlot</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 plot(s) will be processed, otherwise only the calculation and reorganization 
 of outputs will occur, be saved and returned</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> containing two <code>data.frame</code> objects with the 
-following columns, and two <code>ggplot2</code> objects :</p><dl><dt>tab.spaceOccupancy</dt>
+    
+
+<p>A <code>list</code> containing two <code>data.frame</code> objects with the 
+following columns, and two <code>ggplot2</code> objects :</p>
+
+
+<dl><dt>tab.spaceOccupancy</dt>
 <dd><p></p><dl><dt><code>PFG</code></dt>
 <dd><p>concerned plant functional group (for abundance)</p></dd>
 
@@ -281,7 +293,7 @@ function has been run and that the file
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

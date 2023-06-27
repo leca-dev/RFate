@@ -24,3 +24,4 @@ parameters and separated by a same character value.
 \author{
 Maya Guéguen
 }
+\keyword{internal}

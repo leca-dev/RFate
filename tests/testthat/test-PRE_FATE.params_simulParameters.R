@@ -116,8 +116,7 @@ test_that("PRE_FATE.params_simulParameters gives error with wrong data : folders
                                    , doDrought = TRUE
                                    , DROUGHT.no_sub = 2
                                    , doAliens = TRUE
-                                   , ALIEN.no = 1
-                                   , ALIEN.freq = 1
+                                   , ALIEN.freq = rep(1, 6)
                                    , doFire = TRUE
                                    , FIRE.no = 1
                                    , FIRE.no_sub = 4

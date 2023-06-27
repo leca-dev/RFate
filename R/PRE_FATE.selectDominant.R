@@ -864,11 +864,9 @@ PRE_FATE.selectDominant = function(mat.observations
     tab.dom.AB = tapply(X = sel.obs$abund
                         , INDEX = list(sel.obs$sites, sel.obs$species)
                         , FUN = sum)
-    tab.dom.PA = tapply(X = sel.obs$abund
-                        , INDEX = list(sel.obs$sites, sel.obs$species)
-                        , FUN = length)
     
     ## Change sum of abundBB and NA to 1 in tab.dom.PA
+    tab.dom.PA = tab.dom.AB
     tab.dom.PA[which(tab.dom.PA[] > 0)] = 1
     
     

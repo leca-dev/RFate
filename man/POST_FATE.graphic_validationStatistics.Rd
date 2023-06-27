@@ -12,7 +12,8 @@ POST_FATE.graphic_validationStatistics(
   years,
   mat.PFG.obs,
   opt.ras_habitat = NULL,
-  opt.doPlot = TRUE
+  opt.doPlot = TRUE,
+  opt.no_CPU = 1
 )
 }
 \arguments{
@@ -37,6 +38,10 @@ A \code{string} corresponding to the file name of a raster mask, with an
 \item{opt.doPlot}{(\emph{optional}) default \code{TRUE}. \cr If \code{TRUE}, 
 plot(s) will be processed, otherwise only the calculation and reorganization 
 of outputs will occur, be saved and returned}
+
+\item{opt.no_CPU}{(\emph{optional}) default \code{1}. \cr The number of 
+resources that can be used to parallelize the \code{unzip/zip} of raster 
+files}
 }
 \value{
 A \code{list} containing one \code{data.frame} object with the 

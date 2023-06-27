@@ -31,6 +31,8 @@
 ##' @param vy \eqn{\Sigma (y - my) * (y - my) * \frac{z}{\Sigma z}}
 ##' @param coeff default \code{1}
 ##' 
+##' @keywords internal
+##' 
 ##' @importFrom stats model.matrix
 ##' 
 ## END OF HEADER ###############################################################
