@@ -946,10 +946,14 @@ PRE_FATE.params_multipleSet = function(
   for (fi in TOKEEP.simul[-ind])
   {
     cat("\n ", paste0(dirname(name.simulation.1), "/", fi))
+    file.dest <- paste0(opt.folder.name, "/"
+                        , paste0(strsplit(fi, "/")[[1]][-1]
+                                 , collapse = "/"))
+    if (!dir.exists(dirname(file.dest))) {
+      dir.create(dirname(file.dest), recursive = TRUE)
+    }
     file.copy(from = paste0(dirname(name.simulation.1), "/", fi)
-              , to = paste0(opt.folder.name, "/"
-                            , paste0(strsplit(fi, "/")[[1]][-1]
-                                     , collapse = "/")))
+              , to = file.dest)
   }
   cat("\n")
   

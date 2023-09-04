@@ -51,7 +51,7 @@ m_DoLightInteraction(false), m_LightThreshLow(0), m_LightThreshMedium(0), m_Ligh
 m_DoHabSuitability(false), m_HabSuitMode(1),
 m_DoDispersal(false), m_DispersalMode(1), m_DispersalSaving(false), 
 m_DoDisturbances(false), m_NoDist(0), m_NoDistSub(0), m_FreqDist(0,0),
-m_DoSoilInteraction(false), m_SoilInit(0.0), m_SoilRetention(0.0), m_SoilSaving(false), 
+m_DoSoilInteraction(false), m_SoilFillMap(true), m_SoilInit(0.0), m_SoilRetention(0.0), m_SoilSaving(false), 
 m_DoFireDisturbances(false), m_NoFireDist(0), m_NoFireDistSub(0), m_FreqFireDist(0,0),
 m_FireIgnitMode(1), m_FireNeighMode(1), m_FirePropMode(1), m_FireQuotaMode(1),
 m_FireIgnitNo(0,0), m_FireIgnitNoHist(0), m_FireIgnitFlammMax(0), m_FireIgnitLogis(0,0),
@@ -70,7 +70,7 @@ const bool& doLightInteraction, const int& lightThreshLow, const int& lightThres
 const bool& doHabSuitability, const int& habSuitMode,
 const bool& doDispersal, const int& dispersalMode, const bool& dispersalSaving, 
 const bool& doDisturbances, const int& noDist, const int& noDistSub, const vector<int>& freqDist,
-const bool& doSoilInteraction, const double& soilInit, const double& soilRetention, const bool& soilSaving, 
+const bool& doSoilInteraction, const bool& soilFillMap, const double& soilInit, const double& soilRetention, const bool& soilSaving, 
 const bool& doFireDisturbances, const int& noFireDist, const int& noFireDistSub, const vector<int>& freqFireDist,
 const int& fireIgnitMode, const int& fireNeighMode, const int& firePropMode, const int& fireQuotaMode,
 const vector<int>& fireIgnitNo, const vector<int>& fireIgnitNoHist,
@@ -87,7 +87,7 @@ m_DoLightInteraction(doLightInteraction), m_LightThreshLow(lightThreshLow), m_Li
 m_DoHabSuitability(doHabSuitability), m_HabSuitMode(habSuitMode),
 m_DoDispersal(doDispersal), m_DispersalMode(dispersalMode), m_DispersalSaving(dispersalSaving), 
 m_DoDisturbances(doDisturbances), m_NoDist(noDist), m_NoDistSub(noDistSub), m_FreqDist(freqDist),
-m_DoSoilInteraction(doSoilInteraction), m_SoilInit(soilInit), m_SoilRetention(soilRetention), m_SoilSaving(soilSaving), 
+m_DoSoilInteraction(doSoilInteraction), m_SoilFillMap(soilFillMap), m_SoilInit(soilInit), m_SoilRetention(soilRetention), m_SoilSaving(soilSaving), 
 m_DoFireDisturbances(doFireDisturbances), m_NoFireDist(noFireDist), m_NoFireDistSub(noFireDistSub), m_FreqFireDist(freqFireDist),
 m_FireIgnitMode(fireIgnitMode), m_FireNeighMode(fireNeighMode), m_FirePropMode(firePropMode), m_FireQuotaMode(fireQuotaMode),
 m_FireIgnitNo(fireIgnitNo), m_FireIgnitNoHist(fireIgnitNoHist), m_FireIgnitFlammMax(fireIgnitFlammMax), m_FireIgnitLogis(fireIgnitLogis),
@@ -291,6 +291,8 @@ GSP::GSP(const string globalParamsFile)
 	if (v_int.size()) m_DoSoilInteraction = bool(v_int[0]); else m_DoSoilInteraction = false;
 	if (m_DoSoilInteraction)
 	{
+	  v_int = GlobParms.get_val<int>("SOIL_FILL_MAP", true);
+	  if (v_int.size()) m_SoilFillMap = bool(v_int[0]); else m_SoilFillMap = true;
 		m_SoilInit = GlobParms.get_val<double>("SOIL_INIT")[0];
 		m_SoilRetention = GlobParms.get_val<double>("SOIL_RETENTION")[0];
 		if (m_SoilRetention < 0.0)
@@ -470,6 +472,7 @@ int GSP::getNoDist() const{ return m_NoDist; }
 int GSP::getNoDistSub() const{ return m_NoDistSub; }
 const vector<int>& GSP::getFreqDist() const{ return m_FreqDist; }
 bool GSP::getDoSoilInteraction() const{ return m_DoSoilInteraction; }
+bool GSP::getSoilFillMap() const{ return m_SoilFillMap; }
 double GSP::getSoilInit() const{ return m_SoilInit; }
 double GSP::getSoilRetention() const{ return m_SoilRetention; }
 bool GSP::getSoilSaving() const{ return m_SoilSaving; }
@@ -524,6 +527,7 @@ void GSP::setNoDist(const int& noDist){ m_NoDist = noDist; }
 void GSP::setNoDistSub(const int& noDistSub){ m_NoDistSub = noDistSub; }
 void GSP::setFreqDist(const vector<int>& freqDist){ m_FreqDist = freqDist; }
 void GSP::setDoSoilInteraction(const bool& doSoilInteraction){ m_DoSoilInteraction = doSoilInteraction; }
+void GSP::setSoilFillMap(const bool& soilFillMap){ m_SoilFillMap = soilFillMap; }
 void GSP::setSoilInit(const double& soilInit){ m_SoilInit = soilInit; }
 void GSP::setSoilRetention(const double& soilRetention){ m_SoilRetention = soilRetention; }
 void GSP::setSoilSaving(const bool& soilSaving){ m_SoilSaving = soilSaving; }
@@ -585,6 +589,7 @@ void GSP::show()
 						 "\nm_NoDistSub = ", m_NoDistSub,
 						 "\nm_FreqDist = ", m_FreqDist,
 						 "\nm_DoSoilInteraction = ", m_DoSoilInteraction,
+						 "\nm_SoilFillMap = ", m_SoilFillMap,
 						 "\nm_SoilInit = ", m_SoilInit,
 						 "\nm_SoilRetention = ", m_SoilRetention,
 						 "\nm_SoilSaving = ", m_SoilSaving,

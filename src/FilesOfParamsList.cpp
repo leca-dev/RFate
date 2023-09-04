@@ -35,7 +35,7 @@ using namespace std;
 FOPL::FOPL() :
 m_GlobSimulParams(""), /* Global simulation parameters */
 m_SavedState(""), m_SavingDir(""), m_SavingTimesMaps(""), m_SavingTimesObjects(""), /* Saving parameters */
-m_Mask(""), m_MaskDist(1,""), m_MaskFire(1,""), m_MaskDrought(""), m_MaskElevation(""), m_MaskSlope(""), /* Spatial parameters */
+m_Mask(""), m_MaskDist(1,""), m_MaskFire(1,""), m_MaskDrought(""), m_MaskElevation(""), m_MaskSlope(""), m_MaskSoil(""), /* Spatial parameters */
 m_MaskChangemaskFiles(1,""), m_MaskChangemaskYears(""), m_HabSuitChangemaskFiles(1,""), m_HabSuitChangemaskYears(""), m_DistChangemaskFiles(1,""), m_DistChangemaskYears(""), /* Simulation Changes parameters */
 m_FireChangemaskFiles(1,""), m_FireChangemaskYears(""), m_FireChangefreqFiles(1,""), m_FireChangefreqYears(""),
 m_DroughtChangemaskFiles(1,""), m_DroughtChangemaskYears(""),
@@ -68,7 +68,8 @@ FOPL::FOPL(string paramSimulFile)
 	m_MaskDrought = ReadParamsWithinFile(paramSimulFile, "DROUGHT_MASK")[0];
 	m_MaskElevation = ReadParamsWithinFile(paramSimulFile, "ELEVATION_MASK")[0];
 	m_MaskSlope = ReadParamsWithinFile(paramSimulFile, "SLOPE_MASK")[0];
-
+	m_MaskSoil = ReadParamsWithinFile(paramSimulFile, "SOIL_MASK")[0];
+	
 	/* Simulation Timing parameters */
 	m_MaskChangemaskFiles = ReadParamsWithinFile(paramSimulFile, "MASK_CHANGEMASK_FILES");
 	m_MaskChangemaskYears = ReadParamsWithinFile(paramSimulFile, "MASK_CHANGEMASK_YEARS")[0];
@@ -123,6 +124,7 @@ const vector<string>& FOPL::getMaskFire() const{ return  m_MaskFire; }
 const string& FOPL::getMaskDrought() const{ return  m_MaskDrought; }
 const string& FOPL::getMaskElevation() const{ return  m_MaskElevation; }
 const string& FOPL::getMaskSlope() const{ return  m_MaskSlope; }
+const string& FOPL::getMaskSoil() const{ return  m_MaskSoil; }
 const vector<string>& FOPL::getMaskChangemaskFiles() const{ return  m_MaskChangemaskFiles; }
 const string& FOPL::getMaskChangemaskYears() const{ return  m_MaskChangemaskYears; }
 const vector<string>& FOPL::getHabSuitChangemaskFiles() const{ return  m_HabSuitChangemaskFiles; }
@@ -160,6 +162,7 @@ void FOPL::setMaskFire(const vector<string>& maskFire){ m_MaskFire = maskFire; }
 void FOPL::setMaskDrought(const string& maskDrought){ m_MaskDrought = maskDrought; }
 void FOPL::setMaskElevation(const string& maskElevation){ m_MaskElevation = maskElevation; }
 void FOPL::setMaskSlope(const string& maskSlope){ m_MaskSlope = maskSlope; }
+void FOPL::setMaskSoil(const string& maskSoil){ m_MaskSoil = maskSoil; }
 void FOPL::setMaskChangemaskFiles(const vector<string>& maskChangemaskFiles){ m_MaskChangemaskFiles = maskChangemaskFiles; }
 void FOPL::setMaskChangemaskYears(const string& maskChangemaskYears){ m_MaskChangemaskYears = maskChangemaskYears; }
 void FOPL::setHabSuitChangemaskFiles(const vector<string>& habSuitChangemaskFiles){ m_HabSuitChangemaskFiles = habSuitChangemaskFiles; }
@@ -205,7 +208,8 @@ void FOPL::show()
 						 "\nm_MaskDrought = ", m_MaskDrought,
 					 	 "\nm_MaskElevation = ", m_MaskElevation,
 					 	 "\nm_MaskSlope = ", m_MaskSlope,
-						 // Simulation timing parameters
+					 	 "\nm_MaskSoil = ", m_MaskSoil,
+					 	 // Simulation timing parameters
 						 "\nm_MaskChangemaskFiles = ", m_MaskChangemaskFiles,
 						 "\nm_MaskChangemaskYears = ", m_MaskChangemaskYears,
 						 "\nm_HabSuitChangemaskFiles = ", m_HabSuitChangemaskFiles,
@@ -272,6 +276,7 @@ void FOPL::checkCorrectParams_soil()
 {
 	testDirExist("--SAVING_DIR--",m_SavingDir+"/SOIL/", false);
 	testFileExist("--PFG_PARAMS_SOIL--",m_FGSoil, false);
+	testFileExist("--SOIL_MASK--",m_MaskSoil, (strcmp(m_MaskSoil.c_str(),"0")==0));
 }
 
 void FOPL::checkCorrectParams_fire()
@@ -366,6 +371,7 @@ void FOPL::checkCorrectParams()
 	testFileExist("--DROUGHT_MASK--",m_MaskDrought, true);
 	testFileExist("--ELEVATION_MASK--",m_MaskElevation, true);
 	testFileExist("--SLOPE_MASK--",m_MaskSlope, true);
+	testFileExist("--SOIL_MASK--",m_MaskSoil, true);
 	testFileExist("--MASK_CHANGEMASK_YEARS--",m_MaskChangemaskYears, true);
 	testFileExist("--MASK_CHANGEMASK_FILES--",m_MaskChangemaskFiles, true);
 	testFileExist_changeFile("--MASK_CHANGEMASK_FILES--",m_MaskChangemaskFiles, true);
@@ -479,7 +485,8 @@ void FOPL::checkCorrectMasks()
 	testSameCoord("--DROUGHT_MASK--",m_MaskDrought,ext_REF,coord_REF);
 	testSameCoord("--ELEVATION_MASK--",m_MaskElevation,ext_REF,coord_REF);
 	testSameCoord("--SLOPE_MASK--",m_MaskSlope,ext_REF,coord_REF);
-
+	testSameCoord("--SOIL_MASK--",m_MaskSoil,ext_REF,coord_REF);
+	
 	testSameCoord("--PFG_MASK_ALIENS--",m_FGMapsAliens,ext_REF,coord_REF);
 
 	logg.info("===========> Check OK!\n");

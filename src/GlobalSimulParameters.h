@@ -102,6 +102,7 @@ class GSP
 
 	/* Soil interaction module */
 	bool m_DoSoilInteraction; /*!< Unable or not Soil interaction module */
+	bool m_SoilFillMap; /*! Fill or not initialization soil map with initialization soil value */
 	double m_SoilInit; /*!< Initialization soil value */
 	double m_SoilRetention; /*!< Percentage of soil from previous year to keep */
 	bool m_SoilSaving; /*!< Unable or not the saving of soil resources maps */
@@ -170,6 +171,7 @@ class GSP
 		ar & m_NoDistSub;
 		ar & m_FreqDist;
 		ar & m_DoSoilInteraction;
+		ar & m_SoilFillMap;
 		ar & m_SoilInit;
 		ar & m_SoilRetention;
 		ar & m_SoilSaving;
@@ -263,6 +265,8 @@ class GSP
 	 *	\param noDistSub : number of way a FG can react to a disturbance
 	 *  \param freqDist : the frequency of each disturbance
 	 *	\param doSoilInteraction : unable or not Soil interaction module
+	 *	\param soilFillMap : fill or not initialization soil map with initialization 
+	 * soil value
 	 *	\param soilInit : initialization soil value
 	 *	\param soilRetention : percentage of soil from previous year to keep
 	 *  \param soilSaving : unable or not the saving of soil resources maps
@@ -324,6 +328,7 @@ class GSP
 	const int& noDistSub,
 	const vector<int>& freqDist,
 	const bool& doSoilInteraction,
+	const bool& soilFillMap,
 	const double& soilInit,
 	const double& soilRetention,
 	const bool& soilSaving,
@@ -395,6 +400,7 @@ class GSP
 		m_NoDistSub == o.m_NoDistSub &&
 		m_FreqDist == o.m_FreqDist &&
 		m_DoSoilInteraction == o.m_DoSoilInteraction &&
+		m_SoilFillMap == o.m_SoilFillMap &&
 		m_SoilInit == o.m_SoilInit &&
 		m_SoilRetention == o.m_SoilRetention &&
 		m_SoilSaving == o.m_SoilSaving &&
@@ -455,6 +461,7 @@ class GSP
 	int getNoDistSub() const;
 	const vector<int>& getFreqDist() const;
 	bool getDoSoilInteraction() const;
+	bool getSoilFillMap() const;
 	double getSoilInit() const;
 	double getSoilRetention() const;
 	bool getSoilSaving() const;
@@ -509,6 +516,7 @@ class GSP
 	void setNoDistSub(const int& noDistSub);
 	void setFreqDist(const vector<int>& freqDist);
 	void setDoSoilInteraction(const bool& doSoilInteraction);
+	void setSoilFillMap(const bool& soilFillMap);
 	void setSoilInit(const double& soilInit);
 	void setSoilRetention(const double& soilRetention);
 	void setSoilSaving(const bool& soilSaving);

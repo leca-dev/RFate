@@ -76,7 +76,8 @@ class FOPL
 	string m_MaskDrought; /*!< path to drought index mask file */
 	string m_MaskElevation; /*!< path to elevation mask file */
 	string m_MaskSlope; /*!< path to slope mask file */
-
+	string m_MaskSoil; /*!< path to soil initiation mask file */
+	
 	// TODO (damien#1#): change way disturbances params are given as smth like :
 	/*
 	time=0
@@ -139,6 +140,7 @@ class FOPL
 		ar & m_MaskDrought;
 		ar & m_MaskElevation;
 		ar & m_MaskSlope;
+		ar & m_MaskSoil;
 		ar & m_MaskChangemaskFiles;
 		ar & m_MaskChangemaskYears;
 		ar & m_HabSuitChangemaskFiles;
@@ -217,6 +219,7 @@ class FOPL
 		m_MaskDrought == o.m_MaskDrought &&
 		m_MaskElevation == o.m_MaskElevation &&
 		m_MaskSlope == o.m_MaskSlope &&
+		m_MaskSoil == o.m_MaskSoil &&
 		m_MaskChangemaskFiles == o.m_MaskChangemaskFiles &&
 		m_MaskChangemaskYears == o.m_MaskChangemaskYears &&
 		m_HabSuitChangemaskFiles == o.m_HabSuitChangemaskFiles &&
@@ -259,6 +262,7 @@ class FOPL
 	const string& getMaskDrought() const;
 	const string& getMaskElevation() const;
 	const string& getMaskSlope() const;
+	const string& getMaskSoil() const;
 	const vector<string>& getMaskChangemaskFiles() const;
 	const string& getMaskChangemaskYears() const;
 	const vector<string>& getHabSuitChangemaskFiles() const;
@@ -296,6 +300,7 @@ class FOPL
 	void setMaskDrought(const string& maskDrought);
 	void setMaskElevation(const string& maskElevation);
 	void setMaskSlope(const string& maskSlope);
+	void setMaskSoil(const string& maskSoil);
 	void setMaskChangemaskFiles(const vector<string>& maskChangemaskFiles);
 	void setMaskChangemaskYears(const string& maskChangemaskYears);
 	void setHabSuitChangemaskFiles(const vector<string>& habSuitChangemaskFiles);

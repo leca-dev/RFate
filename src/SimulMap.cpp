@@ -392,6 +392,25 @@ SimulMap::SimulMap(FOPL file_of_params)
   logg.info("> standard light resource creation...");
   LightResources lr_std(m_glob_params.getNoStrata());
   
+  /* standard soil resource creation */
+  logg.info("> standard soil resource creation...");
+  SpatialMap<double, double> SoilMap;
+  if (m_glob_params.getDoSoilInteraction())
+  {
+    if (m_glob_params.getSoilFillMap())
+    {
+      vector< double >  valSoil( m_Mask.getTotncell(), m_glob_params.getSoilInit() );
+      SoilMap = SpatialMap<double, double>(m_Coord_ptr, valSoil);
+    } else
+    {
+      testFileExist("--SOIL_MASK--",file_of_params.getMaskSoil(), false);
+      SoilMap = SpatialMap<double, double>(m_Coord_ptr, ReadMask<double>( file_of_params.getMaskSoil()) );
+    }
+  } else
+  {
+    SoilMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble);
+  }
+  
   /* create a succession model within each pixel */
   logg.info("> create a succession model within each pixel...");
   vector< SuFatePtr > succModel_ptr_list; // vector of ptr on a succession model
@@ -401,11 +420,11 @@ SimulMap::SimulMap(FOPL file_of_params)
     SuFatePtr succModel_ptr; // ptr on succession model
     if (m_glob_params.getDoHabSuitability() == false)
     { // FATE succession model
-      succModel_ptr = new SuFate(i, Comm_std, lr_std, m_glob_params.getSoilInit()
+      succModel_ptr = new SuFate(i, Comm_std, lr_std, SoilMap(i)
                                    , m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr);
     } else if (m_glob_params.getDoHabSuitability() == true)
     { // FATEH succession model
-      succModel_ptr = new SuFateH(i, Comm_std, lr_std, m_glob_params.getSoilInit()
+      succModel_ptr = new SuFateH(i, Comm_std, lr_std, SoilMap(i)
                                     , m_SeedMapOut_ptr, m_SeedMapIn_ptr, m_glob_params_ptr
                                     , &m_EnvSuitMap, &m_EnvSuitRefMap );
     }

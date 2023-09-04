@@ -50,7 +50,7 @@ Imports:
     reshape2, foreach, data.table,
     raster, sp,
     phyloclim, FD, PresenceAbsence, ade4, adehabitatMA, adehabitatHR, 
-    cluster, huge, 
+    cluster, huge, caret, 
     RColorBrewer, colorspace,
     ape, shiny,
     parallel, doParallel

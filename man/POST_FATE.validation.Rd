@@ -8,76 +8,77 @@ POST_FATE.validation(
   name.simulation,
   file.simulParam,
   year,
-  perStrata = FALSE,
-  opt.no_CPU = 1,
+  mat.obs,
+  mat.hab,
+  ras.habitat,
+  doRichness = TRUE,
+  doComposition = TRUE,
   doHabitat = TRUE,
-  releves.PFG,
-  hab.obs,
-  studied.habitat,
-  predict.all.map = FALSE,
   RF.seed = 123,
   RF.training = 0.7,
-  validation.mask = NULL,
-  list.strata.simulations = NULL,
-  doComposition = TRUE,
-  doRichness = TRUE,
-  exclude.PFG = NULL
+  doHabitat.allMap = FALSE,
+  opt.ras_validation = NULL,
+  opt.keep_PFG = NULL,
+  opt.keep_strata = NULL
 )
 }
 \arguments{
-\item{name.simulation}{a \code{string} corresponding to the simulation folder name.}
+\item{name.simulation}{a \code{string} corresponding to the main directory 
+or simulation name of the \code{FATE} simulation}
 
 \item{file.simulParam}{default \code{NULL}. \cr A \code{string} 
 corresponding to the name of a parameter file that will be contained into 
-the \code{PARAM_SIMUL} folder of the \code{FATE} simulation.}
+the \code{PARAM_SIMUL} folder of the \code{FATE} simulation}
 
-\item{year}{an \code{integer} corresponding to the year of simulation for validation.}
+\item{year}{an \code{integer} corresponding to the simulation year that will 
+be used to extract PFG abundance table}
 
-\item{perStrata}{(\code{logical}) default \code{FALSE}. \cr 
-If \code{TRUE}, habitat & PFG composition are computed with PFG abundance defined by strata. \cr
-If \code{FALSE}, habitat & PFG composition are computed with PFG abundance defined for all strata.}
+\item{mat.obs}{a \code{data.frame} with at least 5 columns : \cr 
+\code{site}, \code{x}, \code{y}, \code{PFG}, \code{abund} 
+\cr (\emph{and optionally, \code{strata}, \code{code.habitat}}) 
+(see \href{POST_FATE.validation#details}{\code{Details}})}
 
-\item{opt.no_CPU}{default \code{1}. \cr An \code{integer} corresponding to the number of resources that can be used to 
-parallelize the computation of prediction performance for habitat & richness validation.}
+\item{mat.hab}{a \code{data.frame} with 2 columns : \code{code.habitat}, 
+\code{habitat}}
 
-\item{doHabitat}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, habitat validation module is activated,
-if \code{FALSE}, habitat validation module is disabled.}
+\item{ras.habitat}{a \code{string} corresponding to the file name of a 
+raster mask, with an \code{integer} value within each pixel, corresponding 
+to a specific habitat}
 
-\item{releves.PFG}{a \code{data.frame} with at least 5 columns : \cr
-\code{site}, \code{x}, \code{y}, \code{abund}, \code{PFG}
-\cr (\emph{and optionally, \code{strata}, \code{code.habitat}})
-\cr (see \href{POST_FATE.validation#details}{\code{Details}}).}
+\item{doRichness}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, 
+difference in observed and simulated PFG richness will be run.}
 
-\item{hab.obs}{a \code{raster} map of the habitats within the studied area, with same projection 
-& resolution than simulation mask.}
+\item{doComposition}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, 
+difference in observed and simulated PFG distribution over habitat will be run.}
 
-\item{studied.habitat}{a \code{data.frame} with 2 columns : \cr
-\code{ID} ,\code{habitat}
-\cr (see \href{POST_FATE.validation#details}{\code{Details}}).}
+\item{doHabitat}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, 
+a random forest model to predict habitat from PFG abundances will be run.}
 
-\item{predict.all.map}{(\code{logical}) default \code{FALSE}. \cr If \code{TRUE}, the function will compute habitat prediction 
-& performance over the whole map and will provide a prediction map.}
+\item{RF.seed}{default \code{123}. \cr An \code{integer} to be given to 
+\code{\link[base]{set.seed}} function, in order to fix the produced results 
+if needed, as dataset will be divided randomly into training and testing 
+datasets for the random forest model}
 
-\item{RF.seed}{default \code{123}. \cr An \code{integer} corresponding to the number of seeds to set 
-in order to generate a \code{Random Forest} model.}
+\item{RF.training}{default \code{0.7}. \cr A \code{numeric} between \code{0} 
+and \code{1} corresponding to the percentage of data that will be used as 
+training dataset in the random forest model}
 
-\item{RF.training}{default \code{0.7}. \cr A \code{numeric} between 0 & 1 corresponding to the part of the data used for 
-training a \code{Random Forest} model on \code{releves.PFG} data.}
+\item{doHabitat.allMap}{(\code{logical}) default \code{TRUE}. \cr If 
+\code{TRUE}, habitat prediction over the whole simulation map will be run.}
 
-\item{validation.mask}{(\code{optional}) default \code{NULL}. \cr A \code{raster} map (with 0 or 1 in each pixel) that specified on 
-which pixels the performance of the habitat prediction will be compute, with same projection & resolution than simulation mask 
-\cr If \code{NULL}, the function will take the simulation mask (which means that the performance will be compute over the whole map).}
+\item{opt.ras_validation}{(\emph{optional}) default \code{NULL}. \cr 
+A \code{string} corresponding to the file name of a raster mask, with either 
+\code{0} or \code{1} within each pixel, \code{1} corresponding to the cells 
+of the studied area in which the validation will take place}
 
-\item{list.strata.simulations}{(\code{optional}) default \code{NULL}. \cr If \code{perStrata} = \code{TRUE}, 
-a \code{list} which contains, for each stratum defined in \code{releves.PFG}, the correspondence with \code{FATE} strata definition. \cr
-If \code{perStrata} = \code{FALSE}, please specify \code{NULL} value.}
+\item{opt.keep_PFG}{(\emph{optional}) default \code{NULL}. \cr 
+A \code{vector} of \code{character} corresponding to the names of the PFG to 
+keep for the validation}
 
-\item{doComposition}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG composition validation module is activated.}
-
-\item{doRichness}{(\code{logical}) default \code{TRUE}. \cr If \code{TRUE}, PFG richness validation module is activated.}
-
-\item{exclude.PFG}{(\code{optional}) default \code{NULL}. \cr A \code{character} vector containing the name(s) 
-of the PFG(s) that will be excluded from the composition and richness analysis.}
+\item{opt.keep_strata}{(\emph{optional}) default \code{NULL}. \cr 
+A \code{list} with names corresponding to the strata to keep for the 
+validation, and each element containing correspondence with \code{FATE} 
+strata definition}
 }
 \value{
 \describe{
@@ -103,31 +104,33 @@ of the PFG(s) that will be excluded from the composition and richness analysis.}
 }
 }
 \description{
-This script is designed to compute validation data for : \cr
-\describe{
-  \item{Habitat}{Compares simulated and observed habitat and
-create a map to visualize this comparison with all the \code{FATE} and
-observed data \cr (if option selected).}
-  \item{PFG Composition}{Computes the similarity between observed and simulated 
-  PFG composition for a chosen set of PFG/habitat/strata combinations.}
-  \item{PFG Richness}{Computes the PFG richness over the whole simulation area 
-for a \code{FATE} simulation and computes the difference between observed and simulated PFG richness.}
-}
+This script is designed to compare observed and simulated 
+PFG distribution for one specific \code{FATE} simulation year by computing 
+a) difference in PFG richness ; b) similarity between distribution quantiles ; 
+c) a random forest model to predict habitat classes.
 }
 \details{
+This function allows to obtain, for a specific \code{FATE} simulation and 
+a specific parameter file within this simulation, \strong{PFG validation 
+habitat model and predictions} and one preanalytical graphic. \cr \cr
+
+
+
+
+
 \describe{
   \item{Habitat validation}{ \cr
   \describe{
-    \item{Observed habitat}{is provided by the \strong{hab.obs} map. The final set of habitats taken into account
-    in the validation is provided by \strong{studied.habitat} table which contains 
+    \item{Observed habitat}{is provided by the \strong{ras.habitat} map. The final set of habitats taken into account
+    in the validation is provided by \strong{mat.hab} table which contains 
     all the \strong{habitats}, with their corresponding \strong{ID}.}
     \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances 
     (see \code{\link{POST_FATE.temporalEvolution}}), thanks to a \code{Random Forest} algorithm. 
-    The model is trained on \strong{releves.PFG} data. Information about \strong{PFG abundances} at each
+    The model is trained on \strong{mat.obs} data. Information about \strong{PFG abundances} at each
     \strong{sites} with \strong{xy} coordinates are necessary. PFG abundances can be given in absolute abundance
     (only in sites where at least one PFG is present) or in presence-absence data.\cr
     Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} names.
-    If not, habitat information will be taken from \strong{hab.obs} map, and PFG abundance will be considered for all strata.}
+    If not, habitat information will be taken from \strong{ras.habitat} map, and PFG abundance will be considered for all strata.}
   }
   To compare observations and simulations, the function computes confusion matrix between 
   observations and predictions and then computes the TSS for each habitat h.
@@ -140,9 +143,9 @@ for a \code{FATE} simulation and computes the difference between observed and si
   \describe{
     \item{Observed composition}{is computed for a set of PFG, habitat & strata
   (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
-  on \strong{releves.PFG} data provided. Habitats are chosen in \code{studied.habitat},
-  PFG list is defined in the file \code{file.simulParam} and, if defined, \code{releves.PFG} strata
-  are taken into account. Optionally, PFGs contained in \code{exclude.PFG} can be excluded from the analysis.}
+  on \strong{mat.obs} data provided. Habitats are chosen in \code{mat.hab},
+  PFG list is defined in the file \code{file.simulParam} and, if defined, \code{mat.obs} strata
+  are taken into account. Optionally, PFGs contained in \code{opt.keep_PFG} can be excluded from the analysis.}
     \item{Simulated composition}{is computed in the same way than the observed composition, with 
     \code{FATE} abundances \cr (see \code{\link{POST_FATE.temporalEvolution}}).}
   }
@@ -157,7 +160,7 @@ for a \code{FATE} simulation and computes the difference between observed and si
   the simulated PFG richness is the number of PFG for which abundance over the simulation area 
   is strictly superior to zero for the simulation year under scrutiny. \cr
   Then, observed and simulated richness are compared for all the PFGs in the simulation in order to quantify the PFG mortality.
-  Optionally, PFGs contained in \code{exclude.PFG} can be excluded from the analysis.}
+  Optionally, PFGs contained in \code{opt.keep_PFG} can be excluded from the analysis.}
 }
 }
 \examples{
@@ -174,25 +177,25 @@ Champsaur_params = .loadData("Champsaur_params", "RData")
 ## Please extract results files in the 'FATE_Champsaur/RESULTS' folder
 
 ## Define a vector to choose habitats taken into account
-studied.habitat = data.frame(ID = c(6, 5, 7, 8)
+mat.hab = data.frame(ID = c(6, 5, 7, 8)
                              , habitat = c("coniferous.forest"
                                            , "deciduous.forest"
                                            , "natural.grassland"
                                            , "woody.heatland"))
 
 ## Habitat & validation maps
-hab.observed = Champsaur_params$stk.mask$habitat
-simulation.map = Champsaur_params$stk.mask$Champsaur
-hab.obs = projectRaster(from = hab.observed, to = simulation.map, method = "ngb")
-writeRaster(simulation.map, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
+ras.habitaterved = Champsaur_params$stk.mask$habitat
+ras_simulation = Champsaur_params$stk.mask$Champsaur
+ras.habitat = projectRaster(from = ras.habitaterved, to = ras_simulation, method = "ngb")
+writeRaster(ras_simulation, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
 
 ## Observed data
-releves.PFG = Champsaur_params$tab.releves
+mat.obs = Champsaur_params$tab.releves
 
 ## Transform observed PFG abundances into relative abundances
-releves.PFG$abund = PRE_FATE.abundBraunBlanquet(releves.PFG$abund)/100
-releves.PFG = aggregate(abund ~ site + PFG + strata + x + y
-                        , data = releves.PFG, FUN = "sum")
+mat.obs$abund = PRE_FATE.abundBraunBlanquet(mat.obs$abund)/100
+mat.obs = aggregate(abund ~ site + PFG + strata + x + y
+                        , data = mat.obs, FUN = "sum")
                         
 ## Create Global and Simulation parameters
 PRE_FATE.params_globalParameters(name.simulation = "FATE_Champsaur"
@@ -225,11 +228,11 @@ POST_FATE.validation(name.simulation = "FATE_Champsaur"
                      , file.simulParam = simul.param
                      , year = 2000
                      , doHabitat = TRUE
-                     , releves.PFG = releves.PFG
-                     , hab.obs = hab.obs
-                     , studied.habitat = studied.habitat
-                     , list.strata.simulations = list.strata.simulations
-                     , predict.all.map = TRUE
+                     , mat.obs = mat.obs
+                     , ras.habitat = ras.habitat
+                     , mat.hab = mat.hab
+                     , opt.keep_strata = opt.keep_strata
+                     , doHabitat.allMap = TRUE
                      , doComposition = TRUE
                      , doRichness = TRUE)
 
