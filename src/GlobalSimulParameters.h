@@ -83,6 +83,7 @@ class GSP
 	bool m_DoLightInteraction; /*!< Unable or not Light interaction module */
 	int m_LightThreshLow; /*!< Threshold to transform PFG abundances into Low light resources */
 	int m_LightThreshMedium; /*!< Threshold to transform PFG abundances into Medium light resources */
+	bool m_LightRecruitment; /*!< Unable or not the dependency of recruitment based on strata 0 light resources */
 	bool m_LightSaving; /*!< Unable or not the saving of light resources maps */
 	
 	/* Habitat suitability module */
@@ -105,6 +106,7 @@ class GSP
 	bool m_SoilFillMap; /*! Fill or not initialization soil map with initialization soil value */
 	double m_SoilInit; /*!< Initialization soil value */
 	double m_SoilRetention; /*!< Percentage of soil from previous year to keep */
+	bool m_SoilRecruitment; /*!< Unable or not the dependency of recruitment based on soil medium resources */
 	bool m_SoilSaving; /*!< Unable or not the saving of soil resources maps */
 	
 	/* Fire disturbance module */
@@ -160,6 +162,7 @@ class GSP
 		ar & m_DoLightInteraction;
 		ar & m_LightThreshLow;
 		ar & m_LightThreshMedium;
+		ar & m_LightRecruitment;
 		ar & m_LightSaving;
 		ar & m_DoHabSuitability;
 		ar & m_HabSuitMode;
@@ -174,6 +177,7 @@ class GSP
 		ar & m_SoilFillMap;
 		ar & m_SoilInit;
 		ar & m_SoilRetention;
+		ar & m_SoilRecruitment;
 		ar & m_SoilSaving;
 		ar & m_DoFireDisturbances;
 		ar & m_NoFireDist;
@@ -253,6 +257,8 @@ class GSP
 	 * light resources
 	 *	\param lightThreshMedium : threshold to transform PFG abundances into
 	 * Medium light resources
+	 *  \param lightRecruitment : unable or not the dependency of recruitment 
+	 * based on strata 0 light resources
 	 *  \param lightSaving : unable or not the saving of light resources maps
 	 *	\param doHabSuitability : unable or not Habitat suitability module
 	 *	\param habSuitMode : option to draw the habitat suitability ref
@@ -269,6 +275,8 @@ class GSP
 	 * soil value
 	 *	\param soilInit : initialization soil value
 	 *	\param soilRetention : percentage of soil from previous year to keep
+	 *  \param soilRecruitment : unable or not the dependency of recruitment 
+	 * based on soil medium resources
 	 *  \param soilSaving : unable or not the saving of soil resources maps
 	 *	\param doFireDisturbances : unable or not Fire disturbances module
 	 *	\param noFireDist : number of fire disturbances involved
@@ -317,6 +325,7 @@ class GSP
 	const bool& doLightInteraction,
 	const int& lightThreshLow,
 	const int& lightThreshMedium,
+	const bool& lightRecruitment,
 	const bool& lightSaving,
 	const bool& doHabSuitability,
 	const int& habSuitMode,
@@ -331,6 +340,7 @@ class GSP
 	const bool& soilFillMap,
 	const double& soilInit,
 	const double& soilRetention,
+	const bool& soilRecruitment,
 	const bool& soilSaving,
 	const bool& doFireDisturbances,
 	const int& noFireDist,
@@ -389,6 +399,7 @@ class GSP
 		m_DoLightInteraction == o.m_DoLightInteraction &&
 		m_LightThreshLow == o.m_LightThreshLow &&
 		m_LightThreshMedium == o.m_LightThreshMedium &&
+		m_LightRecruitment == o.m_LightRecruitment &&
 		m_LightSaving == o.m_LightSaving &&
 		m_DoHabSuitability == o.m_DoHabSuitability &&
 		m_HabSuitMode == o.m_HabSuitMode &&
@@ -403,6 +414,7 @@ class GSP
 		m_SoilFillMap == o.m_SoilFillMap &&
 		m_SoilInit == o.m_SoilInit &&
 		m_SoilRetention == o.m_SoilRetention &&
+		m_SoilRecruitment == o.m_SoilRecruitment &&
 		m_SoilSaving == o.m_SoilSaving &&
 		m_DoFireDisturbances == o.m_DoFireDisturbances &&
 		m_NoFireDist == o.m_NoFireDist &&
@@ -450,6 +462,7 @@ class GSP
 	bool getDoLightInteraction() const;
 	int getLightThreshLow() const;
 	int getLightThreshMedium() const;
+	bool getLightRecruitment() const;
 	bool getLightSaving() const;
 	bool getDoHabSuitability() const;
 	int getHabSuitMode() const;
@@ -464,6 +477,7 @@ class GSP
 	bool getSoilFillMap() const;
 	double getSoilInit() const;
 	double getSoilRetention() const;
+	bool getSoilRecruitment() const;
 	bool getSoilSaving() const;
 	bool getDoFireDisturbances() const;
 	int getNoFireDist() const;
@@ -505,6 +519,7 @@ class GSP
 	void setDoLightInteraction(const bool& doLightInteraction);
 	void setLightThreshLow(const int& lightThreshLow);
 	void setLightThreshMedium(const int& lightThreshMedium);
+	void setLightRecruitment(const bool& lightRecruitment);
 	void setLightSaving(const bool& lightSaving);
 	void setDoHabSuitability(const bool& doHabSuitability);
 	void setHabSuitMode(const int& habSuitMode);
@@ -519,6 +534,7 @@ class GSP
 	void setSoilFillMap(const bool& soilFillMap);
 	void setSoilInit(const double& soilInit);
 	void setSoilRetention(const double& soilRetention);
+	void setSoilRecruitment(const bool& soilRecruitment);
 	void setSoilSaving(const bool& soilSaving);
 	void setDoFireDisturbances(const bool& doFireDisturbances);
 	void setNoFireDist(const int& noFireDist);

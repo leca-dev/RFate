@@ -524,13 +524,13 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
     
     /* 8. Establishment depends upon the germinants being able to withstand the environment in stratum 0 */
     bool doRecruit = true;
-    if (doLight && doSoil)
+    if (doLight && m_GSP->getLightRecruitment() && doSoil && m_GSP->getSoilRecruitment())
     {
       doRecruit = ( FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] && (soilRes == RMedium) );
-    } else if (doLight)
+    } else if (doLight && m_GSP->getLightRecruitment())
     {
       doRecruit = FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ];
-    } else if (doSoil)
+    } else if (doSoil && m_GSP->getSoilRecruitment())
     {
       doRecruit = (soilRes == RMedium);
     }
