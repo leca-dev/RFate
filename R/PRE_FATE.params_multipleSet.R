@@ -237,31 +237,31 @@
 
 
 PRE_FATE.params_multipleSet = function(
-  name.simulation.1
-  , name.simulation.2 = NULL
-  , file.simulParam.1
-  , file.simulParam.2 = NULL
-  , no_simulations
-  , opt.folder.name = "FATE_simulation_MULTIPLE_SET"
-  , opt.seed = NULL
-  , opt.percent_maxAbund = 0.5
-  , opt.percent_seeding = 0.5
-  , opt.percent_light = 0.5
-  , opt.percent_soil = 0.5
-  , do.max_abund_low = TRUE
-  , do.max_abund_medium = TRUE
-  , do.max_abund_high = TRUE
-  , do.seeding_duration = TRUE
-  , do.seeding_timestep = TRUE
-  , do.seeding_input = TRUE
-  , do.potential_fecundity = TRUE
-  , do.no_strata = TRUE
-  , do.LIGHT.thresh_medium = TRUE
-  , do.LIGHT.thresh_low = TRUE
-  , do.SOIL.init = TRUE
-  , do.SOIL.retention = TRUE
-  , do.DISPERSAL.mode = TRUE
-  , do.HABSUIT.mode = TRUE
+    name.simulation.1
+    , name.simulation.2 = NULL
+    , file.simulParam.1
+    , file.simulParam.2 = NULL
+    , no_simulations
+    , opt.folder.name = "FATE_simulation_MULTIPLE_SET"
+    , opt.seed = NULL
+    , opt.percent_maxAbund = 0.5
+    , opt.percent_seeding = 0.5
+    , opt.percent_light = 0.5
+    , opt.percent_soil = 0.5
+    , do.max_abund_low = TRUE
+    , do.max_abund_medium = TRUE
+    , do.max_abund_high = TRUE
+    , do.seeding_duration = TRUE
+    , do.seeding_timestep = TRUE
+    , do.seeding_input = TRUE
+    , do.potential_fecundity = TRUE
+    , do.no_strata = TRUE
+    , do.LIGHT.thresh_medium = TRUE
+    , do.LIGHT.thresh_low = TRUE
+    , do.SOIL.init = TRUE
+    , do.SOIL.retention = TRUE
+    , do.DISPERSAL.mode = TRUE
+    , do.HABSUIT.mode = TRUE
 ){
   
   #############################################################################
@@ -946,10 +946,14 @@ PRE_FATE.params_multipleSet = function(
   for (fi in TOKEEP.simul[-ind])
   {
     cat("\n ", paste0(dirname(name.simulation.1), "/", fi))
+    file.dest <- paste0(opt.folder.name, "/"
+                        , paste0(strsplit(fi, "/")[[1]][-1]
+                                 , collapse = "/"))
+    if (!dir.exists(dirname(file.dest))) {
+      dir.create(dirname(file.dest), recursive = TRUE)
+    }
     file.copy(from = paste0(dirname(name.simulation.1), "/", fi)
-              , to = paste0(opt.folder.name, "/"
-                            , paste0(strsplit(fi, "/")[[1]][-1]
-                                     , collapse = "/")))
+              , to = file.dest)
   }
   cat("\n")
   
