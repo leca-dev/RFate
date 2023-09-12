@@ -7,6 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 <br/>
 
 <div style = "text-align:center;">See [Principle of PFG](fate_tutorial_1_PFG.html) `FATE` tutorial</div>
@@ -25,7 +27,7 @@ It contains documentation and functions to create and organize all input files r
 
 
 
-## <i class="fa fa-shoe-prints"></i> What are the key steps of this process ?
+## <i class="fa-solid fa-shoe-prints"></i> What are the key steps of this process ?
 
 <br/>
 
@@ -54,7 +56,7 @@ with the function [PRE_FATE.speciesClustering_step3](../reference/PRE_FATE.speci
 
 <br/><br/>
 
-## <i class="fa fa-shopping-basket"></i> What do you need ?
+## <i class="fa-solid fa-basket-shopping"></i> What do you need ?
 
 #### 1. Selection of dominant species
 

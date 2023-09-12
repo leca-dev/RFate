@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
@@ -41,13 +41,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -77,7 +77,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -113,14 +113,14 @@
 </li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
@@ -129,21 +129,21 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -170,7 +170,7 @@
 
     
     
-<p><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"></p>
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></p>
 <style>
 pre.bash {
  background-color: black;
@@ -186,8 +186,15 @@ pre.grey {
 }
 </style>
 <p><br><br></p>
-<p>“<em>The recurring suggestions are that models should explicitly (i) include spatiotemporal dynamics; (ii) consider multiple species in interactions and (iii) account for the processes shaping biodiversity distribution.</em>”</p>
-<p><code>FATE</code> is a “<em>a biodiversity model that meets this challenge at regional scale by combining phenomenological and process-based approaches and using well-defined plant functional group</em>”. (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>The recurring suggestions are that models should explicitly (i)
+include spatiotemporal dynamics; (ii) consider multiple species in
+interactions and (iii) account for the processes shaping biodiversity
+distribution.</em>”</p>
+<p><code>FATE</code> is a “<em>a biodiversity model that meets this
+challenge at regional scale by combining phenomenological and
+process-based approaches and using well-defined plant functional
+group</em>”. (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat,
+2014</a>)</p>
 <p><br><br></p>
 <div class="section level2">
 <h2 id="what-fate-needs-to-be-run">What FATE needs to be run?<a class="anchor" aria-label="anchor" href="#what-fate-needs-to-be-run"></a>
@@ -195,17 +202,23 @@ pre.grey {
 <p><br></p>
 <div class="section level4">
 <h4 id="the-different-type-of-parameters-and-flags">
-<i class="fa fa-copy"></i> The different type of parameters and <em>flags</em><a class="anchor" aria-label="anchor" href="#the-different-type-of-parameters-and-flags"></a>
+<i class="fa-solid fa-copy"></i> The different type of parameters
+and <em>flags</em><a class="anchor" aria-label="anchor" href="#the-different-type-of-parameters-and-flags"></a>
 </h4>
-<p><code>FATE</code> requires a quite large number of parameters, which are stored into <code>.txt</code> files, presented to and recovered by the software. These <strong>parameters</strong> can be of 3 types :</p>
+<p><code>FATE</code> requires a quite large number of parameters, which
+are stored into <code>.txt</code> files, presented to and recovered by
+the software. These <strong>parameters</strong> can be of 3 types :</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Filenames</strong>, to guide the application to other parameter files that should be read</li>
+<strong>Filenames</strong>, to guide the application to other
+parameter files that should be read</li>
 <li>These filenames either correspond to :
 <ul>
-<li>other parameter files that contain <strong>values</strong> to be actually read and used</li>
+<li>other parameter files that contain <strong>values</strong> to be
+actually read and used</li>
 <li>
-<strong>raster</strong> files, with the extension <code>.tif</code> (lighter) or <code>.img</code>
+<strong>raster</strong> files, with the extension <code>.tif</code>
+(lighter) or <code>.img</code>
 </li>
 </ul>
 </li>
@@ -214,23 +227,35 @@ pre.grey {
 </div>
 <div class="section level4">
 <h4 id="how-to-produce-all-these-parameters-files">
-<i class="fas fa-wrench"></i> How to produce all these parameters files ?<a class="anchor" aria-label="anchor" href="#how-to-produce-all-these-parameters-files"></a>
+<i class="fa-solid fa-wrench"></i> How to produce all these
+parameters files ?<a class="anchor" aria-label="anchor" href="#how-to-produce-all-these-parameters-files"></a>
 </h4>
-<p><a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> is a <a href="https://www.r-project.org/" class="external-link">R</a> package available on <a href="https://github.com/leca-dev/RFate" class="external-link">github</a> and designed to provide support function to the <code>FATE</code> software.</p>
-<p>It contains documentation and functions to create and organize all input files required by the model, as well as scripts to help analyze the resulting outputs.</p>
+<p><a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> is a <a href="https://www.r-project.org/" class="external-link">R</a> package available on <a href="https://github.com/leca-dev/RFate" class="external-link">github</a> and designed to
+provide support function to the <code>FATE</code> software.</p>
+<p>It contains documentation and functions to create and organize all
+input files required by the model, as well as scripts to help analyze
+the resulting outputs.</p>
 <p><br></p>
 <div style="text-align:center;">
-See <a href="rfate_tutorial_2_params.html">Build parameter files</a> <code>RFate</code> tutorial
+See <a href="rfate_tutorial_2_params.html">Build parameter files</a>
+<code>RFate</code> tutorial
 </div>
 <p><br></p>
 </div>
 <div class="section level4">
 <h4 id="the-fate-friendly-directory-organization">
-<i class="fas fa-folder-open"></i> The FATE friendly directory organization<a class="anchor" aria-label="anchor" href="#the-fate-friendly-directory-organization"></a>
+<i class="fa-solid fa-folder-open"></i> The FATE friendly directory
+organization<a class="anchor" aria-label="anchor" href="#the-fate-friendly-directory-organization"></a>
 </h4>
-<p>As <code>FATE</code> needs quite a lot of parameters given into different parameter files, it is important to organize them in a clear and intuitive way.</p>
-<p>While this is not mandatory to run a <code>FATE</code> simulation, a specific and methodical folder architecture can be obtained with the <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory function</a> from the <a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> package.</p>
-<p>A good way to start is to create this skeleton directory, and then copy or create the needed files inside to have all simulation data into the same place.</p>
+<p>As <code>FATE</code> needs quite a lot of parameters given into
+different parameter files, it is important to organize them in a clear
+and intuitive way.</p>
+<p>While this is not mandatory to run a <code>FATE</code> simulation, a
+specific and methodical folder architecture can be obtained with the <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory
+function</a> from the <a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> package.</p>
+<p>A good way to start is to create this skeleton directory, and then
+copy or create the needed files inside to have all simulation data into
+the same place.</p>
 <div style="text-align:center">
 <img src="pictures/skeleton_directory_2.png" style="width:65.0%">
 </div>
@@ -241,22 +266,35 @@ See <a href="rfate_tutorial_2_params.html">Build parameter files</a> <code>RFate
 <h2 id="how-to-run-a-fate-simulation">How to run a FATE Simulation ?<a class="anchor" aria-label="anchor" href="#how-to-run-a-fate-simulation"></a>
 </h2>
 <p><br></p>
-<p>When all data and parameter files have been produced and correctly referred in a <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file, a <code>FATE</code> simulation can be run using the <a href="../reference/FATE.html">FATE</a> function :</p>
+<p>When all data and parameter files have been produced and correctly
+referred in a <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file, a <code>FATE</code> simulation can be run using the <a href="../reference/FATE.html">FATE</a> function :</p>
 <ul>
-<li>the simulation will start, and the software will print messages into the console indicating what the software is doing.</li>
-<li>depending on the simulation duration, the size and the resolution of the study area, the number of Plant Functional Groups (PFG) involved, … running the full simulation <strong>could take a while</strong>.</li>
+<li>the simulation will start, and the software will print messages into
+the console indicating what the software is doing.</li>
+<li>depending on the simulation duration, the size and the resolution of
+the study area, the number of Plant Functional Groups (PFG) involved, …
+running the full simulation <strong>could take a while</strong>.</li>
 </ul>
 <p><br></p>
-<p><strong>Note :</strong> the folder from which the command is sent must be adapted based on how paths to files have been given within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</p>
+<p><strong>Note :</strong> the folder from which the command is sent
+must be adapted based on how paths to files have been given within the
+<a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</p>
 <ul>
 <li><p>If all paths are <strong>absolute</strong><br>
-(i.e. including the root, such as <em><code>/home/username/FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
+(i.e. including the root, such as
+<em><code>/home/username/FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
 there should not be any problem.<br>
-The only requirement then is to also give absolute path to the simulation folder, if not in the current directory.</p></li>
+The only requirement then is to also give absolute path to the
+simulation folder, if not in the current directory.</p></li>
 <li><p>If all paths are <strong>relative</strong><br>
-(i.e. starting from a specific folder, such as <em><code>FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
-then the <code>FATE</code> simulation must be run from this specific folder<br>
-(i.e. here from the folder containing the <em><code>FATE_simulation</code></em> folder).</p></li>
+(i.e. starting from a specific folder, such as
+<em><code>FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt</code></em>),<br>
+then the <code>FATE</code> simulation must be run from this specific
+folder<br>
+(i.e. here from the folder containing the
+<em><code>FATE_simulation</code></em> folder).</p></li>
 </ul>
 <p><br><br></p>
 </div>
@@ -264,34 +302,53 @@ then the <code>FATE</code> simulation must be run from this specific folder<br>
 <h2 id="how-to-handle-the-results">How to handle the results ?<a class="anchor" aria-label="anchor" href="#how-to-handle-the-results"></a>
 </h2>
 <p><br></p>
-<p>Once the simulation is completed, the directory defined under the flag <code>--SAVING_DIR--</code> within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file can contain the following directories (depending on the parameters selected and the modules activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file) :</p>
+<p>Once the simulation is completed, the directory defined under the
+flag <code>--SAVING_DIR--</code> within the <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file can contain the following directories (depending on the parameters
+selected and the modules activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file) :</p>
 <ul>
 <li><em><code>ABUND_allPFG_perStrata/</code></em></li>
 <li><em><code>ABUND_perPFG_allStrata/</code></em></li>
 <li><em><code>ABUND_perPFG_perStrata/</code></em></li>
 </ul>
-<p>Each of them contains raster files with the abundance of Plant Functional Groups (PFG) (which should be considered as a proxy for the vegetation coverage/abundance) contained within each pixel of the study area. The files within each folder show different informations :</p>
+<p>Each of them contains raster files with the abundance of Plant
+Functional Groups (PFG) (which should be considered as a proxy for the
+vegetation coverage/abundance) contained within each pixel of the study
+area. The files within each folder show different informations :</p>
 <ul>
 <li>
-<em><code>ABUND_perPFG_perStrata/</code></em> : a file represents <strong>one specific year</strong>, and the abundance of <strong>a specific PFG</strong> in <strong>a specific stratum</strong>
+<em><code>ABUND_perPFG_perStrata/</code></em> : a file represents
+<strong>one specific year</strong>, and the abundance of <strong>a
+specific PFG</strong> in <strong>a specific stratum</strong>
 </li>
 <li>
-<em><code>ABUND_allPFG_perStrata</code>/</em> : a file represents <strong>one specific year</strong>, and the abundance of <strong>all PFGs</strong> in <strong>a specific stratum</strong>
+<em><code>ABUND_allPFG_perStrata</code>/</em> : a file represents
+<strong>one specific year</strong>, and the abundance of <strong>all
+PFGs</strong> in <strong>a specific stratum</strong>
 </li>
 <li>
-<em><code>ABUND_perPFG_allStrata/</code></em> : a file represents <strong>one specific year</strong>, and the abundance of <strong>a specific PFG</strong> within <strong>all strata</strong>
+<em><code>ABUND_perPFG_allStrata/</code></em> : a file represents
+<strong>one specific year</strong>, and the abundance of <strong>a
+specific PFG</strong> within <strong>all strata</strong>
 </li>
 </ul>
-<p>If the corresponding modules were activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file, the following folders may also exist and contain output files :</p>
+<p>If the corresponding modules were activated within the <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file, the following folders may also exist and contain output files
+:</p>
 <ul>
 <li><em><code>DISPERSAL/</code></em></li>
 <li><em><code>LIGHT/</code></em></li>
 <li><em><code>SOIL/</code></em></li>
 </ul>
-<p>These ouputs can then be used as is, or post-treated with functions from the <a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> package to obtain more specific results (e.g. evolution of abundance curves, cover or diversity maps, etc).</p>
+<p>These ouputs can then be used as is, or post-treated with functions
+from the <a href="https://leca-dev.github.io/RFate/" class="external-link">RFate</a> package
+to obtain more specific results (e.g. evolution of abundance curves,
+cover or diversity maps, etc).</p>
 <p><br></p>
 <div style="text-align:center;">
-See <a href="rfate_tutorial_3_graphics.html">Build graphics</a> <code>RFate</code> tutorial
+See <a href="rfate_tutorial_3_graphics.html">Build graphics</a>
+<code>RFate</code> tutorial
 </div>
 </div>
   </div>
@@ -313,7 +370,7 @@ See <a href="rfate_tutorial_3_graphics.html">Build graphics</a> <code>RFate</cod
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

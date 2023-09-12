@@ -19,20 +19,20 @@ used in the soil module of FATE."><!-- mathjax --><script src="https://cdnjs.clo
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -57,8 +57,8 @@ used in the soil module of FATE."><!-- mathjax --><script src="https://cdnjs.clo
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -90,35 +90,35 @@ used in the soil module of FATE."><!-- mathjax --><script src="https://cdnjs.clo
   </ul></li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -143,12 +143,12 @@ used in the soil module of <code>FATE</code>.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  <span class="va">mat.PFG.soil</span>,
-  mat.PFG.tol <span class="op">=</span> <span class="cn">NULL</span>,
-  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  <span class="va">mat.PFG.soil</span>,</span>
+<span>  mat.PFG.tol <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  opt.folder.name <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -156,6 +156,8 @@ used in the soil module of <code>FATE</code>.</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory 
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>mat.PFG.soil</dt>
 <dd><p>a <code>data.frame</code> with 3 to 7 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
 <li><p><code>type</code>, (<em>or <code>active_germ_low</code>, 
@@ -164,22 +166,32 @@ or simulation name of the <code>FATE</code> simulation</p></dd>
 <li><p><code>soil_contrib</code>, <code>soil_tol_min</code>, <code>soil_tol_max</code> 
   (<em>or <code>strategy_contrib</code></em>)</p></li>
 </ul><p>(see <a href="PRE_FATE.params_PFGsoil.html#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>mat.PFG.tol</dt>
 <dd><p>(<em>optional</em>) <br> 
 a <code>data.frame</code> with 2 to 4 columns : <br></p><ul><li><p><code>PFG</code>,</p></li>
 <li><p><code>lifeStage</code>, <code>resources</code>, <code>tolerance</code> 
   (<em>or <code>strategy_tol</code></em>)</p></li>
 </ul><p>(see <a href="PRE_FATE.params_PFGsoil.html#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>opt.folder.name</dt>
 <dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding 
 to the name of the folder that will be created into the 
 <code>name.simulation/DATA/PFGS/SOIL/</code> directory to store the results</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>.txt</code> file per PFG into the 
+    
+
+<p>A <code>.txt</code> file per PFG into the 
 <code>name.simulation/DATA/PFGS/SOIL/</code> directory with the following 
-parameters :</p><dl><dt>NAME</dt>
+parameters :</p>
+
+
+<dl><dt>NAME</dt>
 <dd><p>name of the PFG</p></dd>
 
   <dt>ACTIVE_GERM</dt>
@@ -213,8 +225,10 @@ parameters :</p><dl><dt>NAME</dt>
 
 
 </dl><p>A <code>SOIL_COMPLETE_TABLE.csv</code> file summarizing information for all 
-groups into the <code>name.simulation/DATA/PFGS/</code> directory.  
-If the <code>opt.folder.name</code> has been used, the files will be into the 
+groups into the <code>name.simulation/DATA/PFGS/</code> directory.</p>
+
+
+<p>If the <code>opt.folder.name</code> has been used, the files will be into the 
 folder <code>name.simulation/DATA/PFGS/SOIL/opt.folder.name/</code>.</p>
     </div>
     <div id="details">
@@ -430,66 +444,65 @@ each PFG :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-                                                    
-<span class="co">## Create a skeleton folder with the default name ('FATE_simulation')</span>
-<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="co">## Create PFG soil parameter files (with strategies) -----------------------------------------</span>
-<span class="va">tab.soil</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                      , strategy_ag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rich_lover'</span>, <span class="st">'indifferent'</span> , <span class="st">'indifferent'</span>
-                                        , <span class="st">'rich_lover'</span>, <span class="st">'indifferent'</span>, <span class="st">'poor_lover'</span><span class="op">)</span>
-                      , strategy_contrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'eutrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span>
-                                             , <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'oligotrophic'</span><span class="op">)</span><span class="op">)</span>
-<span class="va">tab.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                     , strategy_tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rich_lover'</span>, <span class="st">'ubiquist'</span>, <span class="st">'poor_lover'</span>
-                                        , <span class="st">'ubiquist'</span>, <span class="st">'poor_lover'</span>, <span class="st">'poor_lover'</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                        , mat.PFG.soil <span class="op">=</span> <span class="va">tab.soil</span>
-                        , mat.PFG.tol <span class="op">=</span> <span class="va">tab.tol</span><span class="op">)</span>
-                                                        
-
-<span class="co">## Create PFG soil parameter files (with all values) -----------------------------------------</span>
-<span class="va">tab.soil</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span>
-                      , active_germ_low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span>
-                      , active_germ_medium <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">6</span><span class="op">)</span>
-                      , active_germ_high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span>
-                      , strategy_contrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'eutrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span>
-                                             , <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'oligotrophic'</span><span class="op">)</span><span class="op">)</span>
-<span class="va">tab.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>resources <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Low'</span>, <span class="st">'Medium'</span>, <span class="st">'High'</span><span class="op">)</span>
-                      , lifeStage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Germinant'</span>, <span class="st">'Immature'</span>, <span class="st">'Mature'</span><span class="op">)</span>
-                      , PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span>
-<span class="va">tab.tol</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">9</span>, <span class="fl">4</span>, <span class="fl">4</span>
-                      , <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">9</span><span class="op">)</span>
-                      , <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">9</span><span class="op">)</span>
-                      , <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">9</span>, <span class="fl">5</span>, <span class="fl">5</span>
-                      , <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">9</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">9</span>
-                      , <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">9</span><span class="op">)</span>
-
-<span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span>
-                        , mat.PFG.soil <span class="op">=</span> <span class="va">tab.soil</span>
-                        , mat.PFG.tol <span class="op">=</span> <span class="va">tab.tol</span><span class="op">)</span>
-                                                        
-                                                        
-<span class="co">## -------------------------------------------------------------------------------------------</span>
-
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_params'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Create a skeleton folder</span>
-<span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span><span class="op">)</span>
-
-
-<span class="co">## PFG traits for light</span>
-<span class="va">tab.soil</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SOIL</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.soil</span><span class="op">)</span>
-
-<span class="co">## Create PFG soil parameter files -----------------------------------------------------------</span>
-<span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span>
-                           , mat.PFG.soil <span class="op">=</span> <span class="va">tab.soil</span><span class="op">)</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span>                                                    </span>
+<span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation')</span></span>
+<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create PFG soil parameter files (with strategies) -----------------------------------------</span></span>
+<span><span class="va">tab.soil</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                      , strategy_ag <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rich_lover'</span>, <span class="st">'indifferent'</span> , <span class="st">'indifferent'</span></span>
+<span>                                        , <span class="st">'rich_lover'</span>, <span class="st">'indifferent'</span>, <span class="st">'poor_lover'</span><span class="op">)</span></span>
+<span>                      , strategy_contrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'eutrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span></span>
+<span>                                             , <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'oligotrophic'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tab.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                     , strategy_tol <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'rich_lover'</span>, <span class="st">'ubiquist'</span>, <span class="st">'poor_lover'</span></span>
+<span>                                        , <span class="st">'ubiquist'</span>, <span class="st">'poor_lover'</span>, <span class="st">'poor_lover'</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                        , mat.PFG.soil <span class="op">=</span> <span class="va">tab.soil</span></span>
+<span>                        , mat.PFG.tol <span class="op">=</span> <span class="va">tab.tol</span><span class="op">)</span></span>
+<span>                                                        </span>
+<span></span>
+<span><span class="co">## Create PFG soil parameter files (with all values) -----------------------------------------</span></span>
+<span><span class="va">tab.soil</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span></span>
+<span>                      , active_germ_low <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">8</span><span class="op">)</span></span>
+<span>                      , active_germ_medium <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">6</span><span class="op">)</span></span>
+<span>                      , active_germ_high <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">9</span>, <span class="fl">8</span>, <span class="fl">4</span><span class="op">)</span></span>
+<span>                      , strategy_contrib <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'eutrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span></span>
+<span>                                             , <span class="st">'mesotrophic'</span>, <span class="st">'mesotrophic'</span>, <span class="st">'oligotrophic'</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tab.tol</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html" class="external-link">expand.grid</a></span><span class="op">(</span>resources <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Low'</span>, <span class="st">'Medium'</span>, <span class="st">'High'</span><span class="op">)</span></span>
+<span>                      , lifeStage <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'Germinant'</span>, <span class="st">'Immature'</span>, <span class="st">'Mature'</span><span class="op">)</span></span>
+<span>                      , PFG <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">tab.tol</span><span class="op">$</span><span class="va">tolerance</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">5</span>, <span class="fl">4</span>, <span class="fl">9</span>, <span class="fl">4</span>, <span class="fl">4</span></span>
+<span>                      , <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span>                      , <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">9</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span>                      , <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">8</span>, <span class="fl">6</span>, <span class="fl">6</span>, <span class="fl">9</span>, <span class="fl">5</span>, <span class="fl">5</span></span>
+<span>                      , <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">5</span>, <span class="fl">6</span>, <span class="fl">9</span>, <span class="fl">3</span>, <span class="fl">4</span>, <span class="fl">9</span></span>
+<span>                      , <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">8</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">9</span>, <span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">9</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>
+<span>                        , mat.PFG.soil <span class="op">=</span> <span class="va">tab.soil</span></span>
+<span>                        , mat.PFG.tol <span class="op">=</span> <span class="va">tab.tol</span><span class="op">)</span></span>
+<span>                                                        </span>
+<span>                                                        </span>
+<span><span class="co">## -------------------------------------------------------------------------------------------</span></span>
+<span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_params</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_params'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create a skeleton folder</span></span>
+<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="co">## PFG traits for light</span></span>
+<span><span class="va">tab.soil</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SOIL</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">tab.soil</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Create PFG soil parameter files -----------------------------------------------------------</span></span>
+<span><span class="fu">PRE_FATE.params_PFGsoil</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_Champsaur'</span></span>
+<span>                           , mat.PFG.soil <span class="op">=</span> <span class="va">tab.soil</span><span class="op">)</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -503,7 +516,7 @@ each PFG :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

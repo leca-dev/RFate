@@ -18,20 +18,20 @@ used to build a set of Plant Functional Groups."><!-- mathjax --><script src="ht
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -56,8 +56,8 @@ used to build a set of Plant Functional Groups."><!-- mathjax --><script src="ht
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -89,35 +89,35 @@ used to build a set of Plant Functional Groups."><!-- mathjax --><script src="ht
   </ul></li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -141,21 +141,21 @@ used to build a set of Plant Functional Groups.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">SAVE_FATE.step1_PFG</span><span class="op">(</span>
-  <span class="va">name.dataset</span>,
-  <span class="va">mat.observations</span>,
-  rules.selectDominant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>doRuleA <span class="op">=</span> <span class="cn">NA</span>, rule.A1 <span class="op">=</span> <span class="cn">NA</span>, rule.A2_quantile <span class="op">=</span> <span class="cn">NA</span>, doRuleB <span class="op">=</span>
-    <span class="cn">NA</span>, rule.B1_percentage <span class="op">=</span> <span class="cn">NA</span>, rule.B1_number <span class="op">=</span> <span class="cn">NA</span>, rule.B2 <span class="op">=</span> <span class="cn">NA</span>, doRuleC <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
-  <span class="va">mat.traits</span>,
-  mat.overlap <span class="op">=</span> <span class="cn">NA</span>,
-  rules.speciesDistance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>opt.maxPercent.NA <span class="op">=</span> <span class="cn">NA</span>, opt.maxPercent.similarSpecies <span class="op">=</span> <span class="cn">NA</span>,
-    opt.min.sd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,
-  <span class="va">mat.species.DIST</span>,
-  clust.evaluation <span class="op">=</span> <span class="cn">NA</span>,
-  <span class="va">no.clusters</span>,
-  <span class="va">determ.all</span>,
-  <span class="va">mat.traits.PFG</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SAVE_FATE.step1_PFG</span><span class="op">(</span></span>
+<span>  <span class="va">name.dataset</span>,</span>
+<span>  <span class="va">mat.observations</span>,</span>
+<span>  rules.selectDominant <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>doRuleA <span class="op">=</span> <span class="cn">NA</span>, rule.A1 <span class="op">=</span> <span class="cn">NA</span>, rule.A2_quantile <span class="op">=</span> <span class="cn">NA</span>, doRuleB <span class="op">=</span></span>
+<span>    <span class="cn">NA</span>, rule.B1_percentage <span class="op">=</span> <span class="cn">NA</span>, rule.B1_number <span class="op">=</span> <span class="cn">NA</span>, rule.B2 <span class="op">=</span> <span class="cn">NA</span>, doRuleC <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  <span class="va">mat.traits</span>,</span>
+<span>  mat.overlap <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  rules.speciesDistance <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>opt.maxPercent.NA <span class="op">=</span> <span class="cn">NA</span>, opt.maxPercent.similarSpecies <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>    opt.min.sd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>,</span>
+<span>  <span class="va">mat.species.DIST</span>,</span>
+<span>  clust.evaluation <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="va">no.clusters</span>,</span>
+<span>  <span class="va">determ.all</span>,</span>
+<span>  <span class="va">mat.traits.PFG</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -163,9 +163,13 @@ used to build a set of Plant Functional Groups.</p>
     <dl><dt>name.dataset</dt>
 <dd><p>a <code>string</code> corresponding to the name to give to 
 archive folder</p></dd>
+
+
 <dt>mat.observations</dt>
 <dd><p>a <code>data.frame</code> with at least 3 columns : <br><code>sites</code>, <code>species</code>, <code>abund</code> (<em>and optionally, 
 <code>habitat</code></em>) (see <code><a href="PRE_FATE.selectDominant.html">PRE_FATE.selectDominant</a></code>)</p></dd>
+
+
 <dt>rules.selectDominant</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> A 
 <code>vector</code> containing all the parameter values given to the 
@@ -173,10 +177,14 @@ archive folder</p></dd>
 (<code>doRuleA</code>, <code>rule.A1</code>, <code>rule.A2_quantile</code>, <code>doRuleB</code>, 
 <code>rule.B1_percentage</code>, <code>rule.B1_number</code>, <code>rule.B2</code>, 
 <code>doRuleC</code>).</p></dd>
+
+
 <dt>mat.traits</dt>
 <dd><p>a <code>data.frame</code> with at least 3 columns :
 <code>species</code>, <code>GROUP</code>, <code>...</code> (one column for each functional 
 trait) <br> (see <code><a href="PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></code>)</p></dd>
+
+
 <dt>mat.overlap</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> 
 Otherwise, two options :</p><ul><li><p>a <code>data.frame</code> with 2 columns : <code>species</code>, <code>raster</code></p></li>
@@ -184,32 +192,44 @@ Otherwise, two options :</p><ul><li><p>a <code>data.frame</code> with 2 columns 
   each pair of species. <br> It can be a <code>dist</code> object, a 
   <code>niolap</code> object, or simply a <code>matrix</code>.</p></li>
 </ul><p>(see <code><a href="PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></code>)</p></dd>
+
+
 <dt>rules.speciesDistance</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> A 
 <code>vector</code> containing all the parameter values given to the 
 <code><a href="PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></code> function, if used <br> (
 <code>opt.maxPercent.NA</code>, <code>opt.maxPercent.similarSpecies</code>, 
 <code>opt.min.sd</code>).</p></dd>
+
+
 <dt>mat.species.DIST</dt>
 <dd><p>a <code>dist</code> object, or a <code>list</code> of 
 <code>dist</code> objects (one for each <code>GROUP</code> value), corresponding to the 
 distance between each pair of species. <br> Such an object can be obtained 
 with the <code><a href="PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></code> function.</p></dd>
+
+
 <dt>clust.evaluation</dt>
 <dd><p>(<em>optional</em>) default <code>NA</code>. <br> A 
 <code>data.frame</code> with 4 columns : <br><code>GROUP</code>, <code>no.clusters</code>, <code>variable</code>, <code>value</code>. <br> Such an 
 object can be obtained with the 
 <code><a href="PRE_FATE.speciesClustering_step1.html">PRE_FATE.speciesClustering_step1</a></code> function.</p></dd>
+
+
 <dt>no.clusters</dt>
 <dd><p>an <code>integer</code>, or a <code>vector</code> of <code>integer</code> 
 (one for each <code>GROUP</code> value), with the number of clusters to be kept 
 (see <code><a href="PRE_FATE.speciesClustering_step2.html">PRE_FATE.speciesClustering_step2</a></code>)</p></dd>
+
+
 <dt>determ.all</dt>
 <dd><p>a <code>data.frame</code> with 6 or 10 columns : <br><code>PFG</code>, <code>GROUP</code>, <code>ID.cluster</code>, <code>species</code>, 
 <code>ID.species</code>, <code>DETERMINANT</code> <br> (<em>and optionally, 
 <code>sp.mean.dist</code>, <code>allSp.mean</code>, <code>allSp.min</code>, 
 <code>allSp.max</code></em>). <br> Such an object can be obtained 
 with the <code><a href="PRE_FATE.speciesClustering_step2.html">PRE_FATE.speciesClustering_step2</a></code> function.</p></dd>
+
+
 <dt>mat.traits.PFG</dt>
 <dd><p>a <code>data.frame</code> with at least 3 columns :
 <code>PFG</code>, <code>no.species</code>, <code>...</code> (one column for each functional 
@@ -217,11 +237,17 @@ trait, computed as the <code>mean</code> (for numeric traits) or the <code>media
 (for categorical traits) of the values of the determinant species of this 
 PFG). <br> Such an object can be obtained with the 
 <code><a href="PRE_FATE.speciesClustering_step3.html">PRE_FATE.speciesClustering_step3</a></code> function.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> containing all the elements given to the function and 
-checked :</p><dl><dt>name.dataset</dt>
+    
+
+<p>A <code>list</code> containing all the elements given to the function and 
+checked :</p>
+
+
+<dl><dt>name.dataset</dt>
 <dd><p>name of the dataset</p></dd>
 
   <dt>mat.observations</dt>
@@ -367,10 +393,9 @@ checked :</p><dl><dt>name.dataset</dt>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -384,7 +409,7 @@ checked :</p><dl><dt>name.dataset</dt>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

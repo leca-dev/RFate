@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
 .zoom p {
@@ -54,11 +54,11 @@ A [shiny](https://shiny.rstudio.com/) interface, that can be launched with the [
 <br/>
 
 
-## <i class="fas fa-tools"></i> `shinyRFate` tool box
+## <i class="fa-solid fa-screwdriver-wrench"></i> `shinyRFate` tool box
 
-#### <i class="fas fa-question-circle"></i> Help and documentation
+#### <i class="fa-solid fa-circle-question"></i> Help and documentation
 
-Two types of documentation can be accessed all over the application through <i class="fas fa-question-circle"></i> buttons. They give informations about :
+Two types of documentation can be accessed all over the application through <i class="fa-solid fa-circle-question"></i> buttons. They give informations about :
 
   - the different steps to be followed in each part  
   (global informations that can be found in the tutorials, about [the different `FATE` modules](fate_tutorial_3_MODULES.html) for example)
@@ -87,7 +87,7 @@ Two types of documentation can be accessed all over the application through <i c
 <p><img src="pictures/SHINY_RFate_8.png" alt="shinyRFate help 4"></img></p>
 </div>
 
-#### <i class="fas fa-hourglass-half"></i> Monitoring of functions
+#### <i class="fa-solid fa-hourglass-half"></i> Monitoring of functions
 
 Once a button was pressed to start a function, a panel is displayed as long as the function is running, indicating the selected parameters. All informations printed by the function can be followed within the `R` console. Information panels appear when the functions has finished running, results files have been created, or an error has been found.
 
@@ -107,9 +107,9 @@ Once a button was pressed to start a function, a panel is displayed as long as t
 <br/><br/>
 
 
-## <i class="fas fa-shoe-prints"></i> `shinyRFate` workflow
+## <i class="fa-solid fa-shoe-prints"></i> `shinyRFate` workflow
 
-#### <i class="fa fa-object-group"></i> Plant Functional Groups
+#### <i class="fa-solid fa-object-group"></i> Plant Functional Groups
 
 Created graphics and tables of loaded and used values can be visualized through the application.  
 Generally, the data shown onto the shiny application is saved into `.csv` or `.pdf` files.
@@ -127,7 +127,7 @@ Generally, the data shown onto the shiny application is saved into `.csv` or `.p
   </div>
 </div> 
 
-#### <i class="fa fa-copy"></i> Simulation parameter files
+#### <i class="fa-solid fa-copy"></i> Simulation parameter files
 
 Parameter files and folders can be created, visualized and modified from the application.  
 Multiple sets of parameters can be produced from a pre-existing simulation folder.
@@ -140,7 +140,7 @@ Multiple sets of parameters can be produced from a pre-existing simulation folde
   </div>
 </div> 
 
-#### <i class="fa fa-cogs"></i> Run a FATE simulation
+#### <i class="fa-solid fa-gears"></i> Run a FATE simulation
 
 `C++` model is run through `R` with the `Rcpp` package.
 Outputs and log errors can be visualized in the application or the `R` console.
@@ -153,7 +153,7 @@ Outputs and log errors can be visualized in the application or the `R` console.
   </div>
 </div> 
 
-#### <i class="fa fa fa-chart-bar"></i> Analyse results
+#### <i class="fa-solid fa-chart-column"></i> Analyse results
 
 `RFate` package provides functions to pre-analyse results of `FATE` simulations. 
 It can produce intermediate results files, quick summary graphics, and preliminary transformation of outputs. Existing graphics can be re-viewed with the browser panel.

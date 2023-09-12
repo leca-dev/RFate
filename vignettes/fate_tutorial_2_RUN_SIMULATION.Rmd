@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
 pre.bash {
@@ -38,7 +38,7 @@ multiple species in interactions and (iii) account for the processes shaping bio
 
 <br/>
 
-### <i class="fa fa-copy"></i> The different type of parameters and *flags*
+### <i class="fa-solid fa-copy"></i> The different type of parameters and *flags*
 
 `FATE` requires a quite large number of parameters, which are stored into `.txt` files, presented to and recovered by the software. These **parameters** can be of 3 types :
 
@@ -49,7 +49,7 @@ multiple species in interactions and (iii) account for the processes shaping bio
 
 <br/>
 
-### <i class="fas fa-wrench"></i> How to produce all these parameters files ?
+### <i class="fa-solid fa-wrench"></i> How to produce all these parameters files ?
 
 [RFate](https://leca-dev.github.io/RFate/) is a [R](https://www.r-project.org/) package available on [github](https://github.com/leca-dev/RFate) and designed to provide support function to the `FATE` software.
 
@@ -61,7 +61,7 @@ It contains documentation and functions to create and organize all input files r
 
 <br/>
 
-### <i class="fas fa-folder-open"></i> The FATE friendly directory organization
+### <i class="fa-solid fa-folder-open"></i> The FATE friendly directory organization
 
 As `FATE` needs quite a lot of parameters given into different parameter files, it is important to organize them in a clear and intuitive way.
 

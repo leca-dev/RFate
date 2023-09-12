@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
@@ -41,13 +41,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -77,7 +77,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -113,14 +113,14 @@
 </li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
@@ -129,21 +129,21 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -170,6 +170,7 @@
 
     
     
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></p>
 <style>
 pre.bash {
  background-color: black;
@@ -187,27 +188,35 @@ pre.grey {
 <p><br></p>
 <div class="section level2">
 <h2 id="the-different-type-of-parameters-and-flags">
-<i class="fa fa-copy"></i> The different type of parameters and <em>flags</em><a class="anchor" aria-label="anchor" href="#the-different-type-of-parameters-and-flags"></a>
+<i class="fa-solid fa-copy"></i> The different type of parameters
+and <em>flags</em><a class="anchor" aria-label="anchor" href="#the-different-type-of-parameters-and-flags"></a>
 </h2>
 <p><br></p>
-<p><code>FATE</code> requires a quite large number of parameters, which are stored into <code>.txt</code> files, presented to and recovered by the software.<br>
+<p><code>FATE</code> requires a quite large number of parameters, which
+are stored into <code>.txt</code> files, presented to and recovered by
+the software.<br>
 These <strong>parameters</strong> can be of 3 types :</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Filenames</strong>, to guide the application to other parameter files that should be read</li>
+<strong>Filenames</strong>, to guide the application to other
+parameter files that should be read</li>
 <li>These filenames either correspond to :
 <ul>
-<li>other parameter files that contain <strong>values</strong> to be actually read and used</li>
+<li>other parameter files that contain <strong>values</strong> to be
+actually read and used</li>
 <li>
-<strong>raster</strong> files, with the extension <code>.tif</code> (lighter) or <code>.img</code>
+<strong>raster</strong> files, with the extension <code>.tif</code>
+(lighter) or <code>.img</code>
 </li>
 </ul>
 </li>
 </ol>
 <p><br></p>
-<p>To enumerate these settings, <strong>2 types of flag</strong> can be found and used within the parameter files :</p>
+<p>To enumerate these settings, <strong>2 types of flag</strong> can be
+found and used within the parameter files :</p>
 <ol style="list-style-type: decimal">
-<li>To give one or several links to other files containing parameter values or to raster files : <strong><code>--PARAM_NAME--</code></strong>
+<li>To give one or several links to other files containing parameter
+values or to raster files : <strong><code>--PARAM_NAME--</code></strong>
 <pre class="bash">
 --GLOBAL_PARAMS--
 FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt
@@ -220,8 +229,10 @@ FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt
 </pre>
 </li>
 </ol>
-<p>In this way, each parameter can have several values (filenames), and <strong>each line corresponds to a value</strong>.<br>
-The transition to a new parameter is made thanks to the presence of a new flag on the next line.</p>
+<p>In this way, each parameter can have several values (filenames), and
+<strong>each line corresponds to a value</strong>.<br>
+The transition to a new parameter is made thanks to the presence of a
+new flag on the next line.</p>
 <ol start="2" style="list-style-type: decimal">
 <li>To give parameter values : <strong><code>PARAM_NAME</code></strong>
 <pre class="bash">
@@ -234,63 +245,83 @@ CHANG_STR_AGES 0 10000 10000 10000 10000
 </pre>
 </li>
 </ol>
-<p>Each line corresponds to a parameter, given by the <strong>flag</strong> (parameter name in capital letters) <strong>followed by all values linked to this flag on the same line</strong>. Each value has to be separated from another by a <strong>space</strong>.</p>
+<p>Each line corresponds to a parameter, given by the
+<strong>flag</strong> (parameter name in capital letters)
+<strong>followed by all values linked to this flag on the same
+line</strong>. Each value has to be separated from another by a
+<strong>space</strong>.</p>
 <p><br><br></p>
 </div>
 <div class="section level2">
 <h2 id="which-files-for-which-settings">
-<i class="fas fa-wrench"></i> Which files for which settings ?<a class="anchor" aria-label="anchor" href="#which-files-for-which-settings"></a>
+<i class="fa-solid fa-wrench"></i> Which files for which settings
+?<a class="anchor" aria-label="anchor" href="#which-files-for-which-settings"></a>
 </h2>
 <p><br></p>
-<p>The function <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a> allows to create a user-friendly directory tree to store all parameter files and data.</p>
+<p>The function <a href="../reference/PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a>
+allows to create a user-friendly directory tree to store all parameter
+files and data.</p>
 <p><br></p>
 <p><em>1. Simulation parameterization</em></p>
 <ul>
 <li>
-<strong>Global parameters</strong> : related to the simulation definition<br>
-(number of PFG and strata, simulation duration, computer resources, manage abundance values, modules loaded…)<br>
+<strong>Global parameters</strong> : related to the simulation
+definition<br>
+(number of PFG and strata, simulation duration, computer resources,
+manage abundance values, modules loaded…)<br>
 with the function <a href="../reference/PRE_FATE.params_globalParameters.html">PRE_FATE.params_globalParameters</a>
 </li>
 <li>
-<strong>Years to save abundance raster maps and simulation outputs</strong> with the function <a href="../reference/PRE_FATE.params_saveYears.html">PRE_FATE.params_saveYears</a>
+<strong>Years to save abundance raster maps and simulation
+outputs</strong> with the function <a href="../reference/PRE_FATE.params_saveYears.html">PRE_FATE.params_saveYears</a>
 </li>
 <li>
-<strong>Years and files to change rasters</strong> for the succession, habitat suitability or disturbance modules<br>
+<strong>Years and files to change rasters</strong> for the
+succession, habitat suitability or disturbance modules<br>
 with the function <a href="../reference/PRE_FATE.params_changingYears.html">PRE_FATE.params_changingYears</a>
 </li>
 </ul>
 <p><em>2. For each PFG : behavior and characteristics</em></p>
 <ul>
 <li>
-<strong>Succession files</strong> : related to the life history with the function <a href="../reference/PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a>
+<strong>Succession files</strong> : related to the life history with
+the function <a href="../reference/PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a>
 </li>
 <li>
-<strong>Dispersal files</strong> : related to the dispersal ability with the function <a href="../reference/PRE_FATE.params_PFGdispersal.html">PRE_FATE.params_PFGdispersal</a>
+<strong>Dispersal files</strong> : related to the dispersal ability
+with the function <a href="../reference/PRE_FATE.params_PFGdispersal.html">PRE_FATE.params_PFGdispersal</a>
 </li>
 <li>
-<strong>Light files</strong> : related to the light interaction with the function <a href="../reference/PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a>
+<strong>Light files</strong> : related to the light interaction with
+the function <a href="../reference/PRE_FATE.params_PFGlight.html">PRE_FATE.params_PFGlight</a>
 </li>
 <li>
-<strong>Soil files</strong> : related to the soil interaction with the function <a href="../reference/PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a>
+<strong>Soil files</strong> : related to the soil interaction with
+the function <a href="../reference/PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a>
 </li>
 <li>
-<strong>Disturbance files</strong> : related to the response to perturbations in terms of resprouting and mortality<br>
+<strong>Disturbance files</strong> : related to the response to
+perturbations in terms of resprouting and mortality<br>
 with the function <a href="../reference/PRE_FATE.params_PFGdisturbance.html">PRE_FATE.params_PFGdisturbance</a>
 </li>
 <li>
-<strong>Drought files</strong> : related to the response to drought in terms of resprouting and mortality<br>
+<strong>Drought files</strong> : related to the response to drought
+in terms of resprouting and mortality<br>
 with the function <a href="../reference/PRE_FATE.params_PFGdrought.html">PRE_FATE.params_PFGdrought</a>
 </li>
 </ul>
 <p><em>3. Parameter management</em></p>
 <ul>
 <li>
-<strong>SimulParameters file</strong> : containing all links to the files created with the previous functions.<br>
+<strong>SimulParameters file</strong> : containing all links to the
+files created with the previous functions.<br>
 This is the file that will be given as the only argument to the <a href="../reference/FATE.html">FATE</a> function.<br>
 It can be created with the function <a href="../reference/PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a>
 </li>
 <li>
-<strong>Multiple set of files</strong> : to duplicate simulation folder and scan global parameters space with Latin Hypercube Sampling.<br>
+<strong>Multiple set of files</strong> : to duplicate simulation
+folder and scan global parameters space with Latin Hypercube
+Sampling.<br>
 Folders can be created with the function <a href="../reference/PRE_FATE.params_multipleSet.html">PRE_FATE.params_multipleSet</a>
 </li>
 </ul>
@@ -314,7 +345,7 @@ Folders can be created with the function <a href="../reference/PRE_FATE.params_m
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

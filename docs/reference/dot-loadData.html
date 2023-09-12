@@ -37,20 +37,20 @@ results obtained from outputs and
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -75,8 +75,8 @@ results obtained from outputs and
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -108,35 +108,35 @@ results obtained from outputs and
   </ul></li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -176,7 +176,7 @@ results obtained from outputs and
 </dl></div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">.loadData</span><span class="op">(</span><span class="va">data.name</span>, <span class="va">format.name</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.loadData</span><span class="op">(</span><span class="va">data.name</span>, <span class="va">format.name</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -184,15 +184,26 @@ results obtained from outputs and
     <dl><dt>data.name</dt>
 <dd><p>a <code>string</code> corresponding to the name of the dataset 
 that will be loaded</p></dd>
+
+
 <dt>format.name</dt>
 <dd><p>a <code>string</code> corresponding to the downloading format way 
 (either <code>RData</code> or <code>7z</code>)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><strong>Note :</strong><em>references to habitat refer to habitat map and classes from 
+    
+
+<p><strong>Note :</strong></p>
+<p></p>
+<p><em>references to habitat refer to habitat map and classes from 
 <a href="http://osr-cesbio.ups-tlse.fr/~oso/posts/2019-03-25-carte-s2-2018" class="external-link">CESBIO2018</a>.
-Some class gathering has been made, as follow :</em></p><ul><li><p><strong>0 - Other :</strong> 0, 21, 22, 23</p></li>
+Some class gathering has been made, as follow :</em></p>
+
+
+
+<ul><li><p><strong>0 - Other :</strong> 0, 21, 22, 23</p></li>
 <li><p><strong>1 - Urban :</strong> 1, 2, 3, 4</p></li>
 <li><p><strong>2 - Crops :</strong> 5, 6, 7, 8, 9, 10, 11, 12</p></li>
 <li><p><strong>3 - Prairies :</strong> 13</p></li>
@@ -202,8 +213,20 @@ Some class gathering has been made, as follow :</em></p><ul><li><p><strong>0 - O
 <li><p><strong>7 - Natural grasslands :</strong> 18</p></li>
 <li><p><strong>8 - Woody heathlands :</strong> 19</p></li>
 <li><p><strong>9 - Mineral surfaces :</strong> 20 <br><br></p></li>
-</ul><p><strong><br><br>#########################################################<br></strong><strong>&gt;&gt;&gt; Champsaur_PFG</strong><strong><br>#########################################################<br><br></strong>A <code>list</code> object with 18 elements to help building the Plant Functional 
-Group :</p><dl><dt>name.dataset</dt>
+</ul><p><strong><br><br>#########################################################<br></strong></p>
+
+
+<p><strong>&gt;&gt;&gt; Champsaur_PFG</strong></p>
+
+
+<p><strong><br>#########################################################<br><br></strong></p>
+
+
+
+<p>A <code>list</code> object with 18 elements to help building the Plant Functional 
+Group :</p>
+<p></p>
+<dl><dt>name.dataset</dt>
 <dd><p><strong>Champsaur</strong></p></dd>
 
     <dt>sp.observations</dt>
@@ -287,7 +310,7 @@ Group :</p><dl><dt>name.dataset</dt>
     <dt>mat.overlap</dt>
 <dd><p><code>matrix</code> of dimension <code>244 x 244</code> <br>
     containing niche overlap distance (1 - Schoeners' D, obtained with 
-    <code><a href="https://rdrr.io/pkg/ecospat/man/ecospat.niche.overlap.html" class="external-link">ecospat.niche.overlap</a></code>) for dominant species <br>
+    <code>ecospat.niche.overlap</code>) for dominant species <br>
     to be used with the <code><a href="PRE_FATE.speciesDistance.html">PRE_FATE.speciesDistance</a></code> function</p></dd>
 
     <dt>sp.DIST.P</dt>
@@ -351,8 +374,20 @@ Group :</p><dl><dt>name.dataset</dt>
     <code><a href="PRE_FATE.speciesClustering_step3.html">PRE_FATE.speciesClustering_step3</a></code> function</p></dd>
 
   
-</dl><p><strong><br><br>#########################################################<br></strong><strong>&gt;&gt;&gt; Champsaur_params</strong><strong><br>#########################################################<br><br></strong>A <code>list</code> object with 12 elements to help building the simulation 
-files and folders to run a <code>FATE</code> simulation :</p><dl><dt>name.dataset</dt>
+</dl><p><strong><br><br>#########################################################<br></strong></p>
+
+
+<p><strong>&gt;&gt;&gt; Champsaur_params</strong></p>
+
+
+<p><strong><br>#########################################################<br><br></strong></p>
+
+  
+
+<p>A <code>list</code> object with 12 elements to help building the simulation 
+files and folders to run a <code>FATE</code> simulation :</p>
+<p></p>
+<dl><dt>name.dataset</dt>
 <dd><p><strong>Champsaur</strong></p></dd>
 
     <dt>tab.occ</dt>
@@ -423,16 +458,47 @@ files and folders to run a <code>FATE</code> simulation :</p><dl><dt>name.datase
 </ul><p></p></dd>
 
   
-</dl><p><strong><br><br>#########################################################<br></strong><strong>&gt;&gt;&gt; Champsaur_simul_[...]</strong><strong><br>#########################################################<br><br></strong>A <code>7z</code> file containing one <code>FATE</code> simulation result folder. <br>4 simulations are available :</p><ol><li><p>a simulation with only basic modules activated : <br><strong>CORE 
+</dl><p><strong><br><br>#########################################################<br></strong></p>
+
+
+<p><strong>&gt;&gt;&gt; Champsaur_simul_[...]</strong></p>
+
+
+<p><strong><br>#########################################################<br><br></strong></p>
+
+
+
+<p>A <code>7z</code> file containing one <code>FATE</code> simulation result folder. <br></p>
+
+
+<p>4 simulations are available :</p>
+
+
+<ol><li><p>a simulation with only basic modules activated : <br><strong>CORE 
   (succession)</strong> module, <strong>dispersal</strong> module, and <strong>habitat 
   suitability</strong> module</p></li>
 <li><p>the same as <strong>V1</strong> + the <strong>light</strong> module</p></li>
 <li><p>the same as <strong>V1</strong> + the <strong>soil</strong> module</p></li>
 <li><p>the same as <strong>V1</strong> + the <strong>light</strong> and <strong>soil</strong> 
   modules</p></li>
-</ol><p><strong><br><br>#########################################################<br></strong><strong>&gt;&gt;&gt; Champsaur_results_[...]</strong><strong><br>#########################################################<br><br></strong>A <code>7z</code> file containing <strong><code>.csv</code> and <code>.pdf</code> files</strong>obtained from the corresponding <code>FATE</code> simulation result folder 
+</ol><p><strong><br><br>#########################################################<br></strong></p>
+
+
+<p><strong>&gt;&gt;&gt; Champsaur_results_[...]</strong></p>
+
+
+<p><strong><br>#########################################################<br><br></strong></p>
+
+
+
+<p>A <code>7z</code> file containing <strong><code>.csv</code> and <code>.pdf</code> files</strong></p>
+ 
+
+<p>obtained from the corresponding <code>FATE</code> simulation result folder 
 (4 simulations available) with the help of 
 <a href="index.html#section-analyze-fate-outputs"><code>POST_FATE</code> functions</a>. <br></p>
+
+
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -451,7 +517,7 @@ files and folders to run a <code>FATE</code> simulation :</p><dl><dt>name.datase
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

@@ -22,15 +22,15 @@ navbar:
     - github
   components:
     home:
-      icon: fa-home fa-lg
+      icon: fa-house
       href: index.html
     reference:
       text: Reference
-      icon: fa-book fa-lg
+      icon: fa-book
       href: reference/index.html
     FATE:
       text: FATE
-      icon: fab fa-pagelines
+      icon: fa-pagelines
       menu:
         - text: "---------"
         - text: Publications
@@ -46,7 +46,7 @@ navbar:
           href: articles/fate_tutorial_3_MODULES.html
     RFate:
       text: RFate
-      icon: fas fa-toolbox
+      icon: fa-toolbox
       menu:
         - text: "---------"
         - text: Build PFG
@@ -61,19 +61,19 @@ navbar:
         - text: "---------"
     interface:
       text: SHINY interface
-      icon: fas fa-desktop
+      icon: fa-desktop
       href: articles/interface_tutorial_0_presentation.html
     articles:
     manual:
       text: 'Manual & Examples'
-      icon: fas fa-stethoscope
+      icon: fa-stethoscope
       href: articles/manual.html
     news:
       text: 'News'
-      icon: far fa-newspaper
+      icon: fa-newspaper
       href: articles/news.html
     github:
-      icon: fab fa-github
+      icon: fa-github
       href: https://github.com/leca-dev/RFate.git
       
 

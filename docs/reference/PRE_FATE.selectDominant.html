@@ -18,20 +18,20 @@ abundance records, and habitat if the information is available."><!-- mathjax --
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -56,8 +56,8 @@ abundance records, and habitat if the information is available."><!-- mathjax --
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -89,35 +89,35 @@ abundance records, and habitat if the information is available."><!-- mathjax --
   </ul></li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -141,22 +141,22 @@ abundance records, and habitat if the information is available.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>
-  <span class="va">mat.observations</span>,
-  doRuleA <span class="op">=</span> <span class="cn">TRUE</span>,
-  rule.A1 <span class="op">=</span> <span class="fl">10</span>,
-  rule.A2_quantile <span class="op">=</span> <span class="fl">0.9</span>,
-  doRuleB <span class="op">=</span> <span class="cn">TRUE</span>,
-  rule.B1_percentage <span class="op">=</span> <span class="fl">0.25</span>,
-  rule.B1_number <span class="op">=</span> <span class="fl">5</span>,
-  rule.B2 <span class="op">=</span> <span class="fl">0.5</span>,
-  doRuleC <span class="op">=</span> <span class="cn">FALSE</span>,
-  opt.doRobustness <span class="op">=</span> <span class="cn">FALSE</span>,
-  opt.robustness_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>,
-  opt.robustness_rep <span class="op">=</span> <span class="fl">10</span>,
-  opt.doSitesSpecies <span class="op">=</span> <span class="cn">TRUE</span>,
-  opt.doPlot <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span></span>
+<span>  <span class="va">mat.observations</span>,</span>
+<span>  doRuleA <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  rule.A1 <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  rule.A2_quantile <span class="op">=</span> <span class="fl">0.9</span>,</span>
+<span>  doRuleB <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  rule.B1_percentage <span class="op">=</span> <span class="fl">0.25</span>,</span>
+<span>  rule.B1_number <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  rule.B2 <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  doRuleC <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  opt.doRobustness <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  opt.robustness_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
+<span>  opt.robustness_rep <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  opt.doSitesSpecies <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opt.doPlot <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -165,63 +165,95 @@ abundance records, and habitat if the information is available.</p>
 <dd><p>a <code>data.frame</code> with at least 3 columns : <br><code>sites</code>, <code>species</code>, <code>abund</code>
 <br> (<em>and optionally, <code>habitat</code></em>) 
 <br> (see <a href="PRE_FATE.selectDominant#details"><code>Details</code></a>)</p></dd>
+
+
 <dt>doRuleA</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, selection 
 is done including constraints on number of occurrences</p></dd>
+
+
 <dt>rule.A1</dt>
 <dd><p>default <code>10</code>. <br> If <code>doRuleA = TRUE</code> or 
 <code>doRuleC = TRUE</code>, minimum number of releves required for each species</p></dd>
+
+
 <dt>rule.A2_quantile</dt>
 <dd><p>default <code>0.9</code>. <br> If <code>doRuleA = TRUE</code> 
 or <code>doRuleC = TRUE</code>, quantile corresponding to the minimum number of 
 total occurrences required for each species (between <code>0</code> and <code>1</code>)</p></dd>
+
+
 <dt>doRuleB</dt>
 <dd><p>default <code>FALSE</code>. <br> If <code>TRUE</code>, selection is done 
 including constraints on relative abundances</p></dd>
+
+
 <dt>rule.B1_percentage</dt>
 <dd><p>default <code>0.25</code>. <br> If <code>doRuleB = TRUE</code>, 
 minimum relative abundance required for each species in at least 
 <code>rule.B1_number</code> sites (between <code>0</code> and <code>1</code>)</p></dd>
+
+
 <dt>rule.B1_number</dt>
 <dd><p>default <code>5</code>. <br> If <code>doRuleB = TRUE</code>, 
 minimum number of sites in which each species has relative abundance 
 <code>&gt;= rule.B1_percentage</code></p></dd>
+
+
 <dt>rule.B2</dt>
 <dd><p>default <code>0.5</code>. <br> If <code>doRuleB = TRUE</code>, minimum 
 average relative abundance required for each species (between <code>0</code> and 
 <code>1</code>)</p></dd>
+
+
 <dt>doRuleC</dt>
 <dd><p>default <code>FALSE</code>. <br> If <code>TRUE</code>, selection is done 
 including constraints on number of occurrences at the habitat level (with 
 the values of <code>rule.A1</code> and <code>rule.A2_quantile</code>)</p></dd>
+
+
 <dt>opt.doRobustness</dt>
 <dd><p>(<em>optional</em>) default <code>FALSE</code>. <br> 
 If <code>TRUE</code>, selection is also done on subsets of 
 <code>mat.observations</code>, keeping only a percentage of releves or sites, to 
 visualize the robustness of the selection</p></dd>
+
+
 <dt>opt.robustness_percent</dt>
 <dd><p>(<em>optional</em>) default <code>c(0.1, 0.2, 
 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9)</code>. <br> If <code>opt.doRobustness = TRUE</code>, 
 <code>vector</code> containing values between <code>0</code> and <code>1</code> corresponding 
 to the percentages with which to build subsets to evaluate robustness</p></dd>
+
+
 <dt>opt.robustness_rep</dt>
 <dd><p>(<em>optional</em>) default <code>10</code>. <br> If 
 <code>opt.doRobustness = TRUE</code>, number of repetitions for each percentage 
 value defined by <code>opt.robustness_percent</code> to evaluate robustness</p></dd>
+
+
 <dt>opt.doSitesSpecies</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> 
 If <code>TRUE</code>, building of abundances / occurrences tables for selected 
 species will be processed, saved and returned.</p></dd>
+
+
 <dt>opt.doPlot</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 plot(s) will be processed, otherwise only the calculation and reorganization 
 of outputs will occur, be saved and returned.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A <code>list</code> containing one <code>vector</code>, four or five 
+    
+
+<p>A <code>list</code> containing one <code>vector</code>, four or five 
 <code>data.frame</code> objects with the following columns, and up to five 
-<code>ggplot2</code> objects :</p><dl><dt>species.selected</dt>
+<code>ggplot2</code> objects :</p>
+
+
+<dl><dt>species.selected</dt>
 <dd><p>the names of the selected species</p></dd>
 
   <dt>tab.rules</dt>
@@ -430,58 +462,57 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code>
-<span class="co">## Load example data</span>
-<span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span>
-
-<span class="co">## Species observations</span>
-<span class="va">tab</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.observations</span>
-
-<span class="co">## No habitat, no robustness -------------------------------------------------</span>
-<span class="va">tab.occ</span> <span class="op">=</span> <span class="va">tab</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sites'</span>, <span class="st">'species'</span>, <span class="st">'abund'</span><span class="op">)</span><span class="op">]</span>
-<span class="va">sp.SELECT</span> <span class="op">=</span> <span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>mat.observations <span class="op">=</span> <span class="va">tab.occ</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.rules</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.dom.PA</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.A</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.B</span><span class="op">$</span><span class="va">abs</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.B</span><span class="op">$</span><span class="va">rel</span><span class="op">)</span>
-
-<span class="co">## Habitat, change parameters, no robustness (!quite long!) --------------------</span>
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-<span class="va">tab.occ</span> <span class="op">=</span> <span class="va">tab</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sites'</span>, <span class="st">'species'</span>, <span class="st">'abund'</span>, <span class="st">'habitat'</span><span class="op">)</span><span class="op">]</span>
-<span class="va">sp.SELECT</span> <span class="op">=</span> <span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>mat.observations <span class="op">=</span> <span class="va">tab.occ</span>
-                                    , doRuleA <span class="op">=</span> <span class="cn">TRUE</span>
-                                    , rule.A1 <span class="op">=</span> <span class="fl">10</span>
-                                    , rule.A2_quantile <span class="op">=</span> <span class="fl">0.9</span>
-                                    , doRuleB <span class="op">=</span> <span class="cn">TRUE</span>
-                                    , rule.B1_percentage <span class="op">=</span> <span class="fl">0.2</span>
-                                    , rule.B1_number <span class="op">=</span> <span class="fl">10</span>
-                                    , rule.B2 <span class="op">=</span> <span class="fl">0.4</span>
-                                    , doRuleC <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.rules</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.C</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.pco</span><span class="op">$</span><span class="va">Axis1_Axis2</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.pco</span><span class="op">$</span><span class="va">Axis1_Axis3</span><span class="op">)</span>
-<span class="op">}</span>
-
-<span class="co">## No habitat, robustness (!quite long!) --------------------</span>
-<span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span>
-<span class="va">tab.occ</span> <span class="op">=</span> <span class="va">tab</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sites'</span>, <span class="st">'species'</span>, <span class="st">'abund'</span><span class="op">)</span><span class="op">]</span>
-<span class="va">sp.SELECT</span> <span class="op">=</span> <span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>mat.observations <span class="op">=</span> <span class="va">tab.occ</span>
-                                    , opt.doSitesSpecies <span class="op">=</span> <span class="cn">FALSE</span>
-                                    , opt.doRobustness <span class="op">=</span> <span class="cn">TRUE</span>
-                                    , opt.robustness_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.9</span>,<span class="fl">0.1</span><span class="op">)</span>
-                                    , opt.robustness_rep <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.robustness</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.robustness</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.robustness</span><span class="op">$</span><span class="va">`All dataset`</span><span class="op">)</span>
-<span class="op">}</span>
-                                    
-
-</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
+<span><span class="co">## Load example data</span></span>
+<span><span class="va">Champsaur_PFG</span> <span class="op">=</span> <span class="fu"><a href="dot-loadData.html">.loadData</a></span><span class="op">(</span><span class="st">'Champsaur_PFG'</span>, <span class="st">'RData'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Species observations</span></span>
+<span><span class="va">tab</span> <span class="op">=</span> <span class="va">Champsaur_PFG</span><span class="op">$</span><span class="va">sp.observations</span></span>
+<span></span>
+<span><span class="co">## No habitat, no robustness -------------------------------------------------</span></span>
+<span><span class="va">tab.occ</span> <span class="op">=</span> <span class="va">tab</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sites'</span>, <span class="st">'species'</span>, <span class="st">'abund'</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">sp.SELECT</span> <span class="op">=</span> <span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>mat.observations <span class="op">=</span> <span class="va">tab.occ</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.rules</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.dom.PA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.A</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.B</span><span class="op">$</span><span class="va">abs</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.B</span><span class="op">$</span><span class="va">rel</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Habitat, change parameters, no robustness (!quite long!) --------------------</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">tab.occ</span> <span class="op">=</span> <span class="va">tab</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sites'</span>, <span class="st">'species'</span>, <span class="st">'abund'</span>, <span class="st">'habitat'</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">sp.SELECT</span> <span class="op">=</span> <span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>mat.observations <span class="op">=</span> <span class="va">tab.occ</span></span>
+<span>                                    , doRuleA <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>                                    , rule.A1 <span class="op">=</span> <span class="fl">10</span></span>
+<span>                                    , rule.A2_quantile <span class="op">=</span> <span class="fl">0.9</span></span>
+<span>                                    , doRuleB <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>                                    , rule.B1_percentage <span class="op">=</span> <span class="fl">0.2</span></span>
+<span>                                    , rule.B1_number <span class="op">=</span> <span class="fl">10</span></span>
+<span>                                    , rule.B2 <span class="op">=</span> <span class="fl">0.4</span></span>
+<span>                                    , doRuleC <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.rules</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.C</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.pco</span><span class="op">$</span><span class="va">Axis1_Axis2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.pco</span><span class="op">$</span><span class="va">Axis1_Axis3</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co">## No habitat, robustness (!quite long!) --------------------</span></span>
+<span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span><span class="va">tab.occ</span> <span class="op">=</span> <span class="va">tab</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'sites'</span>, <span class="st">'species'</span>, <span class="st">'abund'</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="va">sp.SELECT</span> <span class="op">=</span> <span class="fu">PRE_FATE.selectDominant</span><span class="op">(</span>mat.observations <span class="op">=</span> <span class="va">tab.occ</span></span>
+<span>                                    , opt.doSitesSpecies <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>                                    , opt.doRobustness <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>                                    , opt.robustness_percent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>,<span class="fl">0.9</span>,<span class="fl">0.1</span><span class="op">)</span></span>
+<span>                                    , opt.robustness_rep <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">tab.robustness</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.robustness</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">sp.SELECT</span><span class="op">$</span><span class="va">plot.robustness</span><span class="op">$</span><span class="va">`All dataset`</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span>                                    </span>
+<span></span></code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -495,7 +526,7 @@ but not meeting criterion A1 are also considered as "<em>Not selected</em>".</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

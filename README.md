@@ -2,6 +2,8 @@
 [![Coverage status](https://github.com/leca-dev/RFate/workflows/CODECOV-check/badge.svg)](https://github.com/leca-dev/RFate/actions)
 [![Coverage status](https://codecov.io/gh/leca-dev/RFate/branch/master/graph/badge.svg)](https://codecov.io/gh/leca-dev/RFate/branch/master)
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 
 <style>
 pre.bash {
@@ -32,7 +34,7 @@ z-index: 10;
 <br/>
 
 
-## <i class="fa fa-tools"></i> Installing `RFate` package
+## <i class="fa-solid fa-screwdriver-wrench"></i> Installing `RFate` package
 
 From [GitHub](https://github.com/leca-dev/RFate) using [devtools](https://cran.r-project.org/package=devtools) :
 
@@ -47,7 +49,7 @@ devtools::install_github(repo="leca-dev/RFate")
 
 
 
-## <i class="fas fa-shoe-prints"></i> `RFate` workflow
+## <i class="fa-solid fa-shoe-prints"></i> `RFate` workflow
 
 <br/>
 

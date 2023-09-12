@@ -7,6 +7,8 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 <style>
 <!-- .zoom { -->
 <!-- height:600px; -->
@@ -37,20 +39,20 @@ width:1200px;
 <br/><br/>
 
 
-## <i class="fas fa-boxes"></i> Conceptual diagram
+## <i class="fa-solid fa-boxes-stacked"></i> Conceptual diagram
 
 The whole area is divided in grid-cells in which an independent **demographic model** regulates the PFG life cycle. PFG abundances are structured by age into cohorts and each cohort is attributed to a height stratum according to the growth parameters.
 
 Different submodels affect this cycle at various levels :
 
-- **Interaction through <i class="fas fa-sun"></i> light and/or <i class="fas fa-recycle"></i> soil resources** regulates interactions between cohorts affecting germination, recruitment and survival.
+- **Interaction through <i class="fa-solid fa-sun"></i> light and/or <i class="fa-solid fa-recycle"></i> soil resources** regulates interactions between cohorts affecting germination, recruitment and survival.
 
-- **<i class="fas fa-globe"></i> Habitat suitability** affects the recruitment and fecundity rates.
+- **<i class="fa-solid fa-globe"></i> Habitat suitability** affects the recruitment and fecundity rates.
 
-- **<i class="fas fa-seedling"></i> The seed dispersal model** makes `FATE` spatially explicit by connecting grid-cells.  
+- **<i class="fa-solid fa-seedling"></i> The seed dispersal model** makes `FATE` spatially explicit by connecting grid-cells.  
 It depends on the amount of seeds produced by mature plants and affects each PFG’s seed bank in each cell.
 
-- **<i class="fas fa-bolt"></i> Disturbances** affect PFG survival and fecundity.
+- **<i class="fa-solid fa-bolt-lightning"></i> Disturbances** affect PFG survival and fecundity.
 
 
 <br/>
@@ -66,7 +68,7 @@ It depends on the amount of seeds produced by mature plants and affects each PFG
 
 
 
-## <i class="fas fa-recycle"></i> Life cycle of each PFG and influences from sub-models
+## <i class="fa-solid fa-recycle"></i> Life cycle of each PFG and influences from sub-models
 
 Only three age classes are considered : **germinant**, **juvenile** and **mature**.
 
@@ -98,7 +100,7 @@ The timestep is at the year level : seasonality is not included within each time
 
 <br/><br/>
 
-## <i class="fas fa-sliders-h"></i> Calculation of pixel resources
+## <i class="fa-solid fa-sliders"></i> Calculation of pixel resources
 
 <br/>
 
@@ -112,7 +114,7 @@ Light and soil resources are **proportional to the abundance of the PFG communit
 
 <br/><br/>
 
-## <i class="fas fa-square-root-alt"></i> Structural equations
+## <i class="fa-solid fa-square-root-variable"></i> Structural equations
 
 <br/>
 

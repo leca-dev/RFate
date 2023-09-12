@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
@@ -41,13 +41,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -77,7 +77,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -113,14 +113,14 @@
 </li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
@@ -129,21 +129,21 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -170,7 +170,7 @@
 
     
     
-<p><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"></p>
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></p>
 <style>
 pre.bash {
  background-color: black;
@@ -186,7 +186,13 @@ pre.grey {
 }
 </style>
 <p><br><br></p>
-<p><code>FATE</code> model is built like a <a href="https://i.pinimg.com/originals/47/7b/f3/477bf37d4d316285108b62e2e852a014.gif" class="external-link">LEGO</a> tool : it has a <strong>core module</strong>, which corresponds to the fundamental succession, and then can be complemented with <strong>other modules</strong>. Some of these modules can be regarded as equally important as the core module (from an ecological likelihood point of view, like light, dispersal, soil, etc), and some others are more specific (drought, aliens, fire, etc).</p>
+<p><code>FATE</code> model is built like a <a href="https://i.pinimg.com/originals/47/7b/f3/477bf37d4d316285108b62e2e852a014.gif" class="external-link">LEGO</a>
+tool : it has a <strong>core module</strong>, which corresponds to the
+fundamental succession, and then can be complemented with <strong>other
+modules</strong>. Some of these modules can be regarded as equally
+important as the core module (from an ecological likelihood point of
+view, like light, dispersal, soil, etc), and some others are more
+specific (drought, aliens, fire, etc).</p>
 <p><br></p>
 All of these modules require
 <pre class="bash">mandatory parameters</pre>
@@ -196,14 +202,20 @@ and sometimes, some others that are
 <p><br><br></p>
 <div class="section level2">
 <h2 id="core-module-succession">
-<i class="fa fa-heart"></i> <code>CORE</code> module (succession)<a class="anchor" aria-label="anchor" href="#core-module-succession"></a>
+<i class="fa-solid fa-heart"></i> <code>CORE</code> module
+(succession)<a class="anchor" aria-label="anchor" href="#core-module-succession"></a>
 </h2>
-<p>“<em>Based on the ‘FATE’ model (Moore &amp; Noble, 1990), it describes the within-pixel succession dynamics in an annual time step. […] Five processes describe PFG demography (germination, recruitment, growth, survival and fecundity, see Table 1).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>Based on the ‘FATE’ model (Moore &amp; Noble, 1990), it
+describes the within-pixel succession dynamics in an annual time step.
+[…] Five processes describe PFG demography (germination, recruitment,
+growth, survival and fecundity, see Table 1).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat,
+2014</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 NO_PFG 16
@@ -221,15 +233,18 @@ The number of computer resources can also be given :
 <pre class="grey">
 NO_CPU 6
 </pre>
-<p>If so, some parts of the main loop of the code will be parallelized on the amount of indicated resources.</p>
-Finally, several parameters are available to select which outputs should be saved on when running the simulation :
+<p>If so, some parts of the main loop of the code will be parallelized
+on the amount of indicated resources.</p>
+Finally, several parameters are available to select which outputs should
+be saved on when running the simulation :
 <pre class="grey">
 SAVING_ABUND_PFG_STRATUM 1
 SAVING_ABUND_PFG 1
 SAVING_ABUND_STRATUM 0
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --GLOBAL_PARAMS--
@@ -243,7 +258,8 @@ FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG1.txt
 FATE_simulation/DATA/PFGS/SUCC/SUCC_PFG2.txt
 --END_OF_FILE--
 </pre>
-<p>The years for which outputs must be saved can also be indicated,<br>
+<p>The years for which outputs must be saved can also be
+indicated,<br>
 as well as years to save a copy of the simulation object :</p>
 <pre class="grey">
 --SAVING_YEARS_ARRAYS--
@@ -252,7 +268,9 @@ FATE_simulation/DATA/SAVE/SAVE_YEARS_maps.txt
 FATE_simulation/DATA/SAVE/SAVE_YEARS_objects.txt
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGsuccession.html">SUCCESSION</a> files (given with the <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGsuccession.html">SUCCESSION</a>
+files (given with the <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -267,7 +285,8 @@ CHANG_STR_AGES 0 14 38 110 344
 SEED_POOL_LIFE 0 0
 SEED_DORMANCY 0
 </pre>
-The maximum number of seeds produced each year can also be specified per PFG :
+The maximum number of seeds produced each year can also be specified per
+PFG :
 <pre class="grey">
 POTENTIAL_FECUNDITY 50
 </pre>
@@ -276,14 +295,21 @@ POTENTIAL_FECUNDITY 50
 </div>
 <div class="section level2">
 <h2 id="light-module-interaction">
-<i class="fa fa-sun"></i> <code>LIGHT</code> module (interaction)<a class="anchor" aria-label="anchor" href="#light-module-interaction"></a>
+<i class="fa-solid fa-sun"></i> <code>LIGHT</code> module
+(interaction)<a class="anchor" aria-label="anchor" href="#light-module-interaction"></a>
 </h2>
-<p>“<em>Vegetation height is represented by a limited number of strata to incorporate the shading process (Fig. 1a). Within a pixel, the light resource for each stratum is calculated from the total abundance of all PFGs across all the upper strata. Within-pixel spatial heterogeneity in light resources is not taken into consideration</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>Vegetation height is represented by a limited number of strata
+to incorporate the shading process (Fig. 1a). Within a pixel, the light
+resource for each stratum is calculated from the total abundance of all
+PFGs across all the upper strata. Within-pixel spatial heterogeneity in
+light resources is not taken into consideration</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat,
+2014</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters-1">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-1"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_LIGHT_INTERACTION 1
@@ -291,10 +317,12 @@ LIGHT_THRESH_MEDIUM 4000
 LIGHT_THRESH_LOW 7000
 </pre>
 <pre class="grey">
+LIGHT_RECRUIT 1
 LIGHT_SAVING 1
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_PARAMS_LIGHT--
@@ -302,7 +330,9 @@ FATE_simulation/DATA/PFGS/LIGHT/LIGHT_PFG1.txt
 FATE_simulation/DATA/PFGS/LIGHT/LIGHT_PFG2.txt
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGlight.html">LIGHT</a> files (given with the <code>--PFG_PARAMS_LIGHT--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGlight.html">LIGHT</a>
+files (given with the <code>--PFG_PARAMS_LIGHT--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -316,14 +346,16 @@ LIGHT_TOL 1 1 1 1 1 1 1 1 1
 </div>
 <div class="section level2">
 <h2 id="soil-module-interaction">
-<i class="fas fa-recycle"></i> <code>SOIL</code> module (interaction)<a class="anchor" aria-label="anchor" href="#soil-module-interaction"></a>
+<i class="fa-solid fa-recycle"></i> <code>SOIL</code> module
+(interaction)<a class="anchor" aria-label="anchor" href="#soil-module-interaction"></a>
 </h2>
 <p>“<em>To be written</em>” ()</p>
 <div class="section level5">
 <h5 id="required-parameters-2">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-2"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_SOIL_INTERACTION 1
@@ -331,18 +363,27 @@ SOIL_INIT 2.5
 SOIL_RETENTION 0.8
 </pre>
 <pre class="grey">
+SOIL_FILL_MAP 0
+SOIL_RECRUIT 1
 SOIL_SAVING 1
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_PARAMS_SOIL--
 FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG1.txt
 FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG2.txt
 </pre>
+<pre class="grey">
+--SOIL_MASK--
+FATE_simulation/DATA/MASK/mask_soil.tif
+</pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGsoil.html">SOIL</a> files (given with the <code>--PFG_PARAMS_SOIL--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGsoil.html">SOIL</a>
+files (given with the <code>--PFG_PARAMS_SOIL--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -357,14 +398,27 @@ SOIL_TOL 1 10 0 5 10 4 9 10 8
 </div>
 <div class="section level2">
 <h2 id="dispersal-module">
-<i class="fa fa-seedling"></i> <code>DISPERSAL</code> module<a class="anchor" aria-label="anchor" href="#dispersal-module"></a>
+<i class="fa-solid fa-seedling"></i> <code>DISPERSAL</code>
+module<a class="anchor" aria-label="anchor" href="#dispersal-module"></a>
 </h2>
-<p>“<em>The quantity of produced seeds depends on the abundances of mature PFGs and their habitat suitability. A seed dispersal model determines seed inflow in each pixel (Fig. 1c). From the source, three circles of influence are defined using distance parameters. In the first circle, 50% of the seeds are distributed uniformly. In the second circle, 49% of the seeds are distributed with the same concentration as in the first circle but by pairs of pixels, simulating the spatial autocorrelation of dispersed seeds. In the third circle, 1% of the seeds fall into a random pixel. This seed dispersal model behaves similar to a continuous kernel function (see Fig.S1a) but is very effective and requires only a few parameters (Vittoz &amp; Engler, 2007).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>The quantity of produced seeds depends on the abundances of
+mature PFGs and their habitat suitability. A seed dispersal model
+determines seed inflow in each pixel (Fig. 1c). From the source, three
+circles of influence are defined using distance parameters. In the first
+circle, 50% of the seeds are distributed uniformly. In the second
+circle, 49% of the seeds are distributed with the same concentration as
+in the first circle but by pairs of pixels, simulating the spatial
+autocorrelation of dispersed seeds. In the third circle, 1% of the seeds
+fall into a random pixel. This seed dispersal model behaves similar to a
+continuous kernel function (see Fig.S1a) but is very effective and
+requires only a few parameters (Vittoz &amp; Engler, 2007).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat,
+2014</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters-3">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-3"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_DISPERSAL 1
@@ -374,7 +428,8 @@ DISPERSAL_MODE 1
 DISPERSAL_SAVING 0
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_PARAMS_DISPERSAL--
@@ -382,7 +437,9 @@ FATE_simulation/DATA/PFGS/DISP/DISP_PFG1.txt
 FATE_simulation/DATA/PFGS/DISP/DISP_PFG2.txt
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGdispersal.html">DISPERSAL</a> files (given with the <code>--PFG_PARAMS_DISPERSAL--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGdispersal.html">DISPERSAL</a>
+files (given with the <code>--PFG_PARAMS_DISPERSAL--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -393,30 +450,52 @@ DISPERS_DIST 100 500 79000
 </div>
 <div class="section level2">
 <h2 id="habitat-suitability-module">
-<i class="fa fa-globe"></i> <code>HABITAT SUITABILITY</code> module<a class="anchor" aria-label="anchor" href="#habitat-suitability-module"></a>
+<i class="fa-solid fa-globe"></i> <code>HABITAT SUITABILITY</code>
+module<a class="anchor" aria-label="anchor" href="#habitat-suitability-module"></a>
 </h2>
-<p>“<em>Modelling how habitat suitability affects species population dynamics is tricky given the limited knowledge on the type and form of this relationship. Gallien et al. (2010) suggested a parsimonious approach using only presence-absences or a linear link. In FATE-HD, the probability for recruitment and seed production occurring is calculated every year according to the habitat suitability of the PFG in the pixel in question. Over time, the probability of presence is thus linearly related to fecundity and establishment. Accounting for interannual variability allows species coexistence via temporal niches. Mortality does not depend on habitat suitability, as the immediate effects of annual abiotic conditions on plant mortality are not clear in the literature. Habitat suitability for each PFG can be obtained from various sources such as correlative species distribution models (Guisan &amp; Thuiller, 2005) or mechanistic niche models (Chuine &amp; Beaubien, 2001).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>Modelling how habitat suitability affects species population
+dynamics is tricky given the limited knowledge on the type and form of
+this relationship. Gallien et al. (2010) suggested a parsimonious
+approach using only presence-absences or a linear link. In FATE-HD, the
+probability for recruitment and seed production occurring is calculated
+every year according to the habitat suitability of the PFG in the pixel
+in question. Over time, the probability of presence is thus linearly
+related to fecundity and establishment. Accounting for interannual
+variability allows species coexistence via temporal niches. Mortality
+does not depend on habitat suitability, as the immediate effects of
+annual abiotic conditions on plant mortality are not clear in the
+literature. Habitat suitability for each PFG can be obtained from
+various sources such as correlative species distribution models (Guisan
+&amp; Thuiller, 2005) or mechanistic niche models (Chuine &amp;
+Beaubien, 2001).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat,
+2014</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters-4">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-4"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_HAB_SUITABILITY 1
 HABSUIT_MODE 1
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_MASK_HABSUIT--
 FATE_simulation/DATA/PFGS/HABSUIT/HS_CA/HS_PFG1_0.tif
 FATE_simulation/DATA/PFGS/HABSUIT/HS_CA/HS_PFG2_0.tif
 </pre>
-<p>Habitat suitability maps can be changed through simulation time.<br>
-Two supplementary type of files are then needed : 1. a file with each row indicating each simulation year of change 2. as many files as the number of years indicated in the previous file,<br>
-and inside them, as many lines as PFG, with a path for a new habitat suitability for each of them</p>
+<p>Habitat suitability maps can be changed through simulation
+time.<br>
+Two supplementary type of files are then needed : 1. a file with each
+row indicating each simulation year of change 2. as many files as the
+number of years indicated in the previous file,<br>
+and inside them, as many lines as PFG, with a path for a new habitat
+suitability for each of them</p>
 <pre class="grey">
 --HABSUIT_CHANGEMASK_YEARS--
 FATE_simulation/DATA/SCENARIO/HABSUIT/HABSUIT_changingmask_years.txt
@@ -431,14 +510,20 @@ FATE_simulation/DATA/SCENARIO/HABSUIT/HABSUIT_changingmask_files_t100.txt
 </div>
 <div class="section level2">
 <h2 id="disturbances-module">
-<i class="fa fa-bolt"></i> <code>DISTURBANCES</code> module<a class="anchor" aria-label="anchor" href="#disturbances-module"></a>
+<i class="fa-solid fa-bolt-lightning"></i> <code>DISTURBANCES</code>
+module<a class="anchor" aria-label="anchor" href="#disturbances-module"></a>
 </h2>
-<p>“<em>Several disturbance models can be parameterized to remove vegetation, affect fecundity, kill seeds or activate dormant seeds according to each PFG’s tolerance or sensitivity to the given disturbance. (Fig. 1d).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat, 2014</a>)</p>
+<p>“<em>Several disturbance models can be parameterized to remove
+vegetation, affect fecundity, kill seeds or activate dormant seeds
+according to each PFG’s tolerance or sensitivity to the given
+disturbance. (Fig. 1d).</em>” (<a href="papers/Boulangeat_2014_GCB.pdf" title="Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378.">Boulangeat,
+2014</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters-5">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-5"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_DISTURBANCES 1
@@ -447,7 +532,8 @@ DIST_NOSUB 4
 DIST_FREQ 1 1 1 1
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_PARAMS_DISTURBANCES--
@@ -459,9 +545,13 @@ FATE_simulation/DATA/MASK/mask_mowing.tif
 FATE_simulation/DATA/MASK/mask_grazing_level1.tif
 FATE_simulation/DATA/MASK/mask_grazing_level2.tif
 </pre>
-<p>Like habitat suitability maps, disturbances maps can be changed through simulation time.<br>
-Two supplementary type of files are then needed : 1. a file with each row indicating each simulation year of change 2. as many files as the number of years indicated in the previous file,<br>
-and inside them, as many lines as disturbances, with a path for a new mask for each of them</p>
+<p>Like habitat suitability maps, disturbances maps can be changed
+through simulation time.<br>
+Two supplementary type of files are then needed : 1. a file with each
+row indicating each simulation year of change 2. as many files as the
+number of years indicated in the previous file,<br>
+and inside them, as many lines as disturbances, with a path for a new
+mask for each of them</p>
 <pre class="grey">
 --DIST_CHANGEMASK_YEARS--
 FATE_simulation/DATA/SCENARIO/DIST_scenario1/DIST_changingmask_years.txt
@@ -471,7 +561,9 @@ FATE_simulation/DATA/SCENARIO/DIST_scenario1/DIST_changingmask_files_t100.txt
 FATE_simulation/DATA/SCENARIO/DIST_scenario1/DIST_changingmask_files_t150.txt
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGdisturbance.html">DISTURBANCE</a> files (given with the <code>--PFG_PARAMS_DISTURBANCES--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGdisturbance.html">DISTURBANCE</a>
+files (given with the <code>--PFG_PARAMS_DISTURBANCES--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -486,21 +578,35 @@ ACTIVATED_SEED 0 0 0 0
 </div>
 <div class="section level2">
 <h2 id="drought-module">
-<i class="fa fa-tint"></i> <code>DROUGHT</code> module<a class="anchor" aria-label="anchor" href="#drought-module"></a>
+<i class="fa-solid fa-droplet"></i> <code>DROUGHT</code> module<a class="anchor" aria-label="anchor" href="#drought-module"></a>
 </h2>
-<p>“<em>Fig. 1. Drought simulation scheme. For each year i, a PFG’s habitat suitability (HS; step 1) and drought effects (step 2) are evaluated within a pixel j. If HS ij or Din ij are below reference values, PFG fecundity and recruitment are set to 0. Additionally, if Din ij crosses the reference value, one drought year is added to the PFG’s cumulative drought effects counter. Severe drought effects occur if conditions 2.3.1 ii or 2.3.2 are met, consisting in immediate and post-drought effects. Otherwise, only moderate drought effects are caused (2.1 and 2.3.1 i). Drought recovery is simulated by subtracting one or two drought events from the cumulative drought effects counter. […] See Table S3 in Appendix S2 for full parameter list and refer to main text for further details.</em>” (<a href="papers/Barros_2017_Journal_Applied_Ecology.pdf" title="Barros, C., Guéguen, M., Douzet, R., Carboni, M., Boulangeat, I., Zimmermann, N.E., Münkemüller, T., Thuiller, W. and Mori, A. (2017), Extreme climate events counteract the effects of climate and land‐use changes in Alpine tree lines. Journal of Applied Ecology, 54: 39-50.">Barros, 2017</a>)</p>
+<p>“<em>Fig. 1. Drought simulation scheme. For each year i, a PFG’s
+habitat suitability (HS; step 1) and drought effects (step 2) are
+evaluated within a pixel j. If HS ij or Din ij are below reference
+values, PFG fecundity and recruitment are set to 0. Additionally, if Din
+ij crosses the reference value, one drought year is added to the PFG’s
+cumulative drought effects counter. Severe drought effects occur if
+conditions 2.3.1 ii or 2.3.2 are met, consisting in immediate and
+post-drought effects. Otherwise, only moderate drought effects are
+caused (2.1 and 2.3.1 i). Drought recovery is simulated by subtracting
+one or two drought events from the cumulative drought effects counter.
+[…] See Table S3 in Appendix S2 for full parameter list and refer to
+main text for further details.</em>” (<a href="papers/Barros_2017_Journal_Applied_Ecology.pdf" title="Barros, C., Guéguen, M., Douzet, R., Carboni, M., Boulangeat, I., Zimmermann, N.E., Münkemüller, T., Thuiller, W. and Mori, A. (2017), Extreme climate events counteract the effects of climate and land‐use changes in Alpine tree lines. Journal of Applied Ecology, 54: 39-50.">Barros,
+2017</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters-6">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-6"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_DROUGHT_DISTURBANCE 1
 DROUGHT_NOSUB 4
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_PARAMS_DROUGHT--
@@ -509,12 +615,15 @@ FATE_simulation/DATA/PFGS/DROUGHT/DROUGHT_PFG2.txt
 --DROUGHT_MASK--
 FATE_simulation/DATA/MASK/DROUGHT_init.tif
 </pre>
-<p>Like habitat suitability or disturbances maps, the drought index map can be changed through simulation time.<br>
+<p>Like habitat suitability or disturbances maps, the drought index map
+can be changed through simulation time.<br>
 Two supplementary type of files are then needed :</p>
 <ol style="list-style-type: decimal">
 <li>a file with each row indicating each simulation year of change</li>
-<li>as many files as the number of years indicated in the previous file,<br>
-and inside them, one line with a path for a new map of drought index</li>
+<li>as many files as the number of years indicated in the previous
+file,<br>
+and inside them, one line with a path for a new map of drought
+index</li>
 </ol>
 <pre class="grey">
 --DROUGHT_CHANGEMASK_YEARS--
@@ -525,7 +634,9 @@ FATE_simulation/DATA/SCENARIO/DROUGHT_changingmask_files_t30.txt
 FATE_simulation/DATA/SCENARIO/DROUGHT_changingmask_files_t45.txt
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGdrought.html">DROUGHT</a> files (given with the <code>--PFG_PARAMS_DROUGHT--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGdrought.html">DROUGHT</a> files
+(given with the <code>--PFG_PARAMS_DROUGHT--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -545,14 +656,30 @@ COUNTER_CUM 3
 </div>
 <div class="section level2">
 <h2 id="aliens-module">
-<i class="fab fa-reddit-alien"></i> <code>ALIENS</code> module<a class="anchor" aria-label="anchor" href="#aliens-module"></a>
+<i class="fa-brands fa-reddit-alien"></i> <code>ALIENS</code>
+module<a class="anchor" aria-label="anchor" href="#aliens-module"></a>
 </h2>
-<p>“<em>We then simulated the introduction of the alien PFGs through annual seeding. The sites of simulated introduction were based on a map of the Human Footprint […] an index combining information on land-use, population density and transportation network (including mountain footpaths). As such it represents an excellent proxy of potential local propagule pressure for introduced species […] In the current propagule pressure scenario, introductions were a proportion of a set maximum number of seeds depending on the human footprint value in each pixel (i.e. highest introduction intensity in the most densely populated centres, and lowest introduction intensity along mountain footpaths; see Appendix S2 for maps and for details). In the increased propagule pressure scenario, the maximum introduction level was applied in all areas that had a non-zero human footprint (simulating a maximum exploitation of all areas suitable to humans).</em>” (<a href="papers/Carboni_2017_Global_Change_Biology.pdf" title="Carboni M, Guéguen M, Barros C, et al. Simulating plant invasion dynamics in mountain ecosystems under global change scenarios. Glob Change Biol. 2018;24:e289–e302.">Carboni, 2017</a>)</p>
+<p>“<em>We then simulated the introduction of the alien PFGs through
+annual seeding. The sites of simulated introduction were based on a map
+of the Human Footprint […] an index combining information on land-use,
+population density and transportation network (including mountain
+footpaths). As such it represents an excellent proxy of potential local
+propagule pressure for introduced species […] In the current propagule
+pressure scenario, introductions were a proportion of a set maximum
+number of seeds depending on the human footprint value in each pixel
+(i.e. highest introduction intensity in the most densely populated
+centres, and lowest introduction intensity along mountain footpaths; see
+Appendix S2 for maps and for details). In the increased propagule
+pressure scenario, the maximum introduction level was applied in all
+areas that had a non-zero human footprint (simulating a maximum
+exploitation of all areas suitable to humans).</em>” (<a href="papers/Carboni_2017_Global_Change_Biology.pdf" title="Carboni M, Guéguen M, Barros C, et al. Simulating plant invasion dynamics in mountain ecosystems under global change scenarios. Glob Change Biol. 2018;24:e289–e302.">Carboni,
+2017</a>)</p>
 <div class="section level5">
 <h5 id="required-parameters-7">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-7"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_ALIENS_INTRODUCTION 1
@@ -560,7 +687,8 @@ ALIENS_NO 4
 ALIENS_FREQ 2 2 2 2
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_MASK_ALIENS--
@@ -569,12 +697,15 @@ FATE_simulation/DATA/PFGS/ALIENS/Introduction_ALIEN2.tif
 FATE_simulation/DATA/PFGS/ALIENS/Introduction_ALIEN3.tif
 FATE_simulation/DATA/PFGS/ALIENS/Introduction_ALIEN4.tif
 </pre>
-<p>Like habitat suitability or disturbances maps, aliens introduction masks can be changed through simulation time.<br>
+<p>Like habitat suitability or disturbances maps, aliens introduction
+masks can be changed through simulation time.<br>
 Two supplementary type of files are then needed :</p>
 <ol style="list-style-type: decimal">
 <li>a file with each row indicating each simulation year of change</li>
-<li>as many files as the number of years indicated in the previous file,<br>
-and inside them, as many lines as PFG, with a path for a new mask for each of them</li>
+<li>as many files as the number of years indicated in the previous
+file,<br>
+and inside them, as many lines as PFG, with a path for a new mask for
+each of them</li>
 </ol>
 <pre class="grey">
 --ALIENS_CHANGEMASK_YEARS--
@@ -583,12 +714,15 @@ FATE_simulation/DATA/SCENARIO/ALIENS_changingmask_years.txt
 FATE_simulation/DATA/SCENARIO/ALIENS_changingmask_files_t20.txt
 FATE_simulation/DATA/SCENARIO/ALIENS_changingmask_files_t25.txt
 </pre>
-<p>Once introduction maps have been set, frequency of introduction can also be changed through simulation time.<br>
+<p>Once introduction maps have been set, frequency of introduction can
+also be changed through simulation time.<br>
 Two supplementary type of files are then needed :</p>
 <ol style="list-style-type: decimal">
 <li>a file with each row indicating each simulation year of change</li>
-<li>as many files as the number of years indicated in the previous file,<br>
-and inside them, as many lines as PFG, with a number for each of them representing its introduction frequency</li>
+<li>as many files as the number of years indicated in the previous
+file,<br>
+and inside them, as many lines as PFG, with a number for each of them
+representing its introduction frequency</li>
 </ol>
 <pre class="grey">
 --ALIENS_CHANGEFREQ_YEARS--
@@ -598,7 +732,9 @@ FATE_simulation/DATA/SCENARIO/ALIENS_changingfreq_files_t20.txt
 FATE_simulation/DATA/SCENARIO/ALIENS_changingfreq_files_t25.txt
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGsuccession.html">SUCCESSION</a> files (given with the <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGsuccession.html">SUCCESSION</a>
+files (given with the <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 IS_ALIEN 1
@@ -608,14 +744,15 @@ IS_ALIEN 1
 </div>
 <div class="section level2">
 <h2 id="fire-module">
-<i class="fa fa-fire"></i> <code>FIRE</code> module<a class="anchor" aria-label="anchor" href="#fire-module"></a>
+<i class="fa-solid fa-fire"></i> <code>FIRE</code> module<a class="anchor" aria-label="anchor" href="#fire-module"></a>
 </h2>
 <p>“<em>To be written</em>” ()</p>
 <div class="section level5">
 <h5 id="required-parameters-8">Required parameters<a class="anchor" aria-label="anchor" href="#required-parameters-8"></a>
 </h5>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_globalParameters.html">GlobalParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 DO_FIRE_DISTURBANCE 1
@@ -627,7 +764,9 @@ FIRE_NEIGH_MODE 2
 FIRE_PROP_MODE 4
 FIRE_QUOTA_MODE 2
 </pre>
-Depending on the values given for the <code>FIRE_IGNIT_MODE</code>, <code>FIRE_NEIGH_MODE</code>, <code>FIRE_PROP_MODE</code> and <code>FIRE_QUOTA_MODE</code> parameters,<br>
+Depending on the values given for the <code>FIRE_IGNIT_MODE</code>,
+<code>FIRE_NEIGH_MODE</code>, <code>FIRE_PROP_MODE</code> and
+<code>FIRE_QUOTA_MODE</code> parameters,<br>
 more information might be needed :
 <pre class="grey">
 FIRE_IGNIT_NO 12
@@ -646,7 +785,8 @@ FIRE_PROP_LOGIS 0.6 2.5 0.05
 FIRE_QUOTA_MAX 1000
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a> file :</li>
+<li>In <a href="../reference/PRE_FATE.params_simulParameters.html">SimulParameters</a>
+file :</li>
 </ul>
 <pre class="bash">
 --PFG_PARAMS_FIRE--
@@ -655,12 +795,15 @@ FATE_simulation/DATA/PFGS/FIRE/FIRE_PFG2.txt
 --FIRE_MASK--
 FATE_simulation/DATA/MASK/FIRE_init.tif
 </pre>
-<p>Like habitat suitability or disturbances maps, fire masks can be changed through simulation time.<br>
+<p>Like habitat suitability or disturbances maps, fire masks can be
+changed through simulation time.<br>
 Two supplementary type of files are then needed :</p>
 <ol style="list-style-type: decimal">
 <li>a file with each row indicating each simulation year of change</li>
-<li>as many files as the number of years indicated in the previous file,<br>
-and inside them, as many lines as fire disturbances, with a path for a new mask for each of them</li>
+<li>as many files as the number of years indicated in the previous
+file,<br>
+and inside them, as many lines as fire disturbances, with a path for a
+new mask for each of them</li>
 </ol>
 <pre class="grey">
 --FIRE_CHANGEMASK_YEARS--
@@ -669,12 +812,15 @@ FATE_simulation/DATA/SCENARIO/FIRE_changingmask_years.txt
 FATE_simulation/DATA/SCENARIO/FIRE_changingmask_files_t20.txt
 FATE_simulation/DATA/SCENARIO/FIRE_changingmask_files_t25.txt
 </pre>
-<p>Once introduction maps have been set, frequency of fires can also be changed through simulation time.<br>
+<p>Once introduction maps have been set, frequency of fires can also be
+changed through simulation time.<br>
 Two supplementary type of files are then needed :</p>
 <ol style="list-style-type: decimal">
 <li>a file with each row indicating each simulation year of change</li>
-<li>as many files as the number of years indicated in the previous file,<br>
-and inside them, as many lines as fire disturbances, with a number for each of them representing its occuring frequency</li>
+<li>as many files as the number of years indicated in the previous
+file,<br>
+and inside them, as many lines as fire disturbances, with a number for
+each of them representing its occuring frequency</li>
 </ol>
 <pre class="grey">
 --FIRE_CHANGEFREQ_YEARS--
@@ -683,7 +829,8 @@ FATE_simulation/DATA/SCENARIO/FIRE_changingfreq_years.txt
 FATE_simulation/DATA/SCENARIO/FIRE_changingfreq_files_t20.txt
 FATE_simulation/DATA/SCENARIO/FIRE_changingfreq_files_t25.txt
 </pre>
-Depending on the value given for the <code>FIRE_PROP_MODE</code> parameter, more information might be needed :
+Depending on the value given for the <code>FIRE_PROP_MODE</code>
+parameter, more information might be needed :
 <pre class="grey">
 --ELEVATION_MASK--
 FATE_simulation/DATA/MASK/elevation.tif
@@ -691,13 +838,17 @@ FATE_simulation/DATA/MASK/elevation.tif
 FATE_simulation/DATA/MASK/slope.tif
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGsuccession.html">SUCCESSION</a> files (given with the <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGsuccession.html">SUCCESSION</a>
+files (given with the <code>--PFG_PARAMS_LIFE_HISTORY--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 FLAMMABILITY 6
 </pre>
 <ul>
-<li>In <a href="../reference/PRE_FATE.params_PFGdisturbance.html">FIRE</a> files (given with the <code>--PFG_PARAMS_FIRE--</code> flag in <em>SimulParameters</em> file) :</li>
+<li>In <a href="../reference/PRE_FATE.params_PFGdisturbance.html">FIRE</a> files
+(given with the <code>--PFG_PARAMS_FIRE--</code> flag in
+<em>SimulParameters</em> file) :</li>
 </ul>
 <pre class="bash">
 NAME PFG1
@@ -728,7 +879,7 @@ ACTIVATED_SEED 0 0
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

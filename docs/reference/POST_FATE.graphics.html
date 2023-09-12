@@ -24,20 +24,20 @@ specific year (richness, abundance, light, soil)."><!-- mathjax --><script src="
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav"><li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -62,8 +62,8 @@ specific year (richness, abundance, light, soil)."><!-- mathjax --><script src="
     </li>
   </ul></li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -95,35 +95,35 @@ specific year (richness, abundance, light, soil)."><!-- mathjax --><script src="
   </ul></li>
 <li>
   <a href="../articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="../reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
 </li>
       </ul><ul class="nav navbar-nav navbar-right"><li>
   <a href="../articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="../articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -152,33 +152,33 @@ specific year (richness, abundance, light, soil).</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">POST_FATE.graphics</span><span class="op">(</span>
-  <span class="va">name.simulation</span>,
-  file.simulParam <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">years</span>,
-  <span class="va">no_years</span>,
-  opt.ras_habitat <span class="op">=</span> <span class="cn">NULL</span>,
-  doFunc.evolCov <span class="op">=</span> <span class="cn">TRUE</span>,
-  doFunc.evolPix <span class="op">=</span> <span class="cn">TRUE</span>,
-  doFunc.evolStab <span class="op">=</span> <span class="cn">TRUE</span>,
-  evolPix.cells_ID <span class="op">=</span> <span class="cn">NULL</span>,
-  evolStab.mw_size <span class="op">=</span> <span class="fl">3</span>,
-  evolStab.mw_step <span class="op">=</span> <span class="fl">1</span>,
-  evol.fixedScale <span class="op">=</span> <span class="cn">TRUE</span>,
-  doFunc.valid <span class="op">=</span> <span class="cn">TRUE</span>,
-  <span class="va">valid.mat.PFG.obs</span>,
-  doFunc.mapPFGvsHS <span class="op">=</span> <span class="cn">TRUE</span>,
-  doFunc.mapPFG <span class="op">=</span> <span class="cn">TRUE</span>,
-  mapPFGvsHS.stratum <span class="op">=</span> <span class="st">"all"</span>,
-  <span class="va">binMap.method</span>,
-  binMap.method1.threshold <span class="op">=</span> <span class="fl">0.05</span>,
-  binMap.method2.cutoff <span class="op">=</span> <span class="cn">NULL</span>,
-  mapPFG.stratum_min <span class="op">=</span> <span class="fl">1</span>,
-  mapPFG.stratum_max <span class="op">=</span> <span class="fl">10</span>,
-  mapPFG.doBinary <span class="op">=</span> <span class="cn">TRUE</span>,
-  opt.doPlot <span class="op">=</span> <span class="cn">TRUE</span>,
-  opt.no_CPU <span class="op">=</span> <span class="fl">1</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">POST_FATE.graphics</span><span class="op">(</span></span>
+<span>  <span class="va">name.simulation</span>,</span>
+<span>  file.simulParam <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">years</span>,</span>
+<span>  <span class="va">no_years</span>,</span>
+<span>  opt.ras_habitat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  doFunc.evolCov <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  doFunc.evolPix <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  doFunc.evolStab <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  evolPix.cells_ID <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  evolStab.mw_size <span class="op">=</span> <span class="fl">3</span>,</span>
+<span>  evolStab.mw_step <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  evol.fixedScale <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  doFunc.valid <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  <span class="va">valid.mat.PFG.obs</span>,</span>
+<span>  doFunc.mapPFGvsHS <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  doFunc.mapPFG <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mapPFGvsHS.stratum <span class="op">=</span> <span class="st">"all"</span>,</span>
+<span>  <span class="va">binMap.method</span>,</span>
+<span>  binMap.method1.threshold <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  binMap.method2.cutoff <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  mapPFG.stratum_min <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  mapPFG.stratum_max <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  mapPFG.doBinary <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opt.doPlot <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  opt.no_CPU <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -186,107 +186,158 @@ specific year (richness, abundance, light, soil).</p>
     <dl><dt>name.simulation</dt>
 <dd><p>a <code>string</code> corresponding to the main directory 
 or simulation name of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>file.simulParam</dt>
 <dd><p>default <code>NULL</code>. <br> A <code>string</code> 
 corresponding to the name of a parameter file that will be contained into 
 the <code>PARAM_SIMUL</code> folder of the <code>FATE</code> simulation</p></dd>
+
+
 <dt>years</dt>
 <dd><p>an <code>integer</code>, or a <code>vector</code> of <code>integer</code>, 
 corresponding to the simulation year(s) that will be used to extract PFG 
 abundance maps (see <code><a href="POST_FATE.relativeAbund.html">POST_FATE.relativeAbund</a></code>, 
 <code><a href="POST_FATE.graphic_validationStatistics.html">POST_FATE.graphic_validationStatistics</a></code>, 
 <code><a href="POST_FATE.graphic_mapPFGvsHS.html">POST_FATE.graphic_mapPFGvsHS</a></code>)</p></dd>
+
+
 <dt>no_years</dt>
 <dd><p>an <code>integer</code> corresponding to the number of simulation 
 years that will be used to extract PFG abundance / light / soil maps (see 
 <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>)</p></dd>
+
+
 <dt>opt.ras_habitat</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> 
 A <code>string</code> corresponding to the file name of a raster mask, with an 
 <code>integer</code> value within each pixel, corresponding to a specific habitat 
 (see <code><a href="POST_FATE.temporalEvolution.html">POST_FATE.temporalEvolution</a></code>, 
 <code><a href="POST_FATE.graphic_validationStatistics.html">POST_FATE.graphic_validationStatistics</a></code>)</p></dd>
+
+
 <dt>doFunc.evolCov</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 <code><a href="POST_FATE.graphic_evolutionCoverage.html">POST_FATE.graphic_evolutionCoverage</a></code> function will be run.</p></dd>
+
+
 <dt>doFunc.evolPix</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 <code><a href="POST_FATE.graphic_evolutionPixels.html">POST_FATE.graphic_evolutionPixels</a></code> function will be run.</p></dd>
+
+
 <dt>doFunc.evolStab</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 <code><a href="POST_FATE.graphic_evolutionStability.html">POST_FATE.graphic_evolutionStability</a></code> function will be run.</p></dd>
+
+
 <dt>evolPix.cells_ID</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> The 
 cells ID of the studied area for which PFG abundances will be extracted 
 (see <code><a href="POST_FATE.graphic_evolutionPixels.html">POST_FATE.graphic_evolutionPixels</a></code>)</p></dd>
+
+
 <dt>evolStab.mw_size</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> An 
 <code>integer</code> corresponding to the size (<em>in years</em>) of the moving 
 window that will be used to calculate metrics of habitat stability (see 
 <code><a href="POST_FATE.graphic_evolutionStability.html">POST_FATE.graphic_evolutionStability</a></code>)</p></dd>
+
+
 <dt>evolStab.mw_step</dt>
 <dd><p>(<em>optional</em>) default <code>NULL</code>. <br> An 
 <code>integer</code> corresponding to the step (<em>in years</em>) of the moving 
 window that will be used to calculate metrics of habitat stability (see 
 <code><a href="POST_FATE.graphic_evolutionStability.html">POST_FATE.graphic_evolutionStability</a></code>)</p></dd>
+
+
 <dt>evol.fixedScale</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> If 
 <code>FALSE</code>, the ordinate scale will be adapted for each PFG for the 
 graphical representation of the  evolution of abundances through time (see 
 <code><a href="POST_FATE.graphic_evolutionCoverage.html">POST_FATE.graphic_evolutionCoverage</a></code>)</p></dd>
+
+
 <dt>doFunc.valid</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 <code><a href="POST_FATE.graphic_validationStatistics.html">POST_FATE.graphic_validationStatistics</a></code> function will be run.</p></dd>
+
+
 <dt>valid.mat.PFG.obs</dt>
 <dd><p>a <code>data.frame</code> with 4 columns : <code>PFG</code>, 
 <code>X</code>, <code>Y</code>, <code>obs</code> (see 
 <code><a href="POST_FATE.graphic_validationStatistics.html">POST_FATE.graphic_validationStatistics</a></code>)</p></dd>
+
+
 <dt>doFunc.mapPFGvsHS</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 <code><a href="POST_FATE.graphic_mapPFGvsHS.html">POST_FATE.graphic_mapPFGvsHS</a></code> function will be run.</p></dd>
+
+
 <dt>doFunc.mapPFG</dt>
 <dd><p>default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 <code><a href="POST_FATE.graphic_mapPFG.html">POST_FATE.graphic_mapPFG</a></code> function will be run.</p></dd>
+
+
 <dt>mapPFGvsHS.stratum</dt>
 <dd><p>(<em>optional</em>) default <code>all</code>. <br> The 
 stratum number from which to extract PFG binary maps (see 
 <code><a href="POST_FATE.graphic_mapPFGvsHS.html">POST_FATE.graphic_mapPFGvsHS</a></code>)</p></dd>
+
+
 <dt>binMap.method</dt>
 <dd><p>an <code>integer</code> to choose the transformation method : 
 <br><code>1</code> (relative abundance) or <code>2</code> (optimizing TSS) (see 
 <code><a href="POST_FATE.binaryMaps.html">POST_FATE.binaryMaps</a></code>)</p></dd>
+
+
 <dt>binMap.method1.threshold</dt>
 <dd><p>default <code>0.05</code>. <br> If <code>method = 1</code>, 
 minimum relative abundance required for each PFG to be considered as present 
 in the concerned pixel (see <code><a href="POST_FATE.binaryMaps.html">POST_FATE.binaryMaps</a></code>)</p></dd>
+
+
 <dt>binMap.method2.cutoff</dt>
 <dd><p>default <code>NULL</code>. <br> If <code>method = 2</code>, a 
 <code>data.frame</code> with 3 columns : <code>year</code>, <code>PFG</code>, <code>cutoff</code> <br>
 (see <code><a href="POST_FATE.binaryMaps.html">POST_FATE.binaryMaps</a></code>)</p></dd>
+
+
 <dt>mapPFG.stratum_min</dt>
 <dd><p>(<em>optional</em>) default <code>1</code>. <br> An 
 <code>integer</code> corresponding to the lowest stratum from which PFG 
 abundances will be summed up (see <code><a href="POST_FATE.graphic_mapPFG.html">POST_FATE.graphic_mapPFG</a></code>)</p></dd>
+
+
 <dt>mapPFG.stratum_max</dt>
 <dd><p>(<em>optional</em>) default <code>10</code>. <br> An 
 <code>integer</code> corresponding to the highest stratum from which PFG 
 abundances will be summed up (see <code><a href="POST_FATE.graphic_mapPFG.html">POST_FATE.graphic_mapPFG</a></code>)</p></dd>
+
+
 <dt>mapPFG.doBinary</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> If 
 <code>TRUE</code>, abundance maps (absolute or relative) are systematically 
 multiplied by binary maps (see <code><a href="POST_FATE.graphic_mapPFG.html">POST_FATE.graphic_mapPFG</a></code>)</p></dd>
+
+
 <dt>opt.doPlot</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. <br> If <code>TRUE</code>, 
 plot(s) will be processed, otherwise only the calculation and reorganization 
 of outputs will occur, be saved and returned</p></dd>
+
+
 <dt>opt.no_CPU</dt>
 <dd><p>(<em>optional</em>) default <code>1</code>. <br> The number of 
 resources that can be used to parallelize the <code>unzip/zip</code> of raster 
 files, as well as the extraction of values from raster files</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The following <code>POST_FATE_GRAPHIC_[...].pdf</code> files are created :</p><dl><dt><code class="file">A_evolution_coverage</code></dt>
+    
+
+<p>The following <code>POST_FATE_GRAPHIC_[...].pdf</code> files are created :</p><dl><dt><code class="file">A_evolution_coverage</code></dt>
 <dd><p></p><dl><dt><code class="file">spaceOccupancy</code></dt>
 <dd><p>to visualize for each PFG the evolution of 
     its occupation of the studied area through simulation time</p></dd>
@@ -438,7 +489,7 @@ the following graphics before the maps are compressed again :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

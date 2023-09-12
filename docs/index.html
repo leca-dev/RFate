@@ -39,7 +39,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
       </span>
     </div>
 
@@ -47,13 +47,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fa fa-house"></span>
      
   </a>
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fab fa-pagelines"></span>
+    <span class="fa fa-pagelines"></span>
      
     FATE
      
@@ -83,7 +83,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    <span class="fas fa-toolbox"></span>
+    <span class="fa fa-toolbox"></span>
      
     RFate
      
@@ -119,14 +119,14 @@
 </li>
 <li>
   <a href="articles/interface_tutorial_0_presentation.html">
-    <span class="fas fa-desktop"></span>
+    <span class="fa fa-desktop"></span>
      
     SHINY interface
   </a>
 </li>
 <li>
   <a href="reference/index.html">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fa fa-book"></span>
      
     Reference
   </a>
@@ -135,21 +135,21 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="articles/manual.html">
-    <span class="fas fa-stethoscope"></span>
+    <span class="fa fa-stethoscope"></span>
      
     Manual &amp; Examples
   </a>
 </li>
 <li>
   <a href="articles/news.html">
-    <span class="far fa-newspaper"></span>
+    <span class="fa fa-newspaper"></span>
      
     News
   </a>
 </li>
 <li>
   <a href="https://github.com/leca-dev/RFate.git" class="external-link">
-    <span class="fab fa-github"></span>
+    <span class="fa fa-github"></span>
      
   </a>
 </li>
@@ -167,6 +167,7 @@
   <div class="contents col-md-9">
 
 
+<p><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"></p>
 <style>
 pre.bash {
  background-color: black;
@@ -193,8 +194,8 @@ z-index: 10;
 </style>
 <p><br></p>
 <div class="section level2">
-<h2 id="-installing-rfate-package">
-<i class="fa fa-tools"></i> Installing <code>RFate</code> package<a class="anchor" aria-label="anchor" href="#-installing-rfate-package"></a>
+<h2 id="id_-installing-rfate-package">
+<i class="fa-solid fa-screwdriver-wrench"></i> Installing <code>RFate</code> package<a class="anchor" aria-label="anchor" href="#id_-installing-rfate-package"></a>
 </h2>
 <p>From <a href="https://github.com/leca-dev/RFate" class="external-link">GitHub</a> using <a href="https://cran.r-project.org/package=devtools" class="external-link">devtools</a> :</p>
 <pre class="bash">
@@ -205,13 +206,15 @@ devtools::install_github(repo="leca-dev/RFate")
 <p><br><br></p>
 </div>
 <div class="section level2">
-<h2 id="-rfate-workflow">
-<i class="fas fa-shoe-prints"></i> <code>RFate</code> workflow<a class="anchor" aria-label="anchor" href="#-rfate-workflow"></a>
+<h2 id="id_-rfate-workflow">
+<i class="fa-solid fa-shoe-prints"></i> <code>RFate</code> workflow<a class="anchor" aria-label="anchor" href="#id_-rfate-workflow"></a>
 </h2>
 <p><br></p>
 <p><code>FATE</code> is a <strong>spatially and temporally explicit vegetation model</strong>. It uses <strong>plant functional groups (PFG)</strong> and integrates important mechanisms driving vegetation dynamics, structure and diversity, such as <strong>demographic cycle</strong>, obviously, but also <strong>seeds dispersal</strong>, <strong>abiotic filtering</strong> or <strong>biotic interactions</strong> (through the competition for resources like light availability or soil nutrient availability).</p>
 <p>If <strong>primary succession</strong> is the most obvious ecological process that can be modelled with <code>FATE</code>, events related to <strong>secondary succession</strong> can be represented as well using the various <strong><code>FATE</code> add-on modules</strong> : disturbances (mowing, grazing, fire..), drought event, invasive species.</p>
-<div style="text-align:center;"><p><img src="articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></p></div>
+<div style="text-align:center;">
+<p><img src="articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></p>
+</div>
 <p><br></p>
 <p>As vegetation modelling can be challenging (data gathering, parameterization, handling results…), <code>RFate</code> provides <strong>user-friendly functions</strong> to go through the <strong>whole <code>FATE</code> workflow</strong>. Links below present some <strong>guidance documents</strong>, for the vegetation model as well as for the <code>R</code>package.</p>
 <p><br></p>
@@ -232,8 +235,13 @@ devtools::install_github(repo="leca-dev/RFate")
 <li><a href="articles/rfate_tutorial_2_params.html">and how to prepare the corresponding parameter files</a></li>
 </ul>
 <p><strong>3. Analyze the outputs :</strong></p>
-<ul><li><a href="articles/rfate_tutorial_3_graphics.html">transform results and produce graphics</a></li></ul>
-<div class="zoom"><p><img src="articles/pictures/SCHEMA_FATE_WORKFLOW_functions.png" alt="Main workflow"></p></div>
+<ul>
+<li><a href="articles/rfate_tutorial_3_graphics.html">transform results and produce graphics</a></li>
+</ul>
+<div class="zoom">
+<p>
+<img src="articles/pictures/SCHEMA_FATE_WORKFLOW_functions.png" alt="Main workflow"></p>
+</div>
 </div>
 
   </div>
@@ -298,7 +306,7 @@ devtools::install_github(repo="leca-dev/RFate")
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
