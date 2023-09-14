@@ -1,5 +1,5 @@
 
-tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-object-group'></i> Plant Functional Groups</span>")
+tabPanel(title =  HTML("<span class='panel_title'><i class='fa-solid fa-object-group'></i> Plant Functional Groups</span>")
          , value = "panel1"
          , sidebarLayout(
            
@@ -38,7 +38,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-object-group'>
                , column(2
                         , actionButton(inputId = "HELP.panel1"
                                        , label = "Need some help"
-                                       , icon = icon("question-circle")
+                                       , icon = icon("circle-question")
                                        , width = "100%"
                                        , style = button.style.help))
              ) ## END fluidRow
@@ -76,7 +76,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-object-group'>
                                                           , shinyjs::disabled(
                                                             actionButton(inputId = "pfg.go.left"
                                                                          , label = ""
-                                                                         , icon = icon("arrow-circle-left")
+                                                                         , icon = icon("circle-arrow-left")
                                                                          , width = "100%"
                                                                          , style = button.style.help)
                                                           )
@@ -85,7 +85,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-object-group'>
                                                           , shinyjs::disabled(
                                                             actionButton(inputId = "pfg.go.right"
                                                                          , label = ""
-                                                                         , icon = icon("arrow-circle-right")
+                                                                         , icon = icon("circle-arrow-right")
                                                                          , width = "100%"
                                                                          , style = button.style.help)
                                                           )

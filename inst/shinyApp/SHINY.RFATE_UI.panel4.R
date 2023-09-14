@@ -1,5 +1,5 @@
 
-tabPanel(title = HTML("<span class='panel_title'><i class='fa fa-chart-bar'></i> Simulation outputs & graphics</span>")
+tabPanel(title = HTML("<span class='panel_title'><i class='fa-solid fa-chart-column'></i> Simulation outputs & graphics</span>")
          , value = "panel4"
          , sidebarLayout(
            
@@ -34,7 +34,7 @@ tabPanel(title = HTML("<span class='panel_title'><i class='fa fa-chart-bar'></i>
                         , br()
                         , actionButton(inputId = "HELP.panel4"
                                        , label = "Need some help"
-                                       , icon = icon("question-circle")
+                                       , icon = icon("circle-question")
                                        , width = "100%"
                                        , style = button.style.help))
              ) ## END fluidRow

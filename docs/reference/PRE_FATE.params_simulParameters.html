@@ -148,6 +148,7 @@ file containing <code>PARAMETER FILENAMES</code> used in <code>FATE</code> model
 <span>  <span class="va">name.simulation</span>,</span>
 <span>  <span class="va">name.MASK</span>,</span>
 <span>  name.SAVED_STATE <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  name.SOIL <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  name.DIST <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  name.DROUGHT <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  name.ALIENS <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -178,6 +179,14 @@ corresponding to the cells of the studied area in which the succession
 <dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding 
 to the file name of a <code>FATE</code> object, obtained from a previous 
 simulation and from which to restart this new simulation</p></dd>
+
+
+<dt>name.SOIL</dt>
+<dd><p>(<em>optional</em>) <br> a <code>string</code> corresponding to 
+the name of a raster file, with a <code>numeric</code> value within each pixel 
+corresponding to the initial soil resources of this pixel for the soil 
+interaction module of the <code>FATE</code> simulation (see 
+<a href="PRE_FATE.params_globalParameters.html#details"><code>PRE_FATE.params_globalParameters</code></a>)</p></dd>
 
 
 <dt>name.DIST</dt>
@@ -262,6 +271,7 @@ parameter file</p></dd>
 </ul></li>
 <li><p><strong>--PFG_PARAMS_LIFE_HISTORY--</strong></p><ul><li><p>--PFG_PARAMS_LIGHT-- (<em>optional</em>)</p></li>
 <li><p>--PFG_PARAMS_SOIL-- (<em>optional</em>)</p></li>
+<li><p>--SOIL_MASK-- (<em>optional</em>)</p></li>
 <li><p>--PFG_PARAMS_DISPERSAL-- (<em>optional</em>)</p></li>
 <li><p>--PFG_MASK_HABSUIT-- (<em>optional</em>)</p></li>
 <li><p>--HABSUIT_CHANGEMASK_YEARS-- (<em>optional</em>)</p></li>
@@ -347,6 +357,10 @@ needed by the program to run.</p>
 <dd><p>PFG soil contribution and 
   tolerance related parameters (one by PFG) <br>
   (see <code><a href="PRE_FATE.params_PFGsoil.html">PRE_FATE.params_PFGsoil</a></code>) <br><br></p></dd>
+
+  <dt>SOIL_MASK <br> (<em>optional</em>)</dt>
+<dd><p>raster mask that will define the 
+  initialization soil resources values</p></dd>
 
   <dt>PFG_PARAMS_ <br> DISPERSAL (<em>optional</em>)</dt>
 <dd><p>PFG dispersal 

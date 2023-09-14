@@ -72,6 +72,9 @@
 ##' resources are \code{low}. PFG abundances higher than 
 ##' \code{LIGHT.thresh_medium} and lower than this threshold imply 
 ##' \strong{medium amount of light}.
+##' @param LIGHT.recruit (\emph{optional}) default \code{TRUE}. 
+##' \cr If \code{TRUE}, recruitment is depending on the tolerance of the PFG to 
+##' the pixel light resources within the stratum 0
 ##' @param LIGHT.saving (\emph{optional}) default \code{TRUE}. 
 ##' \cr If \code{TRUE}, and saving years have been defined within the 
 ##' \emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
@@ -80,12 +83,19 @@
 ##' @param doSoil default \code{FALSE}. \cr If \code{TRUE}, soil interaction is 
 ##' activated in the \code{FATE} simulation, and associated parameters 
 ##' are required
+##' @param SOIL.fill_map (\emph{optional}) default \code{TRUE}. 
+##' \cr If \code{TRUE}, soil initialization map is filled with \code{SOIL.init} 
+##' value ; if \code{FALSE}, soil initialization map is defined within the 
+##' \emph{Simul_parameters} file with the \code{SOIL_MASK} flag
 ##' @param SOIL.init (\emph{optional}) \cr a \code{double} corresponding to the 
 ##' soil value to initialize all pixels when starting the \code{FATE} 
 ##' simulation
 ##' @param SOIL.retention (\emph{optional}) \cr a \code{double} corresponding 
 ##' to the percentage of soil value of the previous simulation year that will 
 ##' be kept in the calculation of the soil value of the current simulation year
+##' @param SOIL.recruit (\emph{optional}) default \code{TRUE}. 
+##' \cr If \code{TRUE}, recruitment is depending on the tolerance of the PFG to 
+##' the pixel soil resources
 ##' @param SOIL.saving (\emph{optional}) default \code{TRUE}. 
 ##' \cr If \code{TRUE}, and saving years have been defined within the 
 ##' \emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
@@ -595,6 +605,7 @@
 ##'   \item DO_LIGHT_INTERACTION
 ##'   \item LIGHT_THRESH_MEDIUM
 ##'   \item LIGHT_THRESH_LOW
+##'   \item LIGHT_RECRUIT
 ##'   \item LIGHT_SAVING
 ##' }
 ##' 
@@ -602,8 +613,10 @@
 ##' 
 ##' \itemize{
 ##'   \item DO_SOIL_INTERACTION
+##'   \item SOIL_FILL_MAP
 ##'   \item SOIL_INIT
 ##'   \item SOIL_RETENTION
+##'   \item SOIl_RECRUIT
 ##'   \item SOIL_SAVING
 ##' }
 ##' 
@@ -751,10 +764,13 @@ PRE_FATE.params_globalParameters = function(
   , doLight = FALSE
   , LIGHT.thresh_medium
   , LIGHT.thresh_low
+  , LIGHT.recruit = TRUE
   , LIGHT.saving = TRUE
   , doSoil = FALSE
+  , SOIL.fill_map = TRUE
   , SOIL.init
   , SOIL.retention
+  , SOIL.recruit = TRUE
   , SOIL.saving = TRUE
   , doDispersal = FALSE
   , DISPERSAL.mode = 1
@@ -927,10 +943,12 @@ PRE_FATE.params_globalParameters = function(
     params.LIGHT = list(as.numeric(doLight)
                         , as.integer(LIGHT.thresh_medium)
                         , as.integer(LIGHT.thresh_low)
+                        , as.numeric(LIGHT.recruit)
                         , as.numeric(LIGHT.saving))
     names.params.list.LIGHT = c("DO_LIGHT_INTERACTION"
                                 , "LIGHT_THRESH_MEDIUM"
                                 , "LIGHT_THRESH_LOW"
+                                , "LIGHT_RECRUIT"
                                 , "LIGHT_SAVING")
   } else
   {
@@ -940,12 +958,16 @@ PRE_FATE.params_globalParameters = function(
   if (doSoil)
   {
     params.SOIL = list(as.numeric(doSoil)
+                       , as.numeric(SOIL.fill_map)
                        , SOIL.init
                        , SOIL.retention
+                       , as.numeric(SOIL.recruit)
                        , as.numeric(SOIL.saving))
     names.params.list.SOIL = c("DO_SOIL_INTERACTION"
+                               , "SOIL_FILL_MAP"
                                , "SOIL_INIT"
                                , "SOIL_RETENTION"
+                               , "SOIL_RECRUIT"
                                , "SOIL_SAVING")
   } else
   {

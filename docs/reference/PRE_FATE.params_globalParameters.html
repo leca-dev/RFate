@@ -165,10 +165,13 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
 <span>  doLight <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">LIGHT.thresh_medium</span>,</span>
 <span>  <span class="va">LIGHT.thresh_low</span>,</span>
+<span>  LIGHT.recruit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  LIGHT.saving <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  doSoil <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  SOIL.fill_map <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">SOIL.init</span>,</span>
 <span>  <span class="va">SOIL.retention</span>,</span>
+<span>  SOIL.recruit <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  SOIL.saving <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  doDispersal <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -326,6 +329,12 @@ resources are <code>low</code>. PFG abundances higher than
 <strong>medium amount of light</strong>.</p></dd>
 
 
+<dt>LIGHT.recruit</dt>
+<dd><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br> If <code>TRUE</code>, recruitment is depending on the tolerance of the PFG to 
+the pixel light resources within the stratum 0</p></dd>
+
+
 <dt>LIGHT.saving</dt>
 <dd><p>(<em>optional</em>) default <code>TRUE</code>. 
 <br> If <code>TRUE</code>, and saving years have been defined within the 
@@ -339,6 +348,13 @@ activated in the <code>FATE</code> simulation, and associated parameters
 are required</p></dd>
 
 
+<dt>SOIL.fill_map</dt>
+<dd><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br> If <code>TRUE</code>, soil initialization map is filled with <code>SOIL.init</code> 
+value ; if <code>FALSE</code>, soil initialization map is defined within the 
+<em>Simul_parameters</em> file with the <code>SOIL_MASK</code> flag</p></dd>
+
+
 <dt>SOIL.init</dt>
 <dd><p>(<em>optional</em>) <br> a <code>double</code> corresponding to the 
 soil value to initialize all pixels when starting the <code>FATE</code> 
@@ -349,6 +365,12 @@ simulation</p></dd>
 <dd><p>(<em>optional</em>) <br> a <code>double</code> corresponding 
 to the percentage of soil value of the previous simulation year that will 
 be kept in the calculation of the soil value of the current simulation year</p></dd>
+
+
+<dt>SOIL.recruit</dt>
+<dd><p>(<em>optional</em>) default <code>TRUE</code>. 
+<br> If <code>TRUE</code>, recruitment is depending on the tolerance of the PFG to 
+the pixel soil resources</p></dd>
 
 
 <dt>SOIL.saving</dt>
@@ -571,13 +593,16 @@ parameters :</p>
 <ul><li><p>DO_LIGHT_INTERACTION</p></li>
 <li><p>LIGHT_THRESH_MEDIUM</p></li>
 <li><p>LIGHT_THRESH_LOW</p></li>
+<li><p>LIGHT_RECRUIT</p></li>
 <li><p>LIGHT_SAVING</p></li>
 </ul><p>If the simulation includes <em>soil interaction</em> :</p>
 
 
 <ul><li><p>DO_SOIL_INTERACTION</p></li>
+<li><p>SOIL_FILL_MAP</p></li>
 <li><p>SOIL_INIT</p></li>
 <li><p>SOIL_RETENTION</p></li>
+<li><p>SOIl_RECRUIT</p></li>
 <li><p>SOIL_SAVING</p></li>
 </ul><p>If the simulation includes <em>dispersal</em> :</p>
 
@@ -1015,52 +1040,57 @@ file, and if so, some additional parameters will be required :</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span></span>
-<span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span></span>
-<span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">## Create a Global_parameters file------------------------------------------------------------</span></span>
-<span><span class="fu">PRE_FATE.params_globalParameters</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_simulation"</span></span>
-<span>                                 , required.no_PFG <span class="op">=</span> <span class="fl">3</span></span>
-<span>                                 , required.no_strata <span class="op">=</span> <span class="fl">5</span></span>
-<span>                                 , required.simul_duration <span class="op">=</span> <span class="fl">500</span></span>
-<span>                                 , required.seeding_duration <span class="op">=</span> <span class="fl">50</span></span>
-<span>                                 , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span></span>
-<span>                                 , required.seeding_input <span class="op">=</span> <span class="fl">100</span></span>
-<span>                                 , required.potential_fecundity <span class="op">=</span> <span class="fl">100</span></span>
-<span>                                 , required.max_abund_low <span class="op">=</span> <span class="fl">3000</span></span>
-<span>                                 , required.max_abund_medium <span class="op">=</span> <span class="fl">5000</span></span>
-<span>                                 , required.max_abund_high <span class="op">=</span> <span class="fl">9000</span></span>
-<span>                                 , doLight <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>                                 , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">4000</span></span>
-<span>                                 , LIGHT.thresh_low <span class="op">=</span> <span class="fl">7000</span></span>
-<span>                                 , doDispersal <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>                                 , DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span></span>
-<span>                                 , doHabSuitability <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>                                 , HABSUIT.mode <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span>                                   </span>
-<span><span class="co">## Create SEVERAL Global_parameters files ----------------------------------------------------</span></span>
-<span><span class="fu">PRE_FATE.params_globalParameters</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_simulation"</span></span>
-<span>                                 , required.no_PFG <span class="op">=</span> <span class="fl">3</span></span>
-<span>                                 , required.no_strata <span class="op">=</span> <span class="fl">5</span></span>
-<span>                                 , required.simul_duration <span class="op">=</span> <span class="fl">500</span></span>
-<span>                                 , required.seeding_duration <span class="op">=</span> <span class="fl">50</span></span>
-<span>                                 , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span></span>
-<span>                                 , required.seeding_input <span class="op">=</span> <span class="fl">100</span></span>
-<span>                                 , required.potential_fecundity <span class="op">=</span> <span class="fl">100</span></span>
-<span>                                 , required.max_abund_low <span class="op">=</span> <span class="fl">3000</span></span>
-<span>                                 , required.max_abund_medium <span class="op">=</span> <span class="fl">5000</span></span>
-<span>                                 , required.max_abund_high <span class="op">=</span> <span class="fl">9000</span></span>
-<span>                                 , doLight <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>                                 , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">4000</span></span>
-<span>                                 , LIGHT.thresh_low <span class="op">=</span> <span class="fl">7000</span></span>
-<span>                                 , doDispersal <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>                                 , DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span></span>
-<span>                                 , doHabSuitability <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span>                                 , HABSUIT.mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a skeleton folder with the default name ('FATE_simulation') ------------------------</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="PRE_FATE.skeletonDirectory.html">PRE_FATE.skeletonDirectory</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>  Your directory tree for your FATE simulation (FATE_simulation) is ready!</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">## Create a Global_parameters file------------------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="fu">PRE_FATE.params_globalParameters</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_simulation"</span></span></span>
+<span class="r-in"><span>                                 , required.no_PFG <span class="op">=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>                                 , required.no_strata <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span>                                 , required.simul_duration <span class="op">=</span> <span class="fl">500</span></span></span>
+<span class="r-in"><span>                                 , required.seeding_duration <span class="op">=</span> <span class="fl">50</span></span></span>
+<span class="r-in"><span>                                 , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>                                 , required.seeding_input <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span>                                 , required.potential_fecundity <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span>                                 , required.max_abund_low <span class="op">=</span> <span class="fl">3000</span></span></span>
+<span class="r-in"><span>                                 , required.max_abund_medium <span class="op">=</span> <span class="fl">5000</span></span></span>
+<span class="r-in"><span>                                 , required.max_abund_high <span class="op">=</span> <span class="fl">9000</span></span></span>
+<span class="r-in"><span>                                 , doLight <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>                                 , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">4000</span></span></span>
+<span class="r-in"><span>                                 , LIGHT.thresh_low <span class="op">=</span> <span class="fl">7000</span></span></span>
+<span class="r-in"><span>                                 , doDispersal <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>                                 , DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>                                 , doHabSuitability <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>                                 , HABSUIT.mode <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !</span>
+<span class="r-in"><span>                                   </span></span>
+<span class="r-in"><span><span class="co">## Create SEVERAL Global_parameters files ----------------------------------------------------</span></span></span>
+<span class="r-in"><span><span class="fu">PRE_FATE.params_globalParameters</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">"FATE_simulation"</span></span></span>
+<span class="r-in"><span>                                 , required.no_PFG <span class="op">=</span> <span class="fl">3</span></span></span>
+<span class="r-in"><span>                                 , required.no_strata <span class="op">=</span> <span class="fl">5</span></span></span>
+<span class="r-in"><span>                                 , required.simul_duration <span class="op">=</span> <span class="fl">500</span></span></span>
+<span class="r-in"><span>                                 , required.seeding_duration <span class="op">=</span> <span class="fl">50</span></span></span>
+<span class="r-in"><span>                                 , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>                                 , required.seeding_input <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span>                                 , required.potential_fecundity <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span>                                 , required.max_abund_low <span class="op">=</span> <span class="fl">3000</span></span></span>
+<span class="r-in"><span>                                 , required.max_abund_medium <span class="op">=</span> <span class="fl">5000</span></span></span>
+<span class="r-in"><span>                                 , required.max_abund_high <span class="op">=</span> <span class="fl">9000</span></span></span>
+<span class="r-in"><span>                                 , doLight <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>                                 , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">4000</span></span></span>
+<span class="r-in"><span>                                 , LIGHT.thresh_low <span class="op">=</span> <span class="fl">7000</span></span></span>
+<span class="r-in"><span>                                 , doDispersal <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>                                 , DISPERSAL.mode <span class="op">=</span> <span class="fl">1</span></span></span>
+<span class="r-in"><span>                                 , doHabSuitability <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span>                                 , HABSUIT.mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V2.txt has been successfully created !</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
     </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -1,5 +1,5 @@
 
-tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-cogs'></i> Run simulation</span>")
+tabPanel(title =  HTML("<span class='panel_title'><i class='fa-solid fa-gears'></i> Run simulation</span>")
          , value = "panel3"
          , sidebarLayout(
            
@@ -34,7 +34,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-cogs'></i> Run
                         , br()
                         , actionButton(inputId = "HELP.panel3"
                                        , label = "Need some help"
-                                       , icon = icon("question-circle")
+                                       , icon = icon("circle-question")
                                        , width = "100%"
                                        , style = button.style.help)
                )
@@ -65,7 +65,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-cogs'></i> Run
                         , br()
                         , actionButton(inputId = "run"
                                        , label = "Run"
-                                       , icon = icon("play-circle")
+                                       , icon = icon("circle-play")
                                        , width = "100%"
                                        , style = button.style.help
                         ) %>% helper(type = "inline"
