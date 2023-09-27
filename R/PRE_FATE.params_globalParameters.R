@@ -605,7 +605,7 @@
 ##'   \item DO_LIGHT_INTERACTION
 ##'   \item LIGHT_THRESH_MEDIUM
 ##'   \item LIGHT_THRESH_LOW
-##'   \item LIGHT_RECRUIT
+##'   \item LIGHT_RECRUITMENT
 ##'   \item LIGHT_SAVING
 ##' }
 ##' 
@@ -616,7 +616,7 @@
 ##'   \item SOIL_FILL_MAP
 ##'   \item SOIL_INIT
 ##'   \item SOIL_RETENTION
-##'   \item SOIl_RECRUIT
+##'   \item SOIL_RECRUITMENT
 ##'   \item SOIL_SAVING
 ##' }
 ##' 
@@ -948,7 +948,7 @@ PRE_FATE.params_globalParameters = function(
     names.params.list.LIGHT = c("DO_LIGHT_INTERACTION"
                                 , "LIGHT_THRESH_MEDIUM"
                                 , "LIGHT_THRESH_LOW"
-                                , "LIGHT_RECRUIT"
+                                , "LIGHT_RECRUITMENT"
                                 , "LIGHT_SAVING")
   } else
   {
@@ -967,7 +967,7 @@ PRE_FATE.params_globalParameters = function(
                                , "SOIL_FILL_MAP"
                                , "SOIL_INIT"
                                , "SOIL_RETENTION"
-                               , "SOIL_RECRUIT"
+                               , "SOIL_RECRUITMENT"
                                , "SOIL_SAVING")
   } else
   {
