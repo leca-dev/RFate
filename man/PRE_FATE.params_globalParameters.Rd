@@ -343,7 +343,7 @@ If the simulation includes \emph{light interaction} :
   \item DO_LIGHT_INTERACTION
   \item LIGHT_THRESH_MEDIUM
   \item LIGHT_THRESH_LOW
-  \item LIGHT_RECRUIT
+  \item LIGHT_RECRUITMENT
   \item LIGHT_SAVING
 }
 
@@ -354,7 +354,7 @@ If the simulation includes \emph{soil interaction} :
   \item SOIL_FILL_MAP
   \item SOIL_INIT
   \item SOIL_RETENTION
-  \item SOIl_RECRUIT
+  \item SOIL_RECRUITMENT
   \item SOIL_SAVING
 }
 
