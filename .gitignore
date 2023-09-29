@@ -17,3 +17,5 @@ config.*
 autom4te.cache
 RFate.Rproj
 
+/doc/
+/Meta/

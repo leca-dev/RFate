@@ -18,7 +18,7 @@ species, based on functional trait values."><!-- mathjax --><script src="https:/
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1</span>
       </span>
     </div>
 
@@ -258,7 +258,7 @@ of species, calculated as <code>1 - Schoeners D</code>.</p>
 <span><span class="va">pp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">foreach</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">DIST.traits</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/pkg/foreach/man/foreach.html" class="external-link">%do%</a></span></span>
 <span>  <span class="op">{</span></span>
 <span>    <span class="va">hc</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="va">DIST.traits</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">pp</span> <span class="op">=</span> <span class="fu">ggdendrogram</span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="va">pp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/ggdendro/man/ggdendrogram.html" class="external-link">ggdendrogram</a></span><span class="op">(</span><span class="va">hc</span>, rotate <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'Hierarchical clustering based on species distance '</span></span>
 <span>                          , <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">DIST.traits</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">1</span></span>
 <span>                                   , <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'(group '</span>, <span class="va">x</span>, <span class="st">')'</span><span class="op">)</span></span>

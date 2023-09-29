@@ -45,6 +45,8 @@ devtools::install_github(repo="leca-dev/RFate")
 
 **Note :** `RFate` is currently having problems compiling on Windows with RTools4.3 <i class="fa-solid fa-triangle-exclamation"></i>
 
+**Note :** v1.3.1 changes scale from `0:10` to `0:100` <br/> for `IMM_SIZE`, `ACTIVE_GERM`, `LIGHT_TOL`, `SOIL_TOL`, `PROP_KILLED`, `ACTIVATED_SEED`, `FATES` parameters <i class="fa-solid fa-triangle-exclamation"></i>
+
 <br/><br/>
 
 

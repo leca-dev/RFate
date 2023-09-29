@@ -11,3 +11,5 @@
 ^windows$
 ^FATE_simulation$
 ^data-raw$
+^doc$
+^Meta$
