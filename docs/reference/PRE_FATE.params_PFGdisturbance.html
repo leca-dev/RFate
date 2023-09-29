@@ -21,7 +21,7 @@ used in the disturbance module of FATE."><!-- mathjax --><script src="https://cd
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1</span>
       </span>
     </div>
 
@@ -216,13 +216,13 @@ parameters :</p>
 </ul><p>These parameters should be given in this order (e.g. with 3 response 
   stages) : <br><code>DI1_RS1_Ki, DI1_RS1_Re, DI1_RS2_Ki, DI1_RS2_Re, 
   DI1_RS3_Ki, DI1_RS3_Re, DI2_RS1_Ki...</code>
-  <br><em>(from <code>0</code> to <code>10</code>, corresponding to 0 to 100%)</em>.</p></dd>
+  <br><em>(integer between <code>0</code> and <code>100</code>%)</em>.</p></dd>
 
   <dt>PROP_KILLED</dt>
-<dd><p>proportion of propagules killed by each disturbance <br><em>(from <code>0</code> to <code>10</code>, corresponding to 0 to 100%)</em></p></dd>
+<dd><p>proportion of propagules killed by each disturbance <br><em>(integer between <code>0</code> and <code>100</code>%)</em></p></dd>
 
   <dt>ACTIVATED_SEED</dt>
-<dd><p>proportion of seeds activated by each disturbance <br><em>(from <code>0</code> to <code>10</code>, corresponding to 0 to 100%)</em> <br><br></p></dd>
+<dd><p>proportion of seeds activated by each disturbance <br><em>(integer between <code>0</code> and <code>100</code>%)</em> <br><br></p></dd>
 
 
 </dl><p>A <code>DIST_COMPLETE_TABLE.csv</code> file summarizing information for all 
@@ -283,11 +283,11 @@ are required for each PFG in order to set up these responses :</p>
   response class</p></dd>
 
   <dt>killedIndiv</dt>
-<dd><p>an <code>integer</code> between <code>0</code> and <code>10</code> 
+<dd><p>an <code>integer</code> between <code>0</code> and <code>100</code> 
   corresponding to the proportion of killed individuals</p></dd>
 
   <dt>resproutIndiv</dt>
-<dd><p>an <code>integer</code> between <code>0</code> and <code>10</code> 
+<dd><p>an <code>integer</code> between <code>0</code> and <code>100</code> 
   corresponding to the proportion of resprouting individuals <br><br></p></dd>
 
   
@@ -412,12 +412,12 @@ each PFG :</p>
   <dt>PROP_KILLED</dt>
 <dd><p>= the proportion of propagules killed by each 
   disturbance <br>
-  (<em>currently set to <code>0</code> for all PFG and disturbances</em>)</p></dd>
+  (<em>currently set to <code>0</code>% for all PFG and disturbances</em>)</p></dd>
 
   <dt>ACTIVATED_SEED</dt>
 <dd><p>= the proportion of seeds activated by each 
   disturbance <br>
-  (<em>currently set to <code>0</code> for all PFG and disturbances</em>)</p></dd>
+  (<em>currently set to <code>0</code>% for all PFG and disturbances</em>)</p></dd>
 
 
 </dl></div>
@@ -472,18 +472,18 @@ each PFG :</p>
 <span>                        , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">2</span></span>
 <span>                        , <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">5</span></span>
 <span>                        , <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">7</span><span class="op">)</span></span>
-<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">killedIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
-<span>                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
-<span>                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
-<span>                        , <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">5</span></span>
-<span>                        , <span class="fl">10</span>, <span class="fl">7</span>, <span class="fl">4</span></span>
-<span>                        , <span class="fl">10</span>, <span class="fl">6</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">resproutIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span></span>
-<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">5</span></span>
-<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span></span>
-<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">3</span></span>
-<span>                          , <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">4</span></span>
-<span>                          , <span class="fl">0</span>, <span class="fl">2</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">killedIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">100</span>, <span class="fl">50</span></span>
+<span>                        , <span class="fl">100</span>, <span class="fl">100</span>, <span class="fl">50</span></span>
+<span>                        , <span class="fl">100</span>, <span class="fl">100</span>, <span class="fl">50</span></span>
+<span>                        , <span class="fl">100</span>, <span class="fl">100</span>, <span class="fl">50</span></span>
+<span>                        , <span class="fl">100</span>, <span class="fl">70</span>, <span class="fl">40</span></span>
+<span>                        , <span class="fl">100</span>, <span class="fl">60</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="va">mat.tol</span><span class="op">$</span><span class="va">resproutIndiv</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">50</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">50</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">30</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">30</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">40</span></span>
+<span>                          , <span class="fl">0</span>, <span class="fl">20</span>, <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">mat.tol</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">PRE_FATE.params_PFGdisturbance</span><span class="op">(</span>name.simulation <span class="op">=</span> <span class="st">'FATE_simulation'</span></span>

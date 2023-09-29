@@ -50,7 +50,7 @@ parameters :
   \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
   transform it into light resources}
   \item{ACTIVE_GERM}{germination rates depending on light conditions 
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+  \cr \emph{(integer between \code{0} and \code{100}\%)}}
   \item{LIGHT_TOL}{light tolerance table (in a single row). \cr 
   This is a vector of 9 numbers corresponding to the ability of the PFG to 
   survive or not :
@@ -62,7 +62,7 @@ parameters :
   }
   These parameters should be given in this order : \code{GeL, GeM, GeH, ImL, 
   ImM, ImH, MaL, MaM, MaH}
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+  \cr \emph{(integer between \code{0} and \code{100}\%)}. 
   \cr \cr}
 }
 
@@ -99,13 +99,13 @@ are required for each PFG in order to set up this light interaction :
   one}) \cr \cr}
   
   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{Low} light condition}
   \item{(\emph{active_germ_medium})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{Medium} light condition}
   \item{(\emph{active_germ_high})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{High} light condition}
   \item{(\emph{strategy_ag})}{a \code{string} to choose the germination 
   strategy : \cr \code{light_lover}, \code{indifferent}, \code{shade_lover} 
@@ -119,7 +119,7 @@ are required for each PFG in order to set up this light interaction :
   \code{Immature}, \code{Mature})}
   \item{resources}{the concerned light condition (\code{Low}, 
   \code{Medium}, \code{High})}
-  \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
+  \item{tolerance}{an \code{integer} between \code{0} and \code{100} 
   corresponding to the proportion of surviving individuals}
   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
   strategy : \cr \code{full_light}, \code{pioneer}, \code{ubiquist}, 
@@ -139,7 +139,7 @@ each PFG :
     \itemize{
       \item for \code{H} (herbaceous) : \code{1}
       \item for \code{C} (chamaephyte) : \code{5}
-      \item for \code{P} (phanerophyte) : \code{20}
+      \item for \code{P} (phanerophyte) : \code{100}
     }
     \item from \strong{user data} : \cr
     \emph{with the values contained within the \code{shade_factor} column, 
@@ -214,8 +214,8 @@ each PFG :
       }
       \itemize{
         \item \code{.} means \emph{Not tolerant}
-        \item \code{A, B, C, D} mean \emph{Tolerant} according to one of 
-        the rule defined above
+        \item \code{A, B, C, D} mean \emph{Tolerant} (\code{100\%}) according 
+        to one of the rule defined above
         \item with \code{g}: Germinant, \code{i}: Immature, \code{m}: Mature
         \item with \code{L}: low light, \code{M}: medium light, \code{H}: 
         high light \cr \cr
@@ -263,19 +263,19 @@ PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
 ## Create PFG light parameter files (with all values) ----------------------------------------
 mat.ag = data.frame(PFG = paste0('PFG', 1:6)
                     , shade_factor = c(5, 3, 1, 1, 12, 18)
-                    , active_germ_low = c(9, 8, 8, 8, 5, 5)
-                    , active_germ_medium = rep(8, 6)
-                    , active_germ_high = c(4, 8, 8, 5, 9, 9))
+                    , active_germ_low = c(90, 80, 80, 80, 50, 50)
+                    , active_germ_medium = rep(80, 6)
+                    , active_germ_high = c(40, 80, 80, 50, 90, 90))
 
 mat.tol = expand.grid(resources = c('Low', 'Medium', 'High')
                       , lifeStage = c('Germinant', 'Immature', 'Mature')
                       , PFG = paste0('PFG', 1:6))
-mat.tol$tolerance = c(1, 1, 0, 1, 0, 0, 1, 0, 0
-                      , rep(1, 9)
-                      , rep(1, 9)
-                      , 1, 1, 1, 1, 1, 1, 1, 0, 0
-                      , 1, 1, 1, 0, 1, 1, 0, 0, 1
-                      , 1, 1, 1, 0, 0, 1, 0, 0, 1)
+mat.tol$tolerance = c(100, 100, 0, 100, 0, 0, 100, 0, 0
+                      , rep(100, 9)
+                      , rep(100, 9)
+                      , 100, 100, 100, 100, 100, 100, 100, 0, 0
+                      , 100, 100, 100, 0, 100, 100, 0, 0, 100
+                      , 100, 100, 100, 0, 0, 100, 0, 0, 100)
 
 PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
                          , mat.PFG.light = mat.ag

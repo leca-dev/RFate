@@ -58,13 +58,13 @@
 ##'   one}) \cr \cr}
 ##'   
 ##'   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
-##'   \code{10} corresponding to the proportion of seeds that will germinate for 
+##'   \code{100} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{Low} light condition}
 ##'   \item{(\emph{active_germ_medium})}{an \code{integer} between \code{0} and 
-##'   \code{10} corresponding to the proportion of seeds that will germinate for 
+##'   \code{100} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{Medium} light condition}
 ##'   \item{(\emph{active_germ_high})}{an \code{integer} between \code{0} and 
-##'   \code{10} corresponding to the proportion of seeds that will germinate for 
+##'   \code{100} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{High} light condition}
 ##'   \item{(\emph{strategy_ag})}{a \code{string} to choose the germination 
 ##'   strategy : \cr \code{light_lover}, \code{indifferent}, \code{shade_lover} 
@@ -78,7 +78,7 @@
 ##'   \code{Immature}, \code{Mature})}
 ##'   \item{resources}{the concerned light condition (\code{Low}, 
 ##'   \code{Medium}, \code{High})}
-##'   \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
+##'   \item{tolerance}{an \code{integer} between \code{0} and \code{100} 
 ##'   corresponding to the proportion of surviving individuals}
 ##'   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
 ##'   strategy : \cr \code{full_light}, \code{pioneer}, \code{ubiquist}, 
@@ -98,7 +98,7 @@
 ##'     \itemize{
 ##'       \item for \code{H} (herbaceous) : \code{1}
 ##'       \item for \code{C} (chamaephyte) : \code{5}
-##'       \item for \code{P} (phanerophyte) : \code{20}
+##'       \item for \code{P} (phanerophyte) : \code{100}
 ##'     }
 ##'     \item from \strong{user data} : \cr
 ##'     \emph{with the values contained within the \code{shade_factor} column, 
@@ -173,8 +173,8 @@
 ##'       }
 ##'       \itemize{
 ##'         \item \code{.} means \emph{Not tolerant}
-##'         \item \code{A, B, C, D} mean \emph{Tolerant} according to one of 
-##'         the rule defined above
+##'         \item \code{A, B, C, D} mean \emph{Tolerant} (\code{100\%}) according 
+##'         to one of the rule defined above
 ##'         \item with \code{g}: Germinant, \code{i}: Immature, \code{m}: Mature
 ##'         \item with \code{L}: low light, \code{M}: medium light, \code{H}: 
 ##'         high light \cr \cr
@@ -208,7 +208,7 @@
 ##'   \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
 ##'   transform it into light resources}
 ##'   \item{ACTIVE_GERM}{germination rates depending on light conditions 
-##'   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+##'   \cr \emph{(integer between \code{0} and \code{100}\%)}}
 ##'   \item{LIGHT_TOL}{light tolerance table (in a single row). \cr 
 ##'   This is a vector of 9 numbers corresponding to the ability of the PFG to 
 ##'   survive or not :
@@ -220,7 +220,7 @@
 ##'   }
 ##'   These parameters should be given in this order : \code{GeL, GeM, GeH, ImL, 
 ##'   ImM, ImH, MaL, MaM, MaH}
-##'   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+##'   \cr \emph{(integer between \code{0} and \code{100}\%)}. 
 ##'   \cr \cr}
 ##' }
 ##' 
@@ -264,19 +264,19 @@
 ##' ## Create PFG light parameter files (with all values) ----------------------------------------
 ##' mat.ag = data.frame(PFG = paste0('PFG', 1:6)
 ##'                     , shade_factor = c(5, 3, 1, 1, 12, 18)
-##'                     , active_germ_low = c(9, 8, 8, 8, 5, 5)
-##'                     , active_germ_medium = rep(8, 6)
-##'                     , active_germ_high = c(4, 8, 8, 5, 9, 9))
+##'                     , active_germ_low = c(90, 80, 80, 80, 50, 50)
+##'                     , active_germ_medium = rep(80, 6)
+##'                     , active_germ_high = c(40, 80, 80, 50, 90, 90))
 ##' 
 ##' mat.tol = expand.grid(resources = c('Low', 'Medium', 'High')
 ##'                       , lifeStage = c('Germinant', 'Immature', 'Mature')
 ##'                       , PFG = paste0('PFG', 1:6))
-##' mat.tol$tolerance = c(1, 1, 0, 1, 0, 0, 1, 0, 0
-##'                       , rep(1, 9)
-##'                       , rep(1, 9)
-##'                       , 1, 1, 1, 1, 1, 1, 1, 0, 0
-##'                       , 1, 1, 1, 0, 1, 1, 0, 0, 1
-##'                       , 1, 1, 1, 0, 0, 1, 0, 0, 1)
+##' mat.tol$tolerance = c(100, 100, 0, 100, 0, 0, 100, 0, 0
+##'                       , rep(100, 9)
+##'                       , rep(100, 9)
+##'                       , 100, 100, 100, 100, 100, 100, 100, 0, 0
+##'                       , 100, 100, 100, 0, 100, 100, 0, 0, 100
+##'                       , 100, 100, 100, 0, 0, 100, 0, 0, 100)
 ##' 
 ##' PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
 ##'                          , mat.PFG.light = mat.ag
@@ -394,12 +394,15 @@ PRE_FATE.params_PFGlight = function(
     }
     if (sum(colnames(mat.PFG.light) == "active_germ_low") == 1)
     {
+      .testParam_notInteger.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low)
       .testParam_NAvalues.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low)
-      .testParam_notInValues.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low, 0:10)
+      .testParam_notBetween.m("mat.PFG.light$active_germ_low", mat.PFG.light$active_germ_low, 0, 100)
+      .testParam_notInteger.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium)
       .testParam_NAvalues.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium)
-      .testParam_notInValues.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium, 0:10)
+      .testParam_notBetween.m("mat.PFG.light$active_germ_medium", mat.PFG.light$active_germ_medium, 0, 100)
+      .testParam_notInteger.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high)
       .testParam_NAvalues.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high)
-      .testParam_notInValues.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high, 0:10)
+      .testParam_notBetween.m("mat.PFG.light$active_germ_high", mat.PFG.light$active_germ_high, 0, 100)
     }
     if (sum(colnames(mat.PFG.light) == "strategy_ag") == 1)
     {
@@ -435,9 +438,10 @@ PRE_FATE.params_PFGlight = function(
       {
         .testParam_notInValues.m("mat.PFG.tol$lifeStage", mat.PFG.tol$lifeStage, c("Germinant", "Immature", "Mature"))
         .testParam_notInValues.m("mat.PFG.tol$resources", mat.PFG.tol$resources, c("Low", "Medium", "High"))
+        
+        .testParam_notInteger.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance)
         .testParam_NAvalues.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance)
-        # .testParam_notInValues.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance, 0:10)
-        .testParam_notInValues.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance, 0:1)
+        .testParam_notBetween.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance, 0, 100)
       }
       if (sum(colnames(mat.PFG.tol) == "strategy_tol") == 1)
       {
@@ -484,7 +488,7 @@ PRE_FATE.params_PFGlight = function(
   {
     SHADE_FACTOR[which(mat.PFG.light$type == "H")] = 1
     SHADE_FACTOR[which(mat.PFG.light$type == "C")] = 5
-    SHADE_FACTOR[which(mat.PFG.light$type == "P")] = 20
+    SHADE_FACTOR[which(mat.PFG.light$type == "P")] = 100
   } else
   {
     warning("Missing data! The `SHADE_FACTOR` parameter has not been set. Please check.")
@@ -496,27 +500,16 @@ PRE_FATE.params_PFGlight = function(
   ##   = these rates should express a deviation from the
   ##     germination rate in optimal conditions (=100%)
   ##   = for each light condition (Low, Medium, High)
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
-  ACTIVE_GERM = matrix(10, nrow = 3, ncol = no.PFG)
+  ACTIVE_GERM = matrix(100, nrow = 3, ncol = no.PFG)
   
   if (sum(colnames(mat.PFG.light) == "type") == 1)
   {
     ## woody species have little variation in germination rate depending on light conditions
-    ACTIVE_GERM[, which(mat.PFG.light$type %in% c("C", "P"))] = 9
+    ACTIVE_GERM[, which(mat.PFG.light$type %in% c("C", "P"))] = 90
     ## herbaceous germinate less in the shadow
-    ACTIVE_GERM[1, which(mat.PFG.light$type == "H")] = 5 ## low light conditions
-    ACTIVE_GERM[2, which(mat.PFG.light$type == "H")] = 8 ## medium light conditions
-    ACTIVE_GERM[3, which(mat.PFG.light$type == "H")] = 9 ## high light conditions
+    ACTIVE_GERM[1, which(mat.PFG.light$type == "H")] = 50 ## low light conditions
+    ACTIVE_GERM[2, which(mat.PFG.light$type == "H")] = 80 ## medium light conditions
+    ACTIVE_GERM[3, which(mat.PFG.light$type == "H")] = 90 ## high light conditions
     
   } else if (sum(colnames(mat.PFG.light) == "active_germ_low") == 1 ||
              sum(colnames(mat.PFG.light) == "active_germ_medium") == 1 ||
@@ -539,9 +532,9 @@ PRE_FATE.params_PFGlight = function(
   {
     for (i in 1:no.PFG){
       ACTIVE_GERM[, i] = switch(mat.PFG.light$strategy_ag[i]
-                                , light_lover = c(5, 8, 9)
-                                , indifferent = c(9, 9, 9)
-                                , shade_lover = c(9, 8, 5)
+                                , light_lover = c(50, 80, 90)
+                                , indifferent = c(90, 90, 90)
+                                , shade_lover = c(90, 80, 50)
       )
     }
   }
@@ -631,11 +624,11 @@ PRE_FATE.params_PFGlight = function(
     {
       for (i in 1:no.PFG){
         LIGHT_TOL[, i] = switch(mat.PFG.tol$strategy_tol[i]
-                                , full_light = c(1,1,1,0,0,1,0,0,1)
-                                , pioneer = c(1,1,1,0,1,1,0,1,1)
-                                , ubiquist = c(1,1,1,1,1,1,1,1,1)
-                                , semi_shade = c(1,1,0,1,1,0,1,1,1)
-                                , undergrowth = c(1,1,0,1,1,0,1,1,0)
+                                , full_light = c(100, 100, 100, 0, 0, 100, 0, 0, 100)
+                                , pioneer = c(100, 100, 100, 0, 100, 100, 0, 100, 100)
+                                , ubiquist = c(100, 100, 100, 100, 100, 100, 100, 100, 100)
+                                , semi_shade = c(100, 100, 0, 100, 100, 0, 100, 100, 100)
+                                , undergrowth = c(100, 100, 0, 100, 100, 0, 100, 100, 0)
         )
       }
     }

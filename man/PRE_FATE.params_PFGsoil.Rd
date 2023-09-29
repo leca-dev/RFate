@@ -47,7 +47,7 @@ parameters :
 \describe{
   \item{NAME}{name of the PFG}
   \item{ACTIVE_GERM}{germination rates depending on soil conditions
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+  \cr \emph{(integer between \code{0} and \code{100}\%)}}
   \item{SOIL_CONTRIB}{contribution to the soil value of the pixel}
   \item{SOIL_LOW}{lower value of soil supported by the PFG, \cr 
   defining the limit between \code{Low} and \code{Medium} soil resources 
@@ -66,7 +66,7 @@ parameters :
   }
   These parameters should be given in this order : \code{GeL, GeM, GeH, ImL, 
   ImM, ImH, MaL, MaM, MaH}
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+  \cr \emph{(integer between \code{0} and \code{100}\%)}. 
   \cr \cr}
 }
 
@@ -95,13 +95,13 @@ are required for each PFG in order to set up the soil interaction :
   \code{H} (herbaceous), \code{C} (chamaephyte) or \code{P} (phanerophyte) 
   for now}
   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{Low} soil condition}
   \item{(\emph{active_germ_medium})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{Medium} soil condition}
   \item{(\emph{active_germ_high})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{High} soil condition}
   \item{(\emph{strategy_ag})}{a \code{string} to choose the germination 
   strategy : \cr \code{poor_lover}, \code{indifferent}, \code{rich_lover} 
@@ -121,7 +121,7 @@ are required for each PFG in order to set up the soil interaction :
   \code{Immature}, \code{Mature})}
   \item{resources}{the concerned soil condition (\code{Low}, 
   \code{Medium}, \code{High})}
-  \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
+  \item{tolerance}{an \code{integer} between \code{0} and \code{100} 
   corresponding to the proportion of surviving individuals}
   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
   strategy : \cr \code{poor_lover}, \code{ubiquist}, \code{rich_lover} 
@@ -196,12 +196,12 @@ each PFG :
         high soil \cr \cr
       }
       \describe{
-        \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
-        \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
-        \item{}{\code{_____________________________________}}
-        \item{poor_lover}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
-        \item{ubiquist}{\code{| 90 100 80 | 90 100 80 | 90 100 80 |}}
-        \item{rich_lover}{\code{| 10 100 30 | 40 100 60 | 70 100 90 |}}
+        \item{}{\strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}}}
+        \item{}{\strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}}}
+        \item{}{\code{______________________________________________}}
+        \item{poor_lover}{\code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |}}
+        \item{ubiquist}{\code{| 90\% 100\% 80\% | 90\% 100\% 80\% | 90\% 100\% 80\% |}}
+        \item{rich_lover}{\code{| 10\% 100\% 30\% | 40\% 100\% 60\% | 70\% 100\% 90\% |}}
       }
     \item from \strong{predefined rules} (corresponding to the 
     \code{poor_lover} strategy) :
@@ -219,10 +219,10 @@ each PFG :
         high soil \cr \cr
       }
       \describe{
-        \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
-        \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
-        \item{}{\code{_____________________________________}}
-        \item{}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
+        \item{}{\strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}}}
+        \item{}{\strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}}}
+        \item{}{\code{______________________________________________}}
+        \item{}{\code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |}}
       }
     \item from \strong{user data} : \cr
       \emph{with the values contained within the \code{lifeStage}, 
@@ -254,20 +254,20 @@ PRE_FATE.params_PFGsoil(name.simulation = 'FATE_simulation'
 
 ## Create PFG soil parameter files (with all values) -----------------------------------------
 tab.soil = data.frame(PFG = paste0('PFG', 1:6)
-                      , active_germ_low = c(5, 8, 8, 6, 8, 8)
-                      , active_germ_medium = rep(9, 6)
-                      , active_germ_high = c(9, 8, 8, 9, 8, 4)
+                      , active_germ_low = c(50, 80, 80, 60, 80, 80)
+                      , active_germ_medium = rep(90, 6)
+                      , active_germ_high = c(90, 80, 80, 90, 80, 40)
                       , strategy_contrib = c('eutrophic', 'mesotrophic', 'mesotrophic'
                                              , 'mesotrophic', 'mesotrophic', 'oligotrophic'))
 tab.tol = expand.grid(resources = c('Low', 'Medium', 'High')
                       , lifeStage = c('Germinant', 'Immature', 'Mature')
                       , PFG = paste0('PFG', 1:6))
-tab.tol$tolerance = c(8, 8, 4, 8, 5, 4, 9, 4, 4
-                      , rep(9, 9)
-                      , rep(9, 9)
-                      , 8, 8, 6, 8, 6, 6, 9, 5, 5
-                      , 8, 8, 8, 5, 6, 9, 3, 4, 9
-                      , 8, 8, 8, 5, 5, 9, 5, 5, 9)
+tab.tol$tolerance = c(80, 80, 40, 80, 50, 40, 90, 40, 40
+                      , rep(90, 9)
+                      , rep(90, 9)
+                      , 80, 80, 60, 80, 60, 60, 90, 50, 50
+                      , 80, 80, 80, 50, 60, 90, 30, 40, 90
+                      , 80, 80, 80, 50, 50, 90, 50, 50, 90)
 
 PRE_FATE.params_PFGsoil(name.simulation = 'FATE_simulation'
                         , mat.PFG.soil = tab.soil

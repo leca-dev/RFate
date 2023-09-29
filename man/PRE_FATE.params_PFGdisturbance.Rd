@@ -68,12 +68,12 @@ parameters :
   These parameters should be given in this order (e.g. with 3 response 
   stages) : \cr \code{DI1_RS1_Ki, DI1_RS1_Re, DI1_RS2_Ki, DI1_RS2_Re, 
   DI1_RS3_Ki, DI1_RS3_Re, DI2_RS1_Ki...}
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+  \cr \emph{(integer between \code{0} and \code{100}\%)}. 
   }
   \item{PROP_KILLED}{proportion of propagules killed by each disturbance \cr
-  \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+  \emph{(integer between \code{0} and \code{100}\%)}}
   \item{ACTIVATED_SEED}{proportion of seeds activated by each disturbance \cr
-  \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)} \cr \cr}
+  \emph{(integer between \code{0} and \code{100}\%)} \cr \cr}
 }
 
 A \code{DIST_COMPLETE_TABLE.csv} file summarizing information for all 
@@ -119,9 +119,9 @@ are required for each PFG in order to set up these responses :
   
   \item{responseStage}{an \code{integer} corresponding to the concerned 
   response class}
-  \item{killedIndiv}{an \code{integer} between \code{0} and \code{10} 
+  \item{killedIndiv}{an \code{integer} between \code{0} and \code{100} 
   corresponding to the proportion of killed individuals}
-  \item{resproutIndiv}{an \code{integer} between \code{0} and \code{10} 
+  \item{resproutIndiv}{an \code{integer} between \code{0} and \code{100} 
   corresponding to the proportion of resprouting individuals \cr \cr}
   
   \item{(\emph{strategy_tol})}{a \code{string} to choose the response to 
@@ -241,11 +241,11 @@ each PFG :
   }
   \item{PROP_KILLED}{ = the proportion of propagules killed by each 
   disturbance \cr
-  (\emph{currently set to \code{0} for all PFG and disturbances})
+  (\emph{currently set to \code{0}\% for all PFG and disturbances})
   }
   \item{ACTIVATED_SEED}{ = the proportion of seeds activated by each 
   disturbance \cr
-  (\emph{currently set to \code{0} for all PFG and disturbances})
+  (\emph{currently set to \code{0}\% for all PFG and disturbances})
   }
 }
 }
@@ -289,18 +289,18 @@ mat.tol$resproutAge = c(0, 0, 4
                         , 0, 0, 2
                         , 0, 2, 5
                         , 0, 4, 7)
-mat.tol$killedIndiv = c(10, 10, 5
-                        , 10, 10, 5
-                        , 10, 10, 5
-                        , 10, 10, 5
-                        , 10, 7, 4
-                        , 10, 6, 3)
-mat.tol$resproutIndiv = c(0, 0, 5
-                          , 0, 0, 5
-                          , 0, 0, 3
-                          , 0, 0, 3
-                          , 0, 1, 4
-                          , 0, 2, 5)
+mat.tol$killedIndiv = c(100, 100, 50
+                        , 100, 100, 50
+                        , 100, 100, 50
+                        , 100, 100, 50
+                        , 100, 70, 40
+                        , 100, 60, 30)
+mat.tol$resproutIndiv = c(0, 0, 50
+                          , 0, 0, 50
+                          , 0, 0, 30
+                          , 0, 0, 30
+                          , 0, 10, 40
+                          , 0, 20, 50)
 str(mat.tol)
 
 PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_simulation'
