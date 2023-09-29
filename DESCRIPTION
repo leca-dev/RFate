@@ -46,19 +46,20 @@ Depends: R (>= 4.1)
 Imports:
     Rcpp,
     graphics, grDevices, methods, stats, utils, R.utils,
-    ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
+    ggplot2, ggthemes, ggrepel,
     reshape2, foreach, data.table,
     raster, sp,
-    phyloclim, FD, PresenceAbsence, ade4, adehabitatMA, adehabitatHR, 
+    phyloclim, FD, ade4, adehabitatMA, adehabitatHR, 
     cluster, huge, 
     RColorBrewer, colorspace,
-    ape, shiny,
+    ape,
     parallel, doParallel
 Suggests:
     spelling, 
     testthat,
     covr,
     knitr, markdown, rmarkdown,
+    shiny, PresenceAbsence, ggnewscale, ggExtra, gridExtra, cowplot, 
     SPOT, fpc, clValid, ecospat, betapart
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown

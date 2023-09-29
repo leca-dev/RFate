@@ -107,7 +107,7 @@
 ##' scale_color_manual
 ##' facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
-##' @importFrom ggnewscale new_scale_color
+## @importFrom ggnewscale new_scale_color
 ##'
 ## END OF HEADER ###############################################################
 
@@ -120,6 +120,10 @@ POST_FATE.graphic_evolutionPixels = function(
 ){
   
   #############################################################################
+  
+  if (!isNamespaceLoaded("ggnewscale")) { 
+    if (!requireNamespace('ggnewscale', quietly = TRUE)) stop("Package 'ggnewscale' not found")
+  }
   
   ## CHECK parameter name.simulation
   .testParam_existFolder(name.simulation, "PARAM_SIMUL/")

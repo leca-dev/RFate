@@ -132,16 +132,16 @@
 ##' @importFrom reshape2 melt
 ##' @importFrom raster raster stack cellFromXY
 ##' @importFrom grid unit
-##' @importFrom PresenceAbsence cmx sensitivity specificity auc
+## @importFrom PresenceAbsence cmx sensitivity specificity auc
 ##' 
 ##' @importFrom ggplot2 ggplot aes_string 
 ##' geom_bar geom_point geom_hline geom_errorbar annotate
 ##' scale_fill_gradientn scale_y_continuous
 ##' labs ylim theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
-##' @importFrom ggExtra ggMarginal
-##' @importFrom gridExtra grid.arrange
-##' @importFrom cowplot get_legend ggdraw
+## @importFrom ggExtra ggMarginal
+## @importFrom gridExtra grid.arrange
+## @importFrom cowplot get_legend ggdraw
 ##' @importFrom RColorBrewer brewer.pal
 ##' @importFrom grDevices pdf
 ##' @importFrom graphics plot
@@ -160,6 +160,19 @@ POST_FATE.graphic_validationStatistics = function(
 ){
   
   #############################################################################
+  
+  if (!isNamespaceLoaded("PresenceAbsence")) { 
+    if (!requireNamespace('PresenceAbsence', quietly = TRUE)) stop("Package 'PresenceAbsence' not found")
+  }
+  if (!isNamespaceLoaded("ggExtra")) { 
+    if (!requireNamespace('ggExtra', quietly = TRUE)) stop("Package 'ggExtra' not found")
+  }
+  if (!isNamespaceLoaded("gridExtra")) { 
+    if (!requireNamespace('gridExtra', quietly = TRUE)) stop("Package 'gridExtra' not found")
+  }
+  if (!isNamespaceLoaded("cowplot")) { 
+    if (!requireNamespace('cowplot', quietly = TRUE)) stop("Package 'cowplot' not found")
+  }
   
   ## CHECK parameter name.simulation
   .testParam_existFolder(name.simulation, "PARAM_SIMUL/")
