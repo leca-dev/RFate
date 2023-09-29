@@ -74,7 +74,7 @@ private:
   int m_M; /*!< Maturation time */
   int m_L; /*!< Life span */
   Abund m_MaxA; /*!< Maximum Abundance */
-  double m_ImmSize; /*!< Proportion of immature plants relative to mature abundance */
+  int m_ImmSize; /*!< Proportion of immature plants relative to mature abundance */
   int m_MaxStratum; /*!< Maximum stratum reached */
   vector<int> m_Strata; /*!< Strata change age */
   
@@ -85,8 +85,8 @@ private:
   
   /* Light interaction module */
   int m_LightShadeFactor; /*!< Index of shade quantity to weight PFG abundance and transform it into shade resources */
-  vector<Fract> m_LightActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
-  vector< vector<bool> > m_LightTolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
+  vector<int> m_LightActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
+  vector< vector<int> > m_LightTolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
   
   /* Dispersal module */
   bool m_Dispersed; /*!< Is FG widely dispersed ? */
@@ -98,8 +98,8 @@ private:
   double m_SoilContrib; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
   double m_SoilLow; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
   double m_SoilHigh; /*!< Contribution of PFG to refill soil nutriment resources (kind of litter index) */
-  vector<Fract> m_SoilActiveGerm; /*!< Proportion of Active seeds able to germinate considering soil nutriment resources [Rcount] */
-  vector< vector<Fract> > m_SoilTolerance; /*!< Is FG survived considering available soil nutriment resources [LScount][Rcount] */
+  vector<int> m_SoilActiveGerm; /*!< Proportion of Active seeds able to germinate considering soil nutriment resources [Rcount] */
+  vector< vector<int> > m_SoilTolerance; /*!< Is FG survived considering available soil nutriment resources [LScount][Rcount] */
   
   /* Disturbance response */
   FGresponse m_DistResponse; /*!< PFG response to disturbances */
@@ -386,7 +386,7 @@ public:
   int getMatTime() const;
   int getLifeSpan() const;
   const Abund& getMaxAbund() const;
-  double getImmSize() const;
+  int getImmSize() const;
   int getMaxStratum() const;
   const vector<int> getStrata() const;
   int getStrata(const int& i) const;
@@ -395,10 +395,10 @@ public:
   bool getInnateDormancy() const;
   int getPotentialFecund() const;
   int getLightShadeFactor() const;
-  const vector<Fract> getMaxRecruitLight() const;
-  const Fract& getMaxRecruitLight(const Resource& r) const;
-  const vector< vector<bool> >& getLightTolerance() const;
-  bool getLightTolerance(LifeStage ls, Resource r) const;
+  const vector<int> getMaxRecruitLight() const;
+  const int& getMaxRecruitLight(const Resource& r) const;
+  const vector< vector<int> >& getLightTolerance() const;
+  int getLightTolerance(LifeStage ls, Resource r) const;
   bool getDispersed() const;
   double getDisp50() const;
   double getDisp99() const;
@@ -406,10 +406,10 @@ public:
   double getSoilContrib() const;
   double getSoilLow() const;
   double getSoilHigh() const;
-  const vector<Fract> getMaxRecruitSoil() const;
-  const Fract& getMaxRecruitSoil(const Resource& r) const;
-  const vector< vector<Fract> >& getSoilTolerance() const;
-  const Fract getSoilTolerance(LifeStage ls,  Resource r) const;
+  const vector<int> getMaxRecruitSoil() const;
+  const int& getMaxRecruitSoil(const Resource& r) const;
+  const vector< vector<int> >& getSoilTolerance() const;
+  const int getSoilTolerance(LifeStage ls,  Resource r) const;
   FGresponse getDistResponse();
   const FGresponse& getFireResponse() const;
   double getFlamm() const;
@@ -425,7 +425,7 @@ public:
   void setMatTime(const int& matTime);
   void setLifeSpan(const int& lifeSpan);
   void setMaxAbund(const Abund& maxAbund);
-  void setImmSize(const double& immSize);
+  void setImmSize(const int& immSize);
   void setMaxStratum(const int& maxStratum);
   void setStrata(const vector<int>& strata);
   void setStrata(const int& strata, const int& i);
@@ -434,10 +434,10 @@ public:
   void setInnateDormancy(const bool& innateDormancy);
   void setPotentialFecund(const int& potentialFecund);
   void setLightShadeFactor(const int& lightShadeFactor);
-  void setMaxRecruitLight(const Fract (&maxRecruit)[ Rcount ]);
-  void setMaxRecruitLight(const Fract& maxRecruit, const Resource& r );
-  void setTolerance(const bool (&tolerance)[ LScount ][ Rcount ]);
-  void setTolerance(const bool& tolerance, const LifeStage& ls, const Resource& r);
+  void setMaxRecruitLight(const int (&maxRecruit)[ Rcount ]);
+  void setMaxRecruitLight(const int& maxRecruit, const Resource& r );
+  void setTolerance(const int (&tolerance)[ LScount ][ Rcount ]);
+  void setTolerance(const int& tolerance, const LifeStage& ls, const Resource& r);
   void setDispersed(const bool& dispersed);
   void setDisp50(const double& disp50);
   void setDisp99(const double& disp99);
@@ -445,10 +445,10 @@ public:
   void setSoilContrib(const double& soilContrib);
   void setSoilLow(const double& soilLow);
   void setSoilHigh(const double& soilHigh);
-  void setMaxRecruitSoil(const Fract (&maxRecruit)[ Rcount ]);
-  void setMaxRecruitSoil(const Fract& maxRecruit, const Resource& r );
-  void setSoilTolerance(const vector< vector<Fract> >& tolerance);
-  void setSoilTolerance(const Fract& tolerance, const LifeStage& ls, const Resource& r);
+  void setMaxRecruitSoil(const int (&maxRecruit)[ Rcount ]);
+  void setMaxRecruitSoil(const int& maxRecruit, const Resource& r );
+  void setSoilTolerance(const vector< vector<int> >& tolerance);
+  void setSoilTolerance(const int& tolerance, const LifeStage& ls, const Resource& r);
   void setDistResponse(const FGresponse& distResponse);
   void setFireResponse(const FGresponse& fireResponse);
   void setFlamm(const double& flamm);

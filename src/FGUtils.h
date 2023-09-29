@@ -109,40 +109,6 @@ enum LifeStage
 };
 
 /*!
- * \enum Fract
- * \brief Numerical fraction used in Modelling
- */
-enum Fract
-{
-	PC00, /*!< 0% */
-	PC10, /*!< 10% */
-	PC20, /*!< 20% */
-	PC30, /*!< 30% */
-	PC40, /*!< 40% */
-	PC50, /*!< 50% */
-	PC60, /*!< 60% */
-	PC70, /*!< 70% */
-	PC80, /*!< 80% */
-	PC90, /*!< 90% */
-	PC100, /*!< 100% */
-	Fcount
-};
-
-/*!
- * \enum Fract2
- * \brief Factorial fraction used in Modeling
- */
-enum Fract2
-{
-	F2None, /*!< = 0% */
-	F2Low, /*!< = 10% */
-	F2Medium, /*!< = 50% */
-	F2High, /*!< = 90% */
-	F2All, /*!< = 100% */
-	F2count
-};
-
-/*!
  * \enum DistFate
  * \brief PFG behaviour in response to Disturbances
  */
@@ -165,46 +131,35 @@ enum DistFate
  *	\brief Calculate the complement from a given fraction to 100%
  *
  *	This function returns the complement of one or two given fractions to reach
- *	100%. All involved fraction are categorical (input and output).
+ *	100%. All involved fraction are integer (input and output).
  *
  *	\param f1 : the first fraction to be completed
  *	\param f2 : an optional second fraction
- *	\return categorical fraction corresponding to 100% - (f1 + f2)
+ *	\return integer fraction corresponding to 100% - (f1 + f2)
  */
-Fract getLeavingFract(Fract f1, Fract f2 = Fract(0));
+int getLeavingFract(int f1, int f2);
 
 /*!
- *	\brief Convert a categorical Fract fraction into scalar one
+ *	\brief Convert an integer percentage into a double fraction between 0 and 1
  *
  *	This function returns a number between 0 and 1 corresponding to a given
- *	categorical fraction.
+ *	integer percentage.
  *
- *	\param fract : a categorical fraction of class Fract
+ *	\param fract : an integer percentage
  *	\return a number between 0 and 1
  */
-double FractToDouble(Fract fract);
+double IntToDouble(int fract);
 
 /*!
- *	\brief Convert a categorical Fract2 fraction into scalar one
+ *	\brief Convert a double fraction between 0 and 1 into an integer percentage
  *
- *	This function returns a number between 0 and 1 corresponding to a given
- *	categorical fraction.
+ *	This function returns a number between 0 and 100 corresponding to a given
+ *	integer percentage.
  *
- *	\param fract : a categorical fraction of class Fract2
- *	\return a number between 0 and 1
+ *	\param fract : a double fraction between 0 and 1
+ *	\return a number between 0 and 100
  */
-double FractToDouble(Fract2 fract);
-
-/*!
- *	\brief Convert a scalar fraction fraction into categorical one
- *
- *	This function returns the closest categorical fraction to a given number
- * between 0 and 1.
- *
- *	\param d : a 0-1 scalar number
- *	\return a categorical fraction of class Fract
- */
-Fract DoubleToFract(double d);
+int DoubleToInt( double fract);
 
 /*!
  *	\brief Convert a categorical light resources into scalar one
@@ -349,54 +304,5 @@ void testFileExist(const string& param, vector<string> vector_name, const bool& 
  */
 void testFileExist_changeFile(const string& param, vector<string> vector_name, const bool& optional);
 
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-/* =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
-
-/*!
- *	\brief Convert an integer into a specific enum
- *
- *	This function is a wrapper to convert integer into one of FATEHD
- *	factorial variables (e.g Fract, Fract2, Resource,.. ).
- *
- *	\param key_param : parameter name
- * \param val : parameter value
- * \param key_enum : enum name
- * \param max_val : maximum value allowed
- *	\return value of asked Type.
- */
-template<typename T>
-T convert_int_to_enum(const string& key_param, int val, const string& key_enum, int max_val)
-{
-	if (val < 0 || val > max_val)
-	{
-		logg.error("!!! Wrong parameter given for <", key_param, ">.\n",
-							 "Must be a number between 0 and ", max_val - 1,
-							 " corresponding to a level of enum ", key_enum, ". Please check!");
-	}
-	return static_cast<T>(val);
-}
-
-/*!
- *	\brief Convert a vector of integers into a vector of specific enum
- *
- *	This function is a wrapper to convert integer into one of FATEHD
- *	factorial variables (e.g Fract, Fract2, Resource,.. ).
- *
- *	\param key_param : parameter name
- * \param vect : vector of parameter values
- * \param key_enum : enum name
- * \param max_val : maximum value allowed
- *	\return vector of asked Type.
- */
-template<typename T>
-vector<T> convert_int_to_enum(const string& key_param, vector<int> vect, const string& key_enum, int max_val)
-{
-	vector<T> result;
-	for (unsigned i=0; i<vect.size(); i++)
-	{
-		result.push_back( convert_int_to_enum<T>(key_param, vect[i], key_enum, max_val) );
-	}
-	return result;
-}
 
 #endif //FGUTILS_H_INCLUDED

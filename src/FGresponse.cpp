@@ -35,22 +35,22 @@ using namespace std;
 /* Constructors                                                                                    */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-FGresponse::FGresponse() : m_NoPert(1), m_NoPertSub(1), m_PropKilled(m_NoPert,PC00),
+FGresponse::FGresponse() : m_NoPert(1), m_NoPertSub(1), m_PropKilled(m_NoPert, 0),
 m_BreakAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
 m_ResprAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
-m_Fates(m_NoPert, vector< vector<Fract> >(m_NoPertSub+1, vector<Fract>(DFcount, PC00))),
-m_DormBreaks(m_NoPert, PC00)
+m_Fates(m_NoPert, vector< vector<int> >(m_NoPertSub+1, vector<int>(DFcount, 0))),
+m_DormBreaks(m_NoPert, 0)
 {
   	/* Nothing to do */
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-FGresponse::FGresponse(unsigned noPert, unsigned noPertSub) : m_NoPert(noPert), m_NoPertSub(noPertSub), m_PropKilled(m_NoPert,PC00),
+FGresponse::FGresponse(unsigned noPert, unsigned noPertSub) : m_NoPert(noPert), m_NoPertSub(noPertSub), m_PropKilled(m_NoPert, 0),
 m_BreakAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
 m_ResprAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
-m_Fates(m_NoPert, vector< vector<Fract> >(m_NoPertSub+1, vector<Fract>(DFcount, PC00))),
-m_DormBreaks(m_NoPert, PC00)
+m_Fates(m_NoPert, vector< vector<int> >(m_NoPertSub+1, vector<int>(DFcount, 0))),
+m_DormBreaks(m_NoPert, 0)
 {
   	/* Nothing to do */
 }
@@ -62,16 +62,22 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 	testFileExist("--PFG_PARAMS_...PERT...--", PFG_PerturbationsFile, false);
 
 		par::Params PertParms(PFG_PerturbationsFile.c_str(), " = \"", "#"); /* opening PFG perturbations parameters file */
-
-		vector<int> v_int = PertParms.get_val<int>("PROP_KILLED");
-		if (v_int.size() != noPert)
+    
+    m_PropKilled = PertParms.get_val<int>("PROP_KILLED");
+		if (m_PropKilled.size() != noPert)
 		{
 			logg.error("!!! Wrong number of parameters provided for PROP_KILLED (",
-			 					 v_int.size(), " instead of ", noPert, "). Please check!");
+              m_PropKilled.size(), " instead of ", noPert, "). Please check!");
 		}
-		m_PropKilled = convert_int_to_enum<Fract>("PROP_KILLED", v_int, "Fract", Fcount);
+		for(unsigned i=1; i<m_PropKilled.size(); i++)
+		{
+		  if (m_PropKilled[i] < 0 || m_PropKilled[i] > 100)
+		  {
+		    logg.error("!!! PROP_KILLED values must be superior or equal to 0, and inferior or equal to 100. Please check!");
+		  }
+		}
 
-		v_int = PertParms.get_val<int>("BREAK_AGE");
+		vector<int> v_int = PertParms.get_val<int>("BREAK_AGE");
 		if (v_int.size() < noPert * (noPertSub-1))
 		{
 			logg.error("!!! Wrong number of parameters provided for BREAK_AGE (",
@@ -144,14 +150,23 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 			m_Fates[i].resize(noPertSub);
 			for (unsigned j=0; j<m_Fates[i].size(); j++)
 			{
-				m_Fates[i][j].resize(DFcount, Fract(4));
-				m_Fates[i][j][0] = Fract(v_int[counter]); /* killed */
+				m_Fates[i][j].resize(DFcount);
+			  if (v_int[counter] < 0 || v_int[counter] > 100)
+			  {
+			    logg.error("!!! FATES values must be superior or equal to 0, and inferior or equal to 100. Please check!");
+			  }
+				m_Fates[i][j][0] = v_int[counter]; /* killed */
 				counter++;
-				m_Fates[i][j][2] = Fract(v_int[counter]); /* resprout */
+				if (v_int[counter] < 0 || v_int[counter] > 100)
+				{
+				  logg.error("!!! FATES values must be superior or equal to 0, and inferior or equal to 100. Please check!");
+				}
+				m_Fates[i][j][2] = v_int[counter]; /* resprout */
 				counter++;
+				
 				/* Automatic filling of several parameters for compatibility between perturbations index */
 				/* Proportion of individuals unaffected is set to 100% - ( fract(killed) + fract(resprout)) */
-				if ((FractToDouble(m_Fates[i][j][0]) + FractToDouble(m_Fates[i][j][2])) > 1)
+				if ((m_Fates[i][j][0] + m_Fates[i][j][2]) > 100)
 				{
 					logg.error("!!! Wrong values of parameters provided for FATES : ",
 										 "Kill and Resprout percentages for perturbation ", i,
@@ -162,13 +177,19 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 			}
 		}
 
-		v_int = PertParms.get_val<int>("ACTIVATED_SEED");
-		if (v_int.size() != noPert)
+		m_DormBreaks = PertParms.get_val<int>("ACTIVATED_SEED");
+		if (m_DormBreaks.size() != noPert)
 		{
 			logg.error("!!! Wrong number of parameters provided for ACTIVATED_SEED (",
-								 v_int.size(), " instead of ", noPert, "). Please check!");
+              m_DormBreaks.size(), " instead of ", noPert, "). Please check!");
 		}
-		m_DormBreaks = convert_int_to_enum<Fract>("ACTIVATED_SEED", v_int, "Fract", Fcount);
+		for(unsigned i=1; i<m_DormBreaks.size(); i++)
+		{
+		  if (m_DormBreaks[i] < 0 || m_DormBreaks[i] > 100)
+		  {
+		    logg.error("!!! ACTIVATED_SEED values must be superior or equal to 0, and inferior or equal to 100. Please check!");
+		  }
+		}
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -186,8 +207,8 @@ FGresponse::~FGresponse()
 
 unsigned FGresponse::getNoPert() const {return m_NoPert;}
 unsigned FGresponse::getNoPertSub() const {return m_NoPertSub;}
-const vector<Fract>& FGresponse::getPropKilled() const {return m_PropKilled;}
-const Fract& FGresponse::getPropKilled(const int& dist) const {
+const vector<int>& FGresponse::getPropKilled() const {return m_PropKilled;}
+const int& FGresponse::getPropKilled(const int& dist) const {
 	if (dist<0 || dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_PropKilled for a non-existing perturbation. Please check!");
@@ -210,16 +231,16 @@ int FGresponse::getResprAge(const int& dist, const int& range) const {
 	}
 	return m_ResprAge[dist][range];
 }
-const vector<vector< vector<Fract> > >& FGresponse::getFates() const {return m_Fates;}
-const Fract& FGresponse::getFates(const int& dist, const int& range, const DistFate& df) const {
+const vector<vector< vector<int> > >& FGresponse::getFates() const {return m_Fates;}
+const int& FGresponse::getFates(const int& dist, const int& range, const DistFate& df) const {
 	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_Fates for a non-existing perturbation or sub-perturbation. Please check!");
 	}
 	return m_Fates[dist][range][df];
 }
-const vector<Fract>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
-const Fract& FGresponse::getDormBreaks(const int& dist) const {
+const vector<int>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
+const int& FGresponse::getDormBreaks(const int& dist) const {
 	if (dist<0 || dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!");
@@ -229,16 +250,16 @@ const Fract& FGresponse::getDormBreaks(const int& dist) const {
 
 void FGresponse::setNoPert(const unsigned& noPert){m_NoPert = noPert;}
 void FGresponse::setNoPertSub(const unsigned& noPertSub){m_NoPertSub = noPertSub;}
-void FGresponse::setPropKilled(const vector<Fract>& propKilled){m_PropKilled = propKilled;}
-void FGresponse::setPropKilled(const Fract& propKilled, const int& dist){m_PropKilled[dist] = propKilled;}
+void FGresponse::setPropKilled(const vector<int>& propKilled){m_PropKilled = propKilled;}
+void FGresponse::setPropKilled(const int& propKilled, const int& dist){m_PropKilled[dist] = propKilled;}
 void FGresponse::setBreakAge(const vector< vector<int> >& breakAge){m_BreakAge = breakAge;}
 void FGresponse::setBreakAge(const int& breakAge, const int& dist, const int& range){m_BreakAge[dist][range] = breakAge;}
 void FGresponse::setResprAge(const vector< vector<int> >& resprAge){m_ResprAge = resprAge;}
 void FGresponse::setResprAge(const int& resprAge, const int& dist, const int& range){m_ResprAge[dist][range] = resprAge;}
-void FGresponse::setFates(const vector<vector< vector<Fract> > >& fates){m_Fates = fates;}
-void FGresponse::setFates(const Fract& fates, const int& dist, const int& range, const DistFate& df){m_Fates[dist][range][df] = fates;}
-void FGresponse::setDormBreaks(const vector<Fract>& dormBreaks){m_DormBreaks = dormBreaks;}
-void FGresponse::setDormBreaks(const Fract& dormBreaks, const int& dist){m_DormBreaks[dist] = dormBreaks;}
+void FGresponse::setFates(const vector<vector< vector<int> > >& fates){m_Fates = fates;}
+void FGresponse::setFates(const int& fates, const int& dist, const int& range, const DistFate& df){m_Fates[dist][range][df] = fates;}
+void FGresponse::setDormBreaks(const vector<int>& dormBreaks){m_DormBreaks = dormBreaks;}
+void FGresponse::setDormBreaks(const int& dormBreaks, const int& dist){m_DormBreaks[dist] = dormBreaks;}
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Other functions                                                                                 */

@@ -249,11 +249,11 @@ void SuFate::CheckSurvival()
         }
         
         /* check germinant plants survival */
-        FGlegion->reduceCohort(0, 0, FractToDouble(FGparams->getSoilTolerance()[Germinant][soilRes]));
+        FGlegion->reduceCohort(0, 0, IntToDouble(FGparams->getSoilTolerance()[Germinant][soilRes]));
         /* check immature plants survival */
-        FGlegion->reduceCohort(0, FGparams->getMatTime() - 1, FractToDouble(FGparams->getSoilTolerance()[Immature][soilRes]));
+        FGlegion->reduceCohort(0, FGparams->getMatTime() - 1, IntToDouble(FGparams->getSoilTolerance()[Immature][soilRes]));
         /* check mature plants survival */
-        FGlegion->reduceCohort(FGparams->getMatTime(), FGparams->getLifeSpan()+1, FractToDouble(FGparams->getSoilTolerance()[Mature][soilRes]));
+        FGlegion->reduceCohort(FGparams->getMatTime(), FGparams->getLifeSpan()+1, IntToDouble(FGparams->getSoilTolerance()[Mature][soilRes]));
         
       }
     }
@@ -290,29 +290,29 @@ void SuFate::CheckSurvival()
           /* only matures or only immature plants in this Legion */
           if (ayTemp >= this->getMatTime(fg) || aoTemp < this->getMatTime(fg))
           {
-            bool survive; /* are the plants able to survive or not */
+            int survivePercent; /* are the plants able to survive or not */
             /* check if plants are able to survive in this strata */
             if (ayTemp >= this->getMatTime(fg))
             { // only mature plants
-              survive = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
+              survivePercent = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
             } else
-            {
-              survive = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
+            { // only immature plants
+              survivePercent = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
             }
-            if (survive)
-            { /* If plants survives */
+            if (survivePercent > 0)
+            { /* If all or part of the plants survives */
               if (aoTemp < bkStratAges[st])
-              { /* All Legion Plants are in the same stratum, The whole Legion survives */
+              { /* All Legion Plants are in the same stratum, The whole or part of the Legion survives */
+                FGlegion->reduceCohort(ayTemp, aoTemp, IntToDouble(survivePercent));
                 co++;
               } else
               {	/* Plants covered more than a lone stratum */
-                /* We are just sure that individuals in this stratum can survive */
+                /* We are just sure that some individuals in this stratum might survive */
                 FGlegion->splitCohort(co, bkStratAges[st]-1);
                 noCohort++;
-                co++;
               }
             } else
-            {	/* If some plants die, individuals in this stratum die */
+            {	/* If all plants die, individuals in this stratum die */
               FGlegion->removeCohort(ayTemp, min(aoTemp, bkStratAges[st]-1));
               noCohort = m_Comm.getNoCohort(fg);
             }
@@ -399,7 +399,7 @@ double SuFate::calcFecund(int fg)
   //   cout << "PFG : " << fg << ", FECUND : " << min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg) << endl;
   // }
   // return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
-  return min(matAbund, 1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund())) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
+  return min(matAbund, static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund()))) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -526,10 +526,10 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
     bool doRecruit = true;
     if (doLight && m_GSP->getLightRecruitment() && doSoil && m_GSP->getSoilRecruitment())
     {
-      doRecruit = ( FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] && (soilRes == RMedium) );
+      doRecruit = ( FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] > 0 && (soilRes == RMedium) );
     } else if (doLight && m_GSP->getLightRecruitment())
     {
-      doRecruit = FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ];
+      doRecruit = (FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] > 0);
     } else if (doSoil && m_GSP->getSoilRecruitment())
     {
       doRecruit = (soilRes == RMedium);
@@ -541,24 +541,24 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
       double GerminRate = static_cast<double>(min( m_GSP->AbundToInt(FGparams->getMaxAbund()), AvailSeeds )) ;
       if (doLight && doSoil)
       {
-        Fract maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
-        Fract maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
+        int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
+        int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
         
-        GerminRate *= min(FractToDouble( maxRecruitLight0 ), FractToDouble( maxRecruitSoil0 ));
-        //GerminRate *= (FractToDouble( maxRecruitLight0 ) * FractToDouble( maxRecruitSoil0 ));
+        GerminRate *= min(IntToDouble(maxRecruitLight0), IntToDouble(maxRecruitSoil0));
+        // GerminRate *= (IntToDouble(maxRecruitLight0) * IntToDouble(maxRecruitSoil0));
       } else if (doLight)
       {
-        Fract maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
-        GerminRate *= FractToDouble( maxRecruitLight0 );
+        int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
+        GerminRate *= IntToDouble(maxRecruitLight0);
       } else if (doSoil)
       {
-        Fract maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
-        GerminRate *= FractToDouble( maxRecruitSoil0 );
+        int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
+        GerminRate *= IntToDouble(maxRecruitSoil0);
       }
       
       // do recruitment only if abundance is < to max abund * (1 + ImmSize)
       double totAbund = FuncG->totalNumAbund( 1, this->getLifeSpan(fg) );
-      double totMaxAbund = (1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund())) * (1.0 + FGparams->getImmSize());
+      double totMaxAbund = static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund())) * (1.0 + IntToDouble(FGparams->getImmSize()));
       if (totAbund < totMaxAbund)
       {
         double envRecruit = getEnvRecrRate(fg);
@@ -601,25 +601,25 @@ void SuFate::DoUnaffected(int fg, int Dstb, FGresponse FGresp)
   LegionPtr FGlegion = m_Comm.getFuncGroup_(fg)->getLList_();
   
   int noRange = FGresp.getResprAge().front().size(); /* The number of way to react to a disturbance */
-for (int range=0; range<noRange; range++)
-{
-  /* get FG break age for considered disturbance and FG class age */
-  int ageStart = FGresp.getBreakAge(Dstb, range); /* Disturbance age delimiters */
-  int ageStop = max(FGresp.getBreakAge(Dstb, range + 1) - 1, ageStart); // if we have a only one year disturbance class then ageStart = ageStop
-  double pcUnaff = FractToDouble(FGresp.getFates(Dstb, range, Unaff )); /* Unaffected plant percentage */
-  
-  if (m_Comm.getNoCohort(fg) > 0)
+  for (int range=0; range<noRange; range++)
   {
-    /* remove cohorts if all plants are affected */
-    if (pcUnaff <= 0.0)
+    /* get FG break age for considered disturbance and FG class age */
+    int ageStart = FGresp.getBreakAge(Dstb, range); /* Disturbance age delimiters */
+    int ageStop = max(FGresp.getBreakAge(Dstb, range + 1) - 1, ageStart); // if we have a only one year disturbance class then ageStart = ageStop
+    int pcUnaff = FGresp.getFates(Dstb, range, Unaff ); /* Unaffected plant percentage */
+    
+    if (m_Comm.getNoCohort(fg) > 0)
     {
-      FGlegion->removeCohort(ageStart, ageStop);
-    } else if (pcUnaff < 1.0)
-    { /* reduce cohorts abundances if some plants are not unaffected */
-    FGlegion->reduceCohort(ageStart, ageStop, pcUnaff);
+      /* remove cohorts if all plants are affected */
+      if (pcUnaff <= 0)
+      {
+        FGlegion->removeCohort(ageStart, ageStop);
+      } else if (pcUnaff < 100)
+      { /* reduce cohorts abundances if some plants are not unaffected */
+        FGlegion->reduceCohort(ageStart, ageStop, IntToDouble(pcUnaff));
+      }
     }
-  }
-} // end loop over ranges
+  } // end loop over ranges
 } // end of DoUnaffected()
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -642,11 +642,11 @@ void SuFate::DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp)
     {
       for (int range=0; range<noRange; range++)
       {
-        double newKill = FractToDouble(FGresp.getFates(Dstb, range, Kill)) * Dstb_val;
-        double newRespr = FractToDouble(FGresp.getFates(Dstb, range, Respr)) * Dstb_val;
-        FGresp.setFates(DoubleToFract(newKill), Dstb, range, Kill);
-        FGresp.setFates(DoubleToFract(newRespr), Dstb, range, Respr);
-        FGresp.setFates(getLeavingFract(DoubleToFract(newKill), DoubleToFract(newRespr)), Dstb, range, Unaff);
+        double newKill = IntToDouble(FGresp.getFates(Dstb, range, Kill)) * Dstb_val;
+        double newRespr = IntToDouble(FGresp.getFates(Dstb, range, Respr)) * Dstb_val;
+        FGresp.setFates(DoubleToInt(newKill), Dstb, range, Kill);
+        FGresp.setFates(DoubleToInt(newRespr), Dstb, range, Respr);
+        FGresp.setFates(getLeavingFract(DoubleToInt(newKill), DoubleToInt(newRespr)), Dstb, range, Unaff);
       }
     }
     
@@ -654,7 +654,7 @@ void SuFate::DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp)
     {
       for (int range=0; range<noRange; range++)
       {
-        ResprC[range] += ceil( FractToDouble( FGresp.getFates(Dstb, range, Respr) ) * m_Comm.getCSize(fg, co) *
+        ResprC[range] += ceil( IntToDouble( FGresp.getFates(Dstb, range, Respr) ) * m_Comm.getCSize(fg, co) *
           fmax( fmin( m_Comm.getAo(fg,co), FGresp.getBreakAge(Dstb, range+1) - 1 ) -
           fmax( m_Comm.getAy(fg,co), FGresp.getBreakAge(Dstb, range) ) + 1, 0 ) ); //rescale to apply on range-1
       }
@@ -680,19 +680,19 @@ void SuFate::DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp)
     PropPool* Dpp_ptr = FuncG->getPools_(DormantP);
     
     /* Kill active seeds */
-    App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * FractToDouble(FGresp.getPropKilled(Dstb)) * Dstb_val) );
+    App_ptr->setSize( ceil(App_ptr->getSize() - App_ptr->getSize() * IntToDouble(FGresp.getPropKilled(Dstb)) * Dstb_val) );
     
     /* Transfer Dormant seeds to active seed pool */
     if (FuncG->getFGparams_()->getInnateDormancy())
     {
-      Fract dormbreaks = FGresp.getDormBreaks(Dstb);
-      App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * FractToDouble(dormbreaks) * Dstb_val, 100) ) ;
-      if (dormbreaks == PC100)
+      int dormbreaks = FGresp.getDormBreaks(Dstb);
+      App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * IntToDouble(dormbreaks) * Dstb_val, 100) ) ;
+      if (dormbreaks == 100)
       {
         Dpp_ptr->EmptyPool();
       } else
       {
-        Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - FractToDouble(dormbreaks) * Dstb_val) ) );
+        Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - IntToDouble(dormbreaks) * Dstb_val) ) );
       }
     }
   }
