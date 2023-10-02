@@ -125,7 +125,7 @@
 ##' @importFrom data.table rbindlist fwrite
 ##' @importFrom raster raster stack 
 ##' rasterToPoints as.data.frame extract cellFromXY
-##' @importFrom doParallel registerDoParallel
+## @importFrom doParallel registerDoParallel
 ##'
 ##'
 ## END OF HEADER ###############################################################
@@ -233,7 +233,10 @@ POST_FATE.temporalEvolution = function(
     {
       if (.getOS() != "windows")
       {
-        registerDoParallel(cores = opt.no_CPU)
+        if (!isNamespaceLoaded("doParallel")) {
+          if(!requireNamespace('doParallel', quietly = TRUE)) stop("Package 'doParallel' not found")
+        }
+        doParallel::registerDoParallel(cores = opt.no_CPU)
       } else
       {
         warning("Parallelisation with `foreach` is not available for Windows. Sorry.")

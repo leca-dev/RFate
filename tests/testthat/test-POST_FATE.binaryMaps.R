@@ -230,6 +230,7 @@ test_that("POST_FATE.binaryMaps gives error with wrong data : rasters", {
     if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
     PRE_FATE.skeletonDirectory()
     
+    # library(sf)
     library(raster)
     map_mask = raster(nrows = 5, ncols = 5)
     map_mask[] = 1
@@ -281,6 +282,7 @@ test_that("POST_FATE.binaryMaps gives correct outputs : warnings", {
     if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
     PRE_FATE.skeletonDirectory()
     
+    library(sf)
     library(raster)
     map_0 = raster(nrows = 5, ncols = 5, resolution = 50)
     map_0[] = 0
@@ -345,6 +347,7 @@ test_that("POST_FATE.binaryMaps gives correct outputs : correct", {
     if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
     PRE_FATE.skeletonDirectory()
     
+    library(sf)
     library(raster)
     map_0 = raster(nrows = 5, ncols = 5, resolution = 50)
     map_0[] = 0

@@ -723,7 +723,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DROUGH
                , "`DROUGHT.no_sub` must be an integer > 0")
 })
 
-
 ## INPUTS
 test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.freq", {
   

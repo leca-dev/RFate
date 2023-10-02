@@ -133,7 +133,7 @@
 .testParam_notBetween = function(param, value1, value2)
 {
   if (.testParam_notNum(param) ||
-      sum(param < value1) > 0 || sum(param > value2) > 0)
+      sum(param < value1, na.rm = TRUE) > 0 || sum(param > value2, na.rm = TRUE) > 0)
   {
     return(TRUE)
   } else
@@ -152,7 +152,7 @@
 ## ----------------------------------------------------------------------------
 .testParam_notInteger = function(param)
 {
-  if (.testParam_notBetween(param, 0, 1e15) || sum(param %% 1 != 0) > 0)
+  if (.testParam_notBetween(param, 0, 1e15) || sum(param %% 1 != 0, na.rm = TRUE) > 0)
   {
     return(TRUE)
   } else

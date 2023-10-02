@@ -308,23 +308,7 @@ each PFG :</p>
 <dl><dt>ACTIVE_GERM</dt>
 <dd><p>proportion of seeds that will germinate for each soil 
   condition (<code>Low</code>, <code>Medium</code>, <code>High</code>) <br><br>
-  Three methods to define these proportions are available :</p><ul><li><p>from <strong>predefined scenarios</strong> (using <code>strategy_ag</code>) :</p><dl><dt></dt>
-<dd><p><strong><code>| _L_ _M_ _H_ |</code></strong></p></dd>
-
-      <dt></dt>
-<dd><p><code>_______________</code></p></dd>
-
-      <dt>poor_lover</dt>
-<dd><p><code>| 80% 90% 50% |</code></p></dd>
-
-      <dt>indifferent</dt>
-<dd><p><code>| 90% 90% 90% |</code></p></dd>
-
-      <dt>rich_lover</dt>
-<dd><p><code>| 50% 90% 80% |</code></p></dd>
-
-    
-</dl></li>
+  Three methods to define these proportions are available :</p><ul><li><p>from <strong>predefined scenarios</strong> (using <code>strategy_ag</code>) : <br><br><strong><code>| _L_ _M_ _H_ |</code></strong> <br><code>_______________</code> <br><code>| 80% 90% 50% |</code> <strong>poor_lover</strong> <br><code>| 90% 90% 90% |</code> <strong>indifferent</strong> <br><code>| 50% 90% 80% |</code> <strong>rich_lover</strong> <br><br></p></li>
 <li><p>from <strong>predefined rules</strong> (using <code>type</code>) :</p><ul><li><p>for <code>H</code> (herbaceous) : <code>80%, 100%, 50%</code></p></li>
 <li><p>for <code>C</code> (chamaephyte) or <code>P</code> (phanerophyte) : 
       <code>90%, 100%, 90%</code></p></li>
@@ -341,23 +325,7 @@ each PFG :</p>
         and <code>soil_tol_max</code></p></li>
 <li><p>with <code>L</code>: low soil, <code>M</code>: medium soil, <code>H</code>: 
         high soil <br><br></p></li>
-</ul><p></p><dl><dt></dt>
-<dd><p><strong><code>| ___ L ___ | ___ M ___ | ___ H ___ |</code></strong></p></dd>
-
-        <dt></dt>
-<dd><p><code>_____________________________________</code></p></dd>
-
-        <dt>oligotrophic</dt>
-<dd><p><code>__________ 1 ___ 1.5 ___ 2 __________</code></p></dd>
-
-        <dt>mesotrophic</dt>
-<dd><p><code>__________ 1.5 _ 2.5 _ 4.5 __________</code></p></dd>
-
-        <dt>eutrophic</dt>
-<dd><p><code>__________ 3 ____ 4 ____ 5 __________</code></p></dd>
-
-      
-</dl></li>
+</ul><p><strong><code>| ___ L ___ | ___ M ___ | ___ H ___ |</code></strong> <br><code>_____________________________________</code> <br><code>__________ 1 ___ 1.5 ___ 2 __________</code> <strong>oligotrophic</strong> <br><code>__________ 1.5 _ 2.5 _ 4.5 __________</code> <strong>mesotrophic</strong> <br><code>__________ 3 ____ 4 ____ 5 __________</code> <strong>eutrophic</strong> <br><br></p></li>
 <li><p>from <strong>user data</strong> : <br><em>with the values contained within the <code>soil_contrib</code>, 
       <code>soil_tol_min</code> and <code>soil_tol_max</code> columns, if provided <br><br></em></p></li>
 </ul><p></p></dd>
@@ -373,26 +341,7 @@ each PFG :</p>
 <li><p>with <code>g</code>: Germinant, <code>i</code>: Immature, <code>m</code>: Mature</p></li>
 <li><p>with <code>L</code>: low soil, <code>M</code>: medium soil, <code>H</code>: 
         high soil <br><br></p></li>
-</ul><p></p><dl><dt></dt>
-<dd><p><strong><code>| _____ g ____ | _____ i ____ | _____ m ____ |</code></strong></p></dd>
-
-        <dt></dt>
-<dd><p><strong><code>| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |</code></strong></p></dd>
-
-        <dt></dt>
-<dd><p><code>______________________________________________</code></p></dd>
-
-        <dt>poor_lover</dt>
-<dd><p><code>| 30% 100% 10% | 60% 100% 40% | 90% 100% 70% |</code></p></dd>
-
-        <dt>ubiquist</dt>
-<dd><p><code>| 90% 100% 80% | 90% 100% 80% | 90% 100% 80% |</code></p></dd>
-
-        <dt>rich_lover</dt>
-<dd><p><code>| 10% 100% 30% | 40% 100% 60% | 70% 100% 90% |</code></p></dd>
-
-      
-</dl></li>
+</ul><p><strong><code>| _____ g ____ | _____ i ____ | _____ m ____ |</code></strong> <br><strong><code>| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |</code></strong> <br><code>______________________________________________</code> <br><code>| 30% 100% 10% | 60% 100% 40% | 90% 100% 70% |</code> <strong>poor_lover</strong> <br><code>| 90% 100% 80% | 90% 100% 80% | 90% 100% 80% |</code> <strong>ubiquist</strong> <br><code>| 10% 100% 30% | 40% 100% 60% | 70% 100% 90% |</code> <strong>rich_lover</strong> <br><br></p></li>
 <li><p>from <strong>predefined rules</strong> (corresponding to the 
     <code>poor_lover</code> strategy) :</p><dl><dt>(A)</dt>
 <dd><p>germinants are severely impacted by wrong soil conditions</p></dd>
@@ -412,20 +361,7 @@ each PFG :</p>
 <li><p>with <code>g</code>: Germinant, <code>i</code>: Immature, <code>m</code>: Mature</p></li>
 <li><p>with <code>L</code>: low soil, <code>M</code>: medium soil, <code>H</code>: 
         high soil <br><br></p></li>
-</ul><p></p><dl><dt></dt>
-<dd><p><strong><code>| _____ g ____ | _____ i ____ | _____ m ____ |</code></strong></p></dd>
-
-        <dt></dt>
-<dd><p><strong><code>| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |</code></strong></p></dd>
-
-        <dt></dt>
-<dd><p><code>______________________________________________</code></p></dd>
-
-        <dt></dt>
-<dd><p><code>| 30% 100% 10% | 60% 100% 40% | 90% 100% 70% |</code></p></dd>
-
-      
-</dl></li>
+</ul><p><strong><code>| _____ g ____ | _____ i ____ | _____ m ____ |</code></strong> <br><strong><code>| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |</code></strong> <br><code>______________________________________________</code> <br><code>| 30% 100% 10% | 60% 100% 40% | 90% 100% 70% |</code> <br><br></p></li>
 <li><p>from <strong>user data</strong> : <br><em>with the values contained within the <code>lifeStage</code>, 
       <code>resources</code> and <code>tolerance</code> columns, if provided</em></p></li>
 </ul><p></p></dd>

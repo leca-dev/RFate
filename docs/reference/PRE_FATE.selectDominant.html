@@ -400,24 +400,9 @@ presence/abundance sampling information</strong>. <br><br></p>
 
 
 </dl><p>A table is created containing for each species whether or not it fullfills 
-the conditions selected, for example :</p>
-<p></p><dl><dt></dt>
-<dd><p><strong><code>| ___A1 ___A2 ___B1 ___B2 grass lands |</code></strong></p></dd>
-
-      <dt></dt>
-<dd><p><code>_______________________________________</code></p></dd>
-
-      <dt>species a</dt>
-<dd><p><code>| _TRUE FALSE FALSE _TRUE _TRUE FALSE |</code></p></dd>
-
-      <dt>species b</dt>
-<dd><p><code>| _TRUE _TRUE _TRUE FALSE FALSE FALSE |</code></p></dd>
-
-      <dt>species c</dt>
-<dd><p><code>| FALSE FALSE FALSE FALSE FALSE _TRUE |</code></p></dd>
-
-    
-</dl><p>This table is transformed into Euclidean distance matrix (with 
+the conditions selected, for example : <br><br></p>
+<p><strong><code>| ___A1 ___A2 ___B1 ___B2 grass lands |</code></strong> <br><code>_______________________________________</code> <br><code>| _TRUE FALSE FALSE _TRUE _TRUE FALSE |</code> <strong>species a</strong> <br><code>| _TRUE _TRUE _TRUE FALSE FALSE FALSE |</code> <strong>species b</strong> <br><code>| FALSE FALSE FALSE FALSE FALSE _TRUE |</code> <strong>species c</strong> <br><br></p>
+<p>This table is transformed into Euclidean distance matrix (with 
 <code><a href="https://rdrr.io/pkg/FD/man/gowdis.html" class="external-link">gowdis</a></code> and <code><a href="https://rdrr.io/pkg/ade4/man/quasieuclid.html" class="external-link">quasieuclid</a></code> functions) <br>
 to cluster and represent species (see 
 <a href="PRE_FATE.selectDominant#value"><code>.pdf</code> output files</a>) :</p><ul><li><p>through phylogenetic tree (with <code><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></code> and 

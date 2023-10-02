@@ -100,16 +100,14 @@
 ##' 
 ##' 
 ##' A table is created containing for each species whether or not it fullfills 
-##' the conditions selected, for example :
+##' the conditions selected, for example : \cr \cr
 ##' 
-##'     \describe{
-##'       \item{}{\strong{\code{| ___A1 ___A2 ___B1 ___B2 grass lands |}}}
-##'       \item{}{\code{_______________________________________}}
-##'       \item{species a}{\code{| _TRUE FALSE FALSE _TRUE _TRUE FALSE |}}
-##'       \item{species b}{\code{| _TRUE _TRUE _TRUE FALSE FALSE FALSE |}}
-##'       \item{species c}{\code{| FALSE FALSE FALSE FALSE FALSE _TRUE |}}
-##'     }
-##'     
+##' \strong{\code{| ___A1 ___A2 ___B1 ___B2 grass lands |}} \cr
+##' \code{_______________________________________} \cr
+##' \code{| _TRUE FALSE FALSE _TRUE _TRUE FALSE |} \strong{species a} \cr
+##' \code{| _TRUE _TRUE _TRUE FALSE FALSE FALSE |} \strong{species b} \cr
+##' \code{| FALSE FALSE FALSE FALSE FALSE _TRUE |} \strong{species c} \cr \cr
+##' 
 ##' This table is transformed into Euclidean distance matrix (with 
 ##' \code{\link[FD]{gowdis}} and \code{\link[ade4]{quasieuclid}} functions) \cr
 ##' to cluster and represent species (see 

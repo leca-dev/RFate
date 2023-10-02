@@ -367,11 +367,11 @@ POST_FATE.graphic_validationStatistics = function(
                     ## Calculate validation statistics ------------------------
                     mat.bin = tmp
                     mat.bin$fg = ifelse(mat.bin$fg >= cutoff$Cut, 1, 0)
-                    mat.conf = cmx(mat.bin[, c("ID", "obs", "fg")])
-                    sens = sensitivity(mat.conf)
-                    spec = specificity(mat.conf)
+                    mat.conf = PresenceAbsence::cmx(mat.bin[, c("ID", "obs", "fg")])
+                    sens = PresenceAbsence::sensitivity(mat.conf)
+                    spec = PresenceAbsence::specificity(mat.conf)
                     TSS = sens$sensitivity + spec$specificity - 1
-                    auc = auc(mat.bin[, c("ID", "obs", "fg")])
+                    auc = PresenceAbsence::auc(mat.bin[, c("ID", "obs", "fg")])
                     
                     mat.res.habi = data.frame(PFG = fg, HAB = habi
                                               , cutoff = cutoff$Cut
@@ -465,7 +465,7 @@ POST_FATE.graphic_validationStatistics = function(
                 .getGraphics_theme() +
                 theme(legend.key.width = unit(2, "lines"))
               
-              pp_leg = suppressWarnings(get_legend(pp))
+              pp_leg = suppressWarnings(cowplot::get_legend(pp))
               
               ## 2. get one plot for the title and for each statistic
               pp_list = foreach(vari = c("all", "sensitivity", "specificity", "TSS", "AUC")
@@ -528,10 +528,10 @@ POST_FATE.graphic_validationStatistics = function(
                     .getGraphics_theme() +
                     theme(axis.text.x = element_text(angle = 90))
                   
-                  pp = suppressWarnings(ggMarginal(pp
-                                                   , type = "boxplot"
-                                                   , margins = "y"
-                                                   , size = 7))
+                  pp = suppressWarnings(ggExtra:: ggMarginal(pp
+                                                             , type = "boxplot"
+                                                             , margins = "y"
+                                                             , size = 7))
                 }
                 
                 return(pp)
@@ -539,11 +539,11 @@ POST_FATE.graphic_validationStatistics = function(
               
               ## 3. gather everything
               pp_list[[6]] = pp_leg
-              pp_final = grid.arrange(grobs = pp_list
-                                      , layout_matrix = matrix(c(1,1,2,3,2,3,4,5,4,5,6,6)
-                                                               , ncol = 2, byrow = TRUE)
-                                      , newpage = ifelse(y == years[1], FALSE, TRUE))                    
-              pp_final = ggdraw(pp_final) + 
+              pp_final = gridExtra::grid.arrange(grobs = pp_list
+                                                 , layout_matrix = matrix(c(1,1,2,3,2,3,4,5,4,5,6,6)
+                                                                          , ncol = 2, byrow = TRUE)
+                                                 , newpage = ifelse(y == years[1], FALSE, TRUE))                    
+              pp_final = cowplot::ggdraw(pp_final) + 
                 theme(plot.background = element_rect(fill = "transparent", color = NA))
               # require(patchwork)
               # pp_final <- pp_list[[1]] / (pp_list[[2]] | pp_list[[3]]) / (pp_list[[4]] | pp_list[[5]]) / pp_list[[6]]

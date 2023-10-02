@@ -312,12 +312,12 @@ test_that("PRE_FATE.params_PFGdisturbance gives error with wrong data : mat.PFG.
   expect_error(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
                                               , mat.PFG.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
                                                                          , killedIndiv = -1, resproutIndiv = 1))
-               , "`mat.PFG.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$killedIndiv` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
                                               , mat.PFG.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
                                                                          , killedIndiv = 1.5, resproutIndiv = 1))
-               , "`mat.PFG.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$killedIndiv` must be an integer > 0"
                , fixed = TRUE)
   
   
@@ -331,12 +331,12 @@ test_that("PRE_FATE.params_PFGdisturbance gives error with wrong data : mat.PFG.
   expect_error(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
                                               , mat.PFG.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
                                                                          , killedIndiv = 1, resproutIndiv = -1))
-               , "`mat.PFG.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$resproutIndiv` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGdisturbance(name.simulation = "FATE_simulation"
                                               , mat.PFG.tol = data.frame(nameDist = 1, PFG = "A", responseStage = 1
                                                                          , killedIndiv = 1, resproutIndiv = 1.5))
-               , "`mat.PFG.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$resproutIndiv` must be an integer > 0"
                , fixed = TRUE)
   
   
@@ -452,8 +452,8 @@ test_that(paste0("PRE_FATE.params_PFGdisturbance gives correct output : "
                                                                                      , responseStage = c(1, 2)
                                                                                      , breakAge = 2
                                                                                      , resproutAge = 1
-                                                                                     , killedIndiv = 5
-                                                                                     , resproutIndiv = 4))
+                                                                                     , killedIndiv = 50
+                                                                                     , resproutIndiv = 40))
                            , "The parameter file FATE_simulation/DATA/PFGS/DIST/DIST_1.txt has been successfully created !")
           })
 

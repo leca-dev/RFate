@@ -211,22 +211,24 @@
 ##' PRE_FATE.skeletonDirectory()
 ##' 
 ##' ## Create PFG succession parameter files -----------------------------------------------------
+##' tab.succ = data.frame(PFG = paste0('PFG', 1:6)
+##'                       , type = c('C', 'C', 'H', 'H', 'P', 'P')
+##'                       , height = c(10, 250, 36, 68, 1250, 550)
+##'                       , maturity = c(5, 5, 3, 3, 8, 9)
+##'                       , longevity = c(12, 200, 25, 4, 110, 70))
 ##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_simulation'
-##'                               , mat.PFG.succ = data.frame(PFG = paste0('PFG', 1:6)
-##'                                                           , type = c('C', 'C', 'H', 'H', 'P', 'P')
-##'                                                           , height = c(10, 250, 36, 68, 1250, 550)
-##'                                                           , maturity = c(5, 5, 3, 3, 8, 9)
-##'                                                           , longevity = c(12, 200, 25, 4, 110, 70)))
+##'                               , mat.PFG.succ = tab.succ)
 ##'                                                         
 ##' 
 ##' ## Create PFG succession parameter files (with immature_size) --------------------------------
+##' tab.succ = data.frame(PFG = paste0('PFG', 1:6)
+##'                       , type = c('C', 'C', 'H', 'H', 'P', 'P')
+##'                       , height = c(10, 250, 36, 68, 1250, 550)
+##'                       , maturity = c(5, 5, 3, 3, 8, 9)
+##'                       , longevity = c(12, 200, 25, 4, 110, 70)
+##'                       , immature_size = c(100, 80, 100, 100, 10, 50))
 ##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_simulation'
-##'                               , mat.PFG.succ = data.frame(PFG = paste0('PFG', 1:6)
-##'                                                           , type = c('C', 'C', 'H', 'H', 'P', 'P')
-##'                                                           , height = c(10, 250, 36, 68, 1250, 550)
-##'                                                           , maturity = c(5, 5, 3, 3, 8, 9)
-##'                                                           , longevity = c(12, 200, 25, 4, 110, 70)
-##'                                                           , immature_size = c(100, 80, 100, 100, 10, 50)))
+##'                               , mat.PFG.succ = tab.succ)
 ##'                                                         
 ##'                                                         
 ##' ## -------------------------------------------------------------------------------------------

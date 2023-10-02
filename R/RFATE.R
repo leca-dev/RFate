@@ -33,6 +33,6 @@ RFATE = function()
     stop("Could not find shinyApp directory. Try re-installing `RFate`.", call. = FALSE)
   }
   
-  runApp(appDir, display.mode = "normal")
+  shiny::runApp(appDir, display.mode = "normal")
 }
 

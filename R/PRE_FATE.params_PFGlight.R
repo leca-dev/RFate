@@ -110,14 +110,13 @@
 ##'   condition (\code{Low}, \code{Medium}, \code{High}) \cr \cr
 ##'   Three methods to define these proportions are available :
 ##'   \itemize{
-##'     \item from \strong{predefined scenarios} (using \code{strategy_ag}) :
-##'     \describe{
-##'       \item{}{\strong{\code{| _L_ _M_ _H_ |}}}
-##'       \item{}{\code{_______________}}
-##'       \item{light_lover}{\code{| 50\% 80\% 90\% |}}
-##'       \item{indifferent}{\code{| 90\% 90\% 90\% |}}
-##'       \item{shade_lover}{\code{| 90\% 80\% 50\% |}}
-##'     }
+##'     \item from \strong{predefined scenarios} (using \code{strategy_ag}) : \cr \cr
+##'     \strong{\code{| _L_ _M_ _H_ |}} \cr
+##'     \code{_______________} \cr
+##'     \code{| 50\% 80\% 90\% |} \strong{light_lover} \cr
+##'     \code{| 90\% 90\% 90\% |} \strong{indifferent} \cr
+##'     \code{| 90\% 80\% 50\% |} \strong{shade_lover} \cr \cr
+##'     
 ##'     \item from \strong{predefined rules} (using \code{type}) :
 ##'     \itemize{
 ##'       \item for \code{H} (herbaceous) : \code{50\%, 80\%, 90\%}
@@ -145,16 +144,15 @@
 ##'         \item with \code{L}: low light, \code{M}: medium light, \code{H}: 
 ##'         high light \cr \cr
 ##'       }
-##'     \describe{
-##'       \item{}{\strong{\code{| _ g _ | _ i _ | _ m _ |}}}
-##'       \item{}{\strong{\code{| L M H | L M H | L M H |}}}
-##'       \item{}{\code{_________________________}}
-##'       \item{full_light}{\code{| 1 1 1 | . . 1 | . . 1 |}}
-##'       \item{pioneer}{\code{| 1 1 1 | . 1 1 | . 1 1 |}}
-##'       \item{ubiquist}{\code{| 1 1 1 | 1 1 1 | 1 1 1 |}}
-##'       \item{semi_shade}{\code{| 1 1 . | 1 1 . | 1 1 1 |}}
-##'       \item{undergrowth}{\code{| 1 1 . | 1 1 . | 1 1 . |}}
-##'     }
+##'       \strong{\code{| _ g _ | _ i _ | _ m _ |}} \cr
+##'       \strong{\code{| L M H | L M H | L M H |}} \cr
+##'       \code{_________________________} \cr
+##'       \code{| 1 1 1 | . . 1 | . . 1 |} \strong{full_light} \cr
+##'       \code{| 1 1 1 | . 1 1 | . 1 1 |} \strong{pioneer} \cr
+##'       \code{| 1 1 1 | 1 1 1 | 1 1 1 |} \strong{ubiquist} \cr
+##'       \code{| 1 1 . | 1 1 . | 1 1 1 |} \strong{semi_shade} \cr
+##'       \code{| 1 1 . | 1 1 . | 1 1 . |} \strong{undergrowth} \cr \cr
+##'       
 ##'     \item from \strong{predefined rules} (using \code{type} and 
 ##'     \code{light_need}):
 ##'       \describe{
@@ -179,16 +177,15 @@
 ##'         \item with \code{L}: low light, \code{M}: medium light, \code{H}: 
 ##'         high light \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| _ g _ | _ i _ | _ m _ |}}}
-##'         \item{}{\strong{\code{| L M H | L M H | L M H |}}}
-##'         \item{}{\code{_________________________}}
-##'         \item{1}{\code{| A . . | A . D | A C C |}}
-##'         \item{2}{\code{| A A . | A A D | A A C |}}
-##'         \item{3}{\code{| B A . | . A D | . A C |}}
-##'         \item{4}{\code{| B A A | . A A | . A A |}}
-##'         \item{5}{\code{| B . A | . . A | . C A |}}
-##'       }
+##'       \strong{\code{| _ g _ | _ i _ | _ m _ |}} \cr
+##'       \strong{\code{| L M H | L M H | L M H |}} \cr
+##'       \code{_________________________} \cr
+##'       \code{| A . . | A . D | A C C |} \strong{1} \cr
+##'       \code{| A A . | A A D | A A C |} \strong{2} \cr
+##'       \code{| B A . | . A D | . A C |} \strong{3} \cr
+##'       \code{| B A A | . A A | . A A |} \strong{4} \cr
+##'       \code{| B . A | . . A | . C A |} \strong{5} \cr \cr
+##'       
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{lifeStage}, 
 ##'       \code{resources} and \code{tolerance} columns, if provided}

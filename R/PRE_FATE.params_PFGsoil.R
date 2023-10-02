@@ -90,14 +90,13 @@
 ##'   condition (\code{Low}, \code{Medium}, \code{High}) \cr \cr
 ##'   Three methods to define these proportions are available :
 ##'   \itemize{
-##'     \item from \strong{predefined scenarios} (using \code{strategy_ag}) :
-##'     \describe{
-##'       \item{}{\strong{\code{| _L_ _M_ _H_ |}}}
-##'       \item{}{\code{_______________}}
-##'       \item{poor_lover}{\code{| 80\% 90\% 50\% |}}
-##'       \item{indifferent}{\code{| 90\% 90\% 90\% |}}
-##'       \item{rich_lover}{\code{| 50\% 90\% 80\% |}}
-##'     }
+##'     \item from \strong{predefined scenarios} (using \code{strategy_ag}) : \cr \cr
+##'     \strong{\code{| _L_ _M_ _H_ |}} \cr
+##'     \code{_______________} \cr
+##'     \code{| 80\% 90\% 50\% |} \strong{poor_lover} \cr
+##'     \code{| 90\% 90\% 90\% |} \strong{indifferent} \cr
+##'     \code{| 50\% 90\% 80\% |} \strong{rich_lover} \cr \cr
+##'     
 ##'     \item from \strong{predefined rules} (using \code{type}) :
 ##'     \itemize{
 ##'       \item for \code{H} (herbaceous) : \code{80\%, 100\%, 50\%}
@@ -122,13 +121,12 @@
 ##'         \item with \code{L}: low soil, \code{M}: medium soil, \code{H}: 
 ##'         high soil \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___ L ___ | ___ M ___ | ___ H ___ |}}}
-##'         \item{}{\code{_____________________________________}}
-##'         \item{oligotrophic}{\code{__________ 1 ___ 1.5 ___ 2 __________}}
-##'         \item{mesotrophic}{\code{__________ 1.5 _ 2.5 _ 4.5 __________}}
-##'         \item{eutrophic}{\code{__________ 3 ____ 4 ____ 5 __________}}
-##'       }
+##'       \strong{\code{| ___ L ___ | ___ M ___ | ___ H ___ |}} \cr
+##'       \code{_____________________________________} \cr
+##'       \code{__________ 1 ___ 1.5 ___ 2 __________} \strong{oligotrophic} \cr
+##'       \code{__________ 1.5 _ 2.5 _ 4.5 __________} \strong{mesotrophic} \cr
+##'       \code{__________ 3 ____ 4 ____ 5 __________} \strong{eutrophic} \cr \cr
+##'       
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{soil_contrib}, 
 ##'       \code{soil_tol_min} and \code{soil_tol_max} columns, if provided \cr \cr}
@@ -149,14 +147,13 @@
 ##'         \item with \code{L}: low soil, \code{M}: medium soil, \code{H}: 
 ##'         high soil \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}}}
-##'         \item{}{\strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}}}
-##'         \item{}{\code{______________________________________________}}
-##'         \item{poor_lover}{\code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |}}
-##'         \item{ubiquist}{\code{| 90\% 100\% 80\% | 90\% 100\% 80\% | 90\% 100\% 80\% |}}
-##'         \item{rich_lover}{\code{| 10\% 100\% 30\% | 40\% 100\% 60\% | 70\% 100\% 90\% |}}
-##'       }
+##'       \strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}} \cr
+##'       \strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}} \cr
+##'       \code{______________________________________________} \cr
+##'       \code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |} \strong{poor_lover} \cr
+##'       \code{| 90\% 100\% 80\% | 90\% 100\% 80\% | 90\% 100\% 80\% |} \strong{ubiquist} \cr
+##'       \code{| 10\% 100\% 30\% | 40\% 100\% 60\% | 70\% 100\% 90\% |} \strong{rich_lover} \cr \cr
+##'       
 ##'     \item from \strong{predefined rules} (corresponding to the 
 ##'     \code{poor_lover} strategy) :
 ##'       \describe{
@@ -172,12 +169,11 @@
 ##'         \item with \code{L}: low soil, \code{M}: medium soil, \code{H}: 
 ##'         high soil \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}}}
-##'         \item{}{\strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}}}
-##'         \item{}{\code{______________________________________________}}
-##'         \item{}{\code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |}}
-##'       }
+##'       \strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}} \cr
+##'       \strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}} \cr
+##'       \code{______________________________________________} \cr
+##'       \code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |} \cr \cr
+##'       
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{lifeStage}, 
 ##'       \code{resources} and \code{tolerance} columns, if provided}

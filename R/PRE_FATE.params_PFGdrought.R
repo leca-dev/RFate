@@ -83,24 +83,23 @@
 ##'         \item with \code{K}: killed individuals, \code{R}: resprouting 
 ##'         individuals \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___1___ | ___2___ | ___3___ | ___4___ |}}}
-##'         \item{}{\strong{\code{| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |}}}
-##'         \item{}{\code{________________IMMEDIATE________________}}
-##'         \item{herbs_cham_1}{\code{| 10\% _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |}}
-##'         \item{herbs_cham_2}{\code{| 20\% _0_ | _0_ _0_ | _0_ _0_ | 10\% _0_ |}}
-##'         \item{herbs_cham_3}{\code{| 40\% _0_ | 10\% _0_ | 10\% _0_ | 20\% _0_ |}}
-##'         \item{trees_1}{\code{| 10\% _0_ | _0_ _0_ | _0_ 40\% | _0_ 40\% |}}
-##'         \item{trees_2}{\code{| 20\% _0_ | _0_ 10\% | _0_ 50\% | 10\% 50\% |}}
-##'         \item{trees_3}{\code{| 40\% _0_ | 10\% 40\% | 10\% 80\% | 20\% 80\% |}}
-##'         \item{}{\code{_________________DELAYED_________________}}
-##'         \item{herbs_cham_1}{\code{| _0_ _0_ | _0_ 10\% | _0_ 10\% | _0_ 10\% |}}
-##'         \item{herbs_cham_2}{\code{| _0_ _0_ | _0_ 10\% | _0_ 10\% | _0_ 10\% |}}
-##'         \item{herbs_cham_3}{\code{| _0_ _0_ | _0_ 10\% | _0_ 10\% | _0_ 10\% |}}
-##'         \item{trees_1}{\code{| _0_ _0_ | _0_ 10\% | _0_ 40\% | _0_ 40\% |}}
-##'         \item{trees_2}{\code{| 10\% _0_ | _0_ 40\% | _0_ 40\% | _0_ 40\% |}}
-##'         \item{trees_3}{\code{| 20\% _0_ | 10\% 40\% | 10\% 50\% | 10\% 50\% |}}
-##'       }
+##'       \strong{\code{| ___1___ | ___2___ | ___3___ | ___4___ |}} \cr
+##'       \strong{\code{| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |}} \cr
+##'       \code{________________IMMEDIATE________________} \cr
+##'       \code{| 10\% _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{herbs_cham_1} \cr
+##'       \code{| 20\% _0_ | _0_ _0_ | _0_ _0_ | 10\% _0_ |} \strong{herbs_cham_2} \cr
+##'       \code{| 40\% _0_ | 10\% _0_ | 10\% _0_ | 20\% _0_ |} \strong{herbs_cham_3} \cr
+##'       \code{| 10\% _0_ | _0_ _0_ | _0_ 40\% | _0_ 40\% |} \strong{trees_1} \cr
+##'       \code{| 20\% _0_ | _0_ 10\% | _0_ 50\% | 10\% 50\% |} \strong{trees_2} \cr
+##'       \code{| 40\% _0_ | 10\% 40\% | 10\% 80\% | 20\% 80\% |} \strong{trees_3} \cr
+##'       \code{_________________DELAYED_________________} \cr
+##'       \code{| _0_ _0_ | _0_ 10\% | _0_ 10\% | _0_ 10\% |} \strong{herbs_cham_1} \cr
+##'       \code{| _0_ _0_ | _0_ 10\% | _0_ 10\% | _0_ 10\% |} \strong{herbs_cham_2} \cr
+##'       \code{| _0_ _0_ | _0_ 10\% | _0_ 10\% | _0_ 10\% |} \strong{herbs_cham_3} \cr
+##'       \code{| _0_ _0_ | _0_ 10\% | _0_ 40\% | _0_ 40\% |} \strong{trees_1} \cr
+##'       \code{| 10\% _0_ | _0_ 40\% | _0_ 40\% | _0_ 40\% |} \strong{trees_2} \cr
+##'       \code{| 20\% _0_ | 10\% 40\% | 10\% 50\% | 10\% 50\% |} \strong{trees_3} \cr \cr
+##'       
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{responseStage}, 
 ##'       \code{killedIndiv} and \code{resproutIndiv} columns, if provided \cr
@@ -391,10 +390,12 @@ PRE_FATE.params_PFGdrought = function(
       }
       if (sum(colnames(mat.PFG.tol) == "killedIndiv") == 1)
       {
+        .testParam_notInteger.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv)
         .testParam_NAvalues.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv)
-        .testParam_notInValues.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv, 0:10)
+        .testParam_notBetween.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv, 0, 100)
+        .testParam_notInteger.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv)
         .testParam_NAvalues.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv)
-        .testParam_notInValues.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv, 0:10)
+        .testParam_notBetween.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv, 0, 100)
       }
     }
     if (sum(colnames(mat.PFG.tol) == "strategy_tol") == 1)

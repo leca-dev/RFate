@@ -1,4 +1,5 @@
 library(RFate)
+library(parallel)
 context("POST_FATE.relativeAbund() function")
 
 

@@ -150,31 +150,21 @@
 ##'         \item with \code{K}: killed individuals, \code{R}: resprouting 
 ##'         individuals \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___1___ | ___2___ | ___3___ | ___4___ |}}}
-##'         \item{}{\strong{\code{| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |}}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{indifferent}{\code{| _0_ _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{mowing_herbs}{\code{| _0_ _0_ | _0_ _0_ | 50\% 50\% | 100\% 
-##'         0_ |}}
-##'         \item{mowing_trees}{\code{| _0_ _0_ | 100\% 0_ | 100\% 0_ | 100\% 
-##'         0_ |}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{grazing_herbs_1}{\code{| _0_ _0_ | 10\% _0_ | _0_ 50\% | _0_ 
-##'         10\% |}}
-##'         \item{grazing_herbs_2}{\code{| _0_ _0_ | 50\% _0_ | _0_ 80\% | 10\% 
-##'         50\% |}}
-##'         \item{grazing_herbs_3}{\code{| _0_ _0_ | 90\% _0_ | 10\% 90\% | 50\% 
-##'         50\% |}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{grazing_trees_1}{\code{| 40\% _0_ | _0_ _0_ | _0_ _0_ | _0_ 
-##'         _0_ |}}
-##'         \item{grazing_trees_2}{\code{| 80\% _0_ | _0_ _0_ | _0_ _0_ | _0_ 
-##'         _0_ |}}
-##'         \item{grazing_trees_3}{\code{| 100\% 0_ | 40\% _0_ | _0_ _0_ | _0_ 
-##'         _0_ |}}
-##'       }
+##'       \strong{\code{| ___1___ | ___2___ | ___3___ | ___4___ |}} \cr
+##'       \strong{\code{| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |}} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| _0_ _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{indifferent} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| _0_ _0_ | _0_ _0_ | 50\% 50\% | 100\% 0_ |} \strong{mowing_herbs} \cr
+##'       \code{| _0_ _0_ | 100\% 0_ | 100\% 0_ | 100\% 0_ |} \strong{mowing_trees} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| _0_ _0_ | 10\% _0_ | _0_ 50\% | _0_ 10\% |} \strong{grazing_herbs_1} \cr
+##'       \code{| _0_ _0_ | 50\% _0_ | _0_ 80\% | 10\% 50\% |} \strong{grazing_herbs_2} \cr
+##'       \code{| _0_ _0_ | 90\% _0_ | 10\% 90\% | 50\% 50\% |} \strong{grazing_herbs_3} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| 40\% _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{grazing_trees_1} \cr
+##'       \code{| 80\% _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{grazing_trees_2} \cr
+##'       \code{| 100\% 0_ | 40\% _0_ | _0_ _0_ | _0_ _0_ |} \strong{grazing_trees_3} \cr \cr
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{responseStage}, 
 ##'       \code{killedIndiv} and \code{resproutIndiv} columns, if provided \cr

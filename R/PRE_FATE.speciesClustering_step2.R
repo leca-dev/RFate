@@ -169,17 +169,17 @@ PRE_FATE.speciesClustering_step2 = function(clust.dendrograms
   #############################################################################
   
   ## CHECK parameter clust.dendrograms
-  if (.testParam_notInClass(clust.dendrograms, c("list","hclust")))
+  if (!("list" %in% class(clust.dendrograms)) && !("hclust" %in% class(clust.dendrograms)))
   {
     stop("No data given!\n (missing `clust.dendrograms` information which must be of class `hclust` or a list `hclust` objects)")
   } else
   {
-    if (class(clust.dendrograms) == "list" &&
+    if ("list" %in% class(clust.dendrograms) &&
         length(which(sapply(clust.dendrograms, class) == "hclust")) < length(clust.dendrograms))
     {
       stop("Wrong type of data!\n each element of `clust.dendrograms` must be of class `hclust`")
     }
-    if (class(clust.dendrograms) == "hclust")
+    if ("hclust" %in% class(clust.dendrograms))
     {
       clust.dendrograms = list(GROUP1 = clust.dendrograms)
     }
@@ -203,17 +203,17 @@ PRE_FATE.speciesClustering_step2 = function(clust.dendrograms
     }
   }
   ## CHECK parameter mat.species.DIST
-  if (.testParam_notInClass(mat.species.DIST, c("list","dist")))
+  if (!("list" %in% class(mat.species.DIST)) && !("dist" %in% class(mat.species.DIST)))
   {
     stop("No data given!\n (missing `mat.species.DIST` information which must be a dist object, or a list of dist objects)")
   } else
   {
-    if (class(mat.species.DIST) == "list" &&
+    if ("list" %in% class(mat.species.DIST) &&
         length(mat.species.DIST) != length(clust.dendrograms))
     {
       stop("Wrong type of data!\n `mat.species.DIST` must have the same length than `clust.dendrograms`")
     }
-    if (class(mat.species.DIST) == "dist")
+    if ("dist" %in% class(mat.species.DIST))
     {
       mat.species.DIST = list(GROUP1 = mat.species.DIST)
     }

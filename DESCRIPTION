@@ -52,14 +52,14 @@ Imports:
     phyloclim, FD, ade4, adehabitatMA, adehabitatHR, 
     cluster, huge, 
     RColorBrewer, colorspace,
-    ape,
-    parallel, doParallel
+    ape
 Suggests:
     spelling, 
     testthat,
     covr,
     knitr, markdown, rmarkdown,
     shiny, PresenceAbsence, ggnewscale, ggExtra, gridExtra, cowplot, 
+    parallel, doParallel, 
     SPOT, fpc, clValid, ecospat, betapart
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
