@@ -569,24 +569,24 @@ PRE_FATE.params_PFGlight = function(
         ## Low light condition
         if (mat.PFG.light$light_need[i] <= 2)
         {
-          LIGHT_TOL[c(1, 4, 7), i] = 1
+          LIGHT_TOL[c(1, 4, 7), i] = 100
         }
         ## Medium light condition
         if (mat.PFG.light$light_need[i] >= 2 && mat.PFG.light$light_need[i] <= 4)
         {
-          LIGHT_TOL[c(2, 5, 8), i] = 1
+          LIGHT_TOL[c(2, 5, 8), i] = 100
         }
         ## High light condition
         if (mat.PFG.light$light_need[i] >= 3)
         {
-          LIGHT_TOL[c(3, 6, 9), i] = 1
+          LIGHT_TOL[c(3, 6, 9), i] = 100
         }
       }
       
       ## All germinants are assumed to be tolerant to Low light
-      LIGHT_TOL[c(1),] = 1
+      LIGHT_TOL[c(1), ] = 100
       ## All mature trees and shrubs are assumed to be tolerant to Low and Medium Light
-      LIGHT_TOL[c(8, 9), which(mat.PFG.light$type %in% c("C", "P"))] = 1
+      LIGHT_TOL[c(8, 9), which(mat.PFG.light$type %in% c("C", "P"))] = 100
       ## All immature trees that grow in the penultimate stratum are assumed to be tolerant to High light
       # LIGHT_TOL[c(6), which(mat.PFG.light$type == "P" & CHANG_STR_AGES[nrow(CHANG_STR_AGES) - 1,] < MATURITY)] = 1
       
