@@ -452,7 +452,8 @@ class SuFate
 	 * ("dist", "fire", "drought")
 	 */
 	void DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp);
-
+	void DoDisturbance(int Dstb, double Dstb_val);
+	
 };
 
 BOOST_CLASS_VERSION(SuFate, 0)

@@ -1589,11 +1589,7 @@ void SimulMap::DoDisturbance(int yr)
     { // loop on disturbances
       if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0)
       { // within mask & disturbance occurs in this cell
-        for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-        { // loop on PFG
-          FGresponse fgresp = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDistResponse();
-          m_SuccModelMap(cell_ID)->DoDisturbance(fg, dist, m_DistMap(cell_ID, dist), fgresp);
-        }
+        m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
       }
     } // end loop over disturbances
   } // end loop over cells
@@ -1956,7 +1952,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
         //logg.info(">>>>> PFG ", fg);
-        vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
+        vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
         GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
         for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
@@ -1977,7 +1973,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
           { // loop on pixels
             unsigned cell_ID = m_MaskCells[pixId];
-            int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( bkStratAges[strat-1] , bkStratAges[strat] - 1 ));
             abunValues1[cell_ID] = abundTmp;
             abunValues2[cell_ID] += abundTmp;
             if (abundTmp>0)
@@ -2075,8 +2071,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           int abundTmp = 0;
           for (unsigned fg=0; fg<m_FGparams.size(); fg++)
           { // loop on PFG
-            vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
-            abundTmp += static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
+            abundTmp += static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( bkStratAges[strat-1] , bkStratAges[strat] - 1 ));
           }
           abunValues3[cell_ID] = abundTmp;
           if (abundTmp>0)

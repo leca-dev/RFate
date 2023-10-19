@@ -206,8 +206,6 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 
 void Legion::splitCohort(const int& i, const int& age)
 {
-	vector< Cohort >::iterator it = m_CohortList.begin() + i + 1;
-
 	/* create a new cohort of same size between (age + 1, ao) */
 	Cohort newCohort(m_CohortList[i].getCSize(), age + 1, m_CohortList[i].getAo());
 
@@ -215,7 +213,7 @@ void Legion::splitCohort(const int& i, const int& age)
 	m_CohortList[i].setAo(age);
 
 	/* insert the new cohort after the original one */
-	m_CohortList.insert(it, newCohort);
+	m_CohortList.insert(m_CohortList.begin() + i + 1, newCohort);
 } // end of splitCohort(...)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -340,7 +338,7 @@ void Legion::reduceCohort(const int& ay, const int& ao, const double& reducFact)
 		}
 
 		/* 1. DELETE ALL */
-		if (reducFact < 0)
+		if (reducFact <= 0)
 		{
 			this->removeCohort(tempAy, tempAo);
 		}
@@ -375,8 +373,6 @@ void Legion::reduceCohort(const int& ay, const int& ao, const double& reducFact)
 				co--;
 			}
 		}
-		/* pick up cohorts (optional) */
-		this->pickupCohorts();
 	}
 } // end of reduceCohort(...)
 
