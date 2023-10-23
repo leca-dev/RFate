@@ -49,13 +49,13 @@
 ##'   \code{H} (herbaceous), \code{C} (chamaephyte) or \code{P} (phanerophyte) 
 ##'   for now}
 ##'   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
-##'   \code{10} corresponding to the proportion of seeds that will germinate for 
+##'   \code{100} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{Low} soil condition}
 ##'   \item{(\emph{active_germ_medium})}{an \code{integer} between \code{0} and 
-##'   \code{10} corresponding to the proportion of seeds that will germinate for 
+##'   \code{100} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{Medium} soil condition}
 ##'   \item{(\emph{active_germ_high})}{an \code{integer} between \code{0} and 
-##'   \code{10} corresponding to the proportion of seeds that will germinate for 
+##'   \code{100} corresponding to the proportion of seeds that will germinate for 
 ##'   \code{High} soil condition}
 ##'   \item{(\emph{strategy_ag})}{a \code{string} to choose the germination 
 ##'   strategy : \cr \code{poor_lover}, \code{indifferent}, \code{rich_lover} 
@@ -75,7 +75,7 @@
 ##'   \code{Immature}, \code{Mature})}
 ##'   \item{resources}{the concerned soil condition (\code{Low}, 
 ##'   \code{Medium}, \code{High})}
-##'   \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
+##'   \item{tolerance}{an \code{integer} between \code{0} and \code{100} 
 ##'   corresponding to the proportion of surviving individuals}
 ##'   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
 ##'   strategy : \cr \code{poor_lover}, \code{ubiquist}, \code{rich_lover} 
@@ -90,14 +90,13 @@
 ##'   condition (\code{Low}, \code{Medium}, \code{High}) \cr \cr
 ##'   Three methods to define these proportions are available :
 ##'   \itemize{
-##'     \item from \strong{predefined scenarios} (using \code{strategy_ag}) :
-##'     \describe{
-##'       \item{}{\strong{\code{| _L_ _M_ _H_ |}}}
-##'       \item{}{\code{_______________}}
-##'       \item{poor_lover}{\code{| 80\% 90\% 50\% |}}
-##'       \item{indifferent}{\code{| 90\% 90\% 90\% |}}
-##'       \item{rich_lover}{\code{| 50\% 90\% 80\% |}}
-##'     }
+##'     \item from \strong{predefined scenarios} (using \code{strategy_ag}) : \cr \cr
+##'     \strong{\code{| _L_ _M_ _H_ |}} \cr
+##'     \code{_______________} \cr
+##'     \code{| 80\% 90\% 50\% |} \strong{poor_lover} \cr
+##'     \code{| 90\% 90\% 90\% |} \strong{indifferent} \cr
+##'     \code{| 50\% 90\% 80\% |} \strong{rich_lover} \cr \cr
+##'     
 ##'     \item from \strong{predefined rules} (using \code{type}) :
 ##'     \itemize{
 ##'       \item for \code{H} (herbaceous) : \code{80\%, 100\%, 50\%}
@@ -122,13 +121,12 @@
 ##'         \item with \code{L}: low soil, \code{M}: medium soil, \code{H}: 
 ##'         high soil \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___ L ___ | ___ M ___ | ___ H ___ |}}}
-##'         \item{}{\code{_____________________________________}}
-##'         \item{oligotrophic}{\code{__________ 1 ___ 1.5 ___ 2 __________}}
-##'         \item{mesotrophic}{\code{__________ 1.5 _ 2.5 _ 4.5 __________}}
-##'         \item{eutrophic}{\code{__________ 3 ____ 4 ____ 5 __________}}
-##'       }
+##'       \strong{\code{| ___ L ___ | ___ M ___ | ___ H ___ |}} \cr
+##'       \code{_____________________________________} \cr
+##'       \code{__________ 1 ___ 1.5 ___ 2 __________} \strong{oligotrophic} \cr
+##'       \code{__________ 1.5 _ 2.5 _ 4.5 __________} \strong{mesotrophic} \cr
+##'       \code{__________ 3 ____ 4 ____ 5 __________} \strong{eutrophic} \cr \cr
+##'       
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{soil_contrib}, 
 ##'       \code{soil_tol_min} and \code{soil_tol_max} columns, if provided \cr \cr}
@@ -149,14 +147,13 @@
 ##'         \item with \code{L}: low soil, \code{M}: medium soil, \code{H}: 
 ##'         high soil \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
-##'         \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
-##'         \item{}{\code{_____________________________________}}
-##'         \item{poor_lover}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
-##'         \item{ubiquist}{\code{| 90 100 80 | 90 100 80 | 90 100 80 |}}
-##'         \item{rich_lover}{\code{| 10 100 30 | 40 100 60 | 70 100 90 |}}
-##'       }
+##'       \strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}} \cr
+##'       \strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}} \cr
+##'       \code{______________________________________________} \cr
+##'       \code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |} \strong{poor_lover} \cr
+##'       \code{| 90\% 100\% 80\% | 90\% 100\% 80\% | 90\% 100\% 80\% |} \strong{ubiquist} \cr
+##'       \code{| 10\% 100\% 30\% | 40\% 100\% 60\% | 70\% 100\% 90\% |} \strong{rich_lover} \cr \cr
+##'       
 ##'     \item from \strong{predefined rules} (corresponding to the 
 ##'     \code{poor_lover} strategy) :
 ##'       \describe{
@@ -172,12 +169,11 @@
 ##'         \item with \code{L}: low soil, \code{M}: medium soil, \code{H}: 
 ##'         high soil \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___ g ___ | ___ i ___ | ___ m ___ |}}}
-##'         \item{}{\strong{\code{| _L _M_ H_ | _L _M_ H_ | _L _M_ H_ |}}}
-##'         \item{}{\code{_____________________________________}}
-##'         \item{}{\code{| 30 100 10 | 60 100 40 | 90 100 70 |}}
-##'       }
+##'       \strong{\code{| _____ g ____ | _____ i ____ | _____ m ____ |}} \cr
+##'       \strong{\code{| _L__ _M_ _H_ | _L__ _M_ _H_ | _L__ _M_ _H_ |}} \cr
+##'       \code{______________________________________________} \cr
+##'       \code{| 30\% 100\% 10\% | 60\% 100\% 40\% | 90\% 100\% 70\% |} \cr \cr
+##'       
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{lifeStage}, 
 ##'       \code{resources} and \code{tolerance} columns, if provided}
@@ -194,7 +190,7 @@
 ##' \describe{
 ##'   \item{NAME}{name of the PFG}
 ##'   \item{ACTIVE_GERM}{germination rates depending on soil conditions
-##'   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+##'   \cr \emph{(integer between \code{0} and \code{100}\%)}}
 ##'   \item{SOIL_CONTRIB}{contribution to the soil value of the pixel}
 ##'   \item{SOIL_LOW}{lower value of soil supported by the PFG, \cr 
 ##'   defining the limit between \code{Low} and \code{Medium} soil resources 
@@ -213,7 +209,7 @@
 ##'   }
 ##'   These parameters should be given in this order : \code{GeL, GeM, GeH, ImL, 
 ##'   ImM, ImH, MaL, MaM, MaH}
-##'   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+##'   \cr \emph{(integer between \code{0} and \code{100}\%)}. 
 ##'   \cr \cr}
 ##' }
 ##' 
@@ -252,20 +248,20 @@
 ##' 
 ##' ## Create PFG soil parameter files (with all values) -----------------------------------------
 ##' tab.soil = data.frame(PFG = paste0('PFG', 1:6)
-##'                       , active_germ_low = c(5, 8, 8, 6, 8, 8)
-##'                       , active_germ_medium = rep(9, 6)
-##'                       , active_germ_high = c(9, 8, 8, 9, 8, 4)
+##'                       , active_germ_low = c(50, 80, 80, 60, 80, 80)
+##'                       , active_germ_medium = rep(90, 6)
+##'                       , active_germ_high = c(90, 80, 80, 90, 80, 40)
 ##'                       , strategy_contrib = c('eutrophic', 'mesotrophic', 'mesotrophic'
 ##'                                              , 'mesotrophic', 'mesotrophic', 'oligotrophic'))
 ##' tab.tol = expand.grid(resources = c('Low', 'Medium', 'High')
 ##'                       , lifeStage = c('Germinant', 'Immature', 'Mature')
 ##'                       , PFG = paste0('PFG', 1:6))
-##' tab.tol$tolerance = c(8, 8, 4, 8, 5, 4, 9, 4, 4
-##'                       , rep(9, 9)
-##'                       , rep(9, 9)
-##'                       , 8, 8, 6, 8, 6, 6, 9, 5, 5
-##'                       , 8, 8, 8, 5, 6, 9, 3, 4, 9
-##'                       , 8, 8, 8, 5, 5, 9, 5, 5, 9)
+##' tab.tol$tolerance = c(80, 80, 40, 80, 50, 40, 90, 40, 40
+##'                       , rep(90, 9)
+##'                       , rep(90, 9)
+##'                       , 80, 80, 60, 80, 60, 60, 90, 50, 50
+##'                       , 80, 80, 80, 50, 60, 90, 30, 40, 90
+##'                       , 80, 80, 80, 50, 50, 90, 50, 50, 90)
 ##' 
 ##' PRE_FATE.params_PFGsoil(name.simulation = 'FATE_simulation'
 ##'                         , mat.PFG.soil = tab.soil
@@ -352,12 +348,15 @@ PRE_FATE.params_PFGsoil = function(
     }
     if (sum(colnames(mat.PFG.soil) == "active_germ_low") == 1)
     {
+      .testParam_notInteger.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low)
       .testParam_NAvalues.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low)
-      .testParam_notInValues.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low, 0:10)
+      .testParam_notBetween.m("mat.PFG.soil$active_germ_low", mat.PFG.soil$active_germ_low, 0, 100)
+      .testParam_notInteger.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium)
       .testParam_NAvalues.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium)
-      .testParam_notInValues.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium, 0:10)
+      .testParam_notBetween.m("mat.PFG.soil$active_germ_medium", mat.PFG.soil$active_germ_medium, 0, 100)
+      .testParam_notInteger.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high)
       .testParam_NAvalues.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high)
-      .testParam_notInValues.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high, 0:10)
+      .testParam_notBetween.m("mat.PFG.soil$active_germ_high", mat.PFG.soil$active_germ_high, 0, 100)
     }
     if (sum(colnames(mat.PFG.soil) == "strategy_ag") == 1)
     {
@@ -416,8 +415,10 @@ PRE_FATE.params_PFGsoil = function(
       {
         .testParam_notInValues.m("mat.PFG.tol$lifeStage", mat.PFG.tol$lifeStage, c("Germinant", "Immature", "Mature"))
         .testParam_notInValues.m("mat.PFG.tol$resources", mat.PFG.tol$resources, c("Low", "Medium", "High"))
+        
+        .testParam_notInteger.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance)
         .testParam_NAvalues.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance)
-        .testParam_notInValues.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance, 0:10)
+        .testParam_notBetween.m("mat.PFG.tol$tolerance", mat.PFG.tol$tolerance, 0, 100)
       }
       if (sum(colnames(mat.PFG.tol) == "strategy_tol") == 1)
       {
@@ -445,26 +446,15 @@ PRE_FATE.params_PFGsoil = function(
   ##   = these rates should express a deviation from the
   ##     germination rate in optimal conditions (=100%)
   ##   = for each soil condition (Low, Medium, High)
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
-  ACTIVE_GERM = matrix(10, nrow = 3, ncol = no.PFG)
+  ACTIVE_GERM = matrix(100, nrow = 3, ncol = no.PFG)
   
   if (sum(colnames(mat.PFG.soil) == "type") == 1)
   {
     ## woody species have little variation in germination rate depending on soil conditions
-    ACTIVE_GERM[c(1,3), which(mat.PFG.soil$type %in% c("C", "P"))] = 9
+    ACTIVE_GERM[c(1,3), which(mat.PFG.soil$type %in% c("C", "P"))] = 90
     ## herbaceous germinate less in richer soil
-    ACTIVE_GERM[1, which(mat.PFG.soil$type == "H")] = 8 ## low soil conditions
-    ACTIVE_GERM[3, which(mat.PFG.soil$type == "H")] = 5 ## high soil conditions
+    ACTIVE_GERM[1, which(mat.PFG.soil$type == "H")] = 80 ## low soil conditions
+    ACTIVE_GERM[3, which(mat.PFG.soil$type == "H")] = 50 ## high soil conditions
     
   } else if (sum(colnames(mat.PFG.soil) == "active_germ_low") == 1 ||
              sum(colnames(mat.PFG.soil) == "active_germ_medium") == 1 ||
@@ -487,9 +477,9 @@ PRE_FATE.params_PFGsoil = function(
   {
     for (i in 1:no.PFG){
       ACTIVE_GERM[, i] = switch(mat.PFG.soil$strategy_ag[i]
-                                , poor_lover = c(8, 9, 5)
-                                , indifferent = c(9, 9, 9)
-                                , rich_lover = c(5, 9, 8)
+                                , poor_lover = c(80, 90, 50)
+                                , indifferent = c(90, 90, 90)
+                                , rich_lover = c(50, 90, 80)
       )
     }
   } else
@@ -546,29 +536,18 @@ PRE_FATE.params_PFGsoil = function(
   ## GET SOIL TOLERANCE
   ##    = for each life stage (Germinant, Immature, Mature)
   ##    = for each soil condition (Low, Medium, High)
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
-  SOIL_TOL = matrix(10, nrow = 3 * 3, ncol = no.PFG)
+  SOIL_TOL = matrix(100, nrow = 3 * 3, ncol = no.PFG)
   
   if (is.null(mat.PFG.tol))
   {
-    SOIL_TOL[1, ] = 3 ## Germinant - Low soil conditions
-    SOIL_TOL[3, ] = 1 ## Germinant - High soil conditions
+    SOIL_TOL[1, ] = 30 ## Germinant - Low soil conditions
+    SOIL_TOL[3, ] = 10 ## Germinant - High soil conditions
     
-    SOIL_TOL[4, ] = 6 ## Immature - Low soil conditions
-    SOIL_TOL[6, ] = 4 ## Immature - High soil conditions
+    SOIL_TOL[4, ] = 60 ## Immature - Low soil conditions
+    SOIL_TOL[6, ] = 40 ## Immature - High soil conditions
     
-    SOIL_TOL[7, ] = 9 ## Mature - Low soil conditions
-    SOIL_TOL[9, ] = 7 ## Mature - High soil conditions
+    SOIL_TOL[7, ] = 90 ## Mature - Low soil conditions
+    SOIL_TOL[9, ] = 70 ## Mature - High soil conditions
   } else
   {
     if (sum(colnames(mat.PFG.tol) == "lifeStage") == 1)
@@ -593,9 +572,9 @@ PRE_FATE.params_PFGsoil = function(
     {
       for (i in 1:no.PFG){
         SOIL_TOL[, i] = switch(mat.PFG.tol$strategy_tol[i]
-                               , poor_lover = c(3,10,1,6,10,4,9,10,7)
-                               , ubiquist = c(9,10,8,9,10,8,9,10,8)
-                               , rich_lover = c(1,10,3,4,10,6,7,10,9)
+                               , poor_lover = c(30, 100, 10, 60, 100, 40, 90, 100, 70)
+                               , ubiquist = c(90, 100, 80, 90, 100, 80, 90, 100, 80)
+                               , rich_lover = c(10, 100, 30, 40, 100, 60, 70, 100, 90)
         )
       }
     } else

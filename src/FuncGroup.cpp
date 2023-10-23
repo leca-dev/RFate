@@ -138,7 +138,7 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 			/* initialize the legion part (mature and immature) counts */
 			unsigned matLegPart = 0, immLegPart = 0;
 			unsigned MatTime = m_FGparams->getMatTime();
-			double ImmSize = m_FGparams->getImmSize();
+			double ImmSize = IntToDouble(m_FGparams->getImmSize());
 
 			if (Ao>=MatTime && Age1>=MatTime)
 			{ // some matures in this legion

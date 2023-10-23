@@ -120,6 +120,7 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
                                         , mat.PFG.light = data.frame(PFG = 1, type = "H", light_need = 1.5))
                , "`mat.PFG.light$light_need` must be either `0`, `1`, `2`, `3`, `4` or `5`", fixed = TRUE)
   
+  
   ## TEST mat.PFG.light$active_germ_low : no NA values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = c(1,2), active_germ_low = c(3,NA)
@@ -130,12 +131,12 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, active_germ_low = -1
                                                                      , active_germ_medium = 1, active_germ_high = 1))
-               , "`mat.PFG.light$active_germ_low` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.light$active_germ_low` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1.5
                                                                      , active_germ_medium = 1, active_germ_high = 1))
-               , "`mat.PFG.light$active_germ_low` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.light$active_germ_low` must be an integer > 0"
                , fixed = TRUE)  
   
   
@@ -149,12 +150,12 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
                                                                      , active_germ_medium = -1, active_germ_high = 1))
-               , "`mat.PFG.light$active_germ_medium` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.light$active_germ_medium` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
                                                                      , active_germ_medium = 1.5, active_germ_high = 1))
-               , "`mat.PFG.light$active_germ_medium` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.light$active_germ_medium` must be an integer > 0"
                , fixed = TRUE)  
   
   
@@ -168,12 +169,12 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
                                                                      , active_germ_medium = 1, active_germ_high = -1))
-               , "`mat.PFG.light$active_germ_high` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.light$active_germ_high` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
                                                                      , active_germ_medium = 1, active_germ_high = 1.5))
-               , "`mat.PFG.light$active_germ_high` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.light$active_germ_high` must be an integer > 0"
                , fixed = TRUE)  
   
   ## TEST mat.PFG.light$strategy_ag : correct values
@@ -293,14 +294,14 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.tol", 
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "Low", tolerance = -1))
-               # , "`mat.PFG.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
-               , "`mat.PFG.tol$tolerance` must be either `0` or `1`"
+               , "`mat.PFG.tol$tolerance` must be an integer > 0"
+               # , "`mat.PFG.tol$tolerance` must be either `0` or `1`"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "indifferent")
                                         , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant", resources = "Low", tolerance = 1.5))
-               # , "`mat.PFG.tol$tolerance` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
-               , "`mat.PFG.tol$tolerance` must be either `0` or `1`"
+               , "`mat.PFG.tol$tolerance` must be an integer > 0"
+               # , "`mat.PFG.tol$tolerance` must be either `0` or `1`"
                , fixed = TRUE)
   
   ## TEST mat.PFG.tol$strategy_tol : correct values
@@ -362,8 +363,10 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
   if (dir.exists("FATE_simulation")) unlink("FATE_simulation", recursive = TRUE)
   PRE_FATE.skeletonDirectory()
   expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                                           , mat.PFG.light = data.frame(PFG = 1, active_germ_low = 1
-                                                                                        , active_germ_medium = 5, active_germ_high = 9)
+                                                           , mat.PFG.light = data.frame(PFG = 1
+                                                                                        , active_germ_low = 10
+                                                                                        , active_germ_medium = 50
+                                                                                        , active_germ_high = 90)
                                                            , mat.PFG.tol = NULL))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
@@ -410,7 +413,7 @@ test_that("PRE_FATE.params_PFGlight gives correct output : ACTIVE_GERM scenario 
   expect_message(suppressWarnings(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                                            , mat.PFG.light = data.frame(PFG = 1, shade_factor = 1, strategy_ag = "light_lover")
                                                            , mat.PFG.tol = data.frame(PFG = 1, lifeStage = "Germinant"
-                                                                                      , resources = "Low", tolerance = 1)))
+                                                                                      , resources = "Low", tolerance = 10)))
                  , "The parameter file FATE_simulation/DATA/PFGS/LIGHT/LIGHT_1.txt has been successfully created !")
 })
 

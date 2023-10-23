@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <br/><br/>
 
@@ -21,7 +21,7 @@ multiple species in interactions and (iii) account for the processes shaping bio
 <br/><br/>
 
 
-## <i class="fas fa-ruler"></i> Characteristics of a plant functional group ?
+## <i class="fa-solid fa-ruler"></i> Characteristics of a plant functional group ?
 
 <br/>
 
@@ -54,7 +54,7 @@ Building Plant Functional Group therefore consists of **bringing together plants
 
 <br/><br/>
 
-## <i class="fas fa-search"></i> Example of data required ?
+## <i class="fa-solid fa-magnifying-glass"></i> Example of data required ?
 
 <br/>
 
@@ -89,7 +89,7 @@ Here is an example of functional traits that can be used to build Plant Function
 <br/><br/>
 
 
-## <i class="fa fa-shoe-prints"></i> What are the key steps of this process ?
+## <i class="fa-solid fa-shoe-prints"></i> What are the key steps of this process ?
 
 <br/>
 

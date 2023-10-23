@@ -278,19 +278,19 @@ test_that("PRE_FATE.params_PFGsuccession gives error with wrong data : mat.PFG.s
                                              , mat.PFG.succ = data.frame(PFG = 1, type = "H"
                                                                          , height = 3, maturity = 4
                                                                          , longevity = 10, immature_size = "a"))
-               , "`mat.PFG.succ$immature_size` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.succ$immature_size` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
                                              , mat.PFG.succ = data.frame(PFG = 1, type = "H"
                                                                          , height = 3, maturity = 4
                                                                          , longevity = 10, immature_size = 1.5))
-               , "`mat.PFG.succ$immature_size` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.succ$immature_size` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
                                              , mat.PFG.succ = data.frame(PFG = 1, type = "H"
                                                                          , height = 3, maturity = 4
-                                                                         , longevity = 10, immature_size = 11))
-               , "`mat.PFG.succ$immature_size` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+                                                                         , longevity = 10, immature_size = 101))
+               , "`mat.PFG.succ$immature_size` must contain values between `0` and `100`"
                , fixed = TRUE)
   
   
@@ -476,7 +476,7 @@ test_that("PRE_FATE.params_PFGsuccession gives correct output : scenario immatur
                                                                            , height = c(10, 250, 36, 68, 1250, 550)
                                                                            , maturity = c(5, 5, 3, 3, 8, 9)
                                                                            , longevity = c(12, 200, 25, 4, 110, 70)
-                                                                           , immature_size = c(8, 8, 10, 10, 5, 6))
+                                                                           , immature_size = c(80, 80, 100, 100, 50, 60))
                                                , opt.folder.name = "imm_size")
                  , "The parameter file FATE_simulation/DATA/PFGS/SUCC/imm_size/SUCC_PFG1.txt has been successfully created !")
 })

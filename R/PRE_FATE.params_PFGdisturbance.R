@@ -64,9 +64,9 @@
 ##'   
 ##'   \item{responseStage}{an \code{integer} corresponding to the concerned 
 ##'   response class}
-##'   \item{killedIndiv}{an \code{integer} between \code{0} and \code{10} 
+##'   \item{killedIndiv}{an \code{integer} between \code{0} and \code{100} 
 ##'   corresponding to the proportion of killed individuals}
-##'   \item{resproutIndiv}{an \code{integer} between \code{0} and \code{10} 
+##'   \item{resproutIndiv}{an \code{integer} between \code{0} and \code{100} 
 ##'   corresponding to the proportion of resprouting individuals \cr \cr}
 ##'   
 ##'   \item{(\emph{strategy_tol})}{a \code{string} to choose the response to 
@@ -150,31 +150,21 @@
 ##'         \item with \code{K}: killed individuals, \code{R}: resprouting 
 ##'         individuals \cr \cr
 ##'       }
-##'       \describe{
-##'         \item{}{\strong{\code{| ___1___ | ___2___ | ___3___ | ___4___ |}}}
-##'         \item{}{\strong{\code{| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |}}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{indifferent}{\code{| _0_ _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{mowing_herbs}{\code{| _0_ _0_ | _0_ _0_ | 50\% 50\% | 100\% 
-##'         0_ |}}
-##'         \item{mowing_trees}{\code{| _0_ _0_ | 100\% 0_ | 100\% 0_ | 100\% 
-##'         0_ |}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{grazing_herbs_1}{\code{| _0_ _0_ | 10\% _0_ | _0_ 50\% | _0_ 
-##'         10\% |}}
-##'         \item{grazing_herbs_2}{\code{| _0_ _0_ | 50\% _0_ | _0_ 80\% | 10\% 
-##'         50\% |}}
-##'         \item{grazing_herbs_3}{\code{| _0_ _0_ | 90\% _0_ | 10\% 90\% | 50\% 
-##'         50\% |}}
-##'         \item{}{\code{_________________________________________}}
-##'         \item{grazing_trees_1}{\code{| 40\% _0_ | _0_ _0_ | _0_ _0_ | _0_ 
-##'         _0_ |}}
-##'         \item{grazing_trees_2}{\code{| 80\% _0_ | _0_ _0_ | _0_ _0_ | _0_ 
-##'         _0_ |}}
-##'         \item{grazing_trees_3}{\code{| 100\% 0_ | 40\% _0_ | _0_ _0_ | _0_ 
-##'         _0_ |}}
-##'       }
+##'       \strong{\code{| ___1___ | ___2___ | ___3___ | ___4___ |}} \cr
+##'       \strong{\code{| _K_ _R_ | _K_ _R_ | _K_ _R_ | _K_ _R_ |}} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| _0_ _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{indifferent} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| _0_ _0_ | _0_ _0_ | 50\% 50\% | 100\% 0_ |} \strong{mowing_herbs} \cr
+##'       \code{| _0_ _0_ | 100\% 0_ | 100\% 0_ | 100\% 0_ |} \strong{mowing_trees} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| _0_ _0_ | 10\% _0_ | _0_ 50\% | _0_ 10\% |} \strong{grazing_herbs_1} \cr
+##'       \code{| _0_ _0_ | 50\% _0_ | _0_ 80\% | 10\% 50\% |} \strong{grazing_herbs_2} \cr
+##'       \code{| _0_ _0_ | 90\% _0_ | 10\% 90\% | 50\% 50\% |} \strong{grazing_herbs_3} \cr
+##'       \code{_________________________________________} \cr
+##'       \code{| 40\% _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{grazing_trees_1} \cr
+##'       \code{| 80\% _0_ | _0_ _0_ | _0_ _0_ | _0_ _0_ |} \strong{grazing_trees_2} \cr
+##'       \code{| 100\% 0_ | 40\% _0_ | _0_ _0_ | _0_ _0_ |} \strong{grazing_trees_3} \cr \cr
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{responseStage}, 
 ##'       \code{killedIndiv} and \code{resproutIndiv} columns, if provided \cr
@@ -186,11 +176,11 @@
 ##'   }
 ##'   \item{PROP_KILLED}{ = the proportion of propagules killed by each 
 ##'   disturbance \cr
-##'   (\emph{currently set to \code{0} for all PFG and disturbances})
+##'   (\emph{currently set to \code{0}\% for all PFG and disturbances})
 ##'   }
 ##'   \item{ACTIVATED_SEED}{ = the proportion of seeds activated by each 
 ##'   disturbance \cr
-##'   (\emph{currently set to \code{0} for all PFG and disturbances})
+##'   (\emph{currently set to \code{0}\% for all PFG and disturbances})
 ##'   }
 ##' }
 ##' 
@@ -226,12 +216,12 @@
 ##'   These parameters should be given in this order (e.g. with 3 response 
 ##'   stages) : \cr \code{DI1_RS1_Ki, DI1_RS1_Re, DI1_RS2_Ki, DI1_RS2_Re, 
 ##'   DI1_RS3_Ki, DI1_RS3_Re, DI2_RS1_Ki...}
-##'   \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+##'   \cr \emph{(integer between \code{0} and \code{100}\%)}. 
 ##'   }
 ##'   \item{PROP_KILLED}{proportion of propagules killed by each disturbance \cr
-##'   \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+##'   \emph{(integer between \code{0} and \code{100}\%)}}
 ##'   \item{ACTIVATED_SEED}{proportion of seeds activated by each disturbance \cr
-##'   \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)} \cr \cr}
+##'   \emph{(integer between \code{0} and \code{100}\%)} \cr \cr}
 ##' }
 ##' 
 ##' A \code{DIST_COMPLETE_TABLE.csv} file summarizing information for all 
@@ -288,18 +278,18 @@
 ##'                         , 0, 0, 2
 ##'                         , 0, 2, 5
 ##'                         , 0, 4, 7)
-##' mat.tol$killedIndiv = c(10, 10, 5
-##'                         , 10, 10, 5
-##'                         , 10, 10, 5
-##'                         , 10, 10, 5
-##'                         , 10, 7, 4
-##'                         , 10, 6, 3)
-##' mat.tol$resproutIndiv = c(0, 0, 5
-##'                           , 0, 0, 5
-##'                           , 0, 0, 3
-##'                           , 0, 0, 3
-##'                           , 0, 1, 4
-##'                           , 0, 2, 5)
+##' mat.tol$killedIndiv = c(100, 100, 50
+##'                         , 100, 100, 50
+##'                         , 100, 100, 50
+##'                         , 100, 100, 50
+##'                         , 100, 70, 40
+##'                         , 100, 60, 30)
+##' mat.tol$resproutIndiv = c(0, 0, 50
+##'                           , 0, 0, 50
+##'                           , 0, 0, 30
+##'                           , 0, 0, 30
+##'                           , 0, 10, 40
+##'                           , 0, 20, 50)
 ##' str(mat.tol)
 ##' 
 ##' PRE_FATE.params_PFGdisturbance(name.simulation = 'FATE_simulation'
@@ -444,10 +434,12 @@ PRE_FATE.params_PFGdisturbance = function(
       }
       if (sum(colnames(mat.PFG.tol) == "killedIndiv") == 1)
       {
+        .testParam_notInteger.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv)
         .testParam_NAvalues.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv)
-        .testParam_notInValues.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv, 0:10)
+        .testParam_notBetween.m("mat.PFG.tol$killedIndiv", mat.PFG.tol$killedIndiv, 0, 100)
+        .testParam_notInteger.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv)
         .testParam_NAvalues.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv)
-        .testParam_notInValues.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv, 0:10)
+        .testParam_notBetween.m("mat.PFG.tol$resproutIndiv", mat.PFG.tol$resproutIndiv, 0, 100)
       }
     }
     if (sum(colnames(mat.PFG.tol) == "strategy_tol") == 1)
@@ -610,17 +602,6 @@ PRE_FATE.params_PFGdisturbance = function(
   ##   = proportion of killed or resprouting individuals
   ##   = for each disturbance, for each response stage : 2 values
   ##     proportion of killed individuals, and of resprouting individuals
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
   FATES = matrix(0, nrow = no.DIST * no.STAGES * 2, ncol = no.PFG)
   
   if (sum(colnames(mat.PFG.tol) == "killedIndiv") == 1)
@@ -717,15 +698,15 @@ PRE_FATE.params_PFGdisturbance = function(
         ind_fates = (1+(no.di-1)*8) : (8*no.di)
         
         FATES[ind_fates, no.pfg] = switch(tmp$strategy_tol[ind_lines]
-                                          , indifferent = c(0,0,0,0,0,0,0,0)
-                                          , mowing_herbs = c(0,0,0,0,5,5,10,0)
-                                          , mowing_trees = c(0,0,10,0,10,0,10,0)
-                                          , grazing_herbs_1 = c(0,0,1,0,0,5,0,1)
-                                          , grazing_herbs_2 = c(0,0,5,0,0,8,1,5)
-                                          , grazing_herbs_3 = c(0,0,9,0,1,9,5,5)
-                                          , grazing_trees_1 = c(4,0,0,0,0,0,0,0)
-                                          , grazing_trees_2 = c(8,0,0,0,0,0,0,0)
-                                          , grazing_trees_3 = c(10,0,4,0,0,0,0,0)
+                                          , indifferent = c(0, 0, 0, 0, 0, 0, 0, 0)
+                                          , mowing_herbs = c(0, 0, 0, 0, 50, 50, 100, 0)
+                                          , mowing_trees = c(0, 0, 100, 0, 100, 0, 100, 0)
+                                          , grazing_herbs_1 = c(0, 0, 10, 0, 0, 50, 0, 10)
+                                          , grazing_herbs_2 = c(0, 0, 50, 0, 0, 80, 10, 50)
+                                          , grazing_herbs_3 = c(0, 0, 90, 0, 10, 90, 50, 50)
+                                          , grazing_trees_1 = c(40, 0, 0, 0, 0, 0, 0, 0)
+                                          , grazing_trees_2 = c(80, 0, 0, 0, 0, 0, 0, 0)
+                                          , grazing_trees_3 = c(100, 0, 40, 0, 0, 0, 0, 0)
         )
       }
     }
@@ -734,17 +715,6 @@ PRE_FATE.params_PFGdisturbance = function(
   #############################################################################
   
   ## GET PROPORTION OF KILLED PROPAGULES
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
   ## 0 for all PFG and disturbances
   PROP_KILLED = matrix(0, nrow = no.DIST, ncol = no.PFG)
   
@@ -752,17 +722,6 @@ PRE_FATE.params_PFGdisturbance = function(
   #############################################################################
   
   ## GET END OF SEED DORMANCY : % of seeds activated by the perturbation
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
   ## 0 for all PFG and disturbances
   ACTIVATED_SEED = matrix(0, nrow = no.DIST, ncol = no.PFG)
   

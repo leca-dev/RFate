@@ -230,6 +230,7 @@ GSP::GSP(const string globalParamsFile)
 	{
 		m_LightThreshLow = 0;
 		m_LightThreshMedium = 0;
+		m_LightRecruitment = true;
 		m_LightSaving = false;
 	}
 
@@ -316,7 +317,9 @@ GSP::GSP(const string globalParamsFile)
 	} else
 	{
 		m_SoilInit = 0.0;
+	  m_SoilFillMap = true;
 		m_SoilRetention = 0.0;
+		m_SoilRecruitment = true;
 		m_SoilSaving = false;
 	}
 

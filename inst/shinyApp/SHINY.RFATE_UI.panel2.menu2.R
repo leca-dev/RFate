@@ -1,5 +1,5 @@
 
-tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Create multiple set</span>")
+tabPanel(title =  HTML("<span class='panel_title'><i class='fa-solid fa-clone'></i> Create multiple set</span>")
          , value = "panel3"
          
          , fluidRow(
@@ -56,7 +56,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                         , br()
                         , actionButton(inputId = "HELP.panel2.menu2"
                                        , label = "Need some help"
-                                       , icon = icon("question-circle")
+                                       , icon = icon("circle-question")
                                        , width = "100%"
                                        , style = button.style.help))
              ) ## END fluidRow
@@ -77,7 +77,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                     fluidRow(
                                                       column(4
                                                              , checkboxGroupInput(inputId = "set.choices.1"
-                                                                                  , label = HTML("<i class='fa fa-heart'></i> global parameters")
+                                                                                  , label = HTML("<i class='fa-solid fa-heart'></i> global parameters")
                                                                                   , choices = c("max_abund_low"
                                                                                                 , "max_abund_medium"
                                                                                                 , "max_abund_high")
@@ -87,7 +87,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                                           , title = "FATE modules : CORE - Required and impacted parameters"
                                                                           , size = "l"
                                                                           , content = help.HTML(html.file = paste0(path.articles, "fate_tutorial_3_MODULES.html")
-                                                                                                , target.anchor = 'class="section level1'
+                                                                                                , target.anchor = 'class="section level2'
                                                                                                 , target.class = "core-module-succession"
                                                                                                 , web.address = paste0(path.articles, "fate_tutorial_3_MODULES.html#core-module-succession"))
                                                              )
@@ -110,7 +110,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                       , column(1, br())
                                                       , column(4
                                                                , checkboxGroupInput(inputId = "set.choices.4"
-                                                                                    , label = HTML("<i class='fa fa-globe'></i> habitat suitability")
+                                                                                    , label = HTML("<i class='fa-solid fa-globe'></i> habitat suitability")
                                                                                     , choices = "habsuit_mode"
                                                                                     , selected = NULL
                                                                                     , width = "100%"
@@ -120,7 +120,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                                  , title = "FATE modules : HABITAT SUITABILITY - Required and impacted parameters"
                                                                  , size = "l"
                                                                  , content = help.HTML(html.file = paste0(path.articles, "fate_tutorial_3_MODULES.html")
-                                                                                       , target.anchor = 'class="section level1'
+                                                                                       , target.anchor = 'class="section level2'
                                                                                        , target.class = "habitat-suitability-module"
                                                                                        , web.address = paste0(path.articles, "fate_tutorial_3_MODULES.html#habitat-suitability-module"))
                                                     )
@@ -128,7 +128,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                       br()
                                                       , column(4
                                                                , checkboxGroupInput(inputId = "set.choices.2"
-                                                                                    , label = HTML("<i class='fa fa-heart'></i> seeding")
+                                                                                    , label = HTML("<i class='fa-solid fa-heart'></i> seeding")
                                                                                     , choices = c("seeding_duration"
                                                                                                   , "seeding_timestep"
                                                                                                   , "seeding_input")
@@ -152,7 +152,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                       , column(1, br())
                                                       , column(4
                                                                , checkboxGroupInput(inputId = "set.choices.5"
-                                                                                    , label = HTML("<i class='fa fa-seedling'></i> dispersal")
+                                                                                    , label = HTML("<i class='fa-solid fa-seedling'></i> dispersal")
                                                                                     , choices = c("dispersal_mode")
                                                                                     , selected = NULL
                                                                                     , width = "100%"
@@ -162,7 +162,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                                  , title = "FATE modules : DISPERSAL - Required and impacted parameters"
                                                                  , size = "l"
                                                                  , content = help.HTML(html.file = paste0(path.articles, "fate_tutorial_3_MODULES.html")
-                                                                                       , target.anchor = 'class="section level1'
+                                                                                       , target.anchor = 'class="section level2'
                                                                                        , target.class = "dispersal-module"
                                                                                        , web.address = paste0(path.articles, "fate_tutorial_3_MODULES.html#dispersal-module"))
                                                     )
@@ -170,7 +170,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                       br()
                                                       , column(4
                                                                , checkboxGroupInput(inputId = "set.choices.3"
-                                                                                    , label = HTML("<i class='fa fa-sun'></i> global parameters")
+                                                                                    , label = HTML("<i class='fa-solid fa-sun'></i> global parameters")
                                                                                     , choices = c("light_thresh_medium"
                                                                                                   , "light_thresh_low")
                                                                                     , selected = NULL
@@ -193,7 +193,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                       , column(1, br())
                                                       , column(4
                                                                , checkboxGroupInput(inputId = "set.choices.6"
-                                                                                    , label = HTML("<i class='fa fa-sun'></i> height strata")
+                                                                                    , label = HTML("<i class='fa-solid fa-sun'></i> height strata")
                                                                                     , choices = c("strata_limits")
                                                                                     , selected = NULL
                                                                                     , width = "100%"
@@ -203,7 +203,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-clone'></i> Cr
                                                                  , title = "FATE modules : LIGHT - Required and impacted parameters"
                                                                  , size = "l"
                                                                  , content = help.HTML(html.file = paste0(path.articles, "fate_tutorial_3_MODULES.html")
-                                                                                       , target.anchor = 'class="section level1'
+                                                                                       , target.anchor = 'class="section level2'
                                                                                        , target.class = "light-module-interaction"
                                                                                        , web.address = paste0(path.articles, "fate_tutorial_3_MODULES.html#light-module-interaction"))
                                                     ) ## END fluidRow

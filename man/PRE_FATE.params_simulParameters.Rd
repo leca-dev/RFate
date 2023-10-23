@@ -9,6 +9,7 @@ PRE_FATE.params_simulParameters(
   name.simulation,
   name.MASK,
   name.SAVED_STATE = NULL,
+  name.SOIL = NULL,
   name.DIST = NULL,
   name.DROUGHT = NULL,
   name.ALIENS = NULL,
@@ -32,6 +33,12 @@ corresponding to the cells of the studied area in which the succession
 \item{name.SAVED_STATE}{(\emph{optional}) \cr a \code{string} corresponding 
 to the file name of a \code{FATE} object, obtained from a previous 
 simulation and from which to restart this new simulation}
+
+\item{name.SOIL}{(\emph{optional}) \cr a \code{string} corresponding to 
+the name of a raster file, with a \code{numeric} value within each pixel 
+corresponding to the initial soil resources of this pixel for the soil 
+interaction module of the \code{FATE} simulation (see 
+\href{PRE_FATE.params_globalParameters.html#details}{\code{PRE_FATE.params_globalParameters}})}
 
 \item{name.DIST}{(\emph{optional}) \cr a \code{string} corresponding to the 
 file name of a raster mask, with either \code{0} or \code{1} within each 
@@ -100,6 +107,7 @@ directory with the following parameters :
   \itemize{
   \item --PFG_PARAMS_LIGHT-- (\emph{optional})
   \item --PFG_PARAMS_SOIL-- (\emph{optional})
+  \item --SOIL_MASK-- (\emph{optional})
   \item --PFG_PARAMS_DISPERSAL-- (\emph{optional})
   \item --PFG_MASK_HABSUIT-- (\emph{optional})
   \item --HABSUIT_CHANGEMASK_YEARS-- (\emph{optional})
@@ -178,6 +186,8 @@ needed by the program to run.
   tolerance related parameters (one by PFG) \cr
   (see \code{\link{PRE_FATE.params_PFGsoil}}) \cr \cr
   }
+  \item{SOIL_MASK \cr (\emph{optional})}{raster mask that will define the 
+  initialization soil resources values}
   \item{PFG_PARAMS_ \cr DISPERSAL (\emph{optional})}{PFG dispersal 
   capacity related parameters (one by PFG) \cr
   (see \code{\link{PRE_FATE.params_PFGdispersal}}) \cr \cr

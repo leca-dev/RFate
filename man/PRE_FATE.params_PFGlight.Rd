@@ -50,7 +50,7 @@ parameters :
   \item{SHADE_FACTOR}{index of shade quantity to weight PFG abundance and 
   transform it into light resources}
   \item{ACTIVE_GERM}{germination rates depending on light conditions 
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}}
+  \cr \emph{(integer between \code{0} and \code{100}\%)}}
   \item{LIGHT_TOL}{light tolerance table (in a single row). \cr 
   This is a vector of 9 numbers corresponding to the ability of the PFG to 
   survive or not :
@@ -62,7 +62,7 @@ parameters :
   }
   These parameters should be given in this order : \code{GeL, GeM, GeH, ImL, 
   ImM, ImH, MaL, MaM, MaH}
-  \cr \emph{(from \code{0} to \code{10}, corresponding to 0 to 100\%)}. 
+  \cr \emph{(integer between \code{0} and \code{100}\%)}. 
   \cr \cr}
 }
 
@@ -99,13 +99,13 @@ are required for each PFG in order to set up this light interaction :
   one}) \cr \cr}
   
   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{Low} light condition}
   \item{(\emph{active_germ_medium})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{Medium} light condition}
   \item{(\emph{active_germ_high})}{an \code{integer} between \code{0} and 
-  \code{10} corresponding to the proportion of seeds that will germinate for 
+  \code{100} corresponding to the proportion of seeds that will germinate for 
   \code{High} light condition}
   \item{(\emph{strategy_ag})}{a \code{string} to choose the germination 
   strategy : \cr \code{light_lover}, \code{indifferent}, \code{shade_lover} 
@@ -119,7 +119,7 @@ are required for each PFG in order to set up this light interaction :
   \code{Immature}, \code{Mature})}
   \item{resources}{the concerned light condition (\code{Low}, 
   \code{Medium}, \code{High})}
-  \item{tolerance}{an \code{integer} between \code{0} and \code{10} 
+  \item{tolerance}{an \code{integer} between \code{0} and \code{100} 
   corresponding to the proportion of surviving individuals}
   \item{(\emph{strategy_tol})}{a \code{string} to choose the tolerance 
   strategy : \cr \code{full_light}, \code{pioneer}, \code{ubiquist}, 
@@ -139,7 +139,7 @@ each PFG :
     \itemize{
       \item for \code{H} (herbaceous) : \code{1}
       \item for \code{C} (chamaephyte) : \code{5}
-      \item for \code{P} (phanerophyte) : \code{20}
+      \item for \code{P} (phanerophyte) : \code{100}
     }
     \item from \strong{user data} : \cr
     \emph{with the values contained within the \code{shade_factor} column, 
@@ -151,14 +151,13 @@ each PFG :
   condition (\code{Low}, \code{Medium}, \code{High}) \cr \cr
   Three methods to define these proportions are available :
   \itemize{
-    \item from \strong{predefined scenarios} (using \code{strategy_ag}) :
-    \describe{
-      \item{}{\strong{\code{| _L_ _M_ _H_ |}}}
-      \item{}{\code{_______________}}
-      \item{light_lover}{\code{| 50\% 80\% 90\% |}}
-      \item{indifferent}{\code{| 90\% 90\% 90\% |}}
-      \item{shade_lover}{\code{| 90\% 80\% 50\% |}}
-    }
+    \item from \strong{predefined scenarios} (using \code{strategy_ag}) : \cr \cr
+    \strong{\code{| _L_ _M_ _H_ |}} \cr
+    \code{_______________} \cr
+    \code{| 50\% 80\% 90\% |} \strong{light_lover} \cr
+    \code{| 90\% 90\% 90\% |} \strong{indifferent} \cr
+    \code{| 90\% 80\% 50\% |} \strong{shade_lover} \cr \cr
+    
     \item from \strong{predefined rules} (using \code{type}) :
     \itemize{
       \item for \code{H} (herbaceous) : \code{50\%, 80\%, 90\%}
@@ -186,16 +185,15 @@ each PFG :
         \item with \code{L}: low light, \code{M}: medium light, \code{H}: 
         high light \cr \cr
       }
-    \describe{
-      \item{}{\strong{\code{| _ g _ | _ i _ | _ m _ |}}}
-      \item{}{\strong{\code{| L M H | L M H | L M H |}}}
-      \item{}{\code{_________________________}}
-      \item{full_light}{\code{| 1 1 1 | . . 1 | . . 1 |}}
-      \item{pioneer}{\code{| 1 1 1 | . 1 1 | . 1 1 |}}
-      \item{ubiquist}{\code{| 1 1 1 | 1 1 1 | 1 1 1 |}}
-      \item{semi_shade}{\code{| 1 1 . | 1 1 . | 1 1 1 |}}
-      \item{undergrowth}{\code{| 1 1 . | 1 1 . | 1 1 . |}}
-    }
+      \strong{\code{| _ g _ | _ i _ | _ m _ |}} \cr
+      \strong{\code{| L M H | L M H | L M H |}} \cr
+      \code{_________________________} \cr
+      \code{| 1 1 1 | . . 1 | . . 1 |} \strong{full_light} \cr
+      \code{| 1 1 1 | . 1 1 | . 1 1 |} \strong{pioneer} \cr
+      \code{| 1 1 1 | 1 1 1 | 1 1 1 |} \strong{ubiquist} \cr
+      \code{| 1 1 . | 1 1 . | 1 1 1 |} \strong{semi_shade} \cr
+      \code{| 1 1 . | 1 1 . | 1 1 . |} \strong{undergrowth} \cr \cr
+      
     \item from \strong{predefined rules} (using \code{type} and 
     \code{light_need}):
       \describe{
@@ -214,22 +212,21 @@ each PFG :
       }
       \itemize{
         \item \code{.} means \emph{Not tolerant}
-        \item \code{A, B, C, D} mean \emph{Tolerant} according to one of 
-        the rule defined above
+        \item \code{A, B, C, D} mean \emph{Tolerant} (\code{100\%}) according 
+        to one of the rule defined above
         \item with \code{g}: Germinant, \code{i}: Immature, \code{m}: Mature
         \item with \code{L}: low light, \code{M}: medium light, \code{H}: 
         high light \cr \cr
       }
-      \describe{
-        \item{}{\strong{\code{| _ g _ | _ i _ | _ m _ |}}}
-        \item{}{\strong{\code{| L M H | L M H | L M H |}}}
-        \item{}{\code{_________________________}}
-        \item{1}{\code{| A . . | A . D | A C C |}}
-        \item{2}{\code{| A A . | A A D | A A C |}}
-        \item{3}{\code{| B A . | . A D | . A C |}}
-        \item{4}{\code{| B A A | . A A | . A A |}}
-        \item{5}{\code{| B . A | . . A | . C A |}}
-      }
+      \strong{\code{| _ g _ | _ i _ | _ m _ |}} \cr
+      \strong{\code{| L M H | L M H | L M H |}} \cr
+      \code{_________________________} \cr
+      \code{| A . . | A . D | A C C |} \strong{1} \cr
+      \code{| A A . | A A D | A A C |} \strong{2} \cr
+      \code{| B A . | . A D | . A C |} \strong{3} \cr
+      \code{| B A A | . A A | . A A |} \strong{4} \cr
+      \code{| B . A | . . A | . C A |} \strong{5} \cr \cr
+      
     \item from \strong{user data} : \cr
       \emph{with the values contained within the \code{lifeStage}, 
       \code{resources} and \code{tolerance} columns, if provided}
@@ -263,19 +260,19 @@ PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
 ## Create PFG light parameter files (with all values) ----------------------------------------
 mat.ag = data.frame(PFG = paste0('PFG', 1:6)
                     , shade_factor = c(5, 3, 1, 1, 12, 18)
-                    , active_germ_low = c(9, 8, 8, 8, 5, 5)
-                    , active_germ_medium = rep(8, 6)
-                    , active_germ_high = c(4, 8, 8, 5, 9, 9))
+                    , active_germ_low = c(90, 80, 80, 80, 50, 50)
+                    , active_germ_medium = rep(80, 6)
+                    , active_germ_high = c(40, 80, 80, 50, 90, 90))
 
 mat.tol = expand.grid(resources = c('Low', 'Medium', 'High')
                       , lifeStage = c('Germinant', 'Immature', 'Mature')
                       , PFG = paste0('PFG', 1:6))
-mat.tol$tolerance = c(1, 1, 0, 1, 0, 0, 1, 0, 0
-                      , rep(1, 9)
-                      , rep(1, 9)
-                      , 1, 1, 1, 1, 1, 1, 1, 0, 0
-                      , 1, 1, 1, 0, 1, 1, 0, 0, 1
-                      , 1, 1, 1, 0, 0, 1, 0, 0, 1)
+mat.tol$tolerance = c(100, 100, 0, 100, 0, 0, 100, 0, 0
+                      , rep(100, 9)
+                      , rep(100, 9)
+                      , 100, 100, 100, 100, 100, 100, 100, 0, 0
+                      , 100, 100, 100, 0, 100, 100, 0, 0, 100
+                      , 100, 100, 100, 0, 0, 100, 0, 0, 100)
 
 PRE_FATE.params_PFGlight(name.simulation = 'FATE_simulation'
                          , mat.PFG.light = mat.ag

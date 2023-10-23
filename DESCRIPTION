@@ -1,8 +1,8 @@
 Package: RFate
 Type: Package
 Title: FATE with R
-Version: 1.2.0
-Date: 2023-04-03
+Version: 1.3.1
+Date: 2023-09-29
 Authors@R: c(person("Wilfried", "Thuiller", role = "aut"
                     , email = "wilfried.thuiller@univ-grenoble-alpes.fr"),
              person("Damien", "Georges", role = "aut"),
@@ -46,19 +46,20 @@ Depends: R (>= 4.1)
 Imports:
     Rcpp,
     graphics, grDevices, methods, stats, utils, R.utils,
-    ggplot2, ggthemes, ggnewscale, ggrepel, ggExtra, gridExtra, cowplot,
+    ggplot2, ggthemes, ggrepel,
     reshape2, foreach, data.table,
     raster, sp,
-    phyloclim, FD, PresenceAbsence, ade4, adehabitatMA, adehabitatHR, 
-    cluster, huge, caret, 
+    phyloclim, FD, ade4, adehabitatMA, adehabitatHR, 
+    cluster, huge, 
     RColorBrewer, colorspace,
-    ape, shiny,
-    parallel, doParallel
+    ape
 Suggests:
     spelling, 
     testthat,
     covr,
     knitr, markdown, rmarkdown,
+    shiny, PresenceAbsence, ggnewscale, ggExtra, gridExtra, cowplot, 
+    parallel, doParallel, 
     SPOT, fpc, clValid, ecospat, betapart
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown

@@ -30,46 +30,25 @@ using namespace std;
 
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-/* Categorical to scalar and scalar to categorical conversion functions                            */
+/* Int / double conversion functions                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-Fract getLeavingFract(Fract f1, Fract f2)
+int getLeavingFract(int f1, int f2)
 {
-	return DoubleToFract( 1.0 - ( FractToDouble(f1) + FractToDouble(f2) ) );
+  return ( 100 - ( f1 + f2 ) );
+}
+
+double IntToDouble(int fract)
+{
+  return ( static_cast<double>(fract) / 100 );
+}
+
+int DoubleToInt(double fract)
+{
+  return ( min(static_cast<int>(ceil(fract * 100)), 100) );
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-
-double FractToDouble(Fract fract)
-{
-	double Fract_Real [ Fcount ] = {0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0};
-	return Fract_Real[static_cast<int>(fract)];
-}
-
-/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-
-double FractToDouble(Fract2 fract)
-{
-	double Fract_Real [ F2count ] = {0.0,0.1,0.5,0.9,1.0};
-	return Fract_Real[static_cast<int>(fract)];
-}
-
-/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-
-Fract DoubleToFract(double d)
-{
-	if (d <= 0.0) return Fract(0);
-	else if( d > 0.0 && d <= 0.15 ) return Fract(1);
-	else if( d > 0.15 && d <= 0.25 ) return Fract(2);
-	else if( d > 0.25 && d <= 0.35 ) return Fract(3);
-	else if( d > 0.35 && d <= 0.45 ) return Fract(4);
-	else if( d > 0.45 && d <= 0.55 ) return Fract(5);
-	else if( d > 0.55 && d <= 0.65 ) return Fract(6);
-	else if( d > 0.65 && d <= 0.75 ) return Fract(7);
-	else if( d > 0.75 && d <= 0.85 ) return Fract(8);
-	else if( d > 0.85 && d < 1.0 ) return Fract(9);
-	else return Fract(10);
-}
 
 double ResourceToDouble(Resource light)
 {

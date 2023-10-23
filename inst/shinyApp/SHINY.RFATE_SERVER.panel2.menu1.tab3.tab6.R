@@ -415,7 +415,7 @@ output$UI.files.drought = renderUI({
         , column(3
                  , actionButton(inputId = "delete.drought.select"
                                 , label = "Delete selected"
-                                , icon = icon("trash-alt")
+                                , icon = icon("trash")
                                 , width = "100%"
                                 , style = button.style.action))
       ),

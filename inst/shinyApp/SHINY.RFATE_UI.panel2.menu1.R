@@ -1,5 +1,5 @@
 
-tabPanel(title = HTML("<p class='panel_title'><i class='fa fa-folder-plus'></i> New / &emsp;<i class='fa fa-folder-open'></i> Modify</p>")
+tabPanel(title = HTML("<p class='panel_title'><i class='fa-solid fa-folder-plus'></i> New / &emsp;<i class='fa-solid fa-folder-open'></i> Modify</p>")
          , value = "panel2"
          , sidebarLayout(
            
@@ -14,7 +14,7 @@ tabPanel(title = HTML("<p class='panel_title'><i class='fa fa-folder-plus'></i> 
                    column(12
                           , actionButton(inputId = "HELP.panel2.menu1"
                                          , label = "Need some help"
-                                         , icon = icon("question-circle")
+                                         , icon = icon("circle-question")
                                          , width = "100%"
                                          , style = button.style.help)
                           , br()
@@ -113,7 +113,7 @@ tabPanel(title = HTML("<p class='panel_title'><i class='fa fa-folder-plus'></i> 
                           , shinyjs::disabled(
                             actionButton(inputId = "refresh"
                                          , label = "Start new folder"
-                                         , icon = icon("refresh")
+                                         , icon = icon("arrows-rotate")
                                          , width = "100%"
                                          , style = button.style.action
                             )

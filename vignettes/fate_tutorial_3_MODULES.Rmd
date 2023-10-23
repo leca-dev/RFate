@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
 pre.bash {
@@ -36,7 +36,7 @@ All of these modules require <pre class = "bash">mandatory parameters</pre> and 
 
 <br/> <br/>
 
-# <i class="fa fa-heart"></i> `CORE` module (succession)
+# <i class="fa-solid fa-heart"></i> `CORE` module (succession)
 
 "*Based on the ‘FATE’ model (Moore & Noble, 1990), it describes the within-pixel succession dynamics in an annual time step. [...] Five processes describe PFG demography (germination, recruitment, growth, survival and fecundity, see Table 1).*" ([Boulangeat, 2014](papers/Boulangeat_2014_GCB.pdf "Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378."))
 
@@ -53,8 +53,8 @@ SEEDING_DURATION 300
 SEEDING_TIMESTEP 1
 SEEDING_INPUT 100
 POTENTIAL_FECUNDITY 10
-MAX_ABUND_LOW 1000
-MAX_ABUND_MEDIUM 5000
+MAX_ABUND_LOW 100
+MAX_ABUND_MEDIUM 500
 MAX_ABUND_HIGH 8000
 </pre>
 
@@ -106,7 +106,7 @@ MATURITY 45
 LONGEVITY 451
 MAX_STRATUM 5
 MAX_ABUNDANCE 3
-IMM_SIZE 1
+IMM_SIZE 10
 CHANG_STR_AGES 0 14 38 110 344
 SEED_POOL_LIFE 0 0
 SEED_DORMANCY 0
@@ -121,7 +121,7 @@ POTENTIAL_FECUNDITY 50
 
 
 
-# <i class="fa fa-sun"></i> `LIGHT` module (interaction)
+# <i class="fa-solid fa-sun"></i> `LIGHT` module (interaction)
 
 "*Vegetation height is represented by a limited number of strata to incorporate the shading process (Fig. 1a). Within a pixel, the light resource for each stratum is calculated from the total abundance of all PFGs across all the upper strata. Within-pixel spatial heterogeneity in light resources is not taken into consideration*" ([Boulangeat, 2014](papers/Boulangeat_2014_GCB.pdf "Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378."))
 
@@ -137,6 +137,7 @@ LIGHT_THRESH_LOW 7000
 </pre>
 
 <pre class = "grey">
+LIGHT_RECRUITMENT 1
 LIGHT_SAVING 1
 </pre>
 
@@ -154,15 +155,15 @@ FATE_simulation/DATA/PFGS/LIGHT/LIGHT_PFG2.txt
 NAME PFG1
 LIGHT 4
 SHADE_FACTOR 20
-ACTIVE_GERM 9 9 9
-LIGHT_TOL 1 1 1 1 1 1 1 1 1
+ACTIVE_GERM 90 90 90
+LIGHT_TOL 100 100 100 100 100 100 100 100 100
 </pre>
 
 <br/>
 
 
 
-# <i class="fas fa-recycle"></i> `SOIL` module (interaction)
+# <i class="fa-solid fa-recycle"></i> `SOIL` module (interaction)
 
 "*To be written*" ()
 
@@ -178,6 +179,8 @@ SOIL_RETENTION 0.8
 </pre>
 
 <pre class = "grey">
+SOIL_FILL_MAP 1
+SOIL_RECRUITMENT 1
 SOIL_SAVING 1
 </pre>
 
@@ -189,21 +192,26 @@ FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG1.txt
 FATE_simulation/DATA/PFGS/SOIL/SOIL_PFG2.txt
 </pre>
 
+<pre class = "grey">
+--SOIL_MASK--
+FATE_simulation/DATA/MASK/mask_soil.tif
+</pre>
+
 - In [SOIL](../reference/PRE_FATE.params_PFGsoil.html) files (given with the `--PFG_PARAMS_SOIL--` flag in *SimulParameters* file) :  
 
 <pre class = "bash">
 NAME PFG1
-ACTIVE_GERM 8 10 5
+ACTIVE_GERM 80 100 50
 SOIL_CONTRIB 2.4
 SOIL_LOW 1
 SOIL_HIGH 4
-SOIL_TOL 1 10 0 5 10 4 9 10 8
+SOIL_TOL 10 100 0 50 100 40 90 100 80
 </pre>
 
 <br/>
 
 
-# <i class="fa fa-seedling"></i> `DISPERSAL` module
+# <i class="fa-solid fa-seedling"></i> `DISPERSAL` module
 
 "*The quantity of produced seeds depends on the abundances of mature PFGs and their habitat suitability. A seed dispersal model determines seed inflow in each pixel (Fig. 1c). From the source, three circles of influence are defined using distance parameters. In the first circle, 50% of the seeds are distributed uniformly. In the second circle, 49% of the seeds are distributed with the same concentration as in the first circle but by pairs of pixels, simulating the spatial autocorrelation of dispersed seeds. In the third circle, 1% of the seeds fall into a random pixel. This seed dispersal model behaves similar to a continuous kernel function (see Fig.S1a) but is very effective and requires only a few parameters (Vittoz & Engler, 2007).*" ([Boulangeat, 2014](papers/Boulangeat_2014_GCB.pdf "Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378."))
 
@@ -240,7 +248,7 @@ DISPERS_DIST 100 500 79000
 
 
 
-# <i class="fa fa-globe"></i> `HABITAT SUITABILITY` module
+# <i class="fa-solid fa-globe"></i> `HABITAT SUITABILITY` module
 
 "*Modelling how habitat suitability affects species population dynamics is tricky given the limited knowledge on the type and form of this relationship. Gallien et al. (2010) suggested a parsimonious approach using only presence-absences or a linear link. In FATE-HD, the probability for recruitment and seed production occurring is calculated every year according to the habitat suitability of the PFG in the pixel in question. Over time, the probability of presence is thus linearly related to fecundity and establishment. Accounting for interannual variability allows species coexistence via temporal niches. Mortality does not depend on habitat suitability, as the immediate effects of annual abiotic conditions on plant mortality are not clear in the literature. Habitat suitability for each PFG can be obtained from various sources such as correlative species distribution models (Guisan & Thuiller, 2005) or mechanistic niche models (Chuine & Beaubien, 2001).*" ([Boulangeat, 2014](papers/Boulangeat_2014_GCB.pdf "Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378."))
 
@@ -282,7 +290,7 @@ FATE_simulation/DATA/SCENARIO/HABSUIT/HABSUIT_changingmask_files_t100.txt
 
 
 
-# <i class="fa fa-bolt"></i> `DISTURBANCES` module
+# <i class="fa-solid fa-bolt-lightning"></i> `DISTURBANCES` module
 
 "*Several disturbance models can be parameterized to remove vegetation, affect fecundity, kill seeds or activate dormant seeds according to each PFG’s tolerance or sensitivity to the given disturbance. (Fig. 1d).*" ([Boulangeat, 2014](papers/Boulangeat_2014_GCB.pdf "Boulangeat, I., Georges, D., Thuiller, W., FATE-HD: A spatially and temporally explicit integrated model for predicting vegetation structure and diversity at regional scale. Global Change Biology, 20, 2368–2378."))
 
@@ -332,7 +340,7 @@ FATE_simulation/DATA/SCENARIO/DIST_scenario1/DIST_changingmask_files_t150.txt
 NAME PFG1
 BREAK_AGE 2 4 10 2 4 10 2 4 10 2 4 10
 RESPR_AGE 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-FATES 0 0 0 0 5 2 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 2 0 1
+FATES 0 0 0 0 50 20 40 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10 0 0 0 0 0 0 0 20 0 10
 PROP_KILLED 0 0 0 0
 ACTIVATED_SEED 0 0 0 0
 </pre>
@@ -340,7 +348,7 @@ ACTIVATED_SEED 0 0 0 0
 <br/>
 
 
-# <i class="fa fa-tint"></i> `DROUGHT` module
+# <i class="fa-solid fa-droplet"></i> `DROUGHT` module
 
 "*Fig. 1. Drought simulation scheme. For each year i, a PFG’s habitat suitability (HS; step 1) and drought effects (step 2) are evaluated within a pixel j. If HS ij or Din ij are below reference values, PFG fecundity and recruitment are set to 0. Additionally, if Din ij crosses the reference value, one drought year is added to the PFG’s cumulative drought effects counter. Severe drought effects occur if conditions 2.3.1 ii or 2.3.2 are met, consisting in immediate and post-drought effects. Otherwise, only moderate drought effects are caused (2.1 and 2.3.1 i). Drought recovery is simulated by subtracting one or two drought events from the cumulative drought effects counter. [...] See Table S3 in Appendix S2 for full parameter list and refer to main text for further details.*" ([Barros, 2017](papers/Barros_2017_Journal_Applied_Ecology.pdf "Barros, C., Guéguen, M., Douzet, R., Carboni, M., Boulangeat, I., Zimmermann, N.E., Münkemüller, T., Thuiller, W. and Mori, A. (2017), Extreme climate events counteract the effects of climate and land‐use changes in Alpine tree lines. Journal of Applied Ecology, 54: 39-50."))
 
@@ -386,7 +394,7 @@ FATE_simulation/DATA/SCENARIO/DROUGHT_changingmask_files_t45.txt
 NAME PFG1
 BREAK_AGE 1 5 26 1 5 26
 RESPR_AGE 0 0 3 26 0 0 3 26
-FATES 6 0 2 0 5 0 6 0 2 0 5 0 1 0 2 0
+FATES 60 0 20 0 50 0 60 0 20 0 50 0 10 0 20 0
 PROP_KILLED 0 0
 ACTIVATED_SEED 0 0
 THRESHOLD_MOD -11.50406848
@@ -400,7 +408,7 @@ COUNTER_CUM 3
 
 
 
-# <i class="fab fa-reddit-alien"></i> `ALIENS` module
+# <i class="fa-brands fa-reddit-alien"></i> `ALIENS` module
 
 "*We then simulated the introduction of the alien PFGs through annual seeding. The sites of simulated introduction were based on a map of the Human Footprint [...] an index combining information on land-use, population density and transportation network (including mountain footpaths). As such it represents an excellent proxy of potential local propagule pressure for introduced species [...] In the current propagule pressure scenario, introductions were a proportion of a set maximum number of seeds depending on the human footprint value in each pixel (i.e. highest introduction intensity in the most densely populated centres, and lowest introduction intensity along mountain footpaths; see Appendix S2 for maps and for details). In the increased propagule pressure scenario, the maximum introduction level was applied in all areas that had a non-zero human footprint (simulating a maximum exploitation of all areas suitable to humans).*" ([Carboni, 2017](papers/Carboni_2017_Global_Change_Biology.pdf "Carboni M, Guéguen M, Barros C, et al. Simulating plant invasion dynamics in mountain ecosystems under global change scenarios. Glob Change Biol. 2018;24:e289–e302."))
 
@@ -465,7 +473,7 @@ IS_ALIEN 1
 
 
 
-# <i class="fa fa-fire"></i> `FIRE` module
+# <i class="fa-solid fa-fire"></i> `FIRE` module
 
 "*To be written*" ()
 
@@ -563,7 +571,7 @@ FLAMMABILITY 6
 NAME PFG1
 BREAK_AGE 1 4 20
 RESPR_AGE 0 1 3 12
-FATES 8 0 6 4 5 5 4 6
+FATES 80 0 60 40 50 50 40 60
 PROP_KILLED 0 0
 ACTIVATED_SEED 0 0
 </pre>

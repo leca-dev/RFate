@@ -821,7 +821,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
   UniReal random_01(0.0, 1.0);
-  
+
   vector<unsigned int> preCell, currCell, postCell, neighCell;
   currCell = start;
   double prob = 0.0, lim = 100.0 /* maxStep */, stepCount = 0.0 /* maxStep, maxConsume */;
@@ -840,7 +840,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
     lim = 0.0;
     stepCount = (-1.0)*currCell.size();
   }
-  
+
   while (currCell.size())
   {
     /* FIRST CASES : fire spread depends on a probability of the current burning cell */
@@ -865,10 +865,10 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
+
         /* fireIntensity */
         prob = m_glob_params.getFirePropIntensity()[dist];
-        
+
         /* For each neighbour cell : does the fire propagate ? */
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
@@ -901,27 +901,27 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
+
         /* percentConsumed : How much stuff was consumed in the current cell ? */
         unsigned abundTmpTot = 0;
         vector<unsigned> abundTmpFG;
         vector<double> propKillFG;
-        
+
         for (unsigned fg=0; fg<m_FGparams.size(); fg++)
         { // loop on FG
           unsigned abundTmp = m_SuccModelMap(*it1)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund();
           abundTmpTot += abundTmp;
           abundTmpFG.push_back(abundTmp);
-          
+
           double propKill = 0.0;
-          vector<vector< vector<Fract> > > fates = m_SuccModelMap(*it1)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFireResponse().getFates();
+          vector<vector< vector<int> > > fates = m_SuccModelMap(*it1)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getFireResponse().getFates();
           for (unsigned sub=0; sub<fates[dist].size(); sub++)
           {
-            propKill += FractToDouble(fates[dist][sub][Kill]);
+            propKill += IntToDouble(fates[dist][sub][Kill]);
           }
           propKillFG.push_back(propKill);
         } // end loop on FG
-        
+
         prob = 0.0;
         if (abundTmpTot>0)
         {
@@ -930,7 +930,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             prob += 1.0*propKillFG[fg]*abundTmpFG[fg]/abundTmpTot;
           }
         }
-        
+
         /* For each neighbour cell : does the fire propagate ? */
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
@@ -942,8 +942,8 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         } // end loop on neighCell
         neighCell.clear();
       } // end loop on currCell
-    } 
-    
+    }
+
     /* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
     else if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
     { // -------------------------------------------------------------------------------------
@@ -966,7 +966,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
+
         vector<unsigned> abundTmp;
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
@@ -985,7 +985,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
           {
             preCell.push_back(maxCell);
           }
-          
+
           /* if you want to burn all the cells with the max amount of fuel (and not only one) */
           while (count(abundTmp.begin(),abundTmp.end(),*max_element(abundTmp.begin(),abundTmp.end()))>1)
           {
@@ -1021,7 +1021,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
+
         vector<double> soilTmp;
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
@@ -1058,7 +1058,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
           }
         }
-        
+
         for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end())
@@ -1084,7 +1084,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             }
             /* Drought proba */
             double probDrought = (-1.0) * m_DroughtMap(*it2);
-            
+
             /* Slope adjustement */
             double probSlope;
             if (m_ElevationMap(*it2)>m_ElevationMap(*it1))
@@ -1094,7 +1094,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
             {
               probSlope = 1 + 0.001*max(-30.0,(-1.0)*m_SlopeMap(*it2));
             }
-            
+
             if ( random_01(rng) < probBL*probFuel*probDrought*probSlope)
             { //(rand()/(double)RAND_MAX)
               preCell.push_back(*it2);
@@ -1104,7 +1104,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         neighCell.clear();
       } // end loop on currCell
     }
-    
+
     /* IN ANY CASE : Update cells vectors : CURR->POST and PRE->CURR*/
     int newBurnt = postCell.size();
     postCell.insert(postCell.end(),currCell.begin(),currCell.end());
@@ -1126,17 +1126,17 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
       preCell.clear();
     }
     newBurnt = postCell.size()-newBurnt;
-    
+
     /* Update the limit option */
     if (m_glob_params.getFireQuotaMode()==1 /* "maxStep" */){ stepCount++;
     } else if (m_glob_params.getFireQuotaMode()==3 /* "maxCell" */){ stepCount += newBurnt;
     } if (m_glob_params.getFireQuotaMode()==4 /* "keepGoing" */){ stepCount = (-1.0)*currCell.size();
     }
-    
+
     if(stepCount>=lim) { break; }
-    
+
   } // end while
-  
+
   /* if you want to stop the fires only when you reach the quota (maxConsume & maxCell) */
   /*	if (stepCount<lim)
   {
@@ -1158,7 +1158,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   postCell.push_back(*cell_ID);
   }
   }*/
-  
+
   return(postCell);
 }
 
@@ -1504,44 +1504,47 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           //logg.info(">> Current+Post drought effect this year !");
           FGresponse CurrPostResp = FGparams->getDroughtResponse();
           vector<vector<int> > tmpBreakAge = CurrPostResp.getBreakAge(), tmpResprAge = CurrPostResp.getResprAge();
-          vector<Fract> tmpDormBreaks = CurrPostResp.getDormBreaks();
-          vector<Fract> tmpPropKilled = CurrPostResp.getPropKilled();
-          vector<vector<vector<Fract> > > tmpFates = CurrPostResp.getFates();
+          vector<int> tmpDormBreaks = CurrPostResp.getDormBreaks();
+          vector<int> tmpPropKilled = CurrPostResp.getPropKilled();
+          vector<vector<vector<int> > > tmpFates = CurrPostResp.getFates();
           
           tmpBreakAge.push_back(tmpBreakAge[0]);
           tmpResprAge.push_back(tmpResprAge[0]);
           tmpDormBreaks.push_back(tmpDormBreaks[0]);
-          if (FractToDouble(tmpPropKilled[0])==0.0)
+          if (tmpPropKilled[0] == 0)
           {
-            tmpPropKilled.push_back(DoubleToFract(0.1));
+            tmpPropKilled.push_back(DoubleToInt(0.1));
           } else
           {
-            tmpPropKilled.push_back(DoubleToFract(FractToDouble(tmpPropKilled[0])*1.1));
+            tmpPropKilled.push_back(DoubleToInt(IntToDouble(tmpPropKilled[0]) * 1.1));
           }
-          vector<vector<Fract> > tmpNewFates(tmpFates[0].size());
+          vector<vector<int> > tmpNewFates(tmpFates[0].size());
           for (unsigned sub=0; sub<tmpFates[0].size(); sub++)
           { // loop on subdist
-            vector<Fract> tmpKiUnRe = tmpFates[0][sub];
-            if (FractToDouble(tmpFates[0][sub][0])!=1)
+            vector<int> tmpKiUnRe = tmpFates[0][sub];
+            double tmpKiUnRe0 = IntToDouble(tmpFates[0][sub][0]);
+            double tmpKiUnRe1 = IntToDouble(tmpFates[0][sub][1]);
+            double tmpKiUnRe2 = IntToDouble(tmpFates[0][sub][2]);
+            if (tmpKiUnRe0 != 1.0)
             { // already 100% killed
               double mortSup = 0.0;
-              if (FractToDouble(tmpFates[0][sub][0])==0)
+              if (tmpKiUnRe0 == 0.0)
               { // no killed
-                mortSup = 0.1*m_CountDroughtMap(cell_ID, fg);
+                mortSup = 0.1* m_CountDroughtMap(cell_ID, fg);
               } else
               {
-                mortSup = FractToDouble(tmpFates[0][sub][0])*0.1*m_CountDroughtMap(cell_ID, fg);
+                mortSup = tmpKiUnRe0 * 0.1 * m_CountDroughtMap(cell_ID, fg);
               }
-              tmpKiUnRe[0] = DoubleToFract(FractToDouble(tmpFates[0][sub][0])+mortSup);
-              if (FractToDouble(tmpFates[0][sub][1])==0)
+              tmpKiUnRe[0] = DoubleToInt(tmpKiUnRe0 + mortSup);
+              if (tmpKiUnRe1 == 0.0)
               { // no unaffected
-                tmpKiUnRe[1] = DoubleToFract(0.5*(FractToDouble(tmpKiUnRe[0]) - FractToDouble(tmpFates[0][sub][0])));
-              } else if (FractToDouble(tmpFates[0][sub][2])==0)
+                tmpKiUnRe[1] = DoubleToInt(0.5*(IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
+              } else if (tmpKiUnRe2 == 0.0)
               { // no resprouting
-                tmpKiUnRe[1] = DoubleToFract(FractToDouble(tmpFates[0][sub][1]) - 1.5*(FractToDouble(tmpKiUnRe[0]) - FractToDouble(tmpFates[0][sub][0])));
+                tmpKiUnRe[1] = DoubleToInt(tmpKiUnRe1 - 1.5*(IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
               } else
               { // resprouting and unaffected
-                tmpKiUnRe[1] = DoubleToFract(FractToDouble(tmpFates[0][sub][1]) - 0.5*(FractToDouble(tmpKiUnRe[0]) - FractToDouble(tmpFates[0][sub][0])));
+                tmpKiUnRe[1] = DoubleToInt(tmpKiUnRe1 - 0.5*(IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
               }
               tmpKiUnRe[2] = getLeavingFract( tmpKiUnRe[0], tmpKiUnRe[1] );
             }
@@ -1586,11 +1589,7 @@ void SimulMap::DoDisturbance(int yr)
     { // loop on disturbances
       if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0)
       { // within mask & disturbance occurs in this cell
-        for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-        { // loop on PFG
-          FGresponse fgresp = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_()->getDistResponse();
-          m_SuccModelMap(cell_ID)->DoDisturbance(fg, dist, m_DistMap(cell_ID, dist), fgresp);
-        }
+        m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
       }
     } // end loop over disturbances
   } // end loop over cells
@@ -1953,7 +1952,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
         //logg.info(">>>>> PFG ", fg);
-        vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
+        vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
         GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
         for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
@@ -1974,7 +1973,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
           { // loop on pixels
             unsigned cell_ID = m_MaskCells[pixId];
-            int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( bkStratAges[strat-1] , bkStratAges[strat] - 1 ));
             abunValues1[cell_ID] = abundTmp;
             abunValues2[cell_ID] += abundTmp;
             if (abundTmp>0)
@@ -2072,8 +2071,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           int abundTmp = 0;
           for (unsigned fg=0; fg<m_FGparams.size(); fg++)
           { // loop on PFG
-            vector<int> strAgeChange = m_FGparams[fg].getStrata(); // get strat ages change
-            abundTmp += static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( strAgeChange[strat-1] , strAgeChange[strat] - 1 ));
+            vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
+            abundTmp += static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( bkStratAges[strat-1] , bkStratAges[strat] - 1 ));
           }
           abunValues3[cell_ID] = abundTmp;
           if (abundTmp>0)

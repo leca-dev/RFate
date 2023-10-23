@@ -91,7 +91,7 @@ help.full = function(param.web = NULL, param.name.vec, param.desc.vec)
 
 ###################################################################################################################################
 
-help.HTML = function(html.file, target.anchor = 'class="hasAnchor"', target.class = '#arguments', web.address = NULL)
+help.HTML = function(html.file, target.anchor = 'id="arguments"', target.class = 'Arguments', web.address = NULL)
 {
   TEXT = readLines(html.file)
   TEXT.keep = help.web(web.address = paste0(path.reference, basename(html.file)))
@@ -104,7 +104,7 @@ help.HTML = function(html.file, target.anchor = 'class="hasAnchor"', target.clas
   # ind.anchor = c(ind.anchor, length(TEXT))
   for (targ in target.class)
   {
-    ind.class = grep(targ, TEXT[ind.anchor])
+    ind.class = grep(targ, TEXT[ind.anchor + 1])
     TEXT.keep = c(TEXT.keep
                   , "<hr>"
                   , TEXT[(ind.anchor[ind.class] + 1):(ind.anchor[min(ind.class + 1, length(ind.anchor))] - 1)]
@@ -126,7 +126,8 @@ help.HTML = function(html.file, target.anchor = 'class="hasAnchor"', target.clas
 
 ###################################################################################################################################
 
-factory <- function(fun) {
+factory <- function(fun)
+{
   # function(...) {
   mess = capture.output(
     assign("res"
@@ -237,8 +238,8 @@ get_files = function(path_folder, skip.no = 2, opt.sub_folder = FALSE)
 .getParam = function(params.lines
                      , flag
                      , flag.split
-                     , is.num = TRUE
-){
+                     , is.num = TRUE)
+{
   param.name = params.lines
   params.lines = readLines(params.lines)
   
@@ -376,7 +377,6 @@ util.ellipse <- function(mx, my, vx, cxy, vy, coeff) {
               seg2 = c(mx + c12, my + c22, 
                        mx - c12, my - c22)))
 }
-
 
 util.ELLIPSE = function(x, y, z){
   z <- z/sum(z)

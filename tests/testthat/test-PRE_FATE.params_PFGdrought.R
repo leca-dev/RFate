@@ -316,12 +316,12 @@ test_that("PRE_FATE.params_PFGdrought gives error with wrong data : mat.PFG.tol"
   expect_error(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
                                           , mat.PFG.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
                                                                      , killedIndiv = -1, resproutIndiv = 1))
-               , "`mat.PFG.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$killedIndiv` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
                                           , mat.PFG.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
                                                                      , killedIndiv = 1.5, resproutIndiv = 1))
-               , "`mat.PFG.tol$killedIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$killedIndiv` must be an integer > 0"
                , fixed = TRUE)
   
   
@@ -335,12 +335,12 @@ test_that("PRE_FATE.params_PFGdrought gives error with wrong data : mat.PFG.tol"
   expect_error(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
                                           , mat.PFG.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
                                                                      , killedIndiv = 1, resproutIndiv = -1))
-               , "`mat.PFG.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$resproutIndiv` must be an integer > 0"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_PFGdrought(name.simulation = "FATE_simulation"
                                           , mat.PFG.tol = data.frame(nameDist = "immediate", PFG = "A", responseStage = 1
                                                                      , killedIndiv = 1, resproutIndiv = 1.5))
-               , "`mat.PFG.tol$resproutIndiv` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.tol$resproutIndiv` must be an integer > 0"
                , fixed = TRUE)
   
   

@@ -35,6 +35,8 @@ resource_files:
   - pictures/art_2017_Thuiller_DD.png
 ---
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 <style>
 .zoom p {
 width:600px;
@@ -51,7 +53,7 @@ width:1200px;
 </div>
 <br/><br/>
 
-## <i class="fa fa-battery-quarter"></i> Origins (FATE / LAMOS / BioMove)
+## <i class="fa-solid fa-battery-quarter"></i> Origins (FATE / LAMOS / BioMove)
 
 <br/>
 
@@ -81,7 +83,7 @@ ________________________________________________________________________________
 ___________________________________________________________________________________________________
 
 
-## <i class="fa fa-battery-half"></i> FATE model
+## <i class="fa-solid fa-battery-half"></i> FATE model
 
 <br/>
 
@@ -106,7 +108,7 @@ ________________________________________________________________________________
 ___________________________________________________________________________________________________
 
 
-## <i class="fa fa-battery-three-quarters"></i> Applications
+## <i class="fa-solid fa-battery-three-quarters"></i> Applications
 
 <br/>
 

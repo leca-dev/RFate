@@ -46,7 +46,6 @@ source("SHINY.RFATE_FUNCTIONS.R", local = TRUE)
 
 # Define UI for application that plots features of movies
 ui <- fluidPage(
-  useShinyalert(),
   useShinyjs(),
   extendShinyjs("www/js/app-shinyjs.js", functions = c("getInputType")),
   introjsUI(),
@@ -120,7 +119,7 @@ ui <- fluidPage(
                , id = "navbar"
                , source("SHINY.RFATE_UI.panel0.R", local = TRUE)$value
                , source("SHINY.RFATE_UI.panel1.R", local = TRUE)$value
-               , navbarMenu(title = HTML("<span class='panel_title'><i class='fa fa-copy'></i> Simulation parameter files</span>")
+               , navbarMenu(title = HTML("<span class='panel_title'><i class='fa-solid fa-copy'></i> Simulation parameter files</span>")
                             , source("SHINY.RFATE_UI.panel2.menu1.R", local = TRUE)$value
                             , source("SHINY.RFATE_UI.panel2.menu2.R", local = TRUE)$value)
                , source("SHINY.RFATE_UI.panel3.R", local = TRUE)$value

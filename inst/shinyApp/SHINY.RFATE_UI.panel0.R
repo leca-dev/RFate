@@ -1,5 +1,5 @@
 
-tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></span>")
+tabPanel(title =  HTML("<span class='panel_title'><i class='fa-solid fa-house'></i></span>")
          , value = "panel0"
          , sidebarLayout(
            
@@ -20,7 +20,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                       , div(id = "help0_6"
                             , actionButton(inputId = "HELP.panel0"
                                            , label = "Need some help"
-                                           , icon = icon("question-circle")
+                                           , icon = icon("circle-question")
                                            , width = "100%"
                                            , style = button.style.help)
                       )
@@ -28,7 +28,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                       , div(id = "help0_7"
                             , actionButton(inputId = "web.RFate"
                                            , label = "Go to RFate website"
-                                           , icon = icon("arrow-circle-right")
+                                           , icon = icon("circle-arrow-right")
                                            , width = "100%"
                                            , style = button.style.help
                                            , onclick ="window.open('https://leca-dev.github.io/RFate/', '_blank')")
@@ -74,7 +74,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                       , br()
                       , div(id = "help0_2"
                             , HTML("
-                                   <p><i class='fa fa-object-group' style='font-size:30px;'></i>&emsp;&emsp;
+                                   <p><i class='fa-solid fa-object-group' style='font-size:30px;'></i>&emsp;&emsp;
                                    <strong>STEP 1 : Creation of Plant Functional Groups</strong><br/></p>
                                    <p style='padding:0 0 0 40px;'>A plant functional group, or <strong>PFG</strong>, 
                                    is \"<em>A set of representative species is classified based on key biological 
@@ -95,7 +95,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                         , br()
                         , div(id = "help0_4"
                               , HTML("
-                                     <p><i class='fa fa-cogs' style='font-size:30px;'></i>&emsp;&emsp;
+                                     <p><i class='fa-solid fa-gears' style='font-size:30px;'></i>&emsp;&emsp;
                                      <strong>STEP 3 : Run a simulation</strong><br/></p>
                                      <p style='padding:0 0 0 40px;'>Give a simulation folder and a simulation parameters file, 
                                      and run your <code>FATE</code> simulation.
@@ -109,7 +109,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                       , br()
                       , div(id = "help0_3"
                             , HTML("
-                                   <p><i class='fa fa-copy' style='font-size:30px;'></i>&emsp;&emsp;
+                                   <p><i class='fa-solid fa-copy' style='font-size:30px;'></i>&emsp;&emsp;
                                    <strong>STEP 2 : Creation of simulation folder</strong><br/></p>
                                    <p style='padding:0 0 0 40px;'><code>FATE</code> requires a quite large number of 
                                    parameters, which are stored into <code>.txt</code> files, presented to and 
@@ -133,7 +133,7 @@ tabPanel(title =  HTML("<span class='panel_title'><i class='fa fa-home'></i></sp
                         , br()
                         , div(id = "help0_5"
                               , HTML("
-                                     <p><i class='fa fa-chart-bar' style='font-size:30px;'></i>&emsp;&emsp;
+                                     <p><i class='fa-solid fa-chart-column' style='font-size:30px;'></i>&emsp;&emsp;
                                      <strong>STEP 4 : Creation of simulation outputs & graphics</strong><br/></p>
                                      <p style='padding:0 0 0 40px;'>Once a <code>FATE</code> simulation is done, 
                                      some post treatment panels and functions are available :</p>

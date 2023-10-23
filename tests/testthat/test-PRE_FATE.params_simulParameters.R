@@ -203,8 +203,8 @@ test_that("PRE_FATE.params_simulParameters gives error with wrong data : folders
                                                   , mat.PFG.tol = data.frame(nameDist = "graz"
                                                                              , responseStage = rep(c(1,2), 6)
                                                                              , PFG = paste0("PFG", 1:6)
-                                                                             , killedIndiv = rep(c(1, 3), 6)
-                                                                             , resproutIndiv = rep(c(4, 9), 6))))
+                                                                             , killedIndiv = rep(c(10, 30), 6)
+                                                                             , resproutIndiv = rep(c(40, 90), 6))))
   
   ## Create PFG drought parameter files
   expect_error(suppressWarnings(PRE_FATE.params_simulParameters(name.simulation = "FATE_simulation"
@@ -219,8 +219,8 @@ test_that("PRE_FATE.params_simulParameters gives error with wrong data : folders
                                               , mat.PFG.tol = data.frame(nameDist = "immediate"
                                                                          , responseStage = rep(c(1,2), 6)
                                                                          , PFG = paste0("PFG", 1:6)
-                                                                         , killedIndiv = rep(c(1, 3), 6)
-                                                                         , resproutIndiv = rep(c(4, 9), 6))
+                                                                         , killedIndiv = rep(c(10, 30), 6)
+                                                                         , resproutIndiv = rep(c(40, 90), 6))
                                               , mat.PFG.drought = data.frame(PFG = paste0("PFG", 1:6)
                                                                              , threshold_moderate = c(2, 5, 3, 5, 1, 4)
                                                                              , threshold_severe = c(1, 2, 2, 4, 1, 3)
@@ -242,8 +242,8 @@ test_that("PRE_FATE.params_simulParameters gives error with wrong data : folders
                                                   , mat.PFG.tol = data.frame(nameDist = "fire"
                                                                              , responseStage = rep(c(1,2), 6)
                                                                              , PFG = paste0("PFG", 1:6)
-                                                                             , killedIndiv = rep(c(1, 3), 6)
-                                                                             , resproutIndiv = rep(c(4, 9), 6))))
+                                                                             , killedIndiv = rep(c(10, 30), 6)
+                                                                             , resproutIndiv = rep(c(40, 90), 6))))
   for(i in list.files("FATE_simulation/DATA/PFGS/DIST/FIRE/"))
   {
     file.copy(paste0("FATE_simulation/DATA/PFGS/DIST/FIRE/", i)

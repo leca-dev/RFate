@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
 .zoom p {
@@ -25,7 +25,7 @@ width:1200px;
 <br/><br/>
 
 
-## <i class="fas fa-book-medical"></i> Manual (Version 1.0.0)
+## <i class="fa-solid fa-book-medical"></i> Manual (Version 1.0.0)
 
 <br/>
 
@@ -42,7 +42,7 @@ More informations about the `Champsaur` example dataset can be found [here](./..
 <br/><br/>
 
 
-## <i class="fas fa-code"></i> Complete code example
+## <i class="fa-solid fa-code"></i> Complete code example
 
 <br/>
 
@@ -50,8 +50,8 @@ The different parts of the `Champsaur` example dataset can be downloaded with th
 
 |                | `RData` | `7z` |      |                |  `V1.7z`  |  `V2.7z`  |  `V3.7z`  |  `V4.7z`  |
 | :------------- | :-----: | :--: | :--: | :------------- | :--: | :--: | :--: | :--: |
-| **1. PFG**     | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.RData" class="download" title="Download as RData"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |  | **3. simul** | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V1.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V2.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V3.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V4.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |
-| **2. params**  | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.RData" class="download" title="Download as RData"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |  | **4. results** | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V1.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V2.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V3.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V4.7z" class="download" title="Download as 7z"><i class="fas fa-download"></i></a> |
+| **1. PFG**     | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.RData" class="download" title="Download as RData"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_PFG.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> |  | **3. simul** | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V1.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V2.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V3.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_simul_V4.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> |
+| **2. params**  | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.RData" class="download" title="Download as RData"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_params.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> |  | **4. results** | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V1.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V2.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V3.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> | <a href="https://raw.githubusercontent.com/leca-dev/RFate/master/data-raw/Champsaur_results_V4.7z" class="download" title="Download as 7z"><i class="fa-solid fa-download"></i></a> |
 
 
 ### 1. Building Plant Functional Group

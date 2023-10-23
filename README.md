@@ -2,6 +2,8 @@
 [![Coverage status](https://github.com/leca-dev/RFate/workflows/CODECOV-check/badge.svg)](https://github.com/leca-dev/RFate/actions)
 [![Coverage status](https://codecov.io/gh/leca-dev/RFate/branch/master/graph/badge.svg)](https://codecov.io/gh/leca-dev/RFate/branch/master)
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
 
 <style>
 pre.bash {
@@ -32,7 +34,7 @@ z-index: 10;
 <br/>
 
 
-## <i class="fa fa-tools"></i> Installing `RFate` package
+## <i class="fa-solid fa-screwdriver-wrench"></i> Installing `RFate` package
 
 From [GitHub](https://github.com/leca-dev/RFate) using [devtools](https://cran.r-project.org/package=devtools) :
 
@@ -41,27 +43,21 @@ library(devtools)
 devtools::install_github(repo="leca-dev/RFate")
 </pre>
 
-**Note :** `RFate` is currently only working with the [BH_1.75.0-0](https://cran.r-project.org/src/contrib/Archive/BH/BH_1.75.0-0.tar.gz) package !
+**Note :** `RFate` is currently having problems compiling on Windows with RTools4.3 <i class="fa-solid fa-triangle-exclamation"></i>
+
+**Note :** v1.3.1 changes scale from `0:10` to `0:100` <br/> for `IMM_SIZE`, `ACTIVE_GERM`, `LIGHT_TOL`, `SOIL_TOL`, `PROP_KILLED`, `ACTIVATED_SEED`, `FATES` parameters <i class="fa-solid fa-triangle-exclamation"></i>
 
 <br/><br/>
 
 
 
-## <i class="fas fa-shoe-prints"></i> `RFate` workflow
+## <i class="fa-solid fa-shoe-prints"></i> `RFate` workflow
 
 <br/>
 
-`FATE` is a **spatially and temporally explicit vegetation model**. 
-It uses **plant functional groups (PFG)** and integrates important 
-mechanisms driving vegetation dynamics, structure and diversity, 
-such as **demographic cycle**, obviously, but also **seeds dispersal**, 
-**abiotic filtering** or **biotic interactions** (through the competition 
-for resources like light availability or soil nutrient availability).
+`FATE` is a **spatially and temporally explicit vegetation model**. It uses **plant functional groups (PFG)** and integrates important mechanisms driving vegetation dynamics, structure and diversity, such as **demographic cycle**, obviously, but also **seeds dispersal**, **abiotic filtering** or **biotic interactions** (through the competition for resources like light availability or soil nutrient availability).
 
-If **primary succession** is the most obvious ecological process that 
-can be modelled with `FATE`, events related to **secondary succession** 
-can be represented as well using the various **`FATE` add-on modules** : 
-disturbances (mowing, grazing, fire..), drought event, invasive species.
+If **primary succession** is the most obvious ecological process that can be modelled with `FATE`, events related to **secondary succession** can be represented as well using the various **`FATE` add-on modules** : disturbances (mowing, grazing, fire..), drought event, invasive species.
 
 <div style="text-align:center;">
 <img src="articles/pictures/SCHEMA_succession1.jpg" alt="Primary succession" style="width:600px;"></img>
@@ -69,10 +65,7 @@ disturbances (mowing, grazing, fire..), drought event, invasive species.
 
 <br/>
 
-As vegetation modelling can be challenging (data gathering, parameterization, 
-handling results...), `RFate` provides **user-friendly functions** to go through 
-the **whole `FATE` workflow**. Links below present some **guidance documents**, for the 
-vegetation model as well as for the `R`package.
+As vegetation modelling can be challenging (data gathering, parameterization, handling results...), `RFate` provides **user-friendly functions** to go through the **whole `FATE` workflow**. Links below present some **guidance documents**, for the vegetation model as well as for the `R`package.
 
 <br/>
 

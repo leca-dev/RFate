@@ -17,18 +17,22 @@
 ##'  
 ##' @export
 ##' 
-##' @importFrom shiny runApp
+## @importFrom shiny runApp
 ##' 
 ## END OF HEADER ###############################################################
 
 
 RFATE = function()
 {
+  if (!isNamespaceLoaded("shiny")) { 
+    if (!requireNamespace('shiny', quietly = TRUE)) stop("Package 'shiny' not found")
+  }
+  
   appDir <- system.file("shinyApp", package = "RFate")
   if (appDir == "") {
     stop("Could not find shinyApp directory. Try re-installing `RFate`.", call. = FALSE)
   }
   
-  runApp(appDir, display.mode = "normal")
+  shiny::runApp(appDir, display.mode = "normal")
 }
 

@@ -26,10 +26,13 @@ PRE_FATE.params_globalParameters(
   doLight = FALSE,
   LIGHT.thresh_medium,
   LIGHT.thresh_low,
+  LIGHT.recruit = TRUE,
   LIGHT.saving = TRUE,
   doSoil = FALSE,
+  SOIL.fill_map = TRUE,
   SOIL.init,
   SOIL.retention,
+  SOIL.recruit = TRUE,
   SOIL.saving = TRUE,
   doDispersal = FALSE,
   DISPERSAL.mode = 1,
@@ -145,6 +148,10 @@ resources are \code{low}. PFG abundances higher than
 \code{LIGHT.thresh_medium} and lower than this threshold imply 
 \strong{medium amount of light}.}
 
+\item{LIGHT.recruit}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, recruitment is depending on the tolerance of the PFG to 
+the pixel light resources within the stratum 0}
+
 \item{LIGHT.saving}{(\emph{optional}) default \code{TRUE}. 
 \cr If \code{TRUE}, and saving years have been defined within the 
 \emph{Simul_parameters} file with the \code{SAVING_YEARS_MAPS} flag, 
@@ -154,6 +161,11 @@ pixel light resources are saved}
 activated in the \code{FATE} simulation, and associated parameters 
 are required}
 
+\item{SOIL.fill_map}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, soil initialization map is filled with \code{SOIL.init} 
+value ; if \code{FALSE}, soil initialization map is defined within the 
+\emph{Simul_parameters} file with the \code{SOIL_MASK} flag}
+
 \item{SOIL.init}{(\emph{optional}) \cr a \code{double} corresponding to the 
 soil value to initialize all pixels when starting the \code{FATE} 
 simulation}
@@ -161,6 +173,10 @@ simulation}
 \item{SOIL.retention}{(\emph{optional}) \cr a \code{double} corresponding 
 to the percentage of soil value of the previous simulation year that will 
 be kept in the calculation of the soil value of the current simulation year}
+
+\item{SOIL.recruit}{(\emph{optional}) default \code{TRUE}. 
+\cr If \code{TRUE}, recruitment is depending on the tolerance of the PFG to 
+the pixel soil resources}
 
 \item{SOIL.saving}{(\emph{optional}) default \code{TRUE}. 
 \cr If \code{TRUE}, and saving years have been defined within the 
@@ -327,6 +343,7 @@ If the simulation includes \emph{light interaction} :
   \item DO_LIGHT_INTERACTION
   \item LIGHT_THRESH_MEDIUM
   \item LIGHT_THRESH_LOW
+  \item LIGHT_RECRUITMENT
   \item LIGHT_SAVING
 }
 
@@ -334,8 +351,10 @@ If the simulation includes \emph{soil interaction} :
 
 \itemize{
   \item DO_SOIL_INTERACTION
+  \item SOIL_FILL_MAP
   \item SOIL_INIT
   \item SOIL_RETENTION
+  \item SOIL_RECRUITMENT
   \item SOIL_SAVING
 }
 

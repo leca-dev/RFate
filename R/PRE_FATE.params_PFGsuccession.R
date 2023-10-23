@@ -173,8 +173,8 @@
 ##'   \item{MAX_ABUNDANCE}{maximum abundance / space (quantitative) that the 
 ##'   PFG is able to produce / occupy \cr \emph{(\code{1}: Low \code{2}: 
 ##'   Medium \code{3}: High)}}
-##'   \item{IMM_SIZE}{PFG immature relative size \emph{(from \code{0} to 
-##'   \code{10}, corresponding to 0 to 100\%)}}
+##'   \item{IMM_SIZE}{PFG immature relative size \emph{(integer between \code{0}  
+##'   and \code{100}\%)}}
 ##'   \item{CHANG_STR_AGES}{ages at which the PFG goes in the upper stratum 
 ##'   \cr \emph{(in years, put a value higher than the PFG life span if it is 
 ##'   not supposed to rise a stratum)}}
@@ -211,22 +211,24 @@
 ##' PRE_FATE.skeletonDirectory()
 ##' 
 ##' ## Create PFG succession parameter files -----------------------------------------------------
+##' tab.succ = data.frame(PFG = paste0('PFG', 1:6)
+##'                       , type = c('C', 'C', 'H', 'H', 'P', 'P')
+##'                       , height = c(10, 250, 36, 68, 1250, 550)
+##'                       , maturity = c(5, 5, 3, 3, 8, 9)
+##'                       , longevity = c(12, 200, 25, 4, 110, 70))
 ##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_simulation'
-##'                               , mat.PFG.succ = data.frame(PFG = paste0('PFG', 1:6)
-##'                                                           , type = c('C', 'C', 'H', 'H', 'P', 'P')
-##'                                                           , height = c(10, 250, 36, 68, 1250, 550)
-##'                                                           , maturity = c(5, 5, 3, 3, 8, 9)
-##'                                                           , longevity = c(12, 200, 25, 4, 110, 70)))
+##'                               , mat.PFG.succ = tab.succ)
 ##'                                                         
 ##' 
 ##' ## Create PFG succession parameter files (with immature_size) --------------------------------
+##' tab.succ = data.frame(PFG = paste0('PFG', 1:6)
+##'                       , type = c('C', 'C', 'H', 'H', 'P', 'P')
+##'                       , height = c(10, 250, 36, 68, 1250, 550)
+##'                       , maturity = c(5, 5, 3, 3, 8, 9)
+##'                       , longevity = c(12, 200, 25, 4, 110, 70)
+##'                       , immature_size = c(100, 80, 100, 100, 10, 50))
 ##' PRE_FATE.params_PFGsuccession(name.simulation = 'FATE_simulation'
-##'                               , mat.PFG.succ = data.frame(PFG = paste0('PFG', 1:6)
-##'                                                           , type = c('C', 'C', 'H', 'H', 'P', 'P')
-##'                                                           , height = c(10, 250, 36, 68, 1250, 550)
-##'                                                           , maturity = c(5, 5, 3, 3, 8, 9)
-##'                                                           , longevity = c(12, 200, 25, 4, 110, 70)
-##'                                                           , immature_size = c(10, 8, 10, 10, 1, 5)))
+##'                               , mat.PFG.succ = tab.succ)
 ##'                                                         
 ##'                                                         
 ##' ## -------------------------------------------------------------------------------------------
@@ -391,8 +393,9 @@ PRE_FATE.params_PFGsuccession = function(
     }
     if (sum(colnames(mat.PFG.succ) == "immature_size") == 1)
     {
+      .testParam_notInteger.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size)
       .testParam_NAvalues.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size)
-      .testParam_notInValues.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size, 0:10)
+      .testParam_notBetween.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size, 0, 100)
     }
     if (sum(colnames(mat.PFG.succ) == "is_alien") == 1)
     {
@@ -535,17 +538,6 @@ PRE_FATE.params_PFGsuccession = function(
   
   ## GET IMMATURE SIZE
   ##   = relative shade of immature plants
-  ## 11 levels : 0 = 0 %
-  ##             1 = 10 %
-  ##             2 = 20 %
-  ##             3 = 30 %
-  ##             4 = 40 %
-  ##             5 = 50 %
-  ##             6 = 60 %
-  ##             7 = 70 %
-  ##             8 = 80 %
-  ##             9 = 90 %
-  ##             10 = 100 %
   if (sum(colnames(mat.PFG.succ) == "immature_size") == 1)
   {
     IMM_SIZE = mat.PFG.succ$immature_size
@@ -558,14 +550,14 @@ PRE_FATE.params_PFGsuccession = function(
     ## intermediate percentage for herbaceous in stratum > 2
     ## immature chamaephytes in 1st stratum contribute to shade in the same way than mature chamaephytes
     ## immature phanerophytes with height < 10m contribute to shade half less than mature phanerophytes
-    IMM_SIZE = rep(10, no.PFG)
-    IMM_SIZE[which(mat.PFG.succ$type == "H")] = 10
-    IMM_SIZE[which(mat.PFG.succ$type == "C")] = 5
-    IMM_SIZE[which(mat.PFG.succ$type == "P")] = 1
-    IMM_SIZE[which(mat.PFG.succ$type == "H" & MAX_STRATUM == 2)] = 8
-    IMM_SIZE[which(mat.PFG.succ$type == "H" & MAX_STRATUM > 2)] = 5
-    IMM_SIZE[which(mat.PFG.succ$type == "C" & MAX_STRATUM == 1)] = 10
-    IMM_SIZE[which(mat.PFG.succ$type == "P" & mat.PFG.succ$height < 1000)] = 5
+    IMM_SIZE = rep(100, no.PFG)
+    IMM_SIZE[which(mat.PFG.succ$type == "H")] = 100
+    IMM_SIZE[which(mat.PFG.succ$type == "C")] = 50
+    IMM_SIZE[which(mat.PFG.succ$type == "P")] = 10
+    IMM_SIZE[which(mat.PFG.succ$type == "H" & MAX_STRATUM == 2)] = 80
+    IMM_SIZE[which(mat.PFG.succ$type == "H" & MAX_STRATUM > 2)] = 50
+    IMM_SIZE[which(mat.PFG.succ$type == "C" & MAX_STRATUM == 1)] = 100
+    IMM_SIZE[which(mat.PFG.succ$type == "P" & mat.PFG.succ$height < 1000)] = 50
   }
   
   #############################################################################
@@ -581,9 +573,9 @@ PRE_FATE.params_PFGsuccession = function(
     for (i in 1:no.PFG)
     {
       ## If not in first stratum / herbaceous (or potentially chamaephytes) :
-      if (!(IMM_SIZE[i] == 10))
+      if (!(IMM_SIZE[i] == 100))
       {
-        k = -log(1 - IMM_SIZE[i] / 10) / (MATURITY[i] / 2)
+        k = -log(1 - IMM_SIZE[i] / 100) / (MATURITY[i] / 2)
         A = 1:LONGEVITY[i]
         
         ## negative binomiale curve
