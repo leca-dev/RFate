@@ -2,7 +2,8 @@
 % Please edit documentation in R/POST_FATE.validation.R
 \name{POST_FATE.validation}
 \alias{POST_FATE.validation}
-\title{Compute validation data for habitat, PFG richness and composition for a \code{FATE} simulation.}
+\title{Compute validation data for habitat, PFG richness and composition for a 
+\code{FATE} simulation.}
 \usage{
 POST_FATE.validation(
   name.simulation,
@@ -81,32 +82,106 @@ validation, and each element containing correspondence with \code{FATE}
 strata definition}
 }
 \value{
+A \code{list} containing two to ten elements depending on the 
+options selected :
 \describe{
-  \item{Habitat}{into the \code{name.simulation/VALIDATION/HABITAT/ directory :} \cr
-  1 .csv file containing the prepared observed data (relative abundances & habitat information). \cr
-  1 .rds file containing the RF model. \cr
-  5 .csv files containing the performance analysis (confusion matrix and TSS) for the training & 
-  testing parts of the RF model and the final habitat performance. \cr
-  If option selected, 1 .csv file containing the habitat prediction within each pixel, 1 .csv file with 
-  sucess or failure of the prediction and 1 .png prediction map.}
+  \item{PFG richness}{three \code{vector} objects :
+  \describe{
+    \item{\code{rich.obs}}{\code{vector} containing names of PFG in observed 
+    data}
+    \item{\code{rich.sim}}{\code{vector} containing names of PFG in 
+    simulated data}
+    \item{\code{rich.diff}}{\code{vector} containing names of PFG in 
+    observed but not in simulated data}
+  }
+  }
+  \item{PFG composition}{
+  \describe{
+    \item{\code{compo.distrib}}{\code{data.frame} object with the following 
+    columns :
+    \describe{
+      \item{\code{PFG}}{concerned plant functional group}
+      \item{\code{code.habitat}}{concerned habitat code}
+      \item{\code{strata}}{concerned height stratum}
+      \item{\code{quantile.perc}}{concerned quantile}
+      \item{\code{quantile.obs}}{corresponding observed abundance}
+      \item{\code{quantile.sim}}{corresponding simulated abundance}
+    }
+    }
+    \item{\code{compo.proximity}}{\code{data.frame} object with the 
+    following columns :
+    \describe{
+      \item{\code{PFG}}{concerned plant functional group}
+      \item{\code{code.habitat}}{concerned habitat code}
+      \item{\code{strata}}{concerned height stratum}
+      \item{\code{proximity}}{composition similarity between each 
+      habitat/strata combination}
+    }
+    }
+  }
+  }
+  \item{Habitat}{
+  \describe{
+    \item{\code{hab.RF.model}}{\code{randomForest} object obtained from 
+    \code{\link[randomForest]{randomForest}} function}
+    \item{\code{hab.RF.perf}}{\code{data.frame} object with the following 
+    columns :
+    \describe{
+      \item{\code{dataset}}{\code{train}, \code{test} or \code{valid}}
+      \item{\code{habitat}}{concerned habitat code}
+      \item{\code{sensitivity}}{true positive rate}
+      \item{\code{specificity}}{true negative rate}
+      \item{\code{weight}}{share of each habitat in the observed habitat 
+      distribution}
+      \item{\code{TSS}}{mean True Skill Statistic}
+      \item{\code{TSSw}}{mean weighted True Skill Statistic}
+    }
+    }
+    \item{\code{hab.tab.pred}}{\code{data.frame} object with the following columns :
+    \describe{
+      \item{\code{pixel}}{concerned pixel}
+      \item{\code{x}}{corresponding x-coordinate}
+      \item{\code{y}}{corresponding y-coordinate}
+      \item{\code{code.habitat}}{concerned habitat code}
+      \item{\code{habitat.obs}}{observed habitat}
+      \item{\code{habitat.sim}}{simulated habitat through random forest model}
+      \item{\code{habitat.final}}{simulated habitat through random forest 
+      model, with wrong predictions indicated as \code{failure}}
+      \item{\code{fail_succ}}{wether or not the simulated habitat is the 
+      same as the observed}
+      \item{\code{color}}{corresponding color code}
+    }
+    }
+    \item{\code{hab.ras.pred}}{\code{raster} object containing habitat 
+    predictions}
+    \item{\code{hab.plot}}{\code{ggplot2} object, representing 
+    \code{hab.ras.pred} raster}
+  }
+  }
 }
+
+
+One to four \file{POST_FATE_TABLE_[...].csv} files are created : 
 \describe{
-  \item{PFG Composition}{into the \code{name.simulation/VALIDATION/PFG COMPOSITION/ directory :} \cr
-  1 .csv file containing the proximity between observed and simulated data computed for each PFG/strata/habitat. \cr 
-  1 .csv file containing the observed releves transformed into relative metrics. \cr 
-  1 .csv file containing the final output with the distribution per PFG, strata and habitat.}
+  \item{\file{HAB_validation_compo_distribution_}}{\emph{if composition 
+  module was activated}, containing \code{compo.distrib}}
+  \item{\file{HAB_validation_compo_proximity_}}{\emph{if composition module 
+  was activated}, containing \code{compo.proximity}}
+  \item{\file{HAB_validation_RF_performance_}}{\emph{if habitat module was 
+  activated}, containing \code{hab.RF.perf}}
+  \item{\file{PIXEL_validation_RF_prediction_}}{\emph{if habitat module was 
+  activated}, containing \code{hab.tab.pred}}
 }
-\describe{
-  \item{PFG richness}{into the \code{name.simulation/VALIDATION/PFG RICHNESS/ directory :} \cr
-  1 .csv file of PFG richness in a \code{FATE} simulation. \cr 
-  1 .csv fie of the PFG extinction frequency in a \code{FATE} simulation. \cr 
-  1 .rds file which is the abundance per PFG file.}
-}
+
+\file{HabitatPrediction_YEAR_[...].tif} and 
+\file{POST_FATE_GRAPHIC_D_map_habitat_[...].pdf} files are created 
+containing random forest predicted habitat raster and plot respectively.
 }
 \description{
-This script is designed to compare observed and simulated 
-PFG distribution for one specific \code{FATE} simulation year by computing 
-a) difference in PFG richness ; b) similarity between distribution quantiles ; 
+This script is designed to compare observed and simulated PFG 
+distribution for one specific \code{FATE} simulation year by computing 
+a) difference in PFG richness ; 
+b) similarity between distribution quantiles ; 
 c) a random forest model to predict habitat classes.
 }
 \details{
@@ -114,53 +189,39 @@ This function allows to obtain, for a specific \code{FATE} simulation and
 a specific parameter file within this simulation, \strong{PFG validation 
 habitat model and predictions} and one preanalytical graphic. \cr \cr
 
-
-
-
-
 \describe{
-  \item{Habitat validation}{ \cr
-  \describe{
-    \item{Observed habitat}{is provided by the \strong{ras.habitat} map. The final set of habitats taken into account
-    in the validation is provided by \strong{mat.hab} table which contains 
-    all the \strong{habitats}, with their corresponding \strong{ID}.}
-    \item{Simulated habitat}{is determined from \code{FATE} simulated relative abundances 
-    (see \code{\link{POST_FATE.temporalEvolution}}), thanks to a \code{Random Forest} algorithm. 
-    The model is trained on \strong{mat.obs} data. Information about \strong{PFG abundances} at each
-    \strong{sites} with \strong{xy} coordinates are necessary. PFG abundances can be given in absolute abundance
-    (only in sites where at least one PFG is present) or in presence-absence data.\cr
-    Eventually, \strong{habitat ID} information can be provided, as well as \strong{strata} names.
-    If not, habitat information will be taken from \strong{ras.habitat} map, and PFG abundance will be considered for all strata.}
+  \item{PFG richness}{
+  check if all simulated PFG abundances are superior to 0 within the 
+  simulated area (\emph{only a subset of PFG can be examined with the 
+  \code{opt.keep_PFG} parameter}).
   }
-  To compare observations and simulations, the function computes confusion matrix between 
-  observations and predictions and then computes the TSS for each habitat h.
-  \deqn{TSS_{\text{ h}} = (\frac{\text{True Positives}_{\text{ h}}}{\text{True Positives}_{\text{ h}}{\text{ + False Negatives}_{\text{ h}}}} + \frac{\text{True Negatives}_{\text{ h}}}{\text{True Negatives}_{\text{ h}}{\text{ + False Positives}_{\text{ h}}}}) - \text{1}}
-  The final metric used is the mean of TSS per habitat over all habitats, weighted by the share of each habitat in the observed 
-  habitat distribution. The habitat validation also provides a visual comparison of observed and 
-  simulated habitat on the whole studied area, if option selected.}
   
-  \item{PFG composition validation}{ \cr 
-  \describe{
-    \item{Observed composition}{is computed for a set of PFG, habitat & strata
-  (for all strata if strata definition is not activated) by computing 4 quartiles of the composition, based
-  on \strong{mat.obs} data provided. Habitats are chosen in \code{mat.hab},
-  PFG list is defined in the file \code{file.simulParam} and, if defined, \code{mat.obs} strata
-  are taken into account. Optionally, PFGs contained in \code{opt.keep_PFG} can be excluded from the analysis.}
-    \item{Simulated composition}{is computed in the same way than the observed composition, with 
-    \code{FATE} abundances \cr (see \code{\link{POST_FATE.temporalEvolution}}).}
-  }
-  Then, a composition similarity between each habitat/strata combinations is provided by computing a 
-  pseudo-distance between observed and simulated quartiles for each PFG y.
-  \deqn{S_{\text{ habitat, strata}} = \sum S_{\text{ y}{\text{, }habitat}{\text{, }strata}}}
+  \item{PFG composition}{
+  for each PFG and each habitat / stratum combination, abundances for each 
+  quartiles (\code{25}, \code{50}, \code{75} and \code{100} \%) is 
+  calculated for both observed and simulated distributions. \cr
+  (\emph{Only a subset of PFG and strata can be examined with the 
+  \code{opt.keep_PFG} and \code{opt.keep_strata} parameters.}) \cr
+  
+  Then, a composition similarity between each PFG / habitat / strata 
+  combination is calculated as a pseudo-distance between observed and 
+  simulated quartiles \code{Q} :
+  \deqn{S_{\text{ Habitat}_j \text{, }\text{Stratum}_k} = 
+  \sum S_{\text{ PFG}_i \text{, }\text{Habitat}_j \text{, }\text{Stratum}_k}}
   with
-  \deqn{S_{\text{ y}{\text{, }habitat}{\text{, }strata}} = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ i}{\text{, }sim}} - Q_{\text{ i}{\text{, }obs}})}
-  with i varying from 1 to 4.
+  \deqn{S_{\text{ PFG}_i \text{, }\text{Habitat}_j \text{, }\text{Stratum}_k} 
+  = 1 - \frac{\text{1}}{4} * \sum abs(Q_{\text{ q} \text{, }sim} - Q_{\text{ q} \text{, }obs})}
+  with \code{q} varying from 1 to 4.
   }
-  \item{PFG richness validation}{the observed PFG richness corresponds to the PFG list contained in the file \code{file.simulParam}, 
-  the simulated PFG richness is the number of PFG for which abundance over the simulation area 
-  is strictly superior to zero for the simulation year under scrutiny. \cr
-  Then, observed and simulated richness are compared for all the PFGs in the simulation in order to quantify the PFG mortality.
-  Optionally, PFGs contained in \code{opt.keep_PFG} can be excluded from the analysis.}
+
+  \item{Habitat validation}{
+  a \code{\link[randomForest]{randomForest}} model is built to predict 
+  habitat (provided through \code{ras.habitat}) in function of observed PFG 
+  abundances. Only habitat code in \code{mat.hab} are effectively used and 
+  predicted. TSS (True Skill Statistic) is computed between observed and 
+  simulated habitat, and averaged over each habitat. TSS can also be 
+  weighted by the share of each habitat in the observed habitat distribution.
+  }
 }
 }
 \examples{
@@ -178,60 +239,59 @@ Champsaur_params = .loadData("Champsaur_params", "RData")
 
 ## Define a vector to choose habitats taken into account
 mat.hab = data.frame(ID = c(6, 5, 7, 8)
-                             , habitat = c("coniferous.forest"
-                                           , "deciduous.forest"
-                                           , "natural.grassland"
-                                           , "woody.heatland"))
+                     , habitat = c("coniferous.forest"
+                                   , "deciduous.forest"
+                                   , "natural.grassland"
+                                   , "woody.heatland"))
 
 ## Habitat & validation maps
-ras.habitaterved = Champsaur_params$stk.mask$habitat
 ras_simulation = Champsaur_params$stk.mask$Champsaur
-ras.habitat = projectRaster(from = ras.habitaterved, to = ras_simulation, method = "ngb")
-writeRaster(ras_simulation, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
+ras.habitat = Champsaur_params$stk.mask$habitat
+ras.habitat = projectRaster(from = ras.habitat, to = ras_simulation, method = "ngb")
+# writeRaster(ras_simulation, filename = "FATE_Champsaur/DATA/MASK/MASK_Champsaur.tif")
 
 ## Observed data
 mat.obs = Champsaur_params$tab.releves
 
 ## Transform observed PFG abundances into relative abundances
-mat.obs$abund = PRE_FATE.abundBraunBlanquet(mat.obs$abund)/100
+mat.obs$abund = PRE_FATE.abundBraunBlanquet(mat.obs$abund) / 100
 mat.obs = aggregate(abund ~ site + PFG + strata + x + y
-                        , data = mat.obs, FUN = "sum")
+                    , data = mat.obs, FUN = "sum")
                         
 ## Create Global and Simulation parameters
 PRE_FATE.params_globalParameters(name.simulation = "FATE_Champsaur"
-                                , opt.saving_abund_PFG_stratum = TRUE
-                                , opt.saving_abund_PFG = TRUE
-                                , opt.saving_abund_stratum = FALSE
-                                , required.no_PFG = 15
-                                , required.no_strata = 7
-                                , required.simul_duration = 2000
-                                , required.seeding_duration = 1000
-                                , required.seeding_timestep = 1
-                                , required.seeding_input = 100
-                                , required.potential_fecundity = 1
-                                , required.max_abund_low = 1000
-                                , required.max_abund_medium = 2000
-                                , required.max_abund_high = 3000
-                                , doDispersal = TRUE
-                                , DISPERSAL.mode = 1
-                                , DISPERSAL.saving = FALSE
-                                , doHabSuitability = TRUE
-                                , HABSUIT.mode = 1)
+                                 , opt.saving_abund_PFG_stratum = TRUE
+                                 , opt.saving_abund_PFG = TRUE
+                                 , opt.saving_abund_stratum = FALSE
+                                 , required.no_PFG = 15
+                                 , required.no_strata = 7
+                                 , required.simul_duration = 2000
+                                 , required.seeding_duration = 1000
+                                 , required.seeding_timestep = 1
+                                 , required.seeding_input = 100
+                                 , required.potential_fecundity = 1
+                                 , required.max_abund_low = 1000
+                                 , required.max_abund_medium = 2000
+                                 , required.max_abund_high = 3000
+                                 , doDispersal = TRUE
+                                 , DISPERSAL.mode = 1
+                                 , DISPERSAL.saving = FALSE
+                                 , doHabSuitability = TRUE
+                                 , HABSUIT.mode = 1)
                                 
 PRE_FATE.params_simulParameters(name.simulation = "FATE_Champsaur"
                                 , name.MASK = "MASK_Champsaur.tif")
 
-param = "Simul_parameters_V1.txt"
-simul.param = paste0("FATE_Champsaur/PARAM_SIMUL/", param)
+simul.param = "Simul_parameters_V1.txt"
+# simul.param = paste0("FATE_Champsaur/PARAM_SIMUL/", simul.param)
 
 POST_FATE.validation(name.simulation = "FATE_Champsaur"
                      , file.simulParam = simul.param
                      , year = 2000
-                     , doHabitat = TRUE
                      , mat.obs = mat.obs
-                     , ras.habitat = ras.habitat
                      , mat.hab = mat.hab
-                     , opt.keep_strata = opt.keep_strata
+                     , ras.habitat = ras.habitat
+                     , doHabitat = TRUE
                      , doHabitat.allMap = TRUE
                      , doComposition = TRUE
                      , doRichness = TRUE)
