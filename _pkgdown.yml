@@ -129,6 +129,7 @@ reference:
       - "POST_FATE.binaryMaps"
       - "POST_FATE.graphic_mapPFGvsHS"
       - "POST_FATE.graphic_mapPFG"
+      - "POST_FATE.validation"
   - title: Save FATE simulation
     contents:
       - "SAVE_FATE.step1_PFG"

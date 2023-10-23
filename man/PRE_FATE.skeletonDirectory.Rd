@@ -76,6 +76,14 @@ The tree structure is detailed below :
   \code{\link{PRE_FATE.params_simulParameters}})}
   \item{\code{RESULTS}}{this folder will collect all the results produced by the
   software with a folder for each simulation}
+  \item{\code{VALIDATION}}{this folder will collect all the validation files produced
+  by the \code{\link{POST_FATE.validation}} function
+  \describe{
+      \item{\code{HABITAT}}{files containing outputs from habitat validation}
+      \item{\code{PFG_RICHNESS}}{files containing outputs from PFG richness validation}
+      \item{\code{PFG_COMPOSITION}}{files containing outputs from PFG composition validation}
+    }
+    }
 }
 
 \strong{NB :} \cr

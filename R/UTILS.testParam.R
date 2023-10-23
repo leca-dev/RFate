@@ -221,6 +221,29 @@
 }
 
 ###############################################################################
+.testParam_notSameRaster = function(param1, param2)
+{
+  if (!compareCRS(param1, param2) ||
+      !all(res(param1) == res(param2)) ||
+      extent(param1) != extent(param2) ||
+      !all(origin(param1) == origin(param2)))
+  {
+    return(TRUE)
+  } else
+  {
+    return(FALSE)
+  }
+}
+.testParam_notSameRaster.m = function(param1.n, param1, param2.n, param2)
+{
+  if (.testParam_notSameRaster(param1, param2))
+  {
+    .stopMessage_raster(param1.n, param2.n)
+  }
+}
+
+
+###############################################################################
 .getParam_opt.folder.name = function(param, folder.path, create.dir = TRUE)
 {
   if (is.null(param)){
