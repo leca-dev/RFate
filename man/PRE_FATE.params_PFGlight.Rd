@@ -154,9 +154,9 @@ each PFG :
     \item from \strong{predefined scenarios} (using \code{strategy_ag}) : \cr \cr
     \strong{\code{| _L_ _M_ _H_ |}} \cr
     \code{_______________} \cr
-    \code{| 50\% 80\% 90\% |} \strong{light_lover} \cr
+    \code{| 90\% 80\% 50\% |} \strong{shade_lover} \cr
     \code{| 90\% 90\% 90\% |} \strong{indifferent} \cr
-    \code{| 90\% 80\% 50\% |} \strong{shade_lover} \cr \cr
+    \code{| 50\% 80\% 90\% |} \strong{light_lover} \cr \cr
     
     \item from \strong{predefined rules} (using \code{type}) :
     \itemize{
@@ -188,11 +188,11 @@ each PFG :
       \strong{\code{| _ g _ | _ i _ | _ m _ |}} \cr
       \strong{\code{| L M H | L M H | L M H |}} \cr
       \code{_________________________} \cr
-      \code{| 1 1 1 | . . 1 | . . 1 |} \strong{full_light} \cr
-      \code{| 1 1 1 | . 1 1 | . 1 1 |} \strong{pioneer} \cr
-      \code{| 1 1 1 | 1 1 1 | 1 1 1 |} \strong{ubiquist} \cr
+      \code{| 1 1 . | 1 1 . | 1 1 . |} \strong{undergrowth} \cr
       \code{| 1 1 . | 1 1 . | 1 1 1 |} \strong{semi_shade} \cr
-      \code{| 1 1 . | 1 1 . | 1 1 . |} \strong{undergrowth} \cr \cr
+      \code{| 1 1 1 | 1 1 1 | 1 1 1 |} \strong{ubiquist} \cr
+      \code{| 1 1 1 | . 1 1 | . 1 1 |} \strong{pioneer} \cr
+      \code{| 1 1 1 | . . 1 | . . 1 |} \strong{full_light} \cr
       
     \item from \strong{predefined rules} (using \code{type} and 
     \code{light_need}):

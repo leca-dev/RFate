@@ -312,7 +312,7 @@ each PFG :</p>
   <dt>ACTIVE_GERM</dt>
 <dd><p>proportion of seeds that will germinate for each light 
   condition (<code>Low</code>, <code>Medium</code>, <code>High</code>) <br><br>
-  Three methods to define these proportions are available :</p><ul><li><p>from <strong>predefined scenarios</strong> (using <code>strategy_ag</code>) : <br><br><strong><code>| _L_ _M_ _H_ |</code></strong> <br><code>_______________</code> <br><code>| 50% 80% 90% |</code> <strong>light_lover</strong> <br><code>| 90% 90% 90% |</code> <strong>indifferent</strong> <br><code>| 90% 80% 50% |</code> <strong>shade_lover</strong> <br><br></p></li>
+  Three methods to define these proportions are available :</p><ul><li><p>from <strong>predefined scenarios</strong> (using <code>strategy_ag</code>) : <br><br><strong><code>| _L_ _M_ _H_ |</code></strong> <br><code>_______________</code> <br><code>| 90% 80% 50% |</code> <strong>shade_lover</strong> <br><code>| 90% 90% 90% |</code> <strong>indifferent</strong> <br><code>| 50% 80% 90% |</code> <strong>light_lover</strong> <br><br></p></li>
 <li><p>from <strong>predefined rules</strong> (using <code>type</code>) :</p><ul><li><p>for <code>H</code> (herbaceous) : <code>50%, 80%, 90%</code></p></li>
 <li><p>for <code>C</code> (chamaephyte) or <code>P</code> (phanerophyte): 
       <code>90%, 90%, 90%</code></p></li>
@@ -333,7 +333,7 @@ each PFG :</p>
 <li><p>with <code>g</code>: Germinant, <code>i</code>: Immature, <code>m</code>: Mature</p></li>
 <li><p>with <code>L</code>: low light, <code>M</code>: medium light, <code>H</code>: 
         high light <br><br></p></li>
-</ul><p><strong><code>| _ g _ | _ i _ | _ m _ |</code></strong> <br><strong><code>| L M H | L M H | L M H |</code></strong> <br><code>_________________________</code> <br><code>| 1 1 1 | . . 1 | . . 1 |</code> <strong>full_light</strong> <br><code>| 1 1 1 | . 1 1 | . 1 1 |</code> <strong>pioneer</strong> <br><code>| 1 1 1 | 1 1 1 | 1 1 1 |</code> <strong>ubiquist</strong> <br><code>| 1 1 . | 1 1 . | 1 1 1 |</code> <strong>semi_shade</strong> <br><code>| 1 1 . | 1 1 . | 1 1 . |</code> <strong>undergrowth</strong> <br><br></p></li>
+</ul><p><strong><code>| _ g _ | _ i _ | _ m _ |</code></strong> <br><strong><code>| L M H | L M H | L M H |</code></strong> <br><code>_________________________</code> <br><code>| 1 1 . | 1 1 . | 1 1 . |</code> <strong>undergrowth</strong> <br><code>| 1 1 . | 1 1 . | 1 1 1 |</code> <strong>semi_shade</strong> <br><code>| 1 1 1 | 1 1 1 | 1 1 1 |</code> <strong>ubiquist</strong> <br><code>| 1 1 1 | . 1 1 | . 1 1 |</code> <strong>pioneer</strong> <br><code>| 1 1 1 | . . 1 | . . 1 |</code> <strong>full_light</strong> <br></p></li>
 <li><p>from <strong>predefined rules</strong> (using <code>type</code> and 
     <code>light_need</code>):</p><dl><dt>(A)</dt>
 <dd><p>PFG are tolerant to <code>Low</code> light if <code>light &lt;= 2</code></p></dd>
