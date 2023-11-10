@@ -42,7 +42,9 @@ PRE_FATE.params_globalParameters(
   doDisturbances = FALSE,
   DIST.no,
   DIST.no_sub = 4,
-  DIST.freq = 1,
+  DIST.freq = rep(1, DIST.no),
+  DIST.prob = rep(1, DIST.no),
+  DIST.pair = rep(1, DIST.no),
   doDrought = FALSE,
   DROUGHT.no_sub = 4,
   doAliens = FALSE,
@@ -219,6 +221,15 @@ the number of way a PFG could react to a disturbance}
 \item{DIST.freq}{(\emph{optional}) \cr a \code{vector} of \code{integer} 
 corresponding to the frequency of each disturbance (\emph{in years})}
 
+\item{DIST.prob}{(\emph{optional}) \cr a \code{vector} of \code{double} 
+corresponding to the probability of each pixel to be impacted by each 
+disturbance (\emph{between \code{0} and \code{1}})}
+
+\item{DIST.pair}{(\emph{optional}) \cr a \code{vector} of \code{integer} 
+corresponding to the disturbance paired identification : which disturbances 
+will be impacted within the same pixels selected to fullfill the 
+\code{DIST.prob} condition}
+
 \item{doDrought}{default \code{FALSE}. \cr If \code{TRUE}, drought 
 disturbances are applied in the \code{FATE} simulation, and associated 
 parameters are required}
@@ -380,6 +391,8 @@ If the simulation includes \emph{disturbances} :
   \item DIST_NO
   \item DIST_NOSUB
   \item DIST_FREQ
+  \item DIST_PROB
+  \item DIST_PAIR
 }
  
 If the simulation includes \emph{drought disturbance} :
@@ -564,15 +577,20 @@ file, and if so, some additional parameters will be required :
   = filter based on maps given for each disturbance within the 
   \emph{Simul_parameters} file with the \code{DIST_MASK} flag \cr (see 
   \code{\link{PRE_FATE.params_simulParameters}}) \cr \cr
-  These maps, containing either \code{0} or \code{1}, define the impact zone 
-  of each perturbation, and the user will have to define how each PFG will 
-  be impacted depending on age and life stage. 
+  These maps must contain values between \code{0} and \code{1} defining the 
+  impact zone of each perturbation and its intensity. The user will have to 
+  define how each PFG will be impacted depending on age and life stage, and 
+  this will be weighted by the intensity value.
   \describe{
     \item{DIST.no}{the number of different disturbances}
     \item{DIST.no_sub}{the number of way a PFG could react to a 
     perturbation}
     \item{DIST.freq}{the frequency of each disturbance 
-    (\emph{in years}) \cr \cr}
+    (\emph{in years})}
+    \item{DIST.prob}{the probability of each pixel to be impacted by each 
+    disturbance (\emph{between \code{0} and \code{1}})}
+    \item{DIST.pair}{which disturbances will be impacted within the same 
+    pixels randomly selected if \code{DIST.prob < 1} \cr \cr}
   }
   }
   \item{DROUGHT}{= to experience extreme events with a direct and a 

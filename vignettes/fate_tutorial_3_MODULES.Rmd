@@ -272,6 +272,7 @@ FATE_simulation/DATA/PFGS/HABSUIT/HS_CA/HS_PFG2_0.tif
 
 Habitat suitability maps can be changed through simulation time.  
 Two supplementary type of files are then needed :
+
 1. a file with each row indicating each simulation year of change
 2. as many files as the number of years indicated in the previous file,  
 and inside them, as many lines as PFG, with a path for a new habitat suitability for each of them
@@ -306,6 +307,11 @@ DIST_NOSUB 4
 DIST_FREQ 1 1 1 1
 </pre>
 
+<pre class = "grey">
+DIST_PROB 1 1 0.6 0.6
+DIST_PAIR 1 1 2 2
+</pre>
+
 - In [SimulParameters](../reference/PRE_FATE.params_simulParameters.html) file :
 
 <pre class = "bash">
@@ -321,6 +327,7 @@ FATE_simulation/DATA/MASK/mask_grazing_level2.tif
 
 Like habitat suitability maps, disturbances maps can be changed through simulation time.  
 Two supplementary type of files are then needed :
+
 1. a file with each row indicating each simulation year of change
 2. as many files as the number of years indicated in the previous file,  
 and inside them, as many lines as disturbances, with a path for a new mask for each of them

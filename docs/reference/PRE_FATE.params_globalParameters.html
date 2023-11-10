@@ -20,7 +20,7 @@ containing GLOBAL PARAMETERS used in FATE model."><!-- mathjax --><script src="h
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.3</span>
       </span>
     </div>
 
@@ -181,7 +181,9 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
 <span>  doDisturbances <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">DIST.no</span>,</span>
 <span>  DIST.no_sub <span class="op">=</span> <span class="fl">4</span>,</span>
-<span>  DIST.freq <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  DIST.freq <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">DIST.no</span><span class="op">)</span>,</span>
+<span>  DIST.prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">DIST.no</span><span class="op">)</span>,</span>
+<span>  DIST.pair <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">DIST.no</span><span class="op">)</span>,</span>
 <span>  doDrought <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  DROUGHT.no_sub <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  doAliens <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -434,6 +436,19 @@ the number of way a PFG could react to a disturbance</p></dd>
 corresponding to the frequency of each disturbance (<em>in years</em>)</p></dd>
 
 
+<dt>DIST.prob</dt>
+<dd><p>(<em>optional</em>) <br> a <code>vector</code> of <code>double</code> 
+corresponding to the probability of each pixel to be impacted by each 
+disturbance (<em>between <code>0</code> and <code>1</code></em>)</p></dd>
+
+
+<dt>DIST.pair</dt>
+<dd><p>(<em>optional</em>) <br> a <code>vector</code> of <code>integer</code> 
+corresponding to the disturbance paired identification : which disturbances 
+will be impacted within the same pixels selected to fullfill the 
+<code>DIST.prob</code> condition</p></dd>
+
+
 <dt>doDrought</dt>
 <dd><p>default <code>FALSE</code>. <br> If <code>TRUE</code>, drought 
 disturbances are applied in the <code>FATE</code> simulation, and associated 
@@ -622,6 +637,8 @@ parameters :</p>
 <li><p>DIST_NO</p></li>
 <li><p>DIST_NOSUB</p></li>
 <li><p>DIST_FREQ</p></li>
+<li><p>DIST_PROB</p></li>
+<li><p>DIST_PAIR</p></li>
 </ul><p>If the simulation includes <em>drought disturbance</em> :</p>
 
 
@@ -803,9 +820,10 @@ file, and if so, some additional parameters will be required :</p>
   = filter based on maps given for each disturbance within the 
   <em>Simul_parameters</em> file with the <code>DIST_MASK</code> flag <br> (see 
   <code><a href="PRE_FATE.params_simulParameters.html">PRE_FATE.params_simulParameters</a></code>) <br><br>
-  These maps, containing either <code>0</code> or <code>1</code>, define the impact zone 
-  of each perturbation, and the user will have to define how each PFG will 
-  be impacted depending on age and life stage.</p><dl><dt>DIST.no</dt>
+  These maps must contain values between <code>0</code> and <code>1</code> defining the 
+  impact zone of each perturbation and its intensity. The user will have to 
+  define how each PFG will be impacted depending on age and life stage, and 
+  this will be weighted by the intensity value.</p><dl><dt>DIST.no</dt>
 <dd><p>the number of different disturbances</p></dd>
 
     <dt>DIST.no_sub</dt>
@@ -814,7 +832,15 @@ file, and if so, some additional parameters will be required :</p>
 
     <dt>DIST.freq</dt>
 <dd><p>the frequency of each disturbance 
-    (<em>in years</em>) <br><br></p></dd>
+    (<em>in years</em>)</p></dd>
+
+    <dt>DIST.prob</dt>
+<dd><p>the probability of each pixel to be impacted by each 
+    disturbance (<em>between <code>0</code> and <code>1</code></em>)</p></dd>
+
+    <dt>DIST.pair</dt>
+<dd><p>which disturbances will be impacted within the same 
+    pixels randomly selected if <code>DIST.prob &lt; 1</code> <br><br></p></dd>
 
   
 </dl><p></p></dd>
