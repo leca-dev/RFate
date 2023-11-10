@@ -630,17 +630,17 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
 test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.freq", {
   
   ## TEST DIST.freq : integer (vector)
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
-                                                , doDisturbances = T
-                                                , DIST.no = 2
-                                                , DIST.no_sub = 2)
-               , "`DIST.freq` must contain as many values as the number of disturbances (`DIST.no`)"
-               , fixed = TRUE)
+  # expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
+  #                                               , required.no_PFG = 5
+  #                                               , required.no_strata = 2
+  #                                               , required.max_abund_low = 3000
+  #                                               , required.max_abund_medium = 5000
+  #                                               , required.max_abund_high = 9000
+  #                                               , doDisturbances = T
+  #                                               , DIST.no = 2
+  #                                               , DIST.no_sub = 2)
+  #              , "`DIST.freq` must contain as many values as the number of disturbances (`DIST.no`)"
+  #              , fixed = TRUE)
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2

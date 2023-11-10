@@ -1572,11 +1572,16 @@ void SimulMap::DoDisturbance(int yr)
   vector<bool> applyDist;
   for (vector<int>::const_iterator it=m_glob_params.getFreqDist().begin(); it!=m_glob_params.getFreqDist().end(); ++it)
   {
-    if (*it==1) { applyDist.push_back(true);
-    } else if (yr%(*it)==0) { applyDist.push_back(true);
-    } else { applyDist.push_back(false);
+    if (*it==1 || yr%(*it)==0) {
+      applyDist.push_back(true);
+    } else {
+      applyDist.push_back(false);
     }
   }
+  
+  unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+  RandomGenerator rng(seed);
+  UniReal random_01(0.0, 1.0);
   
   /* Do disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1585,9 +1590,13 @@ void SimulMap::DoDisturbance(int yr)
   for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
   {
     unsigned cell_ID = m_MaskCells[ID];
+    double randi = random_01(rng);
     for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
     { // loop on disturbances
-      if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0)
+      if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
+        randi = random_01(rng);
+      }
+      if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0 && randi < m_glob_params.getProbDist()[dist])
       { // within mask & disturbance occurs in this cell
         m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
       }

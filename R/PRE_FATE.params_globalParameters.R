@@ -129,6 +129,13 @@
 ##' the number of way a PFG could react to a disturbance
 ##' @param DIST.freq (\emph{optional}) \cr a \code{vector} of \code{integer} 
 ##' corresponding to the frequency of each disturbance (\emph{in years})
+##' @param DIST.prob (\emph{optional}) \cr a \code{vector} of \code{double} 
+##' corresponding to the probability of each pixel to be impacted by each 
+##' disturbance (\emph{between \code{0} and \code{1}})
+##' @param DIST.pair (\emph{optional}) \cr a \code{vector} of \code{integer} 
+##' corresponding to the disturbance paired identification : which disturbances 
+##' will be impacted within the same pixels selected to fullfill the 
+##' \code{DIST.prob} condition
 ##' @param doDrought default \code{FALSE}. \cr If \code{TRUE}, drought 
 ##' disturbances are applied in the \code{FATE} simulation, and associated 
 ##' parameters are required
@@ -367,15 +374,20 @@
 ##'   = filter based on maps given for each disturbance within the 
 ##'   \emph{Simul_parameters} file with the \code{DIST_MASK} flag \cr (see 
 ##'   \code{\link{PRE_FATE.params_simulParameters}}) \cr \cr
-##'   These maps, containing either \code{0} or \code{1}, define the impact zone 
-##'   of each perturbation, and the user will have to define how each PFG will 
-##'   be impacted depending on age and life stage. 
+##'   These maps must contain values between \code{0} and \code{1} defining the 
+##'   impact zone of each perturbation and its intensity. The user will have to 
+##'   define how each PFG will be impacted depending on age and life stage, and 
+##'   this will be weighted by the intensity value.
 ##'   \describe{
 ##'     \item{DIST.no}{the number of different disturbances}
 ##'     \item{DIST.no_sub}{the number of way a PFG could react to a 
 ##'     perturbation}
 ##'     \item{DIST.freq}{the frequency of each disturbance 
-##'     (\emph{in years}) \cr \cr}
+##'     (\emph{in years})}
+##'     \item{DIST.prob}{the probability of each pixel to be impacted by each 
+##'     disturbance (\emph{between \code{0} and \code{1}})}
+##'     \item{DIST.pair}{which disturbances will be impacted within the same 
+##'     pixels randomly selected if \code{DIST.prob < 1} \cr \cr}
 ##'   }
 ##'   }
 ##'   \item{DROUGHT}{= to experience extreme events with a direct and a 
@@ -642,6 +654,8 @@
 ##'   \item DIST_NO
 ##'   \item DIST_NOSUB
 ##'   \item DIST_FREQ
+##'   \item DIST_PROB
+##'   \item DIST_PAIR
 ##' }
 ##'  
 ##' If the simulation includes \emph{drought disturbance} :
@@ -780,7 +794,9 @@ PRE_FATE.params_globalParameters = function(
   , doDisturbances = FALSE
   , DIST.no
   , DIST.no_sub = 4
-  , DIST.freq = 1
+  , DIST.freq = rep(1, DIST.no)
+  , DIST.prob = rep(1, DIST.no)
+  , DIST.pair = rep(1, DIST.no)
   , doDrought = FALSE
   , DROUGHT.no_sub = 4
   , doAliens = FALSE
@@ -863,6 +879,16 @@ PRE_FATE.params_globalParameters = function(
     .testParam_notInteger.m("DIST.freq", DIST.freq)
     if (length(DIST.freq) != DIST.no){
       stop(paste0("Wrong type of data!\n `DIST.freq` must contain as many "
+                  , "values as the number of disturbances (`DIST.no`)"))
+    }
+    .testParam_notBetween.m("DIST.prob", DIST.prob, 0, 1)
+    if (length(DIST.prob) != DIST.no){
+      stop(paste0("Wrong type of data!\n `DIST.prob` must contain as many "
+                  , "values as the number of disturbances (`DIST.no`)"))
+    }
+    .testParam_notInteger.m("DIST.pair", DIST.pair)
+    if (length(DIST.pair) != DIST.no){
+      stop(paste0("Wrong type of data!\n `DIST.pair` must contain as many "
                   , "values as the number of disturbances (`DIST.no`)"))
     }
   }
@@ -1003,11 +1029,15 @@ PRE_FATE.params_globalParameters = function(
     params.DIST = list(as.numeric(doDisturbances)
                        , DIST.no
                        , DIST.no_sub
-                       , DIST.freq)
+                       , DIST.freq
+                       , DIST.prob
+                       , DIST.pair)
     names.params.list.DIST = c("DO_DISTURBANCES"
                                , "DIST_NO"
                                , "DIST_NOSUB"
-                               , "DIST_FREQ")
+                               , "DIST_FREQ"
+                               , "DIST_PROB"
+                               , "DIST_PAIR")
   } else
   {
     params.DIST = list(as.numeric(doDisturbances))

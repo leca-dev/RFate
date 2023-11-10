@@ -50,7 +50,7 @@ m_DoSavingPFGStratum(false), m_DoSavingPFG(false), m_DoSavingStratum(false),
 m_DoLightInteraction(false), m_LightThreshLow(0), m_LightThreshMedium(0), m_LightRecruitment(false), m_LightSaving(false), 
 m_DoHabSuitability(false), m_HabSuitMode(1),
 m_DoDispersal(false), m_DispersalMode(1), m_DispersalSaving(false), 
-m_DoDisturbances(false), m_NoDist(0), m_NoDistSub(0), m_FreqDist(0,0),
+m_DoDisturbances(false), m_NoDist(0), m_NoDistSub(0), m_FreqDist(0,0), m_ProbDist(0,0.0), m_PairDist(0,0),
 m_DoSoilInteraction(false), m_SoilFillMap(true), m_SoilInit(0.0), m_SoilRetention(0.0), m_SoilRecruitment(false), m_SoilSaving(false), 
 m_DoFireDisturbances(false), m_NoFireDist(0), m_NoFireDistSub(0), m_FreqFireDist(0,0),
 m_FireIgnitMode(1), m_FireNeighMode(1), m_FirePropMode(1), m_FireQuotaMode(1),
@@ -70,7 +70,8 @@ const bool& doLightInteraction, const int& lightThreshLow, const int& lightThres
 const bool& lightRecruitment, const bool& lightSaving, 
 const bool& doHabSuitability, const int& habSuitMode,
 const bool& doDispersal, const int& dispersalMode, const bool& dispersalSaving, 
-const bool& doDisturbances, const int& noDist, const int& noDistSub, const vector<int>& freqDist,
+const bool& doDisturbances, const int& noDist, const int& noDistSub, const vector<int>& freqDist, 
+const vector<double>& probDist, const vector<int>& pairDist,
 const bool& doSoilInteraction, const bool& soilFillMap, const double& soilInit, const double& soilRetention, 
 const bool& soilRecruitment, const bool& soilSaving, 
 const bool& doFireDisturbances, const int& noFireDist, const int& noFireDistSub, const vector<int>& freqFireDist,
@@ -89,7 +90,7 @@ m_DoLightInteraction(doLightInteraction), m_LightThreshLow(lightThreshLow), m_Li
 m_LightRecruitment(lightRecruitment), m_LightSaving(lightSaving), 
 m_DoHabSuitability(doHabSuitability), m_HabSuitMode(habSuitMode),
 m_DoDispersal(doDispersal), m_DispersalMode(dispersalMode), m_DispersalSaving(dispersalSaving), 
-m_DoDisturbances(doDisturbances), m_NoDist(noDist), m_NoDistSub(noDistSub), m_FreqDist(freqDist),
+m_DoDisturbances(doDisturbances), m_NoDist(noDist), m_NoDistSub(noDistSub), m_FreqDist(freqDist), m_ProbDist(probDist), m_PairDist(pairDist),
 m_DoSoilInteraction(doSoilInteraction), m_SoilFillMap(soilFillMap), m_SoilInit(soilInit), m_SoilRetention(soilRetention), 
 m_SoilRecruitment(soilRecruitment), m_SoilSaving(soilSaving), 
 m_DoFireDisturbances(doFireDisturbances), m_NoFireDist(noFireDist), m_NoFireDistSub(noFireDistSub), m_FreqFireDist(freqFireDist),
@@ -286,11 +287,32 @@ GSP::GSP(const string globalParamsFile)
 		{
 			logg.error("!!! Parameter DIST_FREQ : number of frequencies must be equal to the number of disturbances (DIST_NO)!");
 		}
+		vector<double> v_double = GlobParms.get_val<double>("DIST_PROB", true);
+		if (v_double.size()) m_ProbDist = v_double; else m_ProbDist = vector<double>(m_NoDist, 0.0);
+		if (m_NoDist != m_ProbDist.size())
+		{
+		  logg.error("!!! Parameter DIST_PROB : number of probabilities must be equal to the number of disturbances (DIST_NO)!");
+		}
+		for(unsigned i=1; i<m_ProbDist.size(); i++)
+		{
+		  if (m_ProbDist[i] < 0 || m_ProbDist[i] > 1)
+		  {
+		    logg.error("!!! DIST_PROB values must be superior or equal to 0, and inferior or equal to 1. Please check!");
+		  }
+		}
+		v_int = GlobParms.get_val<int>("DIST_PAIR", true);
+		if (v_int.size()) m_PairDist = v_int; else m_PairDist = vector<int>(m_NoDist, 1);
+		if (m_NoDist != m_PairDist.size())
+		{
+		  logg.error("!!! Parameter DIST_PAIR : number of paired identification must be equal to the number of disturbances (DIST_NO)!");
+		}
 	} else
 	{
 		m_NoDist = 0;
 		m_NoDistSub = 0;
-		m_FreqDist = vector<int>(1,0);
+		m_FreqDist = vector<int>(0,0);
+		m_ProbDist = vector<double>(0,0.0);
+		m_PairDist = vector<int>(0,0);
 	}
 
 	/* GET OPTIONAL parameters : soil interaction */
@@ -483,6 +505,8 @@ bool GSP::getDoDisturbances() const{ return m_DoDisturbances; }
 int GSP::getNoDist() const{ return m_NoDist; }
 int GSP::getNoDistSub() const{ return m_NoDistSub; }
 const vector<int>& GSP::getFreqDist() const{ return m_FreqDist; }
+const vector<double>& GSP::getProbDist() const{ return m_ProbDist; }
+const vector<int>& GSP::getPairDist() const{ return m_PairDist; }
 bool GSP::getDoSoilInteraction() const{ return m_DoSoilInteraction; }
 bool GSP::getSoilFillMap() const{ return m_SoilFillMap; }
 double GSP::getSoilInit() const{ return m_SoilInit; }
@@ -540,6 +564,8 @@ void GSP::setDoDisturbances(const bool& doDisturbances){ m_DoDisturbances = doDi
 void GSP::setNoDist(const int& noDist){ m_NoDist = noDist; }
 void GSP::setNoDistSub(const int& noDistSub){ m_NoDistSub = noDistSub; }
 void GSP::setFreqDist(const vector<int>& freqDist){ m_FreqDist = freqDist; }
+void GSP::setProbDist(const vector<double>& probDist){ m_ProbDist = probDist; }
+void GSP::setPairDist(const vector<int>& pairDist){ m_PairDist = pairDist; }
 void GSP::setDoSoilInteraction(const bool& doSoilInteraction){ m_DoSoilInteraction = doSoilInteraction; }
 void GSP::setSoilFillMap(const bool& soilFillMap){ m_SoilFillMap = soilFillMap; }
 void GSP::setSoilInit(const double& soilInit){ m_SoilInit = soilInit; }
@@ -604,6 +630,8 @@ void GSP::show()
 						 "\nm_NoDist = ", m_NoDist,
 						 "\nm_NoDistSub = ", m_NoDistSub,
 						 "\nm_FreqDist = ", m_FreqDist,
+						 "\nm_ProbDist = ", m_ProbDist,
+						 "\nm_PairDist = ", m_PairDist,
 						 "\nm_DoSoilInteraction = ", m_DoSoilInteraction,
 						 "\nm_SoilFillMap = ", m_SoilFillMap,
 						 "\nm_SoilInit = ", m_SoilInit,

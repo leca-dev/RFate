@@ -100,7 +100,9 @@ class GSP
 	int m_NoDist; /*!< Number of disturbances */
 	int m_NoDistSub; /*!< Number of disturbances subdivision (no of way to react to dist) */
 	vector<int> m_FreqDist; /*!< Frequency of each disturbance in years */
-
+	vector<double> m_ProbDist; /*!< Probability of pixels to be impacted by each disturbance */
+	vector<int> m_PairDist; /*!< Disturbance paired identification */
+	
 	/* Soil interaction module */
 	bool m_DoSoilInteraction; /*!< Unable or not Soil interaction module */
 	bool m_SoilFillMap; /*! Fill or not initialization soil map with initialization soil value */
@@ -173,6 +175,8 @@ class GSP
 		ar & m_NoDist;
 		ar & m_NoDistSub;
 		ar & m_FreqDist;
+		ar & m_ProbDist;
+		ar & m_PairDist;
 		ar & m_DoSoilInteraction;
 		ar & m_SoilFillMap;
 		ar & m_SoilInit;
@@ -270,6 +274,8 @@ class GSP
 	 *	\param noDist : number of disturbances involved
 	 *	\param noDistSub : number of way a FG can react to a disturbance
 	 *  \param freqDist : the frequency of each disturbance
+	 *  \param probDist : probability of pixels to be impacted by each disturbance
+	 *  \param pairDist : disturbance paired identification
 	 *	\param doSoilInteraction : unable or not Soil interaction module
 	 *	\param soilFillMap : fill or not initialization soil map with initialization 
 	 * soil value
@@ -336,6 +342,8 @@ class GSP
 	const int& noDist,
 	const int& noDistSub,
 	const vector<int>& freqDist,
+	const vector<double>& probDist,
+	const vector<int>& pairDist,
 	const bool& doSoilInteraction,
 	const bool& soilFillMap,
 	const double& soilInit,
@@ -410,6 +418,8 @@ class GSP
 		m_NoDist == o.m_NoDist &&
 		m_NoDistSub == o.m_NoDistSub &&
 		m_FreqDist == o.m_FreqDist &&
+		m_ProbDist == o.m_ProbDist &&
+		m_PairDist == o.m_PairDist &&
 		m_DoSoilInteraction == o.m_DoSoilInteraction &&
 		m_SoilFillMap == o.m_SoilFillMap &&
 		m_SoilInit == o.m_SoilInit &&
@@ -473,6 +483,8 @@ class GSP
 	int getNoDist() const;
 	int getNoDistSub() const;
 	const vector<int>& getFreqDist() const;
+	const vector<double>& getProbDist() const;
+	const vector<int>& getPairDist() const;
 	bool getDoSoilInteraction() const;
 	bool getSoilFillMap() const;
 	double getSoilInit() const;
@@ -530,6 +542,8 @@ class GSP
 	void setNoDist(const int& noDist);
 	void setNoDistSub(const int& noDistSub);
 	void setFreqDist(const vector<int>& freqDist);
+	void setProbDist(const vector<double>& probDist);
+	void setPairDist(const vector<int>& pairDist);
 	void setDoSoilInteraction(const bool& doSoilInteraction);
 	void setSoilFillMap(const bool& soilFillMap);
 	void setSoilInit(const double& soilInit);
