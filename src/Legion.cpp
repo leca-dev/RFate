@@ -341,39 +341,63 @@ void Legion::reduceCohort(const int& ay, const int& ao, const double& reducFact)
 		if (reducFact <= 0)
 		{
 			this->removeCohort(tempAy, tempAo);
-		}
-
-		for (unsigned co=0; co<m_CohortList.size(); co++)
+		} else
 		{
-			if (m_CohortList[co].getAy() > tempAo)
-			{ // no more concerned cohort : ao < getAy
-				break;
-			}
-			if (m_CohortList[co].getAo() < tempAy)
-			{ // find the first concerned cohort
-				continue;
-			}
-			if (m_CohortList[co].getAy() < tempAy)
-			{ // INSIDE THE COHORT : ay > getAy : split the cohort and call recursively
-				this->splitCohort(co, tempAy-1);
-				continue;
-			}
-			if (m_CohortList[co].getAo() > tempAo)
-			{ // INSIDE THE COHORT : ao < getAo : split the cohort and call recursively
-				this->splitCohort(co, tempAo);
-			}
-
-			unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
-			if (newSize > 0)
-			{ /* 2. REDUCE THIS LEGION ABUNDANCE + CONTINUE THE LOOP */
-				m_CohortList[co].setCSize(newSize);
-			} else
-			{ /* 3. REMOVE THE COHORT */
-				this->removeCohort(m_CohortList[co].getAy(), m_CohortList[co].getAo());
-				co--;
-			}
+		  for (unsigned co=0; co<m_CohortList.size(); co++)
+		  {
+		    if (m_CohortList[co].getAy() > tempAo)
+		    { // no more concerned cohort : ao < getAy
+		      break;
+		    }
+		    if (m_CohortList[co].getAo() < tempAy)
+		    { // find the first concerned cohort
+		      continue;
+		    }
+		    if (m_CohortList[co].getAy() < tempAy)
+		    { // INSIDE THE COHORT : ay > getAy : split the cohort and call recursively
+		      this->splitCohort(co, tempAy-1);
+		      continue;
+		    }
+		    if (m_CohortList[co].getAo() > tempAo)
+		    { // INSIDE THE COHORT : ao < getAo : split the cohort and call recursively
+		      this->splitCohort(co, tempAo);
+		    }
+		    
+		    unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
+		    if (newSize > 0)
+		    { /* 2. REDUCE THIS LEGION ABUNDANCE + CONTINUE THE LOOP */
+		      m_CohortList[co].setCSize(newSize);
+		    } else
+		    { /* 3. REMOVE THE COHORT */
+		      this->removeCohort(m_CohortList[co].getAy(), m_CohortList[co].getAo());
+		      co--;
+		    }
+		  }
 		}
 	}
+} // end of reduceCohort(...)
+
+
+void Legion::reduceCohort(const int& co, const double& reducFact)
+{
+  if (m_CohortList.size() > 0)
+  { /* Check that there is some individuals in the legion */
+    /* 1. DELETE ALL */
+    if (reducFact <= 0)
+    {
+      this->removeCohort(m_CohortList[co].getAy(), m_CohortList[co].getAo());
+    } else
+    {
+      unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
+      if (newSize > 0)
+      { /* 2. REDUCE THIS LEGION ABUNDANCE */
+        m_CohortList[co].setCSize(newSize);
+      } else
+      { /* 3. REMOVE THE COHORT */
+        this->removeCohort(m_CohortList[co].getAy(), m_CohortList[co].getAo());
+      }
+    }
+  }
 } // end of reduceCohort(...)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/

@@ -292,8 +292,12 @@ void SuFate::CheckSurvival()
             { // only mature plants
               survivePercent = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
             } else
-            { // only immature plants
-              survivePercent = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
+            { // only germinant or immature plants
+              if (st == 0 && aoTemp == 0) {
+                survivePercent = FGparams->getLightTolerance(Germinant , m_LightR.getResource(st));
+              } else {
+                survivePercent = FGparams->getLightTolerance(Immature , m_LightR.getResource(st));
+              }
             }
             if (survivePercent > 0)
             { /* If all or part of the plants survives */
@@ -301,19 +305,18 @@ void SuFate::CheckSurvival()
               { /* All Legion Plants are in the same stratum, The whole or part of the Legion survives */
                 if (survivePercent < 100)
                 {
-                  FGlegion->reduceCohort(ayTemp, aoTemp, IntToDouble(survivePercent));
+                  FGlegion->reduceCohort(co, IntToDouble(survivePercent));
                 }
-                co++;
+                if (noCohort == m_Comm.getNoCohort(fg)) {
+                  co++;
+                } else {
+                  noCohort = m_Comm.getNoCohort(fg);
+                }
               } else
               {	/* Plants covered more than a lone stratum */
                 /* We are just sure that some individuals in this stratum might survive */
                 FGlegion->splitCohort(co, bkStratAges[st]-1);
-                if (survivePercent < 100)
-                {
-                  FGlegion->reduceCohort(ayTemp, bkStratAges[st]-1, IntToDouble(survivePercent));
-                }
                 noCohort++;
-                co++;
               }
             } else
             {	/* If all plants die, individuals in this stratum die */

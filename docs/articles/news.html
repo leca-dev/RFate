@@ -219,7 +219,11 @@ development, were meant to facilitate the use and spread of the
 <li>include PFG loop inside <code>SuFate::DoDisturbance()</code>
 (<em>optimization</em>)</li>
 <li>remove call to <code>Legion::pickupCohorts()</code> from
-<code>Legion::reduceCohort()</code> function (<em>seg fault</em>)</li>
+<code>Legion::reduceCohort()</code> function, and add
+<code>Legion::reduceCohort()</code> function targeting directly a
+specified cohort (<em>seg fault</em>)</li>
+<li>take into account Germinant <code>LIGHT_TOL</code> values in
+<code>SuFate::CheckSurvival()</code> function</li>
 </ul>
 </li>
 <li>1.3.1 : change scale from <code>0:10</code> to <code>0:100</code>

@@ -187,7 +187,8 @@ class Legion
 	 * \param reducFact : the cohort abundance reduction factor
 	 */
 	void reduceCohort(const int& ay, const int& ao, const double& reducFact);
-
+	void reduceCohort(const int& co, const double& reducFact);
+	  
 	/*!
 	 *	\brief Pick up all cohorts of individuals from a legion list if possible
 	 *
