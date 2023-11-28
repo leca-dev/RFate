@@ -144,8 +144,9 @@ void SuFate::CalculateEnvironment()
     int noFG_pres = 0;
     
     vector<int> AbundPFG(noFG, 0); // vector to store abundances of PFGs
-    vector<int> stProfile(m_GSP->getNoStrata()+1, 0); // vector to store light unities (abundances * shade factor)
-    
+    vector<int> stProfile(m_GSP->getNoStrata()+1, 0); // vector to store shade unities (abundances * shade factor)
+    // shade unities will be stored from index 1 to NoStrata (not starting at 0 /!\)
+
     for (int fg=0; fg < noFG; fg++)
     {
       /* create a copy of FG parameters to simplify and speed up the code */
@@ -197,18 +198,19 @@ void SuFate::CalculateEnvironment()
     if (m_GSP->getDoLightInteraction())
     {
       int XAbove = 0;
-      for (int Stm = m_GSP->getNoStrata(); Stm > 0; Stm--) /* resource availabilities */
+      m_LightR.setResource(m_GSP->getNoStrata() - 1, RHigh);
+      for (int Stm = m_GSP->getNoStrata(); Stm > 1; Stm--) /* resource availabilities */
       {
-        XAbove = XAbove + stProfile[Stm];
+        XAbove = XAbove + stProfile[Stm]; // shade unities are stored from index 1 to NoStrata (not starting at 0 /!\)
         if (XAbove < m_GSP->getLightThreshMedium())
         {
-          m_LightR.setResource(Stm-1, RHigh);
+          m_LightR.setResource(Stm-2, RHigh);
         } else if (XAbove < m_GSP->getLightThreshLow())
         {
-          m_LightR.setResource(Stm-1, RMedium);
+          m_LightR.setResource(Stm-2, RMedium);
         } else
         {
-          m_LightR.setResource(Stm-1, RLow);
+          m_LightR.setResource(Stm-2, RLow);
         }
       }
     }
@@ -233,6 +235,7 @@ void SuFate::CheckSurvival()
         FGPtr FGparams = FuncG->getFGparams_();
         LegionPtr FGlegion = FuncG->getLList_();
         
+        /* Get soil resources in regard to this PFG */
         Resource soilRes = RMedium;
         if (m_SoilR < FGparams->getSoilLow())
         {
@@ -280,7 +283,7 @@ void SuFate::CheckSurvival()
           
           /* Get the first stratum which Legion filled */
           int st = 0;
-          while (ayTemp >= bkStratAges[st]) { st++; }
+          while (ayTemp >= bkStratAges[st+1]) { st++; }
           if (st == m_GSP->getNoStrata()) { break; } // last stratum, get out of the loop
           
           /* only matures or only immature plants in this Legion */
@@ -301,7 +304,7 @@ void SuFate::CheckSurvival()
             }
             if (survivePercent > 0)
             { /* If all or part of the plants survives */
-              if (aoTemp < bkStratAges[st])
+              if (aoTemp < bkStratAges[st+1])
               { /* All Legion Plants are in the same stratum, The whole or part of the Legion survives */
                 if (survivePercent < 100)
                 {
@@ -315,12 +318,12 @@ void SuFate::CheckSurvival()
               } else
               {	/* Plants covered more than a lone stratum */
                 /* We are just sure that some individuals in this stratum might survive */
-                FGlegion->splitCohort(co, bkStratAges[st]-1);
+                FGlegion->splitCohort(co, bkStratAges[st+1]-1);
                 noCohort++;
               }
             } else
             {	/* If all plants die, individuals in this stratum die */
-              FGlegion->removeCohort(ayTemp, min(aoTemp, bkStratAges[st]-1));
+              FGlegion->removeCohort(ayTemp, min(aoTemp, bkStratAges[st+1]-1));
               noCohort = m_Comm.getNoCohort(fg);
             }
           } else
@@ -396,16 +399,8 @@ double SuFate::calcFecund(int fg)
   /* get mature Abundance */
   if (this->getMatTime(fg) < this->getLifeSpan(fg))
   {
-    // matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg)) /
-    //   (1.0 * m_GSP->AbundToInt(FGparams->getMaxAbund()));
     matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg));
   }
-  // if (matAbund > 0)
-  // {
-  //   cout << "PFG : " << fg << ", MAT ABUND : " << matAbund << endl;
-  //   cout << "PFG : " << fg << ", FECUND : " << min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg) << endl;
-  // }
-  // return min(matAbund, 1.0) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
   return min(matAbund, static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund()))) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
 }
 
@@ -488,16 +483,6 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
     PropPool* App_ptr = FuncG->getPools_(ActiveP);
     PropPool* Dpp_ptr = FuncG->getPools_(DormantP);
     
-    /* Soil resources */
-    Resource soilRes = RMedium;
-    if (m_SoilR < FGparams->getSoilLow())
-    {
-      soilRes = RLow;
-    } else if (m_SoilR > FGparams->getSoilHigh())
-    {
-      soilRes = RHigh;
-    }
-    
     /* 6. Age the propagule pools */
     App_ptr->AgePool1(FGparams->getPoolLife(ActiveP));
     if (FGparams->getInnateDormancy())
@@ -528,54 +513,68 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
     App_ptr->EmptyPool();
     
     
-    /* 8. Establishment depends upon the germinants being able to withstand the environment in stratum 0 */
-    bool doRecruit = true;
-    if (doLight && m_GSP->getLightRecruitment() && doSoil && m_GSP->getSoilRecruitment())
+    double envRecruit = getEnvRecrRate(fg);
+    if (isDrought[fg]){ envRecruit = 0.0; }
+    if (envRecruit > 0.0)
     {
-      doRecruit = ( FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] > 0 && (soilRes == RMedium) );
-    } else if (doLight && m_GSP->getLightRecruitment())
-    {
-      doRecruit = (FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] > 0);
-    } else if (doSoil && m_GSP->getSoilRecruitment())
-    {
-      doRecruit = (soilRes == RMedium);
-    }
-    
-    if (doRecruit)
-    {
-      /* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
-      double GerminRate = static_cast<double>(min( m_GSP->AbundToInt(FGparams->getMaxAbund()), AvailSeeds )) ;
-      if (doLight && doSoil)
+      /* Soil resources */
+      Resource soilRes = RMedium;
+      if (doSoil)
       {
-        int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
-        int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
-        
-        GerminRate *= min(IntToDouble(maxRecruitLight0), IntToDouble(maxRecruitSoil0));
-        // GerminRate *= (IntToDouble(maxRecruitLight0) * IntToDouble(maxRecruitSoil0));
-      } else if (doLight)
-      {
-        int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
-        GerminRate *= IntToDouble(maxRecruitLight0);
-      } else if (doSoil)
-      {
-        int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
-        GerminRate *= IntToDouble(maxRecruitSoil0);
+        if (m_SoilR < FGparams->getSoilLow())
+        {
+          soilRes = RLow;
+        } else if (m_SoilR > FGparams->getSoilHigh())
+        {
+          soilRes = RHigh;
+        }
       }
       
-      // do recruitment only if abundance is < to max abund * (1 + ImmSize)
-      double totAbund = FuncG->totalNumAbund( 1, this->getLifeSpan(fg) );
-      double totMaxAbund = static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund())) * (1.0 + IntToDouble(FGparams->getImmSize()));
-      if (totAbund < totMaxAbund)
+      /* 8. Establishment depends upon the germinants being able to withstand the environment in stratum 0 */
+      bool doRecruit = true;
+      if (doLight && m_GSP->getLightRecruitment() && doSoil && m_GSP->getSoilRecruitment())
       {
-        double envRecruit = getEnvRecrRate(fg);
-        if (isDrought[fg]){ envRecruit = 0.0; }
+        doRecruit = ( FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] > 0 && (soilRes == RMedium) );
+      } else if (doLight && m_GSP->getLightRecruitment())
+      {
+        doRecruit = (FGparams->getLightTolerance()[ Germinant ][ m_LightR.getResource(0) ] > 0);
+      } else if (doSoil && m_GSP->getSoilRecruitment())
+      {
+        doRecruit = (soilRes == RMedium);
+      }
+      
+      if (doRecruit)
+      {
+        /* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
+        double GerminRate = static_cast<double>(min( m_GSP->AbundToInt(FGparams->getMaxAbund()), AvailSeeds )) ;
+        if (doLight && doSoil)
+        {
+          int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
+          int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
+          
+          GerminRate *= min(IntToDouble(maxRecruitLight0), IntToDouble(maxRecruitSoil0));
+          // GerminRate *= (IntToDouble(maxRecruitLight0) * IntToDouble(maxRecruitSoil0));
+        } else if (doLight)
+        {
+          int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
+          GerminRate *= IntToDouble(maxRecruitLight0);
+        } else if (doSoil)
+        {
+          int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
+          GerminRate *= IntToDouble(maxRecruitSoil0);
+        }
+        
         int recrrate = ceil(GerminRate * envRecruit);   /* Recruitment is ponderated by environmental suitabilities */
-        // recrrate = min( static_cast<int>(totMaxAbund - totAbund), recrrate ) ;
-        // recrrate = min( m_GSP->AbundToInt(FGparams->getMaxAbund()), recrrate ) ;
         if (recrrate > 0)
         {
-          FuncG->getLList_()->addCohort( static_cast<int>(recrrate), 0, 0);
-          AvailSeeds -= recrrate ;
+          // do recruitment only if abundance is < to max abund * (1 + ImmSize)
+          double totAbund = FuncG->totalNumAbund( 1, this->getLifeSpan(fg) );
+          double totMaxAbund = static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund())) * (1.0 + IntToDouble(FGparams->getImmSize()));
+          if (totAbund < totMaxAbund)
+          {
+            FuncG->getLList_()->addCohort( static_cast<int>(recrrate), 0, 0);
+            AvailSeeds -= recrrate ;
+          }
         }
       }
     }
