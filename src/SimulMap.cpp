@@ -1402,7 +1402,7 @@ void SimulMap::DoDroughtDisturbance_part1()
         // automatic at the beginning of DoSuccession
         
         /* 2.Check Post Drought Mortality */
-        if (m_PostDroughtMap(cell_ID, fg)==1)
+        if (m_PostDroughtMap(cell_ID, fg) == 1)
         {
           /* Set recruitment and fecundity to 0 */
           m_IsDroughtMap(cell_ID, fg) = 1;
@@ -1411,11 +1411,11 @@ void SimulMap::DoDroughtDisturbance_part1()
         
         /* 1.Check Moisture Index */
         double moistIndex = moistValues(cell_ID);
-        if (moistIndex>m_FGparams[fg].getDroughtSD()[0])
+        if (moistIndex > m_FGparams[fg].getDroughtSD()[0])
         {
           /* 3.If NO drought : apply Drought Recovery */
           m_CountDroughtMap(cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
-          if (m_CountDroughtMap(cell_ID, fg)<0)
+          if (m_CountDroughtMap(cell_ID, fg) < 0)
           {
             m_CountDroughtMap(cell_ID, fg) = 0;
           }
@@ -1424,23 +1424,17 @@ void SimulMap::DoDroughtDisturbance_part1()
           /* Set recruitment and fecundity to 0 */
           m_IsDroughtMap(cell_ID, fg) = 1;
           
-          if (m_CountDroughtMap(cell_ID, fg)<m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
-          bool currSevDrought = false, currModDrought = false;
-          if (moistIndex<m_FGparams[fg].getDroughtSD()[1])
-          {
-            currSevDrought = true;
-          } else
-          {
-            currModDrought = true;
-          }
-          if (currSevDrought && m_CountDroughtMap(cell_ID, fg)==1)
+          if (m_CountDroughtMap(cell_ID, fg) < m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
+          
+          bool currSevDrought = (moistIndex < m_FGparams[fg].getDroughtSD()[1]);
+          if (currSevDrought && m_CountDroughtMap(cell_ID, fg) == 1)
           {
             m_PostDroughtMap(cell_ID, fg) = 1;
           }
-          bool modToSev = (currModDrought && (m_CountDroughtMap(cell_ID, fg)==m_FGparams[fg].getCountModToSev()));
-          bool SevMort = (currSevDrought && (m_CountDroughtMap(cell_ID, fg)==m_FGparams[fg].getCountSevMort()));
           
           /* 4.If drought : check Current Drought Mortality */
+          bool modToSev = (!currSevDrought && (m_CountDroughtMap(cell_ID, fg) == m_FGparams[fg].getCountModToSev()));
+          bool SevMort = (currSevDrought && (m_CountDroughtMap(cell_ID, fg) == m_FGparams[fg].getCountSevMort()));
           if (modToSev || SevMort )
           {
             m_PostDroughtMap(cell_ID, fg) = 1;
@@ -1459,8 +1453,8 @@ void SimulMap::DoDroughtDisturbance_part1()
 
 void SimulMap::DoDroughtDisturbance_part2(string chrono)
 {
-  bool cond1 = (strcmp(chrono.c_str(),m_glob_params.getChronoPost().c_str())==0);
-  bool cond2 = (strcmp(chrono.c_str(),m_glob_params.getChronoCurr().c_str())==0);
+  bool cond1 = (strcmp(chrono.c_str(), m_glob_params.getChronoPost().c_str()) == 0);
+  bool cond2 = (strcmp(chrono.c_str(), m_glob_params.getChronoCurr().c_str()) == 0);
   
   if (cond1)
   {
@@ -1477,8 +1471,8 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
         
         if ((m_ApplyPostDroughtMap(cell_ID, fg)==1) && (m_ApplyCurrDroughtMap(cell_ID, fg)==0))
         { /* Apply post drought effects */
-        //logg.info(">> Post drought effect this year !");
-        m_SuccModelMap(cell_ID)->DoDisturbance(fg, 1, 1.0, FGparams->getDroughtResponse());
+          //logg.info(">> Post drought effect this year !");
+          m_SuccModelMap(cell_ID)->DoDisturbance(fg, 1, 1.0, FGparams->getDroughtResponse());
         }
       }
     }
@@ -1495,11 +1489,11 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
         /* create a copy of FG parameters to simplify and speed up the code */
         FGPtr FGparams = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->getFGparams_();
         
-        if ((m_ApplyCurrDroughtMap(cell_ID, fg)==1) && (m_ApplyPostDroughtMap(cell_ID, fg)==0))
+        if ((m_ApplyCurrDroughtMap(cell_ID, fg) == 1) && (m_ApplyPostDroughtMap(cell_ID, fg) == 0))
         { /* Apply current drought effects */
           //logg.info(">> Current drought effect this year !");
           m_SuccModelMap(cell_ID)->DoDisturbance(fg, 0, 1.0, FGparams->getDroughtResponse());
-        } else if ((m_ApplyCurrDroughtMap(cell_ID, fg)==1) && (m_ApplyPostDroughtMap(cell_ID, fg)==1))
+        } else if ((m_ApplyCurrDroughtMap(cell_ID, fg) == 1) && (m_ApplyPostDroughtMap(cell_ID, fg) == 1))
         { /* Apply cumulated post-current drought effects */
           //logg.info(">> Current+Post drought effect this year !");
           FGresponse CurrPostResp = FGparams->getDroughtResponse();
@@ -1530,7 +1524,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
               double mortSup = 0.0;
               if (tmpKiUnRe0 == 0.0)
               { // no killed
-                mortSup = 0.1* m_CountDroughtMap(cell_ID, fg);
+                mortSup = 0.1 * m_CountDroughtMap(cell_ID, fg);
               } else
               {
                 mortSup = tmpKiUnRe0 * 0.1 * m_CountDroughtMap(cell_ID, fg);
@@ -1538,13 +1532,13 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
               tmpKiUnRe[0] = DoubleToInt(tmpKiUnRe0 + mortSup);
               if (tmpKiUnRe1 == 0.0)
               { // no unaffected
-                tmpKiUnRe[1] = DoubleToInt(0.5*(IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
+                tmpKiUnRe[1] = DoubleToInt(0.5 * (IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
               } else if (tmpKiUnRe2 == 0.0)
               { // no resprouting
-                tmpKiUnRe[1] = DoubleToInt(tmpKiUnRe1 - 1.5*(IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
+                tmpKiUnRe[1] = DoubleToInt(tmpKiUnRe1 - 1.5 * (IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
               } else
               { // resprouting and unaffected
-                tmpKiUnRe[1] = DoubleToInt(tmpKiUnRe1 - 0.5*(IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
+                tmpKiUnRe[1] = DoubleToInt(tmpKiUnRe1 - 0.5 * (IntToDouble(tmpKiUnRe[0]) - tmpKiUnRe0));
               }
               tmpKiUnRe[2] = getLeavingFract( tmpKiUnRe[0], tmpKiUnRe[1] );
             }
@@ -2201,7 +2195,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         
         // Create the output file.
         string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+to_string(year)+
-          "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
+          "_STRATA_"+to_string(strat+1)+prevFile_path.extension().string();
         GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
         CPLAssert( rasOutput != NULL );
         
