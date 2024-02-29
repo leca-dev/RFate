@@ -246,14 +246,17 @@ PRE_FATE.speciesDistanceCombine = function(list.mat.dist
   
   if (opt.normal)
   {
-    mat.dist = lapply(mat.dist, function(x) {
-      diag(x) = NA ## to counteract if some 0 values other than on the diag
+    mat.dist = lapply(mat.dist, function(mat) {
+      x = mat[lower.tri(mat, diag = FALSE)]
+      x = matrix(x, ncol = 1)
       ## Non-paranormal transformation
       y = huge.npn(x)
       ## Normalization by maximum
       z = (y - min(y)) / (max(y) - min(y))
-      diag(z) = 0 ## because of NA : should be 1, replace with 0
-      return(z)
+      ## Result
+      res = mat
+      res[lower.tri(res, diag = FALSE)] = z
+      return(as.matrix(as.dist(res)))
     })
   }
   

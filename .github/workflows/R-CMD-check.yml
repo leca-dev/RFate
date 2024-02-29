@@ -70,8 +70,6 @@ jobs:
       - name: Install system dependencies on macOS
         if: runner.os == 'macOS'
         run: |
-          # conflicts with gfortran from r-lib/actions when linking gcc
-          rm '/usr/local/bin/gfortran'
           brew install pkg-config gdal proj geos
           # XQuartz is needed by vdiffr
           brew install --cask xquartz
