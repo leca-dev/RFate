@@ -107,6 +107,7 @@ namespace par
                      key, ">\t", ex.what());
 			}
 		}
+		if (message.length() > 0) logg.info(message);
 		return result;
 	}
 

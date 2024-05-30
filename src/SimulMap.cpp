@@ -72,7 +72,7 @@ m_DroughtMap(SpatialMap<double, double>()),
 m_ElevationMap(SpatialMap<double, double>()),
 m_SlopeMap(SpatialMap<double, double>()),
 m_PostDroughtMap(SpatialStack<double, unsigned>()),
-m_CountDroughtMap(SpatialStack<double, int>()),
+m_CountDroughtMap(SpatialStack<double, unsigned>()),
 m_IsDroughtMap(SpatialStack<double, unsigned>()),
 m_ApplyCurrDroughtMap(SpatialStack<double, unsigned>()),
 m_ApplyPostDroughtMap(SpatialStack<double, unsigned>()),
@@ -332,7 +332,7 @@ SimulMap::SimulMap(FOPL file_of_params)
       droughtMap.emplace_back( ReadMask<unsigned>( file_of_params.getMask(), 0.0, 1.0 ) );
     }
     m_PostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
-    m_CountDroughtMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
+    m_CountDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     m_IsDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
@@ -349,7 +349,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   {
     m_DroughtMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble );
     m_PostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
-    m_CountDroughtMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
+    m_CountDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
     m_IsDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
     m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
     m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
@@ -470,7 +470,7 @@ SpatialMap<double, double>& SimulMap::getElevationMap() { return m_ElevationMap;
 SpatialMap<double, double>& SimulMap::getSlopeMap() { return m_SlopeMap; }
 SpatialMap<double, double>& SimulMap::getDroughtMap() { return m_DroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getPostDroughtMap() { return m_PostDroughtMap; }
-SpatialStack<double, int>& SimulMap::getCountDroughtMap() { return m_CountDroughtMap; }
+SpatialStack<double, unsigned>& SimulMap::getCountDroughtMap() { return m_CountDroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getIsDroughtMap() { return m_IsDroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getApplyCurrDroughtMap() { return m_ApplyCurrDroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getApplyPostDroughtMap() { return m_ApplyPostDroughtMap; }
@@ -494,7 +494,7 @@ void SimulMap::setElevationMap(SpatialMap<double, double> elevationMap) { m_Elev
 void SimulMap::setSlopeMap(SpatialMap<double, double> slopeMap) { m_SlopeMap = slopeMap; }
 void SimulMap::setDroughtMap(SpatialMap<double, double> droughtMap) { m_DroughtMap = droughtMap; }
 void SimulMap::setPostDroughtMap(SpatialStack<double, unsigned> postDroughtMap) { m_PostDroughtMap = postDroughtMap; }
-void SimulMap::setCountDroughtMap(SpatialStack<double, int> countDroughtMap) { m_CountDroughtMap = countDroughtMap; }
+void SimulMap::setCountDroughtMap(SpatialStack<double, unsigned> countDroughtMap) { m_CountDroughtMap = countDroughtMap; }
 void SimulMap::setIsDroughtMap(SpatialStack<double, unsigned> isDroughtMap) { m_IsDroughtMap = isDroughtMap; }
 void SimulMap::setApplyCurrDroughtMap(SpatialStack<double, unsigned> applyCurrDroughtMap) { m_ApplyCurrDroughtMap = applyCurrDroughtMap; }
 void SimulMap::setApplyPostDroughtMap(SpatialStack<double, unsigned> applyPostDroughtMap) { m_ApplyPostDroughtMap = applyPostDroughtMap; }
@@ -512,7 +512,7 @@ void SimulMap::StartSeeding()
 {
   for (unsigned fg=0; fg<m_FGparams.size(); fg++)
   {
-    m_FGparams[fg].setDispersed(true);
+    m_FGparams[fg].setIsSeeded(true);
   }
 } // end of StartSeeding()
 
@@ -522,7 +522,7 @@ void SimulMap::StopSeeding()
 {
   for (unsigned fg=0; fg<m_FGparams.size(); fg++)
   {
-    m_FGparams[fg].setDispersed(false);
+    m_FGparams[fg].setIsSeeded(false);
   }
 } // end of StopSeeding()
 
@@ -1342,45 +1342,54 @@ void SimulMap::DoFireDisturbance(int yr)
 
 void SimulMap::DoDroughtDisturbance_part1()
 {
-//   /* Calculation of abundance per strata for each pixel */
-//   unsigned noStrata = m_glob_params.getNoStrata();
-//   SpatialMap<double, double> moistValues = getDroughtMap();
-//   
-//   omp_set_num_threads(m_glob_params.getNoCPU());
-// #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-//   
-//   for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
-//   { // loop on pixels
-//     unsigned cell_ID = m_MaskCells[ID];
-//     vector<int> tmpAbund(noStrata+1, 0);
-//     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-//     { // loop on PFG
-//       /* create a copy of FG parameters to simplify and speed up the code */
-//       FuncGroupPtr FuncG = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg);
-//       FGPtr FGparams = FuncG->getFGparams_();
-//       if (m_SuccModelMap(cell_ID)->getCommunity_()->getNoCohort(fg) > 0)
-//       {
-//         /* Create a vector with stratum break ages */
-//         vector<int> bkStratAges = FGparams->getStrata();
-//         
-//         /* add PFG strata abundances */
-//         for (unsigned st=1; st<noStrata; st++)
-//         {
-//           tmpAbund[st] = static_cast<int>(FuncG->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
-//         } // end loop on Stratum
-//       }
-//     } // end loop on PFG
-//       
-//     /* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
-//     double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end()); // SHOULD be only the upper stratum ?
-//     // accumulate(tmpAbund.begin(), tmpAbund.end(),0); ?
-//     double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); // SHOULD by MaxAbundHigh * noPFG * (1 + ImmSizes) ?
-//     if (pixAbund>maxVal) pixAbund = maxVal;
-//     pixAbund = pixAbund/maxVal;
-//     if (pixAbund>0.5){ moistValues(cell_ID) = m_DroughtMap(cell_ID) + abs(m_DroughtMap(cell_ID))/2.0; } // SHOULD be adjustable both parameters (0.5 and 2) ?
-//   } // end loop on pixels
-  
+  /* Calculation of abundance per strata for each pixel */
+  unsigned noStrata = m_glob_params.getNoStrata();
   SpatialMap<double, double> moistValues = getDroughtMap();
+
+  omp_set_num_threads(m_glob_params.getNoCPU());
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+
+  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  { // loop on pixels
+    unsigned cell_ID = m_MaskCells[ID];
+    vector<int> tmpAbund(noStrata+1, 0);
+    double maxVal = 0.0;
+    for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+    { // loop on PFG
+      /* create a copy of FG parameters to simplify and speed up the code */
+      FuncGroupPtr FuncG = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg);
+      FGPtr FGparams = FuncG->getFGparams_();
+      
+      double totMaxAbund = static_cast<double>(m_glob_params.AbundToInt(FGparams->getMaxAbund()));
+      if (totMaxAbund)
+      {
+        totMaxAbund *= (1.0 + IntToDouble(FGparams->getImmSize()));
+      }
+      maxVal += totMaxAbund;
+      
+      if (m_SuccModelMap(cell_ID)->getCommunity_()->getNoCohort(fg) > 0)
+      {
+        /* Create a vector with stratum break ages */
+        vector<int> bkStratAges = FGparams->getStrata();
+
+        /* add PFG strata abundances */
+        for (unsigned st=1; st<noStrata; st++)
+        {
+          tmpAbund[st] = static_cast<int>(FuncG->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
+        } // end loop on Stratum
+      }
+    } // end loop on PFG
+    
+    /* Calculation of canopy closure : 0 = no canopy, 1 = full closure */
+    double pixAbund = *max_element(tmpAbund.begin()+1, tmpAbund.end()); // SHOULD be only the upper stratum ?
+    // accumulate(tmpAbund.begin(), tmpAbund.end(),0); ?
+    // double maxVal = m_glob_params.getMaxAbundHigh() * m_FGparams.size(); // SHOULD by MaxAbundHigh * noPFG * (1 + ImmSizes) ?
+    if (pixAbund>maxVal) pixAbund = maxVal;
+    pixAbund = pixAbund/maxVal;
+    if (pixAbund>0.5){ moistValues(cell_ID) = m_DroughtMap(cell_ID) + abs(m_DroughtMap(cell_ID))/2.0; } // SHOULD be adjustable both parameters (0.5 and 2) ?
+  } // end loop on pixels
+  
+  
   
   /* Do disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1414,17 +1423,16 @@ void SimulMap::DoDroughtDisturbance_part1()
         if (moistIndex > m_FGparams[fg].getDroughtSD()[0])
         {
           /* 3.If NO drought : apply Drought Recovery */
-          m_CountDroughtMap(cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
-          if (m_CountDroughtMap(cell_ID, fg) < 0)
+          if (m_CountDroughtMap(cell_ID, fg) > 0)
           {
-            m_CountDroughtMap(cell_ID, fg) = 0;
+            m_CountDroughtMap(cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
           }
         } else
         {
           /* Set recruitment and fecundity to 0 */
           m_IsDroughtMap(cell_ID, fg) = 1;
           
-          if (m_CountDroughtMap(cell_ID, fg) < m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
+          if (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) < m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
           
           bool currSevDrought = (moistIndex < m_FGparams[fg].getDroughtSD()[1]);
           if (currSevDrought && m_CountDroughtMap(cell_ID, fg) == 1)
@@ -1433,8 +1441,8 @@ void SimulMap::DoDroughtDisturbance_part1()
           }
           
           /* 4.If drought : check Current Drought Mortality */
-          bool modToSev = (!currSevDrought && (m_CountDroughtMap(cell_ID, fg) == m_FGparams[fg].getCountModToSev()));
-          bool SevMort = (currSevDrought && (m_CountDroughtMap(cell_ID, fg) == m_FGparams[fg].getCountSevMort()));
+          bool modToSev = (!currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountModToSev()));
+          bool SevMort = (currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountSevMort()));
           if (modToSev || SevMort )
           {
             m_PostDroughtMap(cell_ID, fg) = 1;
@@ -1498,13 +1506,13 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           //logg.info(">> Current+Post drought effect this year !");
           FGresponse CurrPostResp = FGparams->getDroughtResponse();
           vector<vector<int> > tmpBreakAge = CurrPostResp.getBreakAge(), tmpResprAge = CurrPostResp.getResprAge();
-          vector<int> tmpDormBreaks = CurrPostResp.getDormBreaks();
+          vector<int> tmpActiveSeeds = CurrPostResp.getActiveSeeds();
           vector<int> tmpPropKilled = CurrPostResp.getPropKilled();
           vector<vector<vector<int> > > tmpFates = CurrPostResp.getFates();
           
           tmpBreakAge.push_back(tmpBreakAge[0]);
           tmpResprAge.push_back(tmpResprAge[0]);
-          tmpDormBreaks.push_back(tmpDormBreaks[0]);
+          tmpActiveSeeds.push_back(tmpActiveSeeds[0]);
           if (tmpPropKilled[0] == 0)
           {
             tmpPropKilled.push_back(DoubleToInt(0.1));
@@ -1516,11 +1524,11 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           for (unsigned sub=0; sub<tmpFates[0].size(); sub++)
           { // loop on subdist
             vector<int> tmpKiUnRe = tmpFates[0][sub];
-            double tmpKiUnRe0 = IntToDouble(tmpFates[0][sub][0]);
-            double tmpKiUnRe1 = IntToDouble(tmpFates[0][sub][1]);
-            double tmpKiUnRe2 = IntToDouble(tmpFates[0][sub][2]);
+            double tmpKiUnRe0 = IntToDouble(tmpFates[0][sub][0]); // Killed
+            double tmpKiUnRe1 = IntToDouble(tmpFates[0][sub][1]); // Unaffected
+            double tmpKiUnRe2 = IntToDouble(tmpFates[0][sub][2]); // Resprouting
             if (tmpKiUnRe0 != 1.0)
-            { // already 100% killed
+            { // not already 100% killed
               double mortSup = 0.0;
               if (tmpKiUnRe0 == 0.0)
               { // no killed
@@ -1547,7 +1555,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
           tmpFates.push_back(tmpNewFates);
           CurrPostResp.setBreakAge(tmpBreakAge);
           CurrPostResp.setResprAge(tmpResprAge);
-          CurrPostResp.setDormBreaks(tmpDormBreaks);
+          CurrPostResp.setActiveSeeds(tmpActiveSeeds);
           CurrPostResp.setPropKilled(tmpPropKilled);
           CurrPostResp.setFates(tmpFates);
           m_SuccModelMap(cell_ID)->DoDisturbance(fg, 0, 1.0, FGparams->getDroughtResponse());
@@ -1797,28 +1805,27 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
   if (file_of_params.getMaskDrought() != "0")
   {
     logg.info("***** Update drought disturbances maps...");
-    // TODO
-    // m_DroughtMap = SpatialMap<double, double>(&m_Coord, ReadMask<double>( file_of_params.getMaskDrought(), -5000.0, 1000.0 ) );
-    // vector< vector< unsigned > > droughtMap; // drought disturbances map
-    // droughtMap.reserve(m_FGparams.size());
-    // for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
-    // {
-    //   droughtMap.emplace_back( ReadMask<unsigned>( file_of_params.getMask(), 0.0, 1.0 ) );
-    // }
-    // m_PostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    // m_CountDroughtMap = SpatialStack<double, int>(&m_Coord, droughtMap); // PB here, should be int map
-    // m_IsDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    // m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    // m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    // 
-    // for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-    // { // loop on pixels
-    //   for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-    //   { // loop on PFG
-    //     m_PostDroughtMap(*cell_ID, fg) = 0;
-    //     m_CountDroughtMap(*cell_ID, fg) = 0;
-    //   }
-    // }
+    m_DroughtMap = SpatialMap<double, double>(&m_Coord, ReadMask<double>( file_of_params.getMaskDrought(), -5000.0, 1000.0 ) );
+    vector< vector< unsigned > > droughtMap; // drought disturbances map
+    droughtMap.reserve(m_FGparams.size());
+    for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
+    {
+      droughtMap.emplace_back( ReadMask<unsigned>( file_of_params.getMask(), 0.0, 1.0 ) );
+    }
+    m_PostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    m_CountDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    m_IsDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+
+    for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    { // loop on pixels
+      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+      { // loop on PFG
+        m_PostDroughtMap(*cell_ID, fg) = 0;
+        m_CountDroughtMap(*cell_ID, fg) = 0;
+      }
+    }
   }
   
   /* build simulation fire disturbances masks */
@@ -1949,7 +1956,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       logg.info("> Saving abund per PFG & per strata");
       /* 2. ABUND PER PFG for ALL STRATA */
       logg.info("> Saving abund per PFG for all strata");
-      bool positiveVal12 = false;
+      // bool positiveVal12 = false;
 
       omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
@@ -1987,7 +1994,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
             }
           } // end loop on pixels
           
-          if (positiveVal1) { positiveVal12 = true; }
+          // if (positiveVal1) { positiveVal12 = true; }
           
           if (m_glob_params.getDoSavingPFGStratum() && positiveVal1)
           {
@@ -2019,7 +2026,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           delete [] abunValues1;
         } // end loop on Stratum
         
-        if (positiveVal2) { positiveVal12 = true; }
+        // if (positiveVal2) { positiveVal12 = true; }
         
         if (m_glob_params.getDoSavingPFG() && positiveVal2)
         {
@@ -2057,7 +2064,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
     {
       /* 3. ABUND PER STRATA for ALL PFG */
       logg.info("> Saving abund per strata for all PFG");
-      bool positiveVal33 = false;
+      // bool positiveVal33 = false;
       
       for (int strat=1; strat<m_glob_params.getNoStrata()+1; strat++)
       { // loop on Stratum
@@ -2087,7 +2094,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         
         if (positiveVal3)
         {
-          positiveVal33 = true;
+          // positiveVal33 = true;
           
           // Create the output file only if the PFG is present somewhere.
           string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+to_string(year)+"_allPFG_STRATA_"+to_string(strat)+prevFile_path.extension().string();

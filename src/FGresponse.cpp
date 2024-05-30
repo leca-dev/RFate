@@ -39,7 +39,7 @@ FGresponse::FGresponse() : m_NoPert(1), m_NoPertSub(1), m_PropKilled(m_NoPert, 0
 m_BreakAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
 m_ResprAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
 m_Fates(m_NoPert, vector< vector<int> >(m_NoPertSub+1, vector<int>(DFcount, 0))),
-m_DormBreaks(m_NoPert, 0)
+m_ActiveSeeds(m_NoPert, 0)
 {
   	/* Nothing to do */
 }
@@ -50,7 +50,7 @@ FGresponse::FGresponse(unsigned noPert, unsigned noPertSub) : m_NoPert(noPert), 
 m_BreakAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
 m_ResprAge(m_NoPert, vector<int>(m_NoPertSub+1, 0)),
 m_Fates(m_NoPert, vector< vector<int> >(m_NoPertSub+1, vector<int>(DFcount, 0))),
-m_DormBreaks(m_NoPert, 0)
+m_ActiveSeeds(m_NoPert, 0)
 {
   	/* Nothing to do */
 }
@@ -177,15 +177,15 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, unsigned noPert, uns
 			}
 		}
 
-		m_DormBreaks = PertParms.get_val<int>("ACTIVATED_SEED");
-		if (m_DormBreaks.size() != noPert)
+		m_ActiveSeeds = PertParms.get_val<int>("ACTIVATED_SEED");
+		if (m_ActiveSeeds.size() != noPert)
 		{
 			logg.error("!!! Wrong number of parameters provided for ACTIVATED_SEED (",
-              m_DormBreaks.size(), " instead of ", noPert, "). Please check!");
+              m_ActiveSeeds.size(), " instead of ", noPert, "). Please check!");
 		}
-		for(unsigned i=1; i<m_DormBreaks.size(); i++)
+		for(unsigned i=1; i<m_ActiveSeeds.size(); i++)
 		{
-		  if (m_DormBreaks[i] < 0 || m_DormBreaks[i] > 100)
+		  if (m_ActiveSeeds[i] < 0 || m_ActiveSeeds[i] > 100)
 		  {
 		    logg.error("!!! ACTIVATED_SEED values must be superior or equal to 0, and inferior or equal to 100. Please check!");
 		  }
@@ -239,13 +239,13 @@ const int& FGresponse::getFates(const unsigned& dist, const unsigned& range, con
 	}
 	return m_Fates[dist][range][df];
 }
-const vector<int>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
-const int& FGresponse::getDormBreaks(const unsigned& dist) const {
+const vector<int>& FGresponse::getActiveSeeds() const {return m_ActiveSeeds;}
+const int& FGresponse::getActiveSeeds(const unsigned& dist) const {
 	if (dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!");
 	}
-	return m_DormBreaks[dist];
+	return m_ActiveSeeds[dist];
 }
 
 void FGresponse::setNoPert(const unsigned& noPert){m_NoPert = noPert;}
@@ -258,8 +258,8 @@ void FGresponse::setResprAge(const vector< vector<int> >& resprAge){m_ResprAge =
 void FGresponse::setResprAge(const int& resprAge, const unsigned& dist, const unsigned& range){m_ResprAge[dist][range] = resprAge;}
 void FGresponse::setFates(const vector<vector< vector<int> > >& fates){m_Fates = fates;}
 void FGresponse::setFates(const int& fates, const unsigned& dist, const unsigned& range, const DistFate& df){m_Fates[dist][range][df] = fates;}
-void FGresponse::setDormBreaks(const vector<int>& dormBreaks){m_DormBreaks = dormBreaks;}
-void FGresponse::setDormBreaks(const int& dormBreaks, const unsigned& dist){m_DormBreaks[dist] = dormBreaks;}
+void FGresponse::setActiveSeeds(const vector<int>& activeSeeds){m_ActiveSeeds = activeSeeds;}
+void FGresponse::setActiveSeeds(const int& activeSeeds, const unsigned& dist){m_ActiveSeeds[dist] = activeSeeds;}
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Other functions                                                                                 */
@@ -273,5 +273,5 @@ void FGresponse::show()
 						 "\nm_BreakAge = (line: perturbation, column: reaction level)", m_BreakAge,
 						 "\nm_ResprAge = (line: perturbation, column: reaction level)", m_ResprAge,
 						 "\nm_Fates = (block: perturbation, line: reaction level, column: plant behaviour)", m_Fates,
-						 "\nm_DormBreaks = ", m_DormBreaks);
+						 "\nm_ActiveSeeds = ", m_ActiveSeeds);
 }

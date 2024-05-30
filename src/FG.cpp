@@ -47,7 +47,7 @@ using namespace std;
 FG::FG() : m_Name(""), m_M(0), m_L(1), m_MaxA(ANone), m_ImmSize(100), m_MaxStratum(0), m_Strata(0, 1000), /* Life history*/
 m_PoolL(PTcount,0), m_InnateDorm(false), m_PotentialFecundity(100), /* Propagule biology */
 m_LightShadeFactor(1), m_LightActiveGerm(Rcount, 100), m_LightTolerance(LScount, vector<int>(Rcount, 100)), /* Light response */
-m_Dispersed(false), m_disp50(0.0), m_disp99(0.0), m_dispLD(0.0), /* Dispersal module */
+m_IsSeeded(false), m_disp50(0.0), m_disp99(0.0), m_dispLD(0.0), /* Dispersal module */
 m_SoilContrib(0.0), m_SoilLow(0.0), m_SoilHigh(0.0), /* Soil response */
 m_SoilActiveGerm(Rcount, 100), m_SoilTolerance(LScount, vector<int>(Rcount, 100)), /* Soil response */
 m_DistResponse(FGresponse()), /* Disturbance response */
@@ -137,7 +137,7 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
+void FG::getLightParams(const string& PFG_LightFile)
 {
   /* 1. check parameter file existence */
   testFileExist("--PFG_PARAMS_LIGHT--", PFG_LightFile, false);
@@ -200,7 +200,7 @@ void FG::getLightParams(const GSP& glob_params, const string& PFG_LightFile)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void FG::getDispParams(const GSP& glob_params, const string& PFG_DispersalFile)
+void FG::getDispParams(const string& PFG_DispersalFile)
 {
   /* 1. check parameter file existence */
   testFileExist("--PFG_PARAMS_DISPERSAL--", PFG_DispersalFile, false);
@@ -208,7 +208,7 @@ void FG::getDispParams(const GSP& glob_params, const string& PFG_DispersalFile)
   /* 2. read dispersal parameters */
   par::Params DispParams(PFG_DispersalFile.c_str(), " = \"", "#");
   
-  m_Dispersed = false;
+  m_IsSeeded = false;
   
   vector<double> v_double = DispParams.get_val<double>("DISPERS_DIST");
   if (v_double.size() == 3)
@@ -239,7 +239,7 @@ void FG::getDistParams(const GSP& glob_params, const string& PFG_DisturbancesFil
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void FG::getSoilParams(const GSP& glob_params, const string& PFG_SoilFile)
+void FG::getSoilParams(const string& PFG_SoilFile)
 {
   /* 1. check parameter file existence */
   testFileExist("--PFG_PARAMS_SOIL--", PFG_SoilFile, false);
@@ -354,7 +354,7 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
     {
       if (fg_id < file_of_params.getFGLight().size())
       {
-        getLightParams(glob_params,file_of_params.getFGLight()[fg_id]);
+        getLightParams(file_of_params.getFGLight()[fg_id]);
       } else
       {
         wrong_identifier = true;
@@ -369,14 +369,14 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
     {
       if (fg_id < file_of_params.getFGDispersal().size())
       {
-        getDispParams(glob_params,file_of_params.getFGDispersal()[fg_id]);
+        getDispParams(file_of_params.getFGDispersal()[fg_id]);
       } else
       {
         wrong_identifier = true;
       }
     } else
     {
-      m_Dispersed = false;
+      m_IsSeeded = false;
       m_disp50 = 0.0;
       m_disp99 = 0.0;
       m_dispLD = 0.0;
@@ -385,7 +385,7 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
     {
       if (fg_id < file_of_params.getFGSoil().size())
       {
-        getSoilParams(glob_params,file_of_params.getFGSoil()[fg_id]);
+        getSoilParams(file_of_params.getFGSoil()[fg_id]);
       } else
       {
         wrong_identifier = true;
@@ -484,19 +484,19 @@ int FG::getPoolLife(const PoolType& pt ) const {return m_PoolL[pt];}
 bool FG::getInnateDormancy() const {return m_InnateDorm;}
 int FG::getPotentialFecund() const {return m_PotentialFecundity;}
 int FG::getLightShadeFactor() const {return m_LightShadeFactor;}
-const vector<int> FG::getMaxRecruitLight() const {return m_LightActiveGerm;}
-const int& FG::getMaxRecruitLight(const Resource& r) const {return m_LightActiveGerm[r];}
+const vector<int> FG::getLightActiveGerm() const {return m_LightActiveGerm;}
+const int& FG::getLightActiveGerm(const Resource& r) const {return m_LightActiveGerm[r];}
 const vector< vector<int> >& FG::getLightTolerance() const {return m_LightTolerance;}
 int FG::getLightTolerance(LifeStage ls, Resource r) const {return m_LightTolerance[ls][r];}
-bool FG::getDispersed() const {return m_Dispersed;}
+bool FG::getIsSeeded() const {return m_IsSeeded;}
 double FG::getDisp50() const {return m_disp50;}
 double FG::getDisp99() const {return m_disp99;}
 double FG::getDispLD() const {return m_dispLD;}
 double FG::getSoilContrib() const {return m_SoilContrib;}
 double FG::getSoilLow() const {return m_SoilLow;}
 double FG::getSoilHigh() const {return m_SoilHigh;}
-const vector<int> FG::getMaxRecruitSoil() const {return m_SoilActiveGerm;}
-const int& FG::getMaxRecruitSoil(const Resource& r) const {return m_SoilActiveGerm[r];}
+const vector<int> FG::getSoilActiveGerm() const {return m_SoilActiveGerm;}
+const int& FG::getSoilActiveGerm(const Resource& r) const {return m_SoilActiveGerm[r];}
 const vector< vector<int> >& FG::getSoilTolerance() const {return m_SoilTolerance;}
 int FG::getSoilTolerance(LifeStage ls, Resource r) const { return m_SoilTolerance[ls][r];}
 FGresponse FG::getDistResponse() {return m_DistResponse;}
@@ -523,22 +523,22 @@ void FG::setPoolLife(const int& poolLife, const PoolType& pt ){m_PoolL[pt] = poo
 void FG::setInnateDormancy(const bool& innateDormancy){m_InnateDorm = innateDormancy;}
 void FG::setPotentialFecund(const int& potentialFecund){m_PotentialFecundity = potentialFecund;}
 void FG::setLightShadeFactor(const int& lightShadeFactor){m_LightShadeFactor = lightShadeFactor;}
-void FG::setMaxRecruitLight(const int (&maxRecruit) [ Rcount ] ){ for(int i=0; i<Rcount; i++){m_LightActiveGerm[i] = maxRecruit[i];}}
-void FG::setMaxRecruitLight(const int& maxRecruit, const Resource& r ){ m_LightActiveGerm[r] = maxRecruit;}
+void FG::setLightActiveGerm(const int (&activeGerm) [ Rcount ] ){ for(int i=0; i<Rcount; i++){m_LightActiveGerm[i] = activeGerm[i];}}
+void FG::setLightActiveGerm(const int& activeGerm, const Resource& r ){ m_LightActiveGerm[r] = activeGerm;}
 void FG::setTolerance(const int (&tolerance)[ LScount ][ Rcount ]){
   for(int i=0; i<LScount; i++){
     for(int j=0; j<Rcount; j++){
       m_LightTolerance[i][j] = tolerance[i][j];}}}
 void FG::setTolerance(const int& tolerance, const LifeStage& ls, const Resource& r){m_LightTolerance[ls][r] = tolerance;}
-void FG::setDispersed(const bool& dispersed){m_Dispersed = dispersed;}
+void FG::setIsSeeded(const bool& isSeeded){m_IsSeeded = isSeeded;}
 void FG::setDisp50(const double& disp50){ m_disp50 = disp50;}
 void FG::setDisp99(const double& disp99){ m_disp99 = disp99;}
 void FG::setDispLD(const double& dispLD){ m_dispLD = dispLD;}
 void FG::setSoilContrib(const double& soilContrib) {m_SoilContrib = soilContrib;}
 void FG::setSoilLow(const double& soilLow) {m_SoilLow = soilLow;}
 void FG::setSoilHigh(const double& soilHigh) {m_SoilHigh = soilHigh;}
-void FG::setMaxRecruitSoil(const int (&maxRecruit) [ Rcount ] ){ for(int i=0; i<Rcount; i++){m_SoilActiveGerm[i] = maxRecruit[i];}}
-void FG::setMaxRecruitSoil(const int& maxRecruit, const Resource& r ){ m_SoilActiveGerm[r] = maxRecruit;}
+void FG::setSoilActiveGerm(const int (&activeGerm) [ Rcount ] ){ for(int i=0; i<Rcount; i++){m_SoilActiveGerm[i] = activeGerm[i];}}
+void FG::setSoilActiveGerm(const int& activeGerm, const Resource& r ){ m_SoilActiveGerm[r] = activeGerm;}
 void FG::setSoilTolerance(const vector< vector<int> >& tolerance) { m_SoilTolerance = tolerance; }
 void FG::setSoilTolerance(const int& tolerance, const LifeStage& ls, const Resource& r) { m_SoilTolerance[ls][r] = tolerance; }
 void FG::setDistResponse(const FGresponse& distResponse){m_DistResponse = distResponse;}
@@ -575,7 +575,7 @@ void FG::show()
              "\nm_LightShadeFactor = ", m_LightShadeFactor,
              "\nm_LightActiveGerm = (column: resource) ", m_LightActiveGerm,
              "\nm_LightTolerance = (line: life stage, column: resource)", m_LightTolerance,
-             "\nm_Dispersed = ", m_Dispersed,
+             "\nm_IsSeeded = ", m_IsSeeded,
              "\nm_disp50 = ", m_disp50,
              "\nm_disp99 = ", m_disp99,
              "\nm_dispLD = ", m_dispLD,

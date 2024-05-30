@@ -89,7 +89,7 @@ private:
   vector< vector<int> > m_LightTolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
   
   /* Dispersal module */
-  bool m_Dispersed; /*!< Is FG widely dispersed ? */
+  bool m_IsSeeded; /*!< Is seeding applied to this FG ? */
   double m_disp50; /*!< Distance where 50% of seeds are dispersed */
   double m_disp99; /*!< Distance where 99% of seeds are dispersed */
   double m_dispLD; /*!< Long distance dispersal */
@@ -140,7 +140,7 @@ private:
     ar & m_LightShadeFactor;
     ar & m_LightActiveGerm;
     ar & m_LightTolerance;
-    ar & m_Dispersed;
+    ar & m_IsSeeded;
     ar & m_disp50;
     ar & m_disp99;
     ar & m_dispLD;
@@ -238,26 +238,20 @@ public:
    *
    *	FG part of constructor (OPTIONAL : light interaction model)
    *
-   * param glob_params : GSP class object containing global simulation
-   * related parameters, and modules specific (e.g number of strata, number of
-   * disturbances...)
    *	\param PFG_LightFile : path to text file containing well-formatted light
    * interaction related parameters
    */
-  void getLightParams(const GSP& glob_params, const string& PFG_LightFile);
+  void getLightParams(const string& PFG_LightFile);
   
   /*!
    *	\brief Part of constructor (OPTIONAL : dispersal model)
    *
    *	FG part of constructor (OPTIONAL : dispersal model)
    *
-   * param glob_params : GSP class object containing global simulation
-   * related parameters, and modules specific (e.g number of strata, number of
-   * disturbances...)
    *	\param PFG_DispersalFile : path to text file containing well-formatted
    * dispersal related parameters
    */
-  void getDispParams(const GSP& glob_params, const string& PFG_DispersalFile);
+  void getDispParams(const string& PFG_DispersalFile);
   
   /*!
    *	\brief Part of constructor (OPTIONAL : disturbances model)
@@ -277,13 +271,10 @@ public:
    *
    *	FG part of constructor (OPTIONAL : soil interaction model)
    *
-   * param glob_params : GSP class object containing global simulation
-   * related parameters, and modules specific (e.g number of strata, number of
-   * disturbances...)
    *	\param PFG_SoilFile : path to text file containing well-formatted soil
    * interaction related parameters
    */
-  void getSoilParams(const GSP& glob_params, const string& PFG_SoilFile);
+  void getSoilParams(const string& PFG_SoilFile);
   
   /*!
    *	\brief Part of constructor (OPTIONAL : fire model)
@@ -341,7 +332,7 @@ public:
             m_LightShadeFactor == o.m_LightShadeFactor &&
             m_LightActiveGerm == o.m_LightActiveGerm &&
             m_LightTolerance == o.m_LightTolerance &&
-            m_Dispersed == o.m_Dispersed &&
+            m_IsSeeded == o.m_IsSeeded &&
             m_disp50 == o.m_disp50 &&
             m_disp99 == o.m_disp99 &&
             m_dispLD == o.m_dispLD &&
@@ -395,19 +386,19 @@ public:
   bool getInnateDormancy() const;
   int getPotentialFecund() const;
   int getLightShadeFactor() const;
-  const vector<int> getMaxRecruitLight() const;
-  const int& getMaxRecruitLight(const Resource& r) const;
+  const vector<int> getLightActiveGerm() const;
+  const int& getLightActiveGerm(const Resource& r) const;
   const vector< vector<int> >& getLightTolerance() const;
   int getLightTolerance(LifeStage ls, Resource r) const;
-  bool getDispersed() const;
+  bool getIsSeeded() const;
   double getDisp50() const;
   double getDisp99() const;
   double getDispLD() const;
   double getSoilContrib() const;
   double getSoilLow() const;
   double getSoilHigh() const;
-  const vector<int> getMaxRecruitSoil() const;
-  const int& getMaxRecruitSoil(const Resource& r) const;
+  const vector<int> getSoilActiveGerm() const;
+  const int& getSoilActiveGerm(const Resource& r) const;
   const vector< vector<int> >& getSoilTolerance() const;
   int getSoilTolerance(LifeStage ls,  Resource r) const;
   FGresponse getDistResponse();
@@ -434,19 +425,19 @@ public:
   void setInnateDormancy(const bool& innateDormancy);
   void setPotentialFecund(const int& potentialFecund);
   void setLightShadeFactor(const int& lightShadeFactor);
-  void setMaxRecruitLight(const int (&maxRecruit)[ Rcount ]);
-  void setMaxRecruitLight(const int& maxRecruit, const Resource& r );
+  void setLightActiveGerm(const int (&activeGerm)[ Rcount ]);
+  void setLightActiveGerm(const int& activeGerm, const Resource& r );
   void setTolerance(const int (&tolerance)[ LScount ][ Rcount ]);
   void setTolerance(const int& tolerance, const LifeStage& ls, const Resource& r);
-  void setDispersed(const bool& dispersed);
+  void setIsSeeded(const bool& isSeeded);
   void setDisp50(const double& disp50);
   void setDisp99(const double& disp99);
   void setDispLD(const double& dispLD);
   void setSoilContrib(const double& soilContrib);
   void setSoilLow(const double& soilLow);
   void setSoilHigh(const double& soilHigh);
-  void setMaxRecruitSoil(const int (&maxRecruit)[ Rcount ]);
-  void setMaxRecruitSoil(const int& maxRecruit, const Resource& r );
+  void setSoilActiveGerm(const int (&activeGerm)[ Rcount ]);
+  void setSoilActiveGerm(const int& activeGerm, const Resource& r );
   void setSoilTolerance(const vector< vector<int> >& tolerance);
   void setSoilTolerance(const int& tolerance, const LifeStage& ls, const Resource& r);
   void setDistResponse(const FGresponse& distResponse);

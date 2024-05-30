@@ -492,7 +492,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
     
     /* 3. Calculate the seed rain */
     int SeedInput, AvailSeeds;
-    if (FGparams->getDispersed() == 1)
+    if (FGparams->getIsSeeded() == 1)
     {
       SeedInput = max(getSeedInput(fg), static_cast<int>(getSeedRain(fg)));
       //SeedInput = getSeedInput(fg);
@@ -549,19 +549,19 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
         double GerminRate = static_cast<double>(min( m_GSP->AbundToInt(FGparams->getMaxAbund()), AvailSeeds )) ;
         if (doLight && doSoil)
         {
-          int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
-          int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
+          int lightActiveGerm0 = FGparams->getLightActiveGerm( m_LightR.getResource(0) );
+          int soilActiveGerm0 = FGparams->getSoilActiveGerm( soilRes );
           
-          GerminRate *= min(IntToDouble(maxRecruitLight0), IntToDouble(maxRecruitSoil0));
-          // GerminRate *= (IntToDouble(maxRecruitLight0) * IntToDouble(maxRecruitSoil0));
+          GerminRate *= min(IntToDouble(lightActiveGerm0), IntToDouble(soilActiveGerm0));
+          // GerminRate *= (IntToDouble(lightActiveGerm0) * IntToDouble(soilActiveGerm0));
         } else if (doLight)
         {
-          int maxRecruitLight0 = FGparams->getMaxRecruitLight( m_LightR.getResource(0) );
-          GerminRate *= IntToDouble(maxRecruitLight0);
+          int lightActiveGerm0 = FGparams->getLightActiveGerm( m_LightR.getResource(0) );
+          GerminRate *= IntToDouble(lightActiveGerm0);
         } else if (doSoil)
         {
-          int maxRecruitSoil0 = FGparams->getMaxRecruitSoil( soilRes );
-          GerminRate *= IntToDouble(maxRecruitSoil0);
+          int soilActiveGerm0 = FGparams->getSoilActiveGerm( soilRes );
+          GerminRate *= IntToDouble(soilActiveGerm0);
         }
         
         int recrrate = ceil(GerminRate * envRecruit);   /* Recruitment is ponderated by environmental suitabilities */
@@ -690,14 +690,14 @@ void SuFate::DoDisturbance(int fg, int Dstb, double Dstb_val, FGresponse FGresp)
     /* Transfer Dormant seeds to active seed pool */
     if (FuncG->getFGparams_()->getInnateDormancy())
     {
-      int dormbreaks = FGresp.getDormBreaks(Dstb);
-      App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * IntToDouble(dormbreaks) * Dstb_val, 100) ) ;
-      if (dormbreaks == 100)
+      int activeSeeds = FGresp.getActiveSeeds(Dstb);
+      App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * IntToDouble(activeSeeds) * Dstb_val, 100) ) ;
+      if (activeSeeds == 100)
       {
         Dpp_ptr->EmptyPool();
       } else
       {
-        Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - IntToDouble(dormbreaks) * Dstb_val) ) );
+        Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - IntToDouble(activeSeeds) * Dstb_val) ) );
       }
     }
   }
@@ -769,14 +769,14 @@ void SuFate::DoDisturbance(int Dstb, double Dstb_val)
       /* Transfer Dormant seeds to active seed pool */
       if (FuncG->getFGparams_()->getInnateDormancy())
       {
-        int dormbreaks = FGresp.getDormBreaks(Dstb);
-        App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * IntToDouble(dormbreaks) * Dstb_val, 100) ) ;
-        if (dormbreaks == 100)
+        int activeSeeds = FGresp.getActiveSeeds(Dstb);
+        App_ptr->setSize( fmin(App_ptr->getSize() + Dpp_ptr->getSize() * IntToDouble(activeSeeds) * Dstb_val, 100) ) ;
+        if (activeSeeds == 100)
         {
           Dpp_ptr->EmptyPool();
         } else
         {
-          Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - IntToDouble(dormbreaks) * Dstb_val) ) );
+          Dpp_ptr->setSize( ceil( Dpp_ptr->getSize() * ( 1.0 - IntToDouble(activeSeeds) * Dstb_val) ) );
         }
       }
     }

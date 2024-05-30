@@ -63,7 +63,7 @@ class FGresponse
 	vector<vector<int> > m_BreakAge; /*!< Age representing shift in response of FG */
 	vector<vector<int> > m_ResprAge; /*!< Age of re-sprouting for each age class */
 	vector<vector< vector<int> > > m_Fates; /*!< Proportion of FG unaffected, re-sprouted or killed for each age class */
-	vector<int> m_DormBreaks; /*!< Proportion of Dormant seeds activated */
+	vector<int> m_ActiveSeeds; /*!< Proportion of Dormant seeds activated */
 
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
@@ -79,7 +79,7 @@ class FGresponse
 		ar & m_BreakAge;
 		ar & m_ResprAge;
 		ar & m_Fates;
-		ar & m_DormBreaks;
+		ar & m_ActiveSeeds;
 	}
 
 	public:
@@ -141,7 +141,7 @@ class FGresponse
 		m_BreakAge == o.m_BreakAge &&
 		m_ResprAge == o.m_ResprAge &&
 		m_Fates == o.m_Fates &&
-		m_DormBreaks == o.m_DormBreaks);
+		m_ActiveSeeds == o.m_ActiveSeeds);
 	}
 
 	/*-------------------------------------------*/
@@ -158,8 +158,8 @@ class FGresponse
 	int getResprAge(const unsigned& dist, const unsigned& range) const;
 	const vector<vector< vector<int> > >& getFates() const;
 	const int& getFates(const unsigned& dist, const unsigned& range, const DistFate& df) const;
-	const vector<int>& getDormBreaks() const;
-	const int& getDormBreaks(const unsigned& dist) const;
+	const vector<int>& getActiveSeeds() const;
+	const int& getActiveSeeds(const unsigned& dist) const;
 
 	void setNoPert(const unsigned& noPert);
 	void setNoPertSub(const unsigned& noPertSub);
@@ -171,8 +171,8 @@ class FGresponse
 	void setResprAge(const int& resprAge, const unsigned& dist, const unsigned& range);
 	void setFates(const vector<vector< vector<int> > >& fates);
 	void setFates(const int& fates, const unsigned& dist, const unsigned& range, const DistFate& df);
-	void setDormBreaks(const vector<int>& dormBreaks);
-	void setDormBreaks(const int& dormBreaks, const unsigned& dist);
+	void setActiveSeeds(const vector<int>& activeSeeds);
+	void setActiveSeeds(const int& activeSeeds, const unsigned& dist);
 
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/
