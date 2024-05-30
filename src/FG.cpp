@@ -52,7 +52,8 @@ m_SoilContrib(0.0), m_SoilLow(0.0), m_SoilHigh(0.0), /* Soil response */
 m_SoilActiveGerm(Rcount, 100), m_SoilTolerance(LScount, vector<int>(Rcount, 100)), /* Soil response */
 m_DistResponse(FGresponse()), /* Disturbance response */
 m_FireResponse(FGresponse()), m_Flamm(0.0), /* Fire response */
-m_DroughtResponse(FGresponse()), m_DroughtSD(2,0.0), m_CountModToSev(0), m_CountSevMort(0), m_DroughtRecovery(0), /* Drought response */
+m_DroughtResponse(FGresponse()), m_DroughtThreshMod(0.0), m_DroughtThreshSev(0.0),
+m_CountRecovery(0), m_CountSens(0), m_CountCum(0), /* Drought response */
 m_IsAlien(false) /* Alien module */
 {
   /* Nothing to do */
@@ -327,10 +328,11 @@ void FG::getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile)
   /* 2. read drought disturbance parameters */
   par::Params DroughtParams(PFG_DroughtFile.c_str(), " = \"", "#");
   m_DroughtResponse = FGresponse(PFG_DroughtFile, 2, glob_params.getNoDroughtSub());
-  m_DroughtSD = DroughtParams.get_val<double>("DROUGHT_SD");
-  m_CountModToSev = DroughtParams.get_val<int>("COUNT_MOD_TO_SEV")[0];
-  m_CountSevMort = DroughtParams.get_val<int>("COUNT_SEV_MORT")[0];
-  m_DroughtRecovery = DroughtParams.get_val<int>("DROUGHT_RECOVERY")[0];
+  m_DroughtThreshMod = DroughtParams.get_val<double>("DROUGHT_THRESH_MOD")[0];
+  m_DroughtThreshSev = DroughtParams.get_val<double>("DROUGHT_THRESH_SEV")[0];
+  m_CountRecovery = DroughtParams.get_val<int>("COUNTER_RECOVERY")[0];
+  m_CountSens = DroughtParams.get_val<int>("COUNTER_SENS")[0];
+  m_CountCum = DroughtParams.get_val<int>("COUNTER_CUM")[0];
   logg.info("> PFG drought parameters provided");
 }
 
@@ -437,10 +439,11 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
     } else
     {
       m_DroughtResponse = FGresponse();
-      m_DroughtSD.resize(2,0.0);
-      m_CountModToSev = 0;
-      m_CountSevMort = 0;
-      m_DroughtRecovery = 0;
+      m_DroughtThreshMod = 0.0;
+      m_DroughtThreshSev = 0.0;
+      m_CountRecovery = 0;
+      m_CountSens = 0;
+      m_CountCum = 0;
     }
     
   } else
@@ -503,10 +506,11 @@ FGresponse FG::getDistResponse() {return m_DistResponse;}
 const FGresponse& FG::getFireResponse() const {return m_FireResponse;}
 double FG::getFlamm() const {return m_Flamm;}
 const FGresponse& FG::getDroughtResponse() const {return m_DroughtResponse;}
-const vector<double>& FG::getDroughtSD() const {return m_DroughtSD;}
-int FG::getCountModToSev() const {return m_CountModToSev;}
-int FG::getCountSevMort() const {return m_CountSevMort;}
-int FG::getDroughtRecovery() const {return m_DroughtRecovery;}
+double FG::getDroughtThreshMod() const {return m_DroughtThreshMod;}
+double FG::getDroughtThreshSev() const {return m_DroughtThreshSev;}
+int FG::getCountRecovery() const {return m_CountRecovery;}
+int FG::getCountSens() const {return m_CountSens;}
+int FG::getCountCum() const {return m_CountCum;}
 bool FG::getIsAlien() const {return m_IsAlien;}
 
 
@@ -545,10 +549,11 @@ void FG::setDistResponse(const FGresponse& distResponse){m_DistResponse = distRe
 void FG::setFireResponse(const FGresponse& fireResponse){m_FireResponse = fireResponse;}
 void FG::setFlamm(const double& flamm){m_Flamm = flamm;}
 void FG::setDroughtResponse(const FGresponse& droughtResponse){m_DroughtResponse = droughtResponse;}
-void FG::setDroughtSD(const vector<double>& droughtSD){m_DroughtSD = droughtSD;}
-void FG::setCountModToSev(const int& countModToSev){m_CountModToSev = countModToSev;}
-void FG::setCountSevMort(const int& countSevMort){m_CountSevMort = countSevMort;}
-void FG::setDroughtRecovery(const int& droughtRecovery){m_DroughtRecovery = droughtRecovery;}
+void FG::setDroughtThreshMod(const double& droughtThreshMod){m_DroughtThreshMod = droughtThreshMod;}
+void FG::setDroughtThreshSev(const double& droughtThreshSev){m_DroughtThreshSev = droughtThreshSev;}
+void FG::setCountRecovery(const int& countRecovery){m_CountRecovery = countRecovery;}
+void FG::setCountSens(const int& countSens){m_CountSens = countSens;}
+void FG::setCountCum(const int& countCum){m_CountCum = countCum;}
 void FG::setIsAlien(const bool& isAlien){m_IsAlien = isAlien;}
 
 
@@ -591,10 +596,11 @@ void FG::show()
   logg.debug("\nm_Flamm = ", m_Flamm,
              "\n** m_DroughtResponse =");
   m_DroughtResponse.show();
-  logg.debug("\nm_DroughtSD = ", m_DroughtSD,
-             "\nm_CountModToSev = ", m_CountModToSev,
-             "\nm_CountSevMort = ", m_CountSevMort,
-             "\nm_DroughtRecovery = ", m_DroughtRecovery,
+  logg.debug("\nm_DroughtThreshMod = ", m_DroughtThreshMod,
+             "\nm_DroughtThreshSev = ", m_DroughtThreshSev,
+             "\nm_CountRecovery = ", m_CountRecovery,
+             "\nm_CountSens = ", m_CountSens,
+             "\nm_CountCum = ", m_CountCum,
              "\nm_IsAlien = ", m_IsAlien);
 }
 

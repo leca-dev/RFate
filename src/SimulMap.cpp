@@ -1407,8 +1407,7 @@ void SimulMap::DoDroughtDisturbance_part1()
       if (m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
       {
         /* 0.Check Habitat Suitability */
-        // set recruit and fecund to 0 ?
-        // automatic at the beginning of DoSuccession
+        // set recruit and fecund to 0 automatic at the beginning of DoSuccession
         
         /* 2.Check Post Drought Mortality */
         if (m_PostDroughtMap(cell_ID, fg) == 1)
@@ -1420,29 +1419,25 @@ void SimulMap::DoDroughtDisturbance_part1()
         
         /* 1.Check Moisture Index */
         double moistIndex = moistValues(cell_ID);
-        if (moistIndex > m_FGparams[fg].getDroughtSD()[0])
+        if (moistIndex > m_FGparams[fg].getDroughtThreshMod())
         {
           /* 3.If NO drought : apply Drought Recovery */
-          if (m_CountDroughtMap(cell_ID, fg) > 0)
-          {
-            m_CountDroughtMap(cell_ID, fg) -= m_FGparams[fg].getDroughtRecovery();
-          }
+          m_CountDroughtMap(cell_ID, fg) = max(static_cast<unsigned>(0), m_CountDroughtMap(cell_ID, fg) - m_FGparams[fg].getCountRecovery());
         } else
         {
           /* Set recruitment and fecundity to 0 */
           m_IsDroughtMap(cell_ID, fg) = 1;
+          m_CountDroughtMap(cell_ID, fg) = min(static_cast<unsigned>(m_FGparams[fg].getCountCum()), m_CountDroughtMap(cell_ID, fg)++);
           
-          if (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) < m_FGparams[fg].getCountModToSev()) { m_CountDroughtMap(cell_ID, fg) ++; }
-          
-          bool currSevDrought = (moistIndex < m_FGparams[fg].getDroughtSD()[1]);
+          bool currSevDrought = (moistIndex < m_FGparams[fg].getDroughtThreshSev());
           if (currSevDrought && m_CountDroughtMap(cell_ID, fg) == 1)
           {
             m_PostDroughtMap(cell_ID, fg) = 1;
           }
           
           /* 4.If drought : check Current Drought Mortality */
-          bool modToSev = (!currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountModToSev()));
-          bool SevMort = (currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountSevMort()));
+          bool modToSev = (!currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountSens()));
+          bool SevMort = (currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountCum()));
           if (modToSev || SevMort )
           {
             m_PostDroughtMap(cell_ID, fg) = 1;

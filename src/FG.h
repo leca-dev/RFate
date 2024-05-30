@@ -110,10 +110,11 @@ private:
   
   /* Drought response */
   FGresponse m_DroughtResponse; /*!< PFG response to severe drought disturbance, with immediate or post-year effects */
-  vector<double> m_DroughtSD; /*!< (mean-1.5sd), (mean-2sd) from droughtDistribution and corresponding to thresholds to moderate and severe drought */
-  int m_CountModToSev; /*!< How many years of previous drought lead a moderate drought to a severe one */
-  int m_CountSevMort; /*!< How many years of previous drought lead a severe drought to have mortality effects*/
-  int m_DroughtRecovery; /*!< How many years of previous drought the PFG recovers during a year without drought */
+  double m_DroughtThreshMod; /*!< PFG threshold to moderate drought */
+  double m_DroughtThreshSev; /*!< PFG threshold to moderate drought */
+  int m_CountRecovery; /*!< How many years of previous drought the PFG recovers during a year without drought */
+  int m_CountSens; /*!< How many years of previous drought lead a moderate drought to a severe one */
+  int m_CountCum; /*!< How many years of previous drought lead a severe drought to have mortality effects*/
   
   /* Alien introduction module */
   bool m_IsAlien; /*!< Is FG an alien plant introduced ? */
@@ -154,10 +155,11 @@ private:
     ar & m_FireResponse;
     ar & m_Flamm;
     ar & m_DroughtResponse;
-    ar & m_DroughtSD;
-    ar & m_CountModToSev;
-    ar & m_CountSevMort;
-    ar & m_DroughtRecovery;
+    ar & m_DroughtThreshMod;
+    ar & m_DroughtThreshSev;
+    ar & m_CountRecovery;
+    ar & m_CountSens;
+    ar & m_CountCum;
     ar & m_IsAlien;
   }
   
@@ -345,10 +347,11 @@ public:
             m_FireResponse == o.m_FireResponse &&
             m_Flamm == o.m_Flamm &&
             m_DroughtResponse == o.m_DroughtResponse &&
-            m_DroughtSD == o.m_DroughtSD &&
-            m_CountModToSev == o.m_CountModToSev &&
-            m_CountSevMort == o.m_CountSevMort &&
-            m_DroughtRecovery == o.m_DroughtRecovery &&
+            m_DroughtThreshMod == o.m_DroughtThreshMod &&
+            m_DroughtThreshSev == o.m_DroughtThreshSev &&
+            m_CountRecovery == o.m_CountRecovery &&
+            m_CountSens == o.m_CountSens &&
+            m_CountCum == o.m_CountCum &&
             m_IsAlien == o.m_IsAlien);
     
     /* check fixed size tables equality */
@@ -405,10 +408,11 @@ public:
   const FGresponse& getFireResponse() const;
   double getFlamm() const;
   const FGresponse& getDroughtResponse() const;
-  const vector<double>& getDroughtSD() const;
-  int getCountModToSev() const;
-  int getCountSevMort() const;
-  int getDroughtRecovery() const;
+  double getDroughtThreshMod() const;
+  double getDroughtThreshSev() const;
+  int getCountRecovery() const;
+  int getCountSens() const;
+  int getCountCum() const;
   bool getIsAlien() const;
   
   
@@ -444,10 +448,11 @@ public:
   void setFireResponse(const FGresponse& fireResponse);
   void setFlamm(const double& flamm);
   void setDroughtResponse(const FGresponse& droughtResponse);
-  void setDroughtSD(const vector<double>& droughtSD);
-  void setCountModToSev(const int& countModToSev);
-  void setCountSevMort(const int& countSevMort);
-  void setDroughtRecovery(const int& droughtRecovery);
+  void setDroughtThreshMod(const double& droughtThreshMod);
+  void setDroughtThreshSev(const double& droughtThreshSev);
+  void setCountRecovery(const int& countRecovery);
+  void setCountSens(const int& countSens);
+  void setCountCum(const int& countCum);
   
   void setIsAlien(const bool& isAlien);
   
