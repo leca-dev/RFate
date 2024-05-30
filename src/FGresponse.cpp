@@ -57,7 +57,7 @@ m_DormBreaks(m_NoPert, 0)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPertSub) : m_NoPert(noPert), m_NoPertSub(noPertSub)
+FGresponse::FGresponse(const string& PFG_PerturbationsFile, unsigned noPert, unsigned noPertSub) : m_NoPert(noPert), m_NoPertSub(noPertSub)
 {
 	testFileExist("--PFG_PARAMS_...PERT...--", PFG_PerturbationsFile, false);
 
@@ -69,7 +69,7 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 			logg.error("!!! Wrong number of parameters provided for PROP_KILLED (",
               m_PropKilled.size(), " instead of ", noPert, "). Please check!");
 		}
-		for(unsigned i=1; i<m_PropKilled.size(); i++)
+		for (unsigned i=1; i<m_PropKilled.size(); i++)
 		{
 		  if (m_PropKilled[i] < 0 || m_PropKilled[i] > 100)
 		  {
@@ -99,11 +99,11 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPe
 				counter++;
 			}
 		}
-		for(int i=0; i<noPert; i++)
+		for(unsigned i=0; i<noPert; i++)
 		{
 			bool is_sup = false;
 			int prev_age = m_BreakAge[i][1];
-			for(int j=2; j<noPertSub - 1; j++)
+			for(unsigned j=2; j<noPertSub - 1; j++)
 			{
 				if (m_BreakAge[i][j] < prev_age)
 				{
@@ -208,40 +208,40 @@ FGresponse::~FGresponse()
 unsigned FGresponse::getNoPert() const {return m_NoPert;}
 unsigned FGresponse::getNoPertSub() const {return m_NoPertSub;}
 const vector<int>& FGresponse::getPropKilled() const {return m_PropKilled;}
-const int& FGresponse::getPropKilled(const int& dist) const {
-	if (dist<0 || dist > m_NoPert)
+const int& FGresponse::getPropKilled(const unsigned& dist) const {
+	if (dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_PropKilled for a non-existing perturbation. Please check!");
 	}
 	return m_PropKilled[dist];
 }
 const vector< vector<int> >& FGresponse::getBreakAge() const {return m_BreakAge;}
-int FGresponse::getBreakAge(const int& dist, const int& range) const {
-	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
+int FGresponse::getBreakAge(const unsigned& dist, const unsigned& range) const {
+	if (dist > m_NoPert || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation or sub-perturbation. Please check!");
 	}
 	return m_BreakAge[dist][range];
 }
 const vector< vector<int> >& FGresponse::getResprAge() const {return m_ResprAge;}
-int FGresponse::getResprAge(const int& dist, const int& range) const {
-	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
+int FGresponse::getResprAge(const unsigned& dist, const unsigned& range) const {
+	if (dist > m_NoPert || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_ResprAge for a non-existing perturbation or sub-perturbation. Please check!");
 	}
 	return m_ResprAge[dist][range];
 }
 const vector<vector< vector<int> > >& FGresponse::getFates() const {return m_Fates;}
-const int& FGresponse::getFates(const int& dist, const int& range, const DistFate& df) const {
-	if (dist<0 || dist > m_NoPert || range<0 || range > m_NoPertSub)
+const int& FGresponse::getFates(const unsigned& dist, const unsigned& range, const DistFate& df) const {
+	if (dist > m_NoPert || range > m_NoPertSub)
 	{
 		logg.error("!!! Try to access value of m_Fates for a non-existing perturbation or sub-perturbation. Please check!");
 	}
 	return m_Fates[dist][range][df];
 }
 const vector<int>& FGresponse::getDormBreaks() const {return m_DormBreaks;}
-const int& FGresponse::getDormBreaks(const int& dist) const {
-	if (dist<0 || dist > m_NoPert)
+const int& FGresponse::getDormBreaks(const unsigned& dist) const {
+	if (dist > m_NoPert)
 	{
 		logg.error("!!! Try to access value of m_BreakAge for a non-existing perturbation. Please check!");
 	}
@@ -251,15 +251,15 @@ const int& FGresponse::getDormBreaks(const int& dist) const {
 void FGresponse::setNoPert(const unsigned& noPert){m_NoPert = noPert;}
 void FGresponse::setNoPertSub(const unsigned& noPertSub){m_NoPertSub = noPertSub;}
 void FGresponse::setPropKilled(const vector<int>& propKilled){m_PropKilled = propKilled;}
-void FGresponse::setPropKilled(const int& propKilled, const int& dist){m_PropKilled[dist] = propKilled;}
+void FGresponse::setPropKilled(const int& propKilled, const unsigned& dist){m_PropKilled[dist] = propKilled;}
 void FGresponse::setBreakAge(const vector< vector<int> >& breakAge){m_BreakAge = breakAge;}
-void FGresponse::setBreakAge(const int& breakAge, const int& dist, const int& range){m_BreakAge[dist][range] = breakAge;}
+void FGresponse::setBreakAge(const int& breakAge, const unsigned& dist, const unsigned& range){m_BreakAge[dist][range] = breakAge;}
 void FGresponse::setResprAge(const vector< vector<int> >& resprAge){m_ResprAge = resprAge;}
-void FGresponse::setResprAge(const int& resprAge, const int& dist, const int& range){m_ResprAge[dist][range] = resprAge;}
+void FGresponse::setResprAge(const int& resprAge, const unsigned& dist, const unsigned& range){m_ResprAge[dist][range] = resprAge;}
 void FGresponse::setFates(const vector<vector< vector<int> > >& fates){m_Fates = fates;}
-void FGresponse::setFates(const int& fates, const int& dist, const int& range, const DistFate& df){m_Fates[dist][range][df] = fates;}
+void FGresponse::setFates(const int& fates, const unsigned& dist, const unsigned& range, const DistFate& df){m_Fates[dist][range][df] = fates;}
 void FGresponse::setDormBreaks(const vector<int>& dormBreaks){m_DormBreaks = dormBreaks;}
-void FGresponse::setDormBreaks(const int& dormBreaks, const int& dist){m_DormBreaks[dist] = dormBreaks;}
+void FGresponse::setDormBreaks(const int& dormBreaks, const unsigned& dist){m_DormBreaks[dist] = dormBreaks;}
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 /* Other functions                                                                                 */

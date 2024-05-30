@@ -93,7 +93,7 @@ class SimulMap
 	SpatialMap<double, double> m_ElevationMap; /*!< Elevation mask  */
 	SpatialMap<double, double> m_SlopeMap; /*!< Slope mask  */
 	SpatialStack<double, unsigned> m_PostDroughtMap; /*!< Stack of maps referencing for each FG if a point will suffer from post drought effects (0 or 1) */
-	SpatialStack<double, unsigned> m_CountDroughtMap; /*!< Stack of maps referencing for each FG the number of consecutive years with drought */
+	SpatialStack<double, int> m_CountDroughtMap; /*!< Stack of maps referencing for each FG the number of consecutive years with drought */
 	SpatialStack<double, unsigned> m_IsDroughtMap; /*!< Stack of maps referencing for each FG if a point suffered from drought this year (0 or 1) */
 	SpatialStack<double, unsigned> m_ApplyCurrDroughtMap; /*!< Stack of maps referencing for each FG if a point will suffer from current drought effects (0 or 1) this year */
 	SpatialStack<double, unsigned> m_ApplyPostDroughtMap; /*!< Stack of maps referencing for each FG if a point will suffer from post drought effects (0 or 1) this year */
@@ -252,7 +252,7 @@ class SimulMap
 	SpatialMap<double, double>& getSlopeMap();
 	SpatialMap<double, double>& getDroughtMap();
 	SpatialStack<double, unsigned>& getPostDroughtMap();
-	SpatialStack<double, unsigned>& getCountDroughtMap();
+	SpatialStack<double, int>& getCountDroughtMap();
 	SpatialStack<double, unsigned>& getIsDroughtMap();
 	SpatialStack<double, unsigned>& getApplyCurrDroughtMap();
 	SpatialStack<double, unsigned>& getApplyPostDroughtMap();
@@ -276,7 +276,7 @@ class SimulMap
 	void setSlopeMap(SpatialMap<double, double> slopeMap);
 	void setDroughtMap(SpatialMap<double, double> droughtMap);
 	void setPostDroughtMap(SpatialStack<double, unsigned> postDroughtMap);
-	void setCountDroughtMap(SpatialStack<double, unsigned> countDroughtMap);
+	void setCountDroughtMap(SpatialStack<double, int> countDroughtMap);
 	void setIsDroughtMap(SpatialStack<double, unsigned> isDroughtMap);
 	void setApplyCurrDroughtMap(SpatialStack<double, unsigned> applyCurrDroughtMap);
 	void setApplyPostDroughtMap(SpatialStack<double, unsigned> applyPostDroughtMap);
@@ -380,7 +380,7 @@ class SimulMap
 	 * \param dist : id of considered disturbance
 	 * \param availCells : vector of cells that can be impacted by the disturbance
 	 */
-	vector<unsigned int> DoIgnition(int dist, vector<unsigned int> availCells);
+	vector<unsigned> DoIgnition(int dist, vector<unsigned> availCells);
 
 	/*!
 	 *	\brief Do propagation of fire disturbance model
@@ -394,7 +394,7 @@ class SimulMap
 	 * \param start : vector of cells where there is an ignition of fire
 	 * \param availCells : vector of cells that can be impacted by the disturbance
 	 */
-	vector<unsigned int> DoPropagation(int dist, vector<unsigned int> start, vector<unsigned int> availCells);
+	vector<unsigned> DoPropagation(int dist, vector<unsigned> start, vector<unsigned> availCells);
 
 	/*!
 	 *	\brief Update the TimeSinceLastFire mask
@@ -405,7 +405,7 @@ class SimulMap
 	 *
 	 * \param burnt : vector of cells impacted by the disturbance
 	 */
-	void DoUpdateTslf(vector<unsigned int> burnt);
+	void DoUpdateTslf(vector<unsigned> burnt);
 
 	/*!
 	 *	\brief Apply fire disturbance model

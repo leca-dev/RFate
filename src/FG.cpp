@@ -95,7 +95,7 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
   if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
   m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
   m_Strata.push_back(10000); /* High value of to avoid PFGs to exit the upper stata */
-  if (m_Strata.size() != glob_params.getNoStrata() + 1)
+  if (static_cast<int>(m_Strata.size()) != glob_params.getNoStrata() + 1)
   {
     logg.error("!!! Wrong number of parameters provided for CHANG_STR_AGES (",
                m_Strata.size() - 1," instead of ", glob_params.getNoStrata(),
@@ -328,9 +328,9 @@ void FG::getDrouParams(const GSP& glob_params, const string& PFG_DroughtFile)
   par::Params DroughtParams(PFG_DroughtFile.c_str(), " = \"", "#");
   m_DroughtResponse = FGresponse(PFG_DroughtFile, 2, glob_params.getNoDroughtSub());
   m_DroughtSD = DroughtParams.get_val<double>("DROUGHT_SD");
-  m_CountModToSev = DroughtParams.get_val<unsigned>("COUNT_MOD_TO_SEV")[0];
-  m_CountSevMort = DroughtParams.get_val<unsigned>("COUNT_SEV_MORT")[0];
-  m_DroughtRecovery = DroughtParams.get_val<unsigned>("DROUGHT_RECOVERY")[0];
+  m_CountModToSev = DroughtParams.get_val<int>("COUNT_MOD_TO_SEV")[0];
+  m_CountSevMort = DroughtParams.get_val<int>("COUNT_SEV_MORT")[0];
+  m_DroughtRecovery = DroughtParams.get_val<int>("DROUGHT_RECOVERY")[0];
   logg.info("> PFG drought parameters provided");
 }
 
@@ -498,15 +498,15 @@ double FG::getSoilHigh() const {return m_SoilHigh;}
 const vector<int> FG::getMaxRecruitSoil() const {return m_SoilActiveGerm;}
 const int& FG::getMaxRecruitSoil(const Resource& r) const {return m_SoilActiveGerm[r];}
 const vector< vector<int> >& FG::getSoilTolerance() const {return m_SoilTolerance;}
-const int FG::getSoilTolerance(LifeStage ls, Resource r) const { return m_SoilTolerance[ls][r];}
+int FG::getSoilTolerance(LifeStage ls, Resource r) const { return m_SoilTolerance[ls][r];}
 FGresponse FG::getDistResponse() {return m_DistResponse;}
 const FGresponse& FG::getFireResponse() const {return m_FireResponse;}
 double FG::getFlamm() const {return m_Flamm;}
 const FGresponse& FG::getDroughtResponse() const {return m_DroughtResponse;}
 const vector<double>& FG::getDroughtSD() const {return m_DroughtSD;}
-unsigned FG::getCountModToSev() const {return m_CountModToSev;}
-unsigned FG::getCountSevMort() const {return m_CountSevMort;}
-unsigned FG::getDroughtRecovery() const {return m_DroughtRecovery;}
+int FG::getCountModToSev() const {return m_CountModToSev;}
+int FG::getCountSevMort() const {return m_CountSevMort;}
+int FG::getDroughtRecovery() const {return m_DroughtRecovery;}
 bool FG::getIsAlien() const {return m_IsAlien;}
 
 
@@ -546,9 +546,9 @@ void FG::setFireResponse(const FGresponse& fireResponse){m_FireResponse = fireRe
 void FG::setFlamm(const double& flamm){m_Flamm = flamm;}
 void FG::setDroughtResponse(const FGresponse& droughtResponse){m_DroughtResponse = droughtResponse;}
 void FG::setDroughtSD(const vector<double>& droughtSD){m_DroughtSD = droughtSD;}
-void FG::setCountModToSev(const unsigned& countModToSev){m_CountModToSev = countModToSev;}
-void FG::setCountSevMort(const unsigned& countSevMort){m_CountSevMort = countSevMort;}
-void FG::setDroughtRecovery(const unsigned& droughtRecovery){m_DroughtRecovery = droughtRecovery;}
+void FG::setCountModToSev(const int& countModToSev){m_CountModToSev = countModToSev;}
+void FG::setCountSevMort(const int& countSevMort){m_CountSevMort = countSevMort;}
+void FG::setDroughtRecovery(const int& droughtRecovery){m_DroughtRecovery = droughtRecovery;}
 void FG::setIsAlien(const bool& isAlien){m_IsAlien = isAlien;}
 
 

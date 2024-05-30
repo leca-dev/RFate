@@ -283,13 +283,13 @@ GSP::GSP(const string globalParamsFile)
 		}
 
 		m_FreqDist = GlobParms.get_val<int>("DIST_FREQ");
-		if (m_NoDist != m_FreqDist.size())
+		if (m_NoDist != static_cast<int>(m_FreqDist.size()))
 		{
 			logg.error("!!! Parameter DIST_FREQ : number of frequencies must be equal to the number of disturbances (DIST_NO)!");
 		}
 		vector<double> v_double = GlobParms.get_val<double>("DIST_PROB", true);
 		if (v_double.size()) m_ProbDist = v_double; else m_ProbDist = vector<double>(m_NoDist, 0.0);
-		if (m_NoDist != m_ProbDist.size())
+		if (m_NoDist != static_cast<int>(m_ProbDist.size()))
 		{
 		  logg.error("!!! Parameter DIST_PROB : number of probabilities must be equal to the number of disturbances (DIST_NO)!");
 		}
@@ -302,7 +302,7 @@ GSP::GSP(const string globalParamsFile)
 		}
 		v_int = GlobParms.get_val<int>("DIST_PAIR", true);
 		if (v_int.size()) m_PairDist = v_int; else m_PairDist = vector<int>(m_NoDist, 1);
-		if (m_NoDist != m_PairDist.size())
+		if (m_NoDist != static_cast<int>(m_PairDist.size()))
 		{
 		  logg.error("!!! Parameter DIST_PAIR : number of paired identification must be equal to the number of disturbances (DIST_NO)!");
 		}
@@ -356,7 +356,7 @@ GSP::GSP(const string globalParamsFile)
 		if (v_int.size()) m_NoFireDistSub = v_int[0]; else m_NoFireDistSub = 0;
 		v_int = GlobParms.get_val<int>("FIRE_FREQ",true);
 		if (v_int.size()) m_FreqFireDist = v_int; else m_FreqFireDist = vector<int>(1,0);
-		if (m_NoFireDist != m_FreqFireDist.size())
+		if (m_NoFireDist != static_cast<int>(m_FreqFireDist.size()))
 		{
 			logg.error("!!! Parameter FIRE_FREQ : number of frequencies must be equal to the number of fire disturbances (FIRE_NO)!");
 		}
@@ -454,7 +454,7 @@ GSP::GSP(const string globalParamsFile)
 	if (m_DoAliensIntroduction)
 	{
 		m_FreqAliens = GlobParms.get_val<int>("ALIENS_FREQ");
-		if (m_NoFG != m_FreqAliens.size())
+		if (m_NoFG != static_cast<int>(m_FreqAliens.size()))
 		{
 			logg.error("!!! Parameter ALIENS_FREQ : number of frequencies must be equal to the number of PFG (NO_PFG)!");
 		}

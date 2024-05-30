@@ -72,7 +72,7 @@ m_DroughtMap(SpatialMap<double, double>()),
 m_ElevationMap(SpatialMap<double, double>()),
 m_SlopeMap(SpatialMap<double, double>()),
 m_PostDroughtMap(SpatialStack<double, unsigned>()),
-m_CountDroughtMap(SpatialStack<double, unsigned>()),
+m_CountDroughtMap(SpatialStack<double, int>()),
 m_IsDroughtMap(SpatialStack<double, unsigned>()),
 m_ApplyCurrDroughtMap(SpatialStack<double, unsigned>()),
 m_ApplyPostDroughtMap(SpatialStack<double, unsigned>()),
@@ -99,49 +99,49 @@ SimulMap::SimulMap(FOPL file_of_params)
   
   /* build functional groups entities */
   logg.info("*** building Functional groups...");
-  if (noFG != file_of_params.getFGLifeHistory().size())
+  if (noFG != static_cast<int>(file_of_params.getFGLifeHistory().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIFE_HISTORY-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoLightInteraction() &&
-      noFG != file_of_params.getFGLight().size())
+      noFG != static_cast<int>(file_of_params.getFGLight().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_LIGHT-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoHabSuitability() &&
-      noFG != file_of_params.getFGMapsHabSuit().size())
+      noFG != static_cast<int>(file_of_params.getFGMapsHabSuit().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_MASK_HABSUIT-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDispersal() &&
-      noFG != file_of_params.getFGDispersal().size())
+      noFG != static_cast<int>(file_of_params.getFGDispersal().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISPERSAL-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDisturbances() &&
-      noFG != file_of_params.getFGDisturbance().size())
+      noFG != static_cast<int>(file_of_params.getFGDisturbance().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DISTURBANCES-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoSoilInteraction() &&
-      noFG != file_of_params.getFGSoil().size())
+      noFG != static_cast<int>(file_of_params.getFGSoil().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_SOIL-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoFireDisturbances() &&
-      noFG != file_of_params.getFGFire().size())
+      noFG != static_cast<int>(file_of_params.getFGFire().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_FIRE-- ",
                "do not match in term of number!");
   }
   if (m_glob_params.getDoDroughtDisturbances() &&
-      noFG != file_of_params.getFGDrought().size())
+      noFG != static_cast<int>(file_of_params.getFGDrought().size()))
   {
     logg.error("!!! Parameters NO_PFG and --PFG_PARAMS_DROUGHT-- ",
                "do not match in term of number!");
@@ -250,7 +250,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   if (m_glob_params.getDoDisturbances())
   {
     logg.info("> build simulation disturbances masks...");
-    if (m_glob_params.getNoDist() == file_of_params.getMaskDist().size())
+    if (m_glob_params.getNoDist() == static_cast<int>(file_of_params.getMaskDist().size()))
     {
       vector< vector< double > > distMap; // disturbances masks
       distMap.reserve(noFG);
@@ -275,7 +275,7 @@ SimulMap::SimulMap(FOPL file_of_params)
     if (m_glob_params.getFireIgnitMode()==5)
     {
       logg.info("> build simulation fire disturbances masks...");
-      if (m_glob_params.getNoFireDist() == file_of_params.getMaskFire().size())
+      if (m_glob_params.getNoFireDist() == static_cast<int>(file_of_params.getMaskFire().size()))
       {
         vector< vector< int > > fireMap; // fire disturbances masks
         fireMap.reserve(m_glob_params.getNoFireDist());
@@ -332,7 +332,7 @@ SimulMap::SimulMap(FOPL file_of_params)
       droughtMap.emplace_back( ReadMask<unsigned>( file_of_params.getMask(), 0.0, 1.0 ) );
     }
     m_PostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
-    m_CountDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
+    m_CountDroughtMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
     m_IsDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
@@ -349,7 +349,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   {
     m_DroughtMap = SpatialMap<double, double>(m_Coord_ptr, emptyValDouble );
     m_PostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
-    m_CountDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
+    m_CountDroughtMap = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
     m_IsDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
     m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
     m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, emptyMapUns);
@@ -359,7 +359,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   if (m_glob_params.getDoAliensIntroduction())
   {
     logg.info("> build aliens introduction masks...");
-    if (noFG == file_of_params.getFGMapsAliens().size())
+    if (noFG == static_cast<int>(file_of_params.getFGMapsAliens().size()))
     {
       vector< vector< double > > condInitMap; // aliens introduction masks
       condInitMap.reserve(noFG);
@@ -470,7 +470,7 @@ SpatialMap<double, double>& SimulMap::getElevationMap() { return m_ElevationMap;
 SpatialMap<double, double>& SimulMap::getSlopeMap() { return m_SlopeMap; }
 SpatialMap<double, double>& SimulMap::getDroughtMap() { return m_DroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getPostDroughtMap() { return m_PostDroughtMap; }
-SpatialStack<double, unsigned>& SimulMap::getCountDroughtMap() { return m_CountDroughtMap; }
+SpatialStack<double, int>& SimulMap::getCountDroughtMap() { return m_CountDroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getIsDroughtMap() { return m_IsDroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getApplyCurrDroughtMap() { return m_ApplyCurrDroughtMap; }
 SpatialStack<double, unsigned>& SimulMap::getApplyPostDroughtMap() { return m_ApplyPostDroughtMap; }
@@ -494,7 +494,7 @@ void SimulMap::setElevationMap(SpatialMap<double, double> elevationMap) { m_Elev
 void SimulMap::setSlopeMap(SpatialMap<double, double> slopeMap) { m_SlopeMap = slopeMap; }
 void SimulMap::setDroughtMap(SpatialMap<double, double> droughtMap) { m_DroughtMap = droughtMap; }
 void SimulMap::setPostDroughtMap(SpatialStack<double, unsigned> postDroughtMap) { m_PostDroughtMap = postDroughtMap; }
-void SimulMap::setCountDroughtMap(SpatialStack<double, unsigned> countDroughtMap) { m_CountDroughtMap = countDroughtMap; }
+void SimulMap::setCountDroughtMap(SpatialStack<double, int> countDroughtMap) { m_CountDroughtMap = countDroughtMap; }
 void SimulMap::setIsDroughtMap(SpatialStack<double, unsigned> isDroughtMap) { m_IsDroughtMap = isDroughtMap; }
 void SimulMap::setApplyCurrDroughtMap(SpatialStack<double, unsigned> applyCurrDroughtMap) { m_ApplyCurrDroughtMap = applyCurrDroughtMap; }
 void SimulMap::setApplyPostDroughtMap(SpatialStack<double, unsigned> applyPostDroughtMap) { m_ApplyPostDroughtMap = applyPostDroughtMap; }
@@ -853,12 +853,12 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         {
           for (int yy=-1; yy<=1; yy++)
           {
-            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<m_Mask.getTotncell() && // border precaution
+                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=*it1 && // current cell
+                id!=static_cast<int>(*it1) && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -889,12 +889,12 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         {
           for (int yy=-1; yy<=1; yy++)
           {
-            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<m_Mask.getTotncell() && // border precaution
+                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=*it1 && // current cell
+                id!=static_cast<int>(*it1) && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -954,12 +954,12 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         {
           for (int yy=-1; yy<=1; yy++)
           {
-            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<m_Mask.getTotncell() && // border precaution
+                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=*it1 && // current cell
+                id!=static_cast<int>(*it1) && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -1009,12 +1009,12 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         {
           for (int yy=-1; yy<=1; yy++)
           {
-            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<m_Mask.getTotncell() && // border precaution
+                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=*it1 && // current cell
+                id!=static_cast<int>(*it1) && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -1046,12 +1046,12 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         {
           for (int yy=-1; yy<=1; yy++)
           {
-            unsigned id = *it1+xx*m_Mask.getYncell()+yy;
+            int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<m_Mask.getTotncell() && // border precaution
+                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=*it1 && // current cell
+                id!=static_cast<int>(*it1) && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -1238,9 +1238,9 @@ void SimulMap::DoFireDisturbance(int yr)
             {
               for (int xx=(-we); xx<=ea; xx++)
               {
-                unsigned id = *it1+yy+xx*m_Mask.getYncell();
+                int id = *it1+yy+xx*m_Mask.getYncell();
                 if ( id>=0 && /* border precaution */
-  id<m_Mask.getTotncell() && /* border precaution */
+  id<static_cast<int>(m_Mask.getTotncell()) && /* border precaution */
   find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
   m_Mask(id)==1)
                 { // studied area
@@ -1266,9 +1266,9 @@ void SimulMap::DoFireDisturbance(int yr)
             {
               for (int xx=(-we); xx<=ea; xx++)
               {
-                unsigned id = *it1+yy+xx*m_Mask.getYncell();
+                int id = *it1+yy+xx*m_Mask.getYncell();
                 if ( id>=0 && /* border precaution */
-  id<m_Mask.getTotncell() && /* border precaution */
+  id<static_cast<int>(m_Mask.getTotncell()) && /* border precaution */
   find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
   m_Mask(id)==1)
                 { // studied area
@@ -1710,47 +1710,47 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
   
   /* check some parameters compatibility (between "new" global and simul parameter files) */
   int noFG = m_glob_params.getNoFG();
-  if (noFG != file_of_params.getFGLifeHistory().size())
+  if (noFG != static_cast<int>(file_of_params.getFGLifeHistory().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_LIFE_HISTORY-- (",
                file_of_params.getFGLifeHistory().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoLightInteraction() && noFG != file_of_params.getFGLight().size())
+  if (m_glob_params.getDoLightInteraction() && noFG != static_cast<int>(file_of_params.getFGLight().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_LIGHT-- (",
                file_of_params.getFGLight().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoSoilInteraction() && noFG != file_of_params.getFGSoil().size())
+  if (m_glob_params.getDoSoilInteraction() && noFG != static_cast<int>(file_of_params.getFGSoil().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_SOIL-- (",
                file_of_params.getFGSoil().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoDispersal() && noFG != file_of_params.getFGDispersal().size())
+  if (m_glob_params.getDoDispersal() && noFG != static_cast<int>(file_of_params.getFGDispersal().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DISPERSAL-- (",
                file_of_params.getFGDispersal().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoDisturbances() && noFG != file_of_params.getFGDisturbance().size())
+  if (m_glob_params.getDoDisturbances() && noFG != static_cast<int>(file_of_params.getFGDisturbance().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DISTURBANCES-- (",
                file_of_params.getFGDisturbance().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoDroughtDisturbances() && noFG != file_of_params.getFGDrought().size())
+  if (m_glob_params.getDoDroughtDisturbances() && noFG != static_cast<int>(file_of_params.getFGDrought().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_DROUGHT-- (",
                file_of_params.getFGDrought().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoFireDisturbances() && noFG != file_of_params.getFGFire().size())
+  if (m_glob_params.getDoFireDisturbances() && noFG != static_cast<int>(file_of_params.getFGFire().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_PARAMS_FIRE-- (",
                file_of_params.getFGFire().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoHabSuitability() && noFG != file_of_params.getFGMapsHabSuit().size())
+  if (m_glob_params.getDoHabSuitability() && noFG != static_cast<int>(file_of_params.getFGMapsHabSuit().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_MASK_HABSUIT-- (",
                file_of_params.getFGMapsHabSuit().size(), ") do not match in term of number!");
   }
-  if (m_glob_params.getDoAliensIntroduction() && noFG != file_of_params.getFGMapsAliens().size())
+  if (m_glob_params.getDoAliensIntroduction() && noFG != static_cast<int>(file_of_params.getFGMapsAliens().size()))
   {
     logg.error("!!! Parameters NO_PFG (", noFG, ") and --PFG_MASK_ALIENS-- (",
                file_of_params.getFGMapsAliens().size(), ") do not match in term of number!");
@@ -1797,27 +1797,28 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
   if (file_of_params.getMaskDrought() != "0")
   {
     logg.info("***** Update drought disturbances maps...");
-    m_DroughtMap = SpatialMap<double, double>(&m_Coord, ReadMask<double>( file_of_params.getMaskDrought(), -5000.0, 1000.0 ) );
-    vector< vector< unsigned > > droughtMap; // drought disturbances map
-    droughtMap.reserve(m_FGparams.size());
-    for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
-    {
-      droughtMap.emplace_back( ReadMask<unsigned>( file_of_params.getMask(), 0.0, 1.0 ) );
-    }
-    m_PostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    m_CountDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    m_IsDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
-    
-    for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
-    { // loop on pixels
-      for (unsigned fg=0; fg<m_FGparams.size(); fg++)
-      { // loop on PFG
-        m_PostDroughtMap(*cell_ID, fg) = 0;
-        m_CountDroughtMap(*cell_ID, fg) = 0;
-      }
-    }
+    // TODO
+    // m_DroughtMap = SpatialMap<double, double>(&m_Coord, ReadMask<double>( file_of_params.getMaskDrought(), -5000.0, 1000.0 ) );
+    // vector< vector< unsigned > > droughtMap; // drought disturbances map
+    // droughtMap.reserve(m_FGparams.size());
+    // for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
+    // {
+    //   droughtMap.emplace_back( ReadMask<unsigned>( file_of_params.getMask(), 0.0, 1.0 ) );
+    // }
+    // m_PostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    // m_CountDroughtMap = SpatialStack<double, int>(&m_Coord, droughtMap); // PB here, should be int map
+    // m_IsDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    // m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    // m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
+    // 
+    // for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    // { // loop on pixels
+    //   for (unsigned fg=0; fg<m_FGparams.size(); fg++)
+    //   { // loop on PFG
+    //     m_PostDroughtMap(*cell_ID, fg) = 0;
+    //     m_CountDroughtMap(*cell_ID, fg) = 0;
+    //   }
+    // }
   }
   
   /* build simulation fire disturbances masks */

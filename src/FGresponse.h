@@ -55,9 +55,9 @@ using namespace std;
 class FGresponse
 {
 	private:
-
+	  
 	unsigned m_NoPert; /*!< Number of different levels of perturbation */
-	unsigned m_NoPertSub; /*!< Number of perturbation subdivision (number of way to react to pert) */
+  unsigned m_NoPertSub; /*!< Number of perturbation subdivision (number of way to react to pert) */
 
 	vector<int> m_PropKilled; /*!< Proportion of propagules killed */
 	vector<vector<int> > m_BreakAge; /*!< Age representing shift in response of FG */
@@ -116,7 +116,7 @@ class FGresponse
 	 *	\param noPert : number of perturbations
 	 *	\param noPertSub : number of sub-perturbations
 	 */
-	FGresponse(const string& PFG_PerturbationsFile, int noPert, int noPertSub );
+	FGresponse(const string& PFG_PerturbationsFile, unsigned noPert, unsigned noPertSub );
 
 	/*-------------------------------------------*/
 	/* Destructor -------------------------------*/
@@ -151,28 +151,28 @@ class FGresponse
 	unsigned getNoPert() const;
 	unsigned getNoPertSub() const;
 	const vector<int>& getPropKilled() const;
-	const int& getPropKilled(const int& dist) const;
+	const int& getPropKilled(const unsigned& dist) const;
 	const vector< vector<int> >& getBreakAge() const;
-	int getBreakAge(const int& dist, const int& range) const;
+	int getBreakAge(const unsigned& dist, const unsigned& range) const;
 	const vector< vector<int> >& getResprAge() const;
-	int getResprAge(const int& dist, const int& range) const;
+	int getResprAge(const unsigned& dist, const unsigned& range) const;
 	const vector<vector< vector<int> > >& getFates() const;
-	const int& getFates(const int& dist, const int& range, const DistFate& df) const;
+	const int& getFates(const unsigned& dist, const unsigned& range, const DistFate& df) const;
 	const vector<int>& getDormBreaks() const;
-	const int& getDormBreaks(const int& dist) const;
+	const int& getDormBreaks(const unsigned& dist) const;
 
 	void setNoPert(const unsigned& noPert);
 	void setNoPertSub(const unsigned& noPertSub);
 	void setPropKilled(const vector<int>& propKilled);
-	void setPropKilled(const int& propKilled, const int& dist);
+	void setPropKilled(const int& propKilled, const unsigned& dist);
 	void setBreakAge(const vector< vector<int> >& breakAge);
-	void setBreakAge(const int& breakAge, const int& dist, const int& range);
+	void setBreakAge(const int& breakAge, const unsigned& dist, const unsigned& range);
 	void setResprAge(const vector< vector<int> >& resprAge);
-	void setResprAge(const int& resprAge, const int& dist, const int& range);
+	void setResprAge(const int& resprAge, const unsigned& dist, const unsigned& range);
 	void setFates(const vector<vector< vector<int> > >& fates);
-	void setFates(const int& fates, const int& dist, const int& range, const DistFate& df);
+	void setFates(const int& fates, const unsigned& dist, const unsigned& range, const DistFate& df);
 	void setDormBreaks(const vector<int>& dormBreaks);
-	void setDormBreaks(const int& dormBreaks, const int& dist);
+	void setDormBreaks(const int& dormBreaks, const unsigned& dist);
 
 	/*-------------------------------------------*/
 	/* Other functions --------------------------*/

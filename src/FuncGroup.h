@@ -169,7 +169,7 @@ class FuncGroup
 	 *	\param Age1 : age of the oldest individuals
 	 * \return : the number of individuals within the legion between two ages
 	 */
-	unsigned totalNumAbund(unsigned Age0, unsigned Age1);
+	int totalNumAbund(int Age0, int Age1);
 
 	/*!
 	 *	\brief Calculate abundance of the complete legion
@@ -180,7 +180,7 @@ class FuncGroup
 	 *
 	 * \return : the number of total individuals within the legion
 	 */
-	unsigned totalNumAbund();
+	int totalNumAbund();
 
 	/*!
 	 *	\brief Age all individuals in the legion list

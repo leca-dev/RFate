@@ -111,9 +111,9 @@ private:
   /* Drought response */
   FGresponse m_DroughtResponse; /*!< PFG response to severe drought disturbance, with immediate or post-year effects */
   vector<double> m_DroughtSD; /*!< (mean-1.5sd), (mean-2sd) from droughtDistribution and corresponding to thresholds to moderate and severe drought */
-  unsigned m_CountModToSev; /*!< How many years of previous drought lead a moderate drought to a severe one */
-  unsigned m_CountSevMort; /*!< How many years of previous drought lead a severe drought to have mortality effects*/
-  unsigned m_DroughtRecovery; /*!< How many years of previous drought the PFG recovers during a year without drought */
+  int m_CountModToSev; /*!< How many years of previous drought lead a moderate drought to a severe one */
+  int m_CountSevMort; /*!< How many years of previous drought lead a severe drought to have mortality effects*/
+  int m_DroughtRecovery; /*!< How many years of previous drought the PFG recovers during a year without drought */
   
   /* Alien introduction module */
   bool m_IsAlien; /*!< Is FG an alien plant introduced ? */
@@ -409,15 +409,15 @@ public:
   const vector<int> getMaxRecruitSoil() const;
   const int& getMaxRecruitSoil(const Resource& r) const;
   const vector< vector<int> >& getSoilTolerance() const;
-  const int getSoilTolerance(LifeStage ls,  Resource r) const;
+  int getSoilTolerance(LifeStage ls,  Resource r) const;
   FGresponse getDistResponse();
   const FGresponse& getFireResponse() const;
   double getFlamm() const;
   const FGresponse& getDroughtResponse() const;
   const vector<double>& getDroughtSD() const;
-  unsigned getCountModToSev() const;
-  unsigned getCountSevMort() const;
-  unsigned getDroughtRecovery() const;
+  int getCountModToSev() const;
+  int getCountSevMort() const;
+  int getDroughtRecovery() const;
   bool getIsAlien() const;
   
   
@@ -454,9 +454,9 @@ public:
   void setFlamm(const double& flamm);
   void setDroughtResponse(const FGresponse& droughtResponse);
   void setDroughtSD(const vector<double>& droughtSD);
-  void setCountModToSev(const unsigned& countModToSev);
-  void setCountSevMort(const unsigned& countSevMort);
-  void setDroughtRecovery(const unsigned& droughtRecovery);
+  void setCountModToSev(const int& countModToSev);
+  void setCountSevMort(const int& countSevMort);
+  void setDroughtRecovery(const int& droughtRecovery);
   
   void setIsAlien(const bool& isAlien);
   

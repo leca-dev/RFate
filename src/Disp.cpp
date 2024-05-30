@@ -266,7 +266,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 		/* dispOption = 1 (uniform), 2 (expKernel) or 3 (expKernel + proba) */
 		if (dispOption==1 || dispOption==2 || dispOption==3)
 		{
-			int xt,yt;
+			int xt, yt;
 			vector<int> v1x_select, v2x_select, v1y_select, v2y_select;
 			vector<float> prop_d1_select, prop_d2_select;
 			unsigned noDrawMax = max(1, static_cast<int>(ceil(m_FGdistCircle[fg][0].size()/2.0)));
@@ -284,9 +284,9 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 			  UniReal random_01(0.0, 1.0);
 
 				/* select cell receiving seeds according to a probability decreasing with distance */
-				for (int id = 0; id < m_FGdistCircle[fg][0].size(); id++)
+				for (unsigned id = 0; id < m_FGdistCircle[fg][0].size(); id++)
 				{
-					int dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id]));
+					unsigned dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id]));
 					if (dist_pt < m_prob_d1[fg].size())
 					{
 						/* get an random number between 0-1 */
@@ -299,9 +299,9 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						}
 					}
 				}
-				for (int id = 0; id < m_FGdistCircle[fg][1].size(); id++)
+				for (unsigned id = 0; id < m_FGdistCircle[fg][1].size(); id++)
 				{
-					int dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1;
+					unsigned dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1;
 					if (dist_pt < m_prob_d2[fg].size())
 					{
 						/* get an random number between 0-1 */
@@ -382,7 +382,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 								v2y_select.push_back(m_FGdistCircle[fg][4][d2_draw]);
 							}
 						}
-						for (int id = 0; id < v2x_select.size(); id++)
+						for (unsigned id = 0; id < v2x_select.size(); id++)
 						{
 							xt = x + v2x_select[id];
 							yt = y + v2y_select[id];
@@ -424,7 +424,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 						new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
 					} else if (dld>0)
 					{
-						if(m_FGdistCircle[fg][2].size()>0)
+						if(m_FGdistCircle[fg][2].size() > 0)
 						{
 							UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
 

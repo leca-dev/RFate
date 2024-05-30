@@ -88,7 +88,7 @@ void FuncGroup::show()
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 void FuncGroup::summary()
 {
-	unsigned Ay = 0, Ao = 0, TotAbund = 0;
+	int Ay = 0, Ao = 0, TotAbund = 0;
 
 	if (m_LList.getNoCohort() > 0)
 	{
@@ -106,15 +106,15 @@ void FuncGroup::summary()
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
+int FuncGroup::totalNumAbund(int Age0, int Age1)
 {
 	/* initialize count to 0 */
-	unsigned CsizeTot = 0;
+	int CsizeTot = 0;
 
 	/* check that Age0 < Age1 */
 	if (Age0 > Age1)
 	{
-		unsigned AgeTmp = Age0;
+	  int AgeTmp = Age0;
 		Age0 = Age1;
 		Age1 = AgeTmp;
 	}
@@ -123,8 +123,8 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 	{
 	for (int i=0; i<m_LList.getNoCohort(); i++)
 	{
-		unsigned Ay = m_LList.getCohort(i).getAy();
-		unsigned Ao = m_LList.getCohort(i).getAo();
+	  int Ay = m_LList.getCohort(i).getAy();
+	  int Ao = m_LList.getCohort(i).getAo();
 
 		/* check if legion is concerned */
 		if (Age0 > Ao || Age1 < Ay)
@@ -133,11 +133,11 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 		} else
 		{
 			/* get size of cohorts of the legion */
-			unsigned Csize = m_LList.getCohort(i).getCSize();
+			int Csize = m_LList.getCohort(i).getCSize();
 
 			/* initialize the legion part (mature and immature) counts */
-			unsigned matLegPart = 0, immLegPart = 0;
-			unsigned MatTime = m_FGparams->getMatTime();
+			int matLegPart = 0, immLegPart = 0;
+			int MatTime = m_FGparams->getMatTime();
 			double ImmSize = IntToDouble(m_FGparams->getImmSize());
 
 			if (Ao>=MatTime && Age1>=MatTime)
@@ -149,7 +149,7 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 			if (Ay<MatTime && Age0<MatTime)
 			{ // some immatures in this legion
 				immLegPart = min( MatTime-1, min(Ao, Age1) ) - max(Ay,Age0) + 1;
-				CsizeTot += (unsigned) (immLegPart * Csize * ImmSize);
+				CsizeTot += static_cast<int>(immLegPart * Csize * ImmSize);
 			}
 
 		}
@@ -160,7 +160,7 @@ unsigned FuncGroup::totalNumAbund(unsigned Age0, unsigned Age1)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-unsigned FuncGroup::totalNumAbund()
+int FuncGroup::totalNumAbund()
 {
 	return totalNumAbund( 0, m_FGparams->getLifeSpan() );
 }
