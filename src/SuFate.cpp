@@ -162,9 +162,9 @@ void SuFate::CalculateEnvironment()
         /* add PFG strata abundances */
         for (unsigned st=1; st<stProfile.size(); st++)
         {
-          int StratX = static_cast<int>(m_Comm.getFuncGroup_(fg)->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
-          stProfile[st] += StratX * FGparams->getLightShadeFactor(); /* Abundances per stratum, to be converted into light resources */
-          AbundPFG[fg] += StratX; /* Abundances per PFG, to be converted into soil resources */
+          double StratX = static_cast<double>(m_Comm.getFuncGroup_(fg)->totalNumAbund( bkStratAges[st-1] , bkStratAges[st] - 1 ));
+          stProfile[st] += static_cast<int>(StratX * FGparams->getLightShadeFactor()); /* Abundances per stratum, to be converted into light resources */
+          AbundPFG[fg] += static_cast<int>(StratX); /* Abundances per PFG, to be converted into soil resources */
         } // end loop on strata
       }
     } // end loop on PFG
@@ -401,7 +401,7 @@ double SuFate::calcFecund(int fg)
   {
     matAbund = FuncG->totalNumAbund(this->getMatTime(fg), this->getLifeSpan(fg));
   }
-  return min(matAbund, static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund()))) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
+  return min(matAbund, static_cast<double>(FGparams->getMaxAbund())) * FGparams->getPotentialFecund() * this->getEnvFecund(fg);
 }
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
@@ -546,7 +546,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
       if (doRecruit)
       {
         /* 4. Germination is a function of the degree of enforced dormancy and of the size of the pool of available seeds */
-        double GerminRate = static_cast<double>(min( m_GSP->AbundToInt(FGparams->getMaxAbund()), AvailSeeds )) ;
+        double GerminRate = static_cast<double>(min( FGparams->getMaxAbund(), AvailSeeds )) ;
         if (doLight && doSoil)
         {
           int lightActiveGerm0 = FGparams->getLightActiveGerm( m_LightR.getResource(0) );
@@ -569,7 +569,7 @@ void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
         {
           // do recruitment only if abundance is < to max abund * (1 + ImmSize)
           double totAbund = FuncG->totalNumAbund( 1, this->getLifeSpan(fg) );
-          double totMaxAbund = static_cast<double>(m_GSP->AbundToInt(FGparams->getMaxAbund())) * (1.0 + IntToDouble(FGparams->getImmSize()));
+          double totMaxAbund = static_cast<double>(FGparams->getMaxAbund()) * (1.0 + IntToDouble(FGparams->getImmSize()));
           if (totAbund < totMaxAbund)
           {
             FuncG->getLList_()->addCohort( static_cast<int>(recrrate), 0, 0);

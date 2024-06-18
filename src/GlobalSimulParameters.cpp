@@ -45,7 +45,6 @@ using namespace std;
 
 GSP::GSP() : m_NoCPU(1), m_NoFG(0), m_NoStrata(0), m_SimulDuration(0),
 m_SeedingDuration(0), m_SeedingTimeStep(0), m_SeedingInput(0), m_PotentialFecundity(0),
-m_MaxAbundLow(0), m_MaxAbundMedium(0), m_MaxAbundHigh(0),
 m_DoSavingPFGStratum(false), m_DoSavingPFG(false), m_DoSavingStratum(false), 
 m_DoLightInteraction(false), m_LightThreshLow(0), m_LightThreshMedium(0), m_LightRecruitment(false), m_LightSaving(false), 
 m_DoHabSuitability(false), m_HabSuitMode(1),
@@ -64,7 +63,6 @@ m_DoAliensIntroduction(false), m_FreqAliens(0,0)
 
 GSP::GSP(const int& noCPU, const int& noFG, const int& noStrata, const int& simulDuration,
 const int& seedingDuration, const int& seedingTimeStep, const int& seedingInput, const int& potentialFecundity,
-const int& maxAbundLow, const int& maxAbundMedium, const int& maxAbundHigh,
 const bool& doSavingPFGStratum, const bool& doSavingPFG, const bool& doSavingStratum, 
 const bool& doLightInteraction, const int& lightThreshLow, const int& lightThreshMedium, 
 const bool& lightRecruitment, const bool& lightSaving, 
@@ -84,7 +82,6 @@ const bool& doDroughtDisturbances, const int& noDroughtSub, const string& chrono
 const bool& doAliensIntroduction, const vector<int>& freqAliens) : m_NoFG(noFG), m_NoStrata(noStrata),
 m_SimulDuration(simulDuration),
 m_SeedingDuration(seedingDuration), m_SeedingTimeStep(seedingTimeStep), m_SeedingInput(seedingInput), m_PotentialFecundity(potentialFecundity),
-m_MaxAbundLow(maxAbundLow), m_MaxAbundMedium(maxAbundMedium), m_MaxAbundHigh(maxAbundHigh),
 m_DoSavingPFGStratum(doSavingPFGStratum), m_DoSavingPFG(doSavingPFG), m_DoSavingStratum(doSavingStratum), 
 m_DoLightInteraction(doLightInteraction), m_LightThreshLow(lightThreshLow), m_LightThreshMedium(lightThreshMedium), 
 m_LightRecruitment(lightRecruitment), m_LightSaving(lightSaving), 
@@ -183,17 +180,6 @@ GSP::GSP(const string globalParamsFile)
 	if (m_PotentialFecundity <= 0)
 	{
 	  logg.error("!!! Parameter POTENTIAL_FECUNDITY : must be superior to 0!");
-	}
-	m_MaxAbundLow = GlobParms.get_val<int>("MAX_ABUND_LOW")[0];
-	m_MaxAbundMedium = GlobParms.get_val<int>("MAX_ABUND_MEDIUM")[0];
-	m_MaxAbundHigh = GlobParms.get_val<int>("MAX_ABUND_HIGH")[0];
-	if (m_MaxAbundLow > m_MaxAbundMedium)
-	{
-		logg.error("!!! Parameter MAX_ABUND_LOW : must be inferior or equal to MAX_ABUND_MEDIUM!");
-	}
-	if (m_MaxAbundMedium > m_MaxAbundHigh)
-	{
-		logg.error("!!! Parameter MAX_ABUND_MEDIUM : must be inferior or equal to MAX_ABUND_HIGH!");
 	}
 
 	/* GET OPTIONAL parameters : seeding */
@@ -485,9 +471,6 @@ int GSP::getSeedingDuration() const{ return m_SeedingDuration; }
 int GSP::getSeedingTimeStep() const{ return m_SeedingTimeStep; }
 int GSP::getSeedingInput() const{ return m_SeedingInput; }
 int GSP::getPotentialFecundity() const{ return m_PotentialFecundity; }
-int GSP::getMaxAbundLow() const{ return m_MaxAbundLow; }
-int GSP::getMaxAbundMedium() const{ return m_MaxAbundMedium; }
-int GSP::getMaxAbundHigh() const{ return m_MaxAbundHigh; }
 bool GSP::getDoSavingPFGStratum() const{ return m_DoSavingPFGStratum; }
 bool GSP::getDoSavingPFG() const{ return m_DoSavingPFG; }
 bool GSP::getDoSavingStratum() const{ return m_DoSavingStratum; }
@@ -544,9 +527,6 @@ void GSP::setSeedingDuration(const int& seedingDuration){ m_SeedingDuration = se
 void GSP::setSeedingTimeStep(const int& seedingTimeStep){ m_SeedingTimeStep = seedingTimeStep; }
 void GSP::setSeedingInput(const int& seedingInput){ m_SeedingInput = seedingInput; }
 void GSP::setPotentialFecundity(const int& potentialFecundity){ m_PotentialFecundity = potentialFecundity; }
-void GSP::setMaxAbundLow(const int& maxAbundLow){ m_MaxAbundLow = maxAbundLow; }
-void GSP::setMaxAbundMedium(const int& maxAbundMedium){ m_MaxAbundMedium = maxAbundMedium; }
-void GSP::setMaxAbundHigh(const int& maxAbundHigh){ m_MaxAbundHigh = maxAbundHigh; }
 void GSP::setDoSavingPFGStratum(const bool& doSavingPFGStratum){ m_DoSavingPFGStratum = doSavingPFGStratum; }
 void GSP::setDoSavingPFG(const bool& doSavingPFG){ m_DoSavingPFG = doSavingPFG; }
 void GSP::setDoSavingStratum(const bool& doSavingStratum){ m_DoSavingStratum = doSavingStratum; }
@@ -610,9 +590,6 @@ void GSP::show()
 						 "\nm_SeedingTimeStep = ", m_SeedingTimeStep,
 						 "\nm_SeedingInput = ", m_SeedingInput,
 						 "\nm_PotentialFecundity = ", m_PotentialFecundity,
-						 "\nm_MaxAbundLow = ", m_MaxAbundLow,
-						 "\nm_MaxAbundMedium = ", m_MaxAbundMedium,
-						 "\nm_MaxAbundHigh = ", m_MaxAbundHigh,
 						 "\nm_DoSavingPFGStratum = ", m_DoSavingPFGStratum,
 						 "\nm_DoSavingPFG = ", m_DoSavingPFG,
 						 "\nm_DoSavingStratum = ", m_DoSavingStratum,
@@ -663,26 +640,3 @@ void GSP::show()
 						 "\n");
 }
 
-/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
-
-int GSP::AbundToInt(Abund abund)
-{
-	/* Convert Abundance classes to integer (defined by user) */
-	int res = 0;
-	switch (abund)
-	{
-		case ANone: case Acount:
-			res =  0;
-			break;
-		case ALow:
-			res = m_MaxAbundLow;
-			break;
-		case AMedium:
-			res = m_MaxAbundMedium;
-			break;
-		case AHigh:
-			res = m_MaxAbundHigh;
-			break;
-	}
-	return res;
-}

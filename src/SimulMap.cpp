@@ -1360,7 +1360,7 @@ void SimulMap::DoDroughtDisturbance_part1()
       FuncGroupPtr FuncG = m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg);
       FGPtr FGparams = FuncG->getFGparams_();
       
-      double totMaxAbund = static_cast<double>(m_glob_params.AbundToInt(FGparams->getMaxAbund()));
+      double totMaxAbund = static_cast<double>(FGparams->getMaxAbund());
       if (totMaxAbund)
       {
         totMaxAbund *= (1.0 + IntToDouble(FGparams->getImmSize()));
@@ -1402,14 +1402,11 @@ void SimulMap::DoDroughtDisturbance_part1()
     { // loop on PFG
       m_IsDroughtMap(cell_ID, fg) = 0;
       m_ApplyPostDroughtMap(cell_ID, fg) = 0;
-      m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
+      m_ApplyCurrDroughtMap(cell_ID, fg) = 0; // SHOULD be 0 ??
       
       if (m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund() > 0)
       {
-        /* 0.Check Habitat Suitability */
-        // set recruit and fecund to 0 automatic at the beginning of DoSuccession
-        
-        /* 2.Check Post Drought Mortality */
+        /* Check Post Drought Mortality */
         if (m_PostDroughtMap(cell_ID, fg) == 1)
         {
           /* Set recruitment and fecundity to 0 */
@@ -1417,31 +1414,30 @@ void SimulMap::DoDroughtDisturbance_part1()
           m_ApplyPostDroughtMap(cell_ID, fg) = 1;
         }
         
-        /* 1.Check Moisture Index */
+        /* Check Moisture Index */
         double moistIndex = moistValues(cell_ID);
         if (moistIndex > m_FGparams[fg].getDroughtThreshMod())
         {
-          /* 3.If NO drought : apply Drought Recovery */
+          /* If NO drought : apply Drought Recovery */
           m_CountDroughtMap(cell_ID, fg) = max(static_cast<unsigned>(0), m_CountDroughtMap(cell_ID, fg) - m_FGparams[fg].getCountRecovery());
         } else
         {
+          /* If drought : immediate effects */
+          m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
+          
           /* Set recruitment and fecundity to 0 */
           m_IsDroughtMap(cell_ID, fg) = 1;
+          
+          /* Increase cumulated effect counter */
           m_CountDroughtMap(cell_ID, fg) = min(static_cast<unsigned>(m_FGparams[fg].getCountCum()), m_CountDroughtMap(cell_ID, fg)++);
           
+          /* Check Post Drought Mortality */
           bool currSevDrought = (moistIndex < m_FGparams[fg].getDroughtThreshSev());
-          if (currSevDrought && m_CountDroughtMap(cell_ID, fg) == 1)
+          bool modToSev = (!currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) >= m_FGparams[fg].getCountCum()));
+          bool SevMort = (currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) >= m_FGparams[fg].getCountSens()));
+          if (modToSev || SevMort)
           {
             m_PostDroughtMap(cell_ID, fg) = 1;
-          }
-          
-          /* 4.If drought : check Current Drought Mortality */
-          bool modToSev = (!currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountSens()));
-          bool SevMort = (currSevDrought && (static_cast<int>(m_CountDroughtMap(cell_ID, fg)) == m_FGparams[fg].getCountCum()));
-          if (modToSev || SevMort )
-          {
-            m_PostDroughtMap(cell_ID, fg) = 1;
-            m_ApplyCurrDroughtMap(cell_ID, fg) = 1;
           }
         }
       } else

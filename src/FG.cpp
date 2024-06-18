@@ -44,9 +44,9 @@ using namespace std;
 /* Constructors                                                                                    */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-FG::FG() : m_Name(""), m_M(0), m_L(1), m_MaxA(ANone), m_ImmSize(100), m_MaxStratum(0), m_Strata(0, 1000), /* Life history*/
+FG::FG() : m_Name(""), m_M(0), m_L(1), m_MaxAbund(100), m_ImmSize(100), m_MaxStratum(0), m_Strata(0, 1000), /* Life history*/
 m_PoolL(PTcount,0), m_InnateDorm(false), m_PotentialFecundity(100), /* Propagule biology */
-m_LightShadeFactor(1), m_LightActiveGerm(Rcount, 100), m_LightTolerance(LScount, vector<int>(Rcount, 100)), /* Light response */
+m_LightShadeFactor(1.0), m_LightActiveGerm(Rcount, 100), m_LightTolerance(LScount, vector<int>(Rcount, 100)), /* Light response */
 m_IsSeeded(false), m_disp50(0.0), m_disp99(0.0), m_dispLD(0.0), /* Dispersal module */
 m_SoilContrib(0.0), m_SoilLow(0.0), m_SoilHigh(0.0), /* Soil response */
 m_SoilActiveGerm(Rcount, 100), m_SoilTolerance(LScount, vector<int>(Rcount, 100)), /* Soil response */
@@ -85,13 +85,12 @@ void FG::getSuccParams(const GSP& glob_params, const string& PFG_LifeHistoryFile
     logg.error("!!! MATURITY is superior or equal to LONGEVITY. Please check!");
   }
   
-  m_MaxA = Abund(SuccParams.get_val<int>("MAX_ABUNDANCE")[0]);
+  m_MaxAbund = SuccParams.get_val<int>("MAX_ABUNDANCE")[0];
   m_ImmSize = SuccParams.get_val<int>("IMM_SIZE")[0];
   if (m_ImmSize < 0 || m_ImmSize > 100)
   {
     logg.error("!!! IMM_SIZE must be superior or equal to 0, and inferior or equal to 100. Please check!");
   }
-  //m_MaxStratum = SuccParams.get_val<int>("MAX_STRATUM")[0];
   vector<int> v_int = SuccParams.get_val<int>("MAX_STRATUM", true);
   if (v_int.size()) m_MaxStratum = v_int[0]; else m_MaxStratum = glob_params.getNoStrata();
   m_Strata = SuccParams.get_val<int>("CHANG_STR_AGES");
@@ -146,7 +145,7 @@ void FG::getLightParams(const string& PFG_LightFile)
   /* 2. read light parameters */
   par::Params LightParams(PFG_LightFile.c_str(), " = \"", "#");
   
-  m_LightShadeFactor = LightParams.get_val<int>("SHADE_FACTOR")[0];
+  m_LightShadeFactor = LightParams.get_val<double>("SHADE_FACTOR")[0];
   if (m_LightShadeFactor < 0)
   {
     logg.error("!!! SHADE_FACTOR must be superior or equal to 0. Please check!");
@@ -363,7 +362,7 @@ FG::FG(const GSP& glob_params, const FOPL& file_of_params, const unsigned& fg_id
       }
     } else
     {
-      m_LightShadeFactor = 1;
+      m_LightShadeFactor = 1.0;
       m_LightActiveGerm.resize(Rcount, 100);
       m_LightTolerance.resize(LScount, vector<int>(Rcount, 100));
     }
@@ -476,8 +475,7 @@ FG::~FG()
 const string& FG::getName() const {return m_Name;}
 int FG::getMatTime() const {return m_M;}
 int FG::getLifeSpan() const {return m_L;}
-const Abund& FG::getMaxAbund() const {return m_MaxA;}
-//int FG::getMaxAbund() {return(AbundToInt(m_MaxA));}
+int FG::getMaxAbund() const {return m_MaxAbund;}
 int FG::getImmSize() const {return m_ImmSize;}
 int FG::getMaxStratum() const {return m_MaxStratum;}
 const vector<int> FG::getStrata() const {return m_Strata;}
@@ -486,7 +484,7 @@ const vector<int> FG::getPoolLife() const {return m_PoolL;}
 int FG::getPoolLife(const PoolType& pt ) const {return m_PoolL[pt];}
 bool FG::getInnateDormancy() const {return m_InnateDorm;}
 int FG::getPotentialFecund() const {return m_PotentialFecundity;}
-int FG::getLightShadeFactor() const {return m_LightShadeFactor;}
+double FG::getLightShadeFactor() const {return m_LightShadeFactor;}
 const vector<int> FG::getLightActiveGerm() const {return m_LightActiveGerm;}
 const int& FG::getLightActiveGerm(const Resource& r) const {return m_LightActiveGerm[r];}
 const vector< vector<int> >& FG::getLightTolerance() const {return m_LightTolerance;}
@@ -517,7 +515,7 @@ bool FG::getIsAlien() const {return m_IsAlien;}
 void FG::setName(const string& name){m_Name = name;}
 void FG::setMatTime(const int& matTime){m_M = matTime;}
 void FG::setLifeSpan(const int& lifeSpan){m_L = lifeSpan;}
-void FG::setMaxAbund(const Abund& maxAbund){m_MaxA = maxAbund;}
+void FG::setMaxAbund(const int& maxAbund){m_MaxAbund = maxAbund;}
 void FG::setImmSize(const int& immSize){m_ImmSize = immSize;}
 void FG::setMaxStratum(const int& maxStratum){m_MaxStratum = maxStratum;}
 void FG::setStrata(const vector<int>& strata){m_Strata = strata;}
@@ -526,7 +524,7 @@ void FG::setPoolLife(const int (&poolLife)[ PTcount ]){for(int i=0; i<PTcount; i
 void FG::setPoolLife(const int& poolLife, const PoolType& pt ){m_PoolL[pt] = poolLife;}
 void FG::setInnateDormancy(const bool& innateDormancy){m_InnateDorm = innateDormancy;}
 void FG::setPotentialFecund(const int& potentialFecund){m_PotentialFecundity = potentialFecund;}
-void FG::setLightShadeFactor(const int& lightShadeFactor){m_LightShadeFactor = lightShadeFactor;}
+void FG::setLightShadeFactor(const double& lightShadeFactor){m_LightShadeFactor = lightShadeFactor;}
 void FG::setLightActiveGerm(const int (&activeGerm) [ Rcount ] ){ for(int i=0; i<Rcount; i++){m_LightActiveGerm[i] = activeGerm[i];}}
 void FG::setLightActiveGerm(const int& activeGerm, const Resource& r ){ m_LightActiveGerm[r] = activeGerm;}
 void FG::setTolerance(const int (&tolerance)[ LScount ][ Rcount ]){
@@ -570,7 +568,7 @@ void FG::show()
              "\nm_Name = ", m_Name,
              "\nm_M = ", m_M,
              "\nm_L = ", m_L,
-             "\nm_MaxA = ", m_MaxA,
+             "\nm_MaxAbund = ", m_MaxAbund,
              "\nm_ImmSize = ", m_ImmSize,
              "\nm_MaxStratum = ", m_MaxStratum,
              "\nm_Strata = ", m_Strata,

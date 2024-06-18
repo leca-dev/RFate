@@ -70,9 +70,6 @@ class GSP
 	int m_SeedingTimeStep; /*!< Seeding time step */
 	int m_SeedingInput; /*!< Number of seeds introduced during seeding */
   int m_PotentialFecundity; /*!< Potential Fecundity of mature plants (maximum value of seeds produced in optimal conditions) */
-	int m_MaxAbundLow; /*!< Maximum abundance or space a PFG can occupy : low value */
-	int m_MaxAbundMedium; /*!< Maximum abundance or space a PFG can occupy : medium value */
-	int m_MaxAbundHigh; /*!< Maximum abundance or space a PFG can occupy : high value */
 
   /* Saving parameters */
   bool m_DoSavingPFGStratum; /*!< Unable or not the saving of abundance maps per PFG per stratum */
@@ -155,9 +152,6 @@ class GSP
 		ar & m_SeedingTimeStep;
 		ar & m_SeedingInput;
 		ar & m_PotentialFecundity;
-		ar & m_MaxAbundLow;
-		ar & m_MaxAbundMedium;
-		ar & m_MaxAbundHigh;
 		ar & m_DoSavingPFGStratum;
 		ar & m_DoSavingPFG;
 		ar & m_DoSavingStratum;
@@ -244,12 +238,6 @@ class GSP
 	 *	\param seedingInput : number of seeds dispersed each year during seeding
 	 *	\param potentialFecundity : potential fecundity of mature plants 
 	 * (maximum value of seeds produced in optimal conditions)
-	 *	\param maxAbundLow : maximum abundance or space a PFG can occupy : low
-	 * value
-	 *	\param maxAbundMedium : maximum abundance or space a PFG can occupy :
-	 * medium value
-	 *	\param maxAbundHigh : maximum abundance or space a PFG can occupy :
-	 * high value
 	 *  \param doSavingPFGStratum : unable or not the saving of abundance maps 
 	 * per PFG per stratum
 	 *  \param doSavingPFG : unable or not the saving of abundance maps 
@@ -322,9 +310,6 @@ class GSP
 	const int& seedingTimeStep,
 	const int& seedingInput,
 	const int& potentialFecundity,
-	const int& maxAbundLow,
-	const int& maxAbundMedium,
-	const int& maxAbundHigh,
 	const bool& doSavingPFGStratum,
 	const bool& doSavingPFG,
 	const bool& doSavingStratum,
@@ -398,9 +383,6 @@ class GSP
 		m_SeedingTimeStep == o.m_SeedingTimeStep &&
 		m_SeedingInput == o.m_SeedingInput &&
 		m_PotentialFecundity == o.m_PotentialFecundity &&
-		m_MaxAbundLow == o.m_MaxAbundLow &&
-		m_MaxAbundMedium == o.m_MaxAbundMedium &&
-		m_MaxAbundHigh == o.m_MaxAbundHigh &&
 		m_DoSavingPFGStratum == o.m_DoSavingPFGStratum &&
 		m_DoSavingPFG == o.m_DoSavingPFG &&
 		m_DoSavingStratum == o.m_DoSavingStratum &&
@@ -462,10 +444,6 @@ class GSP
 	int getSeedingTimeStep() const;
 	int getSeedingInput() const;
 	int getPotentialFecundity() const;
-	int getMaxAbundLow() const;
-	int getMaxAbundMedium() const;
-	int getMaxAbundHigh() const;
-	int getMaxAbundPixel() const;
 	bool getDoSavingPFGStratum() const;
 	bool getDoSavingPFG() const;
 	bool getDoSavingStratum() const;
@@ -522,9 +500,6 @@ class GSP
 	void setSeedingTimeStep(const int& seedingTimeStep);
 	void setSeedingInput(const int& seedingInput);
 	void setPotentialFecundity(const int& potentialFecundity);
-	void setMaxAbundLow(const int& maxAbundLow);
-	void setMaxAbundMedium(const int& maxAbundMedium);
-	void setMaxAbundHigh(const int& maxAbundHigh);
 	void setDoSavingPFGStratum(const bool& doSavingPFGStratum);
 	void setDoSavingPFG(const bool& doSavingPFG);
 	void setDoSavingStratum(const bool& doSavingStratum);
@@ -578,20 +553,6 @@ class GSP
 	/*-------------------------------------------*/
 
 	void show();
-
-	/*!
-	 *	\brief Convert Abundance classes to integer
-	 *
-	 *	This functions converts a value from enum Abund to an integer :
-	 *   - ANone -> 0
-	 *   - ALow -> m_MaxAbundLow
-	 *   - AMedium -> m_MaxAbundMedium
-	 *   - AHigh -> m_MaxAbundHigh
-	 *
-	 * \param abund : a value from enum Abund (ANone, ALow, AMedium, AHigh)
-	 *	\return : an integer corresponding to a value from enum Abund
-	 */
-	int AbundToInt(Abund abund);
 
 };
 

@@ -73,7 +73,7 @@ private:
   /* Life history*/
   int m_M; /*!< Maturation time */
   int m_L; /*!< Life span */
-  Abund m_MaxA; /*!< Maximum Abundance */
+  int m_MaxAbund; /*!< Maximum Abundance */
   int m_ImmSize; /*!< Proportion of immature plants relative to mature abundance */
   int m_MaxStratum; /*!< Maximum stratum reached */
   vector<int> m_Strata; /*!< Strata change age */
@@ -84,7 +84,7 @@ private:
   int m_PotentialFecundity; /*!< Potential Fecundity of mature plants */
   
   /* Light interaction module */
-  int m_LightShadeFactor; /*!< Index of shade quantity to weight PFG abundance and transform it into shade resources */
+  double m_LightShadeFactor; /*!< Index of shade quantity to weight PFG abundance and transform it into shade resources */
   vector<int> m_LightActiveGerm; /*!< Proportion of Active seeds able to germinate considering light resources [Rcount] */
   vector< vector<int> > m_LightTolerance; /*!< Is FG survived considering available light resources [LScount][Rcount] */
   
@@ -131,7 +131,7 @@ private:
     ar & m_Name;
     ar & m_M;
     ar & m_L;
-    ar & m_MaxA;
+    ar & m_MaxAbund;
     ar & m_ImmSize;
     ar & m_MaxStratum;
     ar & m_Strata;
@@ -324,7 +324,7 @@ public:
     return (m_Name == o.m_Name &&
             m_M == o.m_M &&
             m_L == o.m_L &&
-            m_MaxA == o.m_MaxA &&
+            m_MaxAbund == o.m_MaxAbund &&
             m_ImmSize == o.m_ImmSize &&
             m_MaxStratum == o.m_MaxStratum &&
             m_Strata == o.m_Strata &&
@@ -379,7 +379,7 @@ public:
   const string& getName() const;
   int getMatTime() const;
   int getLifeSpan() const;
-  const Abund& getMaxAbund() const;
+  int getMaxAbund() const;
   int getImmSize() const;
   int getMaxStratum() const;
   const vector<int> getStrata() const;
@@ -388,7 +388,7 @@ public:
   int getPoolLife(const PoolType& pt ) const;
   bool getInnateDormancy() const;
   int getPotentialFecund() const;
-  int getLightShadeFactor() const;
+  double getLightShadeFactor() const;
   const vector<int> getLightActiveGerm() const;
   const int& getLightActiveGerm(const Resource& r) const;
   const vector< vector<int> >& getLightTolerance() const;
@@ -419,7 +419,7 @@ public:
   void setName(const string& name);
   void setMatTime(const int& matTime);
   void setLifeSpan(const int& lifeSpan);
-  void setMaxAbund(const Abund& maxAbund);
+  void setMaxAbund(const int& maxAbund);
   void setImmSize(const int& immSize);
   void setMaxStratum(const int& maxStratum);
   void setStrata(const vector<int>& strata);
@@ -428,7 +428,7 @@ public:
   void setPoolLife(const int& poolLife, const PoolType& pt);
   void setInnateDormancy(const bool& innateDormancy);
   void setPotentialFecund(const int& potentialFecund);
-  void setLightShadeFactor(const int& lightShadeFactor);
+  void setLightShadeFactor(const double& lightShadeFactor);
   void setLightActiveGerm(const int (&activeGerm)[ Rcount ]);
   void setLightActiveGerm(const int& activeGerm, const Resource& r );
   void setTolerance(const int (&tolerance)[ LScount ][ Rcount ]);

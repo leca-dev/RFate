@@ -60,19 +60,6 @@ using namespace std;
 /* Available values definition for FGs & environment parameters */
 
 /*!
- * \enum Abund
- * \brief Factorial PFGs Abundances
- */
-enum Abund
-{
-	ANone, /*!< No individuals */
-	ALow, /*!< Low Abundance (< AA virtual individuals) */
-	AMedium, /*!< Medium Abundance (< BB virtual individuals) */
-	AHigh, /*!< High Abundance (> CC virtual individuals) */
-	Acount
-};
-
-/*!
  * \enum PoolType
  * \brief Different Propagules Pool type
  */
