@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEWS • RFate</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.3.5</span>
       </span>
     </div>
 
@@ -211,6 +211,37 @@ development, were meant to facilitate the use and spread of the
 <code>FATE</code> model.</p>
 <p><br><br></p>
 <div class="section level4">
+<h4 id="version-1-3-5-june-2024">Version 1.3.5 (june 2024)<a class="anchor" aria-label="anchor" href="#version-1-3-5-june-2024"></a>
+</h4>
+<ul>
+<li>1.3.5 :
+<ul>
+<li>do not need dispersal to have seeding</li>
+<li>transform <code>SHADE_FACTOR</code> from int to double</li>
+<li>remove <code>MAX_ABUND_LOW</code>, <code>MAX_ABUND_MEDIUM</code>,
+<code>MAX_ABUND_HIGH</code> in global parameters</li>
+<li>addition of <code>MAX_ABUND</code> parameter within PFG succession
+files (see <a href="fate_tutorial_3_MODULES.html">FATE tutorial -
+Modules</a>)</li>
+<li>update <code>DROUGHT</code> module code</li>
+</ul>
+</li>
+<li>1.3.4 :
+<ul>
+<li>switch between int / unsigned to remove warnings
+(<em>compilation</em>)</li>
+<li>change variable names (from <code>m_Dispersed</code> to
+<code>m_IsSeeded</code>, <code>MaxRecruit</code> to
+<code>Light/SoilActiveGerm</code>, <code>m_DormBreaks</code> to
+<code>m_ActiveSeeds</code>)</li>
+<li>change PFG parameter names related to drought (see <a href="fate_tutorial_3_MODULES.html">FATE tutorial - Modules</a>)</li>
+<li>update <code>Makevars.win</code> and <code>winlibs</code> to compile
+on Windows with R 4.4.0 and RTools44</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level4">
 <h4 id="version-1-3-3-november-2023">Version 1.3.3 (november 2023)<a class="anchor" aria-label="anchor" href="#version-1-3-3-november-2023"></a>
 </h4>
 <ul>
@@ -303,7 +334,7 @@ page)</li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
 </div>
 
       </footer>
