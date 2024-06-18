@@ -699,7 +699,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 
 		/* Check seeding parameters =================================================*/
 		/* SEEDING MODULE */
-		if (simulMap->getGlobalParameters().getDoDispersal())
+		// if (simulMap->getGlobalParameters().getDoDispersal())
 		{
 			if (seeding_duration > 0 && year < seeding_duration)
 			{
