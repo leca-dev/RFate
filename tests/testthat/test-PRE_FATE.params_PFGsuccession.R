@@ -223,23 +223,6 @@ test_that("PRE_FATE.params_PFGsuccession gives error with wrong data : mat.PFG.s
                                                                          , longevity = 10, max_abundance = c(10,NA)))
                , "`mat.PFG.succ$max_abundance` must not contain NA values", fixed = TRUE)
   
-  ## TEST mat.PFG.succ$max_abundance : correct values
-  expect_error(PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
-                                             , mat.PFG.succ = data.frame(PFG = 1, type = "H"
-                                                                         , height = 3, maturity = 4
-                                                                         , longevity = 10, max_abundance = "a"))
-               , "`mat.PFG.succ$max_abundance` must be either `1`, `2` or `3`", fixed = TRUE)
-  expect_error(PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
-                                             , mat.PFG.succ = data.frame(PFG = 1, type = "H"
-                                                                         , height = 3, maturity = 4
-                                                                         , longevity = 10, max_abundance = 1.5))
-               , "`mat.PFG.succ$max_abundance` must be either `1`, `2` or `3`", fixed = TRUE)
-  expect_error(PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
-                                             , mat.PFG.succ = data.frame(PFG = 1, type = "H"
-                                                                         , height = 3, maturity = 4
-                                                                         , longevity = 10, max_abundance = 10))
-               , "`mat.PFG.succ$max_abundance` must be either `1`, `2` or `3`", fixed = TRUE)
-  
   
   ## TEST mat.PFG.succ$potential_fecundity : numeric values
   expect_error(PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"

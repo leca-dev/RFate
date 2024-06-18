@@ -339,7 +339,6 @@ SAVE_FATE.step2_parameters = function(name.dataset
     if (sum(colnames(mat.PFG.succ) == "max_abundance") == 1)
     {
       .testParam_NAvalues.m("mat.PFG.succ$max_abundance", mat.PFG.succ$max_abundance)
-      .testParam_notInValues.m("mat.PFG.succ$max_abundance", mat.PFG.succ$max_abundance, 1:3)
     }
     if (sum(colnames(mat.PFG.succ) == "potential_fecundity") == 1)
     {
@@ -348,8 +347,9 @@ SAVE_FATE.step2_parameters = function(name.dataset
     }
     if (sum(colnames(mat.PFG.succ) == "immature_size") == 1)
     {
+      .testParam_notInteger.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size)
       .testParam_NAvalues.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size)
-      .testParam_notInValues.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size, 0:10)
+      .testParam_notBetween.m("mat.PFG.succ$immature_size", mat.PFG.succ$immature_size, 0, 100)
     }
     if (sum(colnames(mat.PFG.succ) == "is_alien") == 1)
     {

@@ -98,12 +98,6 @@ test_that("PRE_FATE.params_PFGlight gives error with wrong data : mat.PFG.light"
   
   ## TEST mat.PFG.light$shade_factor : correct values
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, type = "H", shade_factor = ""))
-               , "`mat.PFG.light$shade_factor` must be an integer > 0", fixed = TRUE)
-  expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
-                                        , mat.PFG.light = data.frame(PFG = 1, type = "H", shade_factor = 2.1))
-               , "`mat.PFG.light$shade_factor` must be an integer > 0", fixed = TRUE)
-  expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"
                                         , mat.PFG.light = data.frame(PFG = 1, type = "H", shade_factor = NA))
                , "`mat.PFG.light$shade_factor` must not contain NA values", fixed = TRUE)
   expect_error(PRE_FATE.params_PFGlight(name.simulation = "FATE_simulation"

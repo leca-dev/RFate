@@ -343,29 +343,6 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.succ
                                                                       , longevity = 10, max_abundance = c(10,NA)))
                , "`mat.PFG.succ$max_abundance` must not contain NA values", fixed = TRUE)
   
-  ## TEST mat.PFG.succ$max_abundance : correct values
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H"
-                                                                      , height = 3, maturity = 4
-                                                                      , longevity = 10, max_abundance = "a"))
-               , "`mat.PFG.succ$max_abundance` must be either `1`, `2` or `3`", fixed = TRUE)
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H"
-                                                                      , height = 3, maturity = 4
-                                                                      , longevity = 10, max_abundance = 1.5))
-               , "`mat.PFG.succ$max_abundance` must be either `1`, `2` or `3`", fixed = TRUE)
-  expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
-                                          , name.simulation = "FATE_simulation"
-                                          , strata.limits = 1
-                                          , mat.PFG.succ = data.frame(PFG = 1, type = "H"
-                                                                      , height = 3, maturity = 4
-                                                                      , longevity = 10, max_abundance = 10))
-               , "`mat.PFG.succ$max_abundance` must be either `1`, `2` or `3`", fixed = TRUE)
-  
   
   ## TEST mat.PFG.succ$potential_fecundity : numeric values
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
@@ -416,7 +393,7 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.succ
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H"
                                                                       , height = 3, maturity = 4
                                                                       , longevity = 10, immature_size = "a"))
-               , "`mat.PFG.succ$immature_size` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.succ$immature_size` must be an integer > 0"
                , fixed = TRUE)
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
                                           , name.simulation = "FATE_simulation"
@@ -424,15 +401,15 @@ test_that("SAVE_FATE.step2_parameters gives error with wrong data : mat.PFG.succ
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H"
                                                                       , height = 3, maturity = 4
                                                                       , longevity = 10, immature_size = 1.5))
-               , "`mat.PFG.succ$immature_size` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+               , "`mat.PFG.succ$immature_size` must be an integer > 0"
                , fixed = TRUE)
   expect_error(SAVE_FATE.step2_parameters(name.dataset = "A"
                                           , name.simulation = "FATE_simulation"
                                           , strata.limits = 1
                                           , mat.PFG.succ = data.frame(PFG = 1, type = "H"
                                                                       , height = 3, maturity = 4
-                                                                      , longevity = 10, immature_size = 11))
-               , "`mat.PFG.succ$immature_size` must be either `0`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9` or `10`"
+                                                                      , longevity = 10, immature_size = 101))
+               , "`mat.PFG.succ$immature_size` must contain values between `0` and `100`"
                , fixed = TRUE)
   
   
