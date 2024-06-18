@@ -46,9 +46,7 @@ parameters :
   \item{MATURITY}{PFG maturity age \emph{(in years)}}
   \item{LONGEVITY}{PFG life span \emph{(in years)}}
   \item{MAX_STRATUM}{maximum height stratum that the PFG can reach}
-  \item{MAX_ABUNDANCE}{maximum abundance / space (quantitative) that the 
-  PFG is able to produce / occupy \cr \emph{(\code{1}: Low \code{2}: 
-  Medium \code{3}: High)}}
+  \item{MAX_ABUND}{maximum abundance of mature individuals that the PFG can reach}
   \item{IMM_SIZE}{PFG immature relative size \emph{(integer between \code{0}  
   and \code{100}\%)}}
   \item{CHANG_STR_AGES}{ages at which the PFG goes in the upper stratum 
@@ -143,16 +141,16 @@ and a set of characteristics for each PFG :
   Two methods to define these abundances are available :
   \itemize{
     \item from \strong{predefined rules} (using \code{type}, 
-    \code{MAX_STRATUM}) : \cr \cr
+    \code{HEIGHT}) : \cr \cr
     \tabular{rcccc}{
-      \strong{MAX_STRATUM} \tab \strong{1} \tab \strong{2} \tab 
-      \strong{3} \tab \strong{+}\cr
-      \strong{\code{H} (herbaceous)} \tab \code{3} \tab \code{3} \tab 
-      \code{2} \tab \code{2} \cr
-      \strong{\code{C} (chamaephyte)} \tab \code{3} \tab \code{2} \tab 
-      \code{2} \tab \code{1} \cr
-      \strong{\code{P} (phanerophyte)} \tab \code{3} \tab \code{2} \tab 
-      \code{1} \tab \code{1}
+      \strong{HEIGHT} \tab \strong{<20cm} \tab \strong{<50cm} \tab 
+      \strong{<150cm} \tab \strong{>150cm}\cr
+      \strong{\code{H} (herbaceous)} \tab \code{100} \tab \code{100} \tab 
+      \code{50} \tab \code{50} \cr
+      \strong{\code{C} (chamaephyte)} \tab \code{100} \tab \code{50} \tab 
+      \code{50} \tab \code{10} \cr
+      \strong{\code{P} (phanerophyte)} \tab \code{100} \tab \code{50} \tab 
+      \code{10} \tab \code{10}
     }
     \item from \strong{user data} : \cr
       \emph{with the values contained within the \code{max_abundance} 
@@ -165,12 +163,12 @@ and a set of characteristics for each PFG :
   contribute to shade half less}) than mature individuals \cr \cr
   Two methods to define these sizes are available :
   \itemize{
-    \item from \strong{predefined rules} (using \code{type}, \code{MAX_STRATUM}) 
+    \item from \strong{predefined rules} (using \code{type}, \code{HEIGHT}) 
     : \cr \cr
     
     \tabular{rcccc}{
-      \strong{MAX_STRATUM} \tab \strong{1} \tab \strong{2} \tab 
-      \strong{3} \tab \strong{+}\cr
+      \strong{HEIGHT} \tab \strong{<20cm} \tab \strong{<50cm} \tab 
+      \strong{<10m} \tab \strong{>10m}\cr
       \strong{\code{H} (herbaceous)} \tab \code{100\%} \tab \code{80\%} 
       \tab \code{50\%} \tab \code{50\%} \cr
       \strong{\code{C} (chamaephyte)} \tab \code{100\%} \tab \code{50\%} 

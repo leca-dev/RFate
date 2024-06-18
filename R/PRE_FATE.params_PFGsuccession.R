@@ -91,16 +91,16 @@
 ##'   Two methods to define these abundances are available :
 ##'   \itemize{
 ##'     \item from \strong{predefined rules} (using \code{type}, 
-##'     \code{MAX_STRATUM}) : \cr \cr
+##'     \code{HEIGHT}) : \cr \cr
 ##'     \tabular{rcccc}{
-##'       \strong{MAX_STRATUM} \tab \strong{1} \tab \strong{2} \tab 
-##'       \strong{3} \tab \strong{+}\cr
-##'       \strong{\code{H} (herbaceous)} \tab \code{3} \tab \code{3} \tab 
-##'       \code{2} \tab \code{2} \cr
-##'       \strong{\code{C} (chamaephyte)} \tab \code{3} \tab \code{2} \tab 
-##'       \code{2} \tab \code{1} \cr
-##'       \strong{\code{P} (phanerophyte)} \tab \code{3} \tab \code{2} \tab 
-##'       \code{1} \tab \code{1}
+##'       \strong{HEIGHT} \tab \strong{<20cm} \tab \strong{<50cm} \tab 
+##'       \strong{<150cm} \tab \strong{>150cm}\cr
+##'       \strong{\code{H} (herbaceous)} \tab \code{100} \tab \code{100} \tab 
+##'       \code{50} \tab \code{50} \cr
+##'       \strong{\code{C} (chamaephyte)} \tab \code{100} \tab \code{50} \tab 
+##'       \code{50} \tab \code{10} \cr
+##'       \strong{\code{P} (phanerophyte)} \tab \code{100} \tab \code{50} \tab 
+##'       \code{10} \tab \code{10}
 ##'     }
 ##'     \item from \strong{user data} : \cr
 ##'       \emph{with the values contained within the \code{max_abundance} 
@@ -113,12 +113,12 @@
 ##'   contribute to shade half less}) than mature individuals \cr \cr
 ##'   Two methods to define these sizes are available :
 ##'   \itemize{
-##'     \item from \strong{predefined rules} (using \code{type}, \code{MAX_STRATUM}) 
+##'     \item from \strong{predefined rules} (using \code{type}, \code{HEIGHT}) 
 ##'     : \cr \cr
 ##'     
 ##'     \tabular{rcccc}{
-##'       \strong{MAX_STRATUM} \tab \strong{1} \tab \strong{2} \tab 
-##'       \strong{3} \tab \strong{+}\cr
+##'       \strong{HEIGHT} \tab \strong{<20cm} \tab \strong{<50cm} \tab 
+##'       \strong{<10m} \tab \strong{>10m}\cr
 ##'       \strong{\code{H} (herbaceous)} \tab \code{100\%} \tab \code{80\%} 
 ##'       \tab \code{50\%} \tab \code{50\%} \cr
 ##'       \strong{\code{C} (chamaephyte)} \tab \code{100\%} \tab \code{50\%} 
@@ -170,9 +170,7 @@
 ##'   \item{MATURITY}{PFG maturity age \emph{(in years)}}
 ##'   \item{LONGEVITY}{PFG life span \emph{(in years)}}
 ##'   \item{MAX_STRATUM}{maximum height stratum that the PFG can reach}
-##'   \item{MAX_ABUNDANCE}{maximum abundance / space (quantitative) that the 
-##'   PFG is able to produce / occupy \cr \emph{(\code{1}: Low \code{2}: 
-##'   Medium \code{3}: High)}}
+##'   \item{MAX_ABUND}{maximum abundance of mature individuals that the PFG can reach}
 ##'   \item{IMM_SIZE}{PFG immature relative size \emph{(integer between \code{0}  
 ##'   and \code{100}\%)}}
 ##'   \item{CHANG_STR_AGES}{ages at which the PFG goes in the upper stratum 
@@ -384,7 +382,6 @@ PRE_FATE.params_PFGsuccession = function(
     if (sum(colnames(mat.PFG.succ) == "max_abundance") == 1)
     {
       .testParam_NAvalues.m("mat.PFG.succ$max_abundance", mat.PFG.succ$max_abundance)
-      .testParam_notInValues.m("mat.PFG.succ$max_abundance", mat.PFG.succ$max_abundance, 1:3)
     }
     if (sum(colnames(mat.PFG.succ) == "potential_fecundity") == 1)
     {
@@ -511,7 +508,6 @@ PRE_FATE.params_PFGsuccession = function(
   ##  = maximum abundance of mature PFG
   ##  = carrying capacity proxy in terms of number of individuals
   ## Defined according to the number of strata potentially occupied by a PFG
-  ## 3 levels : 1 = Low, 2 = Medium or 3 = High
   if (sum(colnames(mat.PFG.succ) == "max_abundance") == 1)
   {
     MAX_ABUNDANCE = mat.PFG.succ$max_abundance
@@ -520,18 +516,17 @@ PRE_FATE.params_PFGsuccession = function(
     ## herbaceous are small and can be numerous (high number of individuals)
     ## chamaephytes can produce medium number of individuals
     ## phanerophytes can produce small number of individuals
-    ## all plants in first stratum can produce high number of individuals
-    ## plants other than herbaceous in stratum 2 can produce medium number of individuals
-    ## herbaceous in stratum > 2 can produce medium number of individuals
-    ## chamaephytes in stratum > 3 can produce small number of individuals
+    ## all plants < 20cm can produce high number of individuals
+    ## herbaceous > 20cm & other plants < 20cm can produce medium number of individuals
+    ## plants > 150cm can produce small number of individuals
     MAX_ABUNDANCE = rep(NA, no.PFG)
-    MAX_ABUNDANCE[which(mat.PFG.succ$type == "H")] = 3
-    MAX_ABUNDANCE[which(mat.PFG.succ$type == "C")] = 2
-    MAX_ABUNDANCE[which(mat.PFG.succ$type == "P")] = 1
-    MAX_ABUNDANCE[which(MAX_STRATUM == 1)] = 3
-    MAX_ABUNDANCE[which(MAX_STRATUM == 2 & mat.PFG.succ$type != "H")] = 2
-    MAX_ABUNDANCE[which(MAX_STRATUM > 2 & mat.PFG.succ$type == "H")] = 2
-    MAX_ABUNDANCE[which(MAX_STRATUM > 3 & mat.PFG.succ$type == "C")] = 1
+    MAX_ABUNDANCE[which(mat.PFG.succ$type == "H")] = 100
+    MAX_ABUNDANCE[which(mat.PFG.succ$type == "C")] = 50
+    MAX_ABUNDANCE[which(mat.PFG.succ$type == "P")] = 10
+    MAX_ABUNDANCE[which(mat.PFG.succ$type == "H" & mat.PFG.succ$height > 50)] = 50
+    MAX_ABUNDANCE[which(mat.PFG.succ$type != "H" & mat.PFG.succ$height < 50)] = 50
+    MAX_ABUNDANCE[which(mat.PFG.succ$height > 150)] = 10
+    MAX_ABUNDANCE[which(mat.PFG.succ$height < 20)] = 100
   }
   
   #############################################################################
@@ -543,20 +538,20 @@ PRE_FATE.params_PFGsuccession = function(
     IMM_SIZE = mat.PFG.succ$immature_size
   } else
   {
-    ## immature herbaceous contribute to shade in the same way than mature herbaceous
-    ## immature chamaephytes contribute to shade half less than mature herbaceous
+    ## immature herbaceous contribute to shade in the same way than mature
+    ## immature chamaephytes contribute to shade half less than mature
     ## immature phanerophytes contribute to shade only by 10 % of their full capacity
-    ## intermediate percentage for herbaceous in stratum 2
-    ## intermediate percentage for herbaceous in stratum > 2
-    ## immature chamaephytes in 1st stratum contribute to shade in the same way than mature chamaephytes
-    ## immature phanerophytes with height < 10m contribute to shade half less than mature phanerophytes
+    ## intermediate percentage for herbaceous in stratum > 20cm & < 50cm
+    ## immature herbaceous with height > 50cm contribute to shade half less than mature
+    ## immature chamaephytes < 20cm contribute to shade in the same way than mature
+    ## immature phanerophytes with height < 10m contribute to shade half less than mature
     IMM_SIZE = rep(100, no.PFG)
     IMM_SIZE[which(mat.PFG.succ$type == "H")] = 100
     IMM_SIZE[which(mat.PFG.succ$type == "C")] = 50
     IMM_SIZE[which(mat.PFG.succ$type == "P")] = 10
-    IMM_SIZE[which(mat.PFG.succ$type == "H" & MAX_STRATUM == 2)] = 80
-    IMM_SIZE[which(mat.PFG.succ$type == "H" & MAX_STRATUM > 2)] = 50
-    IMM_SIZE[which(mat.PFG.succ$type == "C" & MAX_STRATUM == 1)] = 100
+    IMM_SIZE[which(mat.PFG.succ$type == "H" & mat.PFG.succ$height > 20)] = 80
+    IMM_SIZE[which(mat.PFG.succ$type == "H" & mat.PFG.succ$height > 50)] = 50
+    IMM_SIZE[which(mat.PFG.succ$type == "C" & mat.PFG.succ$height < 20)] = 100
     IMM_SIZE[which(mat.PFG.succ$type == "P" & mat.PFG.succ$height < 1000)] = 50
   }
   

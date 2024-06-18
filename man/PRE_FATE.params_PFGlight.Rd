@@ -91,12 +91,11 @@ are required for each PFG in order to set up this light interaction :
   \code{H} (herbaceous), \code{C} (chamaephyte) or \code{P} (phanerophyte) 
   for now \cr \cr}
   
-  \item{(\emph{shade_factor})}{an \code{integer} between \code{1} and 
-  \code{Inf} corresponding to an index of shade quantity to weight PFG 
-  abundance and transform it into light resources (\emph{e.g. if two PFG 
-  have shade factors of \code{1} and \code{5} respectively, for the same 
-  abundances, the second PFG will produce 5 times more shade than the first 
-  one}) \cr \cr}
+  \item{(\emph{shade_factor})}{a value corresponding to an index of shade 
+  quantity to weight PFG abundance and transform it into light resources 
+  (\emph{e.g. if two PFG have shade factors of \code{1} and \code{5} 
+  respectively, for the same abundances, the second PFG will produce 5 
+  times more shade than the first one}) \cr \cr}
   
   \item{(\emph{active_germ_low})}{an \code{integer} between \code{0} and 
   \code{100} corresponding to the proportion of seeds that will germinate for 
