@@ -568,7 +568,7 @@ PRE_FATE.params_PFGsuccession = function(
     for (i in 1:no.PFG)
     {
       ## If not in first stratum / herbaceous (or potentially chamaephytes) :
-      if (!(IMM_SIZE[i] == 100))
+      if (MAX_STRATUM[i] > 1)
       {
         k = -log(1 - IMM_SIZE[i] / 100) / (MATURITY[i] / 2)
         A = 1:LONGEVITY[i]
