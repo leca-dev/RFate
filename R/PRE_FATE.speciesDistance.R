@@ -189,7 +189,7 @@
 ##' 
 ##' @importFrom ade4 dudi.pca suprow
 ##' @importFrom raster raster extension
-##' @importFrom phyloclim niche.overlap
+## @importFrom phyloclim niche.overlap
 ##' @importFrom FD gowdis
 ##' 
 ## END OF HEADER ###############################################################

@@ -81,7 +81,7 @@
 ##' @importFrom methods as
 ##' @importFrom ade4 dudi.hillsmith suprow
 ##' @importFrom raster raster extension
-##' @importFrom phyloclim niche.overlap
+## @importFrom phyloclim niche.overlap
 ##' 
 ## END OF HEADER ###############################################################
 

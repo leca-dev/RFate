@@ -49,7 +49,7 @@ Imports:
     ggplot2, ggthemes, ggrepel,
     reshape2, foreach, data.table,
     raster, sp,
-    phyloclim, FD, ade4, adehabitatMA, adehabitatHR, 
+    FD, ade4, adehabitatMA, adehabitatHR, 
     cluster, huge, 
     RColorBrewer, colorspace,
     ape
@@ -60,7 +60,7 @@ Suggests:
     knitr, markdown, rmarkdown,
     shiny, PresenceAbsence, ggnewscale, ggExtra, gridExtra, cowplot, 
     parallel, doParallel, 
-    SPOT, fpc, clValid, ecospat, betapart
+    SPOT, fpc, clValid, ecospat, betapart, phyloclim
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
 Language: en-US

@@ -48,6 +48,7 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 
 - 1.3.6 :
     + weight abundances by `SHADE_FACTOR` for soil contribution (TEST)
+    + remove `phyloclim` dependency by integrating `niche.overlap` function within the package
 
 #### Version 1.3.5 (june 2024)
 
