@@ -175,6 +175,18 @@ void SuFate::CalculateEnvironment()
       double soilResource = 0.0;
       if (noFG_pres > 0)
       {
+        // TEST --------------------------------
+        for (int fg=0; fg<noFG; fg++)
+        {
+          if (AbundPFG[fg] > 0)
+          {
+            /* create a copy of FG parameters to simplify and speed up the code */
+            FGPtr FGparams = m_Comm.getFuncGroup_(fg)->getFGparams_();
+            AbundPFG[fg] = AbundPFG[fg] * FGparams->getLightShadeFactor();
+          }
+        }
+        // TEST --------------------------------
+        
         int TotAbund = accumulate(AbundPFG.begin(), AbundPFG.end(), 0);
         
         /* test if we have a full coverage or not to calculate soil resources */

@@ -299,7 +299,8 @@ POST_FATE.graphic_evolutionPixels = function(
                                  , "evolution through time of its abundance\n"
                                  , "(as well as the light and soil resources if available)"
                                  , "for the selected pixels within the studied area.\n")) +
-        .getGraphics_theme()
+        .getGraphics_theme() +
+        theme(legend.position = "none")
       
       ggsave(filename = paste0(name.simulation
                                , "/RESULTS/POST_FATE_GRAPHIC_A_evolution_pixels_"
