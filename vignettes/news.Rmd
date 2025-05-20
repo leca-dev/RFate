@@ -44,6 +44,11 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 
 <br/> <br/>
 
+#### Version 1.3.6 (may 2025)
+
+- 1.3.6 :
+    + weight abundances by `SHADE_FACTOR` for soil contribution (TEST)
+
 #### Version 1.3.5 (june 2024)
 
 - 1.3.5 :
