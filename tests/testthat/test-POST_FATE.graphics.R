@@ -91,9 +91,6 @@ test_that("POST_FATE.graphics gives correct outputs :", {
                                      , required.seeding_duration = 10
                                      , required.seeding_timestep = 1
                                      , required.seeding_input = 100
-                                     , required.max_abund_low = 3000
-                                     , required.max_abund_medium = 5000
-                                     , required.max_abund_high = 9000
                                      , doLight = TRUE
                                      , LIGHT.thresh_medium = 4000
                                      , LIGHT.thresh_low = 7000

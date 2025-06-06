@@ -137,10 +137,7 @@ test_that("POST_FATE.graphic_evolutionStability gives error with wrong data : cs
                                      , required.simul_duration = 100
                                      , required.seeding_duration = 10
                                      , required.seeding_timestep = 1
-                                     , required.seeding_input = 100
-                                     , required.max_abund_low = 3000
-                                     , required.max_abund_medium = 5000
-                                     , required.max_abund_high = 9000)
+                                     , required.seeding_input = 100)
     
     PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
                                   , mat.PFG.succ = data.frame(PFG = paste0("PFG",1:6)
@@ -189,10 +186,7 @@ test_that("POST_FATE.graphic_evolutionStability gives correct outputs :", {
                                      , required.simul_duration = 100
                                      , required.seeding_duration = 10
                                      , required.seeding_timestep = 1
-                                     , required.seeding_input = 100
-                                     , required.max_abund_low = 3000
-                                     , required.max_abund_medium = 5000
-                                     , required.max_abund_high = 9000)
+                                     , required.seeding_input = 100)
     
     PRE_FATE.params_PFGsuccession(name.simulation = "FATE_simulation"
                                   , mat.PFG.succ = data.frame(PFG = paste0("PFG",1:6)

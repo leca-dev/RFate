@@ -36,10 +36,6 @@
 ##' An \code{integer} to be given to \code{\link[base]{set.seed}} function, in 
 ##' order to fix the produced results if needed, as 
 ##' \code{\link[SPOT]{designLHD}} is also a random value generator
-##' @param opt.percent_maxAbund default \code{0.5}. Amount of variation 
-##' (between \code{0} and \code{1}) around the original value of 
-##' \code{MAX_ABUND_LOW}, \code{MAX_ABUND_MEDIUM}, \code{MAX_ABUND_HIGH} if 
-##' selected
 ##' @param opt.percent_seeding default \code{0.5}. Amount of variation (between 
 ##' \code{0} and \code{1}) around the original value of \code{SEEDING_DURATION}, 
 ##' \code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT}, \code{POTENTIAL_FECUNDITY} 
@@ -50,15 +46,6 @@
 ##' @param opt.percent_soil default \code{0.5}. Amount of variation (between 
 ##' \code{0} and \code{1}) around the original value of \code{SOIL_INIT}, 
 ##' \code{SOIL_RETENTION} if selected
-##' @param do.max_abund_low default \code{TRUE}. If \code{TRUE}, 
-##' \code{MAX_ABUND_LOW} parameter within \emph{Global_parameters} file will be 
-##' declined into a range of values
-##' @param do.max_abund_medium default \code{TRUE}. If \code{TRUE}, 
-##' \code{MAX_ABUND_MEDIUM} parameter within \emph{Global_parameters} file will 
-##' be declined into a range of values
-##' @param do.max_abund_high default \code{TRUE}. If \code{TRUE}, 
-##' \code{MAX_ABUND_HIGH} parameter within \emph{Global_parameters} file will 
-##' be declined into a range of values
 ##' @param do.seeding_duration default \code{TRUE}. If \code{TRUE}, 
 ##' \code{SEEDING_DURATION} parameter within \emph{Global_parameters} file will 
 ##' be declined into a range of values
@@ -185,10 +172,7 @@
 ##'     \item SEEDING_DURATION
 ##'     \item SEEDING_TIMESTEP
 ##'     \item SEEDING_INPUT
-##'     \item POTENTIAL_FECUNDITY
-##'     \item MAX_ABUND_LOW
-##'     \item MAX_ABUND_MEDIUM 
-##'     \item MAX_ABUND_HIGH \cr \cr
+##'     \item POTENTIAL_FECUNDITY \cr \cr
 ##'   }
 ##'   If the simulation includes \emph{light interaction} :
 ##'   \itemize{
@@ -244,13 +228,9 @@ PRE_FATE.params_multipleSet = function(
     , no_simulations
     , opt.folder.name = "FATE_simulation_MULTIPLE_SET"
     , opt.seed = NULL
-    , opt.percent_maxAbund = 0.5
     , opt.percent_seeding = 0.5
     , opt.percent_light = 0.5
     , opt.percent_soil = 0.5
-    , do.max_abund_low = TRUE
-    , do.max_abund_medium = TRUE
-    , do.max_abund_high = TRUE
     , do.seeding_duration = TRUE
     , do.seeding_timestep = TRUE
     , do.seeding_input = TRUE
@@ -333,8 +313,6 @@ PRE_FATE.params_multipleSet = function(
   ## CHECK parameters scenario1
   if (scenario1)
   {
-    .testParam_notNum.m("opt.percent_maxAbund", opt.percent_maxAbund)
-    .testParam_notBetween.m("opt.percent_maxAbund", opt.percent_maxAbund, 0, 1)
     .testParam_notNum.m("opt.percent_seeding", opt.percent_seeding)
     .testParam_notBetween.m("opt.percent_seeding", opt.percent_seeding, 0, 1)
     .testParam_notNum.m("opt.percent_light", opt.percent_light)
@@ -356,10 +334,7 @@ PRE_FATE.params_multipleSet = function(
   
   #############################################################################
   
-  if (sum(c(do.max_abund_low
-            , do.max_abund_medium
-            , do.max_abund_high
-            , do.seeding_duration
+  if (sum(c(do.seeding_duration
             , do.seeding_timestep
             , do.seeding_input
             , do.potential_fecundity
@@ -374,58 +349,45 @@ PRE_FATE.params_multipleSet = function(
     stop("You must select some parameters to vary !")
   }
   
-  get_checked = vector("list", 7)
+  get_checked = vector("list", 6)
   
-  if (do.max_abund_low){
-    get_checked[[1]] = c(get_checked[[1]], "max_abund_low")
-  }
-  if (do.max_abund_medium){
-    get_checked[[1]] = c(get_checked[[1]], "max_abund_medium")
-  }
-  if (do.max_abund_high){
-    get_checked[[1]] = c(get_checked[[1]], "max_abund_high")
-  }
   if (do.seeding_duration){
-    get_checked[[2]] = c(get_checked[[2]], "seeding_duration")
+    get_checked[[1]] = c(get_checked[[1]], "seeding_duration")
   }
   if (do.seeding_timestep){
-    get_checked[[2]] = c(get_checked[[2]], "seeding_timestep")
+    get_checked[[1]] = c(get_checked[[1]], "seeding_timestep")
   }
   if (do.seeding_input){
-    get_checked[[2]] = c(get_checked[[2]], "seeding_input")
+    get_checked[[1]] = c(get_checked[[1]], "seeding_input")
   }
   if (do.potential_fecundity){
-    get_checked[[2]] = c(get_checked[[2]], "potential_fecundity")
+    get_checked[[1]] = c(get_checked[[1]], "potential_fecundity")
   }
   if (do.LIGHT.thresh_medium){
-    get_checked[[3]] = c(get_checked[[3]], "light_thresh_medium")
+    get_checked[[2]] = c(get_checked[[2]], "light_thresh_medium")
   }
   if (do.LIGHT.thresh_low){
-    get_checked[[3]] = c(get_checked[[3]], "light_thresh_low")
+    get_checked[[2]] = c(get_checked[[2]], "light_thresh_low")
   }
   if (do.SOIL.init){
-    get_checked[[4]] = c(get_checked[[4]], "soil_init")
+    get_checked[[3]] = c(get_checked[[3]], "soil_init")
   }
   if (do.SOIL.retention){
-    get_checked[[4]] = c(get_checked[[4]], "soil_retention")
+    get_checked[[3]] = c(get_checked[[3]], "soil_retention")
   }
   if (do.HABSUIT.mode){
-    get_checked[[5]] = c(get_checked[[5]], "habsuit_mode")
+    get_checked[[4]] = c(get_checked[[4]], "habsuit_mode")
   }
   if (do.DISPERSAL.mode){
-    get_checked[[6]] = c(get_checked[[6]], "dispersal_mode")
+    get_checked[[5]] = c(get_checked[[5]], "dispersal_mode")
   }
   if (do.no_strata){
-    get_checked[[7]] = c(get_checked[[7]], "no_strata")
+    get_checked[[6]] = c(get_checked[[6]], "no_strata")
   }
   
-  get_sliders = c(opt.percent_maxAbund, opt.percent_seeding
-                  , opt.percent_light, opt.percent_soil)
+  get_sliders = c(opt.percent_seeding, opt.percent_light, opt.percent_soil)
   
-  GLOBAL.names.params = c("max_abund_low" = "MAX_ABUND_LOW"
-                          , "max_abund_medium" = "MAX_ABUND_MEDIUM"
-                          , "max_abund_high" = "MAX_ABUND_HIGH"
-                          , "seeding_duration" = "SEEDING_DURATION"
+  GLOBAL.names.params = c("seeding_duration" = "SEEDING_DURATION"
                           , "seeding_timestep" = "SEEDING_TIMESTEP"
                           , "seeding_input" = "SEEDING_INPUT"
                           , "potential_fecundity" = "POTENTIAL_FECUNDITY"
@@ -788,10 +750,7 @@ PRE_FATE.params_multipleSet = function(
   ## ---------------------------------------------------------------------- 
   cat("\n  2. Apply Latin Hypercube Sampling...\n")
   
-  if (sum(c("max_abund_low"
-            , "max_abund_medium"
-            , "max_abund_high"
-            , "seeding_duration"
+  if (sum(c("seeding_duration"
             , "seeding_timestep"
             , "seeding_input"
             , "potential_fecundity"
@@ -827,10 +786,7 @@ PRE_FATE.params_multipleSet = function(
     # ind = which(colnames(params.ranges) %in% c("seeding_duration", "seeding_input"))
     # params.ranges[, ind] = round(params.ranges[, ind] / 10)
     
-    if (sum(c("max_abund_low"
-              , "max_abund_medium"
-              , "max_abund_high"
-              , "seeding_duration"
+    if (sum(c("seeding_duration"
               , "seeding_timestep"
               , "seeding_input"
               , "potential_fecundity"
@@ -859,9 +815,7 @@ PRE_FATE.params_multipleSet = function(
             return(xx[param1] <= xx[param2])
           } else { return(TRUE) }
         }
-        return(ifelse(ff("max_abund_low", "max_abund_medium") &&
-                        ff("max_abund_medium", "max_abund_high") &&
-                        ff("seeding_timestep", "seeding_duration") &&
+        return(ifelse(ff("seeding_timestep", "seeding_duration") &&
                         ff("light_thresh_medium", "light_thresh_low"), 0, 1))
       }
       
@@ -869,10 +823,7 @@ PRE_FATE.params_multipleSet = function(
       if (is.null(opt.seed)) {
         opt.seed = sample(1:1000000, 1)
       }
-      lhs_types = c("max_abund_low" = "integer"
-                    , "max_abund_medium" = "integer"
-                    , "max_abund_high" = "integer"
-                    , "seeding_duration" = "integer"
+      lhs_types = c("seeding_duration" = "integer"
                     , "seeding_timestep" = "integer"
                     , "seeding_input" = "integer"
                     , "potential_fecundity" = "integer"
@@ -1126,24 +1077,6 @@ PRE_FATE.params_multipleSet = function(
                                                             , flag = "POTENTIAL_FECUNDITY"
                                                             , flag.split = " "
                                                             , is.num = TRUE))
-        , required.max_abund_low = ifelse("max_abund_low" %in% colnames(params.space)
-                                          , params.space$max_abund_low[i]
-                                          , .getParam(params.lines = tmp_global_param
-                                                      , flag = "MAX_ABUND_LOW"
-                                                      , flag.split = " "
-                                                      , is.num = TRUE))
-        , required.max_abund_medium = ifelse("max_abund_medium" %in% colnames(params.space)
-                                             , params.space$max_abund_medium[i]
-                                             , .getParam(params.lines = tmp_global_param
-                                                         , flag = "MAX_ABUND_MEDIUM"
-                                                         , flag.split = " "
-                                                         , is.num = TRUE))
-        , required.max_abund_high = ifelse("max_abund_high" %in% colnames(params.space)
-                                           , params.space$max_abund_high[i]
-                                           , .getParam(params.lines = tmp_global_param
-                                                       , flag = "MAX_ABUND_HIGH"
-                                                       , flag.split = " "
-                                                       , is.num = TRUE))
         , doLight = doLight
         , LIGHT.thresh_medium = ifelse(doLight &&
                                          "light_thresh_medium" %in% colnames(params.space)

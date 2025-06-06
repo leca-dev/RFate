@@ -325,9 +325,6 @@ test_that("PRE_FATE.params_multipleSet gives error with wrong data : do...", {
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
                                            , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
@@ -718,36 +715,11 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                  , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !"
                  , fixed = TRUE)
   
-  ## TEST do.max_abund_low
-  if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
-  expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
-                                             , file.simulParam.1 = "toto.txt"
-                                             , no_simulations = 10
-                                             , do.max_abund_low = TRUE
-                                             , do.max_abund_medium = FALSE
-                                             , do.max_abund_high = FALSE
-                                             , do.seeding_duration = FALSE
-                                             , do.seeding_timestep = FALSE
-                                             , do.seeding_input = FALSE
-                                             , do.potential_fecundity = FALSE
-                                             , do.no_strata = FALSE
-                                             , do.LIGHT.thresh_medium = FALSE
-                                             , do.LIGHT.thresh_low = FALSE
-                                             , do.SOIL.init = FALSE
-                                             , do.SOIL.retention = FALSE
-                                             , do.DISPERSAL.mode = FALSE
-                                             , do.HABSUIT.mode = FALSE))
-                 , "The parameter file FATE_simulation_MULTIPLE_SET/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !"
-                 , fixed = TRUE)
-  
   ## TEST do.DISPERSAL.mode
   if (dir.exists("FATE_simulation_MULTIPLE_SET")) unlink("FATE_simulation_MULTIPLE_SET", recursive = TRUE)
   expect_message(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                              , file.simulParam.1 = "toto.txt"
                                              , no_simulations = 10
-                                             , do.max_abund_low = FALSE
-                                             , do.max_abund_medium = FALSE
-                                             , do.max_abund_high = FALSE
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE
@@ -798,9 +770,6 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                                             , name.simulation.2 = "FATE_simulation2"
                                                             , file.simulParam.2 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = TRUE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -830,9 +799,6 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                            , name.simulation.2 = "FATE_simulation2"
                                            , file.simulParam.2 = "toto.txt"
                                            , no_simulations = 10
-                                           , do.max_abund_low = TRUE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
@@ -867,9 +833,6 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                            , name.simulation.2 = "FATE_simulation2"
                                            , file.simulParam.2 = "toto.txt"
                                            , no_simulations = 10
-                                           , do.max_abund_low = TRUE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
@@ -894,9 +857,6 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                              , name.simulation.2 = "FATE_simulation2"
                                              , file.simulParam.2 = "toto.txt"
                                              , no_simulations = 10
-                                             , do.max_abund_low = TRUE
-                                             , do.max_abund_medium = FALSE
-                                             , do.max_abund_high = FALSE
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE
@@ -917,9 +877,6 @@ test_that("PRE_FATE.params_multipleSet gives correct output with other condition
                                            , name.simulation.2 = "FATE_simulation2"
                                            , file.simulParam.2 = "toto.txt"
                                            , no_simulations = 5
-                                           , do.max_abund_low = TRUE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
@@ -972,9 +929,6 @@ test_that("PRE_FATE.params_multipleSet gives error for other conditions / scenar
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = TRUE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1027,9 +981,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                            , file.simulParam.1 = "toto.txt"
                                            , no_simulations = 10
-                                           , do.max_abund_low = FALSE
-                                           , do.max_abund_medium = FALSE
-                                           , do.max_abund_high = FALSE
                                            , do.seeding_duration = FALSE
                                            , do.seeding_timestep = FALSE
                                            , do.seeding_input = FALSE
@@ -1052,9 +1003,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = FALSE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1078,9 +1026,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = FALSE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1106,9 +1051,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                               , file.simulParam.1 = "toto.txt"
                                                               , no_simulations = 10
-                                                              , do.max_abund_low = FALSE
-                                                              , do.max_abund_medium = FALSE
-                                                              , do.max_abund_high = FALSE
                                                               , do.seeding_duration = FALSE
                                                               , do.seeding_timestep = FALSE
                                                               , do.seeding_input = FALSE
@@ -1134,9 +1076,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = FALSE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1161,9 +1100,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = FALSE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1187,9 +1123,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = FALSE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1216,9 +1149,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_error(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                             , file.simulParam.1 = "toto.txt"
                                                             , no_simulations = 10
-                                                            , do.max_abund_low = FALSE
-                                                            , do.max_abund_medium = FALSE
-                                                            , do.max_abund_high = FALSE
                                                             , do.seeding_duration = FALSE
                                                             , do.seeding_timestep = FALSE
                                                             , do.seeding_input = FALSE
@@ -1245,9 +1175,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario NO_STRATA", {
   expect_message(suppressWarnings(PRE_FATE.params_multipleSet(name.simulation.1 = "FATE_simulation"
                                                               , file.simulParam.1 = "toto.txt"
                                                               , no_simulations = 10
-                                                              , do.max_abund_low = FALSE
-                                                              , do.max_abund_medium = FALSE
-                                                              , do.max_abund_high = FALSE
                                                               , do.seeding_duration = FALSE
                                                               , do.seeding_timestep = FALSE
                                                               , do.seeding_input = FALSE
@@ -1318,9 +1245,6 @@ test_that("PRE_FATE.params_multipleSet gives error for scenario SOIL", {
                                              , file.simulParam.1 = "toto.txt"
                                              , no_simulations = 10
                                              , opt.percent_soil = 0.9
-                                             , do.max_abund_low = FALSE
-                                             , do.max_abund_medium = FALSE
-                                             , do.max_abund_high = FALSE
                                              , do.seeding_duration = FALSE
                                              , do.seeding_timestep = FALSE
                                              , do.seeding_input = FALSE

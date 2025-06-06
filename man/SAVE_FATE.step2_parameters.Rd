@@ -21,14 +21,11 @@ SAVE_FATE.step2_parameters(
   rasters = list(name.MASK = NA, name.DIST = NA, name.DROUGHT = NA, name.FIRE = NA,
     name.ELEVATION = NA, name.SLOPE = NA),
   multipleSet = list(name.simulation.1 = NA, name.simulation.2 = NA, file.simulParam.1 =
-    NA, file.simulParam.2 = NA, no_simulations = NA, opt.percent_maxAbund = NA,
-    opt.percent_seeding = NA, opt.percent_light = NA, opt.percent_soil = NA,
-    do.max_abund_low = NA, do.max_abund_medium = NA, do.max_abund_high = NA,
-    do.seeding_duration = NA, do.seeding_timestep = NA, do.seeding_input = NA,
-    do.no_strata = NA, do.LIGHT.thresh_medium = NA, do.LIGHT.thresh_low = NA,
-    do.SOIL.init = NA, do.SOIL.retention = NA, do.DISPERSAL.mode = NA, 
-    
-    do.HABSUIT.mode = NA)
+    NA, file.simulParam.2 = NA, no_simulations = NA, opt.percent_seeding = NA,
+    opt.percent_light = NA, opt.percent_soil = NA, do.seeding_duration = NA,
+    do.seeding_timestep = NA, do.seeding_input = NA, do.no_strata = NA,
+    do.LIGHT.thresh_medium = NA, do.LIGHT.thresh_low = NA, do.SOIL.init = NA,
+    do.SOIL.retention = NA, do.DISPERSAL.mode = NA, do.HABSUIT.mode = NA)
 )
 }
 \arguments{
@@ -138,10 +135,8 @@ A \code{data.frame} with 3 to 7 columns : \cr
 to the \code{\link{PRE_FATE.params_multipleSet}} function, if used 
 (\code{name.simulation.1}, \code{name.simulation.2}, 
 \code{file.simulParam.1}, \code{file.simulParam.2}, 
-\code{no_simulations}, \code{opt.percent_maxAbund}, 
-\code{opt.percent_seeding}, \code{opt.percent_light}, 
-\code{opt.percent_soil}, \code{do.max_abund_low}, 
-\code{do.max_abund_medium}, \code{do.max_abund_high}, 
+\code{no_simulations}, \code{opt.percent_seeding}, 
+\code{opt.percent_light}, \code{opt.percent_soil}, 
 \code{do.seeding_duration}, \code{do.seeding_timestep}, 
 \code{do.seeding_input}, \code{do.no_strata}, 
 \code{do.LIGHT.thresh_medium}, \code{do.LIGHT.thresh_low}, 

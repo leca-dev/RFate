@@ -42,10 +42,7 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                  , required.simul_duration = 100
                                  , required.seeding_duration = c(10,50)
                                  , required.seeding_timestep = 1
-                                 , required.seeding_input = 100
-                                 , required.max_abund_low = 30000
-                                 , required.max_abund_medium = 50000
-                                 , required.max_abund_high = 90000)
+                                 , required.seeding_input = 100)
                                  
                                  
 ## Change number of PFG

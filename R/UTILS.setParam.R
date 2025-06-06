@@ -31,10 +31,7 @@
 ##'                                  , required.simul_duration = 100
 ##'                                  , required.seeding_duration = c(10,50)
 ##'                                  , required.seeding_timestep = 1
-##'                                  , required.seeding_input = 100
-##'                                  , required.max_abund_low = 30000
-##'                                  , required.max_abund_medium = 50000
-##'                                  , required.max_abund_high = 90000)
+##'                                  , required.seeding_input = 100)
 ##'                                  
 ##' readLines("FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt")
 ##'                                  

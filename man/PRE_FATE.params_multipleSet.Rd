@@ -13,13 +13,9 @@ PRE_FATE.params_multipleSet(
   no_simulations,
   opt.folder.name = "FATE_simulation_MULTIPLE_SET",
   opt.seed = NULL,
-  opt.percent_maxAbund = 0.5,
   opt.percent_seeding = 0.5,
   opt.percent_light = 0.5,
   opt.percent_soil = 0.5,
-  do.max_abund_low = TRUE,
-  do.max_abund_medium = TRUE,
-  do.max_abund_high = TRUE,
   do.seeding_duration = TRUE,
   do.seeding_timestep = TRUE,
   do.seeding_input = TRUE,
@@ -67,11 +63,6 @@ An \code{integer} to be given to \code{\link[base]{set.seed}} function, in
 order to fix the produced results if needed, as 
 \code{\link[SPOT]{designLHD}} is also a random value generator}
 
-\item{opt.percent_maxAbund}{default \code{0.5}. Amount of variation 
-(between \code{0} and \code{1}) around the original value of 
-\code{MAX_ABUND_LOW}, \code{MAX_ABUND_MEDIUM}, \code{MAX_ABUND_HIGH} if 
-selected}
-
 \item{opt.percent_seeding}{default \code{0.5}. Amount of variation (between 
 \code{0} and \code{1}) around the original value of \code{SEEDING_DURATION}, 
 \code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT}, \code{POTENTIAL_FECUNDITY} 
@@ -84,18 +75,6 @@ if selected}
 \item{opt.percent_soil}{default \code{0.5}. Amount of variation (between 
 \code{0} and \code{1}) around the original value of \code{SOIL_INIT}, 
 \code{SOIL_RETENTION} if selected}
-
-\item{do.max_abund_low}{default \code{TRUE}. If \code{TRUE}, 
-\code{MAX_ABUND_LOW} parameter within \emph{Global_parameters} file will be 
-declined into a range of values}
-
-\item{do.max_abund_medium}{default \code{TRUE}. If \code{TRUE}, 
-\code{MAX_ABUND_MEDIUM} parameter within \emph{Global_parameters} file will 
-be declined into a range of values}
-
-\item{do.max_abund_high}{default \code{TRUE}. If \code{TRUE}, 
-\code{MAX_ABUND_HIGH} parameter within \emph{Global_parameters} file will 
-be declined into a range of values}
 
 \item{do.seeding_duration}{default \code{TRUE}. If \code{TRUE}, 
 \code{SEEDING_DURATION} parameter within \emph{Global_parameters} file will 
@@ -169,10 +148,7 @@ file :
     \item SEEDING_DURATION
     \item SEEDING_TIMESTEP
     \item SEEDING_INPUT
-    \item POTENTIAL_FECUNDITY
-    \item MAX_ABUND_LOW
-    \item MAX_ABUND_MEDIUM 
-    \item MAX_ABUND_HIGH \cr \cr
+    \item POTENTIAL_FECUNDITY \cr \cr
   }
   If the simulation includes \emph{light interaction} :
   \itemize{

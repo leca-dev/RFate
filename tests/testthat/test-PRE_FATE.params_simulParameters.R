@@ -96,9 +96,6 @@ test_that("PRE_FATE.params_simulParameters gives error with wrong data : folders
                                    , required.seeding_duration = c(10,50)
                                    , required.seeding_timestep = 1
                                    , required.seeding_input = 100
-                                   , required.max_abund_low = 3000
-                                   , required.max_abund_medium = 5000
-                                   , required.max_abund_high = 9000
                                    , doHabSuitability = TRUE
                                    , HABSUIT.mode = 1
                                    , doDisturbances = TRUE

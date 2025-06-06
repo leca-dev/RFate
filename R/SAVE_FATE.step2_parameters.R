@@ -100,10 +100,8 @@
 ##' to the \code{\link{PRE_FATE.params_multipleSet}} function, if used 
 ##' (\code{name.simulation.1}, \code{name.simulation.2}, 
 ##' \code{file.simulParam.1}, \code{file.simulParam.2}, 
-##' \code{no_simulations}, \code{opt.percent_maxAbund}, 
-##' \code{opt.percent_seeding}, \code{opt.percent_light}, 
-##' \code{opt.percent_soil}, \code{do.max_abund_low}, 
-##' \code{do.max_abund_medium}, \code{do.max_abund_high}, 
+##' \code{no_simulations}, \code{opt.percent_seeding}, 
+##' \code{opt.percent_light}, \code{opt.percent_soil}, 
 ##' \code{do.seeding_duration}, \code{do.seeding_timestep}, 
 ##' \code{do.seeding_input}, \code{do.no_strata}, 
 ##' \code{do.LIGHT.thresh_medium}, \code{do.LIGHT.thresh_low}, 
@@ -188,13 +186,9 @@ SAVE_FATE.step2_parameters = function(name.dataset
                                                            , "file.simulParam.1" = NA
                                                            , "file.simulParam.2" = NA
                                                            , "no_simulations" = NA
-                                                           , "opt.percent_maxAbund" = NA
                                                            , "opt.percent_seeding" = NA
                                                            , "opt.percent_light" = NA
                                                            , "opt.percent_soil" = NA
-                                                           , "do.max_abund_low" = NA
-                                                           , "do.max_abund_medium" = NA
-                                                           , "do.max_abund_high" = NA
                                                            , "do.seeding_duration" = NA
                                                            , "do.seeding_timestep" = NA
                                                            , "do.seeding_input" = NA
@@ -338,6 +332,7 @@ SAVE_FATE.step2_parameters = function(name.dataset
     
     if (sum(colnames(mat.PFG.succ) == "max_abundance") == 1)
     {
+      .testParam_notInteger.m("mat.PFG.succ$max_abundance", mat.PFG.succ$max_abundance)
       .testParam_NAvalues.m("mat.PFG.succ$max_abundance", mat.PFG.succ$max_abundance)
     }
     if (sum(colnames(mat.PFG.succ) == "potential_fecundity") == 1)
@@ -857,10 +852,11 @@ SAVE_FATE.step2_parameters = function(name.dataset
   rasters = rasters[names.rasters]
   ## CHECK parameter multipleSet
   names.multipleSet = c("name.simulation.1", "name.simulation.2", "file.simulParam.1", "file.simulParam.2"
-                        , "no_simulations", "opt.percent_maxAbund", "opt.percent_seeding", "opt.percent_light"
-                        , "opt.percent_soil", "do.max_abund_low", "do.max_abund_medium", "do.max_abund_high"
-                        , "do.seeding_duration", "do.seeding_timestep", "do.seeding_input", "do.no_strata"
-                        , "do.LIGHT.thresh_medium", "do.LIGHT.thresh_low", "do.SOIL.init", "do.SOIL.retention"
+                        , "no_simulations", "opt.percent_seeding"
+                        , "opt.percent_light", "opt.percent_soil"
+                        , "do.seeding_duration", "do.seeding_timestep", "do.seeding_input"
+                        , "do.no_strata", "do.LIGHT.thresh_medium", "do.LIGHT.thresh_low"
+                        , "do.SOIL.init", "do.SOIL.retention"
                         , "do.DISPERSAL.mode", "do.HABSUIT.mode")
   .testParam_notInValues.m(names(multipleSet), names.multipleSet)
   if (length(multipleSet) != 22)
@@ -940,8 +936,6 @@ SAVE_FATE.step2_parameters = function(name.dataset
     ## CHECK parameters scenario1
     if (scenario1)
     {
-      .testParam_notNum.m("multipleSet['opt.percent_maxAbund']", multipleSet['opt.percent_maxAbund'])
-      .testParam_notBetween.m("multipleSet['opt.percent_maxAbund']", multipleSet['opt.percent_maxAbund'], 0, 1)
       .testParam_notNum.m("multipleSet['opt.percent_seeding']", multipleSet['opt.percent_seeding'])
       .testParam_notBetween.m("multipleSet['opt.percent_seeding']", multipleSet['opt.percent_seeding'], 0, 1)
       .testParam_notNum.m("multipleSet['opt.percent_light']", multipleSet['opt.percent_light'])
@@ -950,9 +944,6 @@ SAVE_FATE.step2_parameters = function(name.dataset
       .testParam_notBetween.m("multipleSet['opt.percent_soil']", multipleSet['opt.percent_soil'], 0, 1)
     }
     ## CHECK parameters do.[...]
-    .testParam_notInValues.m("multipleSet['do.max_abund_low']", multipleSet['do.max_abund_low'], c(0, 1))
-    .testParam_notInValues.m("multipleSet['do.max_abund_medium']", multipleSet['do.max_abund_medium'], c(0, 1))
-    .testParam_notInValues.m("multipleSet['do.max_abund_high']", multipleSet['do.max_abund_high'], c(0, 1))
     .testParam_notInValues.m("multipleSet['do.seeding_duration']", multipleSet['do.seeding_duration'], c(0, 1))
     .testParam_notInValues.m("multipleSet['do.seeding_timestep']", multipleSet['do.seeding_timestep'], c(0, 1))
     .testParam_notInValues.m("multipleSet['do.seeding_input']", multipleSet['do.seeding_input'], c(0, 1))

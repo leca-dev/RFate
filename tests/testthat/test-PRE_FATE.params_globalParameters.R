@@ -169,154 +169,30 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : requir
 })
 
 ## INPUTS
-test_that("PRE_FATE.params_globalParameters gives error with wrong data : required.max_abund_low", {
-  
-  ## TEST required.max_abund_low : integer
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = NA)
-               , "`required.max_abund_low` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = NULL)
-               , "`required.max_abund_low` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = "")
-               , "`required.max_abund_low` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = -1)
-               , "`required.max_abund_low` must be an integer > 0")
-})
-
-## INPUTS
-test_that("PRE_FATE.params_globalParameters gives error with wrong data : required.max_abund_medium", {
-  
-  ## TEST required.max_abund_medium : integer
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = NA)
-               , "`required.max_abund_medium` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = NULL)
-               , "`required.max_abund_medium` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = "")
-               , "`required.max_abund_medium` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = -1)
-               , "`required.max_abund_medium` must be an integer > 0")
-})
-
-## INPUTS
-test_that("PRE_FATE.params_globalParameters gives error with wrong data : required.max_abund_high", {
-  
-  ## TEST required.max_abund_high : integer
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = NA)
-               , "`required.max_abund_high` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = NULL)
-               , "`required.max_abund_high` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = "")
-               , "`required.max_abund_high` must be an integer > 0")
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = -1)
-               , "`required.max_abund_high` must be an integer > 0")
-})
-
-## INPUTS
-test_that("PRE_FATE.params_globalParameters gives error with wrong data : required.max_abund_...", {
-  
-  ## TEST required.max_abund_medium : correct values
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 1
-                                                , required.max_abund_high = 9000)
-               , "`required.max_abund_low` must contain values equal or inferior to `required.max_abund_medium`")
-  
-  ## TEST required.max_abund_high : correct values
-  expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-                                                , required.no_PFG = 5
-                                                , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 1)
-               , "`required.max_abund_medium` must contain values equal or inferior to `required.max_abund_high`")
-})
-
-## INPUTS
 test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.thresh_medium", {
   
   ## TEST LIGHT.thresh_medium : integer
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = NA)
                , "`LIGHT.thresh_medium` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = NULL)
                , "`LIGHT.thresh_medium` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = "")
                , "`LIGHT.thresh_medium` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = -1)
                , "`LIGHT.thresh_medium` must be an integer > 0")
@@ -329,9 +205,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = 13000000
                                                 , LIGHT.thresh_low = NA)
@@ -339,9 +212,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = 13000000
                                                 , LIGHT.thresh_low = NULL)
@@ -349,9 +219,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = 13000000
                                                 , LIGHT.thresh_low = "")
@@ -359,9 +226,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = 13000000
                                                 , LIGHT.thresh_low = -1)
@@ -375,9 +239,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : LIGHT.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doLight = T
                                                 , LIGHT.thresh_medium = 1
                                                 , LIGHT.thresh_low = 0)
@@ -391,27 +252,18 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = NA)
                , "`SOIL.init` must contain numeric values")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = NULL)
                , "`SOIL.init` must contain numeric values")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = "")
                , "`SOIL.init` must contain numeric values")
@@ -424,9 +276,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = 0
                                                 , SOIL.retention = NA)
@@ -434,9 +283,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = 0
                                                 , SOIL.retention = NULL)
@@ -444,9 +290,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = 0
                                                 , SOIL.retention = "")
@@ -454,9 +297,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = 0
                                                 , SOIL.retention = -0.2)
@@ -464,9 +304,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : SOIL.r
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doSoil = T
                                                 , SOIL.init = 0
                                                 , SOIL.retention = 10)
@@ -480,36 +317,24 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DISPER
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDispersal = T
                                                 , DISPERSAL.mode = NA)
                , "`DISPERSAL.mode` must be either `1`, `2` or `3`")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDispersal = T
                                                 , DISPERSAL.mode = NULL)
                , "`DISPERSAL.mode` must be either `1`, `2` or `3`")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDispersal = T
                                                 , DISPERSAL.mode = "")
                , "`DISPERSAL.mode` must be either `1`, `2` or `3`")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDispersal = T
                                                 , DISPERSAL.mode = factor("a"))
                , "`DISPERSAL.mode` must be either `1`, `2` or `3`")
@@ -522,36 +347,24 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : HABSUI
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doHabSuitability = T
                                                 , HABSUIT.mode = NA)
                , "`HABSUIT.mode` must be either `1` or `2`")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doHabSuitability = T
                                                 , HABSUIT.mode = NULL)
                , "`HABSUIT.mode` must be either `1` or `2`")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doHabSuitability = T
                                                 , HABSUIT.mode = "")
                , "`HABSUIT.mode` must be either `1` or `2`")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doHabSuitability = T
                                                 , HABSUIT.mode = factor("a"))
                , "`HABSUIT.mode` must be either `1` or `2`")
@@ -564,27 +377,18 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = NA)
                , "`DIST.no` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = NULL)
                , "`DIST.no` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = "")
                , "`DIST.no` must be an integer > 0")
@@ -597,9 +401,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = NA)
@@ -607,9 +408,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = NULL)
@@ -617,9 +415,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = "")
@@ -633,9 +428,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   # expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
   #                                               , required.no_PFG = 5
   #                                               , required.no_strata = 2
-  #                                               , required.max_abund_low = 3000
-  #                                               , required.max_abund_medium = 5000
-  #                                               , required.max_abund_high = 9000
   #                                               , doDisturbances = T
   #                                               , DIST.no = 2
   #                                               , DIST.no_sub = 2)
@@ -644,9 +436,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = 2
@@ -655,9 +444,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = 2
@@ -666,9 +452,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = 2
@@ -679,9 +462,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DIST.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDisturbances = T
                                                 , DIST.no = 2
                                                 , DIST.no_sub = 2
@@ -697,27 +477,18 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : DROUGH
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDrought = T
                                                 , DROUGHT.no_sub = NA)
                , "`DROUGHT.no_sub` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDrought = T
                                                 , DROUGHT.no_sub = NULL)
                , "`DROUGHT.no_sub` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doDrought = T
                                                 , DROUGHT.no_sub = "")
                , "`DROUGHT.no_sub` must be an integer > 0")
@@ -730,36 +501,24 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doAliens = T)
                , "`ALIEN.freq` must contain as many values as the number of PFG (`required.no_PFG`)"
                , fixed = TRUE)
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doAliens = T
                                                 , ALIEN.freq = NA)
                , "`ALIEN.freq` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doAliens = T
                                                 , ALIEN.freq = NULL)
                , "`ALIEN.freq` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doAliens = T
                                                 , ALIEN.freq = "")
                , "`ALIEN.freq` must be an integer > 0")
@@ -768,9 +527,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : ALIEN.
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doAliens = T
                                                 , ALIEN.freq = 2)
                , "`ALIEN.freq` must contain as many values as the number of PFG (`required.no_PFG`)"
@@ -784,27 +540,18 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = NA)
                , "`FIRE.no` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = NULL)
                , "`FIRE.no` must be an integer > 0")
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = "")
                , "`FIRE.no` must be an integer > 0")
@@ -817,9 +564,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = NA)
@@ -827,9 +571,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = NULL)
@@ -837,9 +578,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = "")
@@ -853,9 +591,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2)
@@ -864,9 +599,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2
@@ -875,9 +607,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2
@@ -886,9 +615,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2
@@ -899,9 +625,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.f
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2
@@ -917,9 +640,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -929,9 +649,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -941,9 +658,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -953,9 +667,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -971,9 +682,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -983,9 +691,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -996,9 +701,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1015,9 +717,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1027,9 +726,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1040,9 +736,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1059,9 +752,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1072,9 +762,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1087,9 +774,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1106,9 +790,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1119,9 +800,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1133,9 +811,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.i
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1153,9 +828,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1166,9 +838,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1179,9 +848,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1198,9 +864,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1212,9 +875,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1228,9 +888,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.n
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1248,9 +905,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1262,9 +916,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1276,9 +927,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1296,9 +944,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1310,9 +955,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1325,9 +967,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1342,9 +981,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1359,9 +995,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 2
                                                 , FIRE.no_sub = 2
@@ -1381,9 +1014,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1396,9 +1026,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1413,9 +1040,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.p
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1434,9 +1058,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1449,9 +1070,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1464,9 +1082,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1485,9 +1100,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1501,9 +1113,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1517,9 +1126,6 @@ test_that("PRE_FATE.params_globalParameters gives error with wrong data : FIRE.q
   expect_error(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                 , required.no_PFG = 5
                                                 , required.no_strata = 2
-                                                , required.max_abund_low = 3000
-                                                , required.max_abund_medium = 5000
-                                                , required.max_abund_high = 9000
                                                 , doFire = T
                                                 , FIRE.no = 1
                                                 , FIRE.no_sub = 2
@@ -1542,27 +1148,18 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario clas
   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.no_CPU = "a"
                                                   , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000)
+                                                  , required.no_strata = 2)
                  , "`opt.no_CPU` must be an integer > 0"
                  , fixed = TRUE)
   
   expect_message(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000)
+                                                  , required.no_strata = 2)
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V2.txt has been successfully created !")
   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
-                                                  , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000)
+                                                  , required.no_strata = 2)
                  , "already exists. It will be replaced.")
 })
 
@@ -1578,9 +1175,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doLight = TRUE
                                                   , LIGHT.thresh_medium = 4000
                                                   , LIGHT.thresh_low = 7000)
@@ -1592,9 +1186,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doSoil = TRUE
                                                   , SOIL.init = 0
                                                   , SOIL.retention = 0.8)
@@ -1606,9 +1197,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doDispersal = TRUE
                                                   , DISPERSAL.mode = 2)
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
@@ -1619,9 +1207,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doHabSuitability = TRUE
                                                   , HABSUIT.mode = 1)
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
@@ -1632,9 +1217,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doDisturbances = TRUE
                                                   , DIST.no = 2
                                                   , DIST.no_sub = 2
@@ -1647,9 +1229,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doDrought = TRUE
                                                   , DROUGHT.no_sub = 3)
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
@@ -1664,9 +1243,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , required.seeding_duration = 100
                                                   , required.seeding_timestep = 100
                                                   , required.seeding_input = 100
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doAliens = TRUE
                                                   , ALIEN.freq = rep(1, 5))
                  , "The parameter file FATE_simulation/DATA/GLOBAL_PARAMETERS/Global_parameters_V1.txt has been successfully created !")
@@ -1677,9 +1253,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
                                                   , opt.replacePrevious = TRUE
                                                   , required.no_PFG = 5
                                                   , required.no_strata = 2
-                                                  , required.max_abund_low = 3000
-                                                  , required.max_abund_medium = 5000
-                                                  , required.max_abund_high = 9000
                                                   , doFire = TRUE
                                                   , FIRE.no = 2
                                                   , FIRE.no_sub = 2
@@ -1707,36 +1280,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
 #                                                   , opt.replacePrevious = TRUE
 #                                                   , required.no_PFG = 5
 #                                                   , required.no_strata = 2
-#                                                   , required.max_abund_low = 3000.5
-#                                                   , required.max_abund_medium = 5000
-#                                                   , required.max_abund_high = 9000)
-#                  , "`required.max_abund_low` is a double. It will be converted (rounded) to an integer"
-#                  , fixed = TRUE)
-#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-#                                                   , opt.replacePrevious = TRUE
-#                                                   , required.no_PFG = 5
-#                                                   , required.no_strata = 2
-#                                                   , required.max_abund_low = 3000
-#                                                   , required.max_abund_medium = 5000.5
-#                                                   , required.max_abund_high = 9000)
-#                  , "`required.max_abund_medium` is a double. It will be converted (rounded) to an integer"
-#                  , fixed = TRUE)
-#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-#                                                   , opt.replacePrevious = TRUE
-#                                                   , required.no_PFG = 5
-#                                                   , required.no_strata = 2
-#                                                   , required.max_abund_low = 3000
-#                                                   , required.max_abund_medium = 5000
-#                                                   , required.max_abund_high = 9000.5)
-#                  , "`required.max_abund_high` is a double. It will be converted (rounded) to an integer"
-#                  , fixed = TRUE)
-#   expect_warning(PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
-#                                                   , opt.replacePrevious = TRUE
-#                                                   , required.no_PFG = 5
-#                                                   , required.no_strata = 2
-#                                                   , required.max_abund_low = 3000
-#                                                   , required.max_abund_medium = 5000
-#                                                   , required.max_abund_high = 9000
 #                                                   , doLight = TRUE
 #                                                   , LIGHT.thresh_medium = 10.5
 #                                                   , LIGHT.thresh_low = 50)
@@ -1746,9 +1289,6 @@ test_that("PRE_FATE.params_globalParameters gives correct output : scenario modu
 #                                                   , opt.replacePrevious = TRUE
 #                                                   , required.no_PFG = 5
 #                                                   , required.no_strata = 2
-#                                                   , required.max_abund_low = 3000
-#                                                   , required.max_abund_medium = 5000
-#                                                   , required.max_abund_high = 9000
 #                                                   , doLight = TRUE
 #                                                   , LIGHT.thresh_medium = 10
 #                                                   , LIGHT.thresh_low = 50.5)
