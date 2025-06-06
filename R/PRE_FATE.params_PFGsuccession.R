@@ -511,7 +511,7 @@ PRE_FATE.params_PFGsuccession = function(
   ## Defined according to the number of strata potentially occupied by a PFG
   if (sum(colnames(mat.PFG.succ) == "max_abundance") == 1)
   {
-    MAX_ABUNDANCE = asinteger(mat.PFG.succ$max_abundance)
+    MAX_ABUNDANCE = as.integer(mat.PFG.succ$max_abundance)
   } else
   {
     ## herbaceous are small and can be numerous (high number of individuals)

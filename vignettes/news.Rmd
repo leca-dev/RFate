@@ -47,6 +47,9 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 #### Version 1.3.6 (may 2025)
 
 - 1.3.6 :
+    + fix `.adaptMaps` when files have same extension
+    + fix `MAX_ABUND` with `as.integer` in PFG succession files
+    + remove `required.max_abund_low`, `medium` and `high` parameters in global parameters function
     + weight abundances by `SHADE_FACTOR` for soil contribution (TEST)
     + remove `phyloclim` dependency by integrating `niche.overlap` function within the package
 
