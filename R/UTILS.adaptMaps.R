@@ -82,31 +82,39 @@
   
   for (fi in all.files)
   {
-    ras = raster(fi)
+    rewrite = FALSE
+    ras = raster(fi) * 1.0
     ## Reproject to study area
-    if (exists("ras.mask")){
+    if (exists("ras.mask")) {
       proj.method = "bilinear"
-      if (sum(unique(ras[]) %in% c(0,1)) == 2 || length(unique(ras[])) < 10){
+      if (sum(unique(ras[]) %in% c(0, 1)) == 2 || length(unique(ras[])) < 10) {
         proj.method = "ngb"
       }
-      if (is.na(projection(ras))){
+      if (is.na(projection(ras))) {
         projection(ras) = projection(ras.mask)
       }
       ras = projectRaster(from = ras, to = ras.mask, method = proj.method)
+      rewrite = TRUE
     }
     
     ## Change potential NA values to 0
     ind_na = which(is.na(ras[]))
-    if (length(ind_na) > 0) ras[ind_na] = 0
+    if (length(ind_na) > 0) {
+      ras[ind_na] = 0
+      rewrite = TRUE
+    }
     
     ## Rewrite raster, changing potentially extension
     new_fi = fi
     if (!is.null(extension.new)){
       new_fi = sub(paste0(".", extension.old, "$"), paste0(".", extension.new), fi)
     }
-    writeRaster(ras, filename = new_fi, overwrite = TRUE)
-    message(paste0("The raster file ", fi
-                   , " has been successfully changed and saved ("
-                   , new_fi, ") !"))
+    
+    if (rewrite) {
+      writeRaster(ras, filename = new_fi, overwrite = TRUE)
+      message(paste0("The raster file ", fi
+                     , " has been successfully changed and saved ("
+                     , new_fi, ") !"))
+    }
   }
 }

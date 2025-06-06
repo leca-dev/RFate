@@ -156,9 +156,6 @@ containing <code>GLOBAL PARAMETERS</code> used in <code>FATE</code> model.</p>
 <span>  required.seeding_timestep <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  required.seeding_input <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  required.potential_fecundity <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  <span class="va">required.max_abund_low</span>,</span>
-<span>  <span class="va">required.max_abund_medium</span>,</span>
-<span>  <span class="va">required.max_abund_high</span>,</span>
 <span>  doLight <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">LIGHT.thresh_medium</span>,</span>
 <span>  <span class="va">LIGHT.thresh_low</span>,</span>
@@ -289,21 +286,6 @@ maximum number of seeds produced each year by a PFG (it can also be
 specified within PFG succession files (see
 <a href="PRE_FATE.params_PFGsuccession.html#details"><code>PRE_FATE.params_PFGsuccession</code></a>)
 otherwise this value will be used)</p></dd>
-
-
-<dt id="arg-required-max-abund-low">required.max_abund_low<a class="anchor" aria-label="anchor" href="#arg-required-max-abund-low"></a></dt>
-<dd><p>an <code>integer</code> in the order of
-<code>1 000</code> to rescale abundance values of tall PFG</p></dd>
-
-
-<dt id="arg-required-max-abund-medium">required.max_abund_medium<a class="anchor" aria-label="anchor" href="#arg-required-max-abund-medium"></a></dt>
-<dd><p>an <code>integer</code> in the order of
-<code>1 000</code> to rescale abundance values of intermediate PFG</p></dd>
-
-
-<dt id="arg-required-max-abund-high">required.max_abund_high<a class="anchor" aria-label="anchor" href="#arg-required-max-abund-high"></a></dt>
-<dd><p>an <code>integer</code> in the order of
-<code>1 000</code> to rescale abundance values of small PFG</p></dd>
 
 
 <dt id="arg-dolight">doLight<a class="anchor" aria-label="anchor" href="#arg-dolight"></a></dt>
@@ -593,10 +575,7 @@ parameters :</p>
 <li><p>SEEDING_DURATION</p></li>
 <li><p>SEEDING_TIMESTEP</p></li>
 <li><p>SEEDING_INPUT</p></li>
-<li><p>POTENTIAL_FECUNDITY</p></li>
-<li><p>MAX_ABUND_LOW</p></li>
-<li><p>MAX_ABUND_MEDIUM</p></li>
-<li><p>MAX_ABUND_HIGH <br><br></p></li>
+<li><p>POTENTIAL_FECUNDITY <br><br></p></li>
 </ul><p>If the simulation includes <em>light interaction</em> :</p>
 <ul><li><p>DO_LIGHT_INTERACTION</p></li>
 <li><p>LIGHT_THRESH_MEDIUM</p></li>
@@ -676,11 +655,8 @@ define general characteristics of the simulation :</p>
     per PFG per pixel is equal to
     \(MaxAbund * \text{required.potential_fecundity}\)</p></dd>
 
-    <dt>max_abund_low / medium / high</dt>
-<dd><p>abundance regulation thresholds for
-    tall / intermediate / small PFG within a pixel (<em>in `FATE` arbitrary
-    abundance units</em>). <br>
-    Each PFG is assigned with one of these 3 values (see
+    <dt>max_abund</dt>
+<dd><p>Each PFG is assigned with one value (see
     <code><a href="PRE_FATE.params_PFGsuccession.html">PRE_FATE.params_PFGsuccession</a></code>) to be a broad proxy of the
     amount of space it can occupy within a pixel (herbaceous should be more
     numerous than phanerophytes). These thresholds help regulate the PFG
@@ -730,11 +706,7 @@ file, and if so, some additional parameters will be required :</p>
 <p>$$abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} &gt;
   \text{LIGHT.thresh_low} \;\; \Leftrightarrow \;\;
   light_{\text{ Stratum}_k} = \text{Low}$$
-  <em>As light resources are directly obtained from PFG abundances,
-  <code>LIGHT.thresh_medium</code> and <code>LIGHT.thresh_low</code> parameters should
-  be on the same scale than <code>required.max_abund_low</code>,
-  <code>required.max_abund_medium</code> and <code>required.max_abund_high</code>
-  parameters from the core module.</em> <br><br></p></dd>
+  <br><br></p></dd>
 
   <dt>SOIL</dt>
 <dd><p>= to influence seed recruitment and plant mortality
@@ -1058,9 +1030,6 @@ file, and if so, some additional parameters will be required :</p>
 <span>                                 , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span></span>
 <span>                                 , required.seeding_input <span class="op">=</span> <span class="fl">100</span></span>
 <span>                                 , required.potential_fecundity <span class="op">=</span> <span class="fl">100</span></span>
-<span>                                 , required.max_abund_low <span class="op">=</span> <span class="fl">3000</span></span>
-<span>                                 , required.max_abund_medium <span class="op">=</span> <span class="fl">5000</span></span>
-<span>                                 , required.max_abund_high <span class="op">=</span> <span class="fl">9000</span></span>
 <span>                                 , doLight <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>                                 , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">4000</span></span>
 <span>                                 , LIGHT.thresh_low <span class="op">=</span> <span class="fl">7000</span></span>
@@ -1078,9 +1047,6 @@ file, and if so, some additional parameters will be required :</p>
 <span>                                 , required.seeding_timestep <span class="op">=</span> <span class="fl">1</span></span>
 <span>                                 , required.seeding_input <span class="op">=</span> <span class="fl">100</span></span>
 <span>                                 , required.potential_fecundity <span class="op">=</span> <span class="fl">100</span></span>
-<span>                                 , required.max_abund_low <span class="op">=</span> <span class="fl">3000</span></span>
-<span>                                 , required.max_abund_medium <span class="op">=</span> <span class="fl">5000</span></span>
-<span>                                 , required.max_abund_high <span class="op">=</span> <span class="fl">9000</span></span>
 <span>                                 , doLight <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span>                                 , LIGHT.thresh_medium <span class="op">=</span> <span class="fl">4000</span></span>
 <span>                                 , LIGHT.thresh_low <span class="op">=</span> <span class="fl">7000</span></span>

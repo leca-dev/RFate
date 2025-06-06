@@ -20,9 +20,6 @@ PRE_FATE.params_globalParameters(
   required.seeding_timestep = 1,
   required.seeding_input = 100,
   required.potential_fecundity = 100,
-  required.max_abund_low,
-  required.max_abund_medium,
-  required.max_abund_high,
   doLight = FALSE,
   LIGHT.thresh_medium,
   LIGHT.thresh_low,
@@ -122,15 +119,6 @@ maximum number of seeds produced each year by a PFG (it can also be
 specified within PFG succession files (see 
 \href{PRE_FATE.params_PFGsuccession.html#details}{\code{PRE_FATE.params_PFGsuccession}})
 otherwise this value will be used)}
-
-\item{required.max_abund_low}{an \code{integer} in the order of 
-\code{1 000} to rescale abundance values of tall PFG}
-
-\item{required.max_abund_medium}{an \code{integer} in the order of 
-\code{1 000} to rescale abundance values of intermediate PFG}
-
-\item{required.max_abund_high}{an \code{integer} in the order of 
-\code{1 000} to rescale abundance values of small PFG}
 
 \item{doLight}{default \code{FALSE}. \cr If \code{TRUE}, light interaction 
 is activated in the \code{FATE} simulation, and associated parameters are 
@@ -342,10 +330,7 @@ parameters :
   \item SEEDING_DURATION
   \item SEEDING_TIMESTEP
   \item SEEDING_INPUT
-  \item POTENTIAL_FECUNDITY
-  \item MAX_ABUND_LOW
-  \item MAX_ABUND_MEDIUM 
-  \item MAX_ABUND_HIGH \cr \cr
+  \item POTENTIAL_FECUNDITY \cr \cr
 }
 
 If the simulation includes \emph{light interaction} :
@@ -458,10 +443,7 @@ define general characteristics of the simulation :
     is limited by PFG maximum abundance, meaning that maximum fecundity 
     per PFG per pixel is equal to 
     \eqn{MaxAbund * \text{required.potential_fecundity}}}
-    \item{max_abund_low / medium / high}{abundance regulation thresholds for 
-    tall / intermediate / small PFG within a pixel (\emph{in `FATE` arbitrary 
-    abundance units}). \cr
-    Each PFG is assigned with one of these 3 values (see 
+    \item{max_abund}{Each PFG is assigned with one value (see 
     \code{\link{PRE_FATE.params_PFGsuccession}}) to be a broad proxy of the 
     amount of space it can occupy within a pixel (herbaceous should be more 
     numerous than phanerophytes). These thresholds help regulate the PFG 
@@ -505,12 +487,8 @@ file, and if so, some additional parameters will be required :
   
   \deqn{abund_{\text{ PFG}_{all}\text{, }\text{Stratum}_k} > 
   \text{LIGHT.thresh_low} \;\; \Leftrightarrow \;\; 
-  light_{\text{ Stratum}_k} = \text{Low}}
-  \emph{As light resources are directly obtained from PFG abundances, 
-  \code{LIGHT.thresh_medium} and \code{LIGHT.thresh_low} parameters should 
-  be on the same scale than \code{required.max_abund_low}, 
-  \code{required.max_abund_medium} and \code{required.max_abund_high} 
-  parameters from the core module.} \cr \cr
+  light_{\text{ Stratum}_k} = \text{Low}} 
+  \cr \cr
   }
   \item{SOIL}{= to influence seed recruitment and plant mortality 
   according to PFG preferences for soil conditions \cr (see 
@@ -806,9 +784,6 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                  , required.seeding_timestep = 1
                                  , required.seeding_input = 100
                                  , required.potential_fecundity = 100
-                                 , required.max_abund_low = 3000
-                                 , required.max_abund_medium = 5000
-                                 , required.max_abund_high = 9000
                                  , doLight = TRUE
                                  , LIGHT.thresh_medium = 4000
                                  , LIGHT.thresh_low = 7000
@@ -826,9 +801,6 @@ PRE_FATE.params_globalParameters(name.simulation = "FATE_simulation"
                                  , required.seeding_timestep = 1
                                  , required.seeding_input = 100
                                  , required.potential_fecundity = 100
-                                 , required.max_abund_low = 3000
-                                 , required.max_abund_medium = 5000
-                                 , required.max_abund_high = 9000
                                  , doLight = TRUE
                                  , LIGHT.thresh_medium = 4000
                                  , LIGHT.thresh_low = 7000
