@@ -2,6 +2,7 @@
 ##' @title From phyloclim package 0.9.5 : niche.overlap and di.enm functions
 ##' 
 ##' @name niche.overlap
+##' @aliases di.pno
 ##' @aliases di.enm
 ##' 
 ##' @description This function quantifies the degree of niche overlap using 
@@ -12,6 +13,7 @@
 ##' dimensions of the climatic niches (Evans et al., 2009).
 ##' 
 ##' @usage
+##' di.pno(x, y)
 ##' di.enm(rn, x, y)
 ##' niche.overlap(x)
 ##' 
@@ -26,11 +28,38 @@
 ##' 
 ##' @seealso \code{\link[phyloclim]{niche.overlap}}
 ##' 
+##' @importFrom methods slot
 ##' @importFrom sp read.asciigrid
 ##' 
 ##' @export
 ##' 
 ## END OF HEADER ###############################################################
+
+di.pno <- function(x, y)
+{
+  
+  # normalize probability surfaces
+  # ------------------------------
+  xSUM <- sum(x, na.rm = TRUE)
+  x <- x / xSUM
+  ySUM <- sum(y, na.rm = TRUE)
+  y <- y / ySUM
+  
+  # Schoeners D (Schoener, 1968; Warren, Glor & Turelli, 2008)
+  # ----------------------------------------------------------
+  D <- 1 - 0.5 * sum(abs(x - y), na.rm = TRUE)
+  
+  # Hellingers Distance:
+  # ---------------------
+  H <- sqrt(sum((sqrt(x) - sqrt(y))^2, na.rm = TRUE))
+  # I <- 1 - 0.5 * H -> error in Warren, Glor and Turelli 
+  # (2008, Evolution 62:2868-2883)
+  I <- 1 - H^2 * 0.5 # <- corrected I
+  
+  # both statistics range betweeen 0 (no overlap) and 1 (niches are identical)
+  
+  c(D = D, I = I)	
+}
 
 di.enm <- function(rn, x, y)
 {

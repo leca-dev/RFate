@@ -2,9 +2,11 @@
 % Please edit documentation in R/UTILS.package_phyloclim.R
 \name{niche.overlap}
 \alias{niche.overlap}
+\alias{di.pno}
 \alias{di.enm}
 \title{From phyloclim package 0.9.5 : niche.overlap and di.enm functions}
 \usage{
+di.pno(x, y)
 di.enm(rn, x, y)
 niche.overlap(x)
 }

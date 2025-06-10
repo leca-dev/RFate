@@ -85,7 +85,7 @@ The process is as follows :
   \item{\strong{2. Evaluation of the \cr clustering}}{once the hierarchical 
   clustering is done, the number of clusters to keep should be chosen. \cr 
   To do that, several metrics are computed :
-  \itemize{
+  \describe{
     \item{\emph{Dunn index (\code{mdunn}) : }}{ratio of the smallest 
     distance between observations not in the same cluster to the largest 
     intra-cluster distance. Value between \code{0} and \eqn{\infty}, and 

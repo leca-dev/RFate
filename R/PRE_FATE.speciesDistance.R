@@ -62,7 +62,7 @@
 ##' based on two types of distance information :
 ##' 
 ##' \enumerate{
-##'   \item{\strong{Functional traits : }}{
+##'   \item \strong{Functional traits : }
 ##'   \itemize{
 ##'     \item The \code{GROUP} column is required if species must be separated 
 ##'     to have one final distance matrix per \code{GROUP} value. \cr If the 
@@ -85,14 +85,12 @@
 ##'       \item{opt.min.sd}{traits with too little variability are removed}
 ##'     }
 ##'   }
-##'   }
-##'   \item{\strong{Niche overlap : }}{
+##'   \item \strong{Niche overlap : }
 ##'   \itemize{
 ##'     \item If \code{PCA} option is selected, the degree of niche overlap will 
 ##'     be computed using the \code{\link[ecospat]{ecospat.niche.overlap}}. 
 ##'     \item If \code{raster} option is selected, the degree of niche overlap will 
 ##'     be computed using the \code{\link[phyloclim]{niche.overlap}}. \cr \cr \cr
-##'   }
 ##'   }
 ##' }
 ##' 
