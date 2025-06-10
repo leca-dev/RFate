@@ -529,7 +529,7 @@ PRE_FATE.params_multipleSet = function(
     }
     
     ## Get parameters value
-    PARAMS = lapply(params[c(1:4, 7)], function(y) {
+    PARAMS = lapply(params[c(1:4, 6)], function(y) {
       sapply(y, function(x) {
         if (!is.null(x))
         {
