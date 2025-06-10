@@ -247,8 +247,7 @@ file is created for each group).</p>
     <h2>Details</h2>
     <p>This function allows to obtain a <strong>distance matrix between species</strong>,
 based on two types of distance information :</p>
-<ol><li><p><strong>Functional traits : </strong>
-  </p><ul><li><p>The <code>GROUP</code> column is required if species must be separated
+<ol><li><p><strong>Functional traits : </strong></p><ul><li><p>The <code>GROUP</code> column is required if species must be separated
     to have one final distance matrix per <code>GROUP</code> value. <br> If the
     column is missing, all species will be considered as part of a unique
     dataset.</p></li>
@@ -262,13 +261,19 @@ based on two types of distance information :</p>
     user to play with the place given to missing values, and therefore the
     selection of traits that will be used for the distance computation :</p><dl><dt>opt.maxPercent.NA</dt>
 <dd><p>traits with too many missing values are
-      removed</p></dd>      <dt>opt.maxPercent <br> .similarSpecies</dt>
+      removed</p></dd>
+
+      <dt>opt.maxPercent <br> .similarSpecies</dt>
 <dd><p>traits with too many
-      similar values are removed</p></dd>      <dt>opt.min.sd</dt>
-<dd><p>traits with too little variability are removed</p></dd></dl></li>
+      similar values are removed</p></dd>
+
+      <dt>opt.min.sd</dt>
+<dd><p>traits with too little variability are removed</p></dd>
+
+
+</dl></li>
 </ul></li>
-<li><p><strong>Niche overlap : </strong>
-  </p><ul><li><p>If <code>PCA</code> option is selected, the degree of niche overlap will
+<li><p><strong>Niche overlap : </strong></p><ul><li><p>If <code>PCA</code> option is selected, the degree of niche overlap will
     be computed using the <code>ecospat.niche.overlap</code>.</p></li>
 <li><p>If <code>raster</code> option is selected, the degree of niche overlap will
     be computed using the <code>niche.overlap</code>. <br><br><br></p></li>

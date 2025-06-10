@@ -2,6 +2,9 @@
 ## .getELLIPSE
 utils::globalVariables(names = c("fac.i"))
 
+## .adaptMaps
+utils::globalVariables(names = c("projection"))
+
 ## .getGraphics_results
 utils::globalVariables(names = c("dir.save", "dir.output.perPFG.allStrata"
                                  , "dir.output.perPFG.perStrata", "dir.output.light"

@@ -58,8 +58,8 @@
 ##'     distance between observations not in the same cluster to the largest 
 ##'     intra-cluster distance. Value between \code{0} and \eqn{\infty}, and 
 ##'     should be maximized.}
-##'     \item{\emph{Meila's Variation of Information index (\code{mVI}) : }}
-##'     {measures the amount of information lost and gained in changing 
+##'     \item{\emph{Meila's Variation of Information index (\code{mVI}) : }}{
+##'     measures the amount of information lost and gained in changing 
 ##'     between two clusterings. Should be minimized.}
 ##'     \item{\emph{Coefficient of determination (\code{R2}) : }}{value 
 ##'     between \code{0} and \code{1}. Should be maximized.}

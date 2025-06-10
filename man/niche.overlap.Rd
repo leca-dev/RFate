@@ -13,9 +13,9 @@ niche.overlap(x)
 \arguments{
 \item{x}{Might take one of the follwing forms: (1) a data frame containing 
 predicted niche occupancy (PNO) profiles, e.g., as derived by 
-\code{\link{pno}}; (2) a vector of filenames referencing to probability 
-surfaces saved in ASCII-format with an ArcGIS-compatible header; (3) a 
-list containing probability surfaces stored as objects of class 
+\code{\link[phyloclim]{pno}}; (2) a vector of filenames referencing to 
+probability surfaces saved in ASCII-format with an ArcGIS-compatible header; 
+(3) a list containing probability surfaces stored as objects of class 
 \code{\link[sp]{SpatialGrid}}}
 }
 \description{

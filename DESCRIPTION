@@ -60,7 +60,7 @@ Suggests:
     knitr, markdown, rmarkdown,
     shiny, PresenceAbsence, ggnewscale, ggExtra, gridExtra, cowplot, 
     parallel, doParallel, 
-    SPOT, fpc, clValid, ecospat, betapart, phyloclim
+    fpc, clValid, ecospat, betapart
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
 Language: en-US

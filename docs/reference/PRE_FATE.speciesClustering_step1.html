@@ -236,28 +236,40 @@ a <code>list</code> of <code>dist</code> objects (instead of a <code>dist</code>
   <dt><strong>2. Evaluation of the <br> clustering</strong></dt>
 <dd><p>once the hierarchical
   clustering is done, the number of clusters to keep should be chosen. <br>
-  To do that, several metrics are computed :</p><ul><li><p><em>Dunn index (<code>mdunn</code>) : </em>ratio of the smallest
+  To do that, several metrics are computed :</p><dl><dt><em>Dunn index (<code>mdunn</code>) : </em></dt>
+<dd><p>ratio of the smallest
     distance between observations not in the same cluster to the largest
     intra-cluster distance. Value between <code>0</code> and \(\infty\), and
-    should be maximized.</p></li>
-<li><p><em>Meila's Variation of Information index (<code>mVI</code>) : </em>
-    measures the amount of information lost and gained in changing
-    between two clusterings. Should be minimized.</p></li>
-<li><p><em>Coefficient of determination (<code>R2</code>) : </em>value
-    between <code>0</code> and <code>1</code>. Should be maximized.</p></li>
-<li><p><em>Calinski and Harabasz index (<code>ch</code>) : </em>the higher
-    the value, the "better" is the solution.</p></li>
-<li><p><em>Corrected rand index (<code>Rand</code>) : </em>measures the
+    should be maximized.</p></dd>
+
+    <dt><em>Meila's Variation of Information index (<code>mVI</code>) : </em></dt>
+<dd><p>measures the amount of information lost and gained in changing
+    between two clusterings. Should be minimized.</p></dd>
+
+    <dt><em>Coefficient of determination (<code>R2</code>) : </em></dt>
+<dd><p>value
+    between <code>0</code> and <code>1</code>. Should be maximized.</p></dd>
+
+    <dt><em>Calinski and Harabasz index (<code>ch</code>) : </em></dt>
+<dd><p>the higher
+    the value, the "better" is the solution.</p></dd>
+
+    <dt><em>Corrected rand index (<code>Rand</code>) : </em></dt>
+<dd><p>measures the
     similarity between two data clusterings. Value between <code>0</code> and
     <code>1</code>, with <code>0</code> indicating that the two data clusters do not
     agree on any pair of points and <code>1</code> indicating that the data
-    clusters are exactly the same.</p></li>
-<li><p><em>Average silhouette width (<code>av.sil</code>) : </em>Observations
+    clusters are exactly the same.</p></dd>
+
+    <dt><em>Average silhouette width (<code>av.sil</code>) : </em></dt>
+<dd><p>Observations
     with a large <code>s(i)</code> (almost <code>1</code>) are very well clustered, a
     small <code>s(i)</code> (around <code>0</code>) means that the observation lies
     between two clusters, and observations with a negative <code>s(i)</code> are
-    probably placed in the wrong cluster. Should be maximized.</p></li>
-</ul><p><strong>A graphic is produced, giving the values of these metrics in
+    probably placed in the wrong cluster. Should be maximized.</p></dd>
+
+
+</dl><p><strong>A graphic is produced, giving the values of these metrics in
   function of the number of clusters used. Number of clusters are
   highlighted in function of evaluation metrics' values to help the
   user to make his/her optimal choice : the brighter (yellow-ish) the
