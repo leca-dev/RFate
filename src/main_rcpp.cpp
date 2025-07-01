@@ -90,8 +90,10 @@
 #include "Logger.h"
 
 /* to save and load simulation objects */
-#include <boost/archive/text_oarchive.hpp> // to create archive
-#include <boost/archive/text_iarchive.hpp> // to read archive
+// #include <boost/archive/text_oarchive.hpp> // to create archive
+// #include <boost/archive/text_iarchive.hpp> // to read archive
+#include <boost/archive/binary_oarchive.hpp> // to create archive
+#include <boost/archive/binary_iarchive.hpp> // to read archive
 #include <boost/serialization/export.hpp> // for children class serialisation
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/nvp.hpp>
@@ -235,7 +237,8 @@ void saveFATE(string objFileName)
 {
 	// Create an output archive
 	ofstream ofs(objFileName.c_str(), fstream::binary | fstream::out);
-	boost::archive::text_oarchive ar(ofs);
+	// boost::archive::text_oarchive ar(ofs);
+	boost::archive::binary_oarchive ar(ofs);
 	ar << simulMap; // Write data
 	ofs.close();
 
@@ -256,8 +259,9 @@ void loadFATE(string objFileName)
   ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
   if (ifs.good())
   {
-		boost::archive::text_iarchive ar(ifs);
-		ar >> simulMap; // load data
+		// boost::archive::text_iarchive ar(ifs);
+		boost::archive::binary_iarchive ar(ifs);
+    ar >> simulMap; // load data
 		ifs.close(); // close file
 	} else
 	{
