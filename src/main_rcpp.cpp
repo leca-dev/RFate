@@ -236,8 +236,9 @@ Logger logg;
 void saveFATE(string objFileName)
 {
 	// Create an output archive
-	ofstream ofs(objFileName.c_str(), fstream::binary | fstream::out);
-	// boost::archive::text_oarchive ar(ofs);
+	// ofstream ofs(objFileName.c_str(), fstream::binary | fstream::out);
+  ofstream ofs(objFileName.c_str(), std::ios::binary);
+  // boost::archive::text_oarchive ar(ofs);
 	boost::archive::binary_oarchive ar(ofs);
 	ar << simulMap; // Write data
 	ofs.close();
@@ -256,7 +257,8 @@ void saveFATE(string objFileName)
 void loadFATE(string objFileName)
 {
 	// Create an input archive
-  ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
+  // ifstream ifs( objFileName.c_str(), fstream::binary | fstream::in );
+  ifstream ifs(objFileName.c_str(), std::ios::binary);
   if (ifs.good())
   {
 		// boost::archive::text_iarchive ar(ifs);
