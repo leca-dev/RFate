@@ -133,20 +133,26 @@ class SimulMap
 		ar & m_EnvSuitRefMap;
 		logg.info(">> Saving/Loading DISTURBANCE MAPS...");
 		ar & m_DistMap;
-		logg.info(">> Saving/Loading FIRE MAPS...");
-		ar & m_FireMap;
-		ar & m_TslfMap;
-		logg.info(">> Saving/Loading DROUGHT MAPS...");
-		ar & m_DroughtMap;
-		ar & m_ElevationMap;
-		ar & m_SlopeMap;
-		ar & m_PostDroughtMap;
-		ar & m_CountDroughtMap;
-		ar & m_IsDroughtMap;
-		ar & m_ApplyCurrDroughtMap;
-		ar & m_ApplyPostDroughtMap;
-		logg.info(">> Saving/Loading ALIEN MAPS...");
-		ar & m_CondInitMap;
+		if (m_glob_params.getDoFireDisturbances()) {
+		  logg.info(">> Saving/Loading FIRE MAPS...");
+		  ar & m_FireMap;
+		  ar & m_TslfMap;
+		}
+		if (m_glob_params.getDoDroughtDisturbances()) {
+		  logg.info(">> Saving/Loading DROUGHT MAPS...");
+		  ar & m_DroughtMap;
+		  ar & m_ElevationMap;
+		  ar & m_SlopeMap;
+		  ar & m_PostDroughtMap;
+		  ar & m_CountDroughtMap;
+		  ar & m_IsDroughtMap;
+		  ar & m_ApplyCurrDroughtMap;
+		  ar & m_ApplyPostDroughtMap;
+		}
+		if (m_glob_params.getDoAliensIntroduction()) {
+		  logg.info(">> Saving/Loading ALIEN MAPS...");
+		  ar & m_CondInitMap;
+		}
 		logg.info(">> Saving/Loading SUCCESSION MODEL MAP...");
 		ar & m_SuccModelMap;
 		logg.info(">> Saving/Loading DISPERSAL MODEL...");
