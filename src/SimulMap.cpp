@@ -787,6 +787,7 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
       /* Baseline proba */
       double probBL = m_glob_params.getFireIgnitLogis()[0] / (1+exp(m_glob_params.getFireIgnitLogis()[1]-m_glob_params.getFireIgnitLogis()[2]*m_TslfMap(*cell_ID)));
       /* Fuel proba */
+      // TODO: change unsigned to int !!!!!
       unsigned abundTmpTot=0;
       vector<unsigned> abundTmpFG;
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)

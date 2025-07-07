@@ -363,7 +363,8 @@ void Legion::reduceCohort(const int& ay, const int& ao, const double& reducFact)
 		      this->splitCohort(co, tempAo);
 		    }
 		    
-		    unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
+		    // unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
+		    int newSize = static_cast<int>(m_CohortList[co].getCSize() * reducFact);
 		    if (newSize > 0)
 		    { /* 2. REDUCE THIS LEGION ABUNDANCE + CONTINUE THE LOOP */
 		      m_CohortList[co].setCSize(newSize);
@@ -388,7 +389,8 @@ void Legion::reduceCohort(const int& co, const double& reducFact)
       this->removeCohort(m_CohortList[co].getAy(), m_CohortList[co].getAo());
     } else
     {
-      unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
+      // unsigned newSize = (unsigned) ( m_CohortList[co].getCSize() * reducFact );
+      int newSize = static_cast<int>(m_CohortList[co].getCSize() * reducFact);
       if (newSize > 0)
       { /* 2. REDUCE THIS LEGION ABUNDANCE */
         m_CohortList[co].setCSize(newSize);
