@@ -80,9 +80,9 @@ class Coordinates
 	T Ymax; /*!< maximal latitude */
 	T Yres; /*!< latitudinal resolution */
 
-	unsigned Xncell; /*!< number of cells in the whole longitudinal gradient */
-	unsigned Yncell; /*!< number of cells in the whole latitudinal gradient */
-	unsigned Totncell; /*!< total number of cells in the map */
+	int Xncell; /*!< number of cells in the whole longitudinal gradient */
+	int Yncell; /*!< number of cells in the whole latitudinal gradient */
+	int Totncell; /*!< total number of cells in the map */
 
 	/*-------------------------------------------*/
 	/* Serialization function -------------------*/
@@ -181,8 +181,8 @@ class Coordinates
 	T getXres() { return Xres; }
 	T getYres() { return Yres; }
 
-	unsigned getXncell() const{ return Xncell; }
-	unsigned getYncell() const{ return Yncell; }
+	int getXncell() const{ return Xncell; }
+	  int getYncell() const{ return Yncell; }
 
 	T getXmin(){ return Xmin; }
 	T getYmin(){ return Ymin; }
@@ -190,7 +190,7 @@ class Coordinates
 	T getXmax(){ return Xmax; }
 	T getYmax(){ return Ymax; }
 
-	unsigned getTotncell(){ return Totncell; }
+	  int getTotncell(){ return Totncell; }
 
 };
 
@@ -293,7 +293,7 @@ class SpatialMap
 	}
 
 	/* getter based on x,y coordinates */
-	val_T& operator() (unsigned i, unsigned j)
+	val_T& operator() (int i, int j)
 	{
 		if (i >= XY->getXncell() || j >= XY->getYncell())
 		{
@@ -303,13 +303,13 @@ class SpatialMap
 	}
 
 	/* getter based on point id */
-	val_T& operator() (unsigned id)
+	val_T& operator() (int id)
 	{
 		return this->getValue(id);
 	}
 
 	/* setter based on x,y coordinates */
-	void operator() (unsigned i, unsigned j, const val_T value)
+	void operator() (int i, int j, const val_T value)
 	{
 		if (i >= XY->getXncell() || j >= XY->getYncell())
 		{
@@ -324,7 +324,7 @@ class SpatialMap
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	vector<coor_T> getXY(unsigned i, unsigned j)
+	vector<coor_T> getXY(int i, int j)
 	{
 		vector<coor_T> xy(2);
 		xy[0] = XY->getX(i);
@@ -333,13 +333,13 @@ class SpatialMap
 	}
 	coor_T getXres() { return XY->getXres(); }
 	coor_T getYres() { return XY->getYres(); }
-	unsigned getXncell() { return XY->getXncell(); }
-	unsigned getYncell() { return XY->getYncell(); }
-	unsigned getTotncell() { return XY->getTotncell(); }
+	int getXncell() { return XY->getXncell(); }
+	int getYncell() { return XY->getYncell(); }
+	int getTotncell() { return XY->getTotncell(); }
 	Coordinates<coor_T>* getCoordinates() { return XY; }
 	vector<val_T> getValues() { return Values; };
 
-	val_T& getValue(unsigned id)
+	val_T& getValue(int id)
 	{
 		if (id > XY->getXncell() * XY->getYncell())
 		{
@@ -349,7 +349,7 @@ class SpatialMap
 	}
 
 	void setValues(vector<val_T> values){ Values = values; }
-	void setValue(unsigned id, val_T value)
+	void setValue(int id, val_T value)
 	{
 		if (id > XY->getXncell() * XY->getYncell())
 		{
@@ -371,7 +371,7 @@ class SpatialMap
 	void emptyMap()
 	{
 		val_T null_val = (val_T)(0);
-		for (unsigned id=0; id<this->getTotncell(); id++)
+		for (int id=0; id<this->getTotncell(); id++)
 		{
 			Values[ id ] = null_val;
 		}
@@ -481,7 +481,7 @@ class SpatialStack
 	}
 
 	/* getter based on x,y coordinates and layer id */
-	val_T& operator() (unsigned i, unsigned j, unsigned k)
+	val_T& operator() (int i, int j, int k)
 	{
 		if (i >= Layers.at(0).getXncell() || j >= Layers.at(0).getYncell())
 		{
@@ -491,7 +491,7 @@ class SpatialStack
 	}
 
 	/* getter based on cell id and layer id */
-	val_T& operator() (unsigned id, unsigned k)
+	val_T& operator() (int id, unsigned k)
 	{
 		if (id > Layers.at(0).getXncell() * Layers.at(0).getYncell())
 		{
@@ -507,7 +507,7 @@ class SpatialStack
 	}
 
 	/* setter based on x,y coordinates and layer id */
-	void operator() (unsigned i, unsigned j, unsigned k, const val_T value)
+	void operator() (int i, int j, unsigned k, const val_T value)
 	{
 		if (i >= Layers.at(0).getXncell() || j >= Layers.at(0).getYncell())
 		{
@@ -522,7 +522,7 @@ class SpatialStack
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	vector<coor_T> getXY( unsigned i, unsigned j)
+	vector<coor_T> getXY(int i, int j)
 	{
 		vector<coor_T> xy(2);
 		xy = Layers.at(0).getXY(i, j);
@@ -533,13 +533,13 @@ class SpatialStack
 	coor_T getXres() { return Layers.at(0).getXres(); }
 	coor_T getYres() { return Layers.at(0).getYres(); }
 
-	unsigned getXncell() { return Layers.at(0).getXncell(); }
-	unsigned getYncell() { return Layers.at(0).getYncell(); }
-	unsigned getNoLayers() { return Layers.size(); }
+	int getXncell() { return Layers.at(0).getXncell(); }
+	int getYncell() { return Layers.at(0).getYncell(); }
+	int getNoLayers() { return Layers.size(); }
 
 	vector<val_T> getValues(unsigned k) {return Layers.at(k).getValues(); };
 
-	void setValue(unsigned id, unsigned k, val_T value)
+	void setValue(int id, unsigned k, val_T value)
 	{
 		if (id > Layers.at(0).getXncell() * Layers.at(0).getYncell())
 		{
