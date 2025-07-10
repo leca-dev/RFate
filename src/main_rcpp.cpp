@@ -235,11 +235,13 @@ Logger logg;
 
 void saveFATE(string objFileName)
 {
+  static auto const flags = boost::archive::no_header | boost::archive::no_tracking;
+  
 	// Create an output archive
 	// ofstream ofs(objFileName.c_str(), fstream::binary | fstream::out);
   ofstream ofs(objFileName.c_str(), std::ios::binary);
   // boost::archive::text_oarchive ar(ofs);
-	boost::archive::binary_oarchive ar(ofs);
+	boost::archive::binary_oarchive ar(ofs, flags);
 	ar << simulMap; // Write data
 	ofs.close();
 
