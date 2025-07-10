@@ -1956,7 +1956,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       { // loop on PFG
         //logg.info(">>>>> PFG ", fg);
         vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
-        GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        GUInt32 *abunValues2 = new GUInt32[m_Mask.getXncell()*m_Mask.getYncell()];
         for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
           abunValues2[pixId] = 0;
@@ -1966,7 +1966,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         { // loop on Stratum
           //logg.info(">>>>> Stratum ", strat);
           // Calculate abundance values.
-          GUInt16 *abunValues1 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+          GUInt32 *abunValues1 = new GUInt32[m_Mask.getXncell()*m_Mask.getYncell()];
           for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
           {
             abunValues1[pixId] = 0;
@@ -2061,7 +2061,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       for (int strat=1; strat<m_glob_params.getNoStrata()+1; strat++)
       { // loop on Stratum
         // Calculate abundance values.
-        GUInt16 *abunValues3 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        GUInt32 *abunValues3 = new GUInt32[m_Mask.getXncell()*m_Mask.getYncell()];
         for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
           abunValues3[pixId] = 0;
@@ -2228,7 +2228,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       logg.info(">>> Saving seeds after dispersal");
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
-        GUInt16 *seedValues = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
+        float *seedValues = new float[m_Mask.getXncell()*m_Mask.getYncell()];
         
         // fill our file pix by pix
         omp_set_num_threads( m_glob_params.getNoCPU() );
