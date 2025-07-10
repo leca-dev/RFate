@@ -69,9 +69,9 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, unsigned noPert, uns
 			logg.error("!!! Wrong number of parameters provided for PROP_KILLED (",
               m_PropKilled.size(), " instead of ", noPert, "). Please check!");
 		}
-		for (unsigned i=1; i<m_PropKilled.size(); i++)
+		for (int propKilled : m_PropKilled)
 		{
-		  if (m_PropKilled[i] < 0 || m_PropKilled[i] > 100)
+		  if (propKilled < 0 || propKilled > 100)
 		  {
 		    logg.error("!!! PROP_KILLED values must be superior or equal to 0, and inferior or equal to 100. Please check!");
 		  }
@@ -183,9 +183,9 @@ FGresponse::FGresponse(const string& PFG_PerturbationsFile, unsigned noPert, uns
 			logg.error("!!! Wrong number of parameters provided for ACTIVATED_SEED (",
               m_ActiveSeeds.size(), " instead of ", noPert, "). Please check!");
 		}
-		for(unsigned i=1; i<m_ActiveSeeds.size(); i++)
+		for (int activeSeeds : m_ActiveSeeds)
 		{
-		  if (m_ActiveSeeds[i] < 0 || m_ActiveSeeds[i] > 100)
+		  if (activeSeeds < 0 || activeSeeds > 100)
 		  {
 		    logg.error("!!! ACTIVATED_SEED values must be superior or equal to 0, and inferior or equal to 100. Please check!");
 		  }

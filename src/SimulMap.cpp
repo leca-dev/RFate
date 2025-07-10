@@ -575,14 +575,14 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
       vector< vector<double> > newMaps; // DOUBLE VALUES
       newMaps.reserve(noFiles);
       if (strcmp(typeFile.c_str(),"habSuit")==0 || strcmp(typeFile.c_str(),"dist")==0 | strcmp(typeFile.c_str(),"aliens")==0){
-        for (unsigned file_id=0; file_id<noFiles; file_id++)
+        for (string newName : newNameFiles)
         {
-          newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], 0.0, 1.0 ) );
+          newMaps.emplace_back( ReadMask<double>( newName, 0.0, 1.0 ) );
         }
       } else if (strcmp(typeFile.c_str(),"drought")==0){
-        for (unsigned file_id=0; file_id<noFiles; file_id++)
+        for (string newName : newNameFiles)
         {
-          newMaps.emplace_back( ReadMask<double>( newNameFiles[file_id], -5000.0, 1000.0 ) );
+          newMaps.emplace_back( ReadMask<double>( newName, -5000.0, 1000.0 ) );
         }
       }
       if (strcmp(typeFile.c_str(),"habSuit")==0){ setEnvSuitMap(SpatialStack<double, double>( &m_Coord, newMaps));
@@ -594,9 +594,9 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
     {
       vector< vector<int> > newMaps; // INTEGER VALUES
       newMaps.reserve(noFiles);
-      for (unsigned file_id=0; file_id<noFiles; file_id++)
+      for (string newName : newNameFiles)
       {
-        newMaps.emplace_back( ReadMask<int>( newNameFiles[file_id], 0.0, 1.0 ) );
+        newMaps.emplace_back( ReadMask<int>( newName, 0.0, 1.0 ) );
       }
       if (strcmp(typeFile.c_str(),"mask")==0)
       {
@@ -684,9 +684,8 @@ void SimulMap::DoSuccession()
   /* Do succession only on points within mask */
   omp_set_num_threads(m_glob_params.getNoCPU());
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (int ID=0; ID<static_cast<int>(m_MaskCells.size()); ID++)
+  for (int cell_ID : m_MaskCells)
   {
-    int cell_ID = m_MaskCells[ID];
     m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
   }
   if (m_glob_params.getDoHabSuitability())
@@ -728,15 +727,14 @@ void SimulMap::DoAliensIntroduction(int yr)
   /* Do succession only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (int ID=0; ID<static_cast<int>(m_MaskCells.size()); ID++)
+  for (int cell_ID : m_MaskCells)
   {
-    int cell_ID = m_MaskCells[ID];
     for (int fg = 0; fg<m_glob_params.getNoFG(); fg++)
     {
       if (applyIntro[fg] && m_CondInitMap(cell_ID, fg)>0.0)
       {
-        m_SuccModelMap(cell_ID)->setSeedRain(fg, static_cast<int>(m_SuccModelMap(cell_ID)->getSeedRain(fg) +
-          static_cast<int>(m_glob_params.getSeedingInput() * m_CondInitMap(cell_ID, fg))));
+        m_SuccModelMap(cell_ID)->setSeedRain(fg, m_SuccModelMap(cell_ID)->getSeedRain(fg) +
+          static_cast<int>(m_glob_params.getSeedingInput() * m_CondInitMap(cell_ID, fg)));
       }
     } //end loop on PFGs
   } // end loop on cells
@@ -1350,9 +1348,8 @@ void SimulMap::DoDroughtDisturbance_part1()
   omp_set_num_threads(m_glob_params.getNoCPU());
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
 
-  for (int ID=0; ID<m_MaskCells.size(); ID++)
+  for (int cell_ID : m_MaskCells)
   { // loop on pixels
-    int cell_ID = m_MaskCells[ID];
     vector<int> tmpAbund(noStrata+1, 0);
     double maxVal = 0.0;
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1396,9 +1393,8 @@ void SimulMap::DoDroughtDisturbance_part1()
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
   
-  for (int ID=0; ID<m_MaskCells.size(); ID++)
+  for (int cell_ID : m_MaskCells)
   {
-    int cell_ID = m_MaskCells[ID];
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
     { // loop on PFG
       m_IsDroughtMap(cell_ID, fg) = 0;
@@ -1461,9 +1457,8 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
     omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
     
-    for (int ID=0; ID<m_MaskCells.size(); ID++)
+    for (int cell_ID : m_MaskCells)
     { // loop on pixels
-      int cell_ID = m_MaskCells[ID];
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
         /* create a copy of FG parameters to simplify and speed up the code */
@@ -1481,9 +1476,8 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
     omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
     
-    for (int ID=0; ID<m_MaskCells.size(); ID++)
+    for (int cell_ID : m_MaskCells)
     { // loop on pixels
-      int cell_ID = m_MaskCells[ID];
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
         /* create a copy of FG parameters to simplify and speed up the code */
@@ -1581,9 +1575,8 @@ void SimulMap::DoDisturbance(int yr)
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
   
-  for (int ID=0; ID<m_MaskCells.size(); ID++)
+  for (int cell_ID : m_MaskCells)
   {
-    int cell_ID = m_MaskCells[ID];
     double randi = random_01(rng);
     for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
     { // loop on disturbances
@@ -1973,9 +1966,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           }
           bool positiveVal1 = false;
 #pragma omp parallel for ordered
-          for (int pixId=0; pixId<m_MaskCells.size(); pixId++)
+          for (int cell_ID : m_MaskCells)
           { // loop on pixels
-            int cell_ID = m_MaskCells[pixId];
             int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( bkStratAges[strat-1] , bkStratAges[strat] - 1 ));
             abunValues1[cell_ID] = abundTmp;
             abunValues2[cell_ID] += abundTmp;
@@ -2068,9 +2060,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         }
         bool positiveVal3 = false;
 #pragma omp parallel for ordered
-        for (int pixId=0; pixId<m_MaskCells.size(); pixId++)
+        for (int cell_ID : m_MaskCells)
         { // loop on pixels
-          int cell_ID = m_MaskCells[pixId];
           int abundTmp = 0;
           for (unsigned fg=0; fg<m_FGparams.size(); fg++)
           { // loop on PFG
@@ -2138,9 +2129,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       {
         soilValues[pixId] = 0;
       }
-      for (int ID=0; ID<m_MaskCells.size(); ID++)
+      for (int cell_ID : m_MaskCells)
       {
-        int cell_ID = m_MaskCells[ID];
         soilValues[cell_ID] = m_SuccModelMap(cell_ID)->getSoilResources();
       }
       // Create the output file.
@@ -2160,8 +2150,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       );
       if (rasterAccess > 0)
       {
-        logg.warning("Writing ", newFile, " raster: acces status ",
-                     rasterAccess);
+        logg.warning("Writing ", newFile, " raster: acces status ", rasterAccess);
       }
       GDALClose( rasOutput ); // Once we're done, close properly the dataset
       
@@ -2187,9 +2176,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         {
           lightValues[pixId] = 0;
         }
-        for (int ID=0; ID<m_MaskCells.size(); ID++)
+        for (int cell_ID : m_MaskCells)
         {
-          int cell_ID = m_MaskCells[ID];
           lightValues[cell_ID] = ResourceToDouble(m_SuccModelMap(cell_ID)->getLightResources().getResource(strat));
         }
         
@@ -2237,10 +2225,9 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         {
           seedValues[pixId] = 0;
         }
-        for (int ID=0; ID<m_MaskCells.size(); ID++)
+        for (int cell_ID : m_MaskCells)
         {
-          int cell_ID = m_MaskCells[ID];
-          seedValues[cell_ID] = m_SeedMapOut(cell_ID,fg);
+          seedValues[cell_ID] = m_SeedMapOut(cell_ID, fg);
         }
         
         // Create the output file only if the PFG is present somewhere.

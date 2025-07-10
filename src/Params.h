@@ -89,9 +89,9 @@ namespace par
 		try
 		{
 			const vector<string> vals = data.at(key);
-			for (unsigned i=0; i < vals.size(); i++)
+			for (auto vals_i : vals)
 			{
-				result.push_back(str_convert<T>(vals[i]));
+				result.push_back(str_convert<T>(vals_i));
 			}
 		}
 		catch(const out_of_range& ex)

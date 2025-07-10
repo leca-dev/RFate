@@ -93,7 +93,7 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 		}
 
 		/* initialize the position within the legion (index of the cohort) */
-		int i = 0;
+		unsigned i = 0;
 		while (true)
 		{ // recursive infinite loop
 

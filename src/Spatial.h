@@ -733,9 +733,9 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 	GDALClose( rasInput );
 
 	/* check for values out of range */
-	for (int cell_ID=0; cell_ID<static_cast<int>(res.size()); cell_ID++)
+	for (T res_val : res)
 	{
-		if (res[cell_ID]<lim_inf || res[cell_ID]>lim_sup)
+		if (res_val < lim_inf || res_val > lim_sup)
 		{
 			logg.error("!!! This map contains element that are not included between ",
                  lim_inf, " and ", lim_sup, "!\n",

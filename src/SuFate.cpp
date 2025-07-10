@@ -506,7 +506,7 @@ void SuFate::DoSuccessionPart2(vector<int> isDrought)
     int SeedInput, AvailSeeds;
     if (FGparams->getIsSeeded() == 1)
     {
-      SeedInput = max(getSeedInput(fg), static_cast<int>(getSeedRain(fg)));
+      SeedInput = max(getSeedInput(fg), getSeedRain(fg));
       //SeedInput = getSeedInput(fg);
     } else
     {
