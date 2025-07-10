@@ -1994,8 +1994,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
             string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+
               "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
             //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
-            //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt16, NULL );
-            GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+            //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt32, NULL );
+            GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt32, NULL );
             CPLAssert( rasOutput != NULL );
             GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
             GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
@@ -2090,7 +2090,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           
           // Create the output file only if the PFG is present somewhere.
           string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+to_string(year)+"_allPFG_STRATA_"+to_string(strat)+prevFile_path.extension().string();
-          GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
+          GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt32, NULL );
           CPLAssert( rasOutput != NULL );
           GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
           GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
@@ -2207,7 +2207,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
         CPLErr rasterAccess = GDALRasterIO(
           hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-          lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt32, 0, 0
+          lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
         );
         if (rasterAccess > 0)
         {
@@ -2256,7 +2256,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
         CPLErr rasterAccess = GDALRasterIO(
           hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-          seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt32, 0, 0
+          seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
         );
         if (rasterAccess > 0)
         {
