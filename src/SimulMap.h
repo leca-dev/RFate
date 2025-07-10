@@ -230,7 +230,7 @@ class SimulMap
 			is_equal = is_equal && ( *(m_SuccModelMap.getCoordinates()) == *( o.m_SuccModelMap.getCoordinates() ) );
 			omp_set_num_threads( m_glob_params.getNoCPU() );
 			#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-			for (int i=0; i<static_cast<int>(m_SuccModelMap.getTotncell()); i++)
+			for (int i=0; i<m_SuccModelMap.getTotncell(); i++)
 			{
 				is_equal = is_equal && ( *(m_SuccModelMap(i)) == *(o.m_SuccModelMap(i)) );
 			}

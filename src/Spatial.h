@@ -134,7 +134,7 @@ class Coordinates
 	 */
 	Coordinates(T xmin, T xmax, T xres, T ymin, T ymax, T yres) :
 	Xmin(xmin), Xmax(xmax), Xres(xres), Ymin(ymin), Ymax(ymax), Yres(yres),
-	Xncell(unsigned ((xmax - xmin) / xres)), Yncell(unsigned ((ymax - ymin) / yres)),
+	Xncell((xmax - xmin) / xres), Yncell((ymax - ymin) / yres),
 	Totncell(this->Xncell * this->Yncell)
 	{
 		/* Nothing to do */
@@ -733,7 +733,7 @@ vector< T > ReadRaster(string file_name, double lim_inf, double lim_sup, bool pr
 	GDALClose( rasInput );
 
 	/* check for values out of range */
-	for (unsigned cell_ID=0; cell_ID<res.size(); cell_ID++)
+	for (int cell_ID=0; cell_ID<static_cast<int>(res.size()); cell_ID++)
 	{
 		if (res[cell_ID]<lim_inf || res[cell_ID]>lim_sup)
 		{

@@ -93,7 +93,7 @@ void Legion::addCohort(const int& cSize, const int& ay, const int& ao)
 		}
 
 		/* initialize the position within the legion (index of the cohort) */
-		unsigned i = 0;
+		int i = 0;
 		while (true)
 		{ // recursive infinite loop
 
@@ -232,7 +232,7 @@ void Legion::removeCohort(const int& ay, const int& ao)
 	int minAge = m_CohortList.front().getAy(), maxAge = m_CohortList.back().getAo();
 
 	/* initialize the position within the legion (index of the cohort) */
-	unsigned i = 0;
+	int i = 0;
 	if (tempAy > maxAge || tempAo < minAge)
 	{ /* 1. DELETE NOTHING : outside the legion */
 		return;

@@ -173,7 +173,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   logg.info("> build simulation mask (study area)...");
   m_Mask = SpatialMap<double, int>(m_Coord_ptr, ReadMask<int>( file_of_params.getMask(), 0.0, 1.0, true ) );
   m_MaskCells.reserve(m_Mask.getTotncell());
-  for (int cell_ID=0; cell_ID<static_cast<int>(m_Mask.getTotncell()); cell_ID++)
+  for (int cell_ID=0; cell_ID<m_Mask.getTotncell(); cell_ID++)
   {
     if (m_Mask(cell_ID) == 1)
     {
@@ -415,7 +415,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   logg.info("> create a succession model within each pixel...");
   vector< SuFatePtr > succModel_ptr_list; // vector of ptr on a succession model
   succModel_ptr_list.reserve(m_Mask.getTotncell());
-  for (int i=0; i<static_cast<int>(m_Mask.getTotncell()); i++)
+  for (int i=0; i<m_Mask.getTotncell(); i++)
   {
     SuFatePtr succModel_ptr; // ptr on succession model
     if (m_glob_params.getDoHabSuitability() == false)
@@ -444,7 +444,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 SimulMap::~SimulMap()
 {
   /* delete all Succession Models */
-  for (int i=0; i<static_cast<int>(m_Mask.getTotncell()); i++)
+  for (int i=0; i<m_Mask.getTotncell(); i++)
   {
     delete m_SuccModelMap(i);
   }
@@ -605,7 +605,7 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
         /* If studied area changed, change also the ids of used cells */
         vector<int> newMaskCells;
         newMaskCells.reserve(m_Mask.getTotncell());
-        for (int cell_ID=0; cell_ID<static_cast<int>(m_Mask.getTotncell()); cell_ID++)
+        for (int cell_ID=0; cell_ID<m_Mask.getTotncell(); cell_ID++)
         {
           if (m_Mask(cell_ID) == 1)
           {
@@ -856,10 +856,10 @@ vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> ava
           {
             int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=static_cast<int>(*it1) && // current cell
+                id!=*it1 && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -892,10 +892,10 @@ vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> ava
           {
             int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=static_cast<int>(*it1) && // current cell
+                id!=*it1 && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -957,10 +957,10 @@ vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> ava
           {
             int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=static_cast<int>(*it1) && // current cell
+                id!=*it1 && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -1012,10 +1012,10 @@ vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> ava
           {
             int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=static_cast<int>(*it1) && // current cell
+                id!=*it1 && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -1030,7 +1030,7 @@ vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> ava
         } // end loop on neighCell
         if (accumulate(soilTmp.begin(),soilTmp.end(),0)>0)
         {
-          unsigned maxCell = neighCell[distance(soilTmp.begin(),max_element(soilTmp.begin(),soilTmp.end()))];
+          int maxCell = neighCell[distance(soilTmp.begin(),max_element(soilTmp.begin(),soilTmp.end()))];
           if (find(postCell.begin(),postCell.end(),maxCell)==postCell.end() && find(preCell.begin(),preCell.end(),maxCell)==preCell.end())
           {
             preCell.push_back(maxCell);
@@ -1049,10 +1049,10 @@ vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> ava
           {
             int id = *it1+xx*m_Mask.getYncell()+yy;
             if (id>=0 && // border precaution
-                id<static_cast<int>(m_Mask.getTotncell()) && // border precaution
+                id<m_Mask.getTotncell() && // border precaution
                 m_Mask(id)==1 && // studied area
                 find(availCells.begin(),availCells.end(),id)!=availCells.end() && // not already burnt
-                id!=static_cast<int>(*it1) && // current cell
+                id!=*it1 && // current cell
                 find(postCell.begin(),postCell.end(),id)==postCell.end())
             { // not already burnt
               neighCell.push_back(id);
@@ -1241,7 +1241,7 @@ void SimulMap::DoFireDisturbance(int yr)
               {
                 int id = *it1+yy+xx*m_Mask.getYncell();
                 if ( id>=0 && /* border precaution */
-  id<static_cast<int>(m_Mask.getTotncell()) && /* border precaution */
+  id<m_Mask.getTotncell() && /* border precaution */
   find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
   m_Mask(id)==1)
                 { // studied area
@@ -1269,7 +1269,7 @@ void SimulMap::DoFireDisturbance(int yr)
               {
                 int id = *it1+yy+xx*m_Mask.getYncell();
                 if ( id>=0 && /* border precaution */
-  id<static_cast<int>(m_Mask.getTotncell()) && /* border precaution */
+  id<m_Mask.getTotncell() && /* border precaution */
   find(burntCell.begin(),burntCell.end(),id)==burntCell.end() && /* not already burnt */
   m_Mask(id)==1)
                 { // studied area
@@ -1957,7 +1957,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         //logg.info(">>>>> PFG ", fg);
         vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
         GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
+        for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
           abunValues2[pixId] = 0;
         }
@@ -1967,7 +1967,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           //logg.info(">>>>> Stratum ", strat);
           // Calculate abundance values.
           GUInt16 *abunValues1 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-          for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
+          for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
           {
             abunValues1[pixId] = 0;
           }
@@ -2062,7 +2062,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       { // loop on Stratum
         // Calculate abundance values.
         GUInt16 *abunValues3 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
+        for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
           abunValues3[pixId] = 0;
         }
@@ -2134,7 +2134,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       // fill our file pix by pix
       omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-      for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
+      for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
       {
         soilValues[pixId] = 0;
       }
@@ -2183,7 +2183,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         // fill our file pix by pix
         omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
+        for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
           lightValues[pixId] = 0;
         }
@@ -2233,7 +2233,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         // fill our file pix by pix
         omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
+        for (int pixId=0; pixId<m_Mask.getTotncell(); pixId++)
         {
           seedValues[pixId] = 0;
         }
