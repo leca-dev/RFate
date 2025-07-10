@@ -235,13 +235,14 @@ Logger logg;
 
 void saveFATE(string objFileName)
 {
-  static auto const flags = boost::archive::no_header | boost::archive::no_tracking;
+  // static auto const flags = boost::archive::no_header | boost::archive::no_tracking;
   
 	// Create an output archive
 	// ofstream ofs(objFileName.c_str(), fstream::binary | fstream::out);
   ofstream ofs(objFileName.c_str(), std::ios::binary);
   // boost::archive::text_oarchive ar(ofs);
-	boost::archive::binary_oarchive ar(ofs, flags);
+	// boost::archive::binary_oarchive ar(ofs, flags);
+	boost::archive::binary_oarchive ar(ofs);
 	ar << simulMap; // Write data
 	ofs.close();
 
@@ -253,6 +254,14 @@ void saveFATE(string objFileName)
 	// if (compress_ok != 0)
 	// {
 	// 	logg.warning("Compression failed for ", objFileName);
+	// }
+	// std::vector<char> compressed;
+	// {
+	//   boost::iostreams::filtering_ostream fos;
+	//   fos.push(boost::iostreams::bzip2_compressor());
+	//   fos.push(boost::iostreams::back_inserter(compressed));
+	//   
+	//   boost::iostreams::copy(ss, fos);
 	// }
 }
 

@@ -530,8 +530,7 @@ void SimulMap::StopSeeding()
 
 void SimulMap::DoFileChange(string newChangeFile, string typeFile)
 {
-  logg.info("Try to get change parameters :\nFrom file ", newChangeFile, " (",
-                                  typeFile, ")");
+  logg.info("Try to get change parameters :\nFrom file ", newChangeFile, " (", typeFile, ")");
   
   /* open newChangeFile */
   ifstream file(newChangeFile.c_str(), ios::in);
@@ -669,6 +668,12 @@ void SimulMap::DoSuccession()
   /*	time_t start,end;
   time(&start);*/
   
+  if (m_glob_params.getDoHabSuitability())
+  {
+    /* Defined the new environmental reference value for this year */
+    this->UpdateEnvSuitRefMap(m_glob_params.getHabSuitMode());
+  }
+  
   vector <vector<int> > isDrought(m_Mask.getTotncell(),vector<int>(m_glob_params.getNoFG(),0));
   if (m_glob_params.getDoDroughtDisturbances())
   {
@@ -687,11 +692,6 @@ void SimulMap::DoSuccession()
   for (int cell_ID : m_MaskCells)
   {
     m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
-  }
-  if (m_glob_params.getDoHabSuitability())
-  {
-    /* Defined the new environmental reference value for next year */
-    this->UpdateEnvSuitRefMap(m_glob_params.getHabSuitMode());
   }
   
   /*  time(&end);
@@ -756,7 +756,7 @@ vector<int> SimulMap::DoIgnition(int dist, vector<int> availCells)
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
   UniReal random_01(0.0, 1.0);
-  
+
   int noFires = m_glob_params.getFireIgnitNo()[dist];
   if (m_glob_params.getFireIgnitMode()==2)
   { /* No of starting fires : normal distribution */
@@ -767,9 +767,9 @@ vector<int> SimulMap::DoIgnition(int dist, vector<int> availCells)
     UniInt distrib(0,m_glob_params.getFireIgnitNoHist().size()-1);
     noFires = m_glob_params.getFireIgnitNoHist()[distrib(rng)];
   }
-  
+
   vector<int> startCell;
-  
+
   /* Randomly distributed over the landscape */
   if (m_glob_params.getFireIgnitMode()==1 || m_glob_params.getFireIgnitMode()==2 || m_glob_params.getFireIgnitMode()==3)
   {
@@ -1180,7 +1180,7 @@ void SimulMap::DoFireDisturbance(int yr)
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
-  
+
   /* Do fire disturbances depending on their frequency */
   vector<bool> applyDist;
   for (vector<int>::const_iterator it=m_glob_params.getFreqFireDist().begin(); it!=m_glob_params.getFreqFireDist().end(); ++it)
@@ -1191,7 +1191,7 @@ void SimulMap::DoFireDisturbance(int yr)
     } else { applyDist.push_back(false);
     }
   }
-  
+
   /* If fire disturbances occur this year :
   apply ignition function
   apply propagation function
@@ -1213,14 +1213,14 @@ void SimulMap::DoFireDisturbance(int yr)
     int ea = m_glob_params.getFireNeighCC()[1];
     int so = m_glob_params.getFireNeighCC()[2];
     int we = m_glob_params.getFireNeighCC()[3];
-    
+
     if (m_glob_params.getFireNeighMode()==3 /* "extentRand" */)
     { // CASE 2a --------------------------------------------------------------
       UniInt distrib_no(0,m_glob_params.getFireNeighCC()[0]);
       UniInt distrib_ea(0,m_glob_params.getFireNeighCC()[1]);
       UniInt distrib_so(0,m_glob_params.getFireNeighCC()[2]);
       UniInt distrib_we(0,m_glob_params.getFireNeighCC()[3]);
-      
+
       for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
       {
         if (applyDist[dist])
@@ -1296,7 +1296,7 @@ void SimulMap::DoFireDisturbance(int yr)
       }
     }
   }
-  
+
   /* If a cell has been burnt by several disturbances, only the most severe is applied */
   for (int dist2=m_glob_params.getNoFireDist()-1; dist2>0; dist2--)
   {
@@ -1315,11 +1315,11 @@ void SimulMap::DoFireDisturbance(int yr)
       }
     }
   }
-  
+
   /* Do fire disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  
+
   for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
   { // loop on disturbances
     DoUpdateTslf(ALLburntCell[dist]);
@@ -1771,6 +1771,33 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
       envSuitMap.emplace_back( ReadMask<double>( file_of_params.getFGMapsHabSuit()[fg_id], 0.0, 1.0 ) );
     }
     m_EnvSuitMap = SpatialStack<double, double>(&m_Coord, envSuitMap);
+    
+    
+    logg.info("***** Update habitat suitability reference maps...");
+    vector< double >  envSuitRefVal( m_Mask.getTotncell(), 0.5 );
+    vector< vector< double > > envSuitRefMap; // environmental suitability year reference of fgs
+    envSuitRefMap.reserve(m_FGparams.size());
+    for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
+    {
+      envSuitRefMap.emplace_back( envSuitRefVal );
+    }
+    m_EnvSuitRefMap = SpatialStack<double, double>(&m_Coord, envSuitRefMap);
+  }
+  
+  /* update fg environmental suitability conditions if needed */
+  if (file_of_params.getFGMapsHabSuit()[0] != "0")
+  {
+    logg.info("***** Update out seed map...");
+    vector< vector< int > > emptyMapInt;
+    emptyMapInt.reserve(m_FGparams.size());
+    vector< int >  emptyValInt( m_Mask.getTotncell(), 0 );
+    for (int fg_id=0; fg_id<m_FGparams.size(); fg_id++)
+    {
+      emptyMapInt.emplace_back( emptyValInt );
+    }
+    
+    // m_SeedMapIn = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
+    m_SeedMapOut = SpatialStack<double, int>(&m_Coord, emptyMapInt);
   }
   
   /* update disturbances mask if needed */
