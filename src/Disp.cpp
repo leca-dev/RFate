@@ -256,7 +256,7 @@ void Disp::GetPropProb()
 // TODO (damien#1#): make possible to consider different x and y resolution
 
 
-void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> maskCells)
+void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCells)
 {
 	omp_set_num_threads( noCPU );
 	#pragma omp parallel for schedule(dynamic) if(noCPU>1)
@@ -319,7 +319,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<unsigned> ma
 			SpatialMap<double, int> new_SeedMapOut(SpatialMap<double, int>(m_SeedMapOut->getCoordinates(fg), m_SeedMapOut->getValues(fg)));
 
 			/* Do dispersal for each cell containing seeds */
-			for(vector<unsigned>::iterator cell_ID=maskCells.begin(); cell_ID!=maskCells.end(); ++cell_ID)
+			for(vector<int>::iterator cell_ID=maskCells.begin(); cell_ID!=maskCells.end(); ++cell_ID)
 			{ // loop on pixels
 
 				unsigned x = *cell_ID % m_SeedMapIn->getXncell();

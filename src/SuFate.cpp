@@ -36,7 +36,7 @@ m_GSP(new GSP())
   /* Nothing to do */
 }
 
-SuFate::SuFate(unsigned cellID) : m_CellID(cellID),
+SuFate::SuFate(int cellID) : m_CellID(cellID),
 m_Comm(Community()), m_LightR(LightResources()), m_SoilR(0.0),
 m_SeedRainMap(new SpatialStack<double,int>()), m_SeedProdMap(new SpatialStack<double,int>()),
 m_GSP(new GSP())
@@ -44,7 +44,7 @@ m_GSP(new GSP())
   /* Nothing to do */
 }
 
-SuFate::SuFate(unsigned cellID, Community comm, LightResources lightR, double soilR,
+SuFate::SuFate(int cellID, Community comm, LightResources lightR, double soilR,
                IntMapPtr seedRainMap, IntMapPtr seedProdMap, GSPPtr gspPtr) : m_CellID(cellID),
                m_Comm(comm), m_LightR(lightR), m_SoilR(soilR),
                m_SeedRainMap(seedRainMap), m_SeedProdMap(seedProdMap),
@@ -66,7 +66,7 @@ SuFate::~SuFate()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-unsigned SuFate::getCellID() const { return m_CellID; }
+int SuFate::getCellID() const { return m_CellID; }
 const Community SuFate::getCommunity() const { return m_Comm; }
 LightResources SuFate::getLightResources() { return m_LightR; }
 double SuFate::getSoilResources() { return m_SoilR; }
@@ -457,7 +457,7 @@ int SuFate::getSeedInput(int fg)
  Maxyears is the maximum time to run this succession */
 
 
-void SuFate::DoSuccessionPart1(vector<unsigned> isDrought)
+void SuFate::DoSuccessionPart1(vector<int> isDrought)
 {
   unsigned noFG = m_Comm.getFuncGroupList().size();
   if (noFG > 0)
@@ -481,7 +481,7 @@ void SuFate::DoSuccessionPart1(vector<unsigned> isDrought)
 
 /* -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- */
 
-void SuFate::DoSuccessionPart2(vector<unsigned> isDrought)
+void SuFate::DoSuccessionPart2(vector<int> isDrought)
 {
   bool doLight = m_GSP->getDoLightInteraction();
   bool doSoil = m_GSP->getDoSoilInteraction();

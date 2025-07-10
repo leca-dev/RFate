@@ -93,7 +93,7 @@ class SuFateH : public SuFate
 	 *
 	 *	\param cellID : id of pixel this succession model is linked to
 	 */
-	SuFateH(unsigned cellID);
+	SuFateH(int cellID);
 
 	/*!
 	 *	\brief Full constructor
@@ -114,7 +114,7 @@ class SuFateH : public SuFate
 	 * \param envSuitRefMapPtr : pointer to SpatialStack class object containing
 	 * habitat reference maps (between 0 and 1) for each FG
 	 */
-	SuFateH(unsigned cellID, Community comm, LightResources lightR, double soilR,
+	SuFateH(int cellID, Community comm, LightResources lightR, double soilR,
 	IntMapPtr seedRainMap, IntMapPtr SeedProdMap, GSPPtr gspPtr,
 	DoubleMapPtr envSuitMapPtr, DoubleMapPtr envSuitRefMapPtr);
 

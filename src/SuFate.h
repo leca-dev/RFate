@@ -65,7 +65,7 @@ class SuFate
 	protected:
 
 	/* pixel attributes */
-	unsigned m_CellID; /*!< Cell grid id */
+	int m_CellID; /*!< Cell grid id */
 
 	/* community attributes */
 	Community m_Comm; /*!< Vector of FG Communities : state of each FG population at one time in one space */
@@ -119,7 +119,7 @@ class SuFate
 	 *
 	 *	\param cellID : id of pixel this succession model is linked to
 	 */
-	SuFate(unsigned cellID);
+	SuFate(int cellID);
 
 	/*!
 	 *	\brief Full constructor
@@ -136,7 +136,7 @@ class SuFate
 	 * related parameters, and modules specific (e.g number of strata, number of
 	 * disturbances...)
 	 */
-	SuFate(unsigned cellID, Community comm, LightResources lightR, double soilR,
+	SuFate(int cellID, Community comm, LightResources lightR, double soilR,
 	IntMapPtr seedRainMap, IntMapPtr SeedProdMap, GSPPtr gspPtr);
 
 	/*-------------------------------------------*/
@@ -169,7 +169,7 @@ class SuFate
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
-	unsigned getCellID() const;
+	int getCellID() const;
 	const Community getCommunity() const;
 	LightResources getLightResources();
 	double getSoilResources();
@@ -400,7 +400,7 @@ class SuFate
 	 *	\param isDrought : vector of boolean indicating for each PFG is drought
 	 * effect must be modelled
 	 */
-	void DoSuccessionPart1(vector<unsigned> isDrought);
+	void DoSuccessionPart1(vector<int> isDrought);
 
 	/*!
 	 *	\brief Do annual step of demographic FATE model : STEP 2
@@ -420,7 +420,7 @@ class SuFate
 	 *	\param isDrought : vector of boolean indicating for each PFG is drought
 	 * effect must be modelled
 	 */
-	void DoSuccessionPart2(vector<unsigned> isDrought);
+	void DoSuccessionPart2(vector<int> isDrought);
 
 	/*-------------------------------------------*/
 

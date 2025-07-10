@@ -34,13 +34,13 @@ m_EnvSuitRefMapPtr(new SpatialStack<double,double>())
 	/* Nothing to do */
 }
 
-SuFateH::SuFateH(unsigned cellID) : SuFate(cellID), m_EnvSuitMapPtr(new SpatialStack<double,double>()), 
+SuFateH::SuFateH(int cellID) : SuFate(cellID), m_EnvSuitMapPtr(new SpatialStack<double,double>()), 
 m_EnvSuitRefMapPtr(new SpatialStack<double,double>())
 {
 	/* Nothing to do */
 }
 
-SuFateH::SuFateH(unsigned cellID, Community comm, LightResources lightR, double soilR,
+SuFateH::SuFateH(int cellID, Community comm, LightResources lightR, double soilR,
 IntMapPtr seedRainMap, IntMapPtr seedProdMap, GSPPtr gspPtr,
 DoubleMapPtr envSuitMapPtr, DoubleMapPtr envSuitRefMapPtr) :
 SuFate( cellID, comm, lightR, soilR, seedRainMap, seedProdMap, gspPtr), 

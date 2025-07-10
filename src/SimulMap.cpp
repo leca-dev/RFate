@@ -173,7 +173,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   logg.info("> build simulation mask (study area)...");
   m_Mask = SpatialMap<double, int>(m_Coord_ptr, ReadMask<int>( file_of_params.getMask(), 0.0, 1.0, true ) );
   m_MaskCells.reserve(m_Mask.getTotncell());
-  for (unsigned cell_ID=0; cell_ID<m_Mask.getTotncell(); cell_ID++)
+  for (int cell_ID=0; cell_ID<static_cast<int>(m_Mask.getTotncell()); cell_ID++)
   {
     if (m_Mask(cell_ID) == 1)
     {
@@ -337,7 +337,7 @@ SimulMap::SimulMap(FOPL file_of_params)
     m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(m_Coord_ptr, droughtMap);
     
-    for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     { // loop on pixels
       for (int fg=0; fg<noFG; fg++)
       { // loop on PFG
@@ -415,7 +415,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   logg.info("> create a succession model within each pixel...");
   vector< SuFatePtr > succModel_ptr_list; // vector of ptr on a succession model
   succModel_ptr_list.reserve(m_Mask.getTotncell());
-  for (unsigned i=0; i<m_Mask.getTotncell(); i++)
+  for (int i=0; i<static_cast<int>(m_Mask.getTotncell()); i++)
   {
     SuFatePtr succModel_ptr; // ptr on succession model
     if (m_glob_params.getDoHabSuitability() == false)
@@ -444,7 +444,7 @@ SimulMap::SimulMap(FOPL file_of_params)
 SimulMap::~SimulMap()
 {
   /* delete all Succession Models */
-  for (unsigned i=0; i<m_Mask.getTotncell(); i++)
+  for (int i=0; i<static_cast<int>(m_Mask.getTotncell()); i++)
   {
     delete m_SuccModelMap(i);
   }
@@ -458,7 +458,7 @@ GSP& SimulMap::getGlobalParameters() { return m_glob_params; }
 vector<FG>&  SimulMap::getFGparams() { return m_FGparams; }
 Coordinates<double>& SimulMap::getCoord() { return m_Coord; }
 SpatialMap<double, int>& SimulMap::getMask() { return m_Mask; }
-vector<unsigned>& SimulMap::getMaskCells() { return m_MaskCells; }
+vector<int>& SimulMap::getMaskCells() { return m_MaskCells; }
 SpatialStack<double, int>& SimulMap::getSeedMapIn() { return m_SeedMapIn; }
 SpatialStack<double, int>& SimulMap::getSeedMapOut() { return m_SeedMapOut; }
 SpatialStack<double, double>&  SimulMap::getEnvSuitMap() { return m_EnvSuitMap ; }
@@ -482,7 +482,7 @@ void SimulMap::setGlobalParameters(GSP globalParameters) { m_glob_params = globa
 void SimulMap::setFGparams(vector<FG> FGparams) { m_FGparams = FGparams; }
 void SimulMap::setCoord(Coordinates<double> coord) { m_Coord = coord; }
 void SimulMap::setMask(SpatialMap<double, int> mask) { m_Mask = mask; }
-void SimulMap::setMaskCells(vector<unsigned> maskCells) { m_MaskCells = maskCells; }
+void SimulMap::setMaskCells(vector<int> maskCells) { m_MaskCells = maskCells; }
 void SimulMap::setSeedMapIn(SpatialStack<double, int> seedMapIn) { m_SeedMapIn = seedMapIn; }
 void SimulMap::setSeedMapOut(SpatialStack<double, int> seedMapOut) { m_SeedMapOut = seedMapOut; }
 void SimulMap::setEnvSuitMap(SpatialStack<double, double> envSuitMap) { m_EnvSuitMap = envSuitMap; }
@@ -603,9 +603,9 @@ void SimulMap::DoFileChange(string newChangeFile, string typeFile)
         setMask(SpatialMap<double, int>( &m_Coord, newMaps[0]));
         
         /* If studied area changed, change also the ids of used cells */
-        vector<unsigned> newMaskCells;
+        vector<int> newMaskCells;
         newMaskCells.reserve(m_Mask.getTotncell());
-        for (unsigned cell_ID=0; cell_ID<m_Mask.getTotncell(); cell_ID++)
+        for (int cell_ID=0; cell_ID<static_cast<int>(m_Mask.getTotncell()); cell_ID++)
         {
           if (m_Mask(cell_ID) == 1)
           {
@@ -669,10 +669,10 @@ void SimulMap::DoSuccession()
   /*	time_t start,end;
   time(&start);*/
   
-  vector <vector<unsigned> > isDrought(m_Mask.getTotncell(),vector<unsigned>(m_glob_params.getNoFG(),0));
+  vector <vector<int> > isDrought(m_Mask.getTotncell(),vector<int>(m_glob_params.getNoFG(),0));
   if (m_glob_params.getDoDroughtDisturbances())
   {
-    for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     {
       for (int fg=0; fg<m_glob_params.getNoFG(); fg++)
       {
@@ -684,9 +684,9 @@ void SimulMap::DoSuccession()
   /* Do succession only on points within mask */
   omp_set_num_threads(m_glob_params.getNoCPU());
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  for (int ID=0; ID<static_cast<int>(m_MaskCells.size()); ID++)
   {
-    unsigned cell_ID = m_MaskCells[ID];
+    int cell_ID = m_MaskCells[ID];
     m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
   }
   if (m_glob_params.getDoHabSuitability())
@@ -728,9 +728,9 @@ void SimulMap::DoAliensIntroduction(int yr)
   /* Do succession only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  for (int ID=0; ID<static_cast<int>(m_MaskCells.size()); ID++)
   {
-    unsigned cell_ID = m_MaskCells[ID];
+    int cell_ID = m_MaskCells[ID];
     for (int fg = 0; fg<m_glob_params.getNoFG(); fg++)
     {
       if (applyIntro[fg] && m_CondInitMap(cell_ID, fg)>0.0)
@@ -753,7 +753,7 @@ void SimulMap::DoDispersal()
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCells)
+vector<int> SimulMap::DoIgnition(int dist, vector<int> availCells)
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
@@ -770,7 +770,7 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
     noFires = m_glob_params.getFireIgnitNoHist()[distrib(rng)];
   }
   
-  vector<unsigned> startCell;
+  vector<int> startCell;
   
   /* Randomly distributed over the landscape */
   if (m_glob_params.getFireIgnitMode()==1 || m_glob_params.getFireIgnitMode()==2 || m_glob_params.getFireIgnitMode()==3)
@@ -782,7 +782,7 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
     }
   } else if (m_glob_params.getFireIgnitMode()==4) /* ChaoLi probability adaptation */
   {
-    for (vector<unsigned>::iterator cell_ID=availCells.begin(); cell_ID!=availCells.end(); ++cell_ID)
+    for (vector<int>::iterator cell_ID=availCells.begin(); cell_ID!=availCells.end(); ++cell_ID)
     {
       /* Baseline proba */
       double probBL = m_glob_params.getFireIgnitLogis()[0] / (1+exp(m_glob_params.getFireIgnitLogis()[1]-m_glob_params.getFireIgnitLogis()[2]*m_TslfMap(*cell_ID)));
@@ -817,13 +817,13 @@ vector<unsigned int> SimulMap::DoIgnition(int dist, vector<unsigned int> availCe
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> start, vector<unsigned int> availCells)
+vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> availCells)
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed);
   UniReal random_01(0.0, 1.0);
 
-  vector<unsigned int> preCell, currCell, postCell, neighCell;
+  vector<int> preCell, currCell, postCell, neighCell;
   currCell = start;
   double prob = 0.0, lim = 100.0 /* maxStep */, stepCount = 0.0 /* maxStep, maxConsume */;
   lim = m_glob_params.getFireQuotaMax();
@@ -847,7 +847,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
     /* FIRST CASES : fire spread depends on a probability of the current burning cell */
     if (m_glob_params.getFirePropMode()==1)
     { // -------------------------------------------------------------------------------------
-      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
+      for (vector<int>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
         /* Get the IDs of the 8 neighbour cells */
         for (int xx=-1; xx<=1; xx++)
@@ -871,7 +871,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         prob = m_glob_params.getFirePropIntensity()[dist];
 
         /* For each neighbour cell : does the fire propagate ? */
-        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        for (vector<int>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01(rng) < prob)
           { //(rand()/(double)RAND_MAX)
@@ -883,7 +883,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
       } // end loop on currCell
     } else if (m_glob_params.getFirePropMode()==2)
     { // -------------------------------------------------------------------------------------
-      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
+      for (vector<int>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
         /* Get the IDs of the 8 neighbour cells */
         for (int xx=-1; xx<=1; xx++)
@@ -933,7 +933,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         }
 
         /* For each neighbour cell : does the fire propagate ? */
-        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        for (vector<int>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end() && random_01(rng) < prob)
           { //(rand()/(double)RAND_MAX)
@@ -948,7 +948,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
     /* SECOND CASE : fire spread depends on a probability of the 8 neighboring cells of the current burning cell */
     else if (m_glob_params.getFirePropMode()==3 /* "maxAmountFuel" */)
     { // -------------------------------------------------------------------------------------
-      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
+      for (vector<int>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
         /* Get the IDs of the 8 neighbour cells */
         for (int xx=-1; xx<=1; xx++)
@@ -969,7 +969,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         }
 
         vector<unsigned> abundTmp;
-        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        for (vector<int>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           unsigned abund = 0;
           for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1003,7 +1003,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
       } // end loop on currCell
     }  else if (m_glob_params.getFirePropMode()==4 /* "maxAmountSoil" */)
     { // -------------------------------------------------------------------------------------
-      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
+      for (vector<int>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
         /* Get the IDs of the 8 neighbour cells */
         for (int xx=-1; xx<=1; xx++)
@@ -1024,7 +1024,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
         }
 
         vector<double> soilTmp;
-        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        for (vector<int>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           soilTmp.push_back(m_SuccModelMap(*it2)->getSoilResources());
         } // end loop on neighCell
@@ -1040,7 +1040,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
       } // end loop on currCell
     }  else if (m_glob_params.getFirePropMode()==5 /* "probLandClim" */)
     { // -------------------------------------------------------------------------------------
-      for (vector<unsigned>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
+      for (vector<int>::iterator it1=currCell.begin(); it1!=currCell.end(); ++it1)
       {
         /* Get the IDs of the 8 neighbour cells */
         for (int xx=-1; xx<=1; xx++)
@@ -1060,7 +1060,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
           }
         }
 
-        for (vector<unsigned>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
+        for (vector<int>::iterator it2=neighCell.begin(); it2!=neighCell.end(); ++it2)
         {
           if (find(postCell.begin(),postCell.end(),*it2)==postCell.end() && find(preCell.begin(),preCell.end(),*it2)==preCell.end())
           {
@@ -1141,7 +1141,7 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   /* if you want to stop the fires only when you reach the quota (maxConsume & maxCell) */
   /*	if (stepCount<lim)
   {
-  vector<unsigned int> newAvailCell = m_MaskCells;
+  vector<int> newAvailCell = m_MaskCells;
   vector<unsigned>::iterator it;
   // erase cells that have already burnt
   for (vector<unsigned>::iterator cell_ID=postCell.begin(); cell_ID!=postCell.end(); ++cell_ID)
@@ -1149,8 +1149,8 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   it = find(newAvailCell.begin(),newAvailCell.end(),*cell_ID);
   newAvailCell.erase(it);
   }
-  vector<unsigned int> newStartCell = DoIgnition(dist,newAvailCell);
-  vector<unsigned int> newBurntCell = DoPropagation(dist,newStartCell,newAvailCell);
+  vector<int> newStartCell = DoIgnition(dist,newAvailCell);
+  vector<int> newBurntCell = DoPropagation(dist,newStartCell,newAvailCell);
   }
   for (vector<unsigned>::iterator cell_ID=newBurntCell.begin(); cell_ID!=newBurntCell.end(); ++cell_ID)
   {
@@ -1163,9 +1163,9 @@ vector<unsigned int> SimulMap::DoPropagation(int dist, vector<unsigned int> star
   return(postCell);
 }
 
-void SimulMap::DoUpdateTslf(vector<unsigned int> burnt)
+void SimulMap::DoUpdateTslf(vector<int> burnt)
 {
-  for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+  for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
   {
     if (find(burnt.begin(),burnt.end(),*cell_ID)!=burnt.end())
     {
@@ -1198,14 +1198,14 @@ void SimulMap::DoFireDisturbance(int yr)
   apply ignition function
   apply propagation function
   update the fire disturbances masks */
-  vector< vector<unsigned int> > ALLburntCell(m_glob_params.getNoFireDist());
+  vector< vector<int> > ALLburntCell(m_glob_params.getNoFireDist());
   if (m_glob_params.getFireIgnitMode()!=5 /* map */ && m_glob_params.getFireNeighMode()==1)
   { // CASE 1 ---------------------------------------------------------------------------------------
     for (int dist=0; dist<m_glob_params.getNoFireDist(); dist++)
     {
       if (applyDist[dist])
       {
-        vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
+        vector<int> startCell = DoIgnition(dist,m_MaskCells);
         ALLburntCell[dist] = DoPropagation(dist,startCell,m_MaskCells);;
       }
     }
@@ -1227,9 +1227,9 @@ void SimulMap::DoFireDisturbance(int yr)
       {
         if (applyDist[dist])
         {
-          vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
-          vector<unsigned int> burntCell;
-          for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
+          vector<int> startCell = DoIgnition(dist,m_MaskCells);
+          vector<int> burntCell;
+          for (vector<int>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
           {
             no = distrib_no(rng); //rand() % no + 1;
             ea = distrib_ea(rng); //rand() % ea + 1;
@@ -1259,9 +1259,9 @@ void SimulMap::DoFireDisturbance(int yr)
       {
         if (applyDist[dist])
         {
-          vector<unsigned int> startCell = DoIgnition(dist,m_MaskCells);
-          vector<unsigned int> burntCell;
-          for (vector<unsigned>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
+          vector<int> startCell = DoIgnition(dist,m_MaskCells);
+          vector<int> burntCell;
+          for (vector<int>::iterator it1=startCell.begin(); it1!=startCell.end(); ++it1)
           {
             for (int yy=(-no); yy<=so; yy++)
             {
@@ -1288,7 +1288,7 @@ void SimulMap::DoFireDisturbance(int yr)
     {
       if (applyDist[dist])
       {
-        for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+        for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
         {
           if (m_FireMap(*cell_ID, dist) == 1 )
           {
@@ -1308,7 +1308,7 @@ void SimulMap::DoFireDisturbance(int yr)
       {
         for (unsigned pos=0; pos<ALLburntCell[dist2].size(); pos++)
         {
-          vector<unsigned>::iterator it = find(ALLburntCell[dist1].begin(),ALLburntCell[dist1].end(),ALLburntCell[dist2][pos]);
+          vector<int>::iterator it = find(ALLburntCell[dist1].begin(),ALLburntCell[dist1].end(),ALLburntCell[dist2][pos]);
           if (it!=ALLburntCell[dist1].end())
           {
             ALLburntCell[dist1].erase(it);
@@ -1328,7 +1328,7 @@ void SimulMap::DoFireDisturbance(int yr)
     if (applyDist[dist] & (ALLburntCell[dist].size()>0))
     {
       logg.info("Fire this year !");
-      for (vector<unsigned>::iterator cell_ID=ALLburntCell[dist].begin(); cell_ID!=ALLburntCell[dist].end(); ++cell_ID)
+      for (vector<int>::iterator cell_ID=ALLburntCell[dist].begin(); cell_ID!=ALLburntCell[dist].end(); ++cell_ID)
       {
         for (unsigned fg=0; fg<m_FGparams.size(); fg++)
         { // loop on PFG
@@ -1350,9 +1350,9 @@ void SimulMap::DoDroughtDisturbance_part1()
   omp_set_num_threads(m_glob_params.getNoCPU());
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
 
-  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  for (int ID=0; ID<m_MaskCells.size(); ID++)
   { // loop on pixels
-    unsigned cell_ID = m_MaskCells[ID];
+    int cell_ID = m_MaskCells[ID];
     vector<int> tmpAbund(noStrata+1, 0);
     double maxVal = 0.0;
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
@@ -1396,9 +1396,9 @@ void SimulMap::DoDroughtDisturbance_part1()
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
   
-  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  for (int ID=0; ID<m_MaskCells.size(); ID++)
   {
-    unsigned cell_ID = m_MaskCells[ID];
+    int cell_ID = m_MaskCells[ID];
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
     { // loop on PFG
       m_IsDroughtMap(cell_ID, fg) = 0;
@@ -1461,9 +1461,9 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
     omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
     
-    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+    for (int ID=0; ID<m_MaskCells.size(); ID++)
     { // loop on pixels
-      unsigned cell_ID = m_MaskCells[ID];
+      int cell_ID = m_MaskCells[ID];
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
         /* create a copy of FG parameters to simplify and speed up the code */
@@ -1481,9 +1481,9 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
     omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
     
-    for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+    for (int ID=0; ID<m_MaskCells.size(); ID++)
     { // loop on pixels
-      unsigned cell_ID = m_MaskCells[ID];
+      int cell_ID = m_MaskCells[ID];
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
         /* create a copy of FG parameters to simplify and speed up the code */
@@ -1581,9 +1581,9 @@ void SimulMap::DoDisturbance(int yr)
   omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
   
-  for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+  for (int ID=0; ID<m_MaskCells.size(); ID++)
   {
-    unsigned cell_ID = m_MaskCells[ID];
+    int cell_ID = m_MaskCells[ID];
     double randi = random_01(rng);
     for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
     { // loop on disturbances
@@ -1611,7 +1611,7 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
   if (option==1)
   {
     /* draw a random number for each pixel*/
-    for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     {
       envSuitRefVal[*cell_ID] = random_01(rng); //( rand()/(double)RAND_MAX );
     }
@@ -1637,7 +1637,7 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
       
       /* draw a random number from this distribution for each pixel*/
       envSuitRefVal.resize(m_Mask.getTotncell(),0.5);
-      for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+      for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
       {
         envSuitRefVal[*cell_ID] = distrib(rng);
       }
@@ -1810,7 +1810,7 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
     m_ApplyCurrDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
     m_ApplyPostDroughtMap = SpatialStack<double, unsigned>(&m_Coord, droughtMap);
 
-    for (vector<unsigned>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
+    for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     { // loop on pixels
       for (unsigned fg=0; fg<m_FGparams.size(); fg++)
       { // loop on PFG
@@ -1957,7 +1957,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         //logg.info(">>>>> PFG ", fg);
         vector<int> bkStratAges = m_FGparams[fg].getStrata(); // get strat ages change
         GUInt16 *abunValues2 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
         {
           abunValues2[pixId] = 0;
         }
@@ -1967,15 +1967,15 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           //logg.info(">>>>> Stratum ", strat);
           // Calculate abundance values.
           GUInt16 *abunValues1 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-          for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+          for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
           {
             abunValues1[pixId] = 0;
           }
           bool positiveVal1 = false;
 #pragma omp parallel for ordered
-          for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
+          for (int pixId=0; pixId<m_MaskCells.size(); pixId++)
           { // loop on pixels
-            unsigned cell_ID = m_MaskCells[pixId];
+            int cell_ID = m_MaskCells[pixId];
             int abundTmp = static_cast<int>(m_SuccModelMap(cell_ID)->getCommunity_()->getFuncGroup_(fg)->totalNumAbund( bkStratAges[strat-1] , bkStratAges[strat] - 1 ));
             abunValues1[cell_ID] = abundTmp;
             abunValues2[cell_ID] += abundTmp;
@@ -2062,15 +2062,15 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       { // loop on Stratum
         // Calculate abundance values.
         GUInt16 *abunValues3 = new GUInt16[m_Mask.getXncell()*m_Mask.getYncell()];
-        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
         {
           abunValues3[pixId] = 0;
         }
         bool positiveVal3 = false;
 #pragma omp parallel for ordered
-        for (unsigned pixId=0; pixId<m_MaskCells.size(); pixId++)
+        for (int pixId=0; pixId<m_MaskCells.size(); pixId++)
         { // loop on pixels
-          unsigned cell_ID = m_MaskCells[pixId];
+          int cell_ID = m_MaskCells[pixId];
           int abundTmp = 0;
           for (unsigned fg=0; fg<m_FGparams.size(); fg++)
           { // loop on PFG
@@ -2134,13 +2134,13 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       // fill our file pix by pix
       omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-      for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+      for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
       {
         soilValues[pixId] = 0;
       }
-      for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+      for (int ID=0; ID<m_MaskCells.size(); ID++)
       {
-        unsigned cell_ID = m_MaskCells[ID];
+        int cell_ID = m_MaskCells[ID];
         soilValues[cell_ID] = m_SuccModelMap(cell_ID)->getSoilResources();
       }
       // Create the output file.
@@ -2183,13 +2183,13 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         // fill our file pix by pix
         omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
         {
           lightValues[pixId] = 0;
         }
-        for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+        for (int ID=0; ID<m_MaskCells.size(); ID++)
         {
-          unsigned cell_ID = m_MaskCells[ID];
+          int cell_ID = m_MaskCells[ID];
           lightValues[cell_ID] = ResourceToDouble(m_SuccModelMap(cell_ID)->getLightResources().getResource(strat));
         }
         
@@ -2233,13 +2233,13 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         // fill our file pix by pix
         omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-        for (unsigned pixId=0; pixId<m_Mask.getTotncell(); pixId++)
+        for (int pixId=0; pixId<static_cast<int>(m_Mask.getTotncell()); pixId++)
         {
           seedValues[pixId] = 0;
         }
-        for (unsigned ID=0; ID<m_MaskCells.size(); ID++)
+        for (int ID=0; ID<m_MaskCells.size(); ID++)
         {
-          unsigned cell_ID = m_MaskCells[ID];
+          int cell_ID = m_MaskCells[ID];
           seedValues[cell_ID] = m_SeedMapOut(cell_ID,fg);
         }
         

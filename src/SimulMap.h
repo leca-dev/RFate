@@ -80,7 +80,7 @@ class SimulMap
 
 	Coordinates<double> m_Coord; /*!< Coordinates of study area */
 	SpatialMap<double, int> m_Mask; /*!< Map referencing if a point belong (1) or not (0) to the studied area  */
-	vector<unsigned> m_MaskCells; /*!< List of the cells belonging to the studied area */
+	vector<int> m_MaskCells; /*!< List of the cells belonging to the studied area */
 	SpatialStack<double, int> m_SeedMapIn; /*!< Map of seeds produced at the end of succession step that will be dispersed	*/
 	SpatialStack<double, int> m_SeedMapOut; /*!< Map of dispersed seeds == succession seed rain*/
 	SpatialStack<double, double> m_EnvSuitMap; /*!< Stack of FG environmental suitability maps */
@@ -230,7 +230,7 @@ class SimulMap
 			is_equal = is_equal && ( *(m_SuccModelMap.getCoordinates()) == *( o.m_SuccModelMap.getCoordinates() ) );
 			omp_set_num_threads( m_glob_params.getNoCPU() );
 			#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-			for (unsigned i=0; i<m_SuccModelMap.getTotncell(); i++)
+			for (int i=0; i<static_cast<int>(m_SuccModelMap.getTotncell()); i++)
 			{
 				is_equal = is_equal && ( *(m_SuccModelMap(i)) == *(o.m_SuccModelMap(i)) );
 			}
@@ -246,7 +246,7 @@ class SimulMap
 	vector<FG>& getFGparams();
 	Coordinates<double>& getCoord();
 	SpatialMap<double, int>& getMask();
-	vector<unsigned>& getMaskCells();
+	vector<int>& getMaskCells();
 	SpatialStack<double, int>& getSeedMapIn();
 	SpatialStack<double, int>& getSeedMapOut();
 	SpatialStack<double, double>& getEnvSuitMap();
@@ -270,7 +270,7 @@ class SimulMap
 	void setFGparams(vector<FG> FGparams);
 	void setCoord(Coordinates<double> coord);
 	void setMask(SpatialMap<double, int> mask);
-	void setMaskCells(vector<unsigned> maskCells);
+	void setMaskCells(vector<int> maskCells);
 	void setSeedMapIn(SpatialStack<double, int> seedMapIn);
 	void setSeedMapOut(SpatialStack<double, int> seedMapOut);
 	void setEnvSuitMap(SpatialStack<double, double> envSuitMap);
@@ -386,7 +386,7 @@ class SimulMap
 	 * \param dist : id of considered disturbance
 	 * \param availCells : vector of cells that can be impacted by the disturbance
 	 */
-	vector<unsigned> DoIgnition(int dist, vector<unsigned> availCells);
+	vector<int> DoIgnition(int dist, vector<int> availCells);
 
 	/*!
 	 *	\brief Do propagation of fire disturbance model
@@ -400,7 +400,7 @@ class SimulMap
 	 * \param start : vector of cells where there is an ignition of fire
 	 * \param availCells : vector of cells that can be impacted by the disturbance
 	 */
-	vector<unsigned> DoPropagation(int dist, vector<unsigned> start, vector<unsigned> availCells);
+	vector<int> DoPropagation(int dist, vector<int> start, vector<int> availCells);
 
 	/*!
 	 *	\brief Update the TimeSinceLastFire mask
@@ -411,7 +411,7 @@ class SimulMap
 	 *
 	 * \param burnt : vector of cells impacted by the disturbance
 	 */
-	void DoUpdateTslf(vector<unsigned> burnt);
+	void DoUpdateTslf(vector<int> burnt);
 
 	/*!
 	 *	\brief Apply fire disturbance model
