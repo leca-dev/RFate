@@ -157,7 +157,7 @@ class LogMessage
 {
 protected:
   string m_message;  // Log message.
-  int m_importance, m_verbosity;  // message importance and verbosity level.
+  int m_Importance, m_Verbosity;  // message importance and verbosity level.
 
 public:
   /**
@@ -169,10 +169,10 @@ public:
   */
   template <typename T, typename... Types>
   LogMessage(int importance, int verbosity, const T& t1, const Types&... t2) :
-    m_importance(importance), m_verbosity(verbosity)
+    m_Importance(importance), m_Verbosity(verbosity)
   {
     // Fill the message string only if verbosity tolerates its importance level.
-    if (m_importance > m_verbosity)
+    if (m_Importance > m_Verbosity)
     {
       appendMessage(m_message, t1, t2...);
     }

@@ -39,40 +39,76 @@
 #include "openmp.h"
 #include "LogMessage.h"
 
+/*!
+ * \class Logger
+ * \brief Manage output streams according to verbosity level.
+ *
+ * A Logger stores a verbosity level
+ *    0: shows any message,
+ *    1: shows any message except debug,
+ *    2: shows only warning and error messages,
+ *    3: shows only error messages,
+ *    4+: mute.
+ * It shows LogMessage instances, or ignores it, 
+ * depending on the verbosity level.
+ */
 
-/**
-  @class Logger
-  Manage output streams according to verbosity level.
-  A Logger stores a verbosity level (0: shows any message,
-                                     1: shows any message except debug,
-                                     2: shows only warning and error messages,
-                                     3: shows only error messages,
-                                     4+: mute).
-  It shows LogMessage instances, or ingnores it, depending on the verbosity
-  level.
-*/
 class Logger
 {
-private:
-  int m_verbosity;  // verbosity level
+  private:
+    
+  int m_Verbosity;  // verbosity level
+  
+  public:
+  
+  /*-------------------------------------------*/
+  /* Constructors -----------------------------*/
+  /*-------------------------------------------*/
+  
+  /*!
+   *	\brief Default constructor
+   *
+   *	Logger default constructor => Verbosity default to 0 (shows any LogMessage)
+   */
+  Logger();
+    
+    /*!
+     *	\brief Full constructor
+     *
+     *	Logger full constructor
+     *
+     *	\param verbosity : verbosity level
+     *	    0: shows any message
+     *	    1: shows any message except debug
+     *	    2: shows only warning and error messages
+     *	    3: shows only error messages
+     *	    4+: mute
+     */
+    Logger(int verbosity);
 
-public:
-	/**
-    Logger constructor.
-    Verbosity default to 0 (shows any LogMessage)
-	*/
-  Logger(int verbosity=0);
-
-  /**
-    Logger destructor
-	*/
+    
+  /*-------------------------------------------*/
+  /* Destructor -------------------------------*/
+  /*-------------------------------------------*/
+    
+  /*!
+   *	\brief Destructor
+   *
+   *	Logger destructor
+   */
   ~Logger();
-
-  /**
-    Sets verbosity level of the Logger instance.
-    @param verbosity verbosity level.
-	*/
-  void configure(int verbosity);
+  
+  /*-------------------------------------------*/
+  /* Getters & Setters ------------------------*/
+  /*-------------------------------------------*/
+  
+  int getVerbosity() const;
+  
+  void setVerbosity(const int& verbosity);
+  
+  /*-------------------------------------------*/
+  /* Other functions --------------------------*/
+  /*-------------------------------------------*/
 
   /**
     Fires a DebugMessage instance.
@@ -85,7 +121,7 @@ public:
     // omp critical to avoid simultaneous couts when multithreading.
     #pragma omp critical
     {
-      DebugMessage logMessage(m_verbosity, t1, t2...);
+      DebugMessage logMessage(m_Verbosity, t1, t2...);
       logMessage.show();  // Fires message if verbosity <= 0.
     }
   }
@@ -101,7 +137,7 @@ public:
     // omp critical to avoid simultaneous couts when multithreading.
     #pragma omp critical
     {
-      InfoMessage logMessage(m_verbosity, t1, t2...);
+      InfoMessage logMessage(m_Verbosity, t1, t2...);
       logMessage.show();  // Fires message if verbosity <= 1.
     }
   }
@@ -117,7 +153,7 @@ public:
     // Don't need omp critical there: an exception while multithreading will
     // crash R anyway...
     {
-      WarningMessage logMessage(m_verbosity, "[WARNING] : ", t1, t2...);
+      WarningMessage logMessage(m_Verbosity, "[WARNING] : ", t1, t2...);
       logMessage.show();  // Fires message if verbosity <= 2.
     }
   }
@@ -133,7 +169,7 @@ public:
     // Don't need omp critical there: an exception while multithreading will
     // crash R anyway...
     {
-      ErrorMessage logMessage(m_verbosity, "[ERROR] : ", t1, t2...);
+      ErrorMessage logMessage(m_Verbosity, "[ERROR] : ", t1, t2...);
       logMessage.show();  // Fires message if verbosity <= 3.
     }
   }

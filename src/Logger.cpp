@@ -25,13 +25,33 @@
 using namespace std;
 
 
-Logger::Logger(int verbosity) : m_verbosity(verbosity) {}
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
+/* Constructors                                                                                    */
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-
-Logger::~Logger() {}
-
-
-void Logger::configure(int verbosity)
+Logger::Logger() : m_Verbosity(0)
 {
-  m_verbosity = verbosity;
+  /* Nothing to do */
 }
+
+Logger::Logger(int verbosity) : m_Verbosity(verbosity)
+{
+  /* Nothing to do */
+}
+
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
+/* Destructor                                                                                      */
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
+
+Logger::~Logger()
+{
+  /* Nothing to do */
+}
+
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
+/* Getters & Setters                                                                               */
+/*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
+
+int Logger::getVerbosity() const{ return m_Verbosity; }
+
+void Logger::setVerbosity(const int& verbosity){ m_Verbosity = verbosity; }

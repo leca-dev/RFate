@@ -31,7 +31,7 @@ LogMessage::~LogMessage() {}
 void LogMessage::show() const
 {
   // Fires the message only if verbosity tolerates its importance level.
-  if (m_importance > m_verbosity)
+  if (m_Importance > m_Verbosity)
   {
     // Use RcppThread output stream to handle parallel C++ vs monothread R
     RcppThread::Rcout << m_message << endl;
@@ -42,7 +42,7 @@ void LogMessage::show() const
 void WarningMessage::show() const
 {
   // Fires the message only if verbosity tolerates its importance level.
-  if (m_importance > m_verbosity)
+  if (m_Importance > m_Verbosity)
   {
     // Use Rcpp::warning to transfert C++ exception into R warning.
     Rcpp::warning(m_message);  // !!Will crash R when multithreading!!
@@ -53,7 +53,7 @@ void WarningMessage::show() const
 void ErrorMessage::show() const
 {
   // Fires the message only if verbosity tolerates its importance level.
-  if (m_importance > m_verbosity)
+  if (m_Importance > m_Verbosity)
   {
     // Use Rcpp::stop to transfert C++ exception into R error.
     Rcpp::stop(m_message);  // !!Will crash R when multithreading!!

@@ -357,7 +357,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 	/* Initialization */
 
 	// Logger initialization
-	logg.configure(verboseLevel);  // Set logger verbose level
+	logg.setVerbosity(verboseLevel);  // Set logger verbose level
 	// Number of CPUs used for computation
 	if (no_CPU > 1)
 	{
