@@ -692,6 +692,9 @@ void SimulMap::DoSuccession()
   for (int cell_ID : m_MaskCells)
   {
     m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
+    if (logg.getVerbosity() == 0) {
+      m_SuccModelMap(cell_ID)->show();
+    }
   }
   
   /*  time(&end);
@@ -1784,20 +1787,25 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
     m_EnvSuitRefMap = SpatialStack<double, double>(&m_Coord, envSuitRefMap);
   }
   
-  /* update fg environmental suitability conditions if needed */
-  if (file_of_params.getFGMapsHabSuit()[0] != "0")
+  /* update seed dispersal maps and model if needed */
+  if (m_glob_params.getDoDispersal())
   {
     logg.info("***** Update out seed map...");
     vector< vector< int > > emptyMapInt;
     emptyMapInt.reserve(m_FGparams.size());
     vector< int >  emptyValInt( m_Mask.getTotncell(), 0 );
-    for (int fg_id=0; fg_id<m_FGparams.size(); fg_id++)
+    for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
     {
       emptyMapInt.emplace_back( emptyValInt );
     }
     
     // m_SeedMapIn = SpatialStack<double, int>(m_Coord_ptr, emptyMapInt);
     m_SeedMapOut = SpatialStack<double, int>(&m_Coord, emptyMapInt);
+    m_DispModel = Disp( &m_FGparams, &m_SeedMapIn, &m_SeedMapOut );
+    // } else
+    // {
+    //   m_DispModel = Disp(&m_FGparams, &m_SeedMapIn, &m_SeedMapOut, false);
+    // }
   }
   
   /* update disturbances mask if needed */

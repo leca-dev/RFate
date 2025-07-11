@@ -155,8 +155,8 @@ class SimulMap
 		// }
 		logg.info(">> Saving/Loading SUCCESSION MODEL MAP...");
 		ar & m_SuccModelMap;
-		logg.info(">> Saving/Loading DISPERSAL MODEL...");
-		ar & m_DispModel;
+		// logg.info(">> Saving/Loading DISPERSAL MODEL...");
+		// ar & m_DispModel;
 	}
 
 	public:
