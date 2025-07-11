@@ -79,10 +79,11 @@ void SuFateH::setEnvSuitRefMap_( DoubleMapPtr envSuitRefMap_ ) { m_EnvSuitRefMap
 void SuFateH::show()
 {
 	SuFate::show();
-	logg.debug("Environmental suitability of cell : ");
+	logg.debug("Environmental suitability / Ref of cell : ");
 	for (unsigned fg=0; fg<m_Comm.getFuncGroupList().size(); fg++)
 	{
 		logg.debug((*m_EnvSuitMapPtr)(m_CellID, fg));
+	  logg.debug((*m_EnvSuitRefMapPtr)(m_CellID, fg));
 	}
 }
 

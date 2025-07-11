@@ -663,7 +663,7 @@ void SimulMap::DoFreqChange(string newChangeFile, string typeFile)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void SimulMap::DoSuccession()
+void SimulMap::DoSuccession(bool doLog)
 {
   /*	time_t start,end;
   time(&start);*/
@@ -692,7 +692,7 @@ void SimulMap::DoSuccession()
   for (int cell_ID : m_MaskCells)
   {
     m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
-    if (logg.getVerbosity() == 0) {
+    if (doLog && logg.getVerbosity() == 0) {
       m_SuccModelMap(cell_ID)->show();
     }
   }

@@ -359,7 +359,7 @@ class SimulMap
 	 *	This function runs DoSuccessionPart1 function of each SuFate or SuFateH
 	 * model within each study pixel.
 	 */
-	void DoSuccession();
+	void DoSuccession(bool doLog);
 
 	/*-------------------------------------------*/
 

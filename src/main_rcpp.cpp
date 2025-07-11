@@ -759,7 +759,8 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		/*===========================================================================*/
 		/* Run succession model */
 		logg.info("Do Succession...");
-		simulMap->DoSuccession();
+		bool doLog = ()summarised_array_saving_times.size() > 0 && summarised_array_saving_times.front() == year);
+		simulMap->DoSuccession(doLog);
 		/*===========================================================================*/
 
 		/* Run drought disturbance model : POST succession */
