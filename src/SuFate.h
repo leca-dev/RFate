@@ -94,9 +94,9 @@ class SuFate
 		ar & m_Comm;
 		ar & m_LightR;
 		ar & m_SoilR;
-		ar & m_SeedRainMap; // ALREADY SAVED in SimulMap.h
-		ar & m_SeedProdMap; // ALREADY SAVED in SimulMap.h
-		ar & m_GSP; // ALREADY SAVED in SimulMap.h
+		// ar & m_SeedRainMap; // ALREADY SAVED in SimulMap.h
+		// ar & m_SeedProdMap; // ALREADY SAVED in SimulMap.h
+		// ar & m_GSP; // ALREADY SAVED in SimulMap.h
 	}
 
 	public:

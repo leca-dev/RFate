@@ -69,8 +69,8 @@ class SuFateH : public SuFate
 	void serialize(Archive & ar , const unsigned int /*version*/)
 	{
 		ar & boost::serialization::base_object<SuFate>(*this);
-		ar & m_EnvSuitMapPtr; // ALREADY SAVED in SimulMap.h
-		ar & m_EnvSuitRefMapPtr; // ALREADY SAVED in SimulMap.h
+		// ar & m_EnvSuitMapPtr; // ALREADY SAVED in SimulMap.h
+		// ar & m_EnvSuitRefMapPtr; // ALREADY SAVED in SimulMap.h
 	}
 
 	public :
