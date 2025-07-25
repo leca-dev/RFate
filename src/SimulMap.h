@@ -358,8 +358,11 @@ class SimulMap
 	 *
 	 *	This function runs DoSuccessionPart1 function of each SuFate or SuFateH
 	 * model within each study pixel.
+	 * 
+	 * \param yr : current year of simulation
+	 * \param doLog : print log with debug or not
 	 */
-	void DoSuccession(bool doLog);
+	void DoSuccession(int yr, bool doLog);
 
 	/*-------------------------------------------*/
 
@@ -371,8 +374,10 @@ class SimulMap
 	 * over the landscape according to the selected dispersal process. Dispersed
 	 * seeds are stored (SeedMapIn) and will constitute the seed rain of the
 	 * following year.
+	 * 
+	 * \param yr : current year of simulation
 	 */
-	void DoDispersal();
+	void DoDispersal(int yr);
 
 	/*-------------------------------------------*/
 
@@ -495,9 +500,10 @@ class SimulMap
 	 *         number is drawn from a normal distribution defined by these two
 	 *         values.
 	 *
+	 * \param yr : current year of simulation
 	 * \param option : 1 (random) or 2 (PFG distribution)
 	 */
-	void UpdateEnvSuitRefMap(unsigned option);
+	void UpdateEnvSuitRefMap(int yr, unsigned option);
 
 	/*!
 	 *	\brief Update simulation parameters when starting from backup
@@ -525,10 +531,10 @@ class SimulMap
 	 *   - soil resources (if soil interaction activated)
 	 *
 	 * \param saveDir : string with the simulation results folder path
-	 * \param year : current year of simulation
+	 * \param yr : current year of simulation
 	 * \param prevFile : path to mask raster file to initiate saved rasters
 	 */
-	void SaveRasterAbund(string saveDir, int year, string prevFile);
+	void SaveRasterAbund(string saveDir, int yr, string prevFile);
 
 };
 

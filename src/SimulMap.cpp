@@ -663,7 +663,7 @@ void SimulMap::DoFreqChange(string newChangeFile, string typeFile)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void SimulMap::DoSuccession(bool doLog)
+void SimulMap::DoSuccession(int yr, bool doLog)
 {
   /*	time_t start,end;
   time(&start);*/
@@ -671,7 +671,7 @@ void SimulMap::DoSuccession(bool doLog)
   if (m_glob_params.getDoHabSuitability())
   {
     /* Defined the new environmental reference value for this year */
-    this->UpdateEnvSuitRefMap(m_glob_params.getHabSuitMode());
+    this->UpdateEnvSuitRefMap(yr, m_glob_params.getHabSuitMode());
   }
   
   vector <vector<int> > isDrought(m_Mask.getTotncell(),vector<int>(m_glob_params.getNoFG(),0));
@@ -745,10 +745,10 @@ void SimulMap::DoAliensIntroduction(int yr)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void SimulMap::DoDispersal()
+void SimulMap::DoDispersal(int yr)
 {
   m_SeedMapOut.emptyStack();
-  m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_glob_params.getNoCPU(), m_MaskCells);
+  m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_glob_params.getSeed() + yr, m_glob_params.getNoCPU(), m_MaskCells);
   m_SeedMapIn.emptyStack();
 }
 
@@ -757,7 +757,7 @@ void SimulMap::DoDispersal()
 vector<int> SimulMap::DoIgnition(int dist, vector<int> availCells)
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-  RandomGenerator rng(seed);
+  RandomGenerator rng(seed); // TODO: change with m_glob_params.getSeed() + yr
   UniReal random_01(0.0, 1.0);
 
   int noFires = m_glob_params.getFireIgnitNo()[dist];
@@ -821,7 +821,7 @@ vector<int> SimulMap::DoIgnition(int dist, vector<int> availCells)
 vector<int> SimulMap::DoPropagation(int dist, vector<int> start, vector<int> availCells)
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-  RandomGenerator rng(seed);
+  RandomGenerator rng(seed); // TODO: change with m_glob_params.getSeed() + yr
   UniReal random_01(0.0, 1.0);
 
   vector<int> preCell, currCell, postCell, neighCell;
@@ -1181,8 +1181,7 @@ void SimulMap::DoUpdateTslf(vector<int> burnt)
 
 void SimulMap::DoFireDisturbance(int yr)
 {
-  unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-  RandomGenerator rng(seed);
+  RandomGenerator rng(m_glob_params.getSeed() + yr);
 
   /* Do fire disturbances depending on their frequency */
   vector<bool> applyDist;
@@ -1570,8 +1569,7 @@ void SimulMap::DoDisturbance(int yr)
     }
   }
   
-  unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-  RandomGenerator rng(seed);
+  RandomGenerator rng(m_glob_params.getSeed() + yr);
   UniReal random_01(0.0, 1.0);
   
   /* Do disturbances only on points within mask */
@@ -1596,12 +1594,11 @@ void SimulMap::DoDisturbance(int yr)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void SimulMap::UpdateEnvSuitRefMap(unsigned option)
+void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
 {
   vector< double > envSuitRefVal(m_Mask.getTotncell(),0.5);
   
-  unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-  RandomGenerator rng(seed);
+  RandomGenerator rng(m_glob_params.getSeed() + yr);
   UniReal random_01(0.0, 1.0);
   
   if (option==1)

@@ -256,7 +256,7 @@ void Disp::GetPropProb()
 // TODO (damien#1#): make possible to consider different x and y resolution
 
 
-void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCells)
+void Disp::DoDispersalPacket(unsigned dispOption, unsigned seed, int noCPU, vector<int> maskCells)
 {
 	omp_set_num_threads( noCPU );
 	#pragma omp parallel for schedule(dynamic) if(noCPU>1)
@@ -271,7 +271,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 			vector<float> prop_d1_select, prop_d2_select;
 			unsigned noDrawMax = max(1, static_cast<int>(ceil(m_FGdistCircle[fg][0].size()/2.0)));
 
-			unsigned seed = chrono::system_clock::now().time_since_epoch().count();
 			RandomGenerator rng(seed);
 
 			/* conversion of dispersal distances in meters into pixels */

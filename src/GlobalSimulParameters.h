@@ -62,6 +62,7 @@ class GSP
 {
 	private:
 
+	unsigned m_Seed; /*!< Seed for stochastic steps (dispersal, disturbance frequency, envsuitRef) */
 	int m_NoCPU; /*!< Number of CPU for parallel computing */
 	int m_NoFG; /*!< Number of PFG studied */
 	int m_NoStrata; /*!< Number of height strata */
@@ -144,6 +145,7 @@ class GSP
 	template<class Archive>
 	void serialize(Archive & ar, const unsigned int /*version*/)
 	{
+		ar & m_Seed;
 		ar & m_NoCPU;
 		ar & m_NoFG;
 		ar & m_NoStrata;
@@ -229,6 +231,7 @@ class GSP
 	 *
 	 *	GSP full constructor
 	 *
+	 *	\param seed : seed for stochastic steps (dispersal, disturbance frequency, envsuitRef)
 	 *	\param noCPU : number of CPUs required for simulation
 	 *	\param noFG : number of Functional Groups involved
 	 *	\param noStrata : number of height strata
@@ -302,7 +305,8 @@ class GSP
 	 *	\param doAliensIntroduction : unable or not Aliens introduction module
 	 *	\param freqAliens : the frequency of each aliens introduction
 	 */
-	GSP(const int& noCPU,
+	GSP(const unsigned& seed,
+  const int& noCPU,
 	const int& noFG,
 	const int& noStrata,
 	const int& simulDuration,
@@ -375,7 +379,8 @@ class GSP
 
 	bool operator==(const GSP& o) const
 	{
-		return ( m_NoCPU == o.m_NoCPU &&
+		return ( m_Seed == o.m_Seed &&
+    m_NoCPU == o.m_NoCPU &&
 		m_NoFG == o.m_NoFG &&
 		m_NoStrata == o.m_NoStrata &&
 		m_SimulDuration == o.m_SimulDuration &&
@@ -436,6 +441,7 @@ class GSP
 	/* Getters & Setters ------------------------*/
 	/*-------------------------------------------*/
 
+	unsigned getSeed() const;
 	int getNoCPU() const;
 	int getNoFG() const;
 	int getNoStrata() const;
@@ -492,6 +498,7 @@ class GSP
 	bool getDoAliensIntroduction() const;
 	const vector<int>& getFreqAliens() const;
 
+	void setSeed(const unsigned& seed);
 	void setNoCPU(const int& noCPU);
 	void setNoFG(const int& noFG);
 	void setNoStrata(const int& noStrata);

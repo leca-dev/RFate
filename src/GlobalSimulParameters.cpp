@@ -33,6 +33,7 @@
 #include <sys/types.h>
 #include <cstdlib>
 #include <ctime>
+#include <chrono>
 
 #include "openmp.h"
 #include "GlobalSimulParameters.h"
@@ -43,7 +44,7 @@ using namespace std;
 /* Constructors                                                                                    */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-GSP::GSP() : m_NoCPU(1), m_NoFG(0), m_NoStrata(0), m_SimulDuration(0),
+GSP::GSP() : m_Seed(0), m_NoCPU(1), m_NoFG(0), m_NoStrata(0), m_SimulDuration(0),
 m_SeedingDuration(0), m_SeedingTimeStep(0), m_SeedingInput(0), m_PotentialFecundity(0),
 m_DoSavingPFGStratum(false), m_DoSavingPFG(false), m_DoSavingStratum(false), 
 m_DoLightInteraction(false), m_LightThreshLow(0), m_LightThreshMedium(0), m_LightRecruitment(false), m_LightSaving(false), 
@@ -61,7 +62,7 @@ m_DoAliensIntroduction(false), m_FreqAliens(0,0)
 	/* Nothing to do */
 }
 
-GSP::GSP(const int& noCPU, const int& noFG, const int& noStrata, const int& simulDuration,
+GSP::GSP(const unsigned& seed, const int& noCPU, const int& noFG, const int& noStrata, const int& simulDuration,
 const int& seedingDuration, const int& seedingTimeStep, const int& seedingInput, const int& potentialFecundity,
 const bool& doSavingPFGStratum, const bool& doSavingPFG, const bool& doSavingStratum, 
 const bool& doLightInteraction, const int& lightThreshLow, const int& lightThreshMedium, 
@@ -97,6 +98,14 @@ m_FireNeighCC(fireNeighCC), m_FirePropIntensity(firePropIntensity), m_FirePropLo
 m_DoDroughtDisturbances(doDroughtDisturbances), m_NoDroughtSub(noDroughtSub), m_ChronoPost(chronoPost), m_ChronoCurr(chronoCurr),
 m_DoAliensIntroduction(doAliensIntroduction), m_FreqAliens(freqAliens)
 {
+  if (seed == 0)
+  {
+    m_Seed = chrono::system_clock::now().time_since_epoch().count();
+  } else
+  {
+    m_Seed = seed;
+  }
+  
 	/* check if the number of cores required is compatible with computer arch */
 	if (noCPU > 1)
 	{
@@ -129,6 +138,14 @@ GSP::GSP(const string globalParamsFile)
 
 	/* 3. fill global simulation attributes given parameters */
 
+	/* GET OPTIONAL seed value */
+	vector<unsigned> v_uns = GlobParms.get_val<unsigned>("SEED", true);
+	if (v_uns.size()) m_Seed = v_uns[0]; else m_Seed = 0;
+	if (m_Seed == 0)
+	{
+	  m_Seed = chrono::system_clock::now().time_since_epoch().count();
+	}
+	
 	/* GET OPTIONAL number of cores */
 	vector<int> v_int = GlobParms.get_val<int>("NO_CPU", true);
 	if (v_int.size()) m_NoCPU = v_int[0]; else m_NoCPU = 1;
@@ -463,6 +480,7 @@ GSP::~GSP()
 /* Getters & Setters                                                                               */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
+unsigned GSP::getSeed() const{ return m_Seed; }
 int GSP::getNoCPU() const{ return m_NoCPU; }
 int GSP::getNoFG() const{ return m_NoFG; }
 int GSP::getNoStrata() const{ return m_NoStrata; }
@@ -519,6 +537,7 @@ const string& GSP::getChronoCurr() const{ return m_ChronoCurr; }
 bool GSP::getDoAliensIntroduction() const{ return m_DoAliensIntroduction; }
 const vector<int>& GSP::getFreqAliens() const{ return m_FreqAliens; }
 
+void GSP::setSeed(const unsigned& seed){ m_Seed = seed; }
 void GSP::setNoCPU(const int& noCPU){ m_NoCPU = noCPU; }
 void GSP::setNoFG(const int& noFG){ m_NoFG = noFG; }
 void GSP::setNoStrata(const int& noStrata){ m_NoStrata = noStrata; }
@@ -582,6 +601,7 @@ void GSP::setFreqAliens(const vector<int>& freqAliens){ m_FreqAliens = freqAlien
 void GSP::show()
 {
 	logg.debug("\nGlobal Simulation Parameters:\n",
+						 "\nm_Seed = ", m_Seed,
 						 "\nm_NoCPU = ", m_NoCPU,
 						 "\nm_NoFG = ", m_NoFG,
 						 "\nm_NoStrata = ", m_NoStrata,

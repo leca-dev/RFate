@@ -763,7 +763,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		if (summarised_array_saving_times.size() > 0 && summarised_array_saving_times.front() == year) {
 		  doLog = true;
 		}
-		simulMap->DoSuccession(doLog);
+		simulMap->DoSuccession(year, doLog);
 		/*===========================================================================*/
 
 		/* Run drought disturbance model : POST succession */
@@ -777,7 +777,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		if (simulMap->getGlobalParameters().getDoDispersal() && !seeding_on)
 		{
 			logg.info("Disperse seeds...");
-			simulMap->DoDispersal();
+			simulMap->DoDispersal(year);
 		}
 
 		/* Run disturbance model ====================================================*/
