@@ -747,6 +747,7 @@ void SimulMap::DoAliensIntroduction(int yr)
 
 void SimulMap::DoDispersal(int yr)
 {
+  logg.info("Before DISP seed : ", m_glob_params.getSeed() + yr);
   m_SeedMapOut.emptyStack();
   m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_glob_params.getSeed() + yr, m_glob_params.getNoCPU(), m_MaskCells);
   m_SeedMapIn.emptyStack();
@@ -1569,6 +1570,7 @@ void SimulMap::DoDisturbance(int yr)
     }
   }
   
+  logg.info("Before DISTURB seed : ", m_glob_params.getSeed() + yr);
   RandomGenerator rng(m_glob_params.getSeed() + yr);
   UniReal random_01(0.0, 1.0);
   
@@ -1598,6 +1600,7 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
 {
   vector< double > envSuitRefVal(m_Mask.getTotncell(),0.5);
   
+  logg.info("Before ENVSUITREF update seed : ", m_glob_params.getSeed() + yr);
   RandomGenerator rng(m_glob_params.getSeed() + yr);
   UniReal random_01(0.0, 1.0);
   
