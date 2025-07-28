@@ -1596,11 +1596,12 @@ void SimulMap::DoDisturbance(int yr)
       vecRandi[dist][cell_ID] = randi;
     }
   }
-  
+  // #pragma omp parallel for schedule(dynamic) ordered if(m_glob_params.getNoCPU()>1)
+
   
   /* Do disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
-#pragma omp parallel for schedule(dynamic) ordered if(m_glob_params.getNoCPU()>1)
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
   
   for (int cell_ID : m_MaskCells)
   {
