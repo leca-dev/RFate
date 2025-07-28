@@ -40,7 +40,8 @@ using namespace std;
 
 // boost::mt19937 est un Mersenne twister generator, ou générateur de nombres pseudo-aléatoires
 
-typedef std::mt19937 RandomGenerator;
+// typedef std::mt19937 RandomGenerator;
+typedef std::default_random_engine RandomGenerator;
 typedef std::uniform_real_distribution<double> UniReal;
 typedef std::uniform_int_distribution<int> UniInt;
 
