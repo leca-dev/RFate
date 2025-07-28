@@ -76,10 +76,12 @@ typedef std::default_random_engine RandomGenerator;
 
 class SimulMap
 {
+  public:
+    
+  static RandomGenerator m_RNG;
+  
 	private:
 	  
-	RandomGenerator m_RNG;
-
 	GSP m_glob_params; /*!< Object containing simulation parameters */
 	vector<FG> m_FGparams; /*!< List of FG parameters objects*/
 

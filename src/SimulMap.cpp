@@ -57,8 +57,7 @@ typedef std::normal_distribution<double> Normal;
 /* Constructor                                                                                     */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-SimulMap::SimulMap() : m_RNG(RandomGenerator(0)),
-m_glob_params(GSP()),
+SimulMap::SimulMap() : m_glob_params(GSP()),
 m_FGparams(0,FG()),
 m_Coord(Coordinates<double>()),
 m_Mask(SpatialMap<double, int>()),
@@ -98,7 +97,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   GSPPtr m_glob_params_ptr = &m_glob_params;
   int noFG = m_glob_params.getNoFG(); // number of functional groups
   
-  m_RNG = RandomGenerator(m_glob_params.getSeed());
+  m_RNG.seed(m_glob_params.getSeed());
   
   /* build functional groups entities */
   logg.info("*** building Functional groups...");
@@ -1580,7 +1579,7 @@ void SimulMap::DoDisturbance(int yr)
   
   /* Do disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
-#pragma omp parallel for ordered
+#pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
   
   for (int cell_ID : m_MaskCells)
   {

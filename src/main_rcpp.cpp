@@ -39,6 +39,7 @@
 #include <cmath>
 #include <ctime>
 #include <string>
+#include <random>
 
 #include "stdlib.h"
 #include "stdio.h"
@@ -227,11 +228,14 @@ BOOST_CLASS_EXPORT_GUID(SuFateH, "SuFateH")
 /*============================================================================*/
 
 using namespace std;
+	
+typedef std::default_random_engine RandomGenerator;
 
 /* some global variables */
 // string FATEHDD_VERSION = "6.2-3";
 SimulMap* simulMap(0);
 Logger logg;
+RandomGenerator SimulMap::m_RNG{};
 
 void saveFATE(string objFileName)
 {
@@ -504,6 +508,9 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		simulMap->setFGparams(fg_vec_tmp);
 	}
 
+	simulMap->m_RNG.seed(simulMap->getGlobalParameters().getSeed());
+	logg.info("\n*** Seed = ", simulMap->getGlobalParameters().getSeed());
+	
 	simulMap->getGlobalParameters().setNoCPU(no_CPU);
 	logg.info("\n*** NoCPU = ", simulMap->getGlobalParameters().getNoCPU());
 	fileStats << "Number of CPU used : "
