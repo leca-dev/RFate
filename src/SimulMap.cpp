@@ -762,7 +762,7 @@ vector<int> SimulMap::DoIgnition(int dist, vector<int> availCells)
 {
   unsigned seed = chrono::system_clock::now().time_since_epoch().count();
   RandomGenerator rng(seed); // TODO: change with m_glob_params.getSeed() + yr
-  UniReal random_01(0.0, 1.0);
+  UniReal random_01(0.0, 1.0); // TODO: change to static ?
 
   int noFires = m_glob_params.getFireIgnitNo()[dist];
   if (m_glob_params.getFireIgnitMode()==2)
@@ -1575,7 +1575,7 @@ void SimulMap::DoDisturbance(int yr)
   
   // logg.info("Before DISTURB seed : ", m_glob_params.getSeed() + yr);
   // RandomGenerator rng(m_glob_params.getSeed() + yr);
-  UniReal random_01(0.0, 1.0);
+  static UniReal random_01(0.0, 1.0);
   
   /* Do disturbances only on points within mask */
   omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1605,7 +1605,7 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
   
   // logg.info("Before ENVSUITREF update seed : ", m_glob_params.getSeed() + yr);
   // RandomGenerator rng(m_glob_params.getSeed() + yr);
-  UniReal random_01(0.0, 1.0);
+  static UniReal random_01(0.0, 1.0);
   
   if (option==1)
   {
@@ -1631,7 +1631,7 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
       logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=", meanFG, " and sd=", sdFG);
       
       /* build the distribution corresponding to these mean and sd */
-      Normal distrib(meanFG,sdFG);
+      static Normal distrib(meanFG,sdFG);
       
       /* draw a random number from this distribution for each pixel*/
       envSuitRefVal.resize(m_Mask.getTotncell(),0.5);
