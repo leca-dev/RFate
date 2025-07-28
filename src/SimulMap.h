@@ -45,10 +45,13 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <random>
 #include "openmp.h"
 
 typedef SuFate* SuFatePtr;
 using namespace std;
+
+typedef std::default_random_engine RandomGenerator;
 
 
 /*!
@@ -74,6 +77,8 @@ using namespace std;
 class SimulMap
 {
 	private:
+	  
+	RandomGenerator m_RNG;
 
 	GSP m_glob_params; /*!< Object containing simulation parameters */
 	vector<FG> m_FGparams; /*!< List of FG parameters objects*/
@@ -201,7 +206,8 @@ class SimulMap
 	bool operator==(SimulMap& o)
 	{
 		/* check equality between all simple elements */
-		bool is_equal = (m_glob_params == o.m_glob_params &&
+		bool is_equal = (m_RNG == o.m_RNG &&
+		m_glob_params == o.m_glob_params &&
 		m_FGparams == o.m_FGparams &&
 		m_Coord == o.m_Coord &&
 		m_Mask == o.m_Mask &&

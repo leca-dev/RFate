@@ -57,7 +57,8 @@ typedef std::normal_distribution<double> Normal;
 /* Constructor                                                                                     */
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-SimulMap::SimulMap() : m_glob_params(GSP()),
+SimulMap::SimulMap() : m_RNG(RandomGenerator(0)),
+m_glob_params(GSP()),
 m_FGparams(0,FG()),
 m_Coord(Coordinates<double>()),
 m_Mask(SpatialMap<double, int>()),
@@ -97,6 +98,7 @@ SimulMap::SimulMap(FOPL file_of_params)
   GSPPtr m_glob_params_ptr = &m_glob_params;
   int noFG = m_glob_params.getNoFG(); // number of functional groups
   
+  m_RNG = RandomGenerator(m_glob_params.getSeed());
   
   /* build functional groups entities */
   logg.info("*** building Functional groups...");
@@ -750,7 +752,8 @@ void SimulMap::DoDispersal(int yr)
 {
   logg.info("Before DISP seed : ", m_glob_params.getSeed() + yr);
   m_SeedMapOut.emptyStack();
-  m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_glob_params.getSeed() + yr, m_glob_params.getNoCPU(), m_MaskCells);
+  // m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_glob_params.getSeed() + yr, m_glob_params.getNoCPU(), m_MaskCells);
+  m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_RNG, m_glob_params.getNoCPU(), m_MaskCells);
   m_SeedMapIn.emptyStack();
 }
 
@@ -1572,7 +1575,7 @@ void SimulMap::DoDisturbance(int yr)
   }
   
   logg.info("Before DISTURB seed : ", m_glob_params.getSeed() + yr);
-  RandomGenerator rng(m_glob_params.getSeed() + yr);
+  // RandomGenerator rng(m_glob_params.getSeed() + yr);
   UniReal random_01(0.0, 1.0);
   
   /* Do disturbances only on points within mask */
@@ -1581,11 +1584,11 @@ void SimulMap::DoDisturbance(int yr)
   
   for (int cell_ID : m_MaskCells)
   {
-    double randi = random_01(rng);
+    double randi = random_01(m_RNG);
     for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
     { // loop on disturbances
       if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-        randi = random_01(rng);
+        randi = random_01(m_RNG);
       }
       if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0 && randi < m_glob_params.getProbDist()[dist])
       { // within mask & disturbance occurs in this cell
@@ -1602,7 +1605,7 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
   vector< double > envSuitRefVal(m_Mask.getTotncell(),0.5);
   
   logg.info("Before ENVSUITREF update seed : ", m_glob_params.getSeed() + yr);
-  RandomGenerator rng(m_glob_params.getSeed() + yr);
+  // RandomGenerator rng(m_glob_params.getSeed() + yr);
   UniReal random_01(0.0, 1.0);
   
   if (option==1)
@@ -1610,7 +1613,7 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
     /* draw a random number for each pixel*/
     for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     {
-      envSuitRefVal[*cell_ID] = random_01(rng); //( rand()/(double)RAND_MAX );
+      envSuitRefVal[*cell_ID] = random_01(m_RNG); //( rand()/(double)RAND_MAX );
     }
     /* assign these same numbers for each pfg */
     m_EnvSuitRefMap.emptyStack();
@@ -1624,10 +1627,9 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
     for (unsigned fg_id=0; fg_id<m_FGparams.size(); fg_id++)
     {
       /* to each pfg assign a mean and a standard deviation */
-      double meanFG = random_01(rng); //( rand()/(double)RAND_MAX );
-      double sdFG = random_01(rng); //( rand()/(double)RAND_MAX );
-      logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=",
-                meanFG, " and sd=", sdFG);
+      double meanFG = random_01(m_RNG); //( rand()/(double)RAND_MAX );
+      double sdFG = random_01(m_RNG); //( rand()/(double)RAND_MAX );
+      logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=", meanFG, " and sd=", sdFG);
       
       /* build the distribution corresponding to these mean and sd */
       Normal distrib(meanFG,sdFG);
@@ -1636,7 +1638,7 @@ void SimulMap::UpdateEnvSuitRefMap(int yr, unsigned option)
       envSuitRefVal.resize(m_Mask.getTotncell(),0.5);
       for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
       {
-        envSuitRefVal[*cell_ID] = distrib(rng);
+        envSuitRefVal[*cell_ID] = distrib(m_RNG);
       }
       m_EnvSuitRefMap.setValues(fg_id, envSuitRefVal);
     }

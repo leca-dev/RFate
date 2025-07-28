@@ -39,9 +39,13 @@
 #include "FG.h"
 #include "Logger.h"
 
+#include <random>
+
 typedef vector<FG>* vecFGPtr;
 typedef SpatialStack<double, int>* IntMapPtr;
 using namespace std;
+
+typedef std::default_random_engine RandomGenerator;
 
 
 // TODO (damien#1#): make dispersal packet + proba dispersal procedure to prevent from seeds loss
@@ -272,7 +276,7 @@ class Disp
 	 * parallelize and speed up dispersal
 	 * \param maskCells : vector of cells ID in which dispersal occurs
 	 */
-	void DoDispersalPacket(unsigned dispOption, unsigned seed, int noCPU, vector<int> maskCells);
+	void DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU, vector<int> maskCells);
 
 };
 
