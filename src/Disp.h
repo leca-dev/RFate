@@ -276,7 +276,7 @@ class Disp
 	 * parallelize and speed up dispersal
 	 * \param maskCells : vector of cells ID in which dispersal occurs
 	 */
-	void DoDispersalPacket(unsigned dispOption, RandomGenerator& rng, int noCPU, vector<int> maskCells);
+	void DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU, vector<int> maskCells);
 
 };
 
