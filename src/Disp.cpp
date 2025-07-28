@@ -257,7 +257,7 @@ void Disp::GetPropProb()
 // TODO (damien#1#): make possible to consider different x and y resolution
 
 
-void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU, vector<int> maskCells)
+void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator& rng, int noCPU, vector<int> maskCells)
 {
 	omp_set_num_threads( noCPU );
 	#pragma omp parallel for schedule(dynamic) if(noCPU>1)
