@@ -257,7 +257,7 @@ void Disp::GetPropProb()
 // TODO (damien#1#): make possible to consider different x and y resolution
 
 
-void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU, vector<int> maskCells)
+void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator& rng, int noCPU, vector<int> maskCells)
 {
   vector< vector< vector<int> > > randInt_1, randInt_2;
   randInt_1.reserve(m_FGparams->size());
