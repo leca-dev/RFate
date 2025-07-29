@@ -1572,49 +1572,69 @@ void SimulMap::DoDisturbance(int yr)
   //     applyDist.push_back(false);
   //   }
   // }
-  vector<bool> applyDist(m_glob_params.getNoDist(), false);
+  
+  // vector<bool> applyDist(m_glob_params.getNoDist(), false);
+  // for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+  // { // loop on disturbances
+  //   if (m_glob_params.getFreqDist()[dist] == 1 || yr%(m_glob_params.getFreqDist()[dist]) == 0) {
+  //     applyDist[dist] = true;
+  //   }
+  // }
+  
+  vector<int> applyDist;
+  applyDist.reserve(m_glob_params.getNoDist());
   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
   { // loop on disturbances
     if (m_glob_params.getFreqDist()[dist] == 1 || yr%(m_glob_params.getFreqDist()[dist]) == 0) {
-      applyDist[dist] = true;
+      applyDist.emplace_back(dist);
     }
   }
+  applyDist.shrink_to_fit();
   
+  logg.info("===============> APPLY DIST OR NOT :", applyDist, "\n");
   
-  vector< vector< double > > vecRandi;
-  vecRandi.reserve(m_glob_params.getNoDist());
-  vector< double >  emptyValDouble( m_Mask.getTotncell(), 0.0 );
-  for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+  if (applyDist.size() > 0)
   {
-    vecRandi.emplace_back( emptyValDouble );
-  }
-  for (int cell_ID : m_MaskCells)
-  {
-    UniReal random_01(0.0, 1.0);
-    double randi = random_01(m_RNG);
-    for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
-    { // loop on disturbances
-      if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-        randi = random_01(m_RNG);
+    vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
+    // vecRandi.reserve(m_glob_params.getNoDist());
+    // vector< double >  emptyValDouble( m_Mask.getTotncell(), 0.0 );
+    // for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+    // {
+    //   vecRandi.emplace_back( emptyValDouble );
+    // }
+    //   omp_set_num_threads( m_glob_params.getNoCPU() );
+    // #pragma omp parallel for ordered schedule(dynamic) if(m_glob_params.getNoCPU()>1)
+  
+    for (int cell_ID : m_MaskCells)
+    {
+      UniReal random_01(0.0, 1.0);
+      double randi = random_01(m_RNG);
+      // for (int dist : applyDist)
+      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+      { // loop on disturbances
+        if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
+          randi = random_01(m_RNG);
+        }
+        vecRandi[dist][cell_ID] = randi;
       }
-      vecRandi[dist][cell_ID] = randi;
     }
-  }
-
-  /* Do disturbances only on points within mask */
-  omp_set_num_threads( m_glob_params.getNoCPU() );
+    
+    /* Do disturbances only on points within mask */
+    omp_set_num_threads( m_glob_params.getNoCPU() );
 #pragma omp parallel for schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-
-  for (int cell_ID : m_MaskCells)
-  {
-    for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
-    { // loop on disturbances
-      if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0 && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist])
-      { // within mask & disturbance occurs in this cell
-        m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
-      }
-    } // end loop over disturbances
-  } // end loop over cells
+    
+    for (int cell_ID : m_MaskCells)
+    {
+      // for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+      for (int dist : applyDist)
+      { // loop on disturbances
+        if (applyDist[dist] && m_DistMap(cell_ID, dist) > 0.0 && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist])
+        { // within mask & disturbance occurs in this cell
+          m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
+        }
+      } // end loop over disturbances
+    } // end loop over cells
+  }
   
   
   // // logg.info("Before DISTURB seed : ", m_glob_params.getSeed() + yr);
