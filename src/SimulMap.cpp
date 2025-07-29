@@ -1580,9 +1580,6 @@ void SimulMap::DoDisturbance(int yr)
   if (applyDist.size() > 0)
   {
     vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
-    omp_set_num_threads( m_glob_params.getNoCPU() );
-#pragma omp parallel for ordered schedule(dynamic) if(m_glob_params.getNoCPU()>1)
-    
     for (int cell_ID : m_MaskCells)
     {
       UniReal random_01(0.0, 1.0);

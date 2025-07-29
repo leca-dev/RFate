@@ -182,7 +182,7 @@ class Coordinates
 	T getYres() { return Yres; }
 
 	int getXncell() const{ return Xncell; }
-	  int getYncell() const{ return Yncell; }
+	int getYncell() const{ return Yncell; }
 
 	T getXmin(){ return Xmin; }
 	T getYmin(){ return Ymin; }
@@ -190,7 +190,7 @@ class Coordinates
 	T getXmax(){ return Xmax; }
 	T getYmax(){ return Ymax; }
 
-	  int getTotncell(){ return Totncell; }
+	int getTotncell(){ return Totncell; }
 
 };
 
@@ -535,6 +535,7 @@ class SpatialStack
 
 	int getXncell() { return Layers.at(0).getXncell(); }
 	int getYncell() { return Layers.at(0).getYncell(); }
+	int getTotncell() { return Layers.at(0).getTotncell(); }
 	int getNoLayers() { return Layers.size(); }
 
 	vector<val_T> getValues(unsigned k) {return Layers.at(k).getValues(); };
