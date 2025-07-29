@@ -694,9 +694,9 @@ void SimulMap::DoSuccession(int yr, bool doLog)
   for (int cell_ID : m_MaskCells)
   {
     m_SuccModelMap(cell_ID)->DoSuccessionPart1(isDrought[cell_ID]);
-    if (doLog && logg.getVerbosity() == 0) {
-      m_SuccModelMap(cell_ID)->show();
-    }
+    // if (doLog && logg.getVerbosity() == 0) {
+    //   m_SuccModelMap(cell_ID)->show();
+    // }
   }
   
   /*  time(&end);
@@ -1585,7 +1585,9 @@ void SimulMap::DoDisturbance(int yr)
   applyDist.reserve(m_glob_params.getNoDist());
   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
   { // loop on disturbances
-    if (m_glob_params.getFreqDist()[dist] == 1 || yr%(m_glob_params.getFreqDist()[dist]) == 0) {
+    if (m_glob_params.getFreqDist()[dist] != 0 && 
+        (m_glob_params.getFreqDist()[dist] == 1 || yr%(m_glob_params.getFreqDist()[dist]) == 0))
+    {
       applyDist.emplace_back(dist);
     }
   }
