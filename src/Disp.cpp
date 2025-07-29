@@ -281,7 +281,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU
 
 			if (dispOption==2 || dispOption==3)
 			{
-			  static UniReal random_01(0.0, 1.0);
+			  UniReal random_01(0.0, 1.0);
 
 				/* select cell receiving seeds according to a probability decreasing with distance */
 				for (unsigned id = 0; id < m_FGdistCircle[fg][0].size(); id++)
@@ -372,7 +372,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU
 							v2x_select.reserve(noDrawMax);
 							v2y_select.reserve(noDrawMax);
 
-							static UniInt distrib(0, m_FGdistCircle[fg][1].size());
+							UniInt distrib(0, m_FGdistCircle[fg][1].size());
 							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
 							{ /* Draw of cells into crown that will received seeds */
 								/*!*/
@@ -394,7 +394,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU
 									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
 
 									/* x of its neighbour */
-									static UniInt distrib(0,3);
+									UniInt distrib(0,3);
 									switch(distrib(rng))
 									{
 										case 0 : xt++;
@@ -426,7 +426,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator rng, int noCPU
 					{
 						if(m_FGdistCircle[fg][2].size() > 0)
 						{
-							static UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
+							UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
 
 							/*!*/
 							int LD_draw = distrib(rng); //rand()% vSize;
