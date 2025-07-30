@@ -263,85 +263,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
                                , vector< vector<double> > rand01_1, vector< vector<double> > rand01_2
                                , vector< vector<int> > LD_draw)
 {
-  // vector< vector< vector<int> > > randInt_1, randInt_2;
-  // randInt_1.reserve(m_FGparams->size());
-  // randInt_2.reserve(m_FGparams->size());
-  // 
-  // if (dispOption == 1)
-  // {
-  //   for (unsigned fg=0; fg<m_FGparams->size(); fg++)
-  //   {
-  //     randInt_1[fg].reserve(maskCells.size());
-  //     randInt_2[fg].reserve(maskCells.size());
-  //     unsigned noDrawMax = max(1, static_cast<int>(ceil(m_FGdistCircle[fg][0].size()/2.0)));
-  //     
-  //     for (unsigned cell_id=0; cell_id<maskCells.size(); cell_id++)
-  //     { // loop on pixels
-  //       randInt_1[fg][cell_id].reserve(noDrawMax);
-  //       randInt_2[fg][cell_id].reserve(m_FGdistCircle[fg][1].size());
-  //       
-  //       UniInt distrib1(0, m_FGdistCircle[fg][1].size());
-  //       for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
-  //       {
-  //         randInt_1[fg][cell_id].emplace_back(distrib1(rng));
-  //       }
-  //       UniInt distrib2(0, 3);
-  //       for (unsigned id = 0; id < m_FGdistCircle[fg][1].size(); id++)
-  //       {
-  //         randInt_2[fg][cell_id].emplace_back(distrib2(rng));
-  //       }
-  //     } // end loop over pixels
-  //   } // end loop over PFG
-  // }
-  // 
-  // vector< vector<double> > rand01_1, rand01_2;
-  // rand01_1.reserve(m_FGparams->size());
-  // rand01_2.reserve(m_FGparams->size());
-  // 
-  // if (dispOption == 3)
-  // {
-  //   for (unsigned fg=0; fg<m_FGparams->size(); fg++)
-  //   {
-  //     rand01_1[fg].reserve(m_FGdistCircle[fg][0].size());
-  //     rand01_2[fg].reserve(m_FGdistCircle[fg][1].size());
-  //     
-  //     UniReal random_01(0.0, 1.0);
-  //     for (unsigned id = 0; id < m_FGdistCircle[fg][0].size(); id++)
-  //     {
-  //       rand01_1[fg].emplace_back(random_01(rng));
-  //     }
-  //     for (unsigned id = 0; id < m_FGdistCircle[fg][1].size(); id++)
-  //     {
-  //       rand01_2[fg].emplace_back(random_01(rng));
-  //     }
-  //   } // end loop over PFG
-  // }
-  // 
-  // vector< vector<int> > LD_draw;
-  // LD_draw.reserve(m_FGparams->size());
-  // 
-  // for (unsigned fg=0; fg<m_FGparams->size(); fg++)
-  // {
-  //   if (m_FGdistCircle[fg][2].size() > 0)
-  //   {
-  //     // LD_draw[fg].reserve(maskCells.size());
-  //     LD_draw[fg].resize(m_SeedMapIn->getTotncell(), 0);
-  //     
-  //     UniInt distrib3(0, m_FGdistCircle[fg][2].size() - 1);
-  //     // for (unsigned cell_id=0; cell_id<maskCells.size(); cell_id++)
-  //     // {
-  //     //   LD_draw[fg].emplace_back(distrib3(rng)); //rand()% vSize;
-  //     // } // end loop over pixels
-  //     for (int cell_ID : maskCells)
-  //     {
-  //       LD_draw[fg][cell_ID] = distrib3(rng); //rand()% vSize;
-  //     } // end loop over pixels
-  //   }
-  // } // end loop over PFG
-      
-  
-  
-  
 	omp_set_num_threads( noCPU );
 	#pragma omp parallel for schedule(dynamic) if(noCPU>1)
 
@@ -355,8 +276,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 			vector<float> prop_d1_select, prop_d2_select;
 			unsigned noDrawMax = max(1, static_cast<int>(ceil(m_FGdistCircle[fg][0].size()/2.0)));
 
-			// RandomGenerator rng(seed);
-
 			/* conversion of dispersal distances in meters into pixels */
 			int d1 = m_FGparams->at(fg).getDisp50() / m_SeedMapIn->getXres(); // disp50 into pixels
 			int d2 = m_FGparams->at(fg).getDisp99() / m_SeedMapIn->getXres(); // disp99 into pixels
@@ -364,8 +283,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 
 			if (dispOption==2 || dispOption==3)
 			{
-			  // UniReal random_01(0.0, 1.0);
-
 				/* select cell receiving seeds according to a probability decreasing with distance */
 				for (unsigned id = 0; id < m_FGdistCircle[fg][0].size(); id++)
 				{
@@ -374,7 +291,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
-						// if (dispOption == 2 || (dispOption == 3 && random_01(rng) < m_prob_d1[fg][dist_pt]))
 						if (dispOption == 2 || (dispOption == 3 && rand01_1[fg][id] < m_prob_d1[fg][dist_pt]))
 						{
 							v1x_select.push_back(m_FGdistCircle[fg][0][id]);
@@ -390,7 +306,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 					{
 						/* get an random number between 0-1 */
 						/* compare this number to the probability vector value if < then the cell will receive seeds */
-						// if (dispOption == 2 || (dispOption == 3 && random_01(rng) < m_prob_d2[fg][dist_pt]))
 						if (dispOption == 2 || (dispOption == 3 && rand01_2[fg][id] < m_prob_d2[fg][dist_pt]))
 						{
 							v2x_select.push_back(m_FGdistCircle[fg][1][id]);
@@ -460,11 +375,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 							// UniInt distrib(0, m_FGdistCircle[fg][1].size());
 							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
 							{ /* Draw of cells into crown that will received seeds */
-							// 	/*!*/
-							// 	int d2_draw = distrib(rng);
-							//   /*!*/
-							// 	v2x_select.push_back(m_FGdistCircle[fg][1][d2_draw]);
-							// 	v2y_select.push_back(m_FGdistCircle[fg][4][d2_draw]);
 								v2x_select.push_back(m_FGdistCircle[fg][1][randInt_1[fg][*cell_ID][noDraw]]);
 								v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][*cell_ID][noDraw]]);
 							}
@@ -481,8 +391,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
 
 									/* x of its neighbour */
-									// UniInt distrib(0,3);
-									// switch(distrib(rng))
 									switch(randInt_2[fg][*cell_ID][id])
 									{
 										case 0 : xt++;
@@ -514,14 +422,6 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 					{
 						if(m_FGdistCircle[fg][2].size() > 0)
 						{
-							// UniInt distrib(0, m_FGdistCircle[fg][2].size() - 1);
-							//
-							// /*!*/
-							// int LD_draw = distrib(rng); //rand()% vSize;
-							// /*!*/
-							// xt = x + m_FGdistCircle[fg][2][LD_draw];
-							// yt = y + m_FGdistCircle[fg][5][LD_draw];
-
 						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
 						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
 							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))

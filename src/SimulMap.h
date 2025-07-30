@@ -370,7 +370,7 @@ class SimulMap
 	 * \param yr : current year of simulation
 	 * \param doLog : print log with debug or not
 	 */
-	void DoSuccession(int yr, bool doLog);
+	void DoSuccession(bool doLog);
 
 	/*-------------------------------------------*/
 
@@ -382,10 +382,8 @@ class SimulMap
 	 * over the landscape according to the selected dispersal process. Dispersed
 	 * seeds are stored (SeedMapIn) and will constitute the seed rain of the
 	 * following year.
-	 * 
-	 * \param yr : current year of simulation
 	 */
-	void DoDispersal(int yr);
+	void DoDispersal();
 
 	/*-------------------------------------------*/
 
@@ -508,10 +506,9 @@ class SimulMap
 	 *         number is drawn from a normal distribution defined by these two
 	 *         values.
 	 *
-	 * \param yr : current year of simulation
 	 * \param option : 1 (random) or 2 (PFG distribution)
 	 */
-	void UpdateEnvSuitRefMap(int yr, unsigned option);
+	void UpdateEnvSuitRefMap(unsigned option);
 
 	/*!
 	 *	\brief Update simulation parameters when starting from backup
