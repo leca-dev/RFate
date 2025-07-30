@@ -755,8 +755,6 @@ void SimulMap::DoDispersal(int yr)
   logg.info("Step 1...");
   
   vector< vector< vector<int> > > randInt_1, randInt_2;
-  // randInt_1.reserve(m_FGparams.size());
-  // randInt_2.reserve(m_FGparams.size());
   randInt_1.resize(m_FGparams.size(), vector< vector<int> >(m_MaskCells.size(), vector<int>(0)));
   randInt_2.resize(m_FGparams.size(), vector< vector<int> >(m_MaskCells.size(), vector<int>(0)));
   
@@ -764,14 +762,7 @@ void SimulMap::DoDispersal(int yr)
   {
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
     {
-      logg.info("PFG : ", fg);
-
-      // randInt_1[fg].clear();
-      // randInt_2[fg].clear();
-      // // randInt_1[fg].reserve(m_MaskCells.size());
-      // // randInt_2[fg].reserve(m_MaskCells.size());
-      // randInt_1[fg].resize(m_MaskCells.size(), vector<int>(0));
-      // randInt_2[fg].resize(m_MaskCells.size(), vector<int>(0));
+      // logg.info("PFG : ", fg);
       unsigned noDrawMax = max(1, static_cast<int>(ceil(m_DispModel.getFGdistCircle(fg, 0).size()/2.0)));
 
       for (unsigned cell_id=0; cell_id<m_MaskCells.size(); cell_id++)
@@ -798,8 +789,6 @@ void SimulMap::DoDispersal(int yr)
   logg.info("Step 2...");
 
   vector< vector<double> > rand01_1, rand01_2;
-  // rand01_1.reserve(m_FGparams.size());
-  // rand01_2.reserve(m_FGparams.size());
   rand01_1.resize(m_FGparams.size(), vector<double>(0.0));
   rand01_2.resize(m_FGparams.size(), vector<double>(0.0));
 
@@ -827,25 +816,17 @@ void SimulMap::DoDispersal(int yr)
   logg.info("Step 3...");
 
   vector< vector<int> > LD_draw;
-  // LD_draw.reserve(m_FGparams.size());
   LD_draw.resize(m_FGparams.size(), vector<int>(0));
 
   for (unsigned fg=0; fg<m_FGparams.size(); fg++)
   {
-    logg.info("PFG : ", fg);
+    // logg.info("PFG : ", fg);
     if (m_DispModel.getFGdistCircle(fg, 2).size() > 0)
     {
-      // LD_draw[fg].reserve(maskCells.size());
-      // LD_draw[fg].resize(m_SeedMapIn.getTotncell(), 0);
       LD_draw[fg].clear();
-      // LD_draw[fg].emplace_back(vector<int>(m_SeedMapIn.getTotncell(), 0)); // ICI ??
       LD_draw[fg].resize(m_SeedMapIn.getTotncell(), 0); // ICI ??
       
       UniInt distrib3(0, m_DispModel.getFGdistCircle(fg, 2).size() - 1);
-      // for (unsigned cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
-      // {
-      //   LD_draw[fg].emplace_back(distrib3(m_RNG)); //rand()% vSize;
-      // } // end loop over pixels
       for (int cell_ID : m_MaskCells)
       {
         LD_draw[fg][cell_ID] = distrib3(m_RNG); //rand()% vSize;
