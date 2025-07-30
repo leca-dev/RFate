@@ -824,12 +824,17 @@ void SimulMap::DoDispersal(int yr)
     if (m_DispModel.getFGdistCircle(fg, 2).size() > 0)
     {
       LD_draw[fg].clear();
-      LD_draw[fg].resize(m_SeedMapIn.getTotncell(), 0); // ICI ??
+      // LD_draw[fg].resize(m_SeedMapIn.getTotncell(), 0); // ICI ??
+      LD_draw[fg].reserve(m_SeedMapIn.getTotncell()); // TEST1
       
       UniInt distrib3(0, m_DispModel.getFGdistCircle(fg, 2).size() - 1);
-      for (int cell_ID : m_MaskCells)
+      // for (int cell_ID : m_MaskCells)
+      // {
+      //   LD_draw[fg][cell_ID] = distrib3(m_RNG); //rand()% vSize;
+      // } // end loop over pixels
+      for (unsigned cell_id=0; cell_id<m_MaskCells.size(); cell_id++) // TEST1
       {
-        LD_draw[fg][cell_ID] = distrib3(m_RNG); //rand()% vSize;
+        LD_draw[fg].emplace_back(distrib3(m_RNG)); //rand()% vSize; // TEST1
       } // end loop over pixels
     }
   } // end loop over PFG
