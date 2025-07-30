@@ -820,12 +820,12 @@ void SimulMap::DoDispersal()
     if (m_DispModel.getFGdistCircle(fg, 2).size() > 0)
     {
       LD_draw[fg].clear();
-      LD_draw[fg].reserve(m_SeedMapIn.getTotncell()); // TEST1
+      LD_draw[fg].reserve(m_SeedMapIn.getTotncell());
       
       UniInt distrib3(0, m_DispModel.getFGdistCircle(fg, 2).size() - 1);
-      for (unsigned cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++) // TEST3
+      for (unsigned cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
       {
-        LD_draw[fg].emplace_back(distrib3(m_RNG)); //rand()% vSize; // TEST1
+        LD_draw[fg].emplace_back(distrib3(m_RNG)); //rand()% vSize;
       } // end loop over pixels
     }
   } // end loop over PFG
@@ -1643,33 +1643,40 @@ void SimulMap::DoDisturbance(int yr)
   /* Do disturbances depending on their frequency */
   vector<int> applyDist;
   applyDist.reserve(m_glob_params.getNoDist());
+  // vector<bool> applyRand(m_glob_params.getNoDist(), false);
   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
   { // loop on disturbances
     if (m_glob_params.getFreqDist()[dist] != 0 && 
         (m_glob_params.getFreqDist()[dist] == 1 || yr%(m_glob_params.getFreqDist()[dist]) == 0))
     {
       applyDist.emplace_back(dist);
+      // if (m_glob_params.getProbDist()[dist] < 1.0)
+      // {
+      //   applyRand[dist] = true;
+      // }
     }
   }
   applyDist.shrink_to_fit();
   logg.info("Disturbances to be applied :", applyDist, "\n");
+  // logg.info("Disturbances not applied everywhere :", applyRand, "\n");
   
   /* Do disturbances only if some need to */
   if (applyDist.size() > 0)
   {
-    vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 1.0));
-    for (int cell_ID : m_MaskCells)
-    {
-      UniReal random_01(0.0, 1.0);
-      double randi = random_01(m_RNG);
-      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
-      { // loop on disturbances
-        if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-          randi = random_01(m_RNG);
-        }
-        vecRandi[dist][cell_ID] = randi;
-      }
-    }
+    // vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 1.0));
+    // for (int cell_ID : m_MaskCells)
+    // {
+    //   UniReal random_01(0.0, 1.0);
+    //   double randi = random_01(m_RNG);
+    //   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+    //   { // loop on disturbances
+    //     if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
+    //       randi = random_01(m_RNG);
+    //     }
+    //     vecRandi[dist][cell_ID] = randi;
+    //   }
+    // }
+    
     
     /* Do disturbances only on points within mask */
     omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1679,9 +1686,13 @@ void SimulMap::DoDisturbance(int yr)
     {
       for (int dist : applyDist)
       { // loop on disturbances
-        if (m_DistMap(cell_ID, dist) > 0.0 && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist])
-        { // within mask & disturbance occurs in this cell
-          m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
+        if (m_DistMap(cell_ID, dist) > 0.0)
+        { // within mask
+          // if (!applyRand[dist] || 
+          //     (applyRand[dist] && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist]))
+          { // & disturbance occurs in this cell
+            m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
+          }
         }
       } // end loop over disturbances
     } // end loop over cells

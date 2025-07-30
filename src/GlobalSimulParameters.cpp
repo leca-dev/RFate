@@ -291,7 +291,10 @@ GSP::GSP(const string globalParamsFile)
 			logg.error("!!! Parameter DIST_FREQ : number of frequencies must be equal to the number of disturbances (DIST_NO)!");
 		}
 		vector<double> v_double = GlobParms.get_val<double>("DIST_PROB", true);
-		if (v_double.size()) m_ProbDist = v_double; else m_ProbDist = vector<double>(m_NoDist, 0.0);
+		if (v_double.size()) { m_ProbDist = v_double; } else {
+		  m_ProbDist = vector<double>(m_NoDist);
+		  iota(m_ProbDist.begin(), m_ProbDist.end(), 1);
+		}
 		if (m_NoDist != static_cast<int>(m_ProbDist.size()))
 		{
 		  logg.error("!!! Parameter DIST_PROB : number of probabilities must be equal to the number of disturbances (DIST_NO)!");
