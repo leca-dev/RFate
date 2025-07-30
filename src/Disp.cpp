@@ -469,41 +469,41 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 								v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][*cell_ID][noDraw]]);
 							}
 						}
-						// for (unsigned id = 0; id < v2x_select.size(); id++)
-						// {
-						// 	xt = x + v2x_select[id];
-						// 	yt = y + v2y_select[id];
-						// 	if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
-						// 	{
-						// 		/* First cell selected */
-						// 		if (dispOption==1)
-						// 		{
-						// 			new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
-						// 
-						// 			/* x of its neighbour */
-						// 			// UniInt distrib(0,3);
-						// 			// switch(distrib(rng))
-						// 			switch(randInt_2[fg][*cell_ID][id])
-						// 			{
-						// 				case 0 : xt++;
-						// 							break;
-						// 				case 1 : xt--;
-						// 							break;
-						// 				case 2 : yt++;
-						// 							break;
-						// 				case 3 : yt--;
-						// 							break;
-						// 			}
-						// 			if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
-						// 			{
-						// 				new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
-						// 			}
-						// 		} else if (dispOption==2 || dispOption==3)
-						// 		{
-						// 			new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
-						// 		}
-						// 	}
-						// }
+						for (unsigned id = 0; id < v2x_select.size(); id++)
+						{
+							xt = x + v2x_select[id];
+							yt = y + v2y_select[id];
+							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
+							{
+								/* First cell selected */
+								if (dispOption==1)
+								{
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
+
+									/* x of its neighbour */
+									// UniInt distrib(0,3);
+									// switch(distrib(rng))
+									switch(randInt_2[fg][*cell_ID][id])
+									{
+										case 0 : xt++;
+													break;
+										case 1 : xt--;
+													break;
+										case 2 : yt++;
+													break;
+										case 3 : yt--;
+													break;
+									}
+									if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
+									{
+										new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
+									}
+								} else if (dispOption==2 || dispOption==3)
+								{
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
+								}
+							}
+						}
 					} // end of d50 -> d99 crown dispersal
 
 					// /* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
