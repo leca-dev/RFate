@@ -752,6 +752,7 @@ void SimulMap::DoDispersal(int yr)
   // logg.info("Before DISP seed : ", m_glob_params.getSeed() + yr);
   m_SeedMapOut.emptyStack();
   
+  logg.info("Step 1...");
   
   vector< vector< vector<int> > > randInt_1, randInt_2;
   randInt_1.reserve(m_FGparams.size());
@@ -761,6 +762,8 @@ void SimulMap::DoDispersal(int yr)
   {
     for (unsigned fg=0; fg<m_FGparams.size(); fg++)
     {
+      logg.info("PFG : ", fg);
+      
       randInt_1[fg].reserve(m_MaskCells.size());
       randInt_2[fg].reserve(m_MaskCells.size());
       unsigned noDrawMax = max(1, static_cast<int>(ceil(m_DispModel.getFGdistCircle(fg, 0).size()/2.0)));
@@ -783,6 +786,8 @@ void SimulMap::DoDispersal(int yr)
       } // end loop over pixels
     } // end loop over PFG
   }
+  
+  logg.info("Step 2...");
   
   vector< vector<double> > rand01_1, rand01_2;
   rand01_1.reserve(m_FGparams.size());
@@ -807,11 +812,14 @@ void SimulMap::DoDispersal(int yr)
     } // end loop over PFG
   }
   
+  logg.info("Step 3...");
+  
   vector< vector<int> > LD_draw;
   LD_draw.reserve(m_FGparams.size());
   
   for (unsigned fg=0; fg<m_FGparams.size(); fg++)
   {
+    logg.info("PFG : ", fg);
     if (m_DispModel.getFGdistCircle(fg, 2).size() > 0)
     {
       // LD_draw[fg].reserve(maskCells.size());
@@ -830,7 +838,7 @@ void SimulMap::DoDispersal(int yr)
   } // end loop over PFG
   
   
-  
+  logg.info("Go for dispersal...");
   
   // m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_glob_params.getSeed() + yr, m_glob_params.getNoCPU(), m_MaskCells);
   // m_DispModel.DoDispersalPacket(m_glob_params.getDispersalMode(), m_RNG, m_glob_params.getNoCPU(), m_MaskCells);
