@@ -762,14 +762,14 @@ void SimulMap::DoDispersal()
     {
       unsigned noDrawMax = max(1, static_cast<int>(ceil(m_DispModel.getFGdistCircle(fg, 0).size()/2.0)));
       
-      for (unsigned cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
+      for (int cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
       { // loop on pixels
         randInt_1[fg][cell_id].clear();
         randInt_2[fg][cell_id].clear();
         randInt_1[fg][cell_id].reserve(noDrawMax);
         randInt_2[fg][cell_id].reserve(m_DispModel.getFGdistCircle(fg, 1).size());
         
-        UniInt distrib1(0, m_DispModel.getFGdistCircle(fg, 1).size());
+        UniInt distrib1(0, m_DispModel.getFGdistCircle(fg, 1).size() - 1);
         for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
         {
           randInt_1[fg][cell_id].emplace_back(distrib1(m_RNG));
@@ -823,7 +823,7 @@ void SimulMap::DoDispersal()
       LD_draw[fg].reserve(m_SeedMapIn.getTotncell());
       
       UniInt distrib3(0, m_DispModel.getFGdistCircle(fg, 2).size() - 1);
-      for (unsigned cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
+      for (int cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
       {
         LD_draw[fg].emplace_back(distrib3(m_RNG)); //rand()% vSize;
       } // end loop over pixels
@@ -1657,8 +1657,8 @@ void SimulMap::DoDisturbance(int yr)
     }
   }
   applyDist.shrink_to_fit();
-  logg.info("Disturbances to be applied :", applyDist, "\n");
-  logg.info("Disturbances not applied everywhere :", applyRand, "\n");
+  logg.info("Disturbances to be applied :", applyDist);
+  logg.info("Disturbances not applied everywhere :", applyRand);
   
   /* Do disturbances only if some need to */
   if (applyDist.size() > 0)

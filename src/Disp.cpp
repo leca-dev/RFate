@@ -414,22 +414,22 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 						}
 					} // end of d50 -> d99 crown dispersal
 
-					/* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
-					if (dld == 0)
-					{
-						new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
-					} else if (dld>0)
-					{
-						if(m_FGdistCircle[fg][2].size() > 0)
-						{
-						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
-						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
-							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
-							{
-								new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
-							}
-						}
-					} // end of d99 -> ldd crown dispersal
+					// /* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
+					// if (dld == 0)
+					// {
+					// 	new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
+					// } else if (dld>0)
+					// {
+					// 	if(m_FGdistCircle[fg][2].size() > 0)
+					// 	{
+					// 	  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
+					// 	  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
+					// 		if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
+					// 		{
+					// 			new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
+					// 		}
+					// 	}
+					// } // end of d99 -> ldd crown dispersal
 				} // end test if some seed to disperse
 			} // end loop over pixels
 
