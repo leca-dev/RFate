@@ -358,78 +358,78 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 						} // end of loop on d1 disk
 					}
 
-					/* chose as many as in first disk and into d1 d2 crow and put 49% / area of crown / p seeds into */
-					if (d2 == 0)
-					{
-						new_SeedMapOut(x,y)+= static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 );
-					} else if (d2>0)
-					{
-						/* seeds will be dispersed in 2 neighbouring cells min disperse in 1 cell and one of its neighbour */
-						if (dispOption==1)
-						{
-							v2x_select.clear();
-							v2y_select.clear();
-							v2x_select.reserve(noDrawMax);
-							v2y_select.reserve(noDrawMax);
+					// /* chose as many as in first disk and into d1 d2 crow and put 49% / area of crown / p seeds into */
+					// if (d2 == 0)
+					// {
+					// 	new_SeedMapOut(x,y)+= static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 );
+					// } else if (d2>0)
+					// {
+					// 	/* seeds will be dispersed in 2 neighbouring cells min disperse in 1 cell and one of its neighbour */
+					// 	if (dispOption==1)
+					// 	{
+					// 		v2x_select.clear();
+					// 		v2y_select.clear();
+					// 		v2x_select.reserve(noDrawMax);
+					// 		v2y_select.reserve(noDrawMax);
+					// 
+					// 		// UniInt distrib(0, m_FGdistCircle[fg][1].size());
+					// 		for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
+					// 		{ /* Draw of cells into crown that will received seeds */
+					// 			v2x_select.push_back(m_FGdistCircle[fg][1][randInt_1[fg][*cell_ID][noDraw]]);
+					// 			v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][*cell_ID][noDraw]]);
+					// 		}
+					// 	}
+					// 	for (unsigned id = 0; id < v2x_select.size(); id++)
+					// 	{
+					// 		xt = x + v2x_select[id];
+					// 		yt = y + v2y_select[id];
+					// 		if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
+					// 		{
+					// 			/* First cell selected */
+					// 			if (dispOption==1)
+					// 			{
+					// 				new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
+					// 
+					// 				/* x of its neighbour */
+					// 				switch(randInt_2[fg][*cell_ID][id])
+					// 				{
+					// 					case 0 : xt++;
+					// 								break;
+					// 					case 1 : xt--;
+					// 								break;
+					// 					case 2 : yt++;
+					// 								break;
+					// 					case 3 : yt--;
+					// 								break;
+					// 				}
+					// 				if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
+					// 				{
+					// 					new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
+					// 				}
+					// 			} else if (dispOption==2 || dispOption==3)
+					// 			{
+					// 				new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
+					// 			}
+					// 		}
+					// 	}
+					// } // end of d50 -> d99 crown dispersal
 
-							// UniInt distrib(0, m_FGdistCircle[fg][1].size());
-							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
-							{ /* Draw of cells into crown that will received seeds */
-								v2x_select.push_back(m_FGdistCircle[fg][1][randInt_1[fg][*cell_ID][noDraw]]);
-								v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][*cell_ID][noDraw]]);
-							}
-						}
-						for (unsigned id = 0; id < v2x_select.size(); id++)
-						{
-							xt = x + v2x_select[id];
-							yt = y + v2y_select[id];
-							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
-							{
-								/* First cell selected */
-								if (dispOption==1)
-								{
-									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
-
-									/* x of its neighbour */
-									switch(randInt_2[fg][*cell_ID][id])
-									{
-										case 0 : xt++;
-													break;
-										case 1 : xt--;
-													break;
-										case 2 : yt++;
-													break;
-										case 3 : yt--;
-													break;
-									}
-									if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
-									{
-										new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
-									}
-								} else if (dispOption==2 || dispOption==3)
-								{
-									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
-								}
-							}
-						}
-					} // end of d50 -> d99 crown dispersal
-
-					/* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
-					if (dld == 0)
-					{
-						new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
-					} else if (dld>0)
-					{
-						if(m_FGdistCircle[fg][2].size() > 0)
-						{
-						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
-						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
-							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
-							{
-								new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
-							}
-						}
-					} // end of d99 -> ldd crown dispersal
+					// /* chose 1 cells into d1 d2 crow and put 1% / area of crown / p seeds into */
+					// if (dld == 0)
+					// {
+					// 	new_SeedMapOut(x,y) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
+					// } else if (dld>0)
+					// {
+					// 	if(m_FGdistCircle[fg][2].size() > 0)
+					// 	{
+					// 	  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
+					// 	  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
+					// 		if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
+					// 		{
+					// 			new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );
+					// 		}
+					// 	}
+					// } // end of d99 -> ldd crown dispersal
 				} // end test if some seed to disperse
 			} // end loop over pixels
 
