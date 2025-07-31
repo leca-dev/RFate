@@ -422,8 +422,8 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 					{
 						if(m_FGdistCircle[fg][2].size() > 0)
 						{
-						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]]; // ICI ??
-						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]]; // ICI ??
+						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
+						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
 							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
 							{
 								new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );

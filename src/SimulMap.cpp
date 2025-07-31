@@ -1643,27 +1643,27 @@ void SimulMap::DoDisturbance(int yr)
   /* Do disturbances depending on their frequency */
   vector<int> applyDist;
   applyDist.reserve(m_glob_params.getNoDist());
-  // vector<bool> applyRand(m_glob_params.getNoDist(), false);
+  vector<bool> applyRand(m_glob_params.getNoDist(), false);
   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
   { // loop on disturbances
     if (m_glob_params.getFreqDist()[dist] != 0 && 
         (m_glob_params.getFreqDist()[dist] == 1 || yr%(m_glob_params.getFreqDist()[dist]) == 0))
     {
       applyDist.emplace_back(dist);
-      // if (m_glob_params.getProbDist()[dist] < 1.0)
-      // {
-      //   applyRand[dist] = true;
-      // }
+      if (m_glob_params.getProbDist()[dist] < 1.0)
+      {
+        applyRand[dist] = true;
+      }
     }
   }
   applyDist.shrink_to_fit();
   logg.info("Disturbances to be applied :", applyDist, "\n");
-  // logg.info("Disturbances not applied everywhere :", applyRand, "\n");
+  logg.info("Disturbances not applied everywhere :", applyRand, "\n");
   
   /* Do disturbances only if some need to */
   if (applyDist.size() > 0)
   {
-    // vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 1.0));
+    vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
     // for (int cell_ID : m_MaskCells)
     // {
     //   UniReal random_01(0.0, 1.0);
@@ -1688,8 +1688,8 @@ void SimulMap::DoDisturbance(int yr)
       { // loop on disturbances
         if (m_DistMap(cell_ID, dist) > 0.0)
         { // within mask
-          // if (!applyRand[dist] || 
-          //     (applyRand[dist] && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist]))
+          if (!applyRand[dist] ||
+              (applyRand[dist] && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist]))
           { // & disturbance occurs in this cell
             m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
           }
