@@ -1688,6 +1688,7 @@ void SimulMap::DoDisturbance(int yr)
       { // loop on disturbances
         if (m_DistMap(cell_ID, dist) > 0.0)
         { // within mask
+          logg.info("Disturbance happening in cell :", cell_ID);
           if (!applyRand[dist] ||
               (applyRand[dist] && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist]))
           { // & disturbance occurs in this cell
