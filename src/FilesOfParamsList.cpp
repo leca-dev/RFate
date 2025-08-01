@@ -36,7 +36,9 @@ FOPL::FOPL() :
 m_GlobSimulParams(""), /* Global simulation parameters */
 m_SavedState(""), m_SavingDir(""), m_SavingTimesMaps(""), m_SavingTimesObjects(""), /* Saving parameters */
 m_Mask(""), m_MaskDist(1,""), m_MaskFire(1,""), m_MaskDrought(""), m_MaskElevation(""), m_MaskSlope(""), m_MaskSoil(""), /* Spatial parameters */
-m_MaskChangemaskFiles(1,""), m_MaskChangemaskYears(""), m_HabSuitChangemaskFiles(1,""), m_HabSuitChangemaskYears(""), m_DistChangemaskFiles(1,""), m_DistChangemaskYears(""), /* Simulation Changes parameters */
+m_MaskChangemaskFiles(1,""), m_MaskChangemaskYears(""), /* Simulation Changes parameters */
+m_HabSuitChangemaskFiles(1,""), m_HabSuitChangemaskYears(""), 
+m_DistChangemaskFiles(1,""), m_DistChangemaskYears(""), m_DistChangefreqFiles(1,""), m_DistChangefreqYears(""),
 m_FireChangemaskFiles(1,""), m_FireChangemaskYears(""), m_FireChangefreqFiles(1,""), m_FireChangefreqYears(""),
 m_DroughtChangemaskFiles(1,""), m_DroughtChangemaskYears(""),
 m_AliensChangemaskFiles(1,""), m_AliensChangemaskYears(""), m_AliensChangefreqFiles(1,""), m_AliensChangefreqYears(""), /* Aliens introduction parameters */
@@ -77,6 +79,8 @@ FOPL::FOPL(string paramSimulFile)
 	m_HabSuitChangemaskYears = ReadParamsWithinFile(paramSimulFile, "HABSUIT_CHANGEMASK_YEARS")[0];
 	m_DistChangemaskFiles = ReadParamsWithinFile(paramSimulFile, "DIST_CHANGEMASK_FILES");
 	m_DistChangemaskYears = ReadParamsWithinFile(paramSimulFile, "DIST_CHANGEMASK_YEARS")[0];
+	m_DistChangefreqFiles = ReadParamsWithinFile(paramSimulFile, "DIST_CHANGEFREQ_FILES");
+	m_DistChangefreqYears = ReadParamsWithinFile(paramSimulFile, "DIST_CHANGEFREQ_YEARS")[0];
 	m_FireChangemaskFiles = ReadParamsWithinFile(paramSimulFile, "FIRE_CHANGEMASK_FILES");
 	m_FireChangemaskYears = ReadParamsWithinFile(paramSimulFile, "FIRE_CHANGEMASK_YEARS")[0];
 	m_FireChangefreqFiles = ReadParamsWithinFile(paramSimulFile, "FIRE_CHANGEFREQ_FILES");
@@ -131,6 +135,8 @@ const vector<string>& FOPL::getHabSuitChangemaskFiles() const{ return  m_HabSuit
 const string& FOPL::getHabSuitChangemaskYears() const{ return  m_HabSuitChangemaskYears; }
 const vector<string>& FOPL::getDistChangemaskFiles() const{ return  m_DistChangemaskFiles; }
 const string& FOPL::getDistChangemaskYears() const{ return  m_DistChangemaskYears; }
+const vector<string>& FOPL::getDistChangefreqFiles() const{ return  m_DistChangefreqFiles; }
+const string& FOPL::getDistChangefreqYears() const{ return  m_DistChangefreqYears; }
 const vector<string>& FOPL::getFireChangemaskFiles() const{ return  m_FireChangemaskFiles; }
 const string& FOPL::getFireChangemaskYears() const{ return  m_FireChangemaskYears; }
 const vector<string>& FOPL::getFireChangefreqFiles() const{ return  m_FireChangefreqFiles; }
@@ -169,6 +175,8 @@ void FOPL::setHabSuitChangemaskFiles(const vector<string>& habSuitChangemaskFile
 void FOPL::setHabSuitChangemaskYears(const string& habSuitChangemaskYears){ m_HabSuitChangemaskYears = habSuitChangemaskYears; }
 void FOPL::setDistChangemaskFiles(const vector<string>& distChangemaskFiles){ m_DistChangemaskFiles = distChangemaskFiles; }
 void FOPL::setDistChangemaskYears(const string& distChangemaskYears){ m_DistChangemaskYears = distChangemaskYears; }
+void FOPL::setDistChangefreqFiles(const vector<string>& distChangefreqFiles){ m_DistChangefreqFiles = distChangefreqFiles; }
+void FOPL::setDistChangefreqYears(const string& distChangefreqYears){ m_DistChangefreqYears = distChangefreqYears; }
 void FOPL::setFireChangemaskFiles(const vector<string>& fireChangemaskFiles){ m_FireChangemaskFiles = fireChangemaskFiles; }
 void FOPL::setFireChangemaskYears(const string& fireChangemaskYears){ m_FireChangemaskYears = fireChangemaskYears; }
 void FOPL::setFireChangefreqFiles(const vector<string>& fireChangefreqFiles){ m_FireChangefreqFiles = fireChangefreqFiles; }
@@ -216,6 +224,8 @@ void FOPL::show()
 						 "\nm_HabSuitChangemaskYears = ", m_HabSuitChangemaskYears,
 						 "\nm_DistChangemaskFiles = ", m_DistChangemaskFiles,
 						 "\nm_DistChangemaskYears = ", m_DistChangemaskYears,
+						 "\nm_DistChangefreqFiles = ", m_DistChangefreqFiles,
+						 "\nm_DistChangefreqYears = ", m_DistChangefreqYears,
 						 "\nm_FireChangemaskFiles = ", m_FireChangemaskFiles,
 						 "\nm_FireChangemaskYears = ", m_FireChangemaskYears,
 						 "\nm_FireChangefreqFiles = ", m_FireChangefreqFiles,
@@ -270,6 +280,9 @@ void FOPL::checkCorrectParams_dist()
 	testFileExist("--DIST_CHANGEMASK_YEARS--",m_DistChangemaskYears, (strcmp(m_DistChangemaskYears.c_str(),"0")==0));
 	testFileExist("--DIST_CHANGEMASK_FILES--",m_DistChangemaskFiles, (strcmp(m_DistChangemaskYears.c_str(),"0")==0));
 	testFileExist_changeFile("--DIST_CHANGEMASK_FILES--",m_DistChangemaskFiles, (strcmp(m_DistChangemaskYears.c_str(),"0")==0));
+	testFileExist("--DIST_CHANGEFREQ_YEARS--",m_DistChangefreqYears, (strcmp(m_DistChangefreqYears.c_str(),"0")==0));
+	testFileExist("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, (strcmp(m_DistChangefreqYears.c_str(),"0")==0));
+	testFileExist_changeFile("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, (strcmp(m_DistChangefreqYears.c_str(),"0")==0));
 }
 
 void FOPL::checkCorrectParams_soil()
@@ -381,11 +394,14 @@ void FOPL::checkCorrectParams()
 	testFileExist("--DIST_CHANGEMASK_YEARS--",m_DistChangemaskYears, true);
 	testFileExist("--DIST_CHANGEMASK_FILES--",m_DistChangemaskFiles, true);
 	testFileExist_changeFile("--DIST_CHANGEMASK_FILES--",m_DistChangemaskFiles, true);
+	testFileExist("--DIST_CHANGEFREQ_YEARS--",m_DistChangefreqYears, true);
+	testFileExist("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, true);
+	testFileExist_changeFile("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, true);
 	testFileExist("--FIRE_CHANGEMASK_YEARS--",m_FireChangemaskYears, true);
 	testFileExist("--FIRE_CHANGEMASK_FILES--",m_FireChangemaskFiles, true);
 	testFileExist_changeFile("--FIRE_CHANGEMASK_FILES--",m_FireChangemaskFiles, true);
-	testFileExist("--FIRE_CHANGEFREQ_FILES--",m_FireChangefreqFiles, true);
 	testFileExist("--FIRE_CHANGEFREQ_YEARS--",m_FireChangefreqYears, true);
+	testFileExist("--FIRE_CHANGEFREQ_FILES--",m_FireChangefreqFiles, true);
 	testFileExist("--DROUGHT_CHANGEMASK_YEARS--",m_DroughtChangemaskYears, true);
 	testFileExist("--DROUGHT_CHANGEMASK_FILES--",m_DroughtChangemaskFiles, true);
 	testFileExist_changeFile("--DROUGHT_CHANGEMASK_FILES--",m_DroughtChangemaskFiles, true);

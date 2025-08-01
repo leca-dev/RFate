@@ -94,16 +94,23 @@ class FOPL
 	/* Simulation Timing parameters */
 	vector<string> m_MaskChangemaskFiles; /*!< list of files containing list of masks of studied area change scenario */
 	string m_MaskChangemaskYears; /*!< list of studied area changes times */
+	
 	vector<string> m_HabSuitChangemaskFiles; /*!< list of files containing list of masks of habitat change scenario */
 	string m_HabSuitChangemaskYears; /*!< list of habitat changes times */
+	
 	vector<string> m_DistChangemaskFiles; /*!< list of files containing list of masks of land use change scenario */
 	string m_DistChangemaskYears; /*!< list of land use changes times */
+	vector<string> m_DistChangefreqFiles; /*!< list of files containing list of land use frequencies files change scenario */
+	string m_DistChangefreqYears; /*!< list of land use frequencies changes times */
+	
 	vector<string> m_FireChangemaskFiles; /*!< list of files containing list of masks of fire change scenario */
-	string m_FireChangemaskYears; /*!< list of land use changes times */
+	string m_FireChangemaskYears; /*!< list of fire changes times */
 	vector<string> m_FireChangefreqFiles; /*!< list of files containing list of fire frequencies files change scenario */
 	string m_FireChangefreqYears; /*!< list of fire frequencies changes times */
+	
 	vector<string> m_DroughtChangemaskFiles; /*!< list of files containing list of masks of drought index change scenario */
 	string m_DroughtChangemaskYears; /*!< list of drought index changes times */
+	
 	vector<string> m_AliensChangemaskFiles;	/*!< list of files containing list of masks of aliens introduction change scenario */
 	string m_AliensChangemaskYears; /*!< list of aliens introduction changes times */
 	vector<string> m_AliensChangefreqFiles;	/*!< list of files containing list of aliens introduction frequencies files change scenario */
@@ -147,6 +154,8 @@ class FOPL
 		ar & m_HabSuitChangemaskYears;
 		ar & m_DistChangemaskFiles;
 		ar & m_DistChangemaskYears;
+		ar & m_DistChangefreqFiles;
+		ar & m_DistChangefreqYears;
 		ar & m_FireChangemaskFiles;
 		ar & m_FireChangemaskYears;
 		ar & m_FireChangefreqFiles;
@@ -226,6 +235,8 @@ class FOPL
 		m_HabSuitChangemaskYears == o.m_HabSuitChangemaskYears &&
 		m_DistChangemaskFiles == o.m_DistChangemaskFiles &&
 		m_DistChangemaskYears == o.m_DistChangemaskYears &&
+		m_DistChangefreqFiles == o.m_DistChangefreqFiles &&
+		m_DistChangefreqYears == o.m_DistChangefreqYears &&
 		m_FireChangemaskFiles == o.m_FireChangemaskFiles &&
 		m_FireChangemaskYears == o.m_FireChangemaskYears &&
 		m_FireChangefreqFiles == o.m_FireChangefreqFiles &&
@@ -269,6 +280,8 @@ class FOPL
 	const string& getHabSuitChangemaskYears() const;
 	const vector<string>& getDistChangemaskFiles() const;
 	const string& getDistChangemaskYears() const;
+	const vector<string>& getDistChangefreqFiles() const;
+	const string& getDistChangefreqYears() const;
 	const vector<string>& getFireChangemaskFiles() const;
 	const string& getFireChangemaskYears() const;
 	const vector<string>& getFireChangefreqFiles() const;
@@ -307,6 +320,8 @@ class FOPL
 	void setHabSuitChangemaskYears(const string& habSuitChangemaskYears);
 	void setDistChangemaskFiles(const vector<string>& distChangemaskFiles);
 	void setDistChangemaskYears(const string& distChangemaskYears);
+	void setDistChangefreqFiles(const vector<string>& distChangefreqFiles);
+	void setDistChangefreqYears(const string& distChangefreqYears);
 	void setFireChangemaskFiles(const vector<string>& fireChangemaskFiles);
 	void setFireChangemaskYears(const string& fireChangemaskYears);
 	void setFireChangefreqFiles(const vector<string>& fireChangefreqFiles);

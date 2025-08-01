@@ -550,6 +550,8 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 	}
 	vector< int > dist_change_times = ReadTimingsFile( file_of_params.getDistChangemaskYears() );
 	vector< string > dist_change_files = file_of_params.getDistChangemaskFiles();
+	vector< int > dist_freq_change_times = ReadTimingsFile( file_of_params.getDistChangefreqYears() );
+	vector< string > dist_freq_change_files = file_of_params.getDistChangefreqFiles();
 	if (simulMap->getGlobalParameters().getDoFireDisturbances())
 	{
 		logg.info("Getting fire timing parameters...");
@@ -692,7 +694,10 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		/* Do disturbances change */
 		if (simulMap->getGlobalParameters().getDoDisturbances())
 		{
+		  /* Do mask change */
 			changeFile(year, "dist", dist_change_times, dist_change_files);
+		  /* Do frequencies change */
+		  changeFreq(year, "dist", dist_freq_change_times, dist_freq_change_files);
 		}
 
 		/* FIRE DISTURBANCE */

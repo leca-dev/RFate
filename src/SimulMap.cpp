@@ -651,7 +651,8 @@ void SimulMap::DoFreqChange(string newChangeFile, string typeFile)
     /* Close file */
     file.close();
     
-    if (strcmp(typeFile.c_str(),"fire")==0){ m_glob_params.setFreqFireDist(newfreq);
+    if (strcmp(typeFile.c_str(),"dist")==0){ m_glob_params.setFreqDist(newfreq);
+    } else if (strcmp(typeFile.c_str(),"fire")==0){ m_glob_params.setFreqFireDist(newfreq);
     } else if(strcmp(typeFile.c_str(),"aliens")==0){ m_glob_params.setFreqAliens(newfreq);
     }
     
@@ -1688,11 +1689,11 @@ void SimulMap::DoDisturbance(int yr)
       { // loop on disturbances
         if (m_DistMap(cell_ID, dist) > 0.0)
         { // within mask
-          logg.info("Disturbance happening in cell (point A) :", dist, cell_ID);
+          // logg.info("Disturbance happening in cell (point A) :", dist, cell_ID);
           if (!applyRand[dist] ||
               (applyRand[dist] && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist]))
           { // & disturbance occurs in this cell
-            logg.info("Disturbance happening in cell (point B) :", dist, cell_ID);
+            // logg.info("Disturbance happening in cell (point B) :", dist, cell_ID);
             m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
           }
         }
