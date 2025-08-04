@@ -1642,6 +1642,7 @@ void SimulMap::DoDroughtDisturbance_part2(string chrono)
 void SimulMap::DoDisturbance(int yr)
 {
   /* Do disturbances depending on their frequency */
+  logg.info("Step 1...");
   vector<int> applyDist;
   applyDist.reserve(m_glob_params.getNoDist());
   vector<bool> applyRand(m_glob_params.getNoDist(), false);
@@ -1661,23 +1662,31 @@ void SimulMap::DoDisturbance(int yr)
   logg.info("Disturbances to be applied (FREQ) :", applyDist);
   
   /* Initialize a probability vector for all cells */
-  vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
+  logg.info("Step 2...");
+  vector< vector< double > > vecRand(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
   for (int cell_ID : m_MaskCells)
   {
     UniReal random_01(0.0, 1.0);
-    double randi = random_01(m_RNG);
+    vector<double> valRand;
+    valRand.reserve(m_glob_params.getNoDist());
+    for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+    { // loop on disturbances
+      valRand[dist] = random_01(m_RNG);
+    }
+    double randi = valRand[0];
     for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
     { // loop on disturbances
       if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-        randi = random_01(m_RNG);
+        randi = valRand[dist];
       }
-      vecRandi[dist][cell_ID] = randi;
+      vecRand[dist][cell_ID] = randi;
     }
   }
   
   /* Do disturbances only if some need to */
   if (applyDist.size() > 0)
   {
+    logg.info("Go for disturbance...");
     logg.info("Disturbances not applied everywhere (PROB) :", applyRand);
     
     /* Do disturbances only on points within mask */
@@ -1691,7 +1700,7 @@ void SimulMap::DoDisturbance(int yr)
         if (m_DistMap(cell_ID, dist) > 0.0)
         { // within mask
           if (!applyRand[dist] ||
-              (applyRand[dist] && vecRandi[dist][cell_ID] <= m_glob_params.getProbDist()[dist]))
+              (applyRand[dist] && vecRand[dist][cell_ID] <= m_glob_params.getProbDist()[dist]))
           { // & disturbance occurs in this cell
             m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
           }
