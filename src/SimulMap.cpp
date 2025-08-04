@@ -1687,7 +1687,8 @@ void SimulMap::DoDisturbance(int yr)
     
     for (int cell_ID : m_MaskCells)
     {
-      for (int dist : applyDist)
+      // for (int dist : applyDist)
+      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
       { // loop on disturbances
         sumtotmapdist[dist] += m_DistMap(cell_ID, dist);
         if (m_DistMap(cell_ID, dist) > 0.0)
