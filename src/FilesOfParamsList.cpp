@@ -280,9 +280,9 @@ void FOPL::checkCorrectParams_dist()
 	testFileExist("--DIST_CHANGEMASK_YEARS--",m_DistChangemaskYears, (strcmp(m_DistChangemaskYears.c_str(),"0")==0));
 	testFileExist("--DIST_CHANGEMASK_FILES--",m_DistChangemaskFiles, (strcmp(m_DistChangemaskYears.c_str(),"0")==0));
 	testFileExist_changeFile("--DIST_CHANGEMASK_FILES--",m_DistChangemaskFiles, (strcmp(m_DistChangemaskYears.c_str(),"0")==0));
-	testFileExist("--DIST_CHANGEFREQ_YEARS--",m_DistChangefreqYears, true);
-	testFileExist("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, true);
-	testFileExist_changeFile("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, true);
+	testFileExist("--DIST_CHANGEFREQ_YEARS--",m_DistChangefreqYears, (strcmp(m_DistChangefreqYears.c_str(),"0")==0));
+	testFileExist("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, (strcmp(m_DistChangefreqYears.c_str(),"0")==0));
+	testFileExist_changeFile("--DIST_CHANGEFREQ_FILES--",m_DistChangefreqFiles, (strcmp(m_DistChangefreqYears.c_str(),"0")==0));
 }
 
 void FOPL::checkCorrectParams_soil()

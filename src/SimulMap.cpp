@@ -1658,26 +1658,28 @@ void SimulMap::DoDisturbance(int yr)
     }
   }
   applyDist.shrink_to_fit();
-  logg.info("Disturbances to be applied :", applyDist);
-  logg.info("Disturbances not applied everywhere :", applyRand);
+  logg.info("Disturbances to be applied (FREQ) :", applyDist);
   
   /* Do disturbances only if some need to */
   if (applyDist.size() > 0)
   {
+    logg.info("Disturbances not applied everywhere (PROB) :", applyRand);
+
     vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
-    for (int cell_ID : m_MaskCells)
-    {
-      UniReal random_01(0.0, 1.0);
-      double randi = random_01(m_RNG);
-      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
-      { // loop on disturbances
-        if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-          randi = random_01(m_RNG);
-        }
-        vecRandi[dist][cell_ID] = randi;
-      }
-    }
+    // for (int cell_ID : m_MaskCells)
+    // {
+    //   UniReal random_01(0.0, 1.0);
+    //   double randi = random_01(m_RNG);
+    //   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+    //   { // loop on disturbances
+    //     if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
+    //       randi = random_01(m_RNG);
+    //     }
+    //     vecRandi[dist][cell_ID] = randi;
+    //   }
+    // }
     
+    vector <double> sumtotmapdist(m_glob_params.getNoDist(), 0.0);
     
     /* Do disturbances only on points within mask */
     omp_set_num_threads( m_glob_params.getNoCPU() );
@@ -1687,6 +1689,7 @@ void SimulMap::DoDisturbance(int yr)
     {
       for (int dist : applyDist)
       { // loop on disturbances
+        sumtotmapdist[dist] += m_DistMap(cell_ID, dist);
         if (m_DistMap(cell_ID, dist) > 0.0)
         { // within mask
           // logg.info("Disturbance happening in cell (point A) :", dist, cell_ID);
@@ -1699,6 +1702,8 @@ void SimulMap::DoDisturbance(int yr)
         }
       } // end loop over disturbances
     } // end loop over cells
+    
+    logg.info("IF NODIST applied, this should all be to 0 :", sumtotmapdist);
   }
 } // end of DoDisturbance(...)
 
