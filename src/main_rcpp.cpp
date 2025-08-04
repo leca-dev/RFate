@@ -793,7 +793,7 @@ int FATE(std::string simulParam, int no_CPU = 1, int verboseLevel = 0)
 		}
 
 		/* Run disturbance model ====================================================*/
-		if (simulMap->getGlobalParameters().getDoDisturbances())
+		// if (simulMap->getGlobalParameters().getDoDisturbances())
 		{
 			logg.info("Apply disturbances...");
 			simulMap->DoDisturbance(year);
