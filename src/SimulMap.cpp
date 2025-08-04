@@ -1670,13 +1670,13 @@ void SimulMap::DoDisturbance(int yr)
     {
       UniReal random_01(0.0, 1.0);
       double randi = random_01(m_RNG);
-      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
-      { // loop on disturbances
-        if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-          randi = random_01(m_RNG);
-        }
-        vecRandi[dist][cell_ID] = randi;
-      }
+      // for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+      // { // loop on disturbances
+      //   if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
+      //     randi = random_01(m_RNG);
+      //   }
+      //   vecRandi[dist][cell_ID] = randi;
+      // }
     }
     
     vector <double> sumtotmapdist(m_glob_params.getNoDist(), 0.0);
@@ -1687,8 +1687,7 @@ void SimulMap::DoDisturbance(int yr)
     
     for (int cell_ID : m_MaskCells)
     {
-      // for (int dist : applyDist)
-      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+      for (int dist : applyDist)
       { // loop on disturbances
         sumtotmapdist[dist] += m_DistMap(cell_ID, dist);
         if (m_DistMap(cell_ID, dist) > 0.0)
