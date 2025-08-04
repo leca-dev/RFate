@@ -1669,7 +1669,7 @@ void SimulMap::DoDisturbance(int yr)
     for (int cell_ID : m_MaskCells)
     {
       UniReal random_01(0.0, 1.0);
-      double randi = random_01(m_RNG);
+      // double randi = random_01(m_RNG);
       // for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
       // { // loop on disturbances
       //   if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
