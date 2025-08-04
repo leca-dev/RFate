@@ -1666,18 +1666,18 @@ void SimulMap::DoDisturbance(int yr)
     logg.info("Disturbances not applied everywhere (PROB) :", applyRand);
 
     vector< vector< double > > vecRandi(m_glob_params.getNoDist(), vector<double>(m_Mask.getTotncell(), 0.0));
-    // for (int cell_ID : m_MaskCells)
-    // {
-    //   UniReal random_01(0.0, 1.0);
-    //   double randi = random_01(m_RNG);
-    //   for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
-    //   { // loop on disturbances
-    //     if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
-    //       randi = random_01(m_RNG);
-    //     }
-    //     vecRandi[dist][cell_ID] = randi;
-    //   }
-    // }
+    for (int cell_ID : m_MaskCells)
+    {
+      UniReal random_01(0.0, 1.0);
+      double randi = random_01(m_RNG);
+      for (int dist=0; dist<m_glob_params.getNoDist(); dist++)
+      { // loop on disturbances
+        if (dist > 0 && m_glob_params.getPairDist()[dist] != m_glob_params.getPairDist()[dist-1]) {
+          randi = random_01(m_RNG);
+        }
+        vecRandi[dist][cell_ID] = randi;
+      }
+    }
     
     vector <double> sumtotmapdist(m_glob_params.getNoDist(), 0.0);
     
@@ -1694,7 +1694,7 @@ void SimulMap::DoDisturbance(int yr)
         { // within mask
           // logg.info("Disturbance happening in cell (point A) :", dist, cell_ID);
           if (!applyRand[dist] ||
-              (applyRand[dist] && vecRandi[dist][cell_ID] < m_glob_params.getProbDist()[dist]))
+              (applyRand[dist] && vecRandi[dist][cell_ID] <= m_glob_params.getProbDist()[dist]))
           { // & disturbance occurs in this cell
             // logg.info("Disturbance happening in cell (point B) :", dist, cell_ID);
             m_SuccModelMap(cell_ID)->DoDisturbance(dist, m_DistMap(cell_ID, dist));
