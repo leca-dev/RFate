@@ -261,12 +261,12 @@ POST_FATE.graphic_evolutionPixels = function(
                    , "_"
                    , basename(GLOB_DIR$dir.save)
                    , ".csv \n"
-                   , "has been successfully created !\n"))
+                   , "has been successfully created !"))
     
     ## produce the plot -------------------------------------------------------
     if (opt.doPlot)
     {
-      cat("\n ---------- PRODUCING PLOT \n")
+      cat("\n ---------- PRODUCING PLOT")
       vec_col1 = c('#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c','#fdbf6f','#ff7f00','#cab2d6')
       val_col1 = c(rep(rgb(1,1,1,1), GLOB_SIM$no_STRATA)
                    , colorRampPalette(vec_col1)(GLOB_SIM$no_PFG)

@@ -887,7 +887,7 @@ PRE_FATE.selectDominant = function(mat.observations
                    , " > PRE_FATE_DOMINANT_TABLE_sitesXspecies_PA"
                    , end_filename
                    , ".csv \n"
-                   , "have been successfully created !\n"))
+                   , "have been successfully created !"))
   }
   
   
@@ -897,7 +897,7 @@ PRE_FATE.selectDominant = function(mat.observations
   
   if (opt.doPlot)
   {
-    cat("\n ---------- PRODUCING PLOT(S) \n")
+    cat("\n ---------- PRODUCING PLOT(S)")
     
     ###########################################################################
     ## ILLUSTRATION of rules A1, A2 and C -------------------------------------

@@ -275,10 +275,8 @@ POST_FATE.graphic_mapPFG = function(
       }
       if (doCover || doLeinster || doCWM)
       {
-        ## If opt.stratum_... used
-        if (opt.doStrata)
+        if (opt.doStrata) ## If opt.stratum_... used
         {
-          # raster.perPFG.perStrata = .getRasterNames(years, "perStrata", "ABUND", GLOB_DIR)
           combi = expand.grid(year = years
                               , pfg = GLOB_SIM$PFG
                               , stratum = range_strata
@@ -302,8 +300,8 @@ POST_FATE.graphic_mapPFG = function(
                  , no_cores = opt.no_CPU)
         }
       }
-      ## If light activated
-      if (doCWM && GLOB_SIM$doLight)
+      
+      if (doCWM && GLOB_SIM$doLight) ## If light activated
       {
         combi = expand.grid(year = years, stratum = range_strata, stringsAsFactors = FALSE)
         raster.light.perStrata = sapply(1:nrow(combi), function(i)
@@ -316,8 +314,7 @@ POST_FATE.graphic_mapPFG = function(
                , list_files = raster.light.perStrata
                , no_cores = opt.no_CPU)
       }
-      ## If soil activated
-      if (doCWM && GLOB_SIM$doSoil)
+      if (doCWM && GLOB_SIM$doSoil) ## If soil activated
       {
         raster.soil = paste0("Soil_Resources_YEAR_", years, ".tif.gz")
         .unzip(folder_name = GLOB_DIR$dir.output.soil
@@ -335,7 +332,6 @@ POST_FATE.graphic_mapPFG = function(
           
           if (doRichness)
           {
-            ## Multiplied by binary maps ----------------------------------------
             file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.BIN
                                , "Binary_YEAR_"
                                , y
@@ -367,224 +363,230 @@ POST_FATE.graphic_mapPFG = function(
             output.names = c(output.names, output.name)
             writeRaster(ras.SR, filename = output.name, overwrite = TRUE)
           }
-          if (!opt.doStrata)
-          {
-            ## GET PFG abundance maps (all strata) ------------------------------
-            file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata
-                               , "Abund_YEAR_"
-                               , y
-                               , "_"
-                               , GLOB_SIM$PFG
-                               , "_STRATA_all.tif")
-            gp = GLOB_SIM$PFG[which(file.exists(file_name))]
-            file_name = file_name[which(file.exists(file_name))]
-            
-            if (length(file_name) > 0)
-            {
-              ras.PFG = stack(file_name) * GLOB_MASK$ras.mask
-              names(ras.PFG) = gp
-            } else
-            {
-              stop(paste0("Missing data!\n The folder "
-                          , GLOB_DIR$dir.output.perPFG.allStrata
-                          , " does not contain adequate files"))
-            }
-          } else
-          {
-            ## GET PFG abundance maps (selected strata) -------------------------
-            ras.PFG = foreach (fg = GLOB_SIM$PFG) %do%
-              {
-                file_name = paste0(GLOB_DIR$dir.output.perPFG.perStrata
-                                   , "Abund_YEAR_"
-                                   , y
-                                   , "_"
-                                   , fg
-                                   , "_STRATA_"
-                                   , range_strata
-                                   , ".tif")
-                st = range_strata[which(file.exists(file_name))]
-                file_name = file_name[which(file.exists(file_name))]
-                
-                if (length(file_name) > 0)
-                {
-                  ras = stack(file_name) * GLOB_MASK$ras.mask
-                  ras.tot = sum(ras)
-                  names(ras.tot) = fg
-                  return(ras.tot)
-                }
-              }
-            names(ras.PFG) = GLOB_SIM$PFG
-            ras.PFG = lapply(which(sapply(ras.PFG, is.null) == FALSE), function(x) ras.PFG[[x]])
-            
-            if (length(ras.PFG) == 0)
-            {
-              stop(paste0("Missing data!\n The folder "
-                          , GLOB_DIR$dir.output.perPFG.perStrata
-                          , " does not contain adequate files"))
-            }
-            ras.PFG = stack(ras.PFG)
-          }
-          if (opt.doBinary)
-          {
-            ## Multiplied by binary maps ----------------------------------------
-            file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.BIN
-                               , "Binary_YEAR_"
-                               , y
-                               , "_"
-                               , names(ras.PFG)
-                               , "_STRATA_all.tif")
-            gp = names(ras.PFG)[which(file.exists(file_name))]
-            file_name = file_name[which(file.exists(file_name))]
-            
-            if (length(file_name) == nlayers(ras.PFG))
-            {
-              ras.bin = stack(file_name) * GLOB_MASK$ras.mask
-              ras.PFG = ras.PFG * ras.bin
-              names(ras.PFG) = gp
-            } else
-            {
-              warning(paste0("Missing data!\n The folder "
-                             , GLOB_DIR$dir.output.perPFG.allStrata.BIN
-                             , " does not contain all required files. "
-                             , "`opt.doBinary` set to FALSE. Please check."))
-            }
-          }
-          ras.TOT = sum(ras.PFG)
           
-          if (doCover)
+          if (doCover || doLeinster || doCWM)
           {
-            ## GET abundance relative maps ------------------------------------------
-            ras.REL = ras.PFG / max(ras.TOT[], na.rm = TRUE)
-            ras_list$cover.PFG = ras.REL
-            
-            ## GET cover map --------------------------------------------------------
-            ras.COVER = ras.TOT / max(ras.TOT[], na.rm = TRUE)
-            ras_list$cover.all = ras.COVER
-            
-            output.name = paste0(GLOB_DIR$dir.save
-                                 , "/PFGcover_YEAR_"
+            if (!opt.doStrata)
+            {
+              ## GET PFG abundance maps (all strata) ------------------------------
+              file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata
+                                 , "Abund_YEAR_"
                                  , y
-                                 , "_STRATA_"
-                                 , name_strata
-                                 , ".tif")
-            output.names = c(output.names, output.name)
-            writeRaster(ras.COVER, filename = output.name, overwrite = TRUE)
-          }
-          
-          if (doLeinster)
-          {
-            ## GET richness map -----------------------------------------------------
-            ras.pts = as.data.frame(ras.REL)
-            ras.pts = as.matrix(ras.pts)
-            ras.DIV = foreach(qq = 0:2) %do%
+                                 , "_"
+                                 , GLOB_SIM$PFG
+                                 , "_STRATA_all.tif")
+              gp = GLOB_SIM$PFG[which(file.exists(file_name))]
+              file_name = file_name[which(file.exists(file_name))]
+              
+              if (length(file_name) > 0)
               {
-                div_q = divLeinster(spxp = ras.pts, q = qq)
-                ras.div = GLOB_MASK$ras.mask
-                ras.div[] = div_q
-                ras.div = ras.div * GLOB_MASK$ras.mask
-                ras_list[[paste0("DIV.", qq)]] = ras.div
-                
-                output.name = paste0(GLOB_DIR$dir.save
-                                     , "/PFGleinster_YEAR_"
-                                     , y
-                                     , "_STRATA_"
-                                     , name_strata
-                                     , "_q"
-                                     , qq
-                                     , ".tif")
-                output.names = c(output.names, output.name)
-                writeRaster(ras.div, filename = output.name, overwrite = TRUE)
-                
-                return(ras.div)
-              }
-          }
-          
-          ## GET CWM map ----------------------------------------------------------
-          if (doCWM && GLOB_SIM$doLight)
-          {
-            light_files = .getParam(params.lines = abs.simulParam
-                                    , flag = "PFG_PARAMS_LIGHT"
-                                    , flag.split = "^--.*--$"
-                                    , is.num = FALSE)
-            light_need = foreach(fi = light_files, .combine = "c") %do%
+                ras.PFG = stack(file_name) * GLOB_MASK$ras.mask
+                names(ras.PFG) = gp
+              } else
               {
-                .getParam(params.lines = fi
-                          , flag = "LIGHT"
-                          , flag.split = " "
-                          , is.num = TRUE)
+                stop(paste0("Missing data!\n The folder "
+                            , GLOB_DIR$dir.output.perPFG.allStrata
+                            , " does not contain adequate files"))
               }
-            if (length(na.exclude(light_need)) == 0)
-            {
-              warning(paste0("Missing data!\n The files \n"
-                             , paste0(" > ", light_files, " \n", collapse = "")
-                             , " do not contain `LIGHT` flag parameter. Please check."))
             } else
             {
-              names(light_need) = GLOB_SIM$PFG
-              ras.CWM.light = sum(ras.REL * light_need[names(ras.REL)])
-              ras_list$CWM.light = ras.CWM.light
+              ## GET PFG abundance maps (selected strata) -------------------------
+              ras.PFG = foreach (fg = GLOB_SIM$PFG) %do%
+                {
+                  file_name = paste0(GLOB_DIR$dir.output.perPFG.perStrata
+                                     , "Abund_YEAR_"
+                                     , y
+                                     , "_"
+                                     , fg
+                                     , "_STRATA_"
+                                     , range_strata
+                                     , ".tif")
+                  st = range_strata[which(file.exists(file_name))]
+                  file_name = file_name[which(file.exists(file_name))]
+                  
+                  if (length(file_name) > 0)
+                  {
+                    ras = stack(file_name) * GLOB_MASK$ras.mask
+                    ras.tot = sum(ras)
+                    names(ras.tot) = fg
+                    return(ras.tot)
+                  }
+                }
+              names(ras.PFG) = GLOB_SIM$PFG
+              ras.PFG = lapply(which(sapply(ras.PFG, is.null) == FALSE), function(x) ras.PFG[[x]])
+              
+              if (length(ras.PFG) == 0)
+              {
+                stop(paste0("Missing data!\n The folder "
+                            , GLOB_DIR$dir.output.perPFG.perStrata
+                            , " does not contain adequate files"))
+              }
+              ras.PFG = stack(ras.PFG)
+            }
+            if (opt.doBinary)
+            {
+              ## Multiplied by binary maps ----------------------------------------
+              # file_name = paste0(GLOB_DIR$dir.output.perPFG.allStrata.BIN
+              #                    , "Binary_YEAR_"
+              #                    , y
+              #                    , "_"
+              #                    , names(ras.PFG)
+              #                    , "_STRATA_all.tif")
+              # gp = names(ras.PFG)[which(file.exists(file_name))]
+              # file_name = file_name[which(file.exists(file_name))]
+              
+              if (nlayers(ras.BIN) == nlayers(ras.PFG))
+              {
+                # ras.bin = stack(file_name) * GLOB_MASK$ras.mask
+                # ras.PFG = ras.PFG * ras.bin
+                ras.PFG = ras.PFG * ras.BIN
+                names(ras.PFG) = gp
+              } else
+              {
+                warning(paste0("Missing data!\n The folder "
+                               , GLOB_DIR$dir.output.perPFG.allStrata.BIN
+                               , " does not contain all required files. "
+                               , "`opt.doBinary` set to FALSE. Please check."))
+              }
+            }
+            
+            if (doCover)
+            {
+              ras.TOT = sum(ras.PFG)
+              
+              ## GET abundance relative maps ------------------------------------------
+              ras.REL = ras.PFG / max(ras.TOT[], na.rm = TRUE)
+              ras_list$cover.PFG = ras.REL
+              
+              ## GET cover map --------------------------------------------------------
+              ras.COVER = ras.TOT / max(ras.TOT[], na.rm = TRUE)
+              ras_list$cover.all = ras.COVER
               
               output.name = paste0(GLOB_DIR$dir.save
-                                   , "/PFGlight_YEAR_"
+                                   , "/PFGcover_YEAR_"
                                    , y
                                    , "_STRATA_"
                                    , name_strata
                                    , ".tif")
               output.names = c(output.names, output.name)
-              writeRaster(ras.CWM.light, filename = output.name, overwrite = TRUE)
+              writeRaster(ras.COVER, filename = output.name, overwrite = TRUE)
             }
             
-            ## GET light maps (selected strata) -----------------------------------
-            file_name = paste0(GLOB_DIR$dir.output.light, sub(".gz$", "", raster.light.perStrata))
-            st = range_strata[which(file.exists(file_name))]
-            file_name = file_name[which(file.exists(file_name))]
-            if (length(file_name) > 0)
+            if (doLeinster)
             {
-              ras.light = stack(file_name) * GLOB_MASK$ras.mask
-              names(ras.light) = paste0("Stratum_", st)
-              ras_list$LIGHT = ras.light
+              ## GET richness map -----------------------------------------------------
+              ras.pts = as.data.frame(ras.PFG)
+              ras.pts = as.matrix(ras.pts)
+              ras.DIV = foreach(qq = 0:2) %do%
+                {
+                  div_q = divLeinster(spxp = ras.pts, q = qq)
+                  ras.div = GLOB_MASK$ras.mask
+                  ras.div[] = div_q
+                  ras.div = ras.div * GLOB_MASK$ras.mask
+                  ras_list[[paste0("DIV.", qq)]] = ras.div
+                  
+                  output.name = paste0(GLOB_DIR$dir.save
+                                       , "/PFGleinster_YEAR_"
+                                       , y
+                                       , "_STRATA_"
+                                       , name_strata
+                                       , "_q"
+                                       , qq
+                                       , ".tif")
+                  output.names = c(output.names, output.name)
+                  writeRaster(ras.div, filename = output.name, overwrite = TRUE)
+                  
+                  return(ras.div)
+                }
             }
-          }
-          if (doCWM && GLOB_SIM$doSoil)
-          {
-            soil_files = .getParam(params.lines = abs.simulParam
-                                   , flag = "PFG_PARAMS_SOIL"
-                                   , flag.split = "^--.*--$"
-                                   , is.num = FALSE)
-            soil_contrib = foreach(fi = soil_files, .combine = "c") %do%
+            
+            ## GET CWM map ----------------------------------------------------------
+            if (doCWM && GLOB_SIM$doLight)
+            {
+              light_files = .getParam(params.lines = abs.simulParam
+                                      , flag = "PFG_PARAMS_LIGHT"
+                                      , flag.split = "^--.*--$"
+                                      , is.num = FALSE)
+              light_need = foreach(fi = light_files, .combine = "c") %do%
+                {
+                  .getParam(params.lines = fi
+                            , flag = "LIGHT"
+                            , flag.split = " "
+                            , is.num = TRUE)
+                }
+              if (length(na.exclude(light_need)) == 0)
               {
-                .getParam(params.lines = fi
-                          , flag = "SOIL_CONTRIB"
-                          , flag.split = " "
-                          , is.num = TRUE)
+                warning(paste0("Missing data!\n The files \n"
+                               , paste0(" > ", light_files, " \n", collapse = "")
+                               , " do not contain `LIGHT` flag parameter. Please check."))
+              } else
+              {
+                names(light_need) = GLOB_SIM$PFG
+                ras.CWM.light = sum(ras.REL * light_need[names(ras.REL)])
+                ras_list$CWM.light = ras.CWM.light
+                
+                output.name = paste0(GLOB_DIR$dir.save
+                                     , "/PFGlight_YEAR_"
+                                     , y
+                                     , "_STRATA_"
+                                     , name_strata
+                                     , ".tif")
+                output.names = c(output.names, output.name)
+                writeRaster(ras.CWM.light, filename = output.name, overwrite = TRUE)
               }
-            names(soil_contrib) = GLOB_SIM$PFG
-            ras.CWM.soil = sum(ras.REL * soil_contrib[names(ras.REL)])
-            ras_list$CWM.soil = ras.CWM.soil
-            
-            output.name = paste0(GLOB_DIR$dir.save
-                                 , "/PFGsoil_YEAR_"
-                                 , y
-                                 , "_STRATA_"
-                                 , name_strata
-                                 , ".tif")
-            output.names = c(output.names, output.name)
-            writeRaster(ras.CWM.soil, filename = output.name, overwrite = TRUE)
-            
-            ## GET soil maps ------------------------------------------------------
-            file_name = paste0(GLOB_DIR$dir.output.soil, sub(".gz$", "", raster.soil))
-            if (length(file_name) > 0)
+              
+              ## GET light maps (selected strata) -----------------------------------
+              file_name = paste0(GLOB_DIR$dir.output.light, sub(".gz$", "", raster.light.perStrata))
+              st = range_strata[which(file.exists(file_name))]
+              file_name = file_name[which(file.exists(file_name))]
+              if (length(file_name) > 0)
+              {
+                ras.light = stack(file_name) * GLOB_MASK$ras.mask
+                names(ras.light) = paste0("Stratum_", st)
+                ras_list$LIGHT = ras.light
+              }
+            }
+            if (doCWM && GLOB_SIM$doSoil)
             {
-              ras.soil = stack(file_name) * GLOB_MASK$ras.mask
-              names(ras.soil) = years
-              ras_list$SOIL = ras.soil
+              soil_files = .getParam(params.lines = abs.simulParam
+                                     , flag = "PFG_PARAMS_SOIL"
+                                     , flag.split = "^--.*--$"
+                                     , is.num = FALSE)
+              soil_contrib = foreach(fi = soil_files, .combine = "c") %do%
+                {
+                  .getParam(params.lines = fi
+                            , flag = "SOIL_CONTRIB"
+                            , flag.split = " "
+                            , is.num = TRUE)
+                }
+              names(soil_contrib) = GLOB_SIM$PFG
+              ras.CWM.soil = sum(ras.REL * soil_contrib[names(ras.REL)])
+              ras_list$CWM.soil = ras.CWM.soil
+              
+              output.name = paste0(GLOB_DIR$dir.save
+                                   , "/PFGsoil_YEAR_"
+                                   , y
+                                   , "_STRATA_"
+                                   , name_strata
+                                   , ".tif")
+              output.names = c(output.names, output.name)
+              writeRaster(ras.CWM.soil, filename = output.name, overwrite = TRUE)
+              
+              ## GET soil maps ------------------------------------------------------
+              file_name = paste0(GLOB_DIR$dir.output.soil, sub(".gz$", "", raster.soil))
+              if (length(file_name) > 0)
+              {
+                ras.soil = stack(file_name) * GLOB_MASK$ras.mask
+                names(ras.soil) = years
+                ras_list$SOIL = ras.soil
+              }
             }
           }
           
           message(paste0("\n The output files \n"
                          , paste0(" > ", output.names, " \n"
                                   , collapse = "")
-                         , "have been successfully created !\n"))
+                         , "have been successfully created !"))
           
           #########################################################################
           
@@ -777,9 +779,9 @@ POST_FATE.graphic_mapPFG = function(
       ## ZIP the raster saved -------------------------------------------------
       if (doRichness)
       {
-        # .zip(folder_name = GLOB_DIR$dir.output.light
-        #      , list_files = raster.light.perStrata
-        #      , no_cores = opt.no_CPU)
+        .zip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata.BIN
+             , list_files = raster.perPFG.allStrata.BIN
+             , no_cores = opt.no_CPU)
       }
       if (doCover || doLeinster || doCWM)
       {

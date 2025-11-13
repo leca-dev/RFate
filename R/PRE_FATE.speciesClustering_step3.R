@@ -370,12 +370,12 @@ PRE_FATE.speciesClustering_step3 = function(mat.traits, opt.mat.PA = NULL
             , row.names = FALSE)
   
   message(paste0("\n The parameter file PRE_FATE_PFG_TABLE_traits.csv "
-                 , "has been successfully created !\n"))
+                 , "has been successfully created !"))
   
   
   #############################################################################
   
-  cat("\n ---------- PRODUCING PLOT(S) \n")
+  cat("\n ---------- PRODUCING PLOT(S)")
   
   mat.traits.melt = mat.traits
   if (length(ind.factor) > 0){

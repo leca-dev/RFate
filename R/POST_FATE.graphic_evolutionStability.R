@@ -390,7 +390,7 @@ POST_FATE.graphic_evolutionStability = function(
                      , " > POST_FATE_TABLE_HAB_evolution_stability2_"
                      , basename(GLOB_DIR$dir.save)
                      , ".csv \n"
-                     , "has been successfully created !\n"))
+                     , "has been successfully created !"))
       
       ## Compare quantiles ----------------------------------------------------
       ## TO BE DONE ??
@@ -398,7 +398,7 @@ POST_FATE.graphic_evolutionStability = function(
       ## produce the plot -----------------------------------------------------
       if (opt.doPlot && !is.null(tab.HAB))
       {
-        cat("\n ---------- PRODUCING PLOT \n")
+        cat("\n ---------- PRODUCING PLOT")
         col_vec = c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#666666")
         col_fun = colorRampPalette(col_vec)
         

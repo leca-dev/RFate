@@ -242,13 +242,13 @@ POST_FATE.graphic_evolutionCoverage = function(
                    , " > POST_FATE_TABLE_ZONE_evolution_totalAbundance_"
                    , basename(GLOB_DIR$dir.save)
                    , ".csv \n"
-                   , "have been successfully created !\n"))
+                   , "have been successfully created !"))
     
     
     ## produce the plot -------------------------------------------------------
     if (opt.doPlot)
     {
-      cat("\n ---------- PRODUCING PLOTS \n")
+      cat("\n ---------- PRODUCING PLOTS")
       col_vec = c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#666666")
       col_fun = colorRampPalette(col_vec)
       list.pp1 = list.pp2 = list()

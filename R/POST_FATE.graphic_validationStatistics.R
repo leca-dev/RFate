@@ -425,7 +425,7 @@ POST_FATE.graphic_validationStatistics = function(
                          , y
                          , "_validationStatistics_"
                          , basename(GLOB_DIR$dir.save)
-                         , ".csv has been successfully created !\n"))
+                         , ".csv has been successfully created !"))
           
           ## prepare the plot -------------------------------------------------
           mat.valid = melt(mat.valid
