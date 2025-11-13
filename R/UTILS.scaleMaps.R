@@ -33,12 +33,10 @@ NULL
 
 ##' @export
 
-.scaleMaps = function(name.simulation
-                      , resolution
-                      
-){
+.scaleMaps = function(name.simulation, resolution)
+{
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/", "", name.simulation)
+  name.simulation = sub("/$", "", name.simulation)
   
   if (.testParam_notNum(resolution) ||
       sum(resolution <= 0) > 0){
@@ -106,12 +104,10 @@ NULL
 
 ##' @export
 
-.cropMaps = function(name.simulation
-                     , extent
-                     
-){
+.cropMaps = function(name.simulation, extent)
+{
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/", "", name.simulation)
+  name.simulation = sub("/$", "", name.simulation)
   
   if (.testParam_notNum(extent) ||
       length(extent) != 4){

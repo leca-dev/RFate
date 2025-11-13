@@ -60,13 +60,12 @@
                        , opt.name.file = NULL
                        , pattern.tofind
                        , pattern.toreplace
-                       
 ){
   
   #############################################################################
   
   .testParam_existFolder(name.simulation, "")
-  name.simulation = sub("/", "", name.simulation)
+  name.simulation = sub("/$", "", name.simulation)
   
   .testParam_notChar.m("pattern.tofind", pattern.tofind)
   .testParam_notChar.m("pattern.toreplace", pattern.toreplace)

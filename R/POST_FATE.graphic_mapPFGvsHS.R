@@ -118,7 +118,7 @@ POST_FATE.graphic_mapPFGvsHS = function(
   .testParam_existFolder(name.simulation, "PARAM_SIMUL/")
   .testParam_existFolder(name.simulation, "RESULTS/")
   .testParam_existFolder(name.simulation, "DATA/")
-  name.simulation = sub("/", "", name.simulation)
+  name.simulation = sub("/$", "", name.simulation)
   ## CHECK parameter file.simulParam
   abs.simulParams = .getParam_abs.simulParams(file.simulParam, name.simulation)
   ## CHECK parameter years
