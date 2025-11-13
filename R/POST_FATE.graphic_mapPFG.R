@@ -781,16 +781,19 @@ POST_FATE.graphic_mapPFG = function(
         #      , list_files = raster.light.perStrata
         #      , no_cores = opt.no_CPU)
       }
-      if (opt.doStrata)
+      if (doCover || doLeinster || doCWM)
       {
-        .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
-             , list_files = raster.perPFG.perStrata
-             , no_cores = opt.no_CPU)
-      } else
-      {
-        .zip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
-             , list_files = raster.perPFG.allStrata
-             , no_cores = opt.no_CPU)
+        if (opt.doStrata)
+        {
+          .zip(folder_name = GLOB_DIR$dir.output.perPFG.perStrata
+               , list_files = raster.perPFG.perStrata
+               , no_cores = opt.no_CPU)
+        } else
+        {
+          .zip(folder_name = GLOB_DIR$dir.output.perPFG.allStrata
+               , list_files = raster.perPFG.allStrata
+               , no_cores = opt.no_CPU)
+        }
       }
       if (doCWM && GLOB_SIM$doLight)
       {
