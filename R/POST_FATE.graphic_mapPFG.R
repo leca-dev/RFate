@@ -593,7 +593,7 @@ POST_FATE.graphic_mapPFG = function(
           {
             cat("\n ---------- PRODUCING PLOT(S)")
             
-            pp.i = function(tab, i.col, i.axis, i.lim, i.bre, i.lab, i.title, i.subtitle)
+            pp.i = function(tab, i.col, i.axis, i.lim, i.bre, i.lab, i.title = "", i.subtitle = "")
             {
               pp.i = ggplot(tab, aes_string(x = "X", y = "Y", fill = "VALUE")) +
                 scale_fill_gradientn(i.axis
