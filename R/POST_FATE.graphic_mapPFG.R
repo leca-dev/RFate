@@ -19,6 +19,19 @@
 ##' @param years an \code{integer}, or a \code{vector} of \code{integer}, 
 ##' corresponding to the simulation year(s) that will be used to extract PFG 
 ##' abundance and binary maps
+##' 
+##' @param doRichness default \code{TRUE}. \cr If \code{TRUE}, PFG richness 
+##' will be computed from binary maps
+##' @param doCover default \code{FALSE}. \cr If \code{TRUE}, PFG cover will 
+##' be computed from abundance maps 
+##' (PFG total abundance / max(PFG total abundance) per pixel)
+##' @param doLeinster default \code{FALSE}. \cr If \code{TRUE}, PFG diversity  
+##' will be computed from abundance maps based on Leinster's formul
+##' @param doCWM default \code{FALSE}. \cr If \code{TRUE}, FATE light and/or 
+##' soil resources maps will be computed, and weighted by PFG light and/or 
+##' soil preferences/contribution to obtain a kind a community weighted mean 
+##' value per pixel
+##' 
 ##' @param opt.stratum_min (\emph{optional}) default \code{1}. \cr An 
 ##' \code{integer} corresponding to the lowest stratum from which PFG 
 ##' abundances will be summed up
@@ -41,22 +54,23 @@
 ##' @details 
 ##' 
 ##' This function allows to obtain, for a specific \code{FATE} simulation and 
-##' a specific parameter file within this simulation, \strong{up to six raster 
+##' a specific parameter file within this simulation, \strong{up to seven raster 
 ##' maps} and preanalytical graphics. \cr \cr
 ##' 
 ##' For each PFG and each selected simulation year, raster maps are retrieved 
 ##' from the results folders \code{ABUND_perPFG_perStrata} and 
 ##' \code{BIN_perPFG_perStrata} and unzipped. 
-##' Informations extracted lead to the production of up to six graphics before 
+##' Informations extracted lead to the production of up to seven graphics before 
 ##' the maps are compressed again :
 ##' 
 ##' \itemize{
 ##'   \item{map of \strong{PFG richness} within each pixel, representing the sum 
-##'   of binary maps \cr
-##'   \strong{Richness} is calculated with the 
+##'   of binary maps}
+##'   \item{maps of \strong{PFG diversity} within each pixel, calculated from PFG 
+##'   abundances with the 
 ##'   \strong{\href{http://www.jstor.org/stable/23143936}{Leinster & Cobbold 
 ##'   2012 Ecology} framework} which allows to give more or less importance to 
-##'   the commun species through the \code{q} parameter :
+##'   the common species through the \code{q} parameter :
 ##'   \describe{
 ##'     \item{\code{q = 0}}{species richness}
 ##'     \item{\code{q = 1}}{Shannon entropy}
@@ -101,8 +115,9 @@
 ##' \describe{
 ##'   \item{tab}{ 
 ##'     \describe{
+##'       \item{\code{richness}}{\code{raster} of PFG richness}
 ##'       \item{\code{cover}}{\code{raster} of relative coverage}
-##'       \item{\code{DIV.0}}{\code{raster} of species richness}
+##'       \item{\code{DIV.0}}{\code{raster} of PFG richness}
 ##'       \item{\code{DIV.1}}{\code{raster} of Shannon entropy}
 ##'       \item{\code{DIV.2}}{\code{raster} of Simpson concentration}
 ##'       \item{\code{CWM.light}}{\code{raster} of light community weighted mean}
@@ -111,9 +126,11 @@
 ##'   }
 ##'   \item{plot}{
 ##'     \describe{
+##'       \item{\code{richness}}{\code{ggplot2} object, representing 
+##'       \code{richness} raster}
 ##'       \item{\code{cover}}{\code{ggplot2} object, representing \code{cover} 
 ##'       raster}
-##'       \item{\code{richness}}{\code{ggplot2} object, representing 
+##'       \item{\code{leinster}}{\code{ggplot2} object, representing 
 ##'       \code{DIV.0} raster}
 ##'       \item{\code{CWM.light}}{\code{ggplot2} object, representing 
 ##'       \code{CWM.light} raster}
@@ -125,17 +142,19 @@
 ##' 
 ##' 
 ##' \file{POST_FATE_GRAPHIC_C_map_PFG_[...].pdf} file is created containing up 
-##' to four graphics : 
+##' to five graphics : 
 ##' \describe{
+##'   \item{\file{map_PFGrichness}}{to visualize the PFG richness within the 
+##'   studied area}
 ##'   \item{\file{map_PFGcover}}{to visualize the PFG cover within the studied 
 ##'   area}
-##'   \item{\file{map_PFGrichness}}{to visualize the PFG richness within the 
+##'   \item{\file{map_PFGleinster}}{to visualize the PFG diversity within the 
 ##'   studied area}
 ##'   \item{\file{PFGlight}}{to visualize the light CWM within the studied area}
 ##'   \item{\file{PFGsoil}}{to visualize the soil CWM within the studied area}
 ##' }
 ##' 
-##' Three \file{PFGrichness_YEAR_[...]_STRATA_all_q[...].tif} files are created 
+##' Three \file{PFGleinster_YEAR_[...]_STRATA_all_q[...].tif} files are created 
 ##' into the simulation results folder :
 ##' \describe{
 ##'   \item{\file{q0}}{PFG richness}
