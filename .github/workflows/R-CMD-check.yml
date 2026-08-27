@@ -1,12 +1,12 @@
-
-name: R-CMD-check
-
 on:
   push:
-    branches: [ master ]
+    paths:
+      - '**.R'
+    branches: [main, master]
   pull_request:
-    branches: [ master ]
+    branches: [main, master]
 
+name: rcmdcheck
 
 jobs:
   R-CMD-check:
@@ -18,13 +18,12 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'release'}
-          # - {os: windows-latest, r: 'devel'}
-          # - {os: windows-2025,   r: 'release'}
+          - {os: windows-latest, r: 'devel'}
+          - {os: windows-2025,   r: 'release'}
           - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
           - {os: macos-latest,   r: 'release'}
-
+          
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
@@ -39,27 +38,11 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-          
-      - name: Query dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-        shell: Rscript {0}
 
-      - name: Install system dependencies on macOS
+      - name: Install macOS system dependencies
         if: runner.os == 'macOS'
-        run: |
-          brew install pkg-config gdal proj geos
-          # XQuartz is needed by vdiffr
-          brew install --cask xquartz
-          
-      - name: Install dependencies
-        run: |
-          install.packages("remotes")
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
-          
+        run: brew install gdal proj netcdf tbb
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
@@ -68,5 +51,4 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          error-on: '"error"'  
-          
+          error-on: '"error"'
