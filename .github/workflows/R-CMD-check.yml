@@ -1,12 +1,11 @@
+
 name: R-CMD-check
 
 on:
   push:
-    paths:
-      - '**.R'
-    branches: [master]
+    branches: [ master ]
   pull_request:
-    branches: [master]
+    branches: [ master ]
 
 jobs:
   R-CMD-check:
