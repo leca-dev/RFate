@@ -1,12 +1,12 @@
+name: R-CMD-check
+
 on:
   push:
     paths:
       - '**.R'
-    branches: [main, master]
+    branches: [master]
   pull_request:
-    branches: [main, master]
-
-name: R-CMD-check
+    branches: [master]
 
 jobs:
   R-CMD-check:
@@ -41,7 +41,7 @@ jobs:
 
       - name: Install macOS system dependencies
         if: runner.os == 'macOS'
-        run: brew install gdal proj netcdf tbb
+        run: brew install gdal proj geos
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
