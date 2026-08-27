@@ -43,6 +43,8 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install pkg-config gdal proj geos
+          # XQuartz is needed by vdiffr
+          brew install --cask xquartz
           
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
