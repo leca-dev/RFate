@@ -44,7 +44,26 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 
 <br/> <br/>
 
-#### Version 1.3.6 (may 2025)
+
+#### Version 1.4.1 (november 2025)
+
+- 1.4.1 :
+    + remove only the last / in `name.simulation` parameter
+    + add `doRichness`, `doCover`, `doLeinster`, `doCWM` parameters in `POST_FATE.graphic_mapPFG` function <br/> + `doRichness` via binary maps directly <br/> + correct the `.zip` step
+- 1.4.0 (august) :
+    + update `SimulMap::UpdateSimulationParameters` function
+    + add `SEED` in global parameters (instead of `chrono::system_clock::now().time_since_epoch().count()`, impacting *dispersal*, *disturbance probability*, *envsuitRef*) and `m_RNG` parameter in `SimulMap`
+    + switch from `std::mt19937` to `std::default_random_engine` to generate random numbers
+    + move all random number generation out of `pragma` loops (*dispersal*, *disturbances*)
+    + *For dispersal :*
+        + move random number generation out of `Disp::DoDispersalPacket` to `SimulMap::DoDispersal`
+        + fix initialization of rand arrays (with `resize` / `clear` / `reserve` / `emplace_back` functions)
+    + *For disturbances :*
+        + add `DIST_CHANGEFREQ_FILES` and `DIST_CHANGEFREQ_YEARS` in global parameters
+        + change `applyDist` way of working, correct modulo, and add `applyRand`
+        + always perform random number generation, even when the disturbance is not to be applied, or is PAIRED with another, not to change the RNG count and match simulations with same seed but different use of disturbances
+
+#### Version 1.3.6 (june 2025)
 
 - 1.3.6 :
     + fix `.adaptMaps` when files have same extension
@@ -52,6 +71,11 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
     + remove `required.max_abund_low`, `medium` and `high` parameters in global parameters function
     + weight abundances by `SHADE_FACTOR` for soil contribution (TEST)
     + remove `phyloclim` dependency by integrating `niche.overlap` function within the package
+    + change unsigned to int (`maskCells` and `cellID` parameters related, `Spatial.h`, `Legion::addCohort()` and `Legion::reduceCohort()`) and remove useless `static_cast<int>`
+    + change raster maps encoding from `GDT_UInt16` to `GDT_UInt32`, and from `GUInt16` to `GUInt32`
+    + change some `for` loop from `.size()` to range-based
+    + clean and add correct getters and setters to `Logger` and call only on saving years
+    + remove elements from *boost* archive (to make it lighter)
 
 #### Version 1.3.5 (june 2024)
 

@@ -210,7 +210,66 @@ development, were meant to facilitate the use and spread of the
 <code>FATE</code> model.</p>
 <p><br><br></p>
 <div class="section level4">
-<h4 id="version-1-3-6-may-2025">Version 1.3.6 (may 2025)<a class="anchor" aria-label="anchor" href="#version-1-3-6-may-2025"></a>
+<h4 id="version-1-4-1-november-2025">Version 1.4.1 (november 2025)<a class="anchor" aria-label="anchor" href="#version-1-4-1-november-2025"></a>
+</h4>
+<ul>
+<li>1.4.1 :
+<ul>
+<li>remove only the last / in <code>name.simulation</code>
+parameter</li>
+<li>add <code>doRichness</code>, <code>doCover</code>,
+<code>doLeinster</code>, <code>doCWM</code> parameters in
+<code>POST_FATE.graphic_mapPFG</code> function <br> +
+<code>doRichness</code> via binary maps directly <br> + correct the
+<code>.zip</code> step</li>
+</ul>
+</li>
+<li>1.4.0 (august) :
+<ul>
+<li>update <code>SimulMap::UpdateSimulationParameters</code>
+function</li>
+<li>add <code>SEED</code> in global parameters (instead of
+<code>chrono::system_clock::now().time_since_epoch().count()</code>,
+impacting <em>dispersal</em>, <em>disturbance probability</em>,
+<em>envsuitRef</em>) and <code>m_RNG</code> parameter in
+<code>SimulMap</code>
+</li>
+<li>switch from <code>std::mt19937</code> to
+<code>std::default_random_engine</code> to generate random numbers</li>
+<li>move all random number generation out of <code>pragma</code> loops
+(<em>dispersal</em>, <em>disturbances</em>)</li>
+<li>
+<em>For dispersal :</em>
+<ul>
+<li>move random number generation out of
+<code>Disp::DoDispersalPacket</code> to
+<code>SimulMap::DoDispersal</code>
+</li>
+<li>fix initialization of rand arrays (with <code>resize</code> /
+<code>clear</code> / <code>reserve</code> / <code>emplace_back</code>
+functions)</li>
+</ul>
+</li>
+<li>
+<em>For disturbances :</em>
+<ul>
+<li>add <code>DIST_CHANGEFREQ_FILES</code> and
+<code>DIST_CHANGEFREQ_YEARS</code> in global parameters</li>
+<li>change <code>applyDist</code> way of working, correct modulo, and
+add <code>applyRand</code>
+</li>
+<li>always perform random number generation, even when the disturbance
+is not to be applied, or is PAIRED with another, not to change the RNG
+count and match simulations with same seed but different use of
+disturbances</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section level4">
+<h4 id="version-1-3-6-june-2025">Version 1.3.6 (june 2025)<a class="anchor" aria-label="anchor" href="#version-1-3-6-june-2025"></a>
 </h4>
 <ul>
 <li>1.3.6 :
@@ -224,6 +283,22 @@ succession files</li>
 (TEST)</li>
 <li>remove <code>phyloclim</code> dependency by integrating
 <code>niche.overlap</code> function within the package</li>
+<li>change unsigned to int (<code>maskCells</code> and
+<code>cellID</code> parameters related, <code>Spatial.h</code>,
+<code>Legion::addCohort()</code> and
+<code>Legion::reduceCohort()</code>) and remove useless
+<code>static_cast&lt;int&gt;</code>
+</li>
+<li>change raster maps encoding from <code>GDT_UInt16</code> to
+<code>GDT_UInt32</code>, and from <code>GUInt16</code> to
+<code>GUInt32</code>
+</li>
+<li>change some <code>for</code> loop from <code>.size()</code> to
+range-based</li>
+<li>clean and add correct getters and setters to <code>Logger</code> and
+call only on saving years</li>
+<li>remove elements from <em>boost</em> archive (to make it
+lighter)</li>
 </ul>
 </li>
 </ul>
@@ -350,7 +425,7 @@ page)</li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
