@@ -19,14 +19,14 @@
 ##' 
 ##' @param x Might take one of the follwing forms: (1) a data frame containing 
 ##' predicted niche occupancy (PNO) profiles, e.g., as derived by 
-##' \code{\link[phyloclim]{pno}}; (2) a vector of filenames referencing to 
+##' \code{di.pno}; (2) a vector of filenames referencing to 
 ##' probability surfaces saved in ASCII-format with an ArcGIS-compatible header; 
 ##' (3) a list containing probability surfaces stored as objects of class 
 ##' \code{\link[sp]{SpatialGrid}}
 ##' 
 ##' @keywords phyloclim, internal
 ##' 
-##' @seealso \code{\link[phyloclim]{niche.overlap}}
+##' @seealso \code{\href{niche.overlap}{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}} 
 ##' 
 ##' @importFrom methods slot
 ##' @importFrom sp read.asciigrid

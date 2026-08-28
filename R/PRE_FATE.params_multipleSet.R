@@ -35,7 +35,8 @@
 ##' @param opt.seed (\emph{optional}) default \code{NULL}. \cr
 ##' An \code{integer} to be given to \code{\link[base]{set.seed}} function, in 
 ##' order to fix the produced results if needed, as 
-##' \code{\link[SPOT]{designLHD}} is also a random value generator
+##' \code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} 
+##' is also a random value generator
 ##' @param opt.percent_seeding default \code{0.5}. Amount of variation (between 
 ##' \code{0} and \code{1}) around the original value of \code{SEEDING_DURATION}, 
 ##' \code{SEEDING_TIMESTEP}, \code{SEEDING_INPUT}, \code{POTENTIAL_FECUNDITY} 
@@ -208,7 +209,7 @@
 ##' 
 ##' @keywords FATE, simulation, Latin Hypercube Sampling
 ##' 
-##' @seealso \code{\link[SPOT]{designLHD}},
+##' @seealso \code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} ,
 ##' \code{\link{PRE_FATE.skeletonDirectory}},
 ##' \code{\link{PRE_FATE.params_globalParameters}},
 ##' \code{\link{PRE_FATE.params_PFGsuccession}},

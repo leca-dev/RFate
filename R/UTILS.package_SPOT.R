@@ -23,7 +23,8 @@
 ##' @param upper vector with upper boundary of the design variables (in case 
 ##' of categorical parameters, please map the respective factor to a set of 
 ##' contiguous integers, e.g., with lower = 1 and upper = number of levels)
-##' @param control list of controls: see \code{\link[SPOT]{designLHD}}
+##' @param control list of controls: see 
+##' \code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} 
 ##' 
 ##' @param dim number, dimension of the problem (will be no. of columns of 
 ##' the result matrix)
@@ -38,7 +39,7 @@
 ##' 
 ##' @keywords SPOT, Latin Hypercube Sampling, internal
 ##' 
-##' @seealso \code{\link[SPOT]{designLHD}}
+##' @seealso \code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} 
 ##' 
 ##' @importFrom stats runif dist
 ##' 

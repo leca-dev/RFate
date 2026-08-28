@@ -42,13 +42,14 @@ contiguous integers, e.g., with lower = 1 and upper = number of levels)}
 of categorical parameters, please map the respective factor to a set of 
 contiguous integers, e.g., with lower = 1 and upper = number of levels)}
 
-\item{control}{list of controls: see \code{\link[SPOT]{designLHD}}}
+\item{control}{list of controls: see 
+\code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}}}
 }
 \description{
 From SPOT package 2.5.0 : designLHD and designLHDNorm functions
 }
 \seealso{
-\code{\link[SPOT]{designLHD}}
+\code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}}
 }
 \keyword{Hypercube}
 \keyword{Latin}

@@ -61,7 +61,8 @@ to the name of the folder that will be created to store the results}
 \item{opt.seed}{(\emph{optional}) default \code{NULL}. \cr
 An \code{integer} to be given to \code{\link[base]{set.seed}} function, in 
 order to fix the produced results if needed, as 
-\code{\link[SPOT]{designLHD}} is also a random value generator}
+\code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} 
+is also a random value generator}
 
 \item{opt.percent_seeding}{default \code{0.5}. Amount of variation (between 
 \code{0} and \code{1}) around the original value of \code{SEEDING_DURATION}, 
@@ -248,7 +249,7 @@ obtained at the end, each range is more or less finely cut and values are
 drawn in order to explore the whole space of combinations.
 }
 \seealso{
-\code{\link[SPOT]{designLHD}},
+\code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} ,
 \code{\link{PRE_FATE.skeletonDirectory}},
 \code{\link{PRE_FATE.params_globalParameters}},
 \code{\link{PRE_FATE.params_PFGsuccession}},
