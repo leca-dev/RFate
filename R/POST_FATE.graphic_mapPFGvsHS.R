@@ -97,9 +97,9 @@
 ##' @importFrom graphics plot
 ##' 
 ##' @importFrom ggplot2 ggplot aes_string 
-##' geom_raster 
-##' scale_fill_gradientn coord_equal
-##' facet_wrap labs theme element_text element_blank
+##' @importFrom ggplot2 geom_raster 
+##' @importFrom ggplot2 scale_fill_gradientn coord_equal
+##' @importFrom ggplot2 facet_wrap labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##' 
 ## END OF HEADER ###############################################################

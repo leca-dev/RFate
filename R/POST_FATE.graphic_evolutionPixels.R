@@ -103,9 +103,9 @@
 ##' @importFrom foreach foreach %do%
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
-##' geom_line geom_point
-##' scale_color_manual
-##' facet_grid labs theme element_text element_blank
+##' @importFrom ggplot2 geom_line geom_point
+##' @importFrom ggplot2 scale_color_manual
+##' @importFrom ggplot2 facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ## @importFrom ggnewscale new_scale_color
 ##'

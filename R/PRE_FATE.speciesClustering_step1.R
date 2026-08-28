@@ -125,9 +125,8 @@
 ##' as a parameter in the \code{\link{PRE_FATE.speciesClustering_step2}} 
 ##' function.
 ##' 
-##' @keywords hierarchical clustering, Dunn index, Meila's Variation of 
-##' Information index, R2, Calinski and Harabasz index, Corrected rand index, 
-##' Average silhouette width
+##' @keywords hierarchical clustering, Dunn index, Meila's Variation of Information index,
+##' @keywords R2, Calinski and Harabasz index, Corrected rand index, Average silhouette width
 ##' 
 ##' @seealso \code{\link[stats]{hclust}},
 ##' \code{\link[stats]{cutree}},
@@ -187,10 +186,10 @@
 ##' @importFrom reshape2 melt
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string
-##' geom_line geom_point geom_vline geom_label
-##' scale_color_manual scale_linetype_discrete 
-##' scale_color_viridis_c scale_alpha
-##' facet_grid labs theme element_text element_blank
+##' @importFrom ggplot2 geom_line geom_point geom_vline geom_label
+##' @importFrom ggplot2 scale_color_manual scale_linetype_discrete 
+##' @importFrom ggplot2 scale_color_viridis_c scale_alpha
+##' @importFrom ggplot2 facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##' 
 ## END OF HEADER ###############################################################

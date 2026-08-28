@@ -24,8 +24,7 @@
 ##' 
 ##' 
 ##' 
-##' @importFrom raster raster projectRaster writeRaster res projection extent 
-##' crop nlayers
+##' @importFrom raster raster projectRaster writeRaster res projection extent crop nlayers
 ##'
 ## END OF HEADER ###############################################################
 

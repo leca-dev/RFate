@@ -160,9 +160,9 @@
 ##' @importFrom reshape2 melt
 ##' 
 ##' @importFrom ggplot2 ggplot aes_string 
-##' geom_boxplot geom_point geom_segment
-##' scale_y_continuous scale_y_log10 scale_color_manual scale_fill_manual 
-##' facet_wrap labs theme element_blank
+##' @importFrom ggplot2 geom_boxplot geom_point geom_segment
+##' @importFrom ggplot2 scale_y_continuous scale_y_log10 scale_color_manual scale_fill_manual 
+##' @importFrom ggplot2 facet_wrap labs theme element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##'
 ## END OF HEADER ###############################################################

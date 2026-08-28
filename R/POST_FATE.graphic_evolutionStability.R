@@ -127,9 +127,9 @@
 ##' @importFrom grDevices colorRampPalette
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
-##' geom_line geom_point geom_rect
-##' scale_color_manual scale_fill_manual
-##' facet_grid labs theme element_text element_blank
+##' @importFrom ggplot2 geom_line geom_point geom_rect
+##' @importFrom ggplot2 scale_color_manual scale_fill_manual
+##' @importFrom ggplot2 facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##'
 ## END OF HEADER ###############################################################

@@ -282,12 +282,12 @@
 ##' @importFrom ape as.phylo plot.phylo
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
-##' geom_point geom_hline geom_vline geom_histogram geom_segment geom_path 
-##' geom_boxplot geom_smooth geom_col annotate sec_axis
-##' scale_color_manual scale_color_continuous scale_x_discrete 
-##' scale_x_continuous scale_y_continuous scale_y_log10 scale_alpha 
-##' scale_linetype_manual scale_size_manual scale_fill_identity
-##' facet_wrap as_labeller labs theme element_text
+##' @importFrom ggplot2 geom_point geom_hline geom_vline geom_histogram geom_segment geom_path 
+##' @importFrom ggplot2 geom_boxplot geom_smooth geom_col annotate sec_axis
+##' @importFrom ggplot2 scale_color_manual scale_color_continuous scale_x_discrete 
+##' @importFrom ggplot2 scale_x_continuous scale_y_continuous scale_y_log10 scale_alpha 
+##' @importFrom ggplot2 scale_linetype_manual scale_size_manual scale_fill_identity
+##' @importFrom ggplot2 facet_wrap as_labeller labs theme element_text
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##' @importFrom ggrepel geom_label_repel
 ##' @importFrom colorspace sequential_hcl

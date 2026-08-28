@@ -152,9 +152,9 @@
 ##' @importFrom ade4 quasieuclid dudi.pco inertia.dudi
 ##' 
 ##' @importFrom ggplot2 ggplot ggsave aes_string 
-##' geom_point geom_hline geom_vline geom_errorbar geom_path
-##' scale_color_discrete scale_color_manual scale_shape_manual scale_size_manual
-##' facet_grid labs theme element_text element_blank
+##' @importFrom ggplot2 geom_point geom_hline geom_vline geom_errorbar geom_path
+##' @importFrom ggplot2 scale_color_discrete scale_color_manual scale_shape_manual scale_size_manual
+##' @importFrom ggplot2 facet_grid labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##' @importFrom ggrepel geom_label_repel
 ##' 

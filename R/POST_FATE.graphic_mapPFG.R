@@ -167,7 +167,7 @@
 ##' 
 ##' 
 ##' @keywords FATE, outputs, richness, relative abundance, forest cover, 
-##' community weighted mean, light, soil
+##' @keywords community weighted mean, light, soil
 ##' 
 ##' @seealso \code{\link{POST_FATE.relativeAbund}}, 
 ##' \code{\link{POST_FATE.graphic_validationStatistics}},
@@ -200,8 +200,9 @@
 ##' @importFrom reshape2 melt
 ##' 
 ##' @importFrom ggplot2 ggplot aes aes_string ggsave
-##' geom_raster element_blank coord_equal
-##' scale_fill_gradientn labs theme element_rect
+##' @importFrom ggplot2 geom_raster coord_equal
+##' @importFrom ggplot2 scale_fill_gradientn
+##' @importFrom ggplot2 labs theme element_blank element_rect
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##'
 ## END OF HEADER ###############################################################

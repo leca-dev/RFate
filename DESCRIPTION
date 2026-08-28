@@ -35,7 +35,6 @@ Description: Wrapper of the C++ model FATE. FATE is a vegetation model based on 
         1) gather, prepare and format data to be used with FATE ;
         2) run FATE simulation(s)
         3) process and analyze data produced by FATE.
-RoxygenNote: 7.3.2
 Encoding: UTF-8
 NeedsCompilation: yes
 License:
@@ -64,3 +63,4 @@ Suggests:
 LinkingTo: Rcpp, RcppThread, BH
 VignetteBuilder: knitr, rmarkdown
 Language: en-US
+Config/roxygen2/version: 8.0.0

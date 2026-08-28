@@ -110,9 +110,9 @@
 ##' @importFrom grDevices pdf dev.off
 ##' 
 ##' @importFrom ggplot2 ggplot aes_string 
-##' geom_line 
-##' scale_color_manual
-##' facet_wrap labs theme element_text element_blank
+##' @importFrom ggplot2 geom_line 
+##' @importFrom ggplot2 scale_color_manual
+##' @importFrom ggplot2 facet_wrap labs theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ##'
 ## END OF HEADER ###############################################################

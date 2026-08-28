@@ -449,7 +449,7 @@ each PFG :</p>
 <span>                           , strata.limits_reduce <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="va"><a href="https://r-datatable.com" class="external-link">data.table</a></span><span class="op">)</span></span>
-<span><span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">'FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv'</span><span class="op">)</span></span>
+<span><span class="va">tmp</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">'FATE_Champsaur/DATA/PFGS/SUCC_COMPLETE_TABLE.csv'</span><span class="op">)</span></span>
 <span><span class="va">tab.succ</span> <span class="op">=</span> <span class="va">Champsaur_params</span><span class="op">$</span><span class="va">tab.SUCC</span></span>
 <span><span class="va">tab.succ</span><span class="op">$</span><span class="va">age_above_150cm</span> <span class="op">=</span> <span class="va">tmp</span><span class="op">$</span><span class="va">CHANG_STR_AGES_to_str_4_150</span></span>
 <span><span class="va">tab.succ</span> <span class="op">=</span> <span class="va">tab.succ</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'PFG'</span>, <span class="st">'type'</span>, <span class="st">'maturity'</span>, <span class="st">'longevity'</span>, <span class="st">'age_above_150cm'</span><span class="op">)</span><span class="op">]</span></span>
@@ -478,7 +478,7 @@ each PFG :</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer></div>

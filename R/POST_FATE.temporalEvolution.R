@@ -124,7 +124,7 @@
 ##' @importFrom foreach foreach %do% %dopar%
 ##' @importFrom data.table rbindlist fwrite
 ##' @importFrom raster raster stack 
-##' rasterToPoints as.data.frame extract cellFromXY
+##' @importFrom raster rasterToPoints as.data.frame extract cellFromXY
 ## @importFrom doParallel registerDoParallel
 ##'
 ##'

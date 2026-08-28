@@ -114,8 +114,7 @@
 ##' }
 ##' 
 ##' 
-##' @keywords FATE, outputs, area under curve, sensitivity, specificity,
-##' true skill statistic
+##' @keywords FATE, outputs, area under curve, sensitivity, specificity, true skill statistic
 ##' 
 ##' @seealso \code{\link{POST_FATE.relativeAbund}},
 ##' \code{\link[PresenceAbsence]{cmx}},
@@ -135,9 +134,9 @@
 ## @importFrom PresenceAbsence cmx sensitivity specificity auc
 ##' 
 ##' @importFrom ggplot2 ggplot aes_string 
-##' geom_bar geom_point geom_hline geom_errorbar annotate
-##' scale_fill_gradientn scale_y_continuous
-##' labs ylim theme element_text element_blank
+##' @importFrom ggplot2 geom_bar geom_point geom_hline geom_errorbar annotate
+##' @importFrom ggplot2 scale_fill_gradientn scale_y_continuous
+##' @importFrom ggplot2 labs ylim theme element_text element_blank
 ##' @importFrom ggthemes theme_fivethirtyeight
 ## @importFrom ggExtra ggMarginal
 ## @importFrom gridExtra grid.arrange

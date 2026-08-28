@@ -321,7 +321,7 @@ equations<a class="anchor" aria-label="anchor" href="#structural-equations"></a>
 <li>
 <strong>getEnv…() functions</strong> :<br>
 All the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnv</mtext><mi>.</mi><mi>.</mi><mi>.</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{getEnv}...()</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnv</mtext><mi>.</mi><mi>.</mi><mi>.</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{getEnv}...()</annotation></semantics></math>
 functions represent the influence of the habitat suitability if the
 module is selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in
 <a href="./../reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a>
@@ -339,11 +339,11 @@ suitability maps will be compared to a reference value :</p>
 <ul>
 <li>if superior, the environment is considered suitable for the PFG
 (hence
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnv</mtext><mi>.</mi><mi>.</mi><mi>.</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{getEnv}...()</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnv</mtext><mi>.</mi><mi>.</mi><mi>.</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{getEnv}...()</annotation></semantics></math>
 functions will return <code>1</code>)</li>
 <li>otherwise, the environment is considered unsuitable for the PFG
 (hence
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnv</mtext><mi>.</mi><mi>.</mi><mi>.</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{getEnv}...()</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnv</mtext><mi>.</mi><mi>.</mi><mi>.</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{getEnv}...()</annotation></semantics></math>
 functions will return <code>0</code>)</li>
 </ul>
 </li>
@@ -360,16 +360,16 @@ file), the reference value can be set in two different ways.</p>
 In theory, the lifetime of a species could be influenced by the
 environment, but this is currently not the case.<br>
 Hence, habitat or not,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnvMort</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\text{getEnvMort}() = 1</annotation></semantics></math>.</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">getEnvMort</mtext><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\text{getEnvMort}() = 1</annotation></semantics></math>.</li>
 </ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">LifeSpan</mtext><mo>*</mo><mtext mathvariant="normal">getEnvMort</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{LifeSpan} * \text{getEnvMort}()</annotation></semantics></math><br></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">LifeSpan</mtext><mo>*</mo><mtext mathvariant="normal">getEnvMort</mtext><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{LifeSpan} * \text{getEnvMort}()</annotation></semantics></math><br></p>
 <ul>
 <li>
 <strong>Maturity time</strong> :<br>
 The time from which a PFG is able to produce seeds can also be
 influenced by its habitat, in a negative way :</li>
 </ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">maturityTime</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">LifeSpan</mtext><mo>−</mo><mtext mathvariant="normal">Maturity</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1.0</mn><mo>−</mo><mtext mathvariant="normal">getEnvGrowth</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mtext mathvariant="normal">Maturity</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">maturityTime</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mi>c</mi><mi>e</mi><mi>i</mi><mi>l</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">maturityTime</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mtext mathvariant="normal">maturityTime</mtext></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">LifeSpan</mtext><mo>−</mo><mtext mathvariant="normal">Maturity</mtext><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mo stretchy="false" form="prefix">(</mo><mn>1.0</mn><mo>−</mo><mtext mathvariant="normal">getEnvGrowth</mtext><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mtext mathvariant="normal">Maturity</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mtext mathvariant="normal">maturityTime</mtext></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>c</mi><mi>e</mi><mi>i</mi><mi>l</mi><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">maturityTime</mtext><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align}
 \text{maturityTime} &amp;= (\text{LifeSpan} - \text{Maturity}) * (1.0 - \text{getEnvGrowth}()) + \text{Maturity} \\
 \text{maturityTime} &amp;= ceil(\text{maturityTime})
 \end{align}</annotation></semantics></math></p>
@@ -442,7 +442,7 @@ parameter in <a href="./../reference/PRE_FATE.params_globalParameters.html">Glob
 file), the habitat must be suitable, otherwise the recruitment will be
 null.</li>
 </ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">RecruitmentRate</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">GerminationRate</mtext></mtd><mtd columnalign="right" style="text-align: right"><mi>*</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> getEnvRecrRate</mtext></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">AvailSeeds</mtext><mo>*</mo><mtext mathvariant="normal">MaxRecruitment</mtext></mtd><mtd columnalign="right" style="text-align: right"><mi>*</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> getEnvRecrRate</mtext></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">RecruitmentRate</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">GerminationRate</mtext></mtd><mtd columnalign="right" style="text-align: right"><mi>*</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> getEnvRecrRate</mtext></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mtext mathvariant="normal">AvailSeeds</mtext><mo>*</mo><mtext mathvariant="normal">MaxRecruitment</mtext></mtd><mtd columnalign="right" style="text-align: right"><mi>*</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> getEnvRecrRate</mtext></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{align}
 \text{RecruitmentRate} &amp;= \text{GerminationRate} &amp;* \text{ getEnvRecrRate}() \\
  &amp;= \text{AvailSeeds} * \text{MaxRecruitment} &amp;* \text{ getEnvRecrRate}() 
 \end{align}</annotation></semantics></math></p>
@@ -467,7 +467,7 @@ considered pixel, and on the suitability of the pixel if the module is
 selected (see <code>DO_HABITAT_SUITABILITY</code> parameter in <a href="./../reference/PRE_FATE.params_globalParameters.html">GlobalParameter</a>
 file) (no seeds produced if the habitat is not suitable) :</li>
 </ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Fecundity</mtext><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">MatureAbund</mtext><mo>,</mo><mtext mathvariant="normal">MaxAbund</mtext><mo stretchy="true" form="postfix">)</mo></mrow><mo>*</mo><mtext mathvariant="normal">PotentialFecund</mtext><mo>*</mo><mtext mathvariant="normal">getEnvFecund</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{Fecundity} = min(\text{MatureAbund}, \text{MaxAbund}) * \text{PotentialFecund} * \text{getEnvFecund}()</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Fecundity</mtext><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mtext mathvariant="normal">MatureAbund</mtext><mo>,</mo><mtext mathvariant="normal">MaxAbund</mtext><mo stretchy="false" form="postfix">)</mo><mo>*</mo><mtext mathvariant="normal">PotentialFecund</mtext><mo>*</mo><mtext mathvariant="normal">getEnvFecund</mtext><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{Fecundity} = min(\text{MatureAbund}, \text{MaxAbund}) * \text{PotentialFecund} * \text{getEnvFecund}()</annotation></semantics></math></p>
 <p>If
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">MatureAbund</mtext><mo>≥</mo><mtext mathvariant="normal">MaxAbund</mtext></mrow><annotation encoding="application/x-tex">\text{MatureAbund} \geqslant \text{MaxAbund}</annotation></semantics></math>,
 the PFG has reached its annual carrying capacity : it is in optimal
@@ -480,7 +480,7 @@ Otherwise, this amount will be reduced in proportion.</p>
 information</em>)</p>
 <p>Germination occurs depending on the current abundance of the PFG
 inside the pixel : if it reaches the carrying capacity of the PFG =
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">MaxAbund</mtext><mo>*</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mtext mathvariant="normal">ImmSize</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{MaxAbund} * (1 + \text{ImmSize})</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">MaxAbund</mtext><mo>*</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>+</mo><mtext mathvariant="normal">ImmSize</mtext><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\text{MaxAbund} * (1 + \text{ImmSize})</annotation></semantics></math>,
 no seed germinates. The number of produced seeds is proportional to the
 current abundance of mature individuals only.</p>
 <p><br></p>
@@ -506,7 +506,7 @@ current abundance of mature individuals only.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
