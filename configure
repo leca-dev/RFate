@@ -3842,7 +3842,10 @@ printf "%s\n" "no" >&6; }
 printf "%s\n" "yes" >&6; }
   fi
   if test "${proj6ok}" = no; then
+     cat errors.txt
      as_fn_error $? "libproj or sqlite3 not found in standard or given locations." "$LINENO" 5
+  else
+     rm -f errors.txt
   fi
 
 cat > proj_conf_test.c <<_EOCONF

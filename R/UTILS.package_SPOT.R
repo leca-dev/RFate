@@ -24,7 +24,7 @@
 ##' of categorical parameters, please map the respective factor to a set of 
 ##' contiguous integers, e.g., with lower = 1 and upper = number of levels)
 ##' @param control list of controls: see 
-##' \code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} 
+##' \href{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}{\code{designLHD}}
 ##' 
 ##' @param dim number, dimension of the problem (will be no. of columns of 
 ##' the result matrix)
@@ -39,7 +39,7 @@
 ##' 
 ##' @keywords SPOT, Latin Hypercube Sampling, internal
 ##' 
-##' @seealso \code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}} 
+##' @seealso \href{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}{\code{designLHD}}
 ##' 
 ##' @importFrom stats runif dist
 ##' 

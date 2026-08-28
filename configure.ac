@@ -397,7 +397,10 @@ _EOCONF]
     AC_MSG_RESULT(yes)
   fi
   if test "${proj6ok}" = no; then
+     cat errors.txt
      AC_MSG_ERROR([libproj or sqlite3 not found in standard or given locations.])
+  else
+     rm -f errors.txt
   fi
 
 [cat > proj_conf_test.c <<_EOCONF

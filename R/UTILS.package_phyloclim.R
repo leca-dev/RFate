@@ -26,7 +26,7 @@
 ##' 
 ##' @keywords phyloclim, internal
 ##' 
-##' @seealso \code{\href{niche.overlap}{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}} 
+##' @seealso \href{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}{\code{niche.overlap}}
 ##' 
 ##' @importFrom methods slot
 ##' @importFrom sp read.asciigrid

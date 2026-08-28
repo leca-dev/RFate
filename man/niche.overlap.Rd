@@ -27,7 +27,7 @@ entire ecological niche models (Warren et al., 2008) or from single
 dimensions of the climatic niches (Evans et al., 2009).
 }
 \seealso{
-\code{\href{niche.overlap}{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}}
+\href{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}{\code{niche.overlap}}
 }
 \keyword{internal}
 \keyword{phyloclim,}

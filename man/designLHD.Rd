@@ -43,13 +43,13 @@ of categorical parameters, please map the respective factor to a set of
 contiguous integers, e.g., with lower = 1 and upper = number of levels)}
 
 \item{control}{list of controls: see 
-\code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}}}
+\href{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}{\code{designLHD}}}
 }
 \description{
 From SPOT package 2.5.0 : designLHD and designLHDNorm functions
 }
 \seealso{
-\code{\href{designLHD}{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}}
+\href{https://www.rdocumentation.org/packages/SPOT/versions/2.0.3/topics/designLHD}{\code{designLHD}}
 }
 \keyword{Hypercube}
 \keyword{Latin}

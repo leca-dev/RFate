@@ -117,7 +117,7 @@ based on two types of distance information :
     be computed using the \code{\link[ecospat]{ecospat.niche.overlap}}. 
     \item If \code{raster} option is selected, the degree of niche overlap will 
     be computed using the 
-    \code{\href{niche.overlap}{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}}
+    \href{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}{\code{niche.overlap}}
     . \cr \cr \cr
   }
 }
@@ -194,7 +194,7 @@ plot(pp[[3]])
 \seealso{
 \code{\link[FD]{gowdis}},
 \code{\link[ecospat]{ecospat.niche.overlap}}, 
-\code{\href{niche.overlap}{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}}
+\href{https://www.rdocumentation.org/packages/phyloclim/versions/0.9-4/topics/niche.overlap}{\code{niche.overlap}}
 }
 \author{
 Maya Guéguen
