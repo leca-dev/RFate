@@ -24,7 +24,7 @@ PKG_LIBS = \
 	-lodbc32 -lodbccp32 -liconv -lpsapi -lwldap32 -lsecur32 -lgdi32 -lnormaliz \
 	-lcrypto -lcrypt32 -lws2_32 -lshlwapi -lbcrypt \
 	-lgomp -ldl \
-	$(SHLIB_OPENMP_CXXFLAGS) $(SHLIB_OPENMP_CFLAGS)
+	$(SHLIB_OPENMP_CXXFLAGS)
 
 SOURCES = \
 	Cohort.cpp \

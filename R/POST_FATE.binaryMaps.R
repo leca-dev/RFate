@@ -49,7 +49,7 @@
 ##'   \deqn{abund\_rel_{\text{ PFG}_i} > \text{method1.threshold} \;\; 
 ##'   \Leftrightarrow \;\; 1}}
 ##'   \item{\code{2} optimizing TSS}{relative abundance maps are transformed 
-##'   into binary maps according to the \href{.getCutoff}{\code{cutoff}} found 
+##'   into binary maps according to the \href{dot-getCutoff.html}{\code{cutoff}} found 
 ##'   with the \code{\link{POST_FATE.graphic_validationStatistics}} function : 
 ##'   \deqn{abund\_rel_{\text{ PFG}_i} > \text{method2.cutoff}_{\text{ PFG}_i} \;\; 
 ##'   \Leftrightarrow \;\; 1}}
