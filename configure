@@ -2267,28 +2267,28 @@ R_MAJOR=`echo $R_VERSION | cut -f1 -d"."`
 # AC_SUBST([CXX],["clang++"])
 
 if test ${R_MAJOR} -ge 4; then
- CXX11=`"${RBIN}" CMD config CXX11`
- CXX11STD=`"${RBIN}" CMD config CXX11STD`
+ CXX20=`"${RBIN}" CMD config CXX20`
+ CXX20STD=`"${RBIN}" CMD config CXX20STD`
 else
  if test ${R_MAJOR} -eq 3 -a ${R_MINOR} -ge 4; then
-  CXX11=`"${RBIN}" CMD config CXX11`
-  CXX11STD=`"${RBIN}" CMD config CXX11STD`
+  CXX20=`"${RBIN}" CMD config CXX20`
+  CXX20STD=`"${RBIN}" CMD config CXX20STD`
  else
-  CXX11=`"${RBIN}" CMD config CXX1X`
-  CXX11STD=`"${RBIN}" CMD config CXX1XSTD`
+  CXX20=`"${RBIN}" CMD config CXX17`
+  CXX20STD=`"${RBIN}" CMD config CXX17STD`
  fi
 fi
 
-CXX="${CXX11} ${CXX11STD}"
+CXX="${CXX20} ${CXX20STD}"
 
-if test -n "${CXX11}"; then
-  HAVE_CXX11=1
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: C++11 support available" >&5
-printf "%s\n" "$as_me: C++11 support available" >&6;}
+if test -n "${CXX20}"; then
+  HAVE_CXX20=1
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: C++20 support available" >&5
+printf "%s\n" "$as_me: C++20 support available" >&6;}
 else
-  HAVE_CXX11=0
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: C++11 support not available" >&5
-printf "%s\n" "$as_me: C++11 support not available" >&6;}
+  HAVE_CXX20=0
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: C++20 support not available" >&5
+printf "%s\n" "$as_me: C++20 support not available" >&6;}
 fi
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: CXX: ${CXX}" >&5
@@ -2426,15 +2426,15 @@ GDAL_MINOR=`echo $GDAL_VERSION | cut -f2 -d"."`
 GDAL_PATCH=`echo $GDAL_VERSION | cut -f3 -d"."`
 
 if test ${GDAL_MAJOR} = 2 -a ${GDAL_MINOR} -ge 3 ; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking C++11 support for GDAL >= 2.3.0" >&5
-printf %s "checking C++11 support for GDAL >= 2.3.0... " >&6; }
-  if test ${HAVE_CXX11} = 1 ; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking C++20 support for GDAL >= 2.3.0" >&5
+printf %s "checking C++20 support for GDAL >= 2.3.0... " >&6; }
+  if test ${HAVE_CXX20} = 1 ; then
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
   else
     { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-    as_fn_error $? "provide at least CXX11 compiler support for GDAL >= 2.3.0" "$LINENO" 5
+    as_fn_error $? "provide at least C++17 compiler support for GDAL >= 2.3.0" "$LINENO" 5
   fi
 fi
 
