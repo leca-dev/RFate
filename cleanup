@@ -4,6 +4,10 @@
 for f in ./config.*; do
     rm -f $f
 done
+# Remove proj_conf* files
+for f in ./proj_conf*; do
+    rm -f $f
+done
 # Remove autom4te.cache directory
 if [ -d autom4te.cache ]
 then

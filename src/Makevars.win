@@ -1,6 +1,6 @@
 # CXX = /Library/Developer/CommandLineTools/usr/bin/clang++
 # CXX11 = /Library/Developer/CommandLineTools/usr/bin/clang++
-CXX_STD = CXX17
+CXX_STD = CXX20
 VERSION = 3.4.1
 RWINLIB = ../windows/gdal3-$(VERSION)
 TARGET = lib$(subst gcc,,$(COMPILED_BY))$(R_ARCH)
