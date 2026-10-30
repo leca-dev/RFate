@@ -48,6 +48,11 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 #### Version 1.4.2 (october 2026)
 
 - 1.4.2 :
+    + *For dispersal :*
+        + draw correct quantity of random numbers in d50-d99 circle
+        + draw random numbers only in pixels of studied area and only if seeds > 0 in `m_SeedMapIn`
+        + fix pass-by-reference for `DoDispersalPacket` function
+        + change some `for` loop from `.size()` to range-based
     + fix aging of seeds dormant pool
     + fix pass-by-reference for getters in FG (switch from `const vector<int>` to `const vector<int>&`, for `getStrata` / `getPoolLife` / `getLightActiveGerm` / `getSoilActiveGerm`)
     + remove double serialization of `m_SoilTolerance` in `FG`

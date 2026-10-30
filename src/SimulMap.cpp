@@ -463,10 +463,10 @@ SpatialMap<double, int>& SimulMap::getMask() { return m_Mask; }
 vector<int>& SimulMap::getMaskCells() { return m_MaskCells; }
 SpatialStack<double, int>& SimulMap::getSeedMapIn() { return m_SeedMapIn; }
 SpatialStack<double, int>& SimulMap::getSeedMapOut() { return m_SeedMapOut; }
-SpatialStack<double, double>&  SimulMap::getEnvSuitMap() { return m_EnvSuitMap ; }
-SpatialStack<double, double>&  SimulMap::getEnvSuitRefMap() { return m_EnvSuitRefMap; }
-SpatialStack<double, double>&  SimulMap::getDistMap() { return m_DistMap; }
-SpatialStack<double, int>&  SimulMap::getFireMap() { return m_FireMap; }
+SpatialStack<double, double>& SimulMap::getEnvSuitMap() { return m_EnvSuitMap ; }
+SpatialStack<double, double>& SimulMap::getEnvSuitRefMap() { return m_EnvSuitRefMap; }
+SpatialStack<double, double>& SimulMap::getDistMap() { return m_DistMap; }
+SpatialStack<double, int>&SimulMap::getFireMap() { return m_FireMap; }
 SpatialMap<double, int>& SimulMap::getTslfMap() { return m_TslfMap; }
 SpatialMap<double, double>& SimulMap::getElevationMap() { return m_ElevationMap; }
 SpatialMap<double, double>& SimulMap::getSlopeMap() { return m_SlopeMap; }
@@ -680,6 +680,7 @@ void SimulMap::DoSuccession(bool doLog)
   vector <vector<int> > isDrought(m_Mask.getTotncell(),vector<int>(m_glob_params.getNoFG(),0));
   if (m_glob_params.getDoDroughtDisturbances())
   {
+    // for (int cell_ID : m_MaskCells)
     for (vector<int>::iterator cell_ID=m_MaskCells.begin(); cell_ID!=m_MaskCells.end(); ++cell_ID)
     {
       for (int fg=0; fg<m_glob_params.getNoFG(); fg++)
@@ -763,22 +764,25 @@ void SimulMap::DoDispersal()
     {
       unsigned noDrawMax = max(1, static_cast<int>(ceil(m_DispModel.getFGdistCircle(fg, 0).size()/2.0)));
       
-      for (int cell_id=0; cell_id<m_SeedMapIn.getTotncell(); cell_id++)
+      for (int cell_id : m_MaskCells)
       { // loop on pixels
-        randInt_1[fg][cell_id].clear();
-        randInt_2[fg][cell_id].clear();
-        randInt_1[fg][cell_id].reserve(noDrawMax);
-        randInt_2[fg][cell_id].reserve(m_DispModel.getFGdistCircle(fg, 1).size());
-        
-        UniInt distrib1(0, m_DispModel.getFGdistCircle(fg, 1).size() - 1);
-        for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
+        if (m_SeedMapIn(cell_id, fg) > 0)
         {
-          randInt_1[fg][cell_id].emplace_back(distrib1(m_RNG));
-        }
-        UniInt distrib2(0, 3);
-        for (unsigned id = 0; id < m_DispModel.getFGdistCircle(fg, 1).size(); id++)
-        {
-          randInt_2[fg][cell_id].emplace_back(distrib2(m_RNG));
+          randInt_1[fg][cell_id].clear();
+          randInt_2[fg][cell_id].clear();
+          randInt_1[fg][cell_id].reserve(noDrawMax);
+          randInt_2[fg][cell_id].reserve(noDrawMax);
+          
+          UniInt distrib1(0, m_DispModel.getFGdistCircle(fg, 1).size() - 1);
+          for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
+          {
+            randInt_1[fg][cell_id].emplace_back(distrib1(m_RNG));
+          }
+          UniInt distrib2(0, 3);
+          for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
+          {
+            randInt_2[fg][cell_id].emplace_back(distrib2(m_RNG));
+          }
         }
       } // end loop over pixels
     } // end loop over PFG
@@ -1745,7 +1749,7 @@ void SimulMap::UpdateEnvSuitRefMap(unsigned option)
       logg.info("NEW Env Suit Ref distrib for FG : ", fg_id, "  with mean=", meanFG, " and sd=", sdFG);
                 
       /* build the distribution corresponding to these mean and sd */
-      static Normal distrib(meanFG,sdFG);
+      static Normal distrib(meanFG, sdFG);
       
       /* draw a random number from this distribution for each pixel*/
       envSuitRefVal.resize(m_Mask.getTotncell(),0.5);

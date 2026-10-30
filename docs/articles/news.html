@@ -215,6 +215,19 @@ development, were meant to facilitate the use and spread of the
 <ul>
 <li>1.4.2 :
 <ul>
+<li>
+<em>For dispersal :</em>
+<ul>
+<li>draw correct quantity of random numbers in d50-d99 circle</li>
+<li>draw random numbers only in pixels of studied area and only if seeds
+&gt; 0 in <code>m_SeedMapIn</code>
+</li>
+<li>fix pass-by-reference for <code>DoDispersalPacket</code>
+function</li>
+<li>change some <code>for</code> loop from <code>.size()</code> to
+range-based</li>
+</ul>
+</li>
 <li>fix aging of seeds dormant pool</li>
 <li>fix pass-by-reference for getters in FG (switch from
 <code>const vector&lt;int&gt;</code> to

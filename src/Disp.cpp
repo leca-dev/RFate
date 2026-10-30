@@ -259,16 +259,16 @@ void Disp::GetPropProb()
 
 // void Disp::DoDispersalPacket(unsigned dispOption, RandomGenerator& rng, int noCPU, vector<int> maskCells)
 void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCells
-                               , vector< vector< vector<int> > > randInt_1, vector< vector< vector<int> > > randInt_2
-                               , vector< vector<double> > rand01_1, vector< vector<double> > rand01_2
-                               , vector< vector<int> > LD_draw)
+                               , const vector< vector< vector<int> > >& randInt_1, const vector< vector< vector<int> > >& randInt_2
+                               , const vector< vector<double> >& rand01_1, const vector< vector<double> >& rand01_2
+                               , const vector< vector<int> >& LD_draw)
 {
 	omp_set_num_threads( noCPU );
 	#pragma omp parallel for schedule(dynamic) if(noCPU>1)
 
 	for (unsigned fg=0; fg<m_FGparams->size(); fg++)
 	{
-		/* dispOption = 1 (uniform), 2 (expKernel) or 3 (expKernel + proba) */
+		/* dispOption = 1 (uniform + packets), 2 (expKernel) or 3 (expKernel + proba) */
 		if (dispOption==1 || dispOption==2 || dispOption==3)
 		{
 			int xt, yt;
@@ -319,11 +319,11 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 			SpatialMap<double, int> new_SeedMapOut(SpatialMap<double, int>(m_SeedMapOut->getCoordinates(fg), m_SeedMapOut->getValues(fg)));
 
 			/* Do dispersal for each cell containing seeds */
-			for(vector<int>::iterator cell_ID=maskCells.begin(); cell_ID!=maskCells.end(); ++cell_ID)
+			for (int cell_ID : maskCells)
 			{ // loop on pixels
 
-				unsigned x = *cell_ID % m_SeedMapIn->getXncell();
-				unsigned y = trunc(*cell_ID / m_SeedMapIn->getXncell());
+				unsigned x = cell_ID % m_SeedMapIn->getXncell();
+				unsigned y = trunc(cell_ID / m_SeedMapIn->getXncell());
 
 				if ((*m_SeedMapIn)(x,y,fg) > 0)
 				{ // test of value of each pixel
@@ -375,8 +375,8 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 							// UniInt distrib(0, m_FGdistCircle[fg][1].size());
 							for (unsigned noDraw = 0; noDraw < noDrawMax; noDraw++)
 							{ /* Draw of cells into crown that will received seeds */
-								v2x_select.push_back(m_FGdistCircle[fg][1][randInt_1[fg][*cell_ID][noDraw]]);
-								v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][*cell_ID][noDraw]]);
+								v2x_select.push_back(m_FGdistCircle[fg][1][randInt_1[fg][cell_ID][noDraw]]);
+								v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][cell_ID][noDraw]]);
 							}
 						}
 						for (unsigned id = 0; id < v2x_select.size(); id++)
@@ -391,7 +391,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.49 / (noDrawMax * 2.0) );
 
 									/* x of its neighbour */
-									switch(randInt_2[fg][*cell_ID][id])
+									switch(randInt_2[fg][cell_ID][id])
 									{
 										case 0 : xt++;
 													break;
@@ -422,8 +422,8 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 					{
 						if(m_FGdistCircle[fg][2].size() > 0)
 						{
-						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][*cell_ID]];
-						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][*cell_ID]];
+						  xt = x + m_FGdistCircle[fg][2][LD_draw[fg][cell_ID]];
+						  yt = y + m_FGdistCircle[fg][5][LD_draw[fg][cell_ID]];
 							if (xt>=0 && yt>=0 && xt < static_cast<int>(m_SeedMapIn->getXncell()) && yt < static_cast<int>(m_SeedMapIn->getYncell()))
 							{
 								new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.01 );

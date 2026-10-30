@@ -278,9 +278,9 @@ class Disp
 	 */
 	
 	void DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCells
-                          , vector< vector< vector<int> > > randInt_1, vector< vector< vector<int> > > randInt_2
-                          , vector< vector<double> > rand01_1, vector< vector<double> > rand01_2
-                          , vector< vector<int> > LD_draw);
+                          , const vector< vector< vector<int> > >& randInt_1, const vector< vector< vector<int> > >& randInt_2
+                          , const vector< vector<double> >& rand01_1, const vector< vector<double> >& rand01_2
+                          , const vector< vector<int> >& LD_draw);
 	
 };
 
