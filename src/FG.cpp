@@ -478,14 +478,14 @@ int FG::getLifeSpan() const {return m_L;}
 int FG::getMaxAbund() const {return m_MaxAbund;}
 int FG::getImmSize() const {return m_ImmSize;}
 int FG::getMaxStratum() const {return m_MaxStratum;}
-const vector<int> FG::getStrata() const {return m_Strata;}
+const vector<int>& FG::getStrata() const {return m_Strata;}
 int FG::getStrata(const int& i) const {return m_Strata[i];}
-const vector<int> FG::getPoolLife() const {return m_PoolL;}
+const vector<int>& FG::getPoolLife() const {return m_PoolL;}
 int FG::getPoolLife(const PoolType& pt ) const {return m_PoolL[pt];}
 bool FG::getInnateDormancy() const {return m_InnateDorm;}
 int FG::getPotentialFecund() const {return m_PotentialFecundity;}
 double FG::getLightShadeFactor() const {return m_LightShadeFactor;}
-const vector<int> FG::getLightActiveGerm() const {return m_LightActiveGerm;}
+const vector<int>& FG::getLightActiveGerm() const {return m_LightActiveGerm;}
 const int& FG::getLightActiveGerm(const Resource& r) const {return m_LightActiveGerm[r];}
 const vector< vector<int> >& FG::getLightTolerance() const {return m_LightTolerance;}
 int FG::getLightTolerance(LifeStage ls, Resource r) const {return m_LightTolerance[ls][r];}
@@ -496,7 +496,7 @@ double FG::getDispLD() const {return m_dispLD;}
 double FG::getSoilContrib() const {return m_SoilContrib;}
 double FG::getSoilLow() const {return m_SoilLow;}
 double FG::getSoilHigh() const {return m_SoilHigh;}
-const vector<int> FG::getSoilActiveGerm() const {return m_SoilActiveGerm;}
+const vector<int>& FG::getSoilActiveGerm() const {return m_SoilActiveGerm;}
 const int& FG::getSoilActiveGerm(const Resource& r) const {return m_SoilActiveGerm[r];}
 const vector< vector<int> >& FG::getSoilTolerance() const {return m_SoilTolerance;}
 int FG::getSoilTolerance(LifeStage ls, Resource r) const { return m_SoilTolerance[ls][r];}

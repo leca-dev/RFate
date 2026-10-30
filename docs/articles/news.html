@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">RFate</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.2</span>
       </span>
     </div>
 
@@ -209,6 +209,24 @@ code within an <code>R</code> package, as well as new modules
 development, were meant to facilitate the use and spread of the
 <code>FATE</code> model.</p>
 <p><br><br></p>
+<div class="section level4">
+<h4 id="version-1-4-2-october-2026">Version 1.4.2 (october 2026)<a class="anchor" aria-label="anchor" href="#version-1-4-2-october-2026"></a>
+</h4>
+<ul>
+<li>1.4.2 :
+<ul>
+<li>fix pass-by-reference for getters in FG (switch from
+<code>const vector&lt;int&gt;</code> to
+<code>const vector&lt;int&gt;&amp;</code>, for <code>getStrata</code> /
+<code>getPoolLife</code> / <code>getLightActiveGerm</code> /
+<code>getSoilActiveGerm</code>)</li>
+<li>remove double serialization of <code>m_SoilTolerance</code> in
+<code>FG</code>
+</li>
+</ul>
+</li>
+</ul>
+</div>
 <div class="section level4">
 <h4 id="version-1-4-1-november-2025">Version 1.4.1 (november 2025)<a class="anchor" aria-label="anchor" href="#version-1-4-1-november-2025"></a>
 </h4>

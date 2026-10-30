@@ -150,7 +150,6 @@ private:
     ar & m_SoilHigh;
     ar & m_SoilActiveGerm;
     ar & m_SoilTolerance;
-    ar & m_SoilTolerance;
     ar & m_DistResponse;
     ar & m_FireResponse;
     ar & m_Flamm;
@@ -382,14 +381,14 @@ public:
   int getMaxAbund() const;
   int getImmSize() const;
   int getMaxStratum() const;
-  const vector<int> getStrata() const;
+  const vector<int>& getStrata() const;
   int getStrata(const int& i) const;
-  const vector<int> getPoolLife() const;
+  const vector<int>& getPoolLife() const;
   int getPoolLife(const PoolType& pt ) const;
   bool getInnateDormancy() const;
   int getPotentialFecund() const;
   double getLightShadeFactor() const;
-  const vector<int> getLightActiveGerm() const;
+  const vector<int>& getLightActiveGerm() const;
   const int& getLightActiveGerm(const Resource& r) const;
   const vector< vector<int> >& getLightTolerance() const;
   int getLightTolerance(LifeStage ls, Resource r) const;
@@ -400,7 +399,7 @@ public:
   double getSoilContrib() const;
   double getSoilLow() const;
   double getSoilHigh() const;
-  const vector<int> getSoilActiveGerm() const;
+  const vector<int>& getSoilActiveGerm() const;
   const int& getSoilActiveGerm(const Resource& r) const;
   const vector< vector<int> >& getSoilTolerance() const;
   int getSoilTolerance(LifeStage ls,  Resource r) const;
