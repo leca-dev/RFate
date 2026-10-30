@@ -45,6 +45,14 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 <br/> <br/>
 
 
+#### Version 1.4.2 (october 2026)
+
+- 1.4.2 :
+    + fix aging of seeds dormant pool
+    + fix pass-by-reference for getters in FG (switch from `const vector<int>` to `const vector<int>&`, for `getStrata` / `getPoolLife` / `getLightActiveGerm` / `getSoilActiveGerm`)
+    + remove double serialization of `m_SoilTolerance` in `FG`
+
+
 #### Version 1.4.1 (november 2025)
 
 - 1.4.1 :

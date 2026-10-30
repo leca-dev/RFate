@@ -499,7 +499,7 @@ void SuFate::DoSuccessionPart2(vector<int> isDrought)
     App_ptr->AgePool1(FGparams->getPoolLife(ActiveP));
     if (FGparams->getInnateDormancy())
     {
-      Dpp_ptr->AgePool1(FGparams->getPoolLife(ActiveP));
+      Dpp_ptr->AgePool1(FGparams->getPoolLife(DormantP));
     }
     
     /* 3. Calculate the seed rain */
