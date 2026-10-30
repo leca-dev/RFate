@@ -2023,9 +2023,9 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void compressFile(string newFile)
+void compressFile(string newFile, string method, const char * driverInput)
 {
-  // Compress file
+  if (method == "GZIP") {
 #if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX) || defined(__APPLE__)
   ostringstream ossCompressCommand;
   ossCompressCommand <<  "gzip -9 -f " << newFile;
@@ -2045,6 +2045,23 @@ void compressFile(string newFile)
   bo::copy(ifile, out);
   remove(newFile.c_str());
 #endif
+  } else {
+    GDALDriver *poDriver;
+    poDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
+    
+    char **rasOptions = NULL;
+    rasOptions = CSLSetNameValue( rasOptions, "TILED", "YES" );
+    rasOptions = CSLSetNameValue( rasOptions, "COMPRESS", method.c_str() );
+    
+    GDALDataset *beforeComp = (GDALDataset *) GDALOpen( newFile.c_str(), GA_ReadOnly );
+    GDALDataset *afterComp;
+    // afterComp = poDriver->CreateCopy( newFile.c_str(), beforeComp, FALSE, rasOptions, GDALTermProgress, NULL );
+    afterComp = poDriver->CreateCopy( newFile.c_str(), beforeComp, FALSE, rasOptions, NULL, NULL );
+    GDALClose( (GDALDatasetH) beforeComp );
+    GDALClose( (GDALDatasetH) afterComp );
+    
+    CSLDestroy( rasOptions );
+  }
 }
 
 void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
@@ -2160,7 +2177,10 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
             }
             GDALClose( rasOutput ); // Once we're done, close properly the dataset
             
-            compressFile(newFile);
+            /* Compress raster file into gz or compress values */
+            // compressFile(newFile, "GZIP", driverInput);
+            // compressFile(newFile, "PACKBITS", driverInput);
+            compressFile(newFile, "DEFLATE", driverInput);
           }
           delete [] abunValues1;
         } // end loop on Stratum
@@ -2188,7 +2208,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           }
           GDALClose( rasOutput ); // Once we're done, close properly the dataset
           
-          compressFile(newFile);
+          /* Compress raster file into gz or compress values */
+          compressFile(newFile, "DEFLATE", driverInput);
         }
         delete [] abunValues2;
       } // end loop on PFG
@@ -2253,7 +2274,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           }
           GDALClose( rasOutput ); // Once we're done, close properly the dataset
           
-          compressFile(newFile);
+          /* Compress raster file into gz or compress values */
+          compressFile(newFile, "DEFLATE", driverInput);
         }
         delete [] abunValues3;
       } // end loop on Stratum*/
@@ -2311,7 +2333,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       
       delete [] soilValues;
       
-      compressFile(newFile);
+      /* Compress raster file into gz or compress values */
+      compressFile(newFile, "DEFLATE", driverInput);
     }
     
     
@@ -2360,7 +2383,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         
         delete [] lightValues;
         
-        compressFile(newFile);
+        /* Compress raster file into gz or compress values */
+        compressFile(newFile, "DEFLATE", driverInput);
       }
     }
     
@@ -2409,7 +2433,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         
         delete [] seedValues;
         
-        compressFile(newFile);
+        /* Compress raster file into gz or compress values */
+        compressFile(newFile, "DEFLATE", driverInput);
       } // end loop on PFG
     }
   }

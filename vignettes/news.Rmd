@@ -48,6 +48,7 @@ Refinements to the model, and integration of the `C++` code within an `R` packag
 #### Version 1.4.2 (october 2026)
 
 - 1.4.2 :
+    + add the GDAL compress option through `CreateCopy` in `compressFile` function (it creates not a `.gz` file but rather a directly compressed raster file)
     + *For dispersal :*
         + draw correct quantity of random numbers in d50-d99 circle
         + draw random numbers only in pixels of studied area and only if seeds > 0 in `m_SeedMapIn`
