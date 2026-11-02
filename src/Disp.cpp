@@ -243,7 +243,7 @@ void Disp::GetPropProb()
 		m_prob_d2[fg].clear();
 		m_prop_d2[fg].reserve(d2-d1+1);
 		m_prob_d2[fg].reserve(d2-d1+1);
-		for (int i=1; i<=d2-d1; i++)
+		for (int i=0; i<=d2-d1; i++)
 		{
 			m_prop_d2[fg].emplace_back( ExpDensity(log(2.0) + i*6.65*log(2.0)/(d2-d1+1.0),1.0) - ExpDensity(log(2.0) + (i+1)*6.65*log(2.0)/(d2-d1+1.0),1.0));
 			m_prob_d2[fg].emplace_back(ContinuousDecrProba(i+d1, d2));
@@ -286,7 +286,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 				/* select cell receiving seeds according to a probability decreasing with distance */
 				for (unsigned id = 0; id < m_FGdistCircle[fg][0].size(); id++)
 				{
-					unsigned dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id]));
+					unsigned dist_pt = max(abs(m_FGdistCircle[fg][0][id]), abs(m_FGdistCircle[fg][3][id])); // Tchebychev distance
 					if (dist_pt < m_prob_d1[fg].size())
 					{
 						/* get an random number between 0-1 */
@@ -301,7 +301,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 				}
 				for (unsigned id = 0; id < m_FGdistCircle[fg][1].size(); id++)
 				{
-					unsigned dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1;
+				  unsigned dist_pt = max(abs(m_FGdistCircle[fg][1][id]), abs(m_FGdistCircle[fg][4][id])) - d1 + 1; // Tchebychev distance
 					if (dist_pt < m_prob_d2[fg].size())
 					{
 						/* get an random number between 0-1 */
@@ -315,10 +315,14 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 					}
 				}
 			}
+			int totCells = (m_FGdistCircle[fg][0].size() + m_FGdistCircle[fg][1].size());
 
 			SpatialMap<double, int> new_SeedMapOut(SpatialMap<double, int>(m_SeedMapOut->getCoordinates(fg), m_SeedMapOut->getValues(fg)));
 
 			/* Do dispersal for each cell containing seeds */
+			// #pragma omp parallel for ordered
+			// omp_set_num_threads( noCPU );
+			// #pragma omp parallel for schedule(dynamic) if(noCPU>1)
 			for (int cell_ID : maskCells)
 			{ // loop on pixels
 
@@ -352,7 +356,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * 0.5 / static_cast<double>(v1x_select.size()) );
 								} else if (dispOption==2 || dispOption==3)
 								{
-									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d1_select[id] );
+									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d1_select[id] / totCells);
 								}
 							}
 						} // end of loop on d1 disk
@@ -379,6 +383,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 								v2y_select.push_back(m_FGdistCircle[fg][4][randInt_1[fg][cell_ID][noDraw]]);
 							}
 						}
+					  int totCells = (v1x_select.size() + v2x_select.size());
 						for (unsigned id = 0; id < v2x_select.size(); id++)
 						{
 							xt = x + v2x_select[id];
@@ -408,7 +413,7 @@ void Disp::DoDispersalPacket(unsigned dispOption, int noCPU, vector<int> maskCel
 									}
 								} else if (dispOption==2 || dispOption==3)
 								{
-									new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] );
+								  new_SeedMapOut(xt,yt) += static_cast<int>( (*m_SeedMapIn)(x,y,fg) * prop_d2_select[id] / totCells);
 								}
 							}
 						}
