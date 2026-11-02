@@ -2023,46 +2023,38 @@ void SimulMap::UpdateSimulationParameters(FOPL file_of_params)
 
 /*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*/
 
-void compressFile(string newFile, string method, const char * driverInput)
+template <class T>
+void saveGDALFile(string newFile, int Xncell, int Yncell
+                    , const char * driverInput, GDALDriverH outputDriver
+                    , const char * inputProjection, double *outputGeoTransform
+                    , GDALDataType inputDataType, T *saveValues)
 {
-  if (method == "GZIP") {
-#if defined(__unix__) || defined(__linux__) || defined(linux) || defined(LINUX) || defined(__APPLE__)
-  ostringstream ossCompressCommand;
-  ossCompressCommand <<  "gzip -9 -f " << newFile;
-  string strCompressCommand = ossCompressCommand.str();
-  int compress_ok = system(strCompressCommand.c_str());
-  if (compress_ok != 0)
-  {
-    logg.warning("Compression failed for ", newFile);
-  }
-#else
-  std::ifstream ifile(newFile, std::ios_base::in | std::ios_base::binary);
-  std::ofstream ofile(newFile+".gz", std::ios_base::out | std::ios_base::binary);
+  //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
+  //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), Xncell, Yncell, m_glob_params.getNoStrata(), inputDataType, NULL );
   
-  bo::filtering_streambuf<bo::output> out;
-  out.push(bo::gzip_compressor());
-  out.push(ofile); 
-  bo::copy(ifile, out);
-  remove(newFile.c_str());
-#endif
-  } else {
-    GDALDriver *poDriver;
-    poDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
-    
-    char **rasOptions = NULL;
-    rasOptions = CSLSetNameValue( rasOptions, "TILED", "YES" );
-    rasOptions = CSLSetNameValue( rasOptions, "COMPRESS", method.c_str() );
-    
-    GDALDataset *beforeComp = (GDALDataset *) GDALOpen( newFile.c_str(), GA_ReadOnly );
-    GDALDataset *afterComp;
-    // afterComp = poDriver->CreateCopy( newFile.c_str(), beforeComp, FALSE, rasOptions, GDALTermProgress, NULL );
-    afterComp = poDriver->CreateCopy( newFile.c_str(), beforeComp, FALSE, rasOptions, NULL, NULL );
-    GDALClose( (GDALDatasetH) beforeComp );
-    GDALClose( (GDALDatasetH) afterComp );
-    
-    CSLDestroy( rasOptions );
+  char **rasOptions = NULL;
+  rasOptions = CSLSetNameValue( rasOptions, "TILED", "YES" );
+  rasOptions = CSLSetNameValue( rasOptions, "COMPRESS", "DEFLATE" );
+
+  GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), Xncell, Yncell, 1, inputDataType, rasOptions );
+  CPLAssert( rasOutput != NULL );
+  GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
+  GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
+
+  //GDALRasterBand * hBand = rasOutput->GetRasterBand( strat );
+  GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
+  CPLErr rasterAccess = GDALRasterIO(
+    hBand, GF_Write, 0, 0, Xncell, Yncell,
+    saveValues, Xncell, Yncell, inputDataType, 0, 0
+  );
+  if (rasterAccess > 0)
+  {
+    logg.warning("Writing ", newFile, " raster: acces status ", rasterAccess);
   }
+  GDALClose( rasOutput ); // Once we're done, close properly the dataset
+  CSLDestroy( rasOptions );
 }
+
 
 void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
 {
@@ -2072,7 +2064,7 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
   time_t start,end;
   time(&start);
   
-  // Get output driver (GeoTIFF format).
+  // Get output driver --------------------------------------------------------
   const char * driverInput = "GTiff";
   fs::path prevFile_path(prevFile.c_str());
   if (prevFile_path.extension()==".tif"){ driverInput = "GTiff";
@@ -2100,6 +2092,8 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
   
   // Create output with same datatype as first input band.
   //GDALDataType inputDataType = GDALGetRasterDataType(GDALGetRasterBand(rasInput,1)); //GDT_Byte
+  // --------------------------------------------------------------------------
+  
   
   if (m_glob_params.getDoSavingPFGStratum() ||
       m_glob_params.getDoSavingPFG() ||
@@ -2157,30 +2151,10 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
             // Create the output file only if the PFG is present somewhere.
             string newFile = saveDir+"/ABUND_perPFG_perStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+
               "_STRATA_"+to_string(strat)+prevFile_path.extension().string();
-            //GDALDriver * outputDriver = GetGDALDriverManager()->GetDriverByName(driverInput);
-            //GDALDataset * rasOutput = outputDriver->Create( newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), m_glob_params.getNoStrata(), GDT_UInt32, NULL );
-            GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt32, NULL );
-            CPLAssert( rasOutput != NULL );
-            GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-            GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
             
-            //GDALRasterBand * hBand = rasOutput->GetRasterBand( strat );
-            GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-            CPLErr rasterAccess = GDALRasterIO(
-              hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-              abunValues1, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt32, 0, 0
-            );
-            if (rasterAccess > 0)
-            {
-              logg.warning("Writing ", newFile, " raster: acces status ",
-                           rasterAccess);
-            }
-            GDALClose( rasOutput ); // Once we're done, close properly the dataset
-            
-            /* Compress raster file into gz or compress values */
-            // compressFile(newFile, "GZIP", driverInput);
-            // compressFile(newFile, "PACKBITS", driverInput);
-            compressFile(newFile, "DEFLATE", driverInput);
+            saveGDALFile(newFile, m_Mask.getXncell(), m_Mask.getYncell()
+                           , driverInput, outputDriver, inputProjection
+                           , outputGeoTransform, GDT_UInt32, abunValues1);
           }
           delete [] abunValues1;
         } // end loop on Stratum
@@ -2190,26 +2164,12 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         if (m_glob_params.getDoSavingPFG() && positiveVal2)
         {
           // Create the output file only if the PFG is present somewhere.
-          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+"_STRATA_all"+prevFile_path.extension().string();
-          GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt32, NULL );
-          CPLAssert( rasOutput != NULL );
-          GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-          GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
+          string newFile = saveDir+"/ABUND_perPFG_allStrata/Abund_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+
+            "_STRATA_all"+prevFile_path.extension().string();
           
-          GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-          CPLErr rasterAccess = GDALRasterIO(
-            hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-            abunValues2, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt32, 0, 0
-          );
-          if (rasterAccess > 0)
-          {
-            logg.warning("Writing ", newFile, " raster: acces status ",
-                         rasterAccess);
-          }
-          GDALClose( rasOutput ); // Once we're done, close properly the dataset
-          
-          /* Compress raster file into gz or compress values */
-          compressFile(newFile, "DEFLATE", driverInput);
+          saveGDALFile(newFile, m_Mask.getXncell(), m_Mask.getYncell()
+                         , driverInput, outputDriver, inputProjection
+                         , outputGeoTransform, GDT_UInt32, abunValues2);
         }
         delete [] abunValues2;
       } // end loop on PFG
@@ -2256,26 +2216,12 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
           // positiveVal33 = true;
           
           // Create the output file only if the PFG is present somewhere.
-          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+to_string(year)+"_allPFG_STRATA_"+to_string(strat)+prevFile_path.extension().string();
-          GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt32, NULL );
-          CPLAssert( rasOutput != NULL );
-          GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-          GDALSetGeoTransform( rasOutput, outputGeoTransform ); // Write out the GeoTransform.
+          string newFile = saveDir+"/ABUND_allPFG_perStrata/Abund_YEAR_"+to_string(year)+"_allPFG_STRATA_"+
+            to_string(strat)+prevFile_path.extension().string();
           
-          GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-          CPLErr rasterAccess = GDALRasterIO(
-            hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-            abunValues3, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt32, 0, 0
-          );
-          if (rasterAccess > 0)
-          {
-            logg.warning("Writing ", newFile, " raster: acces status ",
-                         rasterAccess);
-          }
-          GDALClose( rasOutput ); // Once we're done, close properly the dataset
-          
-          /* Compress raster file into gz or compress values */
-          compressFile(newFile, "DEFLATE", driverInput);
+          saveGDALFile(newFile, m_Mask.getXncell(), m_Mask.getYncell()
+                         , driverInput, outputDriver, inputProjection
+                         , outputGeoTransform, GDT_UInt32, abunValues3);
         }
         delete [] abunValues3;
       } // end loop on Stratum*/
@@ -2312,29 +2258,12 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
       }
       // Create the output file.
       string newFile = saveDir+"/SOIL/Soil_Resources_YEAR_"+to_string(year)+prevFile_path.extension().string();
-      GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
-      CPLAssert( rasOutput != NULL );
       
-      GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-      double outputGeoTransform[6]; // Write out the GeoTransform.
-      GDALGetGeoTransform( rasInput, outputGeoTransform );
-      GDALSetGeoTransform( rasOutput, outputGeoTransform );
-      
-      GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-      CPLErr rasterAccess = GDALRasterIO(
-        hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-        soilValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
-      );
-      if (rasterAccess > 0)
-      {
-        logg.warning("Writing ", newFile, " raster: acces status ", rasterAccess);
-      }
-      GDALClose( rasOutput ); // Once we're done, close properly the dataset
+      saveGDALFile(newFile, m_Mask.getXncell(), m_Mask.getYncell()
+                     , driverInput, outputDriver, inputProjection
+                     , outputGeoTransform, GDT_Float32, soilValues);
       
       delete [] soilValues;
-      
-      /* Compress raster file into gz or compress values */
-      compressFile(newFile, "DEFLATE", driverInput);
     }
     
     
@@ -2362,29 +2291,12 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         // Create the output file.
         string newFile = saveDir+"/LIGHT/Light_Resources_YEAR_"+to_string(year)+
           "_STRATA_"+to_string(strat+1)+prevFile_path.extension().string();
-        GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_UInt16, NULL );
-        CPLAssert( rasOutput != NULL );
         
-        GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-        double outputGeoTransform[6]; // Write out the GeoTransform.
-        GDALGetGeoTransform( rasInput, outputGeoTransform );
-        GDALSetGeoTransform( rasOutput, outputGeoTransform );
-        
-        GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-        CPLErr rasterAccess = GDALRasterIO(
-          hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-          lightValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_UInt16, 0, 0
-        );
-        if (rasterAccess > 0)
-        {
-          logg.warning("Writing ", newFile, " raster: acces status ", rasterAccess);
-        }
-        GDALClose( rasOutput ); // Once we're done, close properly the dataset
+        saveGDALFile(newFile, m_Mask.getXncell(), m_Mask.getYncell()
+                       , driverInput, outputDriver, inputProjection
+                       , outputGeoTransform, GDT_UInt16, lightValues);
         
         delete [] lightValues;
-        
-        /* Compress raster file into gz or compress values */
-        compressFile(newFile, "DEFLATE", driverInput);
       }
     }
     
@@ -2411,30 +2323,12 @@ void SimulMap::SaveRasterAbund(string saveDir, int year, string prevFile)
         
         // Create the output file only if the PFG is present somewhere.
         string newFile = saveDir+"/DISPERSAL/Dispersal_YEAR_"+to_string(year)+"_"+m_FGparams[fg].getName()+prevFile_path.extension().string();
-        GDALDatasetH rasOutput = GDALCreate( outputDriver, newFile.c_str(), m_Mask.getXncell(), m_Mask.getYncell(), 1, GDT_Float32, NULL );
-        CPLAssert( rasOutput != NULL );
         
-        GDALSetProjection( rasOutput, inputProjection ); // Write out the projection definition.
-        double outputGeoTransform[6]; // Write out the GeoTransform.
-        GDALGetGeoTransform( rasInput, outputGeoTransform );
-        GDALSetGeoTransform( rasOutput, outputGeoTransform );
-        
-        GDALRasterBandH hBand = GDALGetRasterBand( rasOutput, 1 );
-        CPLErr rasterAccess = GDALRasterIO(
-          hBand, GF_Write, 0, 0, m_Mask.getXncell(), m_Mask.getYncell(),
-          seedValues, m_Mask.getXncell(), m_Mask.getYncell(), GDT_Float32, 0, 0
-        );
-        if (rasterAccess > 0)
-        {
-          logg.warning("Writing ", newFile, " raster: acces status ",
-                       rasterAccess);
-        }
-        GDALClose( rasOutput ); // Once we're done, close properly the dataset
+        saveGDALFile(newFile, m_Mask.getXncell(), m_Mask.getYncell()
+                       , driverInput, outputDriver, inputProjection
+                       , outputGeoTransform, GDT_Float32, seedValues);
         
         delete [] seedValues;
-        
-        /* Compress raster file into gz or compress values */
-        compressFile(newFile, "DEFLATE", driverInput);
       } // end loop on PFG
     }
   }

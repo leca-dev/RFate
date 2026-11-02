@@ -210,14 +210,22 @@ development, were meant to facilitate the use and spread of the
 <code>FATE</code> model.</p>
 <p><br><br></p>
 <div class="section level4">
-<h4 id="version-1-4-2-october-2026">Version 1.4.2 (october 2026)<a class="anchor" aria-label="anchor" href="#version-1-4-2-october-2026"></a>
+<h4 id="version-1-4-2-november-2026">Version 1.4.2 (november 2026)<a class="anchor" aria-label="anchor" href="#version-1-4-2-november-2026"></a>
 </h4>
 <ul>
 <li>1.4.2 :
 <ul>
-<li>add the GDAL compress option through <code>CreateCopy</code> in
-<code>compressFile</code> function (it creates not a <code>.gz</code>
-file but rather a directly compressed raster file)</li>
+<li>
+<em>For saving raster :</em>
+<ul>
+<li>add <code>saveGDALFile</code> function to generalize the raster
+creation and saving</li>
+<li>add the GDAL compress options within <code>GDALCreate</code> (it
+does not create a <code>.gz</code> file but rather directly a compressed
+raster file)</li>
+<li>remove <code>compressFile</code> function</li>
+</ul>
+</li>
 <li>
 <em>For dispersal :</em>
 <ul>
