@@ -260,7 +260,7 @@ void SuFate::CheckSurvival()
         /* check germinant plants survival */
         FGlegion->reduceCohort(0, 0, IntToDouble(FGparams->getSoilTolerance()[Germinant][soilRes]));
         /* check immature plants survival */
-        FGlegion->reduceCohort(0, FGparams->getMatTime() - 1, IntToDouble(FGparams->getSoilTolerance()[Immature][soilRes]));
+        FGlegion->reduceCohort(1, FGparams->getMatTime() - 1, IntToDouble(FGparams->getSoilTolerance()[Immature][soilRes]));
         /* check mature plants survival */
         FGlegion->reduceCohort(FGparams->getMatTime(), FGparams->getLifeSpan()+1, IntToDouble(FGparams->getSoilTolerance()[Mature][soilRes]));
         
@@ -299,11 +299,11 @@ void SuFate::CheckSurvival()
           if (st == m_GSP->getNoStrata()) { break; } // last stratum, get out of the loop
           
           /* only matures or only immature plants in this Legion */
-          if (ayTemp >= this->getMatTime(fg) || aoTemp < this->getMatTime(fg))
+          if (ayTemp >= FGparams->getMatTime() || aoTemp < FGparams->getMatTime())
           {
             int survivePercent; /* are the plants able to survive or not */
             /* check if plants are able to survive in this strata */
-            if (ayTemp >= this->getMatTime(fg))
+            if (ayTemp >= FGparams->getMatTime())
             { // only mature plants
               survivePercent = FGparams->getLightTolerance(Mature , m_LightR.getResource(st));
             } else
@@ -341,7 +341,7 @@ void SuFate::CheckSurvival()
           } else
           {	/* If there are both immatures and matures plants in this Legion */
             /* split the legion according to maturation age */
-            FGlegion->splitCohort(co, this->getMatTime(fg)-1);
+            FGlegion->splitCohort(co, FGparams->getMatTime()-1);
             noCohort++;
           }
         }
